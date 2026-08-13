@@ -1,0 +1,24 @@
+# Legacy prototype material — NOT for publication.
+# Contains prior-prototype source, internal knowledge docs, and licensed
+# third-party datasets. Must never be pushed to this public repo.
+legacy/
+
+# Engineer-reference only — NOT for publication.
+# Brand and UI specifications. Engineer-eyes-only; never published.
+BRAND.md
+UI_REFERENCE.md
+
+# Brand assets — ignored pending a deployment-time publish decision.
+brand/
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.local
+*.tsbuildinfo
+
+# Raw source data — downloaded, converted, never committed.
+# Only the simplified web-ready outputs in public/ are tracked.
+data-src/

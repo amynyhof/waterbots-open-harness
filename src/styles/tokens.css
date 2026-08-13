@@ -1,0 +1,190 @@
+/* ---------------------------------------------------------------------------
+   WaterBots design tokens — transcribed from BRAND.md.
+
+   Every value here comes from BRAND.md. Nothing is invented. Components must
+   reference these tokens, never a raw hex, so a palette correction lands
+   everywhere at once.
+
+   NOT SOURCED FROM the bundled `_ds` kit in `brand/Admin color selection/`.
+   That kit predates the 2026-08-08 four-surface ruling: it carries
+   `--paper #070918` / `--card #131630` and has no `--chrome` token at all.
+   BRAND.md flags those values as dead. They are not reinstated here.
+--------------------------------------------------------------------------- */
+
+:root {
+  /* --- Brand hues (theme-independent) ------------------------------------ */
+  --marine: #0f1b3d;
+  --tide: #2b5bff;
+  --iris: #7b5be6;
+  --surf: #14c8d9;
+  --mint: #2bc9a5;
+  --plum: #5848a8;
+  --slate: #3d5878;
+  --amber: #e8a12b;
+  --coral: #e25858;
+  --seagrass: #2f7d5e;
+
+  /* Recorded, not in use. Kept so a future role does not re-open the search. */
+  --anemone: #a04e7e;
+  --driftwood: #8e7147;
+
+  /* Admin is reached through --role-admin, never the raw hex. */
+  --role-admin: var(--seagrass);
+
+  /* --- Type -------------------------------------------------------------- */
+  --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  --fs-display: clamp(44px, 6vw, 84px);
+  --fs-h1: clamp(36px, 4.8vw, 64px);
+  --fs-h2: clamp(28px, 3.4vw, 40px);
+  --fs-h3: clamp(20px, 2.2vw, 26px);
+  --fs-body: 15px;
+  --fs-caption: 13px;
+
+  --track-display: -0.04em;
+  --track-h2: -0.025em;
+  --track-body: 0em;
+  --track-eyebrow: 0.22em;
+
+  /* --- Radii — 4-pt grid ------------------------------------------------- */
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+  --r-2xl: 28px;
+  --r-pill: 999px;
+
+  /* --- Card density — the surface decides which ------------------------- */
+  --pad-card: 24px; /* document surfaces */
+  --pad-console: 16px; /* console modules — denser, deliberately */
+
+  /* --- Layout ------------------------------------------------------------ */
+  --page-max: 1240px;
+  --gutter: clamp(20px, 4vw, 56px);
+  --measure: 816px; /* the centred console column */
+  --chat-rail: 372px; /* agent host seat, 360–380 band */
+
+  /* --- Motion — restrained, never bouncy -------------------------------- */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur: 220ms;
+}
+
+/* ---------------------------------------------------------------------------
+   FROST — the light theme. Public and orientation surfaces.
+
+   THIS IS THE THEME v1 RENDERS ON. The map is a public surface with no login,
+   so BRAND.md's surface rule (light = public, dark = signed-in) puts it here.
+
+   Note Frost has no four-surface ladder: BRAND.md publishes --card and
+   --raised as the SAME value (#FFFFFF), and the ladder is authored explicitly
+   for Deep Marine. On Frost, separation is carried by the 1px --line border,
+   not by fill. This is BRAND.md's structure, not a simplification of it.
+
+   --chrome is UNPUBLISHED for Frost. BRAND.md's §8.3a "chrome recedes" rule
+   and its --chrome token exist only in the Deep Marine block. Rather than
+   invent a hex, chrome aliases --paper here and is separated by a --line rule.
+   A real Frost chrome value is needed before the rails and chat dock are
+   built at step 6 — see README "Open brand questions".
+--------------------------------------------------------------------------- */
+.theme-light,
+[data-theme='light'] {
+  --chrome: var(--paper); /* UNPUBLISHED — alias, not an invented value */
+  --paper: #fbfbfe;
+  --card: #ffffff;
+  --raised: #ffffff;
+
+  --fg-1: #0b1428;
+  --fg-2: #2a3146;
+  --fg-3: #5b6478; /* readability floor */
+  --fg-4: #98a0b2; /* disabled / placeholder only */
+
+  --line: rgba(11, 20, 40, 0.09);
+
+  --tide-ui: var(--tide);
+  --tide-text: var(--tide);
+  --tide-hover: #2750e0;
+
+  --wash: 12%;
+
+  /* Status taxonomy (brand v2). --state-completed is retired. */
+  --state-live: #14c8d9;
+  --state-approved: #2bc9a5;
+  --state-pending: #e8a12b;
+  --state-locked: #98a0b2;
+  --state-warn: #e25858;
+
+  /* --- Crew identity on Frost -------------------------------------------
+     The roster's base hues. Read from the token, never by re-typing a hex,
+     so a roster change lands everywhere at once. */
+  --bot-wellington: var(--tide);
+  --bot-audrey: var(--iris);
+  --bot-ally: #3da8bd; /* sister cyan */
+  --bot-vector: var(--mint);
+  --bot-monty: var(--slate);
+  --bot-reggie: var(--plum);
+
+  /* UNRESOLVED — deliberately not invented. See README "Open brand questions".
+     --bot-bridget : the roster assigns her Surf, but the maintainer has ruled
+                     that Surf carries no agent identity in this repo. Bridget
+                     is therefore the ONLY crew member with no identity colour
+                     on Frost — and she is the step 6 chat host. Needs a
+                     maintainer decision before the console shell is built. */
+}
+
+/* ---------------------------------------------------------------------------
+   DEEP MARINE — the dark theme. Signed-in working surfaces.
+
+   NOT RENDERED IN v1. This repo's map is a public, no-login surface and ships
+   on Frost only. These tokens are kept because they are correct reference and
+   will be needed if a signed-in surface is ever added here. No v1 component
+   applies .theme-dark.
+
+   THE FOUR-SURFACE LADDER. Elevation adds white, not blue: raised surfaces are
+   white composited over the canvas, never hand-picked navies. Adjacent
+   surfaces differ by at least 6 points of CIE L* (7.5 → 14.4 → 22.5 → 30.4).
+   Elevation always goes lighter and never inverts.
+--------------------------------------------------------------------------- */
+.theme-dark,
+[data-theme='dark'] {
+  --chrome: #0e1329; /* below the canvas — topbar, rails, chat dock */
+  --paper: #1b2340; /* the canvas; also marks an active nav item */
+  --card: color-mix(in srgb, #ffffff 8%, var(--paper)); /* ≈ #2d354f */
+  --raised: color-mix(in srgb, #ffffff 17%, var(--paper)); /* ≈ #424860 */
+
+  --fg-1: #f1f3fb; /* never pure white */
+  --fg-2: #dbe0f0;
+  --fg-3: #b0b8d2; /* readability floor — below this is decoration */
+  --fg-4: #838caa; /* disabled / placeholder only */
+
+  --line: rgba(255, 255, 255, 0.1);
+
+  --tide-ui: #3c5fcc;
+  --tide-text: #6285e8;
+  --tide-hover: #6285e8;
+
+  --wash: 22%;
+
+  /* Status taxonomy on Deep Marine — accents desaturated per rule 5. */
+  --state-live: #55cbd8;
+  --state-approved: #5bcdaf;
+  --state-pending: #e3b26b;
+  --state-locked: #838caa;
+  --state-warn: #e08585;
+
+  /* --- Crew identity on Deep Marine ------------------------------------- */
+  /* Published dark values, from BRAND.md. */
+  --bot-wellington: #a3b4e8;
+  --bot-audrey: #c0b4ec;
+  --bot-vector: #5bcdaf;
+  --bot-monty: #a9b6cc;
+
+  /* UNRESOLVED — deliberately not invented. See README "Open brand questions".
+     --bot-bridget : BRAND.md's Surf-family dark value (#7FD5DF) was published
+                     under the retired agent "Mini". Maintainer has ruled that
+                     Surf carries no agent identity, so whether that value
+                     transfers to Bridget is an open decision. Needed at step 6.
+     --bot-reggie  : no published dim value; BRAND.md flags it for design
+                     review. Maintainer has ruled it out of scope for v1. */
+}

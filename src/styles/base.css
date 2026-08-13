@@ -1,0 +1,279 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+/* ---------------------------------------------------------------------------
+   Base elements
+--------------------------------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  letter-spacing: var(--track-body);
+  color: var(--fg-1);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Backgrounds are plain. No gradients on heroes, ever. */
+
+/* ---------------------------------------------------------------------------
+   Type scale
+--------------------------------------------------------------------------- */
+
+.t-display {
+  font-size: var(--fs-display);
+  letter-spacing: var(--track-display);
+  font-weight: 700;
+  line-height: 1.05;
+}
+.t-h1 {
+  font-size: var(--fs-h1);
+  letter-spacing: var(--track-display);
+  font-weight: 700;
+  line-height: 1.1;
+}
+.t-h2 {
+  font-size: var(--fs-h2);
+  letter-spacing: var(--track-h2);
+  font-weight: 600;
+  line-height: 1.2;
+}
+.t-h3 {
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.3;
+}
+.t-body {
+  font-size: var(--fs-body);
+}
+.t-caption {
+  font-size: var(--fs-caption);
+  color: var(--fg-3);
+}
+
+/* Mono is for values: IDs, units, counts, currency, timestamps, citations. */
+.t-mono {
+  font-family: var(--font-mono);
+  font-weight: 400;
+}
+
+/* The eyebrow is the signature type element — SECTION HEADERS ONLY.
+   A repeated label (a table column head) is .label, never an eyebrow. */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--track-eyebrow);
+  color: var(--fg-3);
+}
+.eyebrow::before {
+  content: '';
+  width: 18px;
+  height: 1px;
+  background: currentColor;
+  flex: none;
+}
+.eyebrow.admin {
+  color: var(--role-admin);
+}
+
+/* Repeated labels — table column heads above all. Normal tracking. */
+.label {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fg-3);
+}
+
+/* ---------------------------------------------------------------------------
+   Surfaces
+
+   A card cannot contain a card. One level of containment per region; inside
+   it, dividers and spacing do the work.
+--------------------------------------------------------------------------- */
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--pad-console);
+  /* No shadow by default — borders carry the weight. Shadows are reserved
+     for floating elements (popovers, modals). */
+}
+
+.card-document {
+  border-radius: var(--r-lg);
+  padding: var(--pad-card);
+}
+
+/* Chrome recedes, content rises. Navigation sits BELOW the canvas, flush and
+   square — never as a card. */
+.chrome {
+  background: var(--chrome);
+  border: 0;
+  border-radius: 0;
+}
+
+/* On Frost, --chrome aliases --paper (BRAND.md publishes no Frost chrome
+   value), so the fill alone cannot separate navigation from the canvas. A
+   1px --line rule carries the separation instead — the same device Frost uses
+   for cards. Still flush and square: chrome is never a card. */
+.theme-light .chrome {
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---------------------------------------------------------------------------
+   Status dots — 7–10px with a 3px soft halo.
+   Only the Live dot pulses. Nothing else on any surface pulses.
+--------------------------------------------------------------------------- */
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--r-pill);
+  background: var(--dot);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--dot) 22%, transparent);
+  flex: none;
+}
+
+.status-dot.is-live {
+  animation: wb-pulse 2.4s var(--ease) infinite;
+}
+
+@keyframes wb-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.35);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-dot.is-live {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Chips and tags — split by what they carry.
+   Test: if the text would change when the record changes, it is a .tag.
+--------------------------------------------------------------------------- */
+
+.chip,
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  transition: background var(--dur) var(--ease);
+}
+
+/* A state — Draft, Pending, Verified. Dark: wash fill, no border. */
+.chip {
+  border-radius: var(--r-pill);
+  background: color-mix(in oklab, var(--chip-role, var(--fg-3)) var(--wash), transparent);
+  color: var(--fg-2);
+  border: 0;
+}
+.chip:hover {
+  background: color-mix(in oklab, var(--chip-role, var(--fg-3)) 18%, transparent);
+}
+
+/* Light theme takes an outline instead — a wash on near-white goes pastel. */
+.theme-light .chip {
+  background: transparent;
+  border: 1px solid color-mix(in oklab, var(--chip-role, var(--fg-3)) 40%, transparent);
+}
+
+/* A value — Carbon, VWBA 2.0, §4.2, a count. */
+.tag {
+  border-radius: var(--r-xs);
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--fg-2);
+}
+
+/* ---------------------------------------------------------------------------
+   Buttons — --r-sm, never a pill.
+--------------------------------------------------------------------------- */
+
+.btn {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--fg-1);
+  cursor: pointer;
+  transition:
+    background var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.btn-primary {
+  background: var(--tide-ui);
+  border-color: transparent;
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background: var(--tide-hover);
+}
+.btn:active {
+  transform: scale(0.98); /* no colour shift on press */
+}
+
+.btn:disabled {
+  color: var(--fg-4);
+  cursor: not-allowed;
+}
+.btn:disabled:active {
+  transform: none;
+}
+
+/* Focus — 2px --tide-ui outline at 3px offset, in both themes. */
+:where(a, button, input, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--tide-ui);
+  outline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   Wordmark — always "WaterBots.AI", camel-cased Bot, tide-blue .AI.
+   Never "Waterbots", never all-caps.
+--------------------------------------------------------------------------- */
+
+.wordmark {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--fg-1);
+  text-decoration: none;
+}
+.wordmark .dot-ai {
+  color: var(--tide-text);
+}
+
+/* Page transitions are fades, never slides. No overshoot, no spring. */
