@@ -1,0 +1,12 @@
+<!--
+  PLACEHOLDER favicon — a plain water droplet, deliberately NOT the WaterBots
+  mark. The brand mark waits on the assets-publish decision at deploy time.
+  Colour is --tide (#2B5BFF) from the design tokens.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="7" fill="#2B5BFF" />
+  <path
+    d="M16 6.5c0 0-7 8.1-7 12.3a7 7 0 0 0 14 0C23 14.6 16 6.5 16 6.5z"
+    fill="#FFFFFF"
+  />
+</svg>

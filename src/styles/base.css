@@ -277,3 +277,63 @@ body {
 }
 
 /* Page transitions are fades, never slides. No overshoot, no spring. */
+
+/* ---------------------------------------------------------------------------
+   Leaflet overrides — brand type and surfaces on map chrome.
+
+   The attribution control is never hidden. It is styled to be legible, not
+   to be faint: a faded, hand-rolled credit line does not meet any of the
+   licence bars this product carries.
+--------------------------------------------------------------------------- */
+
+.leaflet-container {
+  font-family: var(--font-sans);
+  background: var(--paper);
+}
+
+.leaflet-control-attribution {
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  color: var(--fg-2);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 1.5;
+  padding: 3px 8px;
+  border-top-left-radius: var(--r-xs);
+}
+.leaflet-control-attribution a {
+  color: var(--tide-text);
+}
+
+.leaflet-control-zoom a {
+  color: var(--fg-2);
+  background: var(--card);
+  border-color: var(--line);
+}
+.leaflet-control-zoom a:hover {
+  background: var(--paper);
+}
+
+/* Basin hover tooltip — mono for values, per the type rule. */
+.wb-basin-tooltip {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  box-shadow: 0 4px 14px rgba(11, 20, 40, 0.1);
+  color: var(--fg-2);
+  padding: 8px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.wb-basin-tooltip::before {
+  display: none; /* no callout arrow */
+}
+.wb-basin-tooltip .wb-tt-id {
+  display: block;
+  color: var(--fg-1);
+  font-weight: 500;
+}
+.wb-basin-tooltip .wb-tt-row {
+  display: block;
+  color: var(--fg-3);
+}
