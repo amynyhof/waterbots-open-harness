@@ -192,18 +192,74 @@ for (const f of geo.features) {
 
 const collisions = [...seenPfaf.entries()].filter(([, v]) => v.length > 1);
 
+/**
+ * The world layer renders Level 4, whose PFAF_ID is four digits — it cannot
+ * read the six-digit Level 6 keys. Level 4 values must therefore be DERIVED.
+ *
+ * Method: area-weighted majority. Each Level 4 parent takes the category
+ * covering the largest share of its area across its Level 6 children.
+ *
+ * A majority, not a mean: the categories are ordinal bands, and averaging
+ * band numbers would invent a value WRI never published — worse, it would
+ * have to assign numbers to "Arid and Low Water Use" and "No Data", which are
+ * not points on the scale at all.
+ *
+ * The winning share is recorded per basin so the information lost to the
+ * roll-up is measurable rather than hidden.
+ */
+const L4 = JSON.parse(readFileSync(path.join(ROOT, 'public', 'hydrobasins_lev04.json'), 'utf8'));
+
+const areaByParent = new Map(); // 4-digit code -> Map<category, km2>
+for (const f of geo.features) {
+  const parent = String(f.properties.PFAF_ID).slice(0, 4);
+  const category = stress[String(f.properties.PFAF_ID)];
+  if (!category) continue;
+  if (!areaByParent.has(parent)) areaByParent.set(parent, new Map());
+  const m = areaByParent.get(parent);
+  m.set(category, (m.get(category) ?? 0) + (f.properties.SUB_AREA ?? 0));
+}
+
+const stress4 = {};
+const dominance = [];
+let l4Matched = 0;
+const l4Unmatched = [];
+
+for (const f of L4.features) {
+  const code = String(f.properties.PFAF_ID);
+  const m = areaByParent.get(code);
+  if (!m || m.size === 0) {
+    l4Unmatched.push(code);
+    continue;
+  }
+  const total = [...m.values()].reduce((a, b) => a + b, 0);
+  const [winner, area] = [...m.entries()].sort((a, b) => b[1] - a[1])[0];
+  if (stress4[code] === undefined) l4Matched++;
+  stress4[code] = winner;
+  dominance.push(total > 0 ? area / total : 1);
+}
+
 const out = {
   source: {
     dataset: 'WRI Aqueduct 4.0 — baseline annual water stress (bws)',
     licence: 'CC-BY 4.0',
     citation:
       'Kuzma, S., M.F.P. Bierkens, S. Lakshman, T. Luo, L. Saccoccia, E. H. Sutanudjaja, and R. Van Beek. 2023. "Aqueduct 4.0: Updated decision-relevant global water risk indicators." Technical Note. Washington, DC: World Resources Institute.',
-    derivation:
-      'Values are WRI\'s published Level 6 figures, deduplicated across the basin x subnational-admin rows. No aggregation and no interpolation was applied.',
-    basins: 'HydroSHEDS HydroBASINS Level 6, keyed by PFAF_ID',
   },
   categories: Object.fromEntries(Object.values(CATEGORIES).map((c) => [c.key, c.label])),
-  stress,
+  levels: {
+    6: {
+      keyedBy: 'PFAF_ID (6 digits)',
+      derivation: 'direct',
+      note: "WRI's published Level 6 values, deduplicated across the basin x subnational-admin rows. No aggregation, no interpolation.",
+      stress,
+    },
+    4: {
+      keyedBy: 'PFAF_ID (4 digits)',
+      derivation: 'area-weighted majority of Level 6 children',
+      note: 'DERIVED, not published by WRI. Each basin takes the category covering the largest share of its area. A majority rather than a mean, because the categories are ordinal bands and two of them are not points on the scale.',
+      stress: stress4,
+    },
+  },
 };
 
 writeFileSync(OUT, JSON.stringify(out));
@@ -225,10 +281,36 @@ if (collisions.length) {
   }
 }
 
-log('\n  Basins by category');
+log('\n  Basins by category (Level 6, direct)');
 for (const c of Object.values(CATEGORIES)) {
   const n = counts[c.key];
   log(`    ${c.label.padEnd(24)} ${String(n).padStart(6)}  ${((100 * n) / matched).toFixed(2)}%`);
+}
+
+// --- Level 4 roll-up --------------------------------------------------------
+const l4counts = Object.fromEntries(Object.values(CATEGORIES).map((c) => [c.key, 0]));
+for (const v of Object.values(stress4)) l4counts[v]++;
+
+dominance.sort((a, b) => a - b);
+const mean = dominance.reduce((a, b) => a + b, 0) / dominance.length;
+const median = dominance[dominance.length >> 1];
+const weak = dominance.filter((d) => d < 0.5).length;
+
+log('\n  Level 4 roll-up (DERIVED — area-weighted majority)');
+log(`    basins in world layer  ${L4.features.length.toLocaleString()}`);
+log(`    basins with a value    ${l4Matched.toLocaleString()}`);
+log(`    basins unmatched       ${l4Unmatched.length.toLocaleString()}`);
+if (l4Unmatched.length) log(`      e.g. ${l4Unmatched.slice(0, 8).join(', ')}`);
+log(`    winning share, mean    ${(100 * mean).toFixed(1)}%`);
+log(`    winning share, median  ${(100 * median).toFixed(1)}%`);
+log(`    won with under half    ${weak.toLocaleString()} basins`);
+log('    (the winning share is how much of the parent the chosen category covers —');
+log('     a low share means the roll-up discarded a lot of variation)');
+
+log('\n  Basins by category (Level 4, derived)');
+for (const c of Object.values(CATEGORIES)) {
+  const n = l4counts[c.key];
+  log(`    ${c.label.padEnd(24)} ${String(n).padStart(6)}  ${((100 * n) / l4Matched).toFixed(2)}%`);
 }
 
 log(`\nWrote ${path.relative(ROOT, OUT)} — ${statSync(OUT).size.toLocaleString()} bytes`);

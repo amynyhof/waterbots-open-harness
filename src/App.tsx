@@ -43,7 +43,11 @@ export default function App() {
             be confirmed by eye. Replaced by the legend at step 4. */}
         {status && (
           <span className="t-mono" style={{ fontSize: 11, color: 'var(--fg-3)' }}>
-            {status.detailError ? (
+            {status.stressError ? (
+              <span style={{ color: 'var(--state-warn)' }}>
+                Water stress data unavailable — basins are shown unfilled
+              </span>
+            ) : status.detailError ? (
               <span style={{ color: 'var(--state-warn)' }}>
                 Detailed basins unavailable — showing the world view
               </span>

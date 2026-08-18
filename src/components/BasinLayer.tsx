@@ -19,23 +19,25 @@ import {
   type BasinProps,
   type Bbox,
 } from '../lib/basins';
+import { styleFor, type StressLookup } from '../lib/stress';
 
-/** Neutral on purpose. Water stress colouring arrives at step 4. */
-const BASIN_STYLE: PathOptions = {
+/**
+ * One stroke for every basin regardless of value, so the boundary reads as
+ * geography and the fill alone carries the data.
+ */
+const STROKE: Pick<PathOptions, 'color' | 'weight' | 'opacity'> = {
   color: '#5B6478', // --fg-3
-  weight: 0.6,
-  opacity: 0.55,
-  fillColor: '#5B6478',
-  fillOpacity: 0.06,
-};
-
-const BASIN_HOVER: PathOptions = {
-  weight: 1.4,
-  opacity: 0.9,
-  fillOpacity: 0.14,
+  weight: 0.5,
+  opacity: 0.45,
 };
 
 const km2 = (n: number) => `${Math.round(n).toLocaleString()} km²`;
+
+function styleForFeature(stress: StressLookup, f?: Feature<Geometry, BasinProps>): PathOptions {
+  const key = f ? stress[String(f.properties.PFAF_ID)] : undefined;
+  const s = styleFor(key);
+  return { ...STROKE, fillColor: s.fill, fillOpacity: s.fillOpacity };
+}
 
 function padded(b: Bbox, ratio: number): Bbox {
   const dx = (b[2] - b[0]) * ratio;
@@ -45,10 +47,12 @@ function padded(b: Bbox, ratio: number): Bbox {
 
 export default function BasinLayer({
   data,
+  stress,
   filterToViewport,
   onVisibleCount,
 }: {
   data: BasinCollection;
+  stress: StressLookup;
   filterToViewport: boolean;
   onVisibleCount?: (n: number) => void;
 }) {
@@ -105,20 +109,27 @@ export default function BasinLayer({
     };
   }, [map, recompute, filterToViewport, data, onVisibleCount]);
 
-  const onEachBasin = useCallback((feature: Feature<Geometry, BasinProps>, layer: Layer) => {
-    const p = feature.properties;
-    layer.bindTooltip(
-      `<span class="wb-tt-id">HYBAS_ID ${p.HYBAS_ID}</span>` +
-        `<span class="wb-tt-row">PFAF_ID ${p.PFAF_ID}</span>` +
-        `<span class="wb-tt-row">Sub-basin ${km2(p.SUB_AREA)}</span>` +
-        `<span class="wb-tt-row">Upstream ${km2(p.UP_AREA)}</span>`,
-      { sticky: true, className: 'wb-basin-tooltip' }
-    );
-    layer.on({
-      mouseover: (e) => e.target.setStyle(BASIN_HOVER),
-      mouseout: (e) => e.target.setStyle(BASIN_STYLE),
-    });
-  }, []);
+  const onEachBasin = useCallback(
+    (feature: Feature<Geometry, BasinProps>, layer: Layer) => {
+      const p = feature.properties;
+      const key = stress[String(p.PFAF_ID)];
+      const s = styleFor(key);
+
+      layer.bindTooltip(
+        `<span class="wb-tt-value">${s.label}</span>` +
+          `<span class="wb-tt-row">HYBAS_ID ${p.HYBAS_ID}</span>` +
+          `<span class="wb-tt-row">Sub-basin ${km2(p.SUB_AREA)}</span>` +
+          `<span class="wb-tt-row">Upstream ${km2(p.UP_AREA)}</span>`,
+        { sticky: true, className: 'wb-basin-tooltip' }
+      );
+
+      layer.on({
+        mouseover: (e) => e.target.setStyle({ weight: 1.6, opacity: 0.95 }),
+        mouseout: (e) => e.target.setStyle(STROKE),
+      });
+    },
+    [stress]
+  );
 
   /* Re-keying on the subset size forces Leaflet to rebuild the layer when the
      visible set changes. GeoJSON does not diff its `data` prop. */
@@ -126,7 +137,7 @@ export default function BasinLayer({
     <GeoJSON
       key={`${subset.features.length}-${validFor?.join(',') ?? 'all'}`}
       data={subset}
-      style={() => BASIN_STYLE}
+      style={(f) => styleForFeature(stress, f as Feature<Geometry, BasinProps>)}
       onEachFeature={onEachBasin}
     />
   );

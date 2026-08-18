@@ -15,7 +15,9 @@ import { MapContainer, TileLayer, useMap, useMapEvent } from 'react-leaflet';
 import { latLngBounds, type LatLngBoundsExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import BasinLayer from './BasinLayer';
+import StressLegend from './StressLegend';
 import { cached, loadBasins } from '../lib/loadBasins';
+import { STRESS_URL, type StressDocument, type StressLookup } from '../lib/stress';
 import {
   DETAIL_LAYER,
   WORLD_LAYER,
@@ -27,16 +29,28 @@ import {
 
 /**
  * The real extent of the basin data, measured by scripts/check-basins.mjs:
- * latitude -55.883 to 83.624, longitude -180 to 180.
- *
- * Bounding to the DATA rather than the full globe matters — HydroBASINS
- * excludes Antarctica, so a full-globe view would leave roughly a quarter of
- * the screen permanently empty.
+ * latitude -55.883 to 83.624, longitude -180 to 180. HydroBASINS excludes
+ * Antarctica, so there is no basin geometry south of roughly -56.
  */
-export const DATA_BOUNDS = latLngBounds([-56, -180], [84, 180]);
+export const DATA_SOUTH = -55.883;
+
+/**
+ * The view is bounded to the DATA rather than the full globe — a full-globe
+ * view would leave roughly a quarter of the screen permanently empty.
+ *
+ * The southern edge is the one deliberate exception. Cropping at the data
+ * limit put the frame straight through the Southern Ocean and the map read as
+ * cut off. -68 reaches past the tip of the Antarctic Peninsula (~-63) and
+ * across the northern coastal fringe of East Antarctica, so the continent
+ * registers as context without opening up the interior ice sheet — which
+ * carries no basins and, in Mercator, would swallow the screen.
+ *
+ * The strip below DATA_SOUTH is basemap only, by design.
+ */
+export const VIEW_BOUNDS = latLngBounds([-68, -180], [84, 180]);
 
 /** A little slack so the edge does not feel clamped against the geometry. */
-const PAN_BOUNDS: LatLngBoundsExpression = latLngBounds([-62, -184], [86, 184]);
+const PAN_BOUNDS: LatLngBoundsExpression = latLngBounds([-72, -184], [86, 184]);
 
 type Fetched =
   | { status: 'idle' }
@@ -96,12 +110,12 @@ function WorldConstraints() {
 
   useEffect(() => {
     const apply = () => {
-      const fit = map.getBoundsZoom(DATA_BOUNDS, false);
+      const fit = map.getBoundsZoom(VIEW_BOUNDS, false);
       map.setMinZoom(fit);
       if (map.getZoom() < fit) map.setZoom(fit);
     };
 
-    map.fitBounds(DATA_BOUNDS, { animate: false });
+    map.fitBounds(VIEW_BOUNDS, { animate: false });
     apply();
     map.on('resize', apply);
     return () => {
@@ -128,6 +142,8 @@ export interface MapStatus {
   rendered: number;
   loadingDetail: boolean;
   detailError: string | null;
+  /** Set when the water-stress lookup failed. Basins then render unfilled. */
+  stressError: string | null;
 }
 
 export default function BasinMap({ onStatus }: { onStatus?: (s: MapStatus) => void }) {
@@ -153,8 +169,40 @@ export default function BasinMap({ onStatus }: { onStatus?: (s: MapStatus) => vo
   const world = useBasinData(WORLD_LAYER, true, attempt);
   const detail = useBasinData(DETAIL_LAYER, wantDetail, attempt);
 
+  /* The stress lookup is small (292 KB, 44 KB gzipped) and both layers need
+     it, so it loads once alongside the world layer. */
+  const [stressDoc, setStressDoc] = useState<StressDocument | null>(null);
+  const [stressError, setStressError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(STRESS_URL)
+      .then((res) => {
+        if (!res.ok) throw new Error(`the server responded ${res.status}`);
+        return res.json();
+      })
+      .then((doc: StressDocument) => {
+        if (cancelled) return;
+        if (!doc?.levels) throw new Error('the file has no levels');
+        setStressDoc(doc);
+        setStressError(null);
+      })
+      .catch((err: Error) => {
+        if (!cancelled) setStressError(err.message);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [attempt]);
+
   const detailReady = wantDetail && detail.status === 'ready';
   const activeLevel: 4 | 6 = detailReady ? 6 : 4;
+
+  /* An empty lookup renders every basin in the "not in the dataset" style
+     rather than guessing a value — an honest blank, not a fabricated one. */
+  const EMPTY: StressLookup = {};
+  const worldStress = stressDoc?.levels?.['4']?.stress ?? EMPTY;
+  const detailStress = stressDoc?.levels?.['6']?.stress ?? EMPTY;
 
   useEffect(() => {
     onStatus?.({
@@ -163,8 +211,9 @@ export default function BasinMap({ onStatus }: { onStatus?: (s: MapStatus) => vo
       rendered,
       loadingDetail: wantDetail && detail.status === 'loading',
       detailError: detail.status === 'error' ? detail.message : null,
+      stressError,
     });
-  }, [onStatus, activeLevel, zoom, rendered, wantDetail, detail]);
+  }, [onStatus, activeLevel, zoom, rendered, wantDetail, detail, stressError]);
 
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
@@ -187,20 +236,37 @@ export default function BasinMap({ onStatus }: { onStatus?: (s: MapStatus) => vo
           subdomains="abcd"
           maxZoom={8}
           noWrap
-          bounds={DATA_BOUNDS}
+          bounds={VIEW_BOUNDS}
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &middot; &copy; <a href="https://carto.com/attributions">CARTO</a> &middot; Basins: HydroSHEDS &copy; WWF'
         />
 
         {/* The world layer stays mounted until the detail layer is genuinely
             ready, so the map is never blank during the swap. */}
         {!detailReady && world.status === 'ready' && (
-          <BasinLayer data={world.data} filterToViewport={false} onVisibleCount={setRendered} />
+          <BasinLayer
+            data={world.data}
+            stress={worldStress}
+            filterToViewport={false}
+            onVisibleCount={setRendered}
+          />
         )}
 
         {detailReady && (
-          <BasinLayer data={detail.data} filterToViewport onVisibleCount={setRendered} />
+          <BasinLayer
+            data={detail.data}
+            stress={detailStress}
+            filterToViewport
+            onVisibleCount={setRendered}
+          />
         )}
       </MapContainer>
+
+      {stressDoc && (
+        <StressLegend
+          level={activeLevel}
+          derivation={stressDoc.levels[String(activeLevel)]?.derivation ?? 'unknown'}
+        />
+      )}
 
       {world.status === 'loading' && <Overlay title="Loading" body="The basin layer is loading." />}
 

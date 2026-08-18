@@ -67,7 +67,7 @@ console.log(`  licence                  ${doc.source?.licence ?? 'MISSING'}`);
 check(!!doc.source?.dataset, 'source.dataset is missing');
 check(doc.source?.licence === 'CC-BY 4.0', 'source.licence is not CC-BY 4.0');
 check(!!doc.source?.citation && doc.source.citation.includes('Kuzma'), 'source.citation is missing the Kuzma et al. 2023 reference');
-check(!!doc.source?.derivation, 'source.derivation is missing — how the values were produced must travel with them');
+/* Per-level derivation is checked below, where the levels are read. */
 
 // --- Categories -------------------------------------------------------------
 const declared = Object.keys(doc.categories ?? {});
@@ -81,7 +81,16 @@ check(
 );
 
 // --- Coverage, re-derived from the basin layer ------------------------------
-const stress = doc.stress ?? {};
+const stress = doc.levels?.['6']?.stress ?? {};
+const stress4 = doc.levels?.['4']?.stress ?? {};
+
+check(doc.levels?.['6']?.derivation === 'direct', "Level 6 must be marked as a direct, underived value");
+check(
+  !!doc.levels?.['4']?.derivation && doc.levels['4'].derivation !== 'direct',
+  'Level 4 must state how it was derived — it is a roll-up, not a published figure'
+);
+console.log(`  Level 6 derivation       ${doc.levels?.['6']?.derivation}`);
+console.log(`  Level 4 derivation       ${doc.levels?.['4']?.derivation}`);
 const counts = Object.fromEntries(EXPECTED_CATEGORIES.map((k) => [k, 0]));
 
 const keys = new Map();
@@ -127,6 +136,44 @@ check(without === 0, `${without} basins have no stress value`);
 const orphans = Object.keys(stress).filter((k) => !keys.has(k));
 console.log(`    stress keys w/o basin  ${orphans.length.toLocaleString()}`);
 check(orphans.length === 0, `${orphans.length} stress entries do not correspond to any basin`);
+
+// --- Level 4, the world layer -----------------------------------------------
+const L4 = JSON.parse(readFileSync(path.join(ROOT, 'public', 'hydrobasins_lev04.json'), 'utf8'));
+
+/* Count DISTINCT keys, not polygons — Level 4 carries its own shared code
+   (3530), the same Arctic/Siberia overlap seen at every level. */
+const l4Keys = new Map();
+for (const f of L4.features) {
+  const code = String(f.properties.PFAF_ID);
+  if (!l4Keys.has(code)) l4Keys.set(code, []);
+  l4Keys.get(code).push(f.properties.HYBAS_ID);
+}
+
+let l4With = 0;
+const l4Missing = [];
+for (const [code] of l4Keys) {
+  const v = stress4[code];
+  if (v === undefined) {
+    if (l4Missing.length < 8) l4Missing.push(code);
+    continue;
+  }
+  if (!EXPECTED_CATEGORIES.includes(v)) failures.push(`Level 4 ${code} has unknown category "${v}"`);
+  else l4With++;
+}
+
+const l4Shared = [...l4Keys.entries()].filter(([, v]) => v.length > 1);
+
+console.log('\n  Coverage — Level 4 world layer (derived)');
+console.log(`    polygons in layer      ${L4.features.length.toLocaleString()}`);
+console.log(`    distinct PFAF_ID keys  ${l4Keys.size.toLocaleString()}`);
+console.log(`    keys with a value      ${l4With.toLocaleString()}`);
+console.log(`    keys without a value   ${(l4Keys.size - l4With).toLocaleString()}`);
+console.log(`    coverage               ${((100 * l4With) / l4Keys.size).toFixed(2)}%`);
+if (l4Missing.length) console.log(`      missing: ${l4Missing.join(', ')}`);
+for (const [code, list] of l4Shared) {
+  console.log(`    shared key ${code} -> ${list.length} polygons -> "${stress4[code]}"`);
+}
+check(l4With === l4Keys.size, `${l4Keys.size - l4With} Level 4 basins have no stress value`);
 
 // --- Shared keys ------------------------------------------------------------
 const shared = [...keys.entries()].filter(([, v]) => v.length > 1);
