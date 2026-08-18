@@ -5,18 +5,20 @@
  * The detail layer is fetched lazily on first crossing and is viewport
  * filtered once mounted.
  *
- * Leaflet's attribution control is ON and carries the short credit line. The
- * full HydroSHEDS Exhibit B statement and the Data & licences panel arrive at
- * step 5.
+ * Leaflet's attribution control is ON and carries the short credit line, with
+ * a "Data & licences" link opening the full statements. The control is never
+ * disabled and the credit line is never replaced.
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, useMap, useMapEvent } from 'react-leaflet';
 import { latLngBounds, type LatLngBoundsExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import BasinLayer from './BasinLayer';
 import StressLegend from './StressLegend';
+import LicencePanel from './LicencePanel';
 import { cached, loadBasins } from '../lib/loadBasins';
+import { SHORT_CREDIT } from '../lib/licences';
 import { STRESS_URL, type StressDocument, type StressLookup } from '../lib/stress';
 import {
   DETAIL_LAYER,
@@ -153,6 +155,25 @@ export default function BasinMap({ onStatus }: { onStatus?: (s: MapStatus) => vo
   /* Bumping this re-runs the load effect. A timeout that cannot be retried is
      a dead end, not an honest state. */
   const [attempt, setAttempt] = useState(0);
+  const [licencesOpen, setLicencesOpen] = useState(false);
+
+  /* The "Data & licences" link lives inside Leaflet's own attribution control,
+     so the control stays enabled and the short credit line is never replaced.
+     Leaflet renders that HTML itself, so the click is caught by delegation. */
+  const container = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const node = container.current;
+    if (!node) return;
+    const onClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target?.closest('.wb-licences-link')) return;
+      e.preventDefault();
+      e.stopPropagation();
+      setLicencesOpen(true);
+    };
+    node.addEventListener('click', onClick);
+    return () => node.removeEventListener('click', onClick);
+  }, []);
 
   /* Hysteresis: enter detail at zoom 5, release below 4.5. Between those the
      current layer is kept, so resting on the boundary cannot thrash an
@@ -216,7 +237,7 @@ export default function BasinMap({ onStatus }: { onStatus?: (s: MapStatus) => vo
   }, [onStatus, activeLevel, zoom, rendered, wantDetail, detail, stressError]);
 
   return (
-    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+    <div ref={container} style={{ position: 'relative', height: '100%', width: '100%' }}>
       <MapContainer
         center={[20, 10]}
         zoom={3}
@@ -237,7 +258,7 @@ export default function BasinMap({ onStatus }: { onStatus?: (s: MapStatus) => vo
           maxZoom={8}
           noWrap
           bounds={VIEW_BOUNDS}
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &middot; &copy; <a href="https://carto.com/attributions">CARTO</a> &middot; Basins: HydroSHEDS &copy; WWF'
+          attribution={SHORT_CREDIT}
         />
 
         {/* The world layer stays mounted until the detail layer is genuinely
@@ -266,6 +287,10 @@ export default function BasinMap({ onStatus }: { onStatus?: (s: MapStatus) => vo
           level={activeLevel}
           derivation={stressDoc.levels[String(activeLevel)]?.derivation ?? 'unknown'}
         />
+      )}
+
+      {licencesOpen && (
+        <LicencePanel stressDoc={stressDoc} onClose={() => setLicencesOpen(false)} />
       )}
 
       {world.status === 'loading' && <Overlay title="Loading" body="The basin layer is loading." />}

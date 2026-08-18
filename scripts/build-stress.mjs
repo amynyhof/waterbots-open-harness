@@ -256,7 +256,7 @@ const out = {
     4: {
       keyedBy: 'PFAF_ID (4 digits)',
       derivation: 'area-weighted majority of Level 6 children',
-      note: 'DERIVED, not published by WRI. Each basin takes the category covering the largest share of its area. A majority rather than a mean, because the categories are ordinal bands and two of them are not points on the scale.',
+      note: 'Derived, not published by WRI. Each basin takes the category covering the largest share of its area. A majority rather than a mean, because the categories are ordinal bands and two of them are not points on the scale.',
       stress: stress4,
     },
   },

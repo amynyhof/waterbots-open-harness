@@ -304,6 +304,16 @@ body {
   color: var(--tide-text);
 }
 
+/* The route to the full licence statements. Weighted so it reads as an
+   affordance rather than as fine print — the obligations behind it are not
+   optional. */
+.leaflet-control-attribution a.wb-licences-link {
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
 .leaflet-control-zoom a {
   color: var(--fg-2);
   background: var(--card);
