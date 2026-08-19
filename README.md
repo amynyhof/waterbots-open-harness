@@ -6,6 +6,23 @@ in the WaterBots style.
 
 It deploys standalone and is linked from [waterbots.ai](https://waterbots.ai).
 
+## Status
+
+**v1 is deployed and live at [map.waterbots.ai](https://map.waterbots.ai).**
+
+Six of the seven planned steps are built. The map renders real HydroSHEDS basin geometry coloured by
+real WRI Aqueduct values, with no fabricated data anywhere in it.
+
+Open items:
+
+- **Project points** — the one unbuilt piece. Nothing will be placed until there is
+  registry-verified source data with published coordinates. See the roadmap below.
+- **Final agent staffing** — which agent hosts the map is undecided. Bridget appears as a
+  placeholder, is named as one in the panel, and does not answer.
+
+See [SESSION_HANDOFF.md](./SESSION_HANDOFF.md) for deployment details and where the next session
+picks up.
+
 ## What is built
 
 - **Basin map.** HydroSHEDS HydroBASINS Level 4 at world view, swapping to Level 6 from zoom 5.

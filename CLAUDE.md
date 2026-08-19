@@ -16,6 +16,9 @@ WaterBots branding, agent design, and agent knowledge with the main
 platform, but shares no repository with it. The maintainer carries
 any shared material across by hand; the engineer never fetches it.
 
+**v1 is deployed and live at https://map.waterbots.ai.** Vercel builds
+from `main` on push. See SESSION_HANDOFF.md for the deploy details.
+
 ## Rule zero — this repo only
 
 You work in this repository and nowhere else. You never read, write,
