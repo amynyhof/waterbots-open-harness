@@ -17,6 +17,8 @@
  * her keyline, ring and wash, never text.
  */
 
+import { PROJECT_MAPPING_NOTE } from '../lib/site';
+
 const HOST = {
   name: 'Bridget',
   role: 'Partnerships',
@@ -66,6 +68,19 @@ export default function ChatPanel() {
         </p>
         <p className="t-caption" style={{ margin: 0, lineHeight: 1.6 }}>
           Which agent staffs this map is still an open decision, so nothing here is final.
+        </p>
+
+        <div style={{ borderTop: '1px solid var(--line)', margin: '18px 0 14px' }} />
+
+        {/* A statement of intent, not an affordance. No button, no form, and
+            no placeholder pins on the map behind it. */}
+        {/* The note itself opens with "Coming:", so the eyebrow says Roadmap
+            rather than repeating the word. */}
+        <div className="eyebrow" style={{ marginBottom: 10 }}>
+          Roadmap
+        </div>
+        <p className="t-caption" style={{ margin: 0, lineHeight: 1.6 }}>
+          {PROJECT_MAPPING_NOTE}
         </p>
       </div>
 

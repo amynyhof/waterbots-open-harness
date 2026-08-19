@@ -13,6 +13,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import { SITE_LABEL, SITE_URL } from '../lib/site';
 
 const EXPANDED = 208;
 const COLLAPSED = 52;
@@ -71,15 +72,45 @@ export default function NavRail() {
 
       <div style={{ flex: 1 }} />
 
+      {/* The production site this map is linked from. The reverse link is the
+          marketing site's to make, not this repository's. */}
+      <a
+        className="wb-rail-link"
+        href={SITE_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={collapsedTitle(open)}
+        style={{ justifyContent: open ? 'flex-start' : 'center' }}
+      >
+        <ExternalIcon />
+        {open && <span>{SITE_LABEL}</span>}
+      </a>
+
       {open && (
         <p
           className="t-caption"
-          style={{ margin: 0, padding: '12px 14px', fontSize: 10.5, lineHeight: 1.5 }}
+          style={{ margin: 0, padding: '10px 14px 12px', fontSize: 10.5, lineHeight: 1.5 }}
         >
           The map is the only surface built so far.
         </p>
       )}
     </nav>
+  );
+}
+
+const collapsedTitle = (open: boolean) => (open ? undefined : SITE_LABEL);
+
+function ExternalIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden style={{ flex: 'none' }}>
+      <path
+        d="M6.5 3.5H3.5v9h9v-3M9.5 3.5h3v3M12.5 3.5 7 9"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
