@@ -1,13 +1,18 @@
 /**
- * The map shell.
+ * The console shell.
  *
- * Full-viewport working shell per the Working Surface Standard: chrome is one
- * hairline row, content starts high, and only the map fills the remainder.
- * The left rail and chat dock arrive at step 6.
+ * Working Surface Standard §1 and §2: a full-viewport frame, fixed left rail
+ * and right chat dock, and only the centre scrolls. Chrome is one hairline
+ * row; content starts high with no dead padding above it.
+ *
+ * Three zones on the surface ladder — the rail and the chat dock sit on
+ * --chrome below the canvas, flush and square; the centre is the canvas.
  */
 
 import { useCallback, useState } from 'react';
 import BasinMap, { type MapStatus } from './components/BasinMap';
+import NavRail from './components/NavRail';
+import ChatPanel from './components/ChatPanel';
 
 export default function App() {
   const [status, setStatus] = useState<MapStatus | null>(null);
@@ -24,6 +29,7 @@ export default function App() {
         color: 'var(--fg-1)',
       }}
     >
+      {/* One hairline row. The wordmark anchors flush top-left on every surface. */}
       <header
         className="chrome"
         style={{
@@ -32,6 +38,7 @@ export default function App() {
           justifyContent: 'space-between',
           gap: 16,
           padding: '12px var(--gutter)',
+          borderBottom: '1px solid var(--line)',
           flex: 'none',
         }}
       >
@@ -40,7 +47,7 @@ export default function App() {
         </span>
 
         {/* Step 2 scaffolding: states which layer is live so the zoom swap can
-            be confirmed by eye. Replaced by the legend at step 4. */}
+            be confirmed by eye. Replaced when the map gains its own chrome. */}
         {status && (
           <span className="t-mono" style={{ fontSize: 11, color: 'var(--fg-3)' }}>
             {status.stressError ? (
@@ -57,16 +64,26 @@ export default function App() {
               <>
                 HydroSHEDS Level {status.level} &middot;{' '}
                 {status.level === 4 ? 'world view' : 'detail view'} &middot;{' '}
-                {status.rendered.toLocaleString()} basins drawn &middot; zoom {status.zoom}
+                {status.rendered.toLocaleString()} basins drawn &middot; zoom{' '}
+                {status.zoom.toFixed(1)}
               </>
             )}
           </span>
         )}
       </header>
 
-      <main style={{ flex: 1, minHeight: 0 }}>
-        <BasinMap onStatus={onStatus} />
-      </main>
+      {/* Rails are fixed; only the centre scrolls. The centre takes no minimum
+          width — a full-viewport working shell must never scroll sideways, and
+          a horizontal scrollbar is a worse failure than a narrow map. The
+          rail collapses instead, and the map holds a zoom floor so it stays
+          readable rather than shrinking to a postage stamp. */}
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', overflow: 'hidden' }}>
+        <NavRail />
+        <main style={{ flex: 1, minWidth: 0, minHeight: 0 }}>
+          <BasinMap onStatus={onStatus} />
+        </main>
+        <ChatPanel />
+      </div>
     </div>
   );
 }

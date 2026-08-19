@@ -279,6 +279,82 @@ body {
 /* Page transitions are fades, never slides. No overshoot, no spring. */
 
 /* ---------------------------------------------------------------------------
+   Console shell — rail and chat dock
+
+   Both sit on --chrome, below the canvas, flush and square. Never cards.
+--------------------------------------------------------------------------- */
+
+.wb-rail-toggle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg-3);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  text-align: left;
+  transition: color var(--dur) var(--ease);
+}
+.wb-rail-toggle:hover {
+  color: var(--fg-2);
+}
+
+.wb-rail-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  font-family: var(--font-sans);
+  transition: background var(--dur) var(--ease);
+}
+
+/* The legend's collapse control. Full-width so the whole strip is the target
+   when collapsed. */
+.wb-legend-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  text-align: left;
+  color: inherit;
+}
+.wb-legend-toggle[aria-expanded='false'] {
+  gap: 10px;
+}
+
+/* The composer is disabled, and looks it. A control that appears usable but
+   does nothing is a false success state. */
+.wb-composer {
+  width: 100%;
+  resize: none;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--fg-2);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 9px 11px;
+}
+.wb-composer:disabled {
+  color: var(--fg-4);
+  background: color-mix(in srgb, var(--paper) 60%, transparent);
+  cursor: not-allowed;
+}
+.wb-composer::placeholder {
+  color: var(--fg-4);
+}
+
+/* ---------------------------------------------------------------------------
    Leaflet overrides — brand type and surfaces on map chrome.
 
    The attribution control is never hidden. It is styled to be legible, not

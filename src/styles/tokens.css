@@ -82,15 +82,30 @@
    for Deep Marine. On Frost, separation is carried by the 1px --line border,
    not by fill. This is BRAND.md's structure, not a simplification of it.
 
-   --chrome is UNPUBLISHED for Frost. BRAND.md's §8.3a "chrome recedes" rule
-   and its --chrome token exist only in the Deep Marine block. Rather than
-   invent a hex, chrome aliases --paper here and is separated by a --line rule.
-   A real Frost chrome value is needed before the rails and chat dock are
-   built at step 6 — see README "Open brand questions".
+   --chrome is DERIVED, not invented. BRAND.md publishes no Frost chrome value
+   — the token and the §8.3a "chrome recedes" rule appear only in the Deep
+   Marine block — so it is produced with BRAND.md's own elevation formula,
+   applied in the opposite direction.
+
+     Deep Marine, one step UP:   --card = color-mix(#FFFFFF 8%, --paper)
+                                 #1B2340 + 8% white = #2D354F, which is the
+                                 published value exactly — confirming the
+                                 formula rather than assuming it.
+
+     Frost, one step DOWN:       --chrome = color-mix(--fg-1 8%, --paper)
+                                 #FBFBFE + 8% ink = #E8E9ED
+
+   The same 8% step, inverted. It lands at CIE L* 92.4 against paper's 98.7 —
+   a separation of 6.3, which clears BRAND.md's "at least 6 points of CIE L*
+   between adjacent surfaces" on the brand's own terms rather than by eye.
+
+   Frost still has no ladder ABOVE the canvas: --card and --raised remain the
+   same published white, separated by the 1px --line border. Only the step
+   below the canvas is carried by a fill.
 --------------------------------------------------------------------------- */
 .theme-light,
 [data-theme='light'] {
-  --chrome: var(--paper); /* UNPUBLISHED — alias, not an invented value */
+  --chrome: #e8e9ed; /* derived: color-mix(in srgb, #0B1428 8%, #FBFBFE) */
   --paper: #fbfbfe;
   --card: #ffffff;
   --raised: #ffffff;
@@ -125,12 +140,14 @@
   --bot-monty: var(--slate);
   --bot-reggie: var(--plum);
 
-  /* UNRESOLVED — deliberately not invented. See README "Open brand questions".
-     --bot-bridget : the roster assigns her Surf, but the maintainer has ruled
-                     that Surf carries no agent identity in this repo. Bridget
-                     is therefore the ONLY crew member with no identity colour
-                     on Frost — and she is the step 6 chat host. Needs a
-                     maintainer decision before the console shell is built. */
+  /* PROVISIONAL (maintainer ruling). The roster assigns Bridget Surf, but Surf
+     carries no agent identity in this repo, so she inherits the Surf-family
+     lifted value published in BRAND.md under the retired agent "Mini".
+     Provisional until final map staffing is decided.
+
+     It is a light cyan — 1.68:1 against white — so it carries her keyline,
+     avatar ring and wash, and NEVER text. Her name is set in --fg-1. */
+  --bot-bridget: #7fd5df;
 }
 
 /* ---------------------------------------------------------------------------

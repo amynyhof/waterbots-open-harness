@@ -51,8 +51,17 @@ export const DATA_SOUTH = -55.883;
  */
 export const VIEW_BOUNDS = latLngBounds([-68, -180], [84, 180]);
 
-/** A little slack so the edge does not feel clamped against the geometry. */
-const PAN_BOUNDS: LatLngBoundsExpression = latLngBounds([-72, -184], [86, 184]);
+/**
+ * Panning is bounded to the same box the view fits.
+ *
+ * An earlier version padded this by a few degrees on each side "for slack",
+ * but degrees are not symmetric in Mercator: 2° at 84°N is far taller in
+ * pixels than 4° at 68°S, so the pad clamped the view off-centre and stacked
+ * all the vertical slack above the map. Using the view bounds themselves
+ * means Leaflet centres on them whenever the column is larger than the world,
+ * which is exactly the atlas view.
+ */
+const PAN_BOUNDS: LatLngBoundsExpression = VIEW_BOUNDS;
 
 type Fetched =
   | { status: 'idle' }
@@ -111,17 +120,80 @@ function WorldConstraints() {
   const map = useMap();
 
   useEffect(() => {
-    const apply = () => {
-      const fit = map.getBoundsZoom(VIEW_BOUNDS, false);
+    /**
+     * The minimum zoom: the point at which the atlas COVERS the column.
+     *
+     * `inside: true` asks for the zoom at which the view fits *within* the
+     * bounds, rather than the bounds within the view. That single flag is the
+     * whole behaviour:
+     *
+     *   contain (inside: false) — the entire world is always visible, but on
+     *     a column whose proportions differ from the world's it leaves empty
+     *     bands. On a tall narrow column that was a wide white gap above the
+     *     map, because the world had been shrunk smaller than the column.
+     *   cover (inside: true) — the world always fills the column. On a wide
+     *     desktop column the proportions are close enough that the whole world
+     *     is effectively in view; as the column narrows the map holds its size
+     *     and the reader pans, which is how maps normally behave.
+     *
+     * Covering never becomes MORE than one world: panning is clamped to
+     * VIEW_BOUNDS at full viscosity and the tiles do not wrap.
+     *
+     * NO FLOOR — the zoom follows the column rather than a fixed minimum. An
+     * earlier floor of 2 cropped the left edge of North America. zoomSnap is
+     * 0, so this is fractional and fits exactly rather than stepping to the
+     * next integer.
+     *
+     * getBoundsZoom clamps to the CURRENT minZoom, so measuring without
+     * clearing it first is a ratchet — minZoom could only ever climb, and a
+     * narrowing column kept the stale larger floor and cropped.
+     */
+    const measureFit = () => {
+      map.setMinZoom(0);
+      const fit = map.getBoundsZoom(VIEW_BOUNDS, true);
       map.setMinZoom(fit);
-      if (map.getZoom() < fit) map.setZoom(fit);
+      return fit;
     };
 
-    map.fitBounds(VIEW_BOUNDS, { animate: false });
-    apply();
-    map.on('resize', apply);
+    /**
+     * Centre in PROJECTED space, not on the latitude midpoint.
+     *
+     * fitBounds centres on bounds.getCenter(), the arithmetic mean of the
+     * latitudes. Mercator is not linear, so for a box running 84°N to 68°S
+     * that lands south of the true pixel midpoint and stacks the slack above
+     * the map. Projecting both corners and halving centres it properly.
+     */
+    const showAtlas = (fit: number) => {
+      const nw = map.project(VIEW_BOUNDS.getNorthWest(), fit);
+      const se = map.project(VIEW_BOUNDS.getSouthEast(), fit);
+      map.setView(map.unproject(nw.add(se).divideBy(2), fit), fit, { animate: false });
+    };
+
+    const apply = (force = false) => {
+      /* Read BEFORE measureFit, which rewrites minZoom. A reader who has
+         zoomed in is left where they are; one sitting at the atlas view gets
+         re-fitted to the new column. */
+      const atAtlasView = map.getZoom() <= map.getMinZoom() + 0.01;
+      const fit = measureFit();
+      if (force || atAtlasView || map.getZoom() < fit) showAtlas(fit);
+    };
+
+    apply(true);
+
+    const onResize = () => apply();
+    map.on('resize', onResize);
+
+    /* The centre column changes width when the rail collapses, which does not
+       always reach Leaflet as a window resize. */
+    const observer = new ResizeObserver(() => {
+      map.invalidateSize();
+      apply();
+    });
+    observer.observe(map.getContainer());
+
     return () => {
-      map.off('resize', apply);
+      map.off('resize', onResize);
+      observer.disconnect();
     };
   }, [map]);
 
@@ -243,6 +315,12 @@ export default function BasinMap({ onStatus }: { onStatus?: (s: MapStatus) => vo
         zoom={3}
         maxZoom={8}
         preferCanvas
+        /* Fractional zoom, so the fit-to-column zoom can be exact and the
+           atlas view never crops or leaves an integer step of dead space.
+           The layer swap already tolerates it — that is what the 5 / 4.5 dead
+           band was built for. Buttons still move a whole level at a time. */
+        zoomSnap={0}
+        zoomDelta={1}
         /* One world only: no horizontal repeat, no panning off the atlas. */
         maxBounds={PAN_BOUNDS}
         maxBoundsViscosity={1}
