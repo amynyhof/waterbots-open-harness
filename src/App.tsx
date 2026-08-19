@@ -13,6 +13,7 @@ import { useCallback, useState } from 'react';
 import BasinMap, { type MapStatus } from './components/BasinMap';
 import NavRail from './components/NavRail';
 import ChatPanel from './components/ChatPanel';
+import Wordmark from './components/Wordmark';
 
 export default function App() {
   const [status, setStatus] = useState<MapStatus | null>(null);
@@ -42,9 +43,7 @@ export default function App() {
           flex: 'none',
         }}
       >
-        <span className="wordmark" style={{ fontSize: 17 }}>
-          WaterBots<span className="dot-ai">.AI</span>
-        </span>
+        <Wordmark height={22} />
 
         {/* Step 2 scaffolding: states which layer is live so the zoom swap can
             be confirmed by eye. Replaced when the map gains its own chrome. */}

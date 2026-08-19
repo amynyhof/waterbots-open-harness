@@ -276,6 +276,28 @@ body {
   color: var(--tide-text);
 }
 
+/* The inlined wordmark SVG. brand/assets/logo/wordmark.svg defines no styling
+   of its own — it references .wm, .ink and .tide and expects the host to
+   supply them. These are those rules, resolved from the design tokens so the
+   mark follows the theme rather than carrying baked-in colour. */
+.wb-wordmark svg {
+  height: 100%;
+  width: auto;
+  display: block;
+}
+.wb-wordmark .wm {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 56px;
+  letter-spacing: -0.02em;
+}
+.wb-wordmark .ink {
+  fill: var(--fg-1);
+}
+.wb-wordmark .tide {
+  fill: var(--tide-text);
+}
+
 /* Page transitions are fades, never slides. No overshoot, no spring. */
 
 /* ---------------------------------------------------------------------------

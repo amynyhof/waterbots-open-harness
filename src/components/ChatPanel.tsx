@@ -18,6 +18,7 @@
  */
 
 import { PROJECT_MAPPING_NOTE } from '../lib/site';
+import bridgetPortrait from '../../brand/assets/bots/bridget.svg';
 
 const HOST = {
   name: 'Bridget',
@@ -107,34 +108,42 @@ export default function ChatPanel() {
 }
 
 /**
- * Bridget's identity mark.
+ * Bridget's portrait.
  *
- * A ring and wash in her identity colour, with her initial. The crew portraits
- * are the product's real iconography, but brand/assets/ is gitignored pending
- * the deployment-time publish decision — bundling a portrait now would both
- * pre-empt that decision and break a build from a fresh clone. The slot is
- * here and the swap is one element.
+ * The crew portraits are the product's real iconography — BRAND.md has them
+ * standing in for what a normal product would do with an icon. This one is
+ * published from brand/assets/bots/bridget.svg; the rest of brand/ stays
+ * unpublished.
+ *
+ * The portrait is self-contained (its fills are baked in), so it loads as a
+ * plain <img> — unlike the wordmark, which needs inlining to pick up styling.
+ *
+ * The wash and ring behind it come from --bot-bridget. Note the portrait is
+ * drawn in Surf #14C8D9 while the token is the lifted #7FD5DF; see the README
+ * on why that value is provisional.
  */
 function HostMark() {
   return (
     <span
-      aria-hidden
       style={{
-        width: 34,
-        height: 34,
+        width: 36,
+        height: 36,
         borderRadius: 'var(--r-pill)',
         flex: 'none',
         display: 'grid',
         placeItems: 'center',
-        background: 'color-mix(in oklab, var(--bot-bridget) 30%, transparent)',
+        background: 'color-mix(in oklab, var(--bot-bridget) 26%, transparent)',
         border: '1.5px solid var(--bot-bridget)',
-        color: 'var(--fg-1)',
-        fontFamily: 'var(--font-sans)',
-        fontWeight: 600,
-        fontSize: 14,
+        overflow: 'hidden',
       }}
     >
-      B
+      <img
+        src={bridgetPortrait}
+        alt=""
+        width={30}
+        height={30}
+        style={{ display: 'block' }}
+      />
     </span>
   );
 }

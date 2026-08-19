@@ -8,8 +8,21 @@ legacy/
 BRAND.md
 UI_REFERENCE.md
 
-# Brand assets — ignored pending a deployment-time publish decision.
-brand/
+# Brand assets — ignored EXCEPT the two files the product actually ships.
+#
+# Git cannot re-include a file whose parent directory is excluded, so the
+# tree is opened level by level and re-closed at each one. Everything else
+# under brand/ — the rest of the crew, the other logo colourways, the pixel
+# avatars, the design-system export — stays unpublished.
+brand/*
+!brand/assets/
+brand/assets/*
+!brand/assets/logo/
+brand/assets/logo/*
+!brand/assets/logo/wordmark.svg
+!brand/assets/bots/
+brand/assets/bots/*
+!brand/assets/bots/bridget.svg
 
 # Dependencies
 node_modules/
