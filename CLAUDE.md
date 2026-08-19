@@ -7,8 +7,9 @@ Read it fully before doing anything.
 
 The public, Apache 2.0 home of the WaterBots map:
 an interactive world map of HydroSHEDS watershed basins, colored by
-water stress, with a small set of real water project locations — and
-the foundation of an AI chat console in the WaterBots style.
+water stress, with a small set of real water project locations
+(planned, not yet placed) — and the foundation of an AI chat console
+in the WaterBots style.
 
 It deploys standalone and is linked from waterbots.ai. It shares
 WaterBots branding, agent design, and agent knowledge with the main
@@ -40,6 +41,10 @@ never an action here.
   the topic alone.
 - **Honest states.** No silent failures, no false success messages.
   The product must tell you what happened.
+- **Docs never drift.** At every session close, refresh the root docs
+  (CLAUDE.md, README) to match what actually shipped. They must never
+  be more than one session behind the build. Doc edits are proposed
+  for the maintainer's review before they are committed.
 
 ## Language rules
 
@@ -65,6 +70,12 @@ the repo README and any About surface.
 World Resources Institute with the suggested citation (Kuzma et al.
 2023) in the README.
 
+**Derived values are labelled as derived.** Aqueduct publishes water
+stress at Level 6 only. Level 6 therefore renders WRI's published
+figures directly; Level 4 is an area-weighted majority of its children
+and must say so wherever it renders. Presenting a derived value as
+WRI's is a fabricated claim about someone else's data.
+
 **Basemap tiles** — whatever tile provider is used carries its own
 attribution requirement (e.g. © OpenStreetMap contributors, © CARTO).
 Leaflet's attribution control stays ON. A tiny, faded, hand-rolled
@@ -72,9 +83,14 @@ credit line does not meet any of these bars.
 
 ## Scope — v1
 
-- HydroSHEDS **Level 3** basins, worldwide, colored by Aqueduct 4.0
-  water stress.
-- A small set of real, registry-verified project points.
+- HydroSHEDS basins worldwide, colored by Aqueduct 4.0 water stress.
+  **Two layers with a zoom swap: Level 4 at world view, Level 6 from
+  zoom 5.** Level 3 was tried first and rejected — single-watershed
+  projects vanished inside continent-sized polygons. Level 6 alone
+  reads as texture at world zoom (~4px per basin), which is why there
+  are two.
+- A small set of real, registry-verified project points. **Planned;
+  not yet placed — awaiting registry-verified source data.**
 - Chat console foundation: a right-hand chat panel in the
   WaterBots console style, and a collapsible left-hand navigation
   rail. Foundation means the shell — no live agent answers in v1.
