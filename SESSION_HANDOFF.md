@@ -81,9 +81,10 @@ automatically.
 `main` carries a ruleset requiring changes through a pull request. A **bypass was added for the
 repository owner** so the v1 work could be pushed directly.
 
-> **Decide whether to keep it.** If the rule was deliberate, restore it and use a branch plus PR
-> from here on. If it was incidental, the bypass is fine. Either way it is a live setting that
-> outlasted the session it was added for.
+> **Decided 20 Aug 2026 — the bypass stays off for now and is restored after this week's build
+> push** (week ending Sunday 23 Aug 2026). The ruleset itself was deliberate; direct pushes to
+> `main` are a temporary allowance for the current build, not the working pattern. Tracked as item
+> 6 in [OPEN_ITEMS.md](./OPEN_ITEMS.md) so it is not left live by default.
 
 ### Verified live
 
@@ -138,42 +139,15 @@ Only the three small outputs in `public/` are committed.
 
 ## What the next session picks up
 
-### 1. Project points — the blocked step
+**Every open thread now lives in [OPEN_ITEMS.md](./OPEN_ITEMS.md).** It was moved out of this
+file on 21 Aug 2026 so that the two do different jobs: this file records the state of the build
+and what a reader needs to pick it up, and OPEN_ITEMS.md records what is still outstanding.
 
-Nothing goes on the map until it can be verified. For each point the build needs:
-
-1. The **registry** and a link.
-2. **Project ID, name, developer, country** as that registry states them.
-3. **Coordinates as published**, plus the retrieval date.
-
-**The likely snag:** public carbon registries often publish a country or region but not point
-coordinates. If so, the honest options are to ship basins only, or to place points at a documented
-administrative centroid, visibly labelled approximate in both tooltip and legend. **A dot at a
-plausible-looking spot is not one of the options.**
-
-The prior prototype's hardcoded project array is **not** a source — its coordinates are rounded to
-~0.05°, which reads as hand-placement.
-
-### 2. Final agent staffing
-
-Undecided. Bridget is a placeholder: named in the panel, stated as provisional, and she does not
-answer. Her identity colour `#7FD5DF` is provisional with her.
-
-Her portrait ships from `brand/assets/bots/bridget.svg`. If staffing changes, that file and the
-`--bot-bridget` token both need revisiting, and the `.gitignore` negation that publishes exactly
-two brand files needs updating.
-
-### 3. Smaller open threads
-
-- **The reverse link** from waterbots.ai to this map is the marketing site's job, not this
-  repository's. Logged in `src/lib/site.ts`, not built.
-- **The collapsed legend strip wraps** at very narrow columns. Cosmetic; left alone deliberately.
-- **`public/hydrobasins_lev06.json` is 8.44 MB in git history.** Fine in practice — `.git` is under
-  4 MB because it compresses well — but it is tracked rather than generated at deploy. Reversible
-  now, awkward later.
-- **Data files ship with unhashed filenames**, so they do not get immutable-asset caching. They
-  carry ETags with `must-revalidate`, so a rebuild will not serve stale data. Only worth revisiting
-  if traffic makes it matter.
+At the time of the move it held eight items — project points (blocked on registry data), the
+Phoebe abstention loop, the VWBA full-docs card pass, the VWB Report Corpus, final agent
+staffing, restoring branch protection on `main`, the reverse link from waterbots.ai, and a short
+list of cosmetic and housekeeping items. Read that file for the current set; this paragraph is
+not maintained as a copy of it.
 
 ---
 

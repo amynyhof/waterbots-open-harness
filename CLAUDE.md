@@ -56,6 +56,21 @@ never an action here.
 - The word "golden" is not used; say "reference".
 - Plain words lead, acronym in parentheses on first use.
 
+## Citations — see CITATIONS.md
+
+**CITATIONS.md in this repo is binding** on every surface, rule card,
+README, and future agent answer. It carries the four-part citation
+shape every cited claim must have, the rule that this repo holds rule
+cards and never source PDFs or excerpts beyond short attributed
+snippets, and the visual format citations render in. Read it before
+writing anything that cites a source. It is published, not
+engineer-eyes-only.
+
+Where CITATIONS.md and this file both speak to a point — the data
+licensing requirements below, derived values, plain-words-first — they
+agree. If they ever diverge, that is a defect to raise with the
+maintainer, not a choice to make.
+
 ## Data licensing — binding display requirements
 
 Two datasets, two separate attributions. One combined line satisfies
