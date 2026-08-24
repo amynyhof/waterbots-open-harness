@@ -68,7 +68,8 @@ export default function ChatPanel() {
           deliberately empty until she can give you a real answer.
         </p>
         <p className="t-caption" style={{ margin: 0, lineHeight: 1.6 }}>
-          Which agent staffs this map is still an open decision, so nothing here is final.
+          Bridget is the agent for this map. Her chat is still being built, which is why there is
+          nothing to read here yet.
         </p>
 
         <div style={{ borderTop: '1px solid var(--line)', margin: '18px 0 14px' }} />

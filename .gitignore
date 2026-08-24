@@ -30,6 +30,7 @@ brand/assets/logo/*
 !brand/assets/bots/
 brand/assets/bots/*
 !brand/assets/bots/bridget.svg
+!brand/assets/bots/phoebe.svg
 
 # Dependencies
 node_modules/

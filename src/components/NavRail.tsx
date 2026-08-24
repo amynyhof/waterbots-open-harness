@@ -6,14 +6,16 @@
  * a card would float navigation above the work it serves. The active item is
  * marked with --paper, one step up, never with an accent fill.
  *
- * It lists exactly what exists. The map is the only surface this repo has, so
- * it is the only item here. Inventing a nav item for something unbuilt would
- * be a fabricated claim about the product, which is the same rule that keeps
- * fabricated data off the map.
+ * It lists exactly what exists. Two surfaces are built — the basin map and
+ * the eligibility worksheet — so there are two items. Inventing a nav item
+ * for something unbuilt would be a fabricated claim about the product, which
+ * is the same rule that keeps fabricated data off the map.
  */
 
 import { useEffect, useState } from 'react';
 import { SITE_LABEL, SITE_URL } from '../lib/site';
+import type { Surface } from '../lib/surfaces';
+import { SURFACES } from '../lib/surfaces';
 
 const EXPANDED = 208;
 const COLLAPSED = 52;
@@ -26,7 +28,13 @@ const COLLAPSED = 52;
  */
 const AUTO_COLLAPSE_BELOW = 1180;
 
-export default function NavRail() {
+export default function NavRail({
+  active,
+  onNavigate,
+}: {
+  active: Surface;
+  onNavigate: (surface: Surface) => void;
+}) {
   const [open, setOpen] = useState(
     () => typeof window === 'undefined' || window.innerWidth >= AUTO_COLLAPSE_BELOW
   );
@@ -68,7 +76,15 @@ export default function NavRail() {
         {open && <span className="t-caption">Collapse</span>}
       </button>
 
-      <RailItem label="Basin map" active collapsed={!open} />
+      {SURFACES.map((surface) => (
+        <RailItem
+          key={surface.key}
+          label={surface.label}
+          active={surface.key === active}
+          collapsed={!open}
+          onSelect={() => onNavigate(surface.key)}
+        />
+      ))}
 
       <div style={{ flex: 1 }} />
 
@@ -91,7 +107,7 @@ export default function NavRail() {
           className="t-caption"
           style={{ margin: 0, padding: '10px 14px 12px', fontSize: 10.5, lineHeight: 1.5 }}
         >
-          The map is the only surface built so far.
+          Two surfaces are built so far. The chat console is next.
         </p>
       )}
     </nav>
@@ -118,17 +134,25 @@ function RailItem({
   label,
   active,
   collapsed,
+  onSelect,
 }: {
   label: string;
   active?: boolean;
   collapsed: boolean;
+  onSelect: () => void;
 }) {
   return (
-    <div
+    <button
       className="wb-rail-item"
+      onClick={onSelect}
       aria-current={active ? 'page' : undefined}
       title={collapsed ? label : undefined}
       style={{
+        width: '100%',
+        border: 0,
+        font: 'inherit',
+        cursor: 'pointer',
+        textAlign: 'left',
         /* --paper marks the subject, one step up from chrome. Never an accent. */
         background: active ? 'var(--paper)' : 'transparent',
         color: active ? 'var(--fg-1)' : 'var(--fg-2)',
@@ -146,7 +170,7 @@ function RailItem({
         }}
       />
       {!collapsed && <span style={{ fontSize: 13.5 }}>{label}</span>}
-    </div>
+    </button>
   );
 }
 

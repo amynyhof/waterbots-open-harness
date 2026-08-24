@@ -148,6 +148,38 @@
      It is a light cyan — 1.68:1 against white — so it carries her keyline,
      avatar ring and wash, and NEVER text. Her name is set in --fg-1. */
   --bot-bridget: #7fd5df;
+
+  /* Phoebe (beta) — Eligibility and Feasibility specialist. Maintainer ruling,
+     22 Aug 2026: she is Anemone, the muted berry-magenta BRAND.md holds in
+     reserve, with a lighter tint of the same hue on her antenna.
+
+     This replaces the provisional Plum/Iris pair taken from her portrait. Both
+     of those are published in BRAND.md against other crew — Plum to Reggie,
+     Iris to Audrey — and although neither agent exists in this repository, the
+     roster document contradicted the ruling. Anemone is unclaimed by any agent
+     and by any role, and BRAND.md records it as a spare kept so a future role
+     would not have to re-open the search. This is that use.
+
+     Anemone Light is a new brand value, set by the maintainer, not derived by
+     the engineer. It is the same lightness step the published Plum-to-Iris pair
+     makes (+0.108 L in OKLCH) applied at Anemone's own hue and chroma, so the
+     pair reads as one family and stays muted.
+
+     Contrast, computed rather than assumed:
+
+       --bot-phoebe        5.40:1 on white, 5.23:1 on --paper
+       --bot-phoebe-accent 3.47:1 on white, 3.36:1 on --paper
+
+     The head clears 4.5:1 and is safe on text as well as on keylines, rings
+     and washes. THE ACCENT IS NOT. At 3.36:1 it clears the 3:1 bar for a
+     non-text graphic, which is all it is asked to do — it draws the antenna
+     stroke in her portrait and nothing else. Never set type in it. Her name is
+     set in --fg-1 to match the house pattern, as it was before.
+
+     No dark value. The [data-theme='dark'] block deliberately invents none for
+     her, the same as for Bridget and Reggie; this repository ships Frost. */
+  --bot-phoebe: #a04e7e;
+  --bot-phoebe-accent: #c36e9f;
 }
 
 /* ---------------------------------------------------------------------------

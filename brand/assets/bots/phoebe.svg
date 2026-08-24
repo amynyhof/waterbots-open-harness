@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Phoebe">
+    
+    <line x1="60" y1="28" x2="60" y2="40" stroke="#C36E9F" stroke-width="2" stroke-linecap="round"></line>
+    <circle cx="50" cy="27" r="3" fill="#2BC9A5"></circle>
+    <circle cx="60" cy="22" r="3" fill="#E8A12B"></circle>
+    <circle cx="70" cy="27" r="3" fill="#E25858"></circle>
+    
+    <circle cx="60" cy="70" r="32" fill="#A04E7E"></circle>
+    
+    <path d="M 44 64 Q 48 61 52 64" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"></path>
+    <circle cx="72" cy="63" r="3" fill="white"></circle>
+    
+    <path d="M 48 74 Q 60 83 72 74" stroke="white" stroke-width="2.2" fill="none" stroke-linecap="round"></path></svg>
