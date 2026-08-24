@@ -61,8 +61,28 @@ interface IncomingMessage {
   content: string;
 }
 
-export const config = { runtime: 'nodejs' };
-
+/**
+ * NO RUNTIME OVERRIDE, DELIBERATELY.
+ *
+ * This handler is written against the web standard: it takes a Request and
+ * returns a Response. It previously declared `runtime: 'nodejs'`, which told
+ * Vercel to invoke it the Node way instead — handing it (req, res) and waiting
+ * for something to be written to `res`. Nothing ever was, so every request in
+ * production hung until the platform gave up, including the ones that should
+ * have failed instantly. A GET that should answer 405 in a millisecond hung for
+ * two minutes.
+ *
+ * It looked fine locally because the dev plugin in vite.config.ts builds a
+ * Request by hand and reads the returned Response, supplying exactly the shape
+ * this handler expects. That is the difference logged as item S6, and this is
+ * the second outage it caused.
+ *
+ * NOT the edge runtime, and that is a decision rather than an omission. Edge
+ * would unambiguously match this handler's shape, but it caps how long a
+ * response may take, and Phoebe's answers are slow by design — she reasons
+ * through six criteria before writing, which measured between 2,762 and 4,423
+ * output tokens. Trading a hang for a truncation is not a fix.
+ */
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== 'POST') {
     return problem(405, 'This endpoint takes POST requests only.');

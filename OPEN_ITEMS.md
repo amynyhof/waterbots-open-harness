@@ -414,7 +414,8 @@ about narrow columns rather than two.
 ## S6. The dev relay resolves imports differently from production
 
 **The one path that could catch a production-only fault is the path that behaves least like
-production.** Opened 24 Aug 2026, after it caused a live outage.
+production.** Opened 24 Aug 2026, after it caused a live outage. **It caused a second one the same
+day, within the hour, before this item had even been read.**
 
 Phoebe's relay is served in development by a plugin in `vite.config.ts` that loads the same handler
 Vercel deploys. That was deliberate — one handler, no second copy to drift — and it is still right.
@@ -432,10 +433,39 @@ changed to match how the code actually runs, so an extensionless import is now a
 rather than a production one. That guard was confirmed by removing an extension on purpose and
 watching the build stop.
 
-**Why this item stays open.** The guard closes this specific difference. It does not close the gap
-that produced it. Anything else the dev relay resolves, polyfills or tolerates that Node would not
-is still invisible until it reaches production — module formats, built-in APIs, environment
-variables, the shape of the request object.
+### The second outage, an hour later
+
+With the imports fixed, every request still failed — and a `GET`, which should answer 405 in a
+millisecond without touching the model, hung for over two minutes. That ruled out the model, the
+token budget and the key.
+
+The handler is written against the web standard: it takes a `Request` and returns a `Response`. It
+declared `runtime: 'nodejs'`, which told Vercel to invoke it the Node way instead, handing it
+`(req, res)` and waiting for something to be written to `res`. Nothing ever was, so every request
+hung until the platform gave up.
+
+**The dev plugin had been supplying the missing shape by hand** — reading the body, constructing a
+`Request`, calling the handler, and writing the returned `Response` out itself. The handler had
+never once worked in production and worked perfectly on a laptop every time.
+
+The runtime override was removed. The dev plugin was narrowed so it stops compensating: headers and
+method now pass through as they arrived rather than being defaulted, and a handler that returns
+anything other than a `Response` fails loudly instead of being tolerated. The rules that keep it
+honest are written at the top of `vite.config.ts`.
+
+**The edge runtime was considered and rejected.** It would match the handler's shape unambiguously,
+but it caps how long a response may take, and Phoebe is slow by design — she reasons through six
+criteria before writing. Trading a hang for a truncation is not a fix.
+
+### Why this item stays open
+
+The two guards close two specific differences. They do not close the gap that produced them.
+Anything else the dev relay resolves, polyfills or tolerates that Node would not is still invisible
+until it reaches production — built-in APIs, environment variables, streaming, response headers,
+request size limits.
+
+**Twice in one day is a pattern, not bad luck.** Every remaining difference is a production outage
+that has not happened yet.
 
 **What would close it.** Something that exercises the relay the way Vercel does before a push, or a
 narrower guard set that names each known difference and tests for it. The first is better and

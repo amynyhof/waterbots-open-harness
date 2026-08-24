@@ -13,6 +13,22 @@ import tailwindcss from '@tailwindcss/vite';
  * The handler is imported through Vite's own module loader, so it is the same
  * file Vercel deploys, with hot reload, rather than a second copy that could
  * drift from it.
+ *
+ * THIS BRIDGE IS THE WEAKEST PART OF THE ARRANGEMENT, and it has hidden two
+ * production outages (item S6 in OPEN_ITEMS.md). Node's http objects are not
+ * web Requests, so something has to convert, and whatever converts is a place
+ * where development can be kinder than production without anyone noticing.
+ *
+ * The rules that keep it honest:
+ *
+ *   1. NEVER SUPPLY WHAT PRODUCTION WOULD NOT. Pass through the method, the
+ *      headers and the body as they arrived. Do not default a missing header,
+ *      do not normalise a method, do not repair a malformed body. If the
+ *      handler needs a header that was not sent, that is a fault to see here
+ *      rather than a fault to discover on the deployed site.
+ *   2. NEVER READ THE RESULT LOOSELY. The handler must return a Response. If it
+ *      returns anything else, say so loudly instead of coping.
+ *   3. This file may not grow logic that belongs in the handler.
  */
 function phoebeDevRelay(): Plugin {
   return {
@@ -27,13 +43,32 @@ function phoebeDevRelay(): Plugin {
           const chunks: Buffer[] = [];
           for await (const chunk of req) chunks.push(chunk as Buffer);
 
-          const request = new Request('http://localhost/api/phoebe', {
+          /* Headers pass through as they arrived. The previous version
+             defaulted a missing content-type to application/json, which is a
+             kindness production does not extend. */
+          const headers = new Headers();
+          for (const [key, value] of Object.entries(req.headers)) {
+            if (typeof value === 'string') headers.set(key, value);
+            else if (Array.isArray(value)) for (const v of value) headers.append(key, v);
+          }
+
+          const request = new Request(`http://localhost${req.url ?? '/api/phoebe'}`, {
             method: req.method,
-            headers: { 'content-type': req.headers['content-type'] ?? 'application/json' },
+            headers,
             body: chunks.length ? Buffer.concat(chunks) : undefined,
           });
 
           const result = await handler(request);
+
+          /* Rule 2. A handler that does not return a Response is broken in a
+             way production would show as a hang, so it is shown as a failure
+             here instead of being quietly tolerated. */
+          if (!(result instanceof Response)) {
+            throw new Error(
+              'api/phoebe.ts did not return a Response. Vercel invokes this handler with a ' +
+                'web Request and uses what it returns; anything else hangs in production.'
+            );
+          }
           res.statusCode = result.status;
           result.headers.forEach((value, key) => res.setHeader(key, value));
           res.end(await result.text());
