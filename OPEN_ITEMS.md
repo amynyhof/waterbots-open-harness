@@ -79,6 +79,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S3 | Level 3 citation pop-out | Surfaces | out of scope — paid platform |
 | S4 | Chat docks were thrown away on a surface switch | Surfaces | fixed 23 Aug 2026 |
 | S5 | The citation line wraps awkwardly in the narrow dock | Surfaces | cosmetic, polish later |
+| S6 | The dev relay resolves imports differently from production | Surfaces | open |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped in v1, number to revisit |
@@ -409,6 +410,39 @@ spacing until one width looks right.
 Related: the collapsed legend strip on the map wraps at very narrow columns too, recorded in the
 cosmetic and housekeeping list under Operations. If both are addressed, they are one piece of work
 about narrow columns rather than two.
+
+## S6. The dev relay resolves imports differently from production
+
+**The one path that could catch a production-only fault is the path that behaves least like
+production.** Opened 24 Aug 2026, after it caused a live outage.
+
+Phoebe's relay is served in development by a plugin in `vite.config.ts` that loads the same handler
+Vercel deploys. That was deliberate — one handler, no second copy to drift — and it is still right.
+But **Vite resolves module paths and Node does not resolve them the same way**. In production the
+handler is compiled and run by plain Node, which requires a local import to name the file exactly,
+extension included.
+
+**What it cost.** Two imports in `api/` named their files without an extension. Every check passed:
+the type checker was set to a mode that assumes a bundler will sort the paths out, and the dev relay
+resolved them happily. Phoebe answered perfectly on a laptop and could never have answered once
+deployed. The deploy was green, the key was correct, and every message returned a 500.
+
+**What was done about it.** The two imports were corrected and the api folder's type-check mode was
+changed to match how the code actually runs, so an extensionless import is now a build failure
+rather than a production one. That guard was confirmed by removing an extension on purpose and
+watching the build stop.
+
+**Why this item stays open.** The guard closes this specific difference. It does not close the gap
+that produced it. Anything else the dev relay resolves, polyfills or tolerates that Node would not
+is still invisible until it reaches production — module formats, built-in APIs, environment
+variables, the shape of the request object.
+
+**What would close it.** Something that exercises the relay the way Vercel does before a push, or a
+narrower guard set that names each known difference and tests for it. The first is better and
+larger; the second is cheap and partial. Neither is designed yet.
+
+**What not to do.** Do not fix this by giving development its own copy of the handler. Two copies
+that drift is a worse problem than one copy resolved two ways.
 
 ---
 

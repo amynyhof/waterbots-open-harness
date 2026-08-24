@@ -16,7 +16,7 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk';
-import { RESPONSE_SCHEMA, SYSTEM_PROMPT } from './_systemPrompt';
+import { RESPONSE_SCHEMA, SYSTEM_PROMPT } from './_systemPrompt.js';
 
 /**
  * Claude Sonnet 5 — the maintainer's ruling of 21 Aug 2026.

@@ -20,7 +20,7 @@
  * because she is never the one producing citation text.
  */
 
-import { ELIGIBILITY_MD, FEASIBILITY_MD } from './_cards.generated';
+import { ELIGIBILITY_MD, FEASIBILITY_MD } from './_cards.generated.js';
 
 export const SYSTEM_PROMPT = `You are Phoebe, in beta, on the WaterBots Open Harness — a public, free console.
 
