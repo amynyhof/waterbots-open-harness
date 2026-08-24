@@ -3,6 +3,33 @@
 This file is the rulebook for AI engineering work in this repository.
 Read it fully before doing anything.
 
+## Start here — PROCESS_RULES_for_ShellB.md
+
+**[PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) governs how
+work is run here**, and every session opens with it. It carries the order
+work moves in — propose, approve, build, eyeball, commit word — how the
+engineer is expected to speak, how open items are grouped, and what has to
+be true before a session closes.
+
+**Read these before doing anything else, every new session:**
+
+1. This file, CLAUDE.md
+2. [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) — how
+   work is run
+3. [BUILD_PLAN.md](./BUILD_PLAN.md) — what is being built now, what
+   comes next, and the compatibility goal
+4. [OPEN_ITEMS.md](./OPEN_ITEMS.md) — every open item, grouped into
+   families, and the north star
+5. [SESSION_HANDOFF.md](./SESSION_HANDOFF.md) — where the last session
+   left things
+
+**The session has not started until these are read.**
+
+Where this file and the process rules both speak to a point — proposal
+before code, one step at a time, honest states, no fabricated data — they
+agree. If they ever diverge, that is a defect to raise with the
+maintainer, not a choice to make.
+
 ## What this repo is
 
 The public, Apache 2.0 home of the WaterBots map:
@@ -51,10 +78,16 @@ never an action here.
 
 ## Language rules
 
+**This section is the single home for these three rules.** They bind
+engineering prose, product copy, and agent answers alike;
+CITATIONS.md and AGENT_RULES.md point here rather than restating them.
+
 - The words "validate/validation" are not used; say "confirms outputs"
   or reference the test suite.
 - The word "golden" is not used; say "reference".
-- Plain words lead, acronym in parentheses on first use.
+- Plain words lead, acronym in parentheses on first use. In an agent
+  conversation the acronym may stand bare after that first use; see
+  AGENT_RULES.md.
 
 ## Citations — see CITATIONS.md
 
@@ -67,9 +100,23 @@ writing anything that cites a source. It is published, not
 engineer-eyes-only.
 
 Where CITATIONS.md and this file both speak to a point — the data
-licensing requirements below, derived values, plain-words-first — they
-agree. If they ever diverge, that is a defect to raise with the
-maintainer, not a choice to make.
+licensing requirements below, derived values — they agree. If they ever
+diverge, that is a defect to raise with the maintainer, not a choice to
+make. Plain-words-first is no longer one of those points: it has a
+single home in Language rules above, and CITATIONS.md points at it.
+
+## Agents — see AGENT_RULES.md
+
+**AGENT_RULES.md in this repo is binding** on every agent on this site.
+It carries how an agent speaks, the three outcomes, the abstention
+ladder, and what an agent may say about itself and about its
+colleagues. It is published, not engineer-eyes-only.
+
+**Three root documents, one home per rule.** CLAUDE.md owns engineering
+work and the language rules; CITATIONS.md owns what a citation is and
+how it renders; AGENT_RULES.md owns how an agent behaves and speaks. A
+rule restated in two of them is a defect, not thoroughness — the copies
+drift, and then nobody can tell which one is current.
 
 ## Data licensing — binding display requirements
 
