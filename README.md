@@ -1,27 +1,30 @@
 # WaterBots Open Harness
 
-An interactive world map of HydroSHEDS watershed basins, coloured by water stress, with a small set
-of real water project locations (planned, not yet placed) — and the foundation of an AI chat console
-in the WaterBots style.
+An interactive world map of HydroSHEDS watershed basins, coloured by water stress, and an
+eligibility console where an AI agent helps you work out whether a water stewardship project can
+generate a countable water benefit.
 
 It deploys standalone and is linked from [waterbots.ai](https://waterbots.ai).
 
 ## Status
 
-**v1 is deployed and live at [map.waterbots.ai](https://map.waterbots.ai).**
+**The basin map is live at [map.waterbots.ai](https://map.waterbots.ai).** It renders real
+HydroSHEDS basin geometry coloured by real WRI Aqueduct values, with no fabricated data anywhere in
+it.
 
-Six of the seven planned steps are built. The map renders real HydroSHEDS basin geometry coloured by
-real WRI Aqueduct values, with no fabricated data anywhere in it.
+**The eligibility console is built and not yet live.** Phoebe answers locally today. On the deployed
+site she will say plainly that she is not connected until an API key is configured for her relay —
+she does not pretend to answer.
 
-Open items:
+Every open thread lives in [OPEN_ITEMS.md](./OPEN_ITEMS.md), grouped into five families:
+Knowledge, Agents, Surfaces, Data and Operations. What is being built next, and why, is in
+[BUILD_PLAN.md](./BUILD_PLAN.md).
 
-- **Project points** — the one unbuilt piece. Nothing will be placed until there is
-  registry-verified source data with published coordinates. See the roadmap below.
-- **Final agent staffing** — which agent hosts the map is undecided. Bridget appears as a
-  placeholder, is named as one in the panel, and does not answer.
+The largest gap: **project points are not placed**, because nothing goes on the map until there is
+registry-verified source data with published coordinates.
 
-See [SESSION_HANDOFF.md](./SESSION_HANDOFF.md) for deployment details and where the next session
-picks up.
+**Bridget is the map's agent.** Her console is not built yet — the panel is there, she is named in
+it, and it says plainly that she is not answering. Her chat is coming; it does not exist today.
 
 ## What is built
 
@@ -29,8 +32,36 @@ picks up.
 - **Water stress.** WRI Aqueduct 4.0, joined at 100% coverage. Level 6 values are WRI's published
   figures; Level 4 is an area-weighted majority of its children, labelled as derived wherever it
   renders.
-- **Console shell.** A collapsible navigation rail and a chat dock. The shell only — no agent
-  answers yet, and the composer is disabled and says why.
+- **Eligibility worksheet.** Six criteria, all of which must be met, each showing what would change
+  a shortfall rather than only reporting one. **The six criteria decide whether a project can
+  qualify at all.** Ten further considerations sit below them and do a different job: they help you
+  choose well between projects that already qualify.
+- **Phoebe (beta).** The eligibility and feasibility agent, answering from a fixed set of rule cards
+  and abstaining when none covers the question.
+- **A shared chat layer** that every agent on this site uses, so citations are rendered one way
+  rather than reinvented per agent.
+
+## Phoebe, and how citations work here
+
+Phoebe reads from **two committed card sets** — six eligibility criteria and ten feasibility
+considerations, both drawn from Volumetric Water Benefit Accounting 2.0 — and nothing else. Asked
+about anything outside them, she says she does not have that card yet rather than guessing. An
+honest gap is more useful than an answer nobody can tell is wrong.
+
+**She never writes a citation.** She names a card and places a marker in her answer; the console
+looks that card up in the committed file and renders the citation itself. A wrong page number or an
+invented link is therefore not something she can produce. A marker naming a card that does not exist
+is dropped rather than shown.
+
+Clicking a marker opens one line: the document, its version, the section, the page, and a link to the
+publisher's own page. Every card carries that link — no canonical link, no card.
+
+The rules behind this are published, not internal: [CITATIONS.md](./CITATIONS.md) governs what a
+citation is and how it renders, and [AGENT_RULES.md](./AGENT_RULES.md) governs how any agent here
+speaks, when it must abstain, and what it may say about work that is not built yet.
+
+**She is in beta**, and the console says so where she appears. Nothing she produces is a decision,
+and no standards body endorses, certifies or is affiliated with this project.
 
 ## Roadmap
 
@@ -42,9 +73,6 @@ Nothing is placed until it can be verified against its source registry — an em
 invented one is not. The same applies to impact figures: an estimate is labelled an estimate, and a
 verified figure names what verified it.
 
-Also planned: a live agent behind the chat panel. Which agent staffs the map is not yet decided, so
-the panel names Bridget as a placeholder and says so.
-
 ## Running locally
 
 ```bash
@@ -53,6 +81,31 @@ npm run dev
 ```
 
 The dev server runs on **port 5173** (pinned, `strictPort`).
+
+The map needs nothing further. **Phoebe needs an Anthropic API key** in the environment *before* the
+server starts, since her relay reads `process.env`:
+
+```powershell
+$env:ANTHROPIC_API_KEY = "..."
+npm run dev
+```
+
+Without it she does not fail silently — the console states that she is not connected and why.
+
+### Confirming the build
+
+Six checks, all of which must pass. `check-attribution` reads the built bundle rather than the
+source, so it catches a refactor that drops a required licence statement while leaving the site
+looking perfectly correct.
+
+```bash
+node scripts/check-basins.mjs
+node scripts/check-stress.mjs
+node scripts/check-palette.mjs
+node scripts/check-cards.mjs
+node scripts/build-card-module.mjs --check
+npm run build && node scripts/check-attribution.mjs
+```
 
 ## Licence
 
@@ -120,6 +173,17 @@ categories and are never folded into a stress level.
 
 ---
 
+### Source documents
+
+The methodology this console follows is **cited and linked, never reproduced**. Volumetric Water
+Benefit Accounting 2.0 is published by the World Resources Institute with LimnoTech, Bluerisk and
+the Bonneville Environmental Foundation, and is available at
+[doi.org/10.46830/wrigb.23.00112](https://doi.org/10.46830/wrigb.23.00112).
+
+The rule cards in this repository are **rewrites in our own words**, each carrying its own citation
+and a link to the publisher's page. No source PDF, and no extract beyond a short attributed snippet,
+is held here.
+
 ### Basemap
 
 Map tiles carry their own attribution, displayed in the map's attribution control alongside the
@@ -127,9 +191,9 @@ above. Leaflet's attribution control is always enabled.
 
 ## Theme
 
-v1 renders on **Frost**, the light theme. The map is a public surface with no login, and BRAND.md's
-surface rule puts public and orientation surfaces on light. The Deep Marine tokens are retained in
-`src/styles/tokens.css` as correct reference but no v1 component applies them.
+The free surfaces render on **Frost**, the light theme. They are public surfaces with no login, and
+BRAND.md's surface rule puts public and orientation surfaces on light. The Deep Marine tokens are
+retained in `src/styles/tokens.css` as correct reference but no component here applies them.
 
 Note that Frost has no four-surface ladder: BRAND.md publishes `--card` and `--raised` as the same
 white, and authors the ladder for Deep Marine only. On Frost, separation is carried by the 1px
@@ -137,26 +201,46 @@ white, and authors the ladder for Deep Marine only. On Frost, separation is carr
 
 ## Brand decisions
 
-BRAND.md does not publish every value this map needed. Where one was missing it was **derived from
-BRAND.md's own formulas**, never invented, and the derivation is recorded so it can be checked:
+BRAND.md does not publish every value this project needed. Where one was missing it was **derived
+from BRAND.md's own formulas**, never invented, and the derivation is recorded so it can be checked:
 
 - **`--chrome` on Frost** — BRAND.md's `--chrome` token and its "chrome recedes" rule exist only in
   the Deep Marine block. Applying BRAND.md's elevation formula downward gives
   `color-mix(in srgb, #0B1428 8%, #FBFBFE)` = `#E8E9ED`, at CIE L\* 92.4 against paper's 98.7 — a
   separation of 6.3, clearing BRAND.md's 6-point minimum between adjacent surfaces. The same 8% step
   reproduces the published Deep Marine `--card` exactly, which is what confirms the formula.
+- **Phoebe's identity colour** — **Anemone `#A04E7E`**, with **Anemone Light `#C36E9F`** on her
+  antenna. Anemone was held in BRAND.md as an unclaimed spare, kept so a future role would not have
+  to re-open the search; this is that use. Anemone Light is a new value set by the maintainer, one
+  lightness step above Anemone at the same hue — the same step the published Plum-to-Iris pair
+  makes. At 5.40:1 on white the head colour is safe on text; **the antenna value is not**, and is
+  used only for that stroke.
 - **Bridget's identity colour** — `#7FD5DF`, the Surf-family lifted value. **Provisional** until map
   staffing is settled. At 1.68:1 against white it carries her keyline, ring and wash, never text.
 - **Stress ramp** — five bands derived from Surf, Amber and Coral, with monotonically descending
   lightness and chroma separating the scale from the two categories that are not on it. Both
   properties are asserted by `scripts/check-palette.mjs` rather than trusted to the eye.
 
-Reggie's gap was dark-only; his Plum is published for Frost and is in use.
+**Bridget is the map's agent**, confirmed 24 Aug 2026. Her identity colour stays marked provisional
+above because BRAND.md assigns Surf no agent identity and her value was published under a retired
+agent — that is a brand question, separate from staffing, and it is still open.
 
-Final agent staffing of the map remains an open maintainer decision. Bridget appears in v1 as a
-placeholder host only and does not answer.
+## How this repository is run
+
+The rules are published rather than kept internal, because a public project that cites sources
+should be checkable on how it works as well as on what it says.
+
+| File | What it governs |
+|---|---|
+| [CLAUDE.md](./CLAUDE.md) | Engineering rules, and the rule that this repository sees only itself |
+| [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) | How work moves: propose, approve, build, review, commit |
+| [AGENT_RULES.md](./AGENT_RULES.md) | How an agent speaks, and when it must abstain |
+| [CITATIONS.md](./CITATIONS.md) | What a citation is and how it renders |
+| [BUILD_PLAN.md](./BUILD_PLAN.md) | What is being built next, and why |
+| [OPEN_ITEMS.md](./OPEN_ITEMS.md) | Every open thread, in five families |
+| [SESSION_HANDOFF.md](./SESSION_HANDOFF.md) | Where things stand, for whoever picks the work up |
 
 ## Not in this repository
 
-Brand source files, design references and prior-prototype material are held locally and are
-gitignored. They are not published here.
+Brand source files, design references, prior-prototype material and source PDFs are held locally and
+are gitignored. They are not published here.
