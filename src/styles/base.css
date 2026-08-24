@@ -216,6 +216,94 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
+   The citation line — Level 2, owned by the shared chat layer.
+
+   CITATIONS.md fixes both its contents and its order:
+   source · version · section · page → canonical link, and nothing more. There
+   is no Level 3 on the free site, so this line is where a citation ends.
+
+   It renders in the map's attribution-bar style, deliberately: the same faint
+   card wash, the same muted ink, the same 11px. Attribution and citation are
+   the same promise made about two different things, and a reader who has met
+   one on the map should recognise the other in the chat.
+
+   The link carries a real affordance rather than reading as fine print — the
+   .wb-licences-link pattern below does the same job for the licence statements,
+   for the same reason. It needs stating because Tailwind's preflight, imported
+   at the top of this file, sets `a { text-decoration: inherit }` and strips the
+   underline a browser would otherwise give every link.
+
+   The arrow is decorative and marked aria-hidden at the call site; the link
+   text carries the meaning on its own.
+--------------------------------------------------------------------------- */
+
+/* The inline marker — Level 2's trigger.
+
+   A .tag by CITATIONS.md's own test: "ref1" is a value, it changes when the
+   record changes, and it carries no state. It is a <button> rather than a link
+   because it discloses something already on the page; the link out to the
+   publisher lives inside the line it opens.
+
+   Sized down from a standing tag so it sits inside a sentence without pushing
+   the line height around, and given baseline alignment for the same reason. */
+
+.wb-cite-marker {
+  font-size: 10px;
+  padding: 1px 5px;
+  margin: 0 2px;
+  vertical-align: baseline;
+  cursor: pointer;
+  color: var(--tide-text);
+  border-color: color-mix(in oklab, var(--tide-ui) 40%, var(--line));
+  background: transparent;
+  transition:
+    background var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+.wb-cite-marker:hover {
+  background: color-mix(in oklab, var(--tide-ui) 10%, transparent);
+}
+.wb-cite-marker[aria-expanded='true'] {
+  background: color-mix(in oklab, var(--tide-ui) 14%, transparent);
+  border-color: var(--tide-ui);
+}
+
+.wb-cite-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: var(--r-xs);
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  border: 1px solid var(--line);
+  color: var(--fg-2);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.wb-cite-link {
+  color: var(--tide-text);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  margin-left: auto;
+  transition: color var(--dur) var(--ease);
+}
+.wb-cite-link:hover {
+  color: var(--tide-hover);
+  text-decoration-thickness: 2px;
+}
+.wb-cite-ext {
+  font-size: 9px;
+  margin-left: 3px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* ---------------------------------------------------------------------------
    Buttons — --r-sm, never a pill.
 --------------------------------------------------------------------------- */
 
