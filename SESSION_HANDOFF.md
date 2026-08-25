@@ -1,6 +1,6 @@
 # Session handoff
 
-Rewritten at the close of the session of 22–24 Aug 2026. Read this with
+Rewritten at the close of the session of 25 Aug 2026. Read this with
 [CLAUDE.md](./CLAUDE.md), which is the rulebook and takes precedence,
 [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md), which says how work is run, and
 [BUILD_PLAN.md](./BUILD_PLAN.md), which says what comes next.
@@ -12,23 +12,31 @@ committed and what is not, what is waiting on the maintainer, and what to do fir
 
 ## Read this first
 
-**Phoebe is live at [map.waterbots.ai](https://map.waterbots.ai) and answering.** Confirmed against
-production on 24 Aug 2026, not assumed: a real question returns her answer with its cited card, and
-the two paths that never reach the model answer in under two seconds.
+**Phoebe's step 4 is built: the daily cap and the abstention log.** She has a cap of 20 messages per
+visitor per UTC day, and every question she declines is now written down where it can be graded.
+Both were confirmed by the maintainer in a preview deployment before merge.
 
-**Twelve commits this session**, from `ddd42c1`. Eight built and documented the work; three fixed
-production faults that only appeared once deployed; this handoff is the twelfth.
+**She was live, public and uncapped from 24 to 25 Aug 2026.** That is why step 4 jumped the queue
+ahead of the work BUILD_PLAN.md had scheduled.
 
-**`main` is protected again.** The owner bypass was removed on 24 Aug 2026 (item O2). **Direct
-pushes will now be refused — changes go through a pull request.** A rejected push is the ruleset
-working, not a fault.
+**The empty answer (item A4) was diagnosed and fixed, and it was not what it looked like.** Hidden
+thinking was spending her whole answer budget. The model thinks before it writes, that thinking is
+not shown, and it is charged to the same output budget as the reply — and the relay never set the
+parameter, so it inherited the default. Three faults across two days had one cause. The measurements
+are in item A4.
+
+**Five commits this session**, on branch `feat/phoebe-step-4-cap-and-abstention-log`, from `f617e90`.
+Three built step 4, one fixed the token budget, and this docs refresh is the fifth.
+
+**`main` is protected.** Direct pushes are refused; changes go through a pull request. A rejected
+push is the ruleset working, not a fault.
 
 **Two card drafts are deliberately uncommitted.** `activity-cards-vwba-DRAFT.md` and
-`definitions-cards-vwba-DRAFT.md` are drafted but not graded, and Phoebe is not given them. They
-stay untracked until they are graded.
+`definitions-cards-vwba-DRAFT.md` are drafted but not graded, and Phoebe is not given them. They stay
+untracked until they are graded.
 
-There may also be an untracked `exports/` folder of `Shell_B_`-prefixed copies of the root
-documents. Those are the maintainer's export copies. They never commit and nothing reads them.
+There may also be an untracked `exports/` folder of `Shell_B_`-prefixed copies of the root documents.
+Those are the maintainer's export copies. They never commit and nothing reads them.
 
 ---
 
@@ -41,7 +49,7 @@ Vercel builds on every push to that branch.
 |---|---|
 | Basin map | Live |
 | Eligibility worksheet | Live |
-| Phoebe, the Eligibility and Feasibility agent | **Live and answering** |
+| Phoebe, the Eligibility and Feasibility agent | **Live and answering, capped at 20 messages a day** |
 | Bridget, the map's agent | Named in the map's dock; her chat is not built |
 | Shared chat layer | Live, built through Level 2 |
 | Project points | Not started — blocked on registry data (item D2) |
@@ -62,15 +70,55 @@ Vercel builds on every push to that branch.
 She is the Eligibility and Feasibility specialist, sitting with the Eligibility surface. **She
 answers for real**, from two committed card sets and nothing else.
 
-- **Model: Claude Sonnet 5.** If abstention discipline ever weakens, the upgrade is one line —
-  `MODEL` in `api/phoebe.ts`.
+- **Model: Claude Sonnet 5**, thinking adaptively at **"medium" effort**, budget 16,000 output
+  tokens. All three are stated in `api/phoebe.ts` rather than inherited — see the token budget
+  below, which is the whole story of item A4. If abstention discipline ever weakens, raise `EFFORT`
+  first, then `MODEL`.
 - **She never writes a citation.** She returns a card number and places a marker; the browser looks
   the card up in the committed file and renders the citation itself. A wrong page or an invented
   link is not something she can produce.
 - **Her colour is Anemone `#A04E7E`**, with Anemone Light `#C36E9F` on her antenna. Maintainer's
   ruling, 22 Aug 2026.
-- **Steps 1–3 of her build are done.** Step 4 — abstention logging and the rate limit — is not
-  started. Step 5 is this close-out.
+- **Her whole build is done — steps 1 through 5.** Step 4, the cap and the abstention log, landed
+  25 Aug 2026.
+
+#### The cap, and what is stored
+
+**20 messages per visitor per UTC day.** A visitor is their network address scrambled with
+`PHOEBE_VISITOR_SALT`; the address itself is never stored and nothing else about the person is read.
+The key expires when the day does.
+
+- **Only delivered answers count.** The count rises just before the model is called and is given
+  back if the call fails on our side. Nobody spends one of their twenty on our fault.
+- **A malformed request never costs a message** — everything a request can be refused for on its own
+  terms happens before the counting.
+- **Missing store, two different answers.** Anywhere the platform runs the relay, a missing store
+  stops Phoebe answering rather than quietly serving an uncapped public endpoint. On a laptop it
+  warns loudly and lets the message through. A store that is set up but stumbling lets one message
+  through uncounted and logs it.
+- **The abstention log holds no visitor identifier at all**, so a question cannot be traced to a
+  person. It keeps when, the topic in Phoebe's words, and the question as typed. Newest 500. Read it
+  at `/api/abstentions?key=…` with `PHOEBE_LOG_KEY`.
+
+#### The token budget, which is where item A4 lived
+
+**Phoebe thinks before she writes, that thinking is invisible, and it is charged to the same budget
+as her reply.** The relay never set the thinking parameter, so it inherited adaptive thinking at
+"high" effort. Nothing in the code said so.
+
+Measured 25 Aug 2026 at the old settings: a two-sentence question spent **4,194 output tokens for
+1,848 characters of visible answer** — about 88% of the spend invisible. The budget was 8,192 and its
+comment claimed that was "roughly double the worst run observed". It was not.
+
+That produced both faults. Run out entirely and the answer is cut off; come close and the model
+still closes out the required JSON shape, with an empty `reply` that parses cleanly and is then
+refused. Same curve, one step apart.
+
+**After the fix** — budget 16,000, effort "medium" — the same question ran 977 and 2,088 tokens.
+Worst-observed headroom went from 51% of budget to 13%. Abstention discipline held.
+
+**A default nobody wrote down is a decision nobody made.** That is the lesson worth keeping, and it
+is why every failure path now logs the token spend against the budget.
 
 ### Three production faults, and why they matter more than they look
 
@@ -114,7 +162,7 @@ to use it unchanged.
 
 ## Confirming the build
 
-Seven checks. All must pass. `check-attribution` needs a build first because it reads `dist/`.
+Nine checks. All must pass. `check-attribution` needs a build first because it reads `dist/`.
 
 ```bash
 node scripts/check-basins.mjs               # counts, fields, geometry, Level 6 → 4 nesting
@@ -122,6 +170,8 @@ node scripts/check-stress.mjs               # join coverage, derivation labellin
 node scripts/check-palette.mjs              # ramp lightness order, chroma separation
 node scripts/check-cards.mjs                # both card sets parse and are complete
 node scripts/check-api-exports.mjs          # the relay can actually answer once deployed
+node scripts/check-visitor-id.mjs           # the scrambled identity is stable, unique, salted
+node scripts/check-cap.mjs                  # 20 pass, 21 refused, refunds work, the log stores no one
 node scripts/build-card-module.mjs --check  # the relay's card copy is not stale
 npm run build && node scripts/check-attribution.mjs
 ```
@@ -136,6 +186,19 @@ that dropped the HydroSHEDS statement would otherwise leave the map looking perf
 
 `check-cards` re-derives both card sets independently of the app's parser, so it proves more than
 that the module agrees with itself. It also enforces the canonical link on every card.
+
+`check-visitor-id` re-derives the scrambling through a second crypto interface, so it proves the
+recipe rather than agreeing with itself. `check-cap` compiles `api/` to a temporary directory and
+runs the **real** relay code against a **stand-in store** on this machine — 21 checks covering the
+refusal boundary, the refund, the missing-store behaviour, and the guarantee that no abstention
+record holds any trace of who asked. It also fails if any environment setting can move the cap,
+which is what stops the testing shortcut coming back.
+
+**That stand-in is not fabricated data**, per the maintainer's ruling of 25 Aug 2026 now written into
+[PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md): the rule protects what a visitor is
+shown, and a test stand-in that never reaches a person is a different thing. **What it cannot prove
+is that the real store behaves like the stand-in** — that is item S6 territory, and only a deployed
+address and a browser settle it.
 
 **After editing any card, run `node scripts/build-card-module.mjs`** or the relay deploys with stale
 cards while the worksheet shows current ones — a disagreement no visitor could see.
@@ -157,6 +220,12 @@ newly opened terminal picks up but a long-running process does not.
 `/api/phoebe` is served in development by a plugin in `vite.config.ts` that loads the same handler
 Vercel deploys, so there is no second copy to drift.
 
+**There is no cap locally**, and that is deliberate rather than an oversight. With no shared store
+configured, the relay logs `this message was not counted against any cap — development only` and
+answers. Anywhere the platform runs it, the same missing store stops her answering instead. If you
+want the cap locally, set `KV_REST_API_URL`, `KV_REST_API_TOKEN` and `PHOEBE_VISITOR_SALT` in the
+shell before starting the server.
+
 > **Two people cannot work in this folder at once.** The dev server reloads the whole page whenever
 > any file changes, including root documents the app never imports. That wipes the open conversation
 > and drops the reader back on the map. It cost an hour of false bug-hunting on 23 Aug 2026. **While
@@ -173,8 +242,30 @@ Vercel deploys, so there is no second copy to drift.
 | **Repo** | https://github.com/amynyhof/waterbots-open-harness (public), branch `main` |
 | **Host** | Vercel, imported from GitHub — pushes to `main` deploy automatically |
 | **Framework preset** | Vite · build `npm run build` · output `dist` · install `npm install` |
-| **Environment variables** | none for the map. Phoebe's relay needs `ANTHROPIC_API_KEY`, **which is set** and confirmed working in production on 24 Aug 2026 |
+| **Environment variables** | none for the map; five for Phoebe — see below |
+| **Shared store** | Redis, added via Vercel Storage on 25 Aug 2026, connected to all three environments |
 | **Config file** | none — no `vercel.json`, no rewrites needed |
+
+### Settings Phoebe needs
+
+All set by the maintainer on 25 Aug 2026, across Production, Preview and Development.
+
+| Setting | What it is for | If it is missing |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | Her relay | She says she is not connected |
+| `KV_REST_API_URL` | The shared store | On the platform, she does not answer at all |
+| `KV_REST_API_TOKEN` | The shared store | Same |
+| `PHOEBE_VISITOR_SALT` | The secret mixed into the scrambled visitor identity | Same |
+| `PHOEBE_LOG_KEY` | Opens `/api/abstentions` | That address returns nothing |
+
+**`PHOEBE_VISITOR_SALT` is set once and never changed.** Changing it makes every visitor look new
+and resets every count to zero. It is not a rotating secret.
+
+**The store's alternative names are also read** — `UPSTASH_REDIS_REST_URL` and
+`UPSTASH_REDIS_REST_TOKEN` — so a store provisioned the other way needs no code change.
+
+**A settings change only reaches a deployment that starts after it.** Adding or editing any of these
+requires a redeploy before it takes effect.
 
 ### Domain and DNS
 
@@ -282,26 +373,38 @@ the old V, B and P identifiers are gone and every reference to them was updated 
 4. **The design session with the production side**, which settles the compatibility goal. No date.
 5. **Grading the two card drafts** — Activity (Appendix C) and Definitions (the glossary). Until
    they are graded they stay uncommitted and Phoebe is not given them.
-6. **Phoebe's step 4 was never built** — abstention logging and the rate limit. Both need shared
-   storage; Vercel KV was approved on 21 Aug 2026 and the maintainer asked to be walked through
-   enabling it. **The relay counts nothing and stores nothing today, and its own header says so
-   rather than implying a cap it does not enforce.**
+6. **Delete `PHOEBE_TEST_CAP` from the Vercel settings.** A testing shortcut lowered the cap so it
+   could be proved in four messages instead of twenty-one. **The code that read it is gone** — it was
+   removed before merge, and `check-cap` now fails if any setting can move the cap again. The setting
+   itself does nothing now, but it should not be left lying in the project. Preview environment.
+7. **Grade the abstention log.** This is what item A1 was built for and it is the part no repository
+   file can do. Read `/api/abstentions?key=…`, and for each gap decide: a legitimate limit of the
+   card set, or a card to write.
+8. **Revisit the number twenty (item O1)** once there is real usage to reason from. It was chosen
+   before any traffic existed. The daily counts and the abstention log are the first real evidence
+   that will exist for that decision — there is none yet, so this is not due.
 
 ---
 
 ## What to do first
 
-**Read [BUILD_PLAN.md](./BUILD_PLAN.md).** It says Agents is next, and in what order.
+**Read [BUILD_PLAN.md](./BUILD_PLAN.md).** It says the agent handoff primer is next, and why.
 
-**Branch first.** `main` is protected again, so work goes through a pull request.
+**Branch first.** `main` is protected, so work goes through a pull request.
 
-The first piece of work is **the empty answer (item A4)** — Phoebe returned an answer with nothing
-in it once, and the reader was shown a message that misdescribes what happened. Small, unexplained,
-and sitting underneath the answer path. After that, **the agent handoff primer (item A3)**, which
-the staffing ruling of 24 Aug 2026 unblocked.
+The next piece of work is **the agent handoff primer (item A3)** — a short shared document telling
+each agent what the others cover, so an agent asked something outside its own sources can point
+rather than only abstain. The staffing ruling of 24 Aug 2026 unblocked it and nothing else holds it
+up, though the worked example it would most want — where the corporate funders are working — is item
+D1 and does not exist yet.
 
-**One larger thing is not in either family's queue and should be:** Phoebe's step 4, the abstention
-logging and the rate limit. The public chat currently has no cap at all.
+**Read the abstention log before writing it.** That log now records what people actually ask Phoebe
+that she cannot answer. Some of those gaps will turn out to be another agent's subject rather than a
+missing card, which is exactly what the primer is for. Writing the primer from real questions is
+cheaper than writing it from guesses and then revising it.
+
+**Nothing is half-landed.** Step 4 is complete and merged, item A4 is closed, and no work was left
+part-built at the close of this session.
 
 ---
 
@@ -318,3 +421,9 @@ every decision in this session.
 - **Shortcuts are named as shortcuts and logged as debt**, never quietly kept.
 - **Rule zero: this repo sees only this repo.** Rules arrive as extracted files brought by the
   maintainer; nothing is fetched, guessed at, or imitated.
+- **A default nobody wrote down is a decision nobody made.** Item A4 hid for two days behind a model
+  setting the code never stated. Where a library's default shapes behaviour that matters, write it
+  down in the code even when the value you write is the default.
+- **Measure before claiming.** The A4 diagnosis is four real requests, not an argument. The last
+  session's lesson was that the platform's log is evidence and local reasoning is a guess; this one
+  is the same lesson pointed at a library.

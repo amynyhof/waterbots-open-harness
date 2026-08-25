@@ -70,22 +70,26 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | K1 | VWBA full-docs card pass | Knowledge | open |
 | K2 | Co-benefit quantification module | Knowledge | open |
 | K3 | VWB Report Corpus | Knowledge | open, no action yet |
-| A1 | Phoebe abstention loop | Agents | open |
+| A1 | Phoebe abstention loop | Agents | built 25 Aug 2026 |
 | A2 | Final agent staffing | Agents | settled 24 Aug 2026 |
 | A3 | Agent handoff primer | Agents | logged, no build |
-| A4 | Phoebe returned an empty answer, once | Agents | to investigate |
+
+| A4 | Phoebe returned an empty answer | Agents | diagnosed and fixed 25 Aug 2026 |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | open |
 | S2 | The shared chat layer | Surfaces | built through Level 2 |
 | S3 | Level 3 citation pop-out | Surfaces | out of scope — paid platform |
+
 | S4 | Chat docks were thrown away on a surface switch | Surfaces | fixed 23 Aug 2026 |
+
 | S5 | The citation line wraps awkwardly in the narrow dock | Surfaces | cosmetic, polish later |
 | S6 | The dev relay resolves imports differently from production | Surfaces | open |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
-| O1 | Rate limit on public chat | Operations | shipped in v1, number to revisit |
+| O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
 | O2 | Restore branch protection on `main` | Operations | restored 24 Aug 2026, closed |
 | O3 | Reverse link from waterbots.ai | Operations | live, closed 24 Aug 2026 |
 | O4 | Cosmetic and housekeeping items | Operations | left alone deliberately |
+
 | O5 | The engineer pushed without a commit word, twice | Operations | logged 24 Aug 2026 |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
@@ -163,7 +167,30 @@ This is the mechanism by which the card sets grow from real questions rather tha
 about what might be asked. It also keeps the honest-states rule true for the agent as well as the
 map: a refusal to answer has to be visible, not silent.
 
-Opened 21 Aug 2026. Not built.
+**Built 25 Aug 2026.** Every abstention is now recorded and readable.
+
+**What a record holds:** when it happened, what Phoebe called the topic in her own few words, and
+the question as the person typed it. The real question is kept — maintainer's ruling, 25 Aug 2026 —
+because "curve number method" tells you a gap exists while the question tells you what card to
+write. A question longer than 500 characters is cut and the record says plainly that it was.
+
+**What a record does not hold: any trace of who asked.** The scrambled identity the daily cap counts
+against is deliberately not written here, so a question can never be tied back to a person, or to
+any other question by the same person. The two stores share a database and nothing else, and a check
+enforces that rather than a comment asking for it.
+
+The most recent 500 are kept; older ones fall off the end. Writing a record can never cost someone
+their answer — a failure to record goes to the log and the answer still goes out.
+
+**Reading them:** `/api/abstentions?key=…`, guarded by `PHOEBE_LOG_KEY`. A guarded address was
+chosen over the storage dashboard on 25 Aug 2026, because this file describes grading as a routine
+and a routine built on an awkward tool is a routine that stops happening. It returns data rather
+than a page, deliberately: every question in it was typed by a member of the public.
+
+**What is left of this item is the grading itself**, which is a maintainer job and not a repository
+one. Read the log, and for each gap decide: a legitimate limit of the card set, or a card to write.
+
+Opened 21 Aug 2026. Mechanism built 25 Aug 2026; grading is ongoing.
 
 ---
 
@@ -224,33 +251,66 @@ reviewed, then inherited by each agent's prompt the way
 
 Opened 22 Aug 2026. **Logged only — no build.**
 
-## A4. Phoebe returned an empty answer, once
+## A4. Phoebe returned an empty answer — diagnosed and fixed
 
-**Seen once, on 23 Aug 2026, between 3:24 PM and 4:14 PM, during the maintainer's browser check.**
-The dev server logged `phoebe: reply failed validation` and the reader was told that Phoebe answered
-in a shape the console could not read. It has not happened again in any test since.
+**Seen three times in two days of real use**, and all three had one cause. Once on 23 Aug 2026
+during a browser check, and twice more on 25 Aug 2026 during the maintainer's preview check — an
+answer with nothing in it, and an answer cut off for running out of room, both on one short message.
 
-**What that message actually means is narrow, which helps.** The relay's `validate` in
-`api/phoebe.ts` rejects an answer outright for **one reason only**: `reply` was missing, was not
-text, or was empty once trimmed. Everything else it checks — a card number out of range, a "not yet"
-with no route forward — is dropped quietly rather than failing the whole answer.
+**The cause: hidden thinking was spending the whole answer budget.** Claude Sonnet 5 thinks before
+it writes, that thinking is not shown, and it is charged to the same output budget as the reply. The
+relay never set the thinking parameter, so it inherited the model's default — adaptive thinking at
+"high" effort. Nothing in the code said so, which is why two days of faults looked inexplicable. A
+default nobody wrote down is a decision nobody made.
 
-So this was not a malformed answer. **It was an answer with nothing in it.**
+**Measured rather than reasoned**, four real requests through the same prompt and model on
+25 Aug 2026:
 
-**This is a different fault from running out of room**, which was fixed on 22 Aug 2026 and now
-reports itself honestly as having been cut off. A truncated answer fails earlier, when the
-half-written JSON will not parse. This one parsed fine and was simply empty.
+| Question | Output tokens | Visible reply |
+|---|---|---|
+| "why?" | 416 | 238 characters |
+| "Is it eligible?" | 1,073 | 384 characters |
+| "Does a borehole in Kenya qualify?" | 710 | 1,010 characters |
+| Two sentences about a Turkana project | **4,194** | 1,848 characters |
 
-**What to look at.** Whether an empty reply can arrive with cards or criteria updates attached — in
-which case the worksheet could move while the reader is shown an error, which would be a worse
-failure than the one on screen. And whether an empty answer deserves its own honest message rather
-than the generic one, since "she said nothing" and "she said something unreadable" are different
-things and the current wording claims the second.
+Every one returned a thinking block with zero visible text, then the answer. The last row is the
+one that matters: 1,848 characters is roughly 460 tokens of reply, so about 3,700 tokens — 88% of
+the spend — were invisible thinking, on a two-sentence question.
 
-**Do not paper over it by accepting an empty reply.** Showing a blank turn would be the dishonest
-fix.
+**A short question is not a cheap one.** The budget comment claimed 8,192 was "roughly double the
+worst run observed"; a two-sentence message already reached half of it. Worse, a vague question
+gives her less to ground on, so she deliberates more rather than less.
 
-Opened 24 Aug 2026. Not investigated.
+**The empty answer is the same curve one step earlier.** With the budget nearly gone, the model
+still has to close out the shape it was told to produce. `reply` is required but nothing said it
+must be non-empty, so an empty string is schema-valid, parses cleanly, and is then refused by the
+relay's `validate` — which refuses for exactly one reason, and that is it.
+
+**Fixed 25 Aug 2026, four changes:** the budget raised from 8,192 to 16,000, which does not raise
+the bill because output is charged on what is produced rather than budgeted; thinking and effort
+stated rather than inherited, at "medium"; an empty answer given its own honest message, since "she
+said nothing" and "she said something unreadable" are different things and the old wording claimed
+the second; and every failure now logs the token spend against the budget.
+
+**Confirmed after**, on the same questions: the Turkana message fell from 4,194 to 977 and 2,088
+across two runs, and worst-observed headroom went from 51% of the budget to 13%. Abstention
+discipline held — three questions with no covering card all abstained cleanly. A substantive answer
+still placed all six eligibility markers inline.
+
+**The two questions this item asked are both answered.**
+
+*Can an empty reply move the worksheet behind an error?* **No, and it cannot.** `validate` returns
+null, the relay answers 502, and `askPhoebe` throws before `PhoebePanel` ever calls
+`onCriteriaUpdate`. That worry is closed.
+
+*Does an empty answer deserve its own message?* Yes, and it has one now.
+
+**What was deliberately not done:** a minimum length on the schema's `reply`. It would stop the
+empty answer by forcing the model to emit something — a full stop, a single word — when it has no
+room, turning an honest failure into a meaningless answer that looks real. The empty reply should
+keep failing. It should just fail with the truth.
+
+Opened 24 Aug 2026. Diagnosed and fixed 25 Aug 2026.
 
 ---
 
@@ -548,13 +608,27 @@ Little of this is product, and several are not repository files at all — they 
 
 ## O1. Rate limit on public chat
 
-**A cap of 20 messages per day per visitor ships in v1**, per the maintainer's ruling of
-21 Aug 2026. See the Phoebe build for how it is implemented.
+**A cap of 20 messages per day per visitor is live**, per the maintainer's ruling of 21 Aug 2026,
+built and confirmed in the browser on 25 Aug 2026.
 
-**This item is only to revisit the number later.** Twenty is a starting point chosen before there
-is any traffic to reason from, not a figure derived from usage. Once real usage exists, the number
+**This row used to say the cap shipped in v1. It did not.** From 24 Aug, when Phoebe went live, until
+25 Aug, the public chat had no cap at all — the relay counted nothing and its own header said so.
+BUILD_PLAN.md and SESSION_HANDOFF.md both recorded that correctly and this file did not, which is
+how a wrong row survived a session close. Recorded rather than quietly corrected, because a document
+that was wrong once is worth knowing about.
+
+**How it works.** A visitor is identified by their network address scrambled with a server-held
+secret; no address is stored and nothing else about the person is read. The count is kept per UTC
+calendar day and expires with the day. Only delivered answers count — anything that fails on our
+side is given back. At the cap the visitor is told the limit, why it exists, and when it returns.
+Anywhere the platform runs the relay, a missing store stops Phoebe answering rather than quietly
+serving an uncapped public endpoint.
+
+**This item stays open only to revisit the number.** Twenty is a starting point chosen before there
+was any traffic to reason from, not a figure derived from usage. Once real usage exists, the number
 should be reconsidered against it — raised, lowered, or reshaped into something other than a flat
-daily count.
+daily count. **The abstention log and the daily counts are the first real evidence** that will exist
+for that decision.
 
 Opened 21 Aug 2026.
 

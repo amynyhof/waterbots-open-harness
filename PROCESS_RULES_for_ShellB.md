@@ -66,6 +66,12 @@ Before the final commit of a session:
   arrive as extracted rule files like this one, brought by Amy.
 - **No fabricated data, ever.** Not in tests, not in demos, not as
   placeholders that look real.
+- **A test stand-in for infrastructure is not fabricated data.** The rule
+  above protects what a visitor is shown. A stand-in for a database or
+  another service, used by a check script and never reaching a person, is a
+  different thing and is allowed. Maintainer's ruling, 25 Aug 2026, made when
+  a daily message cap could otherwise only be confirmed by sending twenty-one
+  real messages. The stand-in must be named as one where it lives.
 - **Honest states:** unbuilt capability is stated plainly ("planned,"
   "not live yet"), never simulated.
 - **Compatibility goal:** owned by [BUILD_PLAN.md](./BUILD_PLAN.md).

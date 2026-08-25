@@ -64,28 +64,6 @@ function onThePlatform(): boolean {
   return process.env.VERCEL === '1';
 }
 
-/* ---------------------------------------------------------------------------
-   SHORTCUT — REMOVE BEFORE MERGE.
-
-   Confirming a daily cap of twenty means sending twenty-one messages to the
-   deployed site and watching the twenty-first be refused. This lets the cap be
-   set lower for one deployment so it can be proved in three messages instead.
-
-   Approved as a shortcut by the maintainer on 25 Aug 2026, named as one here,
-   and to be deleted along with the PHOEBE_TEST_CAP setting before this branch
-   merges. It can only ever lower the cap, never raise it, so the worst it can
-   do while it exists is refuse someone early.
---------------------------------------------------------------------------- */
-function capInForce(): number {
-  const override = Number(process.env.PHOEBE_TEST_CAP);
-  if (Number.isInteger(override) && override >= 1 && override < DAILY_CAP) {
-    console.warn(
-      `phoebe: SHORTCUT ACTIVE — the cap is lowered to ${override} for testing. The real cap is ${DAILY_CAP}.`
-    );
-    return override;
-  }
-  return DAILY_CAP;
-}
 
 /**
  * Count this message against the sender's day, and say what should happen.
@@ -124,9 +102,7 @@ export async function countOneMessage(req: Request, now: Date): Promise<CapDecis
     return { kind: 'uncounted', why: describe(error) };
   }
 
-  const cap = capInForce();
-
-  if (count > cap) {
+  if (count > DAILY_CAP) {
     /* Put it back, so the stored number keeps meaning what it says — messages
        counted — rather than climbing while someone keeps trying. If the refund
        itself fails the number reads high for the rest of the day, which changes
@@ -136,7 +112,7 @@ export async function countOneMessage(req: Request, now: Date): Promise<CapDecis
     } catch (error) {
       console.error('phoebe: could not put back a refused message —', describe(error));
     }
-    return { kind: 'refused', cap, secondsToReset: secondsUntilMidnight(now) };
+    return { kind: 'refused', cap: DAILY_CAP, secondsToReset: secondsUntilMidnight(now) };
   }
 
   return {

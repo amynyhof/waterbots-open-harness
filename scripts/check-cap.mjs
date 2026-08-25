@@ -356,32 +356,29 @@ expect(
 );
 
 /* ---------------------------------------------------------------------------
-   The shortcut, while it exists.
+   No setting may move the cap.
 --------------------------------------------------------------------------- */
 
-console.log('\n  The testing shortcut\n');
+console.log('\n  The cap is not adjustable from outside\n');
 
+/* A shortcut existed on this branch during testing: PHOEBE_TEST_CAP lowered the
+   cap so it could be proved in four messages instead of twenty-one. It was
+   named as a shortcut, approved as one, and removed before merge. This check is
+   what stops it coming back by accident — a cap a setting can move is not a cap,
+   and "remove before merge" is a promise, while a failing gate is a guarantee. */
 process.env.PHOEBE_TEST_CAP = '3';
-const lowered = [];
-for (let i = 0; i < 4; i += 1) lowered.push(await countOneMessage(ask('203.0.113.200'), NOW));
-/* An attempt to raise it has to be disproved with a full day's worth of
-   messages, not one. A single allowed message proves nothing. */
-process.env.PHOEBE_TEST_CAP = String(DAILY_CAP + 500);
-const raised = [];
-for (let i = 0; i < DAILY_CAP + 1; i += 1) raised.push(await countOneMessage(ask('203.0.113.201'), NOW));
+process.env.PHOEBE_CAP = '3';
+process.env.DAILY_CAP = '3';
+const unmoved = [];
+for (let i = 0; i < 4; i += 1) unmoved.push(await countOneMessage(ask('203.0.113.200'), NOW));
 delete process.env.PHOEBE_TEST_CAP;
+delete process.env.PHOEBE_CAP;
+delete process.env.DAILY_CAP;
 
 expect(
-  'PHOEBE_TEST_CAP can lower the cap, so it can be proved in four messages',
-  lowered.slice(0, 3).every((d) => d.kind === 'allowed') && lowered[3].kind === 'refused',
-  `got ${lowered.map((d) => d.kind).join(', ')}`
-);
-
-expect(
-  `PHOEBE_TEST_CAP can never raise the cap — message ${DAILY_CAP + 1} is still refused`,
-  raised.slice(0, DAILY_CAP).every((d) => d.kind === 'allowed') &&
-    raised[DAILY_CAP].kind === 'refused',
-  `a setting lifted the real cap: message ${DAILY_CAP + 1} came back ${raised[DAILY_CAP].kind}`
+  'no environment setting can lower the cap',
+  unmoved.every((d) => d.kind === 'allowed'),
+  `a setting cut the cap short: got ${unmoved.map((d) => d.kind).join(', ')}`
 );
 
 /* ------------------------------------------------------------------------ */
