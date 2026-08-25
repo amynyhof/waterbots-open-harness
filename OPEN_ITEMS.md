@@ -72,12 +72,12 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | K3 | VWB Report Corpus | Knowledge | open, no action yet |
 | A1 | Phoebe abstention loop | Agents | open |
 | A2 | Final agent staffing | Agents | settled 24 Aug 2026 |
-| A3 | Agent handoff primer | Agents | logged, no build |
+| A3 | Agent handoff primer | Agents | logged, no build |
 | A4 | Phoebe returned an empty answer, once | Agents | to investigate |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | open |
 | S2 | The shared chat layer | Surfaces | built through Level 2 |
-| S3 | Level 3 citation pop-out | Surfaces | out of scope — paid platform |
-| S4 | Chat docks were thrown away on a surface switch | Surfaces | fixed 23 Aug 2026 |
+| S3 | Level 3 citation pop-out | Surfaces | out of scope — paid platform |
+| S4 | Chat docks were thrown away on a surface switch | Surfaces | fixed 23 Aug 2026 |
 | S5 | The citation line wraps awkwardly in the narrow dock | Surfaces | cosmetic, polish later |
 | S6 | The dev relay resolves imports differently from production | Surfaces | open |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
@@ -85,7 +85,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | O1 | Rate limit on public chat | Operations | shipped in v1, number to revisit |
 | O2 | Restore branch protection on `main` | Operations | restored 24 Aug 2026, closed |
 | O3 | Reverse link from waterbots.ai | Operations | live, closed 24 Aug 2026 |
-| O4 | Cosmetic and housekeeping items | Operations | left alone deliberately |
+| O4 | Cosmetic and housekeeping items | Operations | left alone deliberately |
 | O5 | The engineer pushed without a commit word, twice | Operations | logged 24 Aug 2026 |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
