@@ -43,3 +43,10 @@ dist/
 # Raw source data — downloaded, converted, never committed.
 # Only the simplified web-ready outputs in public/ are tracked.
 data-src/
+
+# The maintainer's export copies — NOT for publication.
+# Shell_B_-prefixed duplicates of the root documents, made at session close so
+# they can be carried elsewhere by hand. They are copies, never the source: the
+# root files are what binds, and an edit made to a copy is lost. Nothing in the
+# build reads this folder.
+exports/
