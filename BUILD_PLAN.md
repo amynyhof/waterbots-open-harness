@@ -73,7 +73,8 @@ do not exist yet.
 
 ## Building next — Agents
 
-**Two things sit in this family now, and the order between them matters.**
+**Two things sit in this family now, and the order between them matters. A third
+is unqueued and larger — see below.**
 
 **First, the empty answer (item A4).** Phoebe returned an answer with nothing in
 it once, on 23 Aug 2026, and the reader was shown a message that misdescribes
@@ -86,6 +87,13 @@ answer path should not be left underneath new agent work.
 Bridget and say Bridget covers the basin map and the water-stress data. A
 published rule describing behaviour no agent has is a promise outstanding, and
 the primer is what settles it.
+
+**Not queued, and bigger than both:** Phoebe's step 4 — abstention logging and
+the rate limit — was never built. Every abstention should be recorded so it can
+be graded into a new card (item A1), and the public chat has **no cap at all**
+today. Both need shared storage, which the maintainer provisions rather than the
+repository. This is the largest unbuilt piece of the agent work and it sits in
+neither queue.
 
 **The primer is no longer blocked.** Final agent staffing (item A2) was settled
 on 24 Aug 2026 — Bridget on the map, Phoebe on eligibility, two posts — so the

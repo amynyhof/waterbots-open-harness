@@ -83,7 +83,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped in v1, number to revisit |
-| O2 | Restore branch protection on `main` | Operations | due after this week’s push |
+| O2 | Restore branch protection on `main` | Operations | restored 24 Aug 2026, closed |
 | O3 | Reverse link from waterbots.ai | Operations | live, closed 24 Aug 2026 |
 | O4 | Cosmetic and housekeeping items | Operations | left alone deliberately |
 | O5 | The engineer pushed without a commit word, twice | Operations | logged 24 Aug 2026 |
@@ -558,14 +558,21 @@ daily count.
 
 Opened 21 Aug 2026.
 
-## O2. Restore branch protection on `main`
+## O2. Restore branch protection on `main` — closed
 
-Remove the owner bypass, restoring pull-request protection, after this week's build push (week
-ending Sunday 23 Aug 2026). The bypass is held open deliberately as of 20 Aug 2026 so the current
-build can push directly; the ruleset resumes once that push lands.
+**Restored by the maintainer, 24 Aug 2026.** The owner bypass is removed and `main` requires a pull
+request again.
 
-This is a live GitHub setting, not a repository file — the maintainer clears the bypass in
-**Settings → Rules → Rulesets**. Until then, direct pushes to `main` are expected, not a lapse.
+The bypass had been held open deliberately since 20 Aug 2026 so the v1 build and this session's work
+could be pushed directly. That allowance is over.
+
+**What this means for the next session: direct pushes to `main` will be refused.** Changes go
+through a pull request. An engineer who finds a push rejected has not hit a fault — that is the
+ruleset doing its job, and the answer is a branch and a pull request, not a request to reopen the
+bypass.
+
+This was a live GitHub setting rather than a repository file, so nothing here enforces it and
+nothing here can verify it. It is recorded on the maintainer's word.
 
 ## O3. Reverse link from waterbots.ai — closed
 

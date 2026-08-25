@@ -10,37 +10,40 @@ committed and what is not, what is waiting on the maintainer, and what to do fir
 
 ---
 
-## Read this first — the state of the tree
+## Read this first
 
-**This session's work is committed.** Eight commits on 24 Aug 2026, from `ddd42c1`, ending with
-this one: the README, the relay and card pipeline, the shared chat layer, the Eligibility surface,
-AGENT_RULES.md, the rulebook consolidation, the five families and build plan, and this handoff.
+**Phoebe is live at [map.waterbots.ai](https://map.waterbots.ai) and answering.** Confirmed against
+production on 24 Aug 2026, not assumed: a real question returns her answer with its cited card, and
+the two paths that never reach the model answer in under two seconds.
 
-The maintainer's browser check passed on all five points before the commit word was given.
+**Twelve commits this session**, from `ddd42c1`. Eight built and documented the work; three fixed
+production faults that only appeared once deployed; this handoff is the twelfth.
+
+**`main` is protected again.** The owner bypass was removed on 24 Aug 2026 (item O2). **Direct
+pushes will now be refused — changes go through a pull request.** A rejected push is the ruleset
+working, not a fault.
 
 **Two card drafts are deliberately uncommitted.** `activity-cards-vwba-DRAFT.md` and
 `definitions-cards-vwba-DRAFT.md` are drafted but not graded, and Phoebe is not given them. They
 stay untracked until they are graded.
 
-**Committed is not deployed for Phoebe.** Pushing `main` deploys the site, but her relay still needs
-`ANTHROPIC_API_KEY` set in Vercel. Until that is done she reports honestly that she is not
-connected. See "Waiting on the maintainer".
+There may also be an untracked `exports/` folder of `Shell_B_`-prefixed copies of the root
+documents. Those are the maintainer's export copies. They never commit and nothing reads them.
 
 ---
 
 ## Where the build stands
 
-**The map is live at [map.waterbots.ai](https://map.waterbots.ai)**, deployed from `main`. Vercel
-builds on every push to that branch, so this session's work ships with the push that carries these
-commits.
+**Everything is live at [map.waterbots.ai](https://map.waterbots.ai)**, deployed from `main`.
+Vercel builds on every push to that branch.
 
 | Surface | State |
 |---|---|
-| Basin map | Live in production |
-| Eligibility worksheet | Committed; live once `main` is pushed |
-| Phoebe, the Eligibility and Feasibility agent | Committed and answering locally; silent in production until her key is set in Vercel |
+| Basin map | Live |
+| Eligibility worksheet | Live |
+| Phoebe, the Eligibility and Feasibility agent | **Live and answering** |
 | Bridget, the map's agent | Named in the map's dock; her chat is not built |
-| Shared chat layer | Committed, built through Level 2 |
+| Shared chat layer | Live, built through Level 2 |
 | Project points | Not started — blocked on registry data (item D2) |
 
 ### The map
@@ -68,6 +71,32 @@ answers for real**, from two committed card sets and nothing else.
   ruling, 22 Aug 2026.
 - **Steps 1–3 of her build are done.** Step 4 — abstention logging and the rate limit — is not
   started. Step 5 is this close-out.
+
+### Three production faults, and why they matter more than they look
+
+Phoebe worked perfectly on a laptop and failed on every request in production, three times running.
+Each fault was invisible locally and obvious once deployed. They are recorded here because the
+pattern is worth more than the three fixes.
+
+| Fault | What it did | Fix |
+|---|---|---|
+| Imports named a file without its extension | Node could not load the module. 500 on every message | Extensions added; the api folder now type-checks as `nodenext`, so an extensionless import fails the build |
+| `runtime: 'nodejs'` declared on a web-standard handler | Every request hung, including a `GET` that should answer in a millisecond | Override removed — though this was not actually the cause |
+| A **default export** | Vercel always invokes a default export as `(req, res) => void` and ignores what it returns, so nothing was ever written | `POST` and `GET` exported as named methods; `scripts/check-api-exports.mjs` now fails the build on a default export |
+
+**The common cause is one thing: the dev relay was kinder than production.** It resolved
+extensionless imports, it built a `Request` by hand, and it reached for `module.default` — the one
+shape production does not support. Every local check passed on all three faults.
+
+**Two of the three fixes I proposed were wrong**, because I reasoned about production from local
+evidence. What settled it was Vercel's own build log, which named the default-export problem
+outright. **When production and local disagree, the platform's log is evidence and local reasoning
+is a guess.**
+
+This is item S6, and it is still open. Three guards close three known differences; they do not close
+the gap. **The useful signal, if this happens again:** a request that never reaches the model — a
+`GET`, or a malformed `POST` — should answer in milliseconds. If it hangs, the fault is in how the
+function is invoked, not in the model, the token budget or the key.
 
 ### The shared chat layer
 
@@ -144,7 +173,7 @@ Vercel deploys, so there is no second copy to drift.
 | **Repo** | https://github.com/amynyhof/waterbots-open-harness (public), branch `main` |
 | **Host** | Vercel, imported from GitHub — pushes to `main` deploy automatically |
 | **Framework preset** | Vite · build `npm run build` · output `dist` · install `npm install` |
-| **Environment variables** | none for the map. **Phoebe's relay needs `ANTHROPIC_API_KEY` and it is NOT set in Vercel yet** — see "Waiting on the maintainer" |
+| **Environment variables** | none for the map. Phoebe's relay needs `ANTHROPIC_API_KEY`, **which is set** and confirmed working in production on 24 Aug 2026 |
 | **Config file** | none — no `vercel.json`, no rewrites needed |
 
 ### Domain and DNS
@@ -240,24 +269,23 @@ the old V, B and P identifiers are gone and every reference to them was updated 
 
 ## Waiting on the maintainer
 
-1. **`ANTHROPIC_API_KEY` in Vercel.** Settings → Environment Variables, all three environments,
-   then redeploy — Vercel injects env vars at build time, so a running deployment will not pick it
-   up on its own. **Until this is done, Phoebe answers locally and not in production**, where she
-   will honestly report that she is not connected.
-2. **Restore branch protection on `main` (item O2).** Now due — it was set for after the week
-   ending Sunday 23 Aug 2026. Settings → Rules → Rulesets → the ruleset covering `main` → Bypass
-   list → remove the owner entry → Save. Do this after this session's commits land.
-3. **The BRAND.md amendment is still unwritten.** Anemone is now Phoebe's and Anemone Light is a
+1. **The BRAND.md amendment is still unwritten.** Anemone is now Phoebe's and Anemone Light is a
    new brand value, but BRAND.md still records both only as unclaimed spares. The tokens and the
    portrait are correct; the roster document is not. **Not yet logged as an open item** — it needs
    a family.
-4. **`brand/assets/bots/phoebe-card.svg` is still Plum and Iris.** It is unpublished and untracked,
+2. **`brand/assets/bots/phoebe-card.svg` is still Plum and Iris.** It is unpublished and untracked,
    so nothing ships wrong, but it now disagrees with the portrait that does ship. **Not yet logged
    as an open item** — it needs a family.
-5. **Bridget's identity colour.** Staffing was settled on 24 Aug 2026 — she is the map's agent —
+3. **Bridget's identity colour.** Staffing was settled on 24 Aug 2026 — she is the map's agent —
    but `#7FD5DF` is still provisional, because BRAND.md assigns Surf no agent identity and the
    value was published under a retired agent. A brand decision, not a staffing one.
-6. **The design session with the production side**, which settles the compatibility goal. No date.
+4. **The design session with the production side**, which settles the compatibility goal. No date.
+5. **Grading the two card drafts** — Activity (Appendix C) and Definitions (the glossary). Until
+   they are graded they stay uncommitted and Phoebe is not given them.
+6. **Phoebe's step 4 was never built** — abstention logging and the rate limit. Both need shared
+   storage; Vercel KV was approved on 21 Aug 2026 and the maintainer asked to be walked through
+   enabling it. **The relay counts nothing and stores nothing today, and its own header says so
+   rather than implying a cap it does not enforce.**
 
 ---
 
@@ -265,10 +293,15 @@ the old V, B and P identifiers are gone and every reference to them was updated 
 
 **Read [BUILD_PLAN.md](./BUILD_PLAN.md).** It says Agents is next, and in what order.
 
+**Branch first.** `main` is protected again, so work goes through a pull request.
+
 The first piece of work is **the empty answer (item A4)** — Phoebe returned an answer with nothing
 in it once, and the reader was shown a message that misdescribes what happened. Small, unexplained,
 and sitting underneath the answer path. After that, **the agent handoff primer (item A3)**, which
 the staffing ruling of 24 Aug 2026 unblocked.
+
+**One larger thing is not in either family's queue and should be:** Phoebe's step 4, the abstention
+logging and the rate limit. The public chat currently has no cap at all.
 
 ---
 
