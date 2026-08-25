@@ -94,15 +94,17 @@ Without it she does not fail silently — the console states that she is not con
 
 ### Confirming the build
 
-Six checks, all of which must pass. `check-attribution` reads the built bundle rather than the
-source, so it catches a refactor that drops a required licence statement while leaving the site
-looking perfectly correct.
+Seven checks, all of which must pass. Two of them guard against faults that nothing else here can
+see: `check-attribution` reads the built bundle rather than the source, so it catches a refactor
+that drops a required licence statement while leaving the site looking perfectly correct; and
+`check-api-exports` catches a relay that would build cleanly and then answer nothing once deployed.
 
 ```bash
 node scripts/check-basins.mjs
 node scripts/check-stress.mjs
 node scripts/check-palette.mjs
 node scripts/check-cards.mjs
+node scripts/check-api-exports.mjs
 node scripts/build-card-module.mjs --check
 npm run build && node scripts/check-attribution.mjs
 ```

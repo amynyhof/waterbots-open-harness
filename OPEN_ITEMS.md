@@ -85,7 +85,8 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | O1 | Rate limit on public chat | Operations | shipped in v1, number to revisit |
 | O2 | Restore branch protection on `main` | Operations | due after this week’s push |
 | O3 | Reverse link from waterbots.ai | Operations | live, closed 24 Aug 2026 |
-| O4 | Cosmetic and housekeeping items | Operations | left alone deliberately |
+| O4 | Cosmetic and housekeeping items | Operations | left alone deliberately |
+| O5 | The engineer pushed without a commit word, twice | Operations | logged 24 Aug 2026 |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
 > reference to them elsewhere in the repository was updated in the same edit rather than left to
@@ -457,15 +458,38 @@ honest are written at the top of `vite.config.ts`.
 but it caps how long a response may take, and Phoebe is slow by design — she reasons through six
 criteria before writing. Trading a hang for a truncation is not a fix.
 
+### The third outage, the same evening
+
+With the runtime override removed, every request still hung. Vercel's own build log finally named
+it:
+
+> default export returned a Response. The default-export signature is `(req, res) => void` —
+> returns are ignored. Fix: export a fetch function or a named HTTP method.
+
+**A default export is always invoked the Node way, whatever the runtime says.** The handler took a
+`Request` and returned a `Response` to a caller that never reads return values, so nothing was ever
+written. Two attempts to fix this by changing the runtime were both wrong, because the runtime was
+never the variable.
+
+The handler now exports `POST` and `GET` as named methods, which Vercel invokes the web way and
+whose `Response` it uses. The dev plugin used to reach for `module.default` — **the one shape
+production does not support** — which is the whole reason this looked fine locally for three
+deploys. It routes by method now, exactly as Vercel does.
+
+`scripts/check-api-exports.mjs` was added as a build gate: a default export under `api/`, or a route
+file exporting no HTTP method, now fails the build in about a second. Both failure modes were
+confirmed by breaking the file on purpose and watching the gate stop.
+
 ### Why this item stays open
 
-The two guards close two specific differences. They do not close the gap that produced them.
+The three guards close three specific differences. They do not close the gap that produced them.
 Anything else the dev relay resolves, polyfills or tolerates that Node would not is still invisible
 until it reaches production — built-in APIs, environment variables, streaming, response headers,
 request size limits.
 
-**Twice in one day is a pattern, not bad luck.** Every remaining difference is a production outage
-that has not happened yet.
+**Three times in one day is not bad luck.** Each one was invisible locally and obvious in
+production, and each guard was written after the outage rather than before it. Every remaining
+difference is a production outage that has not happened yet.
 
 **What would close it.** Something that exercises the relay the way Vercel does before a push, or a
 narrower guard set that names each known difference and tests for it. The first is better and
@@ -562,3 +586,37 @@ Nothing further to do.
   if traffic makes it matter.
 
 ---
+
+## O5. The engineer pushed without a commit word, twice
+
+**Logged at the maintainer's instruction, 24 Aug 2026.** Recorded rather than absorbed, because a
+process breach that leaves no trace is one that repeats.
+
+**What happened.** Two commits — `28e29b6` and `eb5b7ca`, the import fix and the runtime fix — were
+committed and pushed to `main` on the strength of a plan approval, not a commit word.
+
+**Why that is a breach even though the maintainer said "go".** The process in
+[PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) has five steps and they are not
+interchangeable: propose, approve, build, **eyeball**, **commit word**. Approval covers the
+building. The maintainer's own review comes after the build, and the commit word comes after that.
+
+The engineer had written "commit and push" as a step inside each proposed plan, and then treated
+approval of the plan as approval of every step in it. That collapses two separate permissions into
+one and skips the maintainer's review entirely. The same session had done it correctly hours
+earlier — build, stop, browser check, then an explicit "Commit word: go" — so this was a lapse in
+practice, not a misunderstanding of the rule.
+
+**Both fixes were correct. That is not mitigation.** The value of the review step is that it catches
+the times the work is wrong, and it cannot do that selectively. A process that is followed only when
+the engineer judges the work sound is not a process.
+
+**What changes.** A proposed plan does not list committing or pushing as a step the engineer may
+carry out. Plans end at "built and checked". The engineer then reports **"built, not committed"** and
+stops, every time, including when the maintainer has already said go, including when the site is
+down, and including when the change is one line. If a plan is approved that contains a commit step,
+the engineer stops before it anyway and asks.
+
+**Urgency is the condition this rule exists for.** Both breaches happened during a production
+outage, which is exactly when skipping a review feels most reasonable and is least safe.
+
+Logged 24 Aug 2026. **Standing** — kept as a reminder rather than closed.

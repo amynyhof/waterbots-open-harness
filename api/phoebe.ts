@@ -62,32 +62,54 @@ interface IncomingMessage {
 }
 
 /**
- * NO RUNTIME OVERRIDE, DELIBERATELY.
+ * NAMED METHOD EXPORTS, NOT A DEFAULT EXPORT. This is load-bearing.
  *
- * This handler is written against the web standard: it takes a Request and
- * returns a Response. It previously declared `runtime: 'nodejs'`, which told
- * Vercel to invoke it the Node way instead — handing it (req, res) and waiting
- * for something to be written to `res`. Nothing ever was, so every request in
- * production hung until the platform gave up, including the ones that should
- * have failed instantly. A GET that should answer 405 in a millisecond hung for
- * two minutes.
+ * Vercel always invokes a default export the Node way — `(req, res) => void` —
+ * and ignores what it returns. This handler is written against the web
+ * standard: it takes a Request and returns a Response. Exported as `default`,
+ * that Response went to a caller that never reads return values, so nothing was
+ * ever written and every request hung until the platform gave up. A GET that
+ * should answer 405 in a millisecond hung for two minutes.
  *
- * It looked fine locally because the dev plugin in vite.config.ts builds a
- * Request by hand and reads the returned Response, supplying exactly the shape
- * this handler expects. That is the difference logged as item S6, and this is
- * the second outage it caused.
+ * A named HTTP method export is invoked the web way, and its Response is used.
+ * Vercel's own build log named this, after two wrong guesses at it:
+ *
+ *   "default export returned a Response. The default-export signature is
+ *    (req, res) => void — returns are ignored. Fix: export a fetch function or
+ *    a named HTTP method."
+ *
+ * DO NOT REINTRODUCE A DEFAULT EXPORT HERE. scripts/check-api-exports.mjs fails
+ * the build if one appears, because this cost three failed deploys to find and
+ * nothing local could see it.
+ *
+ * Routing by method is the platform's job now, so there is no method check in
+ * the body. GET is exported separately to keep an honest answer for anyone who
+ * opens the URL; other methods get the platform's own 405.
  *
  * NOT the edge runtime, and that is a decision rather than an omission. Edge
- * would unambiguously match this handler's shape, but it caps how long a
- * response may take, and Phoebe's answers are slow by design — she reasons
- * through six criteria before writing, which measured between 2,762 and 4,423
- * output tokens. Trading a hang for a truncation is not a fix.
+ * would also match this handler's shape, but it caps how long a response may
+ * take, and Phoebe is slow by design — she reasons through six criteria before
+ * writing, measured between 2,762 and 4,423 output tokens. Trading a hang for a
+ * truncation is not a fix.
  */
-export default async function handler(req: Request): Promise<Response> {
-  if (req.method !== 'POST') {
-    return problem(405, 'This endpoint takes POST requests only.');
-  }
 
+/**
+ * How long one answer may take.
+ *
+ * Most of the budget is spent before the first visible word. Measured runs on
+ * one ordinary project description took 2,762 to 4,423 output tokens, which is
+ * far longer than the platform's default allowance. Set explicitly so a slow
+ * answer is a slow answer rather than a timeout that reads like the hang this
+ * file has already produced twice.
+ */
+export const maxDuration = 60;
+
+/** Someone opening the URL in a browser gets a straight answer, not a 404. */
+export async function GET(): Promise<Response> {
+  return problem(405, 'This endpoint takes POST requests only.');
+}
+
+export async function POST(req: Request): Promise<Response> {
   let body: { messages?: IncomingMessage[] };
   try {
     body = (await req.json()) as { messages?: IncomingMessage[] };

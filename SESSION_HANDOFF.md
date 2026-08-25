@@ -85,16 +85,22 @@ to use it unchanged.
 
 ## Confirming the build
 
-Six checks. All must pass. `check-attribution` needs a build first because it reads `dist/`.
+Seven checks. All must pass. `check-attribution` needs a build first because it reads `dist/`.
 
 ```bash
 node scripts/check-basins.mjs               # counts, fields, geometry, Level 6 → 4 nesting
 node scripts/check-stress.mjs               # join coverage, derivation labelling
 node scripts/check-palette.mjs              # ramp lightness order, chroma separation
 node scripts/check-cards.mjs                # both card sets parse and are complete
+node scripts/check-api-exports.mjs          # the relay can actually answer once deployed
 node scripts/build-card-module.mjs --check  # the relay's card copy is not stale
 npm run build && node scripts/check-attribution.mjs
 ```
+
+`check-api-exports` exists because a default export in `api/` builds cleanly, type-checks cleanly,
+works locally, and hangs on every request in production. It cost three failed deploys on
+24 Aug 2026 to find. Vercel's own build log named it in the end; this turns that warning into a
+local build failure.
 
 `check-attribution` greps the **built bundle**, not the source. It is a licence guard: a refactor
 that dropped the HydroSHEDS statement would otherwise leave the map looking perfectly correct.

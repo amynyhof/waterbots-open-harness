@@ -38,7 +38,26 @@ function phoebeDevRelay(): Plugin {
       server.middlewares.use('/api/phoebe', async (req, res) => {
         try {
           const module = await server.ssrLoadModule('/api/phoebe.ts');
-          const handler = module.default as (r: Request) => Promise<Response>;
+
+          /* Route by method, the way Vercel does. It invokes the named HTTP
+             method export and uses the Response it returns; a default export
+             would be invoked the Node way and its return value ignored. This
+             used to reach for `module.default`, which is precisely the shape
+             production does not support — the plugin was the only reason that
+             ever appeared to work. */
+          const method = (req.method ?? 'GET').toUpperCase();
+          const handler = module[method] as ((r: Request) => Promise<Response>) | undefined;
+
+          if (typeof handler !== 'function') {
+            res.statusCode = 405;
+            res.setHeader('content-type', 'application/json');
+            res.end(
+              JSON.stringify({
+                error: `api/phoebe.ts exports no ${method} handler. Vercel routes by method; add a named export or use a method that exists.`,
+              })
+            );
+            return;
+          }
 
           const chunks: Buffer[] = [];
           for await (const chunk of req) chunks.push(chunk as Buffer);
