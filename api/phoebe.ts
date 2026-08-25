@@ -5,9 +5,14 @@
  * environment variables and is read here, on the server. It is never sent to
  * the browser, never written into the bundle, and never committed.
  *
- * WHAT THIS DOES NOT DO YET. Rate limiting and abstention logging are step 4.
- * This function counts nothing and stores nothing, and the response says so
- * honestly rather than implying a cap that is not enforced.
+ * TWENTY MESSAGES A DAY, per visitor. The counting itself lives in _cap.ts;
+ * what a visitor is told about it lives here, with every other message a
+ * visitor reads. A message is counted only when an answer is actually
+ * delivered — anything that fails on our side is put back.
+ *
+ * WHAT THIS DOES NOT DO YET. Abstention logging is the other half of step 4 and
+ * is not built. When Phoebe declines a question, that fact reaches the browser
+ * and is then dropped rather than recorded.
  *
  * THE PROMPT IS CACHED. The system prompt holds both card sets, roughly 12,000
  * tokens, identical on every request. It carries a cache breakpoint so that
@@ -16,6 +21,7 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk';
+import { countOneMessage, timeUntilReset } from './_cap.js';
 import { RESPONSE_SCHEMA, SYSTEM_PROMPT } from './_systemPrompt.js';
 
 /**
@@ -146,6 +152,7 @@ export async function POST(req: Request): Promise<Response> {
     return problem(400, 'No question was sent.');
   }
 
+
   /* The configuration check sits AFTER the request is validated, on purpose.
      Reporting "Phoebe is not connected" for a malformed request would send
      someone hunting a server problem that is not there. Shape first, then
@@ -161,6 +168,41 @@ export async function POST(req: Request): Promise<Response> {
     );
   }
 
+  /* The cap, counted at the last moment before the model — after everything a
+     request can be refused for on its own terms, so a malformed message never
+     costs anyone one of their twenty. */
+  const decision = await countOneMessage(req, new Date());
+
+  if (decision.kind === 'misconfigured') {
+    console.error(
+      `phoebe: ${decision.missing} is not configured, so the daily cap cannot be enforced. Refusing to answer without it.`
+    );
+    return problem(
+      503,
+      'Phoebe is not answering right now. The daily limit that keeps her free and open to everyone is not running in this environment, and she does not answer without it. This is a configuration problem on our side, not something you did.'
+    );
+  }
+
+  if (decision.kind === 'refused') {
+    return problem(
+      429,
+      `You have reached today's limit of ${decision.cap} messages. Phoebe is free and open to anyone, and the daily limit is what keeps her that way. Your count resets at midnight UTC, ${timeUntilReset(decision.secondsToReset)}. Nothing you have told her is kept between visits in any case.`,
+      { 'retry-after': String(decision.secondsToReset) }
+    );
+  }
+
+  if (decision.kind === 'uncounted') {
+    /* An honest state in the log rather than a silent lapse: this message is
+       being answered without being counted, and here is why. */
+    console.error(`phoebe: this message was not counted against any cap — ${decision.why}`);
+  }
+
+  /** Every way out of here that is not a delivered answer gives the message back. */
+  const undelivered = async (response: Response): Promise<Response> => {
+    if (decision.kind === 'allowed') await decision.refund();
+    return response;
+  };
+
   const client = new Anthropic({ apiKey });
 
   let response: Anthropic.Message;
@@ -175,15 +217,17 @@ export async function POST(req: Request): Promise<Response> {
       output_config: { format: { type: 'json_schema', schema: RESPONSE_SCHEMA } },
     });
   } catch (error) {
-    return fromApiError(error);
+    return undelivered(fromApiError(error));
   }
 
   /* Claude Sonnet 5 can decline a request outright. That is a real state and
      it gets said, not smoothed over into an empty answer. */
   if (response.stop_reason === 'refusal') {
-    return problem(
-      502,
-      'Phoebe stopped part-way through that one and did not finish an answer. Try rephrasing the question.'
+    return undelivered(
+      problem(
+        502,
+        'Phoebe stopped part-way through that one and did not finish an answer. Try rephrasing the question.'
+      )
     );
   }
 
@@ -194,9 +238,11 @@ export async function POST(req: Request): Promise<Response> {
      what is our budget. Caught here instead, and named. */
   if (response.stop_reason === 'max_tokens') {
     console.error('phoebe: answer hit the output budget and was cut off');
-    return problem(
-      502,
-      'Phoebe ran out of room part-way through that answer, so it was cut off before it was finished. Nothing has been recorded. This is a limit on our side, not something you did - asking again, or in smaller pieces, usually gets through.'
+    return undelivered(
+      problem(
+        502,
+        'Phoebe ran out of room part-way through that answer, so it was cut off before it was finished. Nothing has been recorded. This is a limit on our side, not something you did - asking again, or in smaller pieces, usually gets through.'
+      )
     );
   }
 
@@ -210,18 +256,22 @@ export async function POST(req: Request): Promise<Response> {
     parsed = JSON.parse(text);
   } catch {
     console.error('phoebe: reply was not the JSON shape requested');
-    return problem(
-      502,
-      'Phoebe answered in a shape this console could not read. Nothing has been recorded. Try asking again.'
+    return undelivered(
+      problem(
+        502,
+        'Phoebe answered in a shape this console could not read. Nothing has been recorded. Try asking again.'
+      )
     );
   }
 
   const answer = validate(parsed);
   if (!answer) {
     console.error('phoebe: reply failed validation');
-    return problem(
-      502,
-      'Phoebe answered in a shape this console could not read. Nothing has been recorded. Try asking again.'
+    return undelivered(
+      problem(
+        502,
+        'Phoebe answered in a shape this console could not read. Nothing has been recorded. Try asking again.'
+      )
     );
   }
 
@@ -308,15 +358,15 @@ function validate(value: unknown): Answer | null {
    Responses. Every failure says what happened, in words a visitor can read.
 ------------------------------------------------------------------------- */
 
-function json(status: number, payload: unknown): Response {
+function json(status: number, payload: unknown, headers?: Record<string, string>): Response {
   return new Response(JSON.stringify(payload), {
     status,
-    headers: { 'content-type': 'application/json', 'cache-control': 'no-store' },
+    headers: { 'content-type': 'application/json', 'cache-control': 'no-store', ...headers },
   });
 }
 
-function problem(status: number, message: string): Response {
-  return json(status, { error: message });
+function problem(status: number, message: string, headers?: Record<string, string>): Response {
+  return json(status, { error: message }, headers);
 }
 
 function fromApiError(error: unknown): Response {
