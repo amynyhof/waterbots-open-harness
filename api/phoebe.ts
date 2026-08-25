@@ -10,9 +10,10 @@
  * visitor reads. A message is counted only when an answer is actually
  * delivered — anything that fails on our side is put back.
  *
- * WHAT THIS DOES NOT DO YET. Abstention logging is the other half of step 4 and
- * is not built. When Phoebe declines a question, that fact reaches the browser
- * and is then dropped rather than recorded.
+ * EVERY ABSTENTION IS WRITTEN DOWN. When Phoebe says she has no card for
+ * something, that is a real question the card sets do not cover, and it is kept
+ * so it can be graded into a card. See _abstentions.ts for what is kept and
+ * what deliberately is not.
  *
  * THE PROMPT IS CACHED. The system prompt holds both card sets, roughly 12,000
  * tokens, identical on every request. It carries a cache breakpoint so that
@@ -21,6 +22,7 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk';
+import { recordAbstention } from './_abstentions.js';
 import { countOneMessage, timeUntilReset } from './_cap.js';
 import { RESPONSE_SCHEMA, SYSTEM_PROMPT } from './_systemPrompt.js';
 
@@ -135,6 +137,9 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   const clean: Anthropic.MessageParam[] = [];
+  /* The question she is answering, kept aside for the abstention log. The last
+     user turn is the only part of a conversation ever written down. */
+  let lastQuestion = '';
   for (const m of messages) {
     if (m?.role !== 'user' && m?.role !== 'assistant') {
       return problem(400, 'That request could not be read.');
@@ -147,6 +152,7 @@ export async function POST(req: Request): Promise<Response> {
       );
     }
     clean.push({ role: m.role, content: m.content });
+    if (m.role === 'user') lastQuestion = m.content;
   }
   if (clean.length === 0 || clean[clean.length - 1].role !== 'user') {
     return problem(400, 'No question was sent.');
@@ -273,6 +279,14 @@ export async function POST(req: Request): Promise<Response> {
         'Phoebe answered in a shape this console could not read. Nothing has been recorded. Try asking again.'
       )
     );
+  }
+
+  /* Recorded before the answer goes out, and awaited rather than left running:
+     once a Response is returned the platform may stop this function where it
+     stands, and unfinished work stops with it. It cannot fail the answer — the
+     recorder swallows its own failures into the log. */
+  if (answer.abstained) {
+    await recordAbstention(lastQuestion, answer.abstentionTopic, new Date());
   }
 
   return json(200, {
