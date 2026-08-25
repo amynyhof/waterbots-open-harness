@@ -38,25 +38,57 @@ const MODEL = 'claude-sonnet-5';
 /**
  * The output budget for one answer.
  *
- * This is NOT the length of her reply. Most of it is spent before the first
- * visible word: she weighs what the person said against each of the six
- * criteria, and that reasoning is charged to the same budget as the answer.
+ * THIS IS NOT THE LENGTH OF HER REPLY, and most of it is not even visible.
+ * Claude Sonnet 5 thinks before it writes, that thinking is hidden, and it is
+ * charged to this same budget.
  *
- * Measured 22 Aug 2026 on one ordinary project description, three runs with
- * the budget lifted: 2,762 / 3,246 / 4,423 output tokens, for a visible answer
- * of roughly 1,400-1,650 characters. The reasoning is 80-90% of the spend and
- * it swings by 60% between identical runs.
+ * Measured 25 Aug 2026, four real requests through this exact prompt and model:
  *
- * At the previous value of 2048 that ran out mid-structure on any message
- * describing a real project: the JSON came back half-written, JSON.parse threw,
- * and the reader was told her answer had a bad shape. 8192 is roughly double
- * the worst run observed, so ordinary variation never reaches it.
+ *   "why?"                                    416 output tokens,   238 characters
+ *   "Is it eligible?"                       1,073 output tokens,   384 characters
+ *   "Does a borehole in Kenya qualify?"       710 output tokens, 1,010 characters
+ *   two sentences about a Turkana project   4,194 output tokens, 1,848 characters
  *
- * Raising this does not raise the bill. Output is charged on what is produced,
- * not on what is budgeted; the only cost that changes is that truncated
- * answers stop being paid for and discarded.
+ * Every one of those came back as a thinking block with zero visible text
+ * followed by the answer. That last row is the important one: 1,848 characters
+ * is roughly 460 tokens of reply, so about 3,700 tokens — 88% of the spend —
+ * were invisible thinking, on a two-sentence question.
+ *
+ * A SHORT QUESTION IS NOT A CHEAP ONE. This budget was previously described as
+ * "roughly double the worst run observed", which stopped being true: a
+ * two-sentence message already reaches half of 8,192. Worse, a vague question
+ * gives her less to ground on, so she deliberates more rather than less. That
+ * is how a one-sentence message ran out of room on 25 Aug 2026, and how the
+ * empty answer of 23 Aug happened — see item A4.
+ *
+ * At the earlier value of 2048 every real project description ran out
+ * mid-structure: the JSON came back half-written and JSON.parse threw. 8,192
+ * fixed that and left less headroom than it appeared to. 16,000 is the
+ * documented default for a request that is not streamed.
+ *
+ * RAISING THIS DOES NOT RAISE THE BILL. Output is charged on what is produced,
+ * not on what is budgeted. The only spend that changes is that truncated
+ * answers stop being paid for and thrown away.
  */
-const MAX_TOKENS = 8192;
+const MAX_TOKENS = 16000;
+
+/**
+ * How hard she thinks before answering.
+ *
+ * Set explicitly rather than inherited. Left unset, this model thinks
+ * adaptively at "high" effort, which is where the runs above came from — and
+ * nothing in the code said so, which is why two days of faults looked
+ * inexplicable. A default nobody wrote down is a decision nobody made.
+ *
+ * "medium" because her task is narrow and fully grounded: read a fixed card
+ * set, weigh what the person said against it, refuse everything else. She is
+ * not solving an open problem. Lower effort means less spend and, more
+ * importantly here, less variation between identical runs.
+ *
+ * If abstention discipline or answer quality ever weakens, this is the first
+ * line to raise — before the model.
+ */
+const EFFORT = 'medium' as const;
 
 /** A conversation this long has left the worksheet behind. */
 const MAX_TURNS = 40;
@@ -96,19 +128,19 @@ interface IncomingMessage {
  *
  * NOT the edge runtime, and that is a decision rather than an omission. Edge
  * would also match this handler's shape, but it caps how long a response may
- * take, and Phoebe is slow by design — she reasons through six criteria before
- * writing, measured between 2,762 and 4,423 output tokens. Trading a hang for a
- * truncation is not a fix.
+ * take, and Phoebe is slow by design — she thinks at length before writing, and
+ * that thinking is hidden. See MAX_TOKENS above for the measurements. Trading a
+ * hang for a truncation is not a fix.
  */
 
 /**
  * How long one answer may take.
  *
- * Most of the budget is spent before the first visible word. Measured runs on
- * one ordinary project description took 2,762 to 4,423 output tokens, which is
- * far longer than the platform's default allowance. Set explicitly so a slow
- * answer is a slow answer rather than a timeout that reads like the hang this
- * file has already produced twice.
+ * Most of the budget is spent before the first visible word — see MAX_TOKENS
+ * above, where it is measured. That takes far longer than the platform's
+ * default allowance. Set explicitly so a slow answer is a slow answer rather
+ * than a timeout that reads like the hang this file has already produced
+ * twice.
  */
 export const maxDuration = 60;
 
@@ -220,7 +252,13 @@ export async function POST(req: Request): Promise<Response> {
          requests; the conversation below it is not cached. */
       system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
       messages: clean,
-      output_config: { format: { type: 'json_schema', schema: RESPONSE_SCHEMA } },
+      /* Stated rather than inherited. This model thinks adaptively whether or
+         not it is asked to, and that thinking is spent from MAX_TOKENS above. */
+      thinking: { type: 'adaptive' },
+      output_config: {
+        effort: EFFORT,
+        format: { type: 'json_schema', schema: RESPONSE_SCHEMA },
+      },
     });
   } catch (error) {
     return undelivered(fromApiError(error));
@@ -243,7 +281,9 @@ export async function POST(req: Request): Promise<Response> {
      answered in a shape this console could not read" - blaming her answer for
      what is our budget. Caught here instead, and named. */
   if (response.stop_reason === 'max_tokens') {
-    console.error('phoebe: answer hit the output budget and was cut off');
+    console.error(
+      `phoebe: answer hit the output budget and was cut off — ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens, most of it hidden thinking`
+    );
     return undelivered(
       problem(
         502,
@@ -261,7 +301,9 @@ export async function POST(req: Request): Promise<Response> {
   try {
     parsed = JSON.parse(text);
   } catch {
-    console.error('phoebe: reply was not the JSON shape requested');
+    console.error(
+      `phoebe: reply was not the JSON shape requested — ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens`
+    );
     return undelivered(
       problem(
         502,
@@ -270,13 +312,22 @@ export async function POST(req: Request): Promise<Response> {
     );
   }
 
+  /* An answer with nothing in it is its own failure, and it is now said as one.
+     validate() refuses for exactly one reason — a reply that is missing, not
+     text, or empty once trimmed — so reaching here means she said nothing at
+     all. It used to be reported as "a shape this console could not read", which
+     described a different fault and sent two days of hunting in the wrong
+     direction. Item A4. Do not paper over it by accepting an empty reply:
+     showing a blank turn would be the dishonest fix. */
   const answer = validate(parsed);
   if (!answer) {
-    console.error('phoebe: reply failed validation');
+    console.error(
+      `phoebe: returned an empty answer — ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens, most of it hidden thinking`
+    );
     return undelivered(
       problem(
         502,
-        'Phoebe answered in a shape this console could not read. Nothing has been recorded. Try asking again.'
+        'Phoebe returned an empty answer — she did not say anything at all. Nothing has been recorded. This is a fault on our side rather than something you did, and asking again usually works.'
       )
     );
   }
