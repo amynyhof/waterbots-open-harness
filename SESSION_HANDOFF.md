@@ -12,9 +12,10 @@ committed and what is not, what is waiting on the maintainer, and what to do fir
 
 ## Read this first
 
-**Phoebe's step 4 is built: the daily cap and the abstention log.** She has a cap of 20 messages per
-visitor per UTC day, and every question she declines is now written down where it can be graded.
-Both were confirmed by the maintainer in a preview deployment before merge.
+**Phoebe's step 4 is live at [map.waterbots.ai](https://map.waterbots.ai).** She has a cap of 20
+messages per visitor per UTC day, and every question she declines is now written down where it can
+be graded. Confirmed by the maintainer in a preview deployment before merge, and confirmed again
+against production after it — see *Verified live* below, which is not assumed.
 
 **She was live, public and uncapped from 24 to 25 Aug 2026.** That is why step 4 jumped the queue
 ahead of the work BUILD_PLAN.md had scheduled.
@@ -25,8 +26,13 @@ not shown, and it is charged to the same output budget as the reply — and the 
 parameter, so it inherited the default. Three faults across two days had one cause. The measurements
 are in item A4.
 
-**Five commits this session**, on branch `feat/phoebe-step-4-cap-and-abstention-log`, from `f617e90`.
-Three built step 4, one fixed the token budget, and this docs refresh is the fifth.
+**Seven commits this session.** Six landed on `main` through pull request #2 as `a12bfc4`: three
+built step 4, one fixed the token budget, and two refreshed the documents. This close-out is the
+seventh and goes through its own pull request.
+
+**`PHOEBE_TEST_CAP` is gone from both sides.** The code that read it was removed before merge, and
+the maintainer deleted the setting after. `check-cap` now fails if any environment setting can move
+the cap, so it cannot come back quietly.
 
 **`main` is protected.** Direct pushes are refused; changes go through a pull request. A rejected
 push is the ruleset working, not a fault.
@@ -279,7 +285,29 @@ automatically.
 
 ### Verified live
 
-Checked against `map.waterbots.ai` before this session, not assumed:
+**Checked against `map.waterbots.ai` immediately after the merge of 25 Aug 2026, not assumed.**
+
+**Why this mattered more than usual.** The relay is now *fail-closed* on the platform: with no
+shared store it refuses to answer at all rather than quietly serving an uncapped public endpoint. So
+a settings mistake would not have looked like a settings mistake — Phoebe would simply have told
+every visitor that her daily limit was not running. Four checks settled it.
+
+| Check | Result | What it proves |
+|---|---|---|
+| `GET /api/phoebe` | 405 in 0.44s | The function is invoked correctly. A hang here is the item S6 signal |
+| `GET /api/abstentions` with no key | 401 | The new route deployed and is guarded |
+| `GET /api/abstentions?key=wrong` | 401, not 503 | `PHOEBE_LOG_KEY` reached Production |
+| `POST /api/phoebe` | **200, a real answer in 5.9s** | The store reached Production. **This was the one that mattered** |
+
+That last answer cited all six eligibility cards inline and reported `cacheWrite: 18788`,
+`output: 395` — the prompt cache re-warming on a fresh deployment, and 395 tokens against a 16,000
+budget, which is the fixed setting behaving.
+
+**The test question was chosen so she would not abstain**, so nothing was written to the abstention
+log. That log is meant to hold real visitor questions; seeding it with an engineer's test would give
+the maintainer something false to grade.
+
+Checked before this session and still true:
 
 - All three data files return HTTP 200 at byte-exact sizes (2,232,356 / 8,854,936 / 299,225).
 - **Brotli compression is on** — 2.72 MB over the wire against 11.39 MB raw. A visitor who never
@@ -373,14 +401,10 @@ the old V, B and P identifiers are gone and every reference to them was updated 
 4. **The design session with the production side**, which settles the compatibility goal. No date.
 5. **Grading the two card drafts** — Activity (Appendix C) and Definitions (the glossary). Until
    they are graded they stay uncommitted and Phoebe is not given them.
-6. **Delete `PHOEBE_TEST_CAP` from the Vercel settings.** A testing shortcut lowered the cap so it
-   could be proved in four messages instead of twenty-one. **The code that read it is gone** — it was
-   removed before merge, and `check-cap` now fails if any setting can move the cap again. The setting
-   itself does nothing now, but it should not be left lying in the project. Preview environment.
-7. **Grade the abstention log.** This is what item A1 was built for and it is the part no repository
+6. **Grade the abstention log.** This is what item A1 was built for and it is the part no repository
    file can do. Read `/api/abstentions?key=…`, and for each gap decide: a legitimate limit of the
    card set, or a card to write.
-8. **Revisit the number twenty (item O1)** once there is real usage to reason from. It was chosen
+7. **Revisit the number twenty (item O1)** once there is real usage to reason from. It was chosen
    before any traffic existed. The daily counts and the abstention log are the first real evidence
    that will exist for that decision — there is none yet, so this is not due.
 
