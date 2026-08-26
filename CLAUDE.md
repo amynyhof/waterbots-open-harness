@@ -78,7 +78,7 @@ never an action here.
 
 ## Language rules
 
-**This section is the single home for these three rules.** They bind
+**This section is the single home for these four rules.** They bind
 engineering prose, product copy, and agent answers alike;
 CITATIONS.md and AGENT_RULES.md point here rather than restating them.
 
@@ -88,6 +88,9 @@ CITATIONS.md and AGENT_RULES.md point here rather than restating them.
 - Plain words lead, acronym in parentheses on first use. In an agent
   conversation the acronym may stand bare after that first use; see
   AGENT_RULES.md.
+- A packaged knowledge set is a **"Knowledge Pack."** Not "cartridge,"
+  not "methodology pack." New copy uses the word; nothing already
+  written is reworded for it.
 
 ## Citations — see CITATIONS.md
 

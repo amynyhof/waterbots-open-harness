@@ -28,7 +28,17 @@ this shell works out may flow back the other way. **Which parts settle where is
 decided in a design session with the production side** — not in this repository,
 and not by an engineer working in it.
 
-**Until that session happens, three rules hold.**
+**The design ruling is being written — 26 Aug 2026.** The session this file has been waiting on has
+an outcome. The direction: **this shell's design language largely prevails** — the light theme, the
+left rail, and the "<" navigation — so little change is expected to arrive from the other side.
+
+**It arrives as a design canon document, by the maintainer's hand, as rules-as-rules**, the same way
+the process rules arrived. It is not here yet.
+
+**Until it arrives, nothing changes.** The three rules below still hold exactly as written, and so
+does rule zero: nothing is fetched, guessed at, or matched from the production side while we wait.
+
+**Until the design canon arrives, three rules hold.**
 
 1. **Build to this repository's own rules.** [CLAUDE.md](./CLAUDE.md),
    [AGENT_RULES.md](./AGENT_RULES.md), [CITATIONS.md](./CITATIONS.md) and
@@ -116,5 +126,6 @@ before writing the primer is the cheaper order.
 | Family | Why it waits |
 |---|---|
 | **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. |
+| **Surfaces** | The bridge (item S7) was ruled on 26 Aug 2026 but has no proposal — the shape of the handoff is coordinated by the maintainer's hand. The rest of the family is polish (item S5) or waits on data that does not exist yet (item S1). |
 | **Data** | Blocked on material the maintainer supplies — registry coordinates for the project points (item D2), public disclosures for corporate goals and target geographies (item D1). Not work that can start from inside the repository. |
 | **Operations** | Nothing to build. Branch protection on `main` was restored on 24 Aug 2026 (item O2) and work now goes through a pull request. The daily cap (item O1) shipped on 25 Aug; what remains of that item is revisiting the number once there is real usage to reason from, which is not yet. |
