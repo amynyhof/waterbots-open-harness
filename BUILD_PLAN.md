@@ -48,8 +48,10 @@ and not by an engineer working in it.
 
 ## Just finished — Agents
 
-**Phoebe's step 4 is built, and item A4 is closed.** Session of 25 Aug 2026, confirmed in a preview
-deployment by the maintainer before merge.
+**Phoebe's step 4 is live, and item A4 is closed.** Session of 25 Aug 2026, merged to `main` as
+`a12bfc4` through pull request #2. Confirmed in a preview deployment by the maintainer before merge,
+and confirmed against production after it — the checks are in
+[SESSION_HANDOFF.md](./SESSION_HANDOFF.md) under *Verified live*.
 
 **The daily cap is live (item O1).** Twenty messages per visitor per UTC day. A visitor is
 identified by their network address scrambled with a server-held secret; no address is stored.

@@ -167,7 +167,7 @@ This is the mechanism by which the card sets grow from real questions rather tha
 about what might be asked. It also keeps the honest-states rule true for the agent as well as the
 map: a refusal to answer has to be visible, not silent.
 
-**Built 25 Aug 2026.** Every abstention is now recorded and readable.
+**Built 25 Aug 2026 and live in production.** Every abstention is now recorded and readable.
 
 **What a record holds:** when it happened, what Phoebe called the topic in her own few words, and
 the question as the person typed it. The real question is kept — maintainer's ruling, 25 Aug 2026 —
@@ -608,8 +608,9 @@ Little of this is product, and several are not repository files at all — they 
 
 ## O1. Rate limit on public chat
 
-**A cap of 20 messages per day per visitor is live**, per the maintainer's ruling of 21 Aug 2026,
-built and confirmed in the browser on 25 Aug 2026.
+**A cap of 20 messages per day per visitor is live in production**, per the maintainer's ruling of
+21 Aug 2026, built on 25 Aug 2026, confirmed in a preview deployment and again against
+`map.waterbots.ai` after merge.
 
 **This row used to say the cap shipped in v1. It did not.** From 24 Aug, when Phoebe went live, until
 25 Aug, the public chat had no cap at all — the relay counted nothing and its own header said so.
