@@ -70,6 +70,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | K1 | VWBA full-docs card pass | Knowledge | open |
 | K2 | Co-benefit quantification module | Knowledge | open |
 | K3 | VWB Report Corpus | Knowledge | open, no action yet |
+| K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | canon, ruled 26 Aug 2026 |
 | A1 | Phoebe abstention loop | Agents | built 25 Aug 2026 |
 | A2 | Final agent staffing | Agents | settled 24 Aug 2026 |
 | A3 | Agent handoff primer | Agents | logged, no build |
@@ -83,6 +84,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 
 | S5 | The citation line wraps awkwardly in the narrow dock | Surfaces | cosmetic, polish later |
 | S6 | The dev relay resolves imports differently from production | Surfaces | open |
+| S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026, no build |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
@@ -143,6 +145,16 @@ common to all of them, to shape the production report product.
 Opened 20 Aug 2026; **no action taken yet**. The same cite-and-link posture applies — reports live
 in `sources-local/`, which never publishes, and the repo carries citations and findings rather than
 copied text.
+
+## K4. "Knowledge Pack" — the word for a packaged knowledge set
+
+**Maintainer's ruling, 26 Aug 2026.** A packaged knowledge set is called a Knowledge Pack.
+
+**The rule itself lives in [CLAUDE.md](./CLAUDE.md) under Language rules**, which is the single home
+for word rules; this row records the ruling and points there rather than restating it. It matters
+most on the Commons surfaces that do not exist yet. No retroactive rewording pass.
+
+Ruled 26 Aug 2026. **Canon — no build.**
 
 ---
 
@@ -557,6 +569,29 @@ larger; the second is cheap and partial. Neither is designed yet.
 
 **What not to do.** Do not fix this by giving development its own copy of the handler. Two copies
 that drift is a worse problem than one copy resolved two ways.
+
+## S7. The bridge — handing a finished screening to the paid platform
+
+**Ruled by the maintainer, 26 Aug 2026, and free by that decision.** At the end of a completed
+screening the visitor is offered one thing: *"Save this project and sign up?"* If they choose it,
+their own project context and their projection go across to the paid platform, and the journey on
+this site ends there.
+
+**It is one-way, and it happens only on their click.** Nothing crosses unless the visitor asks for
+it.
+
+**It does not change the no-memory rule.** This site still keeps nothing between visits. The handoff
+carries what the visitor built in front of them, at the moment they ask for it, and this site keeps
+no copy of it.
+
+This is the crossing the north star already names — the free tier ends where step 4 begins, and the
+bridge is how someone steps over.
+
+**No proposal yet.** The shape of the handoff — what crosses, how, and what the paid side receives —
+is coordinated by the maintainer's hand, not designed in this repository. Rule zero holds while it
+is.
+
+Logged 26 Aug 2026. **Ruled — no build.**
 
 ---
 
