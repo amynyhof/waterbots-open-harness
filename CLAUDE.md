@@ -158,9 +158,10 @@ credit line does not meet any of these bars.
   not yet placed — awaiting registry-verified source data.**
 - Chat console foundation: a right-hand chat panel in the
   WaterBots console style, and a collapsible left-hand navigation
-  rail. Foundation means the shell — no live agent answers in v1.
-  Which agent staffs the map is an open maintainer decision; log
-  agent questions, do not build them.
+  rail. **Foundation meant the shell, and v1 shipped that way — but
+  Phoebe has answered for real since 24 Aug 2026**, from two committed
+  card sets, capped at 20 messages a day per visitor. Bridget staffs
+  the map and her chat is not built; the panel says so plainly.
 - WaterBots branding per BRAND.md. Standalone deploy. No login.
 
 ## Legacy material

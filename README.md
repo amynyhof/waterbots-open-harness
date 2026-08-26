@@ -12,9 +12,11 @@ It deploys standalone and is linked from [waterbots.ai](https://waterbots.ai).
 HydroSHEDS basin geometry coloured by real WRI Aqueduct values, with no fabricated data anywhere in
 it.
 
-**The eligibility console is built and not yet live.** Phoebe answers locally today. On the deployed
-site she will say plainly that she is not connected until an API key is configured for her relay —
-she does not pretend to answer.
+**The eligibility console is live, and Phoebe answers there.** Confirmed against production on
+24 Aug 2026. She is free to use and capped at **20 messages a day per visitor** — enough for a real
+working session, and what keeps her open to anyone. When someone reaches the cap she says so plainly
+and says when it comes back. If her relay is ever unconfigured she states that she is not connected
+rather than pretending to answer.
 
 Every open thread lives in [OPEN_ITEMS.md](./OPEN_ITEMS.md), grouped into five families:
 Knowledge, Agents, Surfaces, Data and Operations. What is being built next, and why, is in
@@ -92,12 +94,32 @@ npm run dev
 
 Without it she does not fail silently — the console states that she is not connected and why.
 
+**The daily cap needs a shared store, and locally it has none.** On a laptop Phoebe answers
+uncapped and writes a line to the server log saying so; that is development only. Anywhere the
+deployment platform runs her, a missing store stops her answering at all rather than quietly
+serving a public endpoint with no limit.
+
+### Settings a deployment needs
+
+| Setting | What it is for |
+|---|---|
+| `ANTHROPIC_API_KEY` | Phoebe's relay. Without it she says she is not connected. |
+| `KV_REST_API_URL` and `KV_REST_API_TOKEN` | The shared store that holds the daily count and the abstention log. `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` are read as an alternative pair. |
+| `PHOEBE_VISITOR_SALT` | A long random secret mixed into the scrambled visitor identity. **Set once and never changed** — changing it makes every visitor look new and resets every count to zero. |
+| `PHOEBE_LOG_KEY` | The secret that opens `/api/abstentions`. Without it that address returns nothing. |
+
+No visitor's network address is ever stored. It is scrambled together with the secret above and
+only the result is kept, under a key that expires when the day does. The abstention log holds no
+visitor identifier at all, so a question can never be traced back to a person.
+
 ### Confirming the build
 
-Seven checks, all of which must pass. Two of them guard against faults that nothing else here can
-see: `check-attribution` reads the built bundle rather than the source, so it catches a refactor
-that drops a required licence statement while leaving the site looking perfectly correct; and
-`check-api-exports` catches a relay that would build cleanly and then answer nothing once deployed.
+Nine checks, all of which must pass. Three guard against faults that nothing else here can see:
+`check-attribution` reads the built bundle rather than the source, so it catches a refactor that
+drops a required licence statement while leaving the site looking perfectly correct;
+`check-api-exports` catches a relay that would build cleanly and then answer nothing once deployed;
+and `check-cap` proves the twentieth message passes and the twenty-first is refused, which would
+otherwise cost twenty-one real messages to confirm by hand.
 
 ```bash
 node scripts/check-basins.mjs
@@ -105,9 +127,18 @@ node scripts/check-stress.mjs
 node scripts/check-palette.mjs
 node scripts/check-cards.mjs
 node scripts/check-api-exports.mjs
+node scripts/check-visitor-id.mjs
+node scripts/check-cap.mjs
 node scripts/build-card-module.mjs --check
 npm run build && node scripts/check-attribution.mjs
 ```
+
+`check-cap` runs the real relay code against a **stand-in store** on your own machine — the
+counting, the refusal, the refund and the abstention log are the files that deploy; only the
+database is stood in for. That stand-in is not fabricated data: the rule against fabricated data
+protects what a visitor is shown, and a test stand-in that never reaches a person is a different
+thing. What it cannot prove is that the real store behaves like the stand-in; only a deployed
+address and a browser can.
 
 ## Licence
 

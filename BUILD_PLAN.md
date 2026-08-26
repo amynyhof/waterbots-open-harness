@@ -46,59 +46,68 @@ and not by an engineer working in it.
 
 ---
 
-## Just finished — Surfaces
+## Just finished — Agents
 
-**The shared chat layer (item S2) is built through Level 2** and passed the
-maintainer's browser check on 24 Aug 2026: the contract between an agent and the
-layer, the chat shell, Phoebe's adapter, and the numbered marker that sits inside
-a sentence and opens one line of citation.
+**Phoebe's step 4 is built, and item A4 is closed.** Session of 25 Aug 2026, confirmed in a preview
+deployment by the maintainer before merge.
 
-It was taken first because it was half-landed in the working tree. Half-landed
-work is the only kind that costs more the longer it waits — a second agent built
-against an unfinished contract would inherit the gap.
+**The daily cap is live (item O1).** Twenty messages per visitor per UTC day. A visitor is
+identified by their network address scrambled with a server-held secret; no address is stored.
+Only delivered answers count — anything that fails on our side is given back. At the cap the
+visitor is told the limit, why it exists, and when it returns.
 
-**One defect was found and fixed along the way (item S4):** the console shell was
-throwing a chat dock away whenever you left its surface, so a conversation
-vanished while the worksheet it had filled in survived. Both docks now stay
-mounted and the off-surface one is hidden, the same treatment the map already
-had.
+**It was taken out of order, and that was the maintainer's call.** The plan below had the empty
+answer first and step 4 unqueued. Phoebe went live and public on 24 Aug with no cap at all, which
+made the cap urgent in a way the ordering had not anticipated.
 
-**Two items were left open on purpose.** The citation line wraps poorly in the
-narrow dock (item S5) — cosmetic, and worth doing properly alongside the map's
-legend rather than nudged on its own. And the collective-action partner surface
-(item S1) needs the corporate goals and target geographies (item D1, Data), which
-do not exist yet.
+**Every abstention is now recorded (item A1)**, readable at a guarded address, holding the question
+and no trace of who asked. The grading itself — which gaps become cards — is a maintainer job and is
+where that item now sits.
 
-**Nothing in Surfaces is the natural next step**, which is why the plan moves on.
+**The empty answer turned out to be the token budget (item A4).** Hidden thinking was spending the
+whole answer budget: the model thinks before it writes, that thinking is not shown, and it is
+charged to the same budget as the reply. The relay never set the parameter, so it inherited the
+default. Three faults in two days had one cause. Measured, fixed, and confirmed — the numbers are in
+the item.
 
-## Building next — Agents
+**One lesson worth carrying.** A default nobody wrote down is a decision nobody made. The relay's
+own comment had already noticed 80–90% of the spend going somewhere invisible and had explained it
+wrongly, which is how it survived two sessions.
 
-**Two things sit in this family now, and the order between them matters. A third
-is unqueued and larger — see below.**
+## Just before that — Surfaces
 
-**First, the empty answer (item A4).** Phoebe returned an answer with nothing in
-it once, on 23 Aug 2026, and the reader was shown a message that misdescribes
-what happened. It is small, it is unexplained, and an unexplained failure in the
-answer path should not be left underneath new agent work.
+**The shared chat layer (item S2) is built through Level 2** and passed the maintainer's browser
+check on 24 Aug 2026: the contract between an agent and the layer, the chat shell, Phoebe's adapter,
+and the numbered marker that sits inside a sentence and opens one line of citation.
 
-**Then, the agent handoff primer (item A3).**
-[AGENT_RULES.md](./AGENT_RULES.md) publishes rung 2 of the abstention ladder as
-*partly live*, with exactly one hard-coded handoff behind it: Phoebe may name
-Bridget and say Bridget covers the basin map and the water-stress data. A
-published rule describing behaviour no agent has is a promise outstanding, and
-the primer is what settles it.
+**One defect was found and fixed along the way (item S4):** the console shell was throwing a chat
+dock away whenever you left its surface, so a conversation vanished while the worksheet it had
+filled in survived. Both docks now stay mounted and the off-surface one is hidden, the same
+treatment the map already had.
 
-**Not queued, and bigger than both:** Phoebe's step 4 — abstention logging and
-the rate limit — was never built. Every abstention should be recorded so it can
-be graded into a new card (item A1), and the public chat has **no cap at all**
-today. Both need shared storage, which the maintainer provisions rather than the
-repository. This is the largest unbuilt piece of the agent work and it sits in
-neither queue.
+**Two items were left open on purpose.** The citation line wraps poorly in the narrow dock (item S5)
+— cosmetic, and worth doing properly alongside the map's legend rather than nudged on its own. And
+the collective-action partner surface (item S1) needs the corporate goals and target geographies
+(item D1, Data), which do not exist yet.
 
-**The primer is no longer blocked.** Final agent staffing (item A2) was settled
-on 24 Aug 2026 — Bridget on the map, Phoebe on eligibility, two posts — so the
-roster the primer would be written against now exists. Neither of these two items
-is waiting on anything.
+## Building next — the agent handoff primer
+
+**One thing sits in the Agents family now: the agent handoff primer (item A3).**
+
+[AGENT_RULES.md](./AGENT_RULES.md) publishes rung 2 of the abstention ladder as *partly live*, with
+exactly one hard-coded handoff behind it: Phoebe may name Bridget and say Bridget covers the basin
+map and the water-stress data. A published rule describing behaviour no agent has is a promise
+outstanding, and the primer is what settles it.
+
+**It is not blocked.** Final agent staffing (item A2) was settled on 24 Aug 2026 — Bridget on the
+map, Phoebe on eligibility, two posts — so the roster the primer would be written against exists.
+One thing limits its worked example: the funder locations it would point at are item D1, and they do
+not exist yet.
+
+**There is also now a first piece of real evidence to work from.** The abstention log records what
+people actually ask Phoebe that she cannot answer. Some of those gaps will be another agent's
+subject rather than a missing card, which is exactly what a handoff primer is for. Reading the log
+before writing the primer is the cheaper order.
 
 ## Not next, and why
 
@@ -106,4 +115,4 @@ is waiting on anything.
 |---|---|
 | **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. |
 | **Data** | Blocked on material the maintainer supplies — registry coordinates for the project points (item D2), public disclosures for corporate goals and target geographies (item D1). Not work that can start from inside the repository. |
-| **Operations** | Nothing to build. **Restoring branch protection on `main` (item O2) is now due** — it was set for after this week's push, week ending Sunday 23 Aug 2026, which has passed. It is a live GitHub setting, not a repository file, so the maintainer makes the change by hand once this session's commits land. |
+| **Operations** | Nothing to build. Branch protection on `main` was restored on 24 Aug 2026 (item O2) and work now goes through a pull request. The daily cap (item O1) shipped on 25 Aug; what remains of that item is revisiting the number once there is real usage to reason from, which is not yet. |
