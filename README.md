@@ -13,7 +13,8 @@ HydroSHEDS basin geometry coloured by real WRI Aqueduct values, with no fabricat
 it.
 
 **The eligibility console is live, and Phoebe answers there.** Confirmed against production on
-24 Aug 2026. She is free to use and capped at **20 messages a day per visitor** — enough for a real
+24 Aug 2026, and the daily cap confirmed there on 25 Aug 2026, when it shipped. She is free to use
+and capped at **20 messages a day per visitor** — enough for a real
 working session, and what keeps her open to anyone. When someone reaches the cap she says so plainly
 and says when it comes back. If her relay is ever unconfigured she states that she is not connected
 rather than pretending to answer.

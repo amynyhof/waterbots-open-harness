@@ -93,6 +93,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | O4 | Cosmetic and housekeeping items | Operations | left alone deliberately |
 
 | O5 | The engineer pushed without a commit word, twice | Operations | logged 24 Aug 2026 |
+| O6 | The card gate reports stale cards that are not stale | Operations | logged 26 Aug 2026, needs a ruling |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
 > reference to them elsewhere in the repository was updated in the same edit rather than left to
@@ -737,3 +738,76 @@ the engineer stops before it anyway and asks.
 outage, which is exactly when skipping a review feels most reasonable and is least safe.
 
 Logged 24 Aug 2026. **Standing** — kept as a reminder rather than closed.
+---
+
+## O6. The card gate reports stale cards that are not stale
+
+**Found 26 Aug 2026**, while repairing an accidental move of the `api/` folder. It is small, it is
+not urgent, and it is worth fixing because a gate that cries wolf is a gate people learn to ignore.
+
+**What it looks like.** On this machine, on a fresh checkout, one of the nine checks fails:
+
+```
+node scripts/build-card-module.mjs --check
+STALE — api/_cards.generated.ts does not match the card files.
+The relay would deploy with out-of-date cards.
+```
+
+**Phoebe's cards are not out of date.** That was checked rather than assumed: the card text carried
+inside the relay's copy was compared character by character against both committed card files, and
+it matches exactly. Nothing about her knowledge is wrong, and nothing reaches a visitor.
+
+**What it actually is: line endings.** Every line in a text file ends with a marker, and Windows and
+Linux use different ones. Git stores one form and is set, on this machine, to write the other form
+into the folder on checkout. The two forms mean the same thing, and git knows it — which is why
+`git status` and a comparison against `main` both show no difference.
+
+The gate does not know it. It rebuilds what the file *should* say and compares the raw characters,
+so fifteen invisible markers read as a mismatch:
+
+| | Line-end markers | Size |
+|---|---|---|
+| As git stores it | 0 | 44,299 bytes |
+| As checked out here | 15 | 44,314 bytes |
+
+Fifteen markers, fifteen bytes, same words.
+
+**The script already knew about this problem and solved half of it.** Its own comment says the card
+files it reads may arrive with either form and normalises them before use, "without this the
+generated module differs by platform and the staleness gate fails on a clean tree." That care was
+applied to what it reads and not to what it compares against.
+
+**Why it matters at all.** Nothing is broken in production — the deployment platform builds from
+what git stores, which has never changed. The cost is entirely to the people working here: a check
+that fails on a clean tree teaches its reader that failures are normal, and the next real staleness
+will look the same as this one.
+
+### Two ways to settle it
+
+1. **Pin the line endings** — a `.gitattributes` file telling git to leave this file's line endings
+   alone on every machine. **Recommended.** It fixes the cause rather than the symptom, it works for
+   anyone who clones the repository rather than only here, and it guards the same class of trouble
+   that has already bitten this repository once: the card parser was line-ending sensitive and
+   rendered a blank page on a Windows checkout while the Linux build was perfectly fine.
+2. **Teach the gate to ignore line endings when it compares** — one line, mirroring what the script
+   already does to the files it reads. Cheaper and narrower; it fixes this one gate and leaves the
+   underlying difference in place for the next thing that trips on it.
+
+**Neither is built.** Both are small enough to be one step by the sizing ruling of 26 Aug 2026 —
+one thing to look at, one thing to undo.
+
+### What not to do
+
+**Do not settle it by regenerating the card module and committing the result.** That was done once
+on 26 Aug 2026, at the maintainer's word, to get a clean run of the checks — and it is a patch, not
+a fix. It writes the file in the form the gate wants, and then the next checkout writes it back the
+other way and the gate fails again. Worse, in between, `git status` shows the file as modified with
+nothing in it to commit, which is its own small confusion.
+
+**A prediction worth recording, because it was wrong.** The engineer said that regenerating would
+leave git showing nothing. It did not — git flagged the file as modified while reporting zero bytes
+to stage. Switching branches afterwards did *not* undo it, because git preserves a file it believes
+you have edited. So the patch survives longer than expected and is more confusing than expected,
+which is an argument for fixing the cause and not the symptom.
+
+Logged 26 Aug 2026. **Open — needs a ruling on which of the two fixes to build.**
