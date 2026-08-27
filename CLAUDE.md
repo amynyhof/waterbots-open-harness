@@ -11,7 +11,7 @@ work moves in — propose, approve, build, eyeball, commit word — how the
 engineer is expected to speak, how open items are grouped, and what has to
 be true before a session closes.
 
-**Read these before doing anything else, every new session:**
+**Read these five before doing anything else, every new session:**
 
 1. This file, CLAUDE.md
 2. [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) — how
@@ -23,7 +23,12 @@ be true before a session closes.
 5. [SESSION_HANDOFF.md](./SESSION_HANDOFF.md) — where the last session
    left things
 
-**The session has not started until these are read.**
+**The session has not started until all five are read.** The opening
+ritual itself is owned by
+[PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md); this list is
+the front door pointing at the same five, not a second rule. **The two
+disagreed until 27 Aug 2026** — this file said five and the process rules
+said four, having left themselves off their own list. Five is right.
 
 Where this file and the process rules both speak to a point — proposal
 before code, one step at a time, honest states, no fabricated data — they

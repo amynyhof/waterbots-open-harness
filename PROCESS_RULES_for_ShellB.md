@@ -7,10 +7,15 @@ reading this.
 
 ## How a session opens
 
-Read four files before doing anything else, every new session:
-[CLAUDE.md](./CLAUDE.md), [BUILD_PLAN.md](./BUILD_PLAN.md),
+Read five documents before doing anything else, every new session:
+[CLAUDE.md](./CLAUDE.md), **this file**, [BUILD_PLAN.md](./BUILD_PLAN.md),
 [OPEN_ITEMS.md](./OPEN_ITEMS.md), [SESSION_HANDOFF.md](./SESSION_HANDOFF.md).
-The session has not started until all four are read.
+The session has not started until all five are read.
+
+**This list is the one home for the opening ritual.** It said four for as long as it existed,
+leaving itself off its own list, while [CLAUDE.md](./CLAUDE.md) said five and named this file
+among them. Corrected 27 Aug 2026 on the maintainer's ruling: five is right, and CLAUDE.md
+points here rather than carrying a second copy of the count.
 
 ## How work moves
 
@@ -49,6 +54,48 @@ fix is one step. **Two unrelated fixes are never one step**, however small eithe
 is — they are checked separately and they are undone separately, so they are
 proposed separately.
 
+### A session batches steps; the ritual runs once
+
+**Maintainer's ruling, 26 Aug 2026.** A session is one working sitting, and it may land
+several steps. **Nothing about a single step changes** — each one still moves through the
+full sequence above on its own, sized by risk. What this ruling settles is how steps are
+grouped.
+
+**The close-out ritual runs once, at the end of the sitting — never once per step.**
+Mid-session, a step that has landed needs only its commit. The documents catch up at the
+close.
+
+### Pull requests — the engineer opens them
+
+**Maintainer's ruling, 26 Aug 2026.** The GitHub command-line tool (`gh` — a way of working
+with GitHub by typing commands instead of clicking in a browser) is installed and signed in
+on the maintainer's machine. From that point the engineer opens its own pull requests, with
+the title and the description filled in, and keeps GitHub's delete-branch-on-merge setting
+turned on so merged branches do not pile up.
+
+**The maintainer's part becomes reviewing and merging.** The commit word still comes first,
+and it is unchanged: opening a pull request is not permission to merge one, and nothing
+merges without her.
+
+#### Every description opens with a block for the maintainer
+
+**Maintainer's ruling, 27 Aug 2026.** Every pull request description begins with a block
+titled **"For Amy"** — three short parts, plain English at about a 6th-grade level, no
+jargon:
+
+1. **What changed** — the files, named, and what each one does in plain words.
+2. **What I approved** — the ruling from the conversation that this delivers, in the
+   maintainer's own words.
+3. **What to check** — what the "Files changed" tab should say, and anything to eyeball.
+
+**Any term a non-engineer would not know gets one plain-English line of explanation.**
+
+The engineer-facing detail follows below the block, unchanged. This adds a block; it
+replaces nothing. **A pull request without the block is not ready for review.**
+
+It binds both shells, and it applies from the first pull request after the ruling. Earlier
+ones are not reformatted.
+
 ## How the engineer speaks
 
 - Plain English, 4th–6th grade level. No jargon without a one-line
@@ -74,7 +121,8 @@ proposed separately.
 
 ## How a session closes
 
-Before the final commit of a session:
+**The close-out is one complete act.** Maintainer's ruling, 26 Aug 2026: the ritual below
+includes every step, every time. **A ritual with a skipped step is an unfinished ritual.**
 
 1. Refresh the root docs so they tell the truth: BUILD_PLAN.md,
    OPEN_ITEMS.md, CLAUDE.md, SESSION_HANDOFF.md, and any rulebook
@@ -82,7 +130,20 @@ Before the final commit of a session:
 2. SESSION_HANDOFF.md is rewritten so a cold reader can resume:
    where we are, what is committed vs. uncommitted, what is waiting
    on Amy, what comes next.
-3. The library is never more than one session stale.
+3. Commit the checkpoint.
+4. **Then** regenerate the export copies, where the repository keeps them.
+   In this repository that is the `exports/` folder — the maintainer's
+   copies of the root documents, which she carries elsewhere by hand.
+   It is gitignored, so nothing here refreshes it and no check notices
+   when it is stale. That is why it is a named step.
+5. Confirm `main` is equal to `origin`.
+
+**The copies are made after the final commit, not before it**, so they carry the close-out
+itself rather than the state just before it. Maintainer's ruling, 27 Aug 2026 — see item O8 in
+[OPEN_ITEMS.md](./OPEN_ITEMS.md) for why the order matters. Regenerating first was how the
+copies fell a session behind on 26 Aug.
+
+The library is never more than one session stale.
 
 ## Standing rules that govern everything above
 
