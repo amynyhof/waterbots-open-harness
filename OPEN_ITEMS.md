@@ -85,6 +85,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S5 | The citation line wraps awkwardly in the narrow dock | Surfaces | cosmetic, polish later |
 | S6 | The dev relay resolves imports differently from production | Surfaces | open |
 | S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026, no build |
+| S8 | Brightness pull-up to BRAND.md's published Frost values | Surfaces | canon received 27 Aug 2026, needs a proposal; carries a colour re-review rider |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
@@ -595,6 +596,94 @@ is coordinated by the maintainer's hand, not designed in this repository. Rule z
 is.
 
 Logged 26 Aug 2026. **Ruled — no build.**
+
+---
+
+## S8. Brightness pull-up to BRAND.md's published Frost values
+
+**From the design canon, received 27 Aug 2026** and held at
+[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md), which is the home for the ruling
+itself. This item is the work it asks for.
+
+**The canon's note, in its own words:** the site "currently reads more muted than BRAND.md's
+published Frost values," and the ruling is BRAND.md at full published brightness — Paper Frost
+canvas, pure white cards with hairline borders, Tide `#2B5BFF` at full strength for primary
+actions, accents at their published values. **The engineer's derived values — chrome, the agent
+colours, the stress ramp — were derived correctly and stand.** The canon says so explicitly. This
+is about surfaces and accents that drifted softer than the book.
+
+**The canon asks for it as one sized step, proposed.** It is not built and no proposal has been
+written.
+
+### One thing measured on receipt, which the proposal will have to start from
+
+**The tokens are already at the published values.** `src/styles/tokens.css` was read on receipt
+rather than assumed:
+
+| Token | In the file | BRAND.md publishes |
+|---|---|---|
+| `--paper` | `#fbfbfe` | Paper Frost `#FBFBFE` |
+| `--card` / `--raised` | `#ffffff` | `#FFFFFF` |
+| `--tide` | `#2b5bff` | Tide `#2B5BFF` |
+| `--line` | `rgba(11,20,40,0.09)` | `rgba(11,20,40,0.09)` |
+
+**So whatever reads muted is in how the tokens are applied, not in the tokens themselves** — a
+component reaching for a softer token than the book intends, a wash, or an opacity. **The
+proposal must find the specific places before it proposes anything**, and must not "fix" this by
+editing values that already match the book.
+
+**Bridget's provisional `#7FD5DF` is a lifted, softer member of the Surf family**, where BRAND.md
+publishes Surf as `#14C8D9`. It is **not** brightened as part of this item — the maintainer ruled
+on 27 Aug 2026 that she stays provisional at her current colour. It is picked up afterwards by the
+taxonomy rider below.
+
+### The agent colours — ruled, and a re-review rides on this item
+
+The canon's standing rules say "agent identity colors remain platform rules (Phoebe violet;
+Bridget Surf, provisional)." In BRAND.md, violet is Iris `#7B5BE6`, while Phoebe's colour here is
+**Anemone `#A04E7E`** — a muted berry-magenta, set by the maintainer's ruling of 22 Aug 2026
+precisely to move her *off* the provisional Plum and Iris pair taken from her portrait.
+
+**Maintainer's ruling, 27 Aug 2026: Anemone stands.** "Violet" in the canon was loose wording, not
+a new decision. The ruling of 22 Aug holds and nothing about Phoebe's colour changes.
+
+**Bridget stays provisional at her current colour**, `#7FD5DF`. Same ruling, same day.
+
+### Rider on this item — re-review both agent colours against the status taxonomy
+
+**Maintainer's ruling, 27 Aug 2026.** After the brightness pull-up lands, both agent identity
+colours are checked against the status taxonomy. **An agent colour must never read as a project
+status.** A visitor who has learned that one colour means *live* should not meet the same colour
+meaning *this is Bridget*.
+
+**The specific worry, and it is not hypothetical.** Bridget's provisional `#7FD5DF` is a lifted
+member of the Surf family, and the taxonomy sets `--state-live` at Surf `#14C8D9`. **Her colour
+sits near Live.** Pulling the surfaces up to full published brightness moves everything around
+both of them, which is exactly why the check comes after the pull-up and not before it.
+
+The taxonomy to check against, as `src/styles/tokens.css` carries it today:
+
+| State | Value |
+|---|---|
+| Live | `#14C8D9` — Surf |
+| Approved | `#2BC9A5` — Mint |
+| Pending | `#E8A12B` — Amber |
+| Locked | `#98A0B2` |
+| Warn | `#E25858` — Coral |
+
+**This rides on S8 and is not its own item**, and it does not gate the pull-up — it follows it.
+
+### The rail rider, recorded here so it is not lost
+
+The canon also notes the left rail may read slightly thin, and asks that it be widened modestly
+**when the rail is next touched for another reason**. It says plainly: *"Not its own work item —
+log it as a rider."*
+
+**So it is not an item and this is not it.** It lives in the canon. It is named here because this
+item is the most likely next work to open the rail, and a rider nobody can find is a rider nobody
+rides.
+
+Received 27 Aug 2026. **Logged only — the proposal is not written.**
 
 ---
 

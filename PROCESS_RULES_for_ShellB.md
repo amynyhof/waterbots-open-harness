@@ -7,15 +7,20 @@ reading this.
 
 ## How a session opens
 
-Read five documents before doing anything else, every new session:
-[CLAUDE.md](./CLAUDE.md), **this file**, [BUILD_PLAN.md](./BUILD_PLAN.md),
-[OPEN_ITEMS.md](./OPEN_ITEMS.md), [SESSION_HANDOFF.md](./SESSION_HANDOFF.md).
-The session has not started until all five are read.
+Read six documents before doing anything else, every new session:
+[CLAUDE.md](./CLAUDE.md), **this file**,
+[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md),
+[BUILD_PLAN.md](./BUILD_PLAN.md), [OPEN_ITEMS.md](./OPEN_ITEMS.md),
+[SESSION_HANDOFF.md](./SESSION_HANDOFF.md).
+The session has not started until all six are read.
 
-**This list is the one home for the opening ritual.** It said four for as long as it existed,
-leaving itself off its own list, while [CLAUDE.md](./CLAUDE.md) said five and named this file
-among them. Corrected 27 Aug 2026 on the maintainer's ruling: five is right, and CLAUDE.md
-points here rather than carrying a second copy of the count.
+**This list is the one home for the opening ritual**, and [CLAUDE.md](./CLAUDE.md) points here
+rather than carrying a second copy of the count.
+
+**The count moved twice on 27 Aug 2026, both times on the maintainer's ruling.** This list said
+four for as long as it existed, leaving itself off its own list, while CLAUDE.md said five and
+named this file among them; five was ruled right. Then the design canon arrived and joined the
+opening reads, making six.
 
 ## How work moves
 
