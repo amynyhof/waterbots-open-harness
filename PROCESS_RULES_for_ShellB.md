@@ -24,6 +24,31 @@ Every piece of work follows one sequence, no skipped steps:
 
 One topic at a time. One step per exchange where possible.
 
+### How big is a step
+
+**Maintainer's ruling, 26 Aug 2026. The sequence above is unchanged and is not
+breakable.** No second topic starts before the first has landed, and nothing is
+built ahead of the approved step. This ruling only says how much work one step
+may hold.
+
+**A step is sized by risk, not by count.** One step is one coherent, testable
+thing, however many files it touches. The number of files is not the measure and
+never was.
+
+**The sizing test, applied when the step is proposed — not after it is built:**
+
+1. Can the maintainer check it in one sitting?
+2. Could it be undone in one motion?
+
+**Both yes, and it is one step. Either no, and the proposal must split it**
+before it is put forward.
+
+**What that means in practice.** A theme change across the whole site can be one
+step, because it is one thing to look at and one thing to undo. A single defect
+fix is one step. **Two unrelated fixes are never one step**, however small either
+is — they are checked separately and they are undone separately, so they are
+proposed separately.
+
 ## How the engineer speaks
 
 - Plain English, 4th–6th grade level. No jargon without a one-line
