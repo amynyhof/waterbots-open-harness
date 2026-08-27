@@ -48,8 +48,19 @@ the line endings, and build it first thing next session** — see item O6.
 `definitions-cards-vwba-DRAFT.md` are drafted but not graded, and Phoebe is not given them. They stay
 untracked until they are graded.
 
-There may also be an untracked `exports/` folder of `Shell_B_`-prefixed copies of the root documents.
-Those are the maintainer's export copies. They never commit and nothing reads them.
+**The untracked `exports/` folder holds `Shell_B_`-prefixed copies of all fifteen root documents.**
+They are the maintainer's export copies — how material leaves this repository by her hand. They
+never commit and nothing here reads them.
+
+**They were regenerated at the close of 26 Aug 2026, after the close-out merged**, so they carry the
+close-out rather than the state just before it. Eleven of the fifteen were confirmed against `main`
+afterwards; the other four — BRAND.md, UI_REFERENCE.md and the two card drafts — are not on `main`
+at all and can only come from the folder.
+
+**They had been missed at this close and were a session behind until the maintainer caught it.**
+Nothing in the repository refreshes them and no check notices when they are stale, because the
+folder is gitignored. Making the export a named step of the close-out ritual is on the waiting list
+below as a proposal for next session.
 
 ### Branch tidy — five merged branches are still lying about
 
@@ -449,6 +460,26 @@ the old V, B and P identifiers are gone and every reference to them was updated 
    enforces it and nothing here can confirm it, the same as branch protection (item O2). It is the
    half that stops merged branches accumulating again; deleting the existing ones is the engineer's
    half and is on the list below.
+9. **Rule on making the export step part of the close-out ritual.** The engineer is to put this
+   forward as a written proposal next session; it is listed here because changing the ritual is the
+   maintainer's decision, not the engineer's.
+
+   **Why it is being raised.** The `exports/` folder holds `Shell_B_`-prefixed copies of all fifteen
+   root documents. It is how material leaves this repository by the maintainer's hand, and it is
+   gitignored, so nothing in the repository refreshes it and no check notices when it is stale. At
+   the close of 26 Aug 2026 it was a session behind — the close-out had been written, reviewed,
+   committed and merged, and the copies still said 25 Aug. **It was caught by the maintainer, not by
+   the process**, and it was regenerated the same evening.
+
+   **What the proposal would say.** [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md)
+   owns how a session closes and lists the steps in order. The export step is not among them, which
+   is the whole reason it was skipped. Adding it as a named step is the smallest change that fixes
+   the cause. Whether it should also be a script rather than a hand copy is a second question and a
+   larger one, and the proposal should keep the two apart.
+
+   **What "done" looks like:** all fifteen copies regenerated from the root documents as they stand
+   at the moment of the close, after the final commit rather than before it, so the copies carry the
+   close-out itself and not the state just before it.
 
 **Two rulings came in on 26 Aug 2026 and are no longer waiting on anyone** — they are work, not
 decisions. Pin the line endings (item O6), first thing next session. Delete the merged branches
@@ -481,8 +512,10 @@ cheaper than writing it from guesses and then revising it.
    modified with nothing to stage — should go away as part of this rather than be committed.
 2. **Delete the merged branches (item O7)** — three here, five on GitHub, all confirmed merged.
    Turning on GitHub's delete-on-merge is the maintainer's half and is on the waiting list above.
+3. **Write the proposal to make the export step part of the close-out ritual.** A written proposal,
+   not a change — the reasoning and what it should cover are in the waiting list above.
 
-**Neither blocks the primer** and both together are a short first hour.
+**None of the three blocks the primer** and together they are a short first hour.
 
 **Nothing is half-built.** Nothing was built this session. The accidental folder move is fully
 repaired and confirmed, the nine checks all pass, and no code changed. The only loose thread is the
