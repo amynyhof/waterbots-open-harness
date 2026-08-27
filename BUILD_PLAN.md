@@ -102,9 +102,16 @@ treatment the map already had.
 the collective-action partner surface (item S1) needs the corporate goals and target geographies
 (item D1, Data), which do not exist yet.
 
-## Building next — the agent handoff primer
+## Building next — one small fix, then the agent handoff primer
 
-**One thing sits in the Agents family now: the agent handoff primer (item A3).**
+**First, and it is minutes: pin the line endings (item O6).** Maintainer's ruling, 26 Aug 2026. A
+check currently reports stale cards that are not stale on a fresh Windows checkout, because git
+writes the file out in a different line-ending form from the one the check expects. The durable fix
+was chosen over the cheap one: pin the endings so every machine agrees, rather than teach the single
+check to look the other way. **It goes first because a check that cries wolf teaches its reader to
+ignore checks**, not because it is urgent — it changes nothing a visitor sees.
+
+**Then the real work of the session: the agent handoff primer (item A3).**
 
 [AGENT_RULES.md](./AGENT_RULES.md) publishes rung 2 of the abstention ladder as *partly live*, with
 exactly one hard-coded handoff behind it: Phoebe may name Bridget and say Bridget covers the basin
@@ -128,4 +135,4 @@ before writing the primer is the cheaper order.
 | **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. |
 | **Surfaces** | The bridge (item S7) was ruled on 26 Aug 2026 but has no proposal — the shape of the handoff is coordinated by the maintainer's hand. The rest of the family is polish (item S5) or waits on data that does not exist yet (item S1). |
 | **Data** | Blocked on material the maintainer supplies — registry coordinates for the project points (item D2), public disclosures for corporate goals and target geographies (item D1). Not work that can start from inside the repository. |
-| **Operations** | Nothing to build. Branch protection on `main` was restored on 24 Aug 2026 (item O2) and work now goes through a pull request. The daily cap (item O1) shipped on 25 Aug; what remains of that item is revisiting the number once there is real usage to reason from, which is not yet. |
+| **Operations** | **One item is ruled and goes first next session — see above.** Beyond it: the merged branches are to be deleted and GitHub's delete-on-merge turned on (item O7, ruled 26 Aug 2026, not yet done), half of which is a live setting rather than repository work. Branch protection on `main` was restored on 24 Aug 2026 (item O2) and work now goes through a pull request. The daily cap (item O1) shipped on 25 Aug; what remains of that item is revisiting the number once there is real usage to reason from, which is not yet. |

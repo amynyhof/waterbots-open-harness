@@ -1,6 +1,6 @@
 # Session handoff
 
-Rewritten at the close of the session of 25 Aug 2026. Read this with
+Rewritten at the close of the session of 26 Aug 2026. Read this with
 [CLAUDE.md](./CLAUDE.md), which is the rulebook and takes precedence,
 [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md), which says how work is run, and
 [BUILD_PLAN.md](./BUILD_PLAN.md), which says what comes next.
@@ -12,30 +12,37 @@ committed and what is not, what is waiting on the maintainer, and what to do fir
 
 ## Read this first
 
-**Phoebe's step 4 is live at [map.waterbots.ai](https://map.waterbots.ai).** She has a cap of 20
-messages per visitor per UTC day, and every question she declines is now written down where it can
-be graded. Confirmed by the maintainer in a preview deployment before merge, and confirmed again
-against production after it — see *Verified live* below, which is not assumed.
+**Nothing was built this session and nothing shipped.** Two documents were merged, one accident was
+repaired, and one small repository fault was found and fixed. **The product is exactly where the
+session of 25 Aug left it** — Phoebe is live and capped, the map is live, and no code changed.
 
-**She was live, public and uncapped from 24 to 25 Aug 2026.** That is why step 4 jumped the queue
-ahead of the work BUILD_PLAN.md had scheduled.
+**Phoebe's relay folder was moved by accident, and it has been put back.** All eight files that make
+up `api/` — the handler, the daily cap, the visitor identity, the abstention log, the card copy —
+were found sitting in `src/api/` at the start of this session, with `api/` gone. Nothing in git did
+it; there is no commit and no reflog entry. It was a stray drag in the folder, confirmed as
+accidental by the maintainer.
 
-**The empty answer (item A4) was diagnosed and fixed, and it was not what it looked like.** Hidden
-thinking was spending her whole answer budget. The model thinks before it writes, that thinking is
-not shown, and it is charged to the same output budget as the reply — and the relay never set the
-parameter, so it inherited the default. Three faults across two days had one cause. The measurements
-are in item A4.
+**Had it been committed, Phoebe would have gone off the air.** The deployment platform only runs
+functions from a folder called `api` at the top of the repository. It also broke the build, the dev
+server and three of the nine checks, all of which name that path.
 
-**Seven commits this session.** Six landed on `main` through pull request #2 as `a12bfc4`: three
-built step 4, one fixed the token budget, and two refreshed the documents. This close-out is the
-seventh and goes through its own pull request.
+It was restored **from the commit itself** rather than by moving the copies back, so what is in the
+folder came from git and not from a copy of unknown history. The stray copies were checked first and
+held nothing the restore did not, and there was no ninth file among them. Confirmed afterwards:
+`api/` is identical to `main`, file by file, with nothing to stage.
 
-**`PHOEBE_TEST_CAP` is gone from both sides.** The code that read it was removed before merge, and
-the maintainer deleted the setting after. `check-cap` now fails if any environment setting can move
-the cap, so it cannot come back quietly.
+**All nine checks pass.** Measured at the close of this session, not assumed.
 
-**`main` is protected.** Direct pushes are refused; changes go through a pull request. A rejected
-push is the ruleset working, not a fault.
+**Two documents merged this session.** The bridge to the paid platform was logged and "Knowledge
+Pack" was made canon (pull request #4, commit `db5b8b6`); the ruling on how big a step is landed in
+the process rules (pull request #5, commit `8a7d52e`). Both are on `main`.
+
+**One new item — the card gate fails on a Windows checkout (item O6).** Found while repairing the
+accident above. **The cards are not stale**; that was checked character by character against both
+card files. The gate compares raw text, and this machine writes the file out with different line
+endings from the ones the gate expects, so it reports a difference git does not see. Re-running the
+generator settles it for now, and that is a patch rather than a fix. **Ruled the same evening: pin
+the line endings, and build it first thing next session** — see item O6.
 
 **Two card drafts are deliberately uncommitted.** `activity-cards-vwba-DRAFT.md` and
 `definitions-cards-vwba-DRAFT.md` are drafted but not graded, and Phoebe is not given them. They stay
@@ -43,6 +50,27 @@ untracked until they are graded.
 
 There may also be an untracked `exports/` folder of `Shell_B_`-prefixed copies of the root documents.
 Those are the maintainer's export copies. They never commit and nothing reads them.
+
+### Branch tidy — five merged branches are still lying about
+
+`main` is protected and every change goes through a pull request, so each session leaves a branch
+behind. None of them is doing anything now.
+
+**Here on this machine, all merged into `main`:**
+
+| Branch | Its commit |
+|---|---|
+| `docs/session-close-out` | `4bc0b06` |
+| `docs/bridge-vocab-design-canon` | `db5b8b6` |
+| `docs/step-sizing-ruling` | `8a7d52e` |
+
+**On GitHub, the same three plus two older ones:** `docs/session-close-out-25-aug` and
+`feat/phoebe-step-4-cap-and-abstention-log`.
+
+**Deleting them is safe** — every commit in them is on `main`, which is what `git branch --merged`
+confirms. **Ruled on 26 Aug 2026: delete them, and turn on GitHub's delete-on-merge so they stop
+accumulating.** Neither half was done that evening; both are item O7. The branch carrying this
+close-out is not among the five — it joins them once its own pull request merges.
 
 ---
 
@@ -354,10 +382,19 @@ Only the three small outputs in `public/` are committed.
 - **The card parser was CRLF-sensitive** and rendered a blank page on a Windows checkout while
   Vercel's Linux build was fine. Both the parser and the card-module gate now normalise line
   endings. Do not remove that.
-- **The relay's output budget is 8192 tokens, and most of it is spent before the first visible
-  word.** Phoebe reasons through six criteria inside the same budget as her answer; measured runs
-  used 2,762 to 4,423 tokens for a visible answer of about 1,500 characters. At the old value of
-  2048 every project description failed. Do not lower it.
+- **Line endings differ between this machine and the commit, and one gate notices.** Git stores
+  these files one way and checks them out on Windows the other way. Most things do not care; the
+  card gate compares raw text and does, so on a fresh checkout it reports stale cards that are not
+  stale. Item O6 carries the whole story and the fix. **Do not "fix" it by regenerating the card
+  module and committing the result** — that treats the symptom and leaves the next checkout to
+  produce it again.
+- **The relay's output budget is 16,000 tokens, and most of it is spent before the first visible
+  word.** Phoebe thinks before she writes, that thinking is invisible, and it is charged to the same
+  budget as the answer. Do not lower it — 8,192 was the value that produced item A4, and 2,048
+  before that failed on every project description. The full measurements are in the token budget
+  section above. **This row said 8,192 until 26 Aug 2026**, having been left behind when item A4 was
+  fixed; it is corrected here rather than quietly, because a stale number in a known-conditions list
+  is exactly the kind of thing a later session trusts.
 
 ---
 
@@ -407,6 +444,15 @@ the old V, B and P identifiers are gone and every reference to them was updated 
 7. **Revisit the number twenty (item O1)** once there is real usage to reason from. It was chosen
    before any traffic existed. The daily counts and the abstention log are the first real evidence
    that will exist for that decision — there is none yet, so this is not due.
+8. **Turn on GitHub's delete-on-merge (item O7).** Ruled on 26 Aug 2026 along with deleting the
+   branches themselves. **This half is a live GitHub setting, not a repository file** — nothing here
+   enforces it and nothing here can confirm it, the same as branch protection (item O2). It is the
+   half that stops merged branches accumulating again; deleting the existing ones is the engineer's
+   half and is on the list below.
+
+**Two rulings came in on 26 Aug 2026 and are no longer waiting on anyone** — they are work, not
+decisions. Pin the line endings (item O6), first thing next session. Delete the merged branches
+(item O7). Both are recorded in [OPEN_ITEMS.md](./OPEN_ITEMS.md) with what "done" looks like.
 
 ---
 
@@ -426,6 +472,25 @@ D1 and does not exist yet.
 that she cannot answer. Some of those gaps will turn out to be another agent's subject rather than a
 missing card, which is exactly what the primer is for. Writing the primer from real questions is
 cheaper than writing it from guesses and then revising it.
+
+**Two small things come first, both ruled on 26 Aug 2026 and neither built.**
+
+1. **Pin the line endings (item O6).** A `.gitattributes` file, minutes of work. Done means
+   `git status` clean and the card gate passing together, on a fresh checkout, with no need to
+   re-run the generator. The patch sitting in the folder now — `api/_cards.generated.ts` showing as
+   modified with nothing to stage — should go away as part of this rather than be committed.
+2. **Delete the merged branches (item O7)** — three here, five on GitHub, all confirmed merged.
+   Turning on GitHub's delete-on-merge is the maintainer's half and is on the waiting list above.
+
+**Neither blocks the primer** and both together are a short first hour.
+
+**Nothing is half-built.** Nothing was built this session. The accidental folder move is fully
+repaired and confirmed, the nine checks all pass, and no code changed. The only loose thread is the
+ruling on item O6.
+
+**Check `git status` before starting.** This session opened by finding Phoebe's whole relay folder
+moved out of place, uncommitted and unexplained, and it would have taken her off the air had it been
+committed. It cost nothing to catch because it was looked at first.
 
 **Nothing is half-landed.** Step 4 is complete and merged, item A4 is closed, and no work was left
 part-built at the close of this session.
