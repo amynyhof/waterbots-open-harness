@@ -28,31 +28,39 @@ this shell works out may flow back the other way. **Which parts settle where is
 decided in a design session with the production side** — not in this repository,
 and not by an engineer working in it.
 
-**The design ruling is being written — 26 Aug 2026.** The session this file has been waiting on has
-an outcome. The direction: **this shell's design language largely prevails** — the light theme, the
-left rail, and the "<" navigation — so little change is expected to arrive from the other side.
+**The design canon has arrived — 27 Aug 2026.** The session this file was waiting on has an
+outcome, and the outcome is written down. It came by the maintainer's hand as rules-as-rules, the
+same way the process rules arrived, and it lives at
+[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md). **That file is the home; this section
+does not restate it.**
 
-**It arrives as a design canon document, by the maintainer's hand, as rules-as-rules**, the same way
-the process rules arrived. It is not here yet.
+**This shell's design language prevailed**, as the ruling had signalled it would, so almost nothing
+arrives inbound. Three things this repository already does are now binding rather than merely
+current: the Frost light theme, the left rail with its "Collapse" row and "<" glyph, and the chat
+dock's citation and formatting rules.
 
-**Until it arrives, nothing changes.** The three rules below still hold exactly as written, and so
-does rule zero: nothing is fetched, guessed at, or matched from the production side while we wait.
+**Two things change, and neither is built.** A brightness pull-up to BRAND.md's published Frost
+values, which the canon asks to be proposed as one sized step — item S8 in
+[OPEN_ITEMS.md](./OPEN_ITEMS.md). And a rider to widen the rail modestly whenever it is next
+opened for another reason, which the canon says is explicitly not its own work item.
 
-**Until the design canon arrives, three rules hold.**
+**Three rules held while we waited. Two of them are permanent and one has done its job.**
 
 1. **Build to this repository's own rules.** [CLAUDE.md](./CLAUDE.md),
-   [AGENT_RULES.md](./AGENT_RULES.md), [CITATIONS.md](./CITATIONS.md) and
-   BRAND.md are what binds today. The compatibility goal is a direction, not a
-   specification, and it does not override any of them.
-2. **Flag drift as an open item, in its family.** Where something built here
-   looks likely to diverge from the production console, log it where that work
-   lives rather than resolving it quietly in either direction. The design session
-   needs the list.
+   [AGENT_RULES.md](./AGENT_RULES.md), [CITATIONS.md](./CITATIONS.md),
+   [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) and BRAND.md are
+   what binds. The compatibility goal is a direction, not a specification, and it
+   does not override any of them. **Still holds.**
+2. **Flag drift as an open item, in its family.** This one was for the design
+   session, and the design session has happened. **It is retired as a standing
+   rule**, and what it was collecting is now settled by the canon. Anything that
+   still looks like drift is an ordinary open item.
 3. **Never copy from, fetch from, or match the production site unaided.** Not its
    files, not its shapes, not its wording, and not by inference from memory. This
    is rule zero in CLAUDE.md and the wall in CITATIONS.md, applied to design.
    **A compatibility goal is not permission to go and look** — rules travel as
-   rules, and they travel by the maintainer's hand.
+   rules, and they travel by the maintainer's hand. **Still holds**, and the canon
+   restates it itself.
 
 ---
 

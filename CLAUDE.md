@@ -11,24 +11,28 @@ work moves in — propose, approve, build, eyeball, commit word — how the
 engineer is expected to speak, how open items are grouped, and what has to
 be true before a session closes.
 
-**Read these five before doing anything else, every new session:**
+**Read these six before doing anything else, every new session:**
 
 1. This file, CLAUDE.md
 2. [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) — how
    work is run
-3. [BUILD_PLAN.md](./BUILD_PLAN.md) — what is being built now, what
+3. [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) — which
+   design rules apply here, and at what strength
+4. [BUILD_PLAN.md](./BUILD_PLAN.md) — what is being built now, what
    comes next, and the compatibility goal
-4. [OPEN_ITEMS.md](./OPEN_ITEMS.md) — every open item, grouped into
+5. [OPEN_ITEMS.md](./OPEN_ITEMS.md) — every open item, grouped into
    families, and the north star
-5. [SESSION_HANDOFF.md](./SESSION_HANDOFF.md) — where the last session
+6. [SESSION_HANDOFF.md](./SESSION_HANDOFF.md) — where the last session
    left things
 
-**The session has not started until all five are read.** The opening
+**The session has not started until all six are read.** The opening
 ritual itself is owned by
 [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md); this list is
-the front door pointing at the same five, not a second rule. **The two
-disagreed until 27 Aug 2026** — this file said five and the process rules
-said four, having left themselves off their own list. Five is right.
+the front door pointing at the same six, not a second rule. **The count
+has moved twice in one day, both on the maintainer's ruling of
+27 Aug 2026.** It was five against the process rules' four, which had left
+themselves off their own list; then the design canon arrived and joined
+the reads. Six is right.
 
 Where this file and the process rules both speak to a point — proposal
 before code, one step at a time, honest states, no fabricated data — they
@@ -120,11 +124,16 @@ It carries how an agent speaks, the three outcomes, the abstention
 ladder, and what an agent may say about itself and about its
 colleagues. It is published, not engineer-eyes-only.
 
-**Three root documents, one home per rule.** CLAUDE.md owns engineering
+**Four root documents, one home per rule.** CLAUDE.md owns engineering
 work and the language rules; CITATIONS.md owns what a citation is and
-how it renders; AGENT_RULES.md owns how an agent behaves and speaks. A
-rule restated in two of them is a defect, not thoroughness — the copies
-drift, and then nobody can tell which one is current.
+how it renders; AGENT_RULES.md owns how an agent behaves and speaks;
+DESIGN_CANON_for_ShellB.md owns which design rules apply here and at
+what strength. A rule restated in two of them is a defect, not
+thoroughness — the copies drift, and then nobody can tell which one is
+current.
+
+**It became four on 27 Aug 2026**, when the design canon arrived. It
+said three for as long as there were three.
 
 ## Data licensing — binding display requirements
 
@@ -179,8 +188,15 @@ are reference only — they predate current rules and must be
 reimagined, not copied. Any claim revived from legacy documents must
 be re-founded on cited sources.
 
-## Brand
+## Brand and design — see DESIGN_CANON_for_ShellB.md
 
 Follow BRAND.md and UI_REFERENCE.md in this repo. They are gitignored
 (engineer-eyes-only, not published). Never invent colors, type, or
 styles outside them.
+
+**[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) is
+binding**, and it is published. It arrived by the maintainer's hand on
+27 Aug 2026, the way the process rules did, and it is the only design
+input from outside this repository. It does not hold values — BRAND.md
+and UI_REFERENCE.md own those. It holds the ruling about which of them
+apply here and at what strength.
