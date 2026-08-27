@@ -63,6 +63,44 @@ export const VIEW_BOUNDS = latLngBounds([-68, -180], [84, 180]);
  */
 const PAN_BOUNDS: LatLngBoundsExpression = VIEW_BOUNDS;
 
+/**
+ * The basemap, and the key it now needs.
+ *
+ * CARTO ended keyless access to their basemaps. Tiles still return HTTP 200
+ * without a key — they come back stamped "API KEY REQUIRED" across the image,
+ * which is why a status check never caught it and a browser did. It applied to
+ * the light_all style this map shipped with from launch, not only to Voyager,
+ * so there was no staying put.
+ *
+ * The key is a BUILD-TIME value. Vite bakes anything named VITE_* into the
+ * bundle when it builds; it is not read at runtime. This is the opposite of
+ * Phoebe's settings, which Node reads from process.env when a request arrives.
+ * Two consequences worth stating because both have cost time here:
+ *
+ *   - The key must be present in Vercel BEFORE the build runs. A settings
+ *     change only reaches a deployment that starts after it.
+ *   - A build with no key produces a bundle that works perfectly, looks
+ *     healthy, and is watermarked. scripts/check-basemap-key.mjs reads the
+ *     BUILT bundle and fails on exactly that, the same way check-attribution
+ *     guards the licence strings.
+ *
+ * The key travels to the browser and is readable in the shipped JavaScript.
+ * That is inherent to browser map tiles: it is a rate-limit token, not a
+ * secret. It is not committed — it comes from the environment.
+ *
+ * Voyager rather than light_all is the maintainer's ruling of 27 Aug 2026,
+ * walked in the browser: the seas read as water and the arid and no-data
+ * basins, which are deliberately near-transparent so the basemap shows
+ * through, read as land instead of as grey fog. Every stress band was
+ * composited over both basemaps before the change: the largest shift is under
+ * a hundredth of relative luminance, and the warm bands do not intensify. A
+ * brighter map does not read as more alarmed than the data.
+ */
+const CARTO_KEY = import.meta.env.VITE_CARTO_KEY ?? '';
+const BASEMAP_URL =
+  `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png` +
+  (CARTO_KEY ? `?key=${CARTO_KEY}` : '');
+
 type Fetched =
   | { status: 'idle' }
   | { status: 'loading' }
@@ -331,7 +369,7 @@ export default function BasinMap({ onStatus }: { onStatus?: (s: MapStatus) => vo
         <ZoomWatcher onZoom={onZoom} />
 
         <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          url={BASEMAP_URL}
           subdomains="abcd"
           maxZoom={8}
           noWrap
