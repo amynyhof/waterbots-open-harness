@@ -95,6 +95,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | O5 | The engineer pushed without a commit word, twice | Operations | logged 24 Aug 2026 |
 | O6 | The card gate reports stale cards that are not stale | Operations | ruled 26 Aug 2026, build first next session |
 | O7 | Merged branches pile up, and are now to be cleared | Operations | ruled 26 Aug 2026, not yet done |
+| O8 | The export step in the close-out ritual | Operations | ruled 27 Aug 2026, first half done |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
 > reference to them elsewhere in the repository was updated in the same edit rather than left to
@@ -864,3 +865,72 @@ one by mistake.
 five — it is still open and becomes deletable once its own pull request merges.
 
 Logged and ruled 26 Aug 2026. **Open until both halves are done.**
+
+---
+
+## O8. The export step in the close-out ritual — named and ordered
+
+**Proposed and ruled 27 Aug 2026**, from the waiting list left by the session of 26 Aug. The
+written proposal that session asked for was put forward, and the maintainer ruled on it the same
+day.
+
+**Why it was raised.** The `exports/` folder holds `Shell_B_`-prefixed copies of all fifteen root
+documents. It is how material leaves this repository by the maintainer's hand. It is gitignored,
+so nothing in the repository refreshes it and no check notices when it is stale. At the close of
+26 Aug 2026 it was a session behind: the close-out had been written, reviewed, committed and
+merged, and the copies still said 25 Aug. **It was caught by the maintainer, not by the process.**
+
+**The cause was plain.** [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) owns how a
+session closes and lists the steps in order. The export was not among them, which is the whole
+reason it was skipped. A step nobody wrote down is a step nobody owes.
+
+### The first half is already ruled
+
+**The maintainer's process ruling of 26 Aug 2026 answers it.** Her close-out ritual names
+"export copies regenerated (where the repo has them)" as one of the steps that must run every
+time, and says a ritual with a skipped step is an unfinished ritual. **That is the naming this
+proposal was going to ask for**, and it is now written into the process rules.
+
+So the proposal does not need to argue for the step. It needs to settle what the ruling did not
+reach.
+
+### The second half: the order, now ruled
+
+The 26 Aug ruling listed the steps in this order: root docs refreshed, handoff written, **export
+copies regenerated, checkpoint committed**, `main` confirmed equal to `origin`.
+
+The session of 26 Aug had written down a different "done": all fifteen copies regenerated
+**after** the final commit rather than before it, "so the copies carry the close-out itself and
+not the state just before it."
+
+**These two disagreed, and the disagreement was not cosmetic.**
+
+| Order | What the copies hold |
+|---|---|
+| Regenerate, then commit | Everything except the close-out commit itself |
+| Commit, then regenerate | Everything, including the close-out |
+
+**Maintainer's ruling, 27 Aug 2026: commit first, then regenerate.** The failure that caused this
+item was copies sitting one step behind the repository, and regenerating first reproduces that
+failure in a smaller form on every close. The cost is only that a session's last action is a hand
+copy rather than a commit.
+
+[PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) now carries the ruled order, and the
+note that flagged the question while it was open has been removed.
+
+### The second question, kept separate on purpose
+
+**Should the export be a script rather than a hand copy?** That is a larger question and a
+different one, and the session of 26 Aug asked that the two be kept apart. They are.
+
+A script would make the step repeatable and would let a check notice staleness. It would also put
+a repository file in charge of a folder the repository deliberately does not track, and it would
+need to know which fifteen documents count — a list that changes. **No recommendation is offered
+here.** It is recorded so it is not lost, and it does not block the ordering question above.
+
+### What is left
+
+**The ordering question is closed and the ritual is written.** What keeps this item open is the
+second question above — script or hand copy — which has no ruling and is not due.
+
+Proposed and ruled 27 Aug 2026. **Open only on the script question.**
