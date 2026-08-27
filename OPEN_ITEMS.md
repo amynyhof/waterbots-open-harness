@@ -93,7 +93,8 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | O4 | Cosmetic and housekeeping items | Operations | left alone deliberately |
 
 | O5 | The engineer pushed without a commit word, twice | Operations | logged 24 Aug 2026 |
-| O6 | The card gate reports stale cards that are not stale | Operations | logged 26 Aug 2026, needs a ruling |
+| O6 | The card gate reports stale cards that are not stale | Operations | ruled 26 Aug 2026, build first next session |
+| O7 | Merged branches pile up, and are now to be cleared | Operations | ruled 26 Aug 2026, not yet done |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
 > reference to them elsewhere in the repository was updated in the same edit rather than left to
@@ -810,4 +811,56 @@ to stage. Switching branches afterwards did *not* undo it, because git preserves
 you have edited. So the patch survives longer than expected and is more confusing than expected,
 which is an argument for fixing the cause and not the symptom.
 
-Logged 26 Aug 2026. **Open — needs a ruling on which of the two fixes to build.**
+### Ruled — pin the line endings
+
+**Maintainer's ruling, 26 Aug 2026: take the durable fix.** A `.gitattributes` file pinning the line
+endings, not the one-line change to the gate. The cause is fixed for every machine that clones this
+repository rather than for this one only.
+
+**It is the first step of the next session, before the agent handoff primer.** It is minutes of work
+and it stops a check crying wolf on every fresh checkout, so it goes first — the primer is the
+session's real work and follows immediately after.
+
+**No build tonight.** Ruled and recorded only.
+
+**What "done" looks like**, so the next session does not have to re-derive it: `git status` clean and
+the card gate passing at the same time, on a fresh checkout, without the generator having to be
+re-run. The patch currently in the folder — `api/_cards.generated.ts` showing as modified with zero
+bytes to stage — should disappear as part of this, not be committed.
+
+Logged 26 Aug 2026. **Ruled 26 Aug 2026 — build first thing next session.**
+
+---
+
+## O7. Merged branches pile up, and are now to be cleared
+
+**Maintainer's ruling, 26 Aug 2026: delete the merged branches, and turn on GitHub's
+delete-on-merge so they stop accumulating.**
+
+**Why there are any.** `main` is protected, so every change goes through a pull request and every
+pull request leaves its branch behind once merged. Nothing deletes them, so the list grows by one or
+two each session. None of them does any harm — every commit in them is already on `main` — but a long
+list of dead branches makes the live one harder to see, and makes it easy to branch from a stale
+one by mistake.
+
+**What was there when this was ruled**, all confirmed merged into `main` by `git branch --merged`:
+
+| Where | Branches |
+|---|---|
+| This machine | `docs/session-close-out`, `docs/bridge-vocab-design-canon`, `docs/step-sizing-ruling` |
+| GitHub | the same three, plus `docs/session-close-out-25-aug` and `feat/phoebe-step-4-cap-and-abstention-log` |
+
+**Two halves, and only one of them is repository work.**
+
+1. **Deleting the branches** — the local three and the remote five. Safe, and confirmed safe rather
+   than assumed: `git branch --merged main` lists every one of them, which means `main` already
+   holds every commit they carry.
+2. **Turning on delete-on-merge** — a live GitHub setting, in the repository's own settings, not a
+   file here. **Nothing in this repository enforces it and nothing here can confirm it**, the same
+   way branch protection (item O2) is recorded on the maintainer's word. It is the half that stops
+   this coming back.
+
+**No build tonight.** Ruled and recorded only. The branch holding this close-out is not one of the
+five — it is still open and becomes deletable once its own pull request merges.
+
+Logged and ruled 26 Aug 2026. **Open until both halves are done.**

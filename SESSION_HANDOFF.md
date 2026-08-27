@@ -41,8 +41,8 @@ the process rules (pull request #5, commit `8a7d52e`). Both are on `main`.
 accident above. **The cards are not stale**; that was checked character by character against both
 card files. The gate compares raw text, and this machine writes the file out with different line
 endings from the ones the gate expects, so it reports a difference git does not see. Re-running the
-generator settles it for now. **The durable fix is chosen but not built, and it needs a ruling** —
-see item O6.
+generator settles it for now, and that is a patch rather than a fix. **Ruled the same evening: pin
+the line endings, and build it first thing next session** — see item O6.
 
 **Two card drafts are deliberately uncommitted.** `activity-cards-vwba-DRAFT.md` and
 `definitions-cards-vwba-DRAFT.md` are drafted but not graded, and Phoebe is not given them. They stay
@@ -68,10 +68,9 @@ behind. None of them is doing anything now.
 `feat/phoebe-step-4-cap-and-abstention-log`.
 
 **Deleting them is safe** — every commit in them is on `main`, which is what `git branch --merged`
-above confirms. **It has not been done, and it is the maintainer's call.** Nothing breaks if they
-are left; the list simply grows by one or two each session. GitHub can also be set to delete a
-branch automatically when its pull request merges, which would stop the remote half of this from
-accumulating again.
+confirms. **Ruled on 26 Aug 2026: delete them, and turn on GitHub's delete-on-merge so they stop
+accumulating.** Neither half was done that evening; both are item O7. The branch carrying this
+close-out is not among the five — it joins them once its own pull request merges.
 
 ---
 
@@ -445,13 +444,15 @@ the old V, B and P identifiers are gone and every reference to them was updated 
 7. **Revisit the number twenty (item O1)** once there is real usage to reason from. It was chosen
    before any traffic existed. The daily counts and the abstention log are the first real evidence
    that will exist for that decision — there is none yet, so this is not due.
-8. **Rule on the line-endings fix (item O6).** Two ways to settle it are written up in that item.
-   The recommended one pins the line endings so every checkout on every machine agrees; the cheaper
-   one teaches the single gate to ignore them. **Small either way, and neither is built.** Until one
-   lands, a fresh checkout on Windows reports stale cards that are not stale.
-9. **Whether to delete the five merged branches.** Listed under *Branch tidy* above. Every commit in
-   them is on `main`, so deleting them loses nothing — but it is a repository decision, not the
-   engineer's, and none has been touched.
+8. **Turn on GitHub's delete-on-merge (item O7).** Ruled on 26 Aug 2026 along with deleting the
+   branches themselves. **This half is a live GitHub setting, not a repository file** — nothing here
+   enforces it and nothing here can confirm it, the same as branch protection (item O2). It is the
+   half that stops merged branches accumulating again; deleting the existing ones is the engineer's
+   half and is on the list below.
+
+**Two rulings came in on 26 Aug 2026 and are no longer waiting on anyone** — they are work, not
+decisions. Pin the line endings (item O6), first thing next session. Delete the merged branches
+(item O7). Both are recorded in [OPEN_ITEMS.md](./OPEN_ITEMS.md) with what "done" looks like.
 
 ---
 
@@ -472,9 +473,16 @@ that she cannot answer. Some of those gaps will turn out to be another agent's s
 missing card, which is exactly what the primer is for. Writing the primer from real questions is
 cheaper than writing it from guesses and then revising it.
 
-**One small thing may come first, if the maintainer rules on it: the line-endings fix (item O6).**
-It is a few minutes of work and it stops a gate crying wolf on every fresh Windows checkout. It is
-not a blocker for the primer and does not have to go first.
+**Two small things come first, both ruled on 26 Aug 2026 and neither built.**
+
+1. **Pin the line endings (item O6).** A `.gitattributes` file, minutes of work. Done means
+   `git status` clean and the card gate passing together, on a fresh checkout, with no need to
+   re-run the generator. The patch sitting in the folder now — `api/_cards.generated.ts` showing as
+   modified with nothing to stage — should go away as part of this rather than be committed.
+2. **Delete the merged branches (item O7)** — three here, five on GitHub, all confirmed merged.
+   Turning on GitHub's delete-on-merge is the maintainer's half and is on the waiting list above.
+
+**Neither blocks the primer** and both together are a short first hour.
 
 **Nothing is half-built.** Nothing was built this session. The accidental folder move is fully
 repaired and confirmed, the nine checks all pass, and no code changed. The only loose thread is the
