@@ -40,6 +40,15 @@ dist/
 *.local
 *.tsbuildinfo
 
+# Environment files — NOT for publication.
+# The CARTO basemaps key lives here locally and in the deployment platform's
+# settings; it is never committed. `.env.local` is already caught by *.local
+# above, but a plain `.env` was not, and a key is exactly the thing that ends
+# up in one by accident.
+.env
+.env.*
+!.env.example
+
 # Raw source data — downloaded, converted, never committed.
 # Only the simplified web-ready outputs in public/ are tracked.
 data-src/
