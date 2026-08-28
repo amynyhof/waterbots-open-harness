@@ -77,7 +77,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 
 | A4 | Phoebe returned an empty answer | Agents | one cause fixed 25 Aug 2026 — **not the only one**, see A6 |
 | A5 | Primer review against the abstention log | Agents | logged 27 Aug 2026, not due |
-| A6 | Phoebe fails about a third of ordinary questions | Agents | **top priority**, measured 28 Aug 2026 |
+| A6 | Phoebe fails about one request in six, and every fault fails late | Agents | **top priority**, diagnosed 28 Aug 2026 |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | open |
 | S2 | The shared chat layer | Surfaces | built through Level 2 |
 | S3 | Level 3 citation pop-out | Surfaces | out of scope — paid platform |
@@ -481,7 +481,7 @@ holds item O1's revisit of the number twenty.**
 
 ---
 
-## A6. Phoebe fails about a third of the time on an ordinary question
+## A6. Phoebe fails about one request in six, and every fault fails late
 
 **Top priority. Measured 28 Aug 2026, twenty requests, and it is live.**
 
@@ -559,6 +559,106 @@ limit and return a gateway error, so a visitor would see a failure rather than a
 **It is recorded here because it may share a cause with the faults above** and re-measuring it is
 part of this item's work. It does not belong to the primer until that has been checked.
 
+### The diagnosis, 28 Aug 2026 — seventy-five requests, instrumented
+
+**The relay was instrumented first** so that failures explain themselves: stop reason, content
+blocks, token usage, elapsed time, the parsed shape, and — for a reply of forty characters or fewer
+— the reply quoted in full. It is behind `PHOEBE_DIAGNOSE=1`, off by default, and is debt to remove
+when this item closes.
+
+**Seventy-five requests across three questions**, all against the deployed prompt.
+
+| Fault | Rate | State |
+|---|---|---|
+| Empty or near-empty reply | **9 in 75 — 12%** | **Explained** |
+| `API error 400 — Invalid request data` | 2 in 75 — 3% | **Explained, and its message is false** |
+| Budget exhausted at 16,000 | 2 in 75 — 3% | **Explained** |
+| Answers varying on identical input | — | **Mostly not a fault** |
+| Any failure | **13 in 75 — 17%** | |
+
+#### Fault 1 and 3 — she finishes on purpose and says nothing
+
+```
+stopReason: "end_turn"        output: 920 of 16000
+parsedKeys: [reply, citedCards, abstained]
+textPreview: {"reply": "","citedCards":[],"abstained": false}
+```
+
+**Not the budget** — 920 to 1,525 of 16,000, measured across five instances. **Not truncation** —
+`end_turn` with valid JSON. **Not a refusal** — no refusal stop reason in seventy-five requests.
+**Not a parsing fault** — it parses cleanly with the right keys.
+
+She spends 900 to 1,500 output tokens, most of it hidden thinking, then writes a well-formed answer
+whose reply is an empty string and whose `abstained` flag is **false**. She does not consider it a
+refusal. She simply produces nothing.
+
+**Fault 3 is the same event with a character in it.** Four replies of one to three characters were
+delivered to callers, same `end_turn`, same `abstained: false`, same zero cards. They are not empty,
+so the guard passed them. **What those characters were is still unknown** — the instrument that
+would quote them was added afterwards and has not caught one since. That gap is named rather than
+filled with a guess.
+
+#### Fault 2 — the "invalid request" is not our request
+
+Reproduced twice. The instrumentation recorded what was sent, and it is **identical to the thirteen
+requests that succeeded in the same run**:
+
+```
+model: claude-sonnet-5   maxTokens: 16000   effort: medium
+systemChars: 53810       messageCount: 1    messageChars: [163]
+```
+
+**And the timing settles it.** Both failures returned after **27.8 and 31.4 seconds**. A genuinely
+malformed request is rejected in milliseconds, because nothing has to be computed to know it is
+malformed. **A 400 arriving after half a minute of work is a failure during generation wearing the
+label of a client error.**
+
+That is why nothing in this repository explained it. There was nothing to explain.
+
+#### Fault 5 — the budget wall, which item A4 said did not exist
+
+Two requests spent **16,000 of 16,000** and stopped on `max_tokens`, taking **102.8 and
+109.5 seconds** against a normal call of about twenty. A4's headroom claim is corrected in place
+under the visible-corrections rule.
+
+**Five times slower, not slightly slower.** That is a runaway rather than a shortage of room, which
+is why raising the number is not the obvious answer.
+
+#### Fault 4 — mostly the measuring instrument, not Phoebe
+
+Answers do vary, and far less than first reported. **The first pass called anything under 800
+characters a failure**, which mislabelled twelve correct short answers to a simple question. The
+real variance is the empty-answer fault plus legitimate differences between questions.
+
+### The shape all of it shares
+
+**Every fault fails late.** Nine hundred to 1,500 tokens of thinking and then nothing; 28 to
+31 seconds and then a false 400; 102 seconds and then a wall. **None of them is a bad request, a bad
+card, or a bad schema** — the inputs are identical to the successes in every case measured.
+
+They are one thing failing to finish, which is why a fix has to touch how she thinks rather than
+what she is given.
+
+### What the difficulty of the question does
+
+| Question | Empty-answer rate |
+|---|---|
+| Wetland restoration — complex, six criteria | **7 in 30 — 23%** |
+| Community consultation — simple, one card | 1 in 15 |
+| Feasibility — the other card set | **0 in 15** |
+
+**The harder the question, the more often she says nothing.**
+
+### What a fix has to move, and how it is proved
+
+**The empty-answer rate is the number: 12% overall, 23% on hard questions.** The proof is the same
+seventy-five requests, the same three questions, the same instrument.
+
+**Budget exhaustion and the false 400 are separate faults with separate answers**, and a fix
+proposal must say for each whether a model or effort change can reach it, or whether it is upstream
+weather that can only be guarded against. Maintainer's ruling, 28 Aug 2026: **if it is weather, the
+guard proposal — including the near-empty hole — rides next.**
+
 ### What this item is, and is not
 
 **It is a diagnosis, not a fix.** Finding the faults comes first, and any fix is proposed separately
@@ -578,7 +678,7 @@ clean, and were reported as a clean baseline. They were small samples and luck. 
 was wrong, and reporting it as a baseline was wrong**, which is why this item carries the raw twenty
 rather than a summary.
 
-Opened 28 Aug 2026. **Top priority, diagnosis not started.**
+Opened 28 Aug 2026. **Diagnosed 28 Aug 2026. Fix proposal owed; no fix attempted.**
 
 ---
 
