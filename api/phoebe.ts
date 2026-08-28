@@ -23,6 +23,7 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 import { recordAbstention } from './_abstentions.js';
+import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
 import { countOneMessage, timeUntilReset } from './_cap.js';
 import { RESPONSE_SCHEMA, SYSTEM_PROMPT } from './_systemPrompt.js';
 
@@ -426,6 +427,33 @@ export async function POST(req: Request): Promise<Response> {
       problem(
         502,
         'Phoebe returned an empty answer — she did not say anything at all. Nothing has been recorded. This is a fault on our side rather than something you did, and asking again usually works.'
+      )
+    );
+  }
+
+  /* An answer of one to three characters is the empty answer wearing a
+     character. validate() refuses a reply that is empty once trimmed; measured
+     on 28 Aug 2026, four replies of one to three characters got past it and
+     reached callers. Refused here for the same reason and with the same honest
+     message — see api/_reply.ts for where the number comes from and why this
+     is not the schema minimum item A4 refused. */
+  if (isDegenerateReply(answer.reply)) {
+    diag('degenerate-reply', {
+      stopReason: response.stop_reason,
+      replyChars: answer.reply.length,
+      reply: JSON.stringify(answer.reply),
+      citedCards: answer.citedCards?.length ?? 0,
+      abstained: answer.abstained,
+      output: response.usage.output_tokens,
+      floor: MIN_REPLY_CHARS,
+    });
+    console.error(
+      `phoebe: returned an answer too short to be one — ${answer.reply.trim().length} characters against a floor of ${MIN_REPLY_CHARS}, ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens`
+    );
+    return undelivered(
+      problem(
+        502,
+        'Phoebe returned an answer with almost nothing in it — a few characters and no substance. Nothing has been recorded. This is a fault on our side rather than something you did, and asking again usually works.'
       )
     );
   }
