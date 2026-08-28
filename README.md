@@ -108,6 +108,7 @@ serving a public endpoint with no limit.
 | `KV_REST_API_URL` and `KV_REST_API_TOKEN` | The shared store that holds the daily count and the abstention log. `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` are read as an alternative pair. |
 | `PHOEBE_VISITOR_SALT` | A long random secret mixed into the scrambled visitor identity. **Set once and never changed** — changing it makes every visitor look new and resets every count to zero. |
 | `PHOEBE_LOG_KEY` | The secret that opens `/api/abstentions`. Without it that address returns nothing. |
+| `VITE_CARTO_KEY` | The basemap key. **Read at build time, not at runtime** — Vite bakes `VITE_`-prefixed settings into the bundle when it builds, so it must be present before the build runs. Without it the map still works and every tile is watermarked. |
 
 No visitor's network address is ever stored. It is scrambled together with the secret above and
 only the result is kept, under a key that expires when the day does. The abstention log holds no
@@ -115,12 +116,14 @@ visitor identifier at all, so a question can never be traced back to a person.
 
 ### Confirming the build
 
-Nine checks, all of which must pass. Three guard against faults that nothing else here can see:
+Ten checks, all of which must pass. Four guard against faults that nothing else here can see:
 `check-attribution` reads the built bundle rather than the source, so it catches a refactor that
 drops a required licence statement while leaving the site looking perfectly correct;
 `check-api-exports` catches a relay that would build cleanly and then answer nothing once deployed;
-and `check-cap` proves the twentieth message passes and the twenty-first is refused, which would
-otherwise cost twenty-one real messages to confirm by hand.
+`check-cap` proves the twentieth message passes and the twenty-first is refused, which would
+otherwise cost twenty-one real messages to confirm by hand; and `check-basemap-key` reads the built
+bundle for the basemap key, because a build without one produces a map that works, looks healthy,
+and is watermarked on every tile.
 
 ```bash
 node scripts/check-basins.mjs
@@ -131,7 +134,7 @@ node scripts/check-api-exports.mjs
 node scripts/check-visitor-id.mjs
 node scripts/check-cap.mjs
 node scripts/build-card-module.mjs --check
-npm run build && node scripts/check-attribution.mjs
+npm run build && node scripts/check-attribution.mjs && node scripts/check-basemap-key.mjs
 ```
 
 `check-cap` runs the real relay code against a **stand-in store** on your own machine — the
@@ -222,6 +225,15 @@ is held here.
 
 Map tiles carry their own attribution, displayed in the map's attribution control alongside the
 above. Leaflet's attribution control is always enabled.
+
+Tiles come from **CARTO**, on their Voyager style, and CARTO's free tier requires an API key and
+requires that the CARTO and OpenStreetMap attribution stays visible. That is what the free tier is
+in exchange for, so the attribution control is not decoration here — it is a licence condition,
+and `check-attribution` fails the build if either credit goes missing.
+
+**The key is a build-time setting** (`VITE_CARTO_KEY`) and is not held in this repository. A build
+without it produces a working map with every tile watermarked, which is why
+`check-basemap-key.mjs` reads the built bundle and fails rather than letting it ship.
 
 ## Theme
 
