@@ -35,9 +35,10 @@ this session and is now the rule.
 | 4 | Brightness pull-up — two card surfaces to full white (item S8) | #11 |
 | 5 | The basemap keyed and moved to Voyager (item O9) | #12 |
 
-**One thing is written and waiting: the agent handoff primer, step one.** `agent-primer.md`, pull
-request **#13, open and not merged.** The maintainer's in-depth read is next session. **No agent has
-the primer**, and the document says so in its own second section.
+**A sixth thing landed after the close: the agent handoff primer, step one.** `agent-primer.md`,
+pull request **#13, merged 28 Aug 2026** after the maintainer read it in full. **No agent has the
+primer yet** — writing it and wiring it into the prompts are two steps, and the document says so in
+its own second section.
 
 **Ten checks now, not nine.** `check-basemap-key` joined them.
 
@@ -51,16 +52,12 @@ already worked unprompted. Only `main` remains, here and on GitHub.
 
 ## What is open right now
 
-**Two pull requests are open at this close**, which is unusual and deliberate:
+**Nothing is waiting on a review.** Two pull requests were open at the close of 27 Aug — the primer
+and this refresh — and both are merged.
 
-| Pull request | What | State |
-|---|---|---|
-| **#13** | The agent handoff primer, step one | Awaiting the maintainer's in-depth read |
-| **The close-out** | This refresh | Awaiting merge |
-
-**#13 is read before it is merged, not after.** Every sentence in `agent-primer.md` is a sentence an
-agent will eventually be allowed to say, which is why the maintainer's read is the eyeball for it
-rather than a browser check.
+**#13 was read before it was merged, not after.** Every sentence in `agent-primer.md` is a sentence
+an agent will eventually be allowed to say, which is why the maintainer's read was the eyeball for
+it rather than a browser check.
 
 ---
 
@@ -76,7 +73,7 @@ Vercel builds on every push to that branch.
 | Phoebe, the Eligibility and Feasibility agent | **Live and answering, capped at 20 messages a day** |
 | Bridget, the map's agent | Named in the map's dock; her chat is not built |
 | Shared chat layer | Live, built through Level 2 |
-| Agent handoff primer | **Written, not merged, and inherited by nobody** |
+| Agent handoff primer | **Written and merged; inherited by nobody yet** |
 | Project points | Not started — blocked on registry data (item D2) |
 
 ### The map
@@ -308,22 +305,21 @@ BRAND.md and UI_REFERENCE.md are gitignored and never publish.
 
 ## Waiting on the maintainer
 
-1. **Read and merge pull request #13**, the agent handoff primer. The in-depth read is the eyeball.
-2. **Approve BRAND.md on the production side.** The brand alignment document arrives here by the
+1. **Approve BRAND.md on the production side.** The brand alignment document arrives here by the
    maintainer's hand once that happens — rules-as-rules, the way the process rules and the design
    canon did. **Nothing here waits on it and nothing is anticipated.**
-3. **The BRAND.md amendment is still unwritten.** Anemone is now Phoebe's and Anemone Light is a new
+2. **The BRAND.md amendment is still unwritten.** Anemone is now Phoebe's and Anemone Light is a new
    brand value, but BRAND.md still records both only as unclaimed spares. **Not yet logged as an
    open item** — it needs a family.
-4. **`brand/assets/bots/phoebe-card.svg` is still Plum and Iris.** Unpublished and untracked, so
+3. **`brand/assets/bots/phoebe-card.svg` is still Plum and Iris.** Unpublished and untracked, so
    nothing ships wrong. **Not yet logged as an open item** — it needs a family.
-5. **Bridget's identity colour.** `#7FD5DF` is still provisional, reaffirmed as provisional on
+4. **Bridget's identity colour.** `#7FD5DF` is still provisional, reaffirmed as provisional on
    27 Aug 2026, and it now carries a rider: after the brightness work, both agent colours are
    re-reviewed against the status taxonomy, because **an agent colour must never read as a project
    status and her soft Surf sits near *Live***.
-6. **Grading the two card drafts** — Activity (Appendix C) and Definitions (the glossary). Until
+5. **Grading the two card drafts** — Activity (Appendix C) and Definitions (the glossary). Until
    they are graded they stay uncommitted and Phoebe is not given them.
-7. **Whether the export copies should be produced by a script rather than by hand (item O8).** The
+6. **Whether the export copies should be produced by a script rather than by hand (item O8).** The
    ordering half is ruled and done; this half is open and unhurried.
 
 **Three things that used to sit on this list are not due**, and it is worth saying why rather than
@@ -346,14 +342,11 @@ folder moved out of place, uncommitted and unexplained.
 
 **Then, in order:**
 
-1. **The maintainer reads and merges pull request #13.** Nothing in the primer moves until she has.
-2. **Walk the landing** — production, which she has already walked once cold, and whatever she wants
-   to see again.
-3. **Step two of the primer**, once #13 is merged: wire it into `api/_systemPrompt.ts` using the
-   card sets' machinery — committed source, generated module, staleness gate — and edit
+1. **Step two of the primer.** Wire it into `api/_systemPrompt.ts` using the card sets' machinery —
+   committed source, generated module, staleness gate — and edit
    [AGENT_RULES.md](./AGENT_RULES.md) **in the same step**, because it says today that no shared
    primer exists.
-4. **The brand alignment document**, if it has arrived by the maintainer's hand.
+2. **The brand alignment document**, if it has arrived by the maintainer's hand.
 
 **How step two is confirmed:** not by reading the diff, but by asking Phoebe four questions on a
 running server. A map question should produce the primer's Bridget sentence and send the person to

@@ -73,7 +73,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | canon, ruled 26 Aug 2026 |
 | A1 | Phoebe abstention loop | Agents | built 25 Aug 2026 |
 | A2 | Final agent staffing | Agents | settled 24 Aug 2026 |
-| A3 | Agent handoff primer | Agents | step one written 27 Aug 2026, awaiting review |
+| A3 | Agent handoff primer | Agents | step one merged 28 Aug 2026; step two proposed |
 
 | A4 | Phoebe returned an empty answer | Agents | diagnosed and fixed 25 Aug 2026 |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | open |
@@ -268,9 +268,9 @@ reviewed, then inherited by each agent's prompt the way
 
 ### Step one written, 27 Aug 2026 — the document
 
-**`agent-primer.md` exists.** Pull request #13, open and not merged at the close of this session;
-the maintainer's in-depth read is the eyeball for it, because every sentence in it is a sentence an
-agent will eventually be allowed to say.
+**`agent-primer.md` is on `main`.** Written 27 Aug 2026, read in full by the maintainer and merged
+as pull request #13 on 28 Aug 2026. Her read was the eyeball for it, rather than a browser check,
+because every sentence in it is a sentence an agent will eventually be allowed to say.
 
 **Writing the document and wiring it into the prompts are two steps**, and only the first has
 happened. **No agent has the primer.** The file says so in its own second section rather than
@@ -310,8 +310,7 @@ is no shared primer and that every handoff but one is not live. That becomes unt
 Phoebe inherits the primer, and shipping a capability while the published rulebook denies it is the
 drift the one-home rule exists to prevent.
 
-Opened 22 Aug 2026. **Step one written 27 Aug 2026 and awaiting review; step two proposed, not
-approved.**
+Opened 22 Aug 2026. **Step one merged 28 Aug 2026; step two proposed and not approved.**
 
 ## A4. Phoebe returned an empty answer — diagnosed and fixed
 

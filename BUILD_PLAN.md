@@ -97,7 +97,7 @@ the maintainer walked and approved. A new check reads the built bundle and fails
 
 ## Building next — step two of the agent handoff primer
 
-**Step one is written and waiting on the maintainer's read: `agent-primer.md`, pull request #13.**
+**Step one is done: `agent-primer.md` is on `main`, merged as pull request #13 on 28 Aug 2026.**
 It is the document [AGENT_RULES.md](./AGENT_RULES.md) names as missing when it publishes rung 2 of
 the abstention ladder as *partly live*. **No agent has it yet.**
 
