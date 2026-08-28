@@ -33,7 +33,7 @@ import { RESPONSE_SCHEMA, SYSTEM_PROMPT } from './_systemPrompt.js';
  * everything else. If abstention discipline proves weak under testing, the
  * upgrade is this one line — 'claude-opus-5'.
  */
-const MODEL = 'claude-sonnet-5';
+const MODEL = 'claude-opus-5';
 
 /**
  * The output budget for one answer.
@@ -323,6 +323,12 @@ export async function POST(req: Request): Promise<Response> {
      rather than on its own. */
   diag('response', {
     ms: Date.now() - calledAt,
+    /* Which settings produced this number. Added after a measurement run was
+       nearly attributed to the wrong model: a second dev server could not take
+       the port, exited, and the requests went to the one still running. A
+       measurement that does not say what produced it is not a measurement. */
+    model: MODEL,
+    effort: EFFORT,
     stopReason: response.stop_reason,
     blocks: response.content.map((b) => b.type),
     usage: {
