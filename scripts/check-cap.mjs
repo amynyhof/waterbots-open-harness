@@ -236,6 +236,37 @@ expect(
 );
 
 /* ---------------------------------------------------------------------------
+   A retry inside one message must not cost two.
+
+   The relay retries once when a 400 arrives too late to be a malformed
+   request — item A6, 28 Aug 2026. The cap is charged once, before the model is
+   called, and the retry happens after that point, so a retried message must
+   still cost exactly one. This is checked rather than reasoned about: the
+   whole reason the retry is safe is a claim about where the counting sits, and
+   a claim about the code is not the code.
+--------------------------------------------------------------------------- */
+
+console.log('\n  A retry inside one message\n');
+
+const retryKeysBefore = new Set(numbers.keys());
+const retried = await countOneMessage(ask('192.0.2.90'), NOW);
+const retryKey = [...numbers.keys()].find((key) => !retryKeysBefore.has(key));
+
+expect(
+  'one visitor message is charged once, whatever happens after',
+  numbers.get(retryKey) === 1,
+  `charged ${numbers.get(retryKey)} times for one message`
+);
+
+/* Both attempts failing is one undelivered message, so one refund. */
+await retried.refund();
+expect(
+  'a message that fails on both attempts is given back once, not twice',
+  numbers.get(retryKey) === 0,
+  `read ${numbers.get(retryKey)} after the refund`
+);
+
+/* ---------------------------------------------------------------------------
    When the store is missing, and where that matters.
 --------------------------------------------------------------------------- */
 

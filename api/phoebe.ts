@@ -113,6 +113,40 @@ const EFFORT = 'medium' as const;
  *
  * REMOVE THIS once item A6 reports. It is debt, and it is named as debt.
  */
+/**
+ * How long the relay waits for the model before giving up.
+ *
+ * IT HAD NONE. The call was made with no timeout at all: on a laptop that is
+ * an unbounded wait, and on the platform it means the deployment's own
+ * function limit ends the request, so a visitor gets a gateway error instead
+ * of the honest message this relay is careful to give everywhere else. A
+ * default nobody wrote down is a decision nobody made — this repository's own
+ * lesson from item A4, unapplied here until now.
+ *
+ * WHERE 120 SECONDS COMES FROM. Measured 28 Aug 2026 over seventy-five
+ * requests on the shipped model: median call 8.2 seconds, slowest complete
+ * answer 50. Two failures ran to about 100 seconds before hitting the output
+ * budget, and eight calls at a lower effort setting passed four minutes.
+ * 120 leaves more than double the headroom over anything that has ever
+ * succeeded, and cuts a runaway off long before a visitor gives up.
+ */
+const CALL_TIMEOUT_MS = 120_000;
+
+/**
+ * A 400 that arrives late is not a bad request.
+ *
+ * Measured 28 Aug 2026: two requests came back `400 Invalid request data`
+ * after 27.8 and 31.4 seconds, with parameters identical to the thirteen that
+ * succeeded in the same run. **A genuinely malformed request is rejected in
+ * milliseconds, because nothing has to be computed to know it is malformed.**
+ * A 400 after half a minute of work is a failure during generation wearing the
+ * label of a client error.
+ *
+ * So one retry, and deliberately narrow: only a 400, and only a late one.
+ * Retrying a real 400 would be a bug, and this cannot become one.
+ */
+const LATE_400_MS = 5_000;
+
 const DIAGNOSE = process.env.PHOEBE_DIAGNOSE === '1';
 
 function diag(label: string, fields: Record<string, unknown>): void {
@@ -282,22 +316,50 @@ export async function POST(req: Request): Promise<Response> {
 
   let response: Anthropic.Message;
   const calledAt = Date.now();
-  try {
-    response = await client.messages.create({
-      model: MODEL,
-      max_tokens: MAX_TOKENS,
-      /* The cache breakpoint. Everything above it is byte-identical between
-         requests; the conversation below it is not cached. */
-      system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
-      messages: clean,
-      /* Stated rather than inherited. This model thinks adaptively whether or
-         not it is asked to, and that thinking is spent from MAX_TOKENS above. */
-      thinking: { type: 'adaptive' },
-      output_config: {
-        effort: EFFORT,
-        format: { type: 'json_schema', schema: RESPONSE_SCHEMA },
+
+  /* One attempt, and a second only for a late 400 — see LATE_400_MS. The
+     retry is inside a single visitor message: the cap was charged before this
+     point and is refunded by undelivered() if both attempts fail, so a retry
+     never costs anyone two of their twenty. Confirmed in
+     scripts/check-cap.mjs rather than assumed. */
+  const callModel = (): Promise<Anthropic.Message> =>
+    client.messages.create(
+      {
+        model: MODEL,
+        max_tokens: MAX_TOKENS,
+        /* The cache breakpoint. Everything above it is byte-identical between
+           requests; the conversation below it is not cached. */
+        system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
+        messages: clean,
+        /* Stated rather than inherited. This model thinks adaptively whether
+           or not it is asked to, and that thinking is spent from MAX_TOKENS
+           above. */
+        thinking: { type: 'adaptive' },
+        output_config: {
+          effort: EFFORT,
+          format: { type: 'json_schema', schema: RESPONSE_SCHEMA },
+        },
       },
-    });
+      { timeout: CALL_TIMEOUT_MS }
+    );
+
+  try {
+    try {
+      response = await callModel();
+    } catch (first) {
+      const status = pick(first, 'status');
+      const elapsed = Date.now() - calledAt;
+      const lateFourHundred = status === 400 && elapsed > LATE_400_MS;
+      if (!lateFourHundred) throw first;
+      diag('late-400-retry', {
+        firstAttemptMs: elapsed,
+        requestId: pick(first, 'request_id') ?? pick(first, 'requestID'),
+      });
+      console.error(
+        `phoebe: a 400 arrived after ${(elapsed / 1000).toFixed(1)}s, which is too late to be a malformed request — retrying once`
+      );
+      response = await callModel();
+    }
   } catch (error) {
     /* Fault 2 of item A6 is an API error 400 on our own request. This records
        what we sent, so that fault is explicable rather than mysterious. */
@@ -587,6 +649,13 @@ function fromApiError(error: unknown): Response {
     return problem(
       429,
       'Phoebe is handling more questions than she can keep up with at the moment. Waiting a minute usually clears it.'
+    );
+  }
+  if (error instanceof Anthropic.APIConnectionTimeoutError) {
+    console.error(`phoebe: gave up waiting after ${CALL_TIMEOUT_MS / 1000}s`);
+    return problem(
+      504,
+      'Phoebe took too long to answer that one and we stopped waiting. Nothing has been recorded. This is a limit on our side rather than something you did — asking again, or in smaller pieces, usually gets through.'
     );
   }
   if (error instanceof Anthropic.APIConnectionError) {
