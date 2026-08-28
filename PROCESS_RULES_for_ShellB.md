@@ -112,6 +112,46 @@ ones are not reformatted.
 - Mistakes are self-reported honestly and immediately. Amy makes all
   rulings.
 
+## Visible corrections over rewritten history
+
+**Maintainer's ruling, 28 Aug 2026.** It had been practised on both sites for a
+while and was written down nowhere, which is how it came to be applied by habit
+rather than by rule. It is law here now.
+
+> **Visible corrections over rewritten history — a false line in any tracked
+> document is struck through and corrected in place, never silently rewritten.
+> The record keeps what was believed and when it was corrected.**
+
+**Why it is worth a rule.** A document that quietly changes its mind teaches its
+reader to trust it less, not more. Once a reader knows that a line may have been
+different yesterday with no sign of it, every line has to be checked against
+something else — and the point of a written record is that it does not have to
+be.
+
+**It also carries the reason a thing was wrong**, which is usually worth more
+than the correct value. "This said 8,192 until 26 Aug 2026" tells a later
+session that a number was left behind when a fault was fixed. Replacing 8,192
+with 16,000 tells them nothing.
+
+**What it applies to.** Every tracked document: the rulebooks, the open items,
+the build plan, the handoff, the card sets, and code comments that state a fact
+about the system. **It is about corrections, not about editing.** Rewriting a
+paragraph that was merely unclear, tightening prose, or reorganising a file are
+ordinary edits and need none of this. The rule bites when something the document
+*asserted* turns out to be untrue.
+
+**How it is done.** Strike the false words rather than deleting them, state what
+is true, and date the correction. A short note is enough; this is not a ceremony.
+
+**What it does not license.** It is not a reason to keep stale material lying
+around, and it does not override *docs never drift* in
+[CLAUDE.md](./CLAUDE.md). A corrected line is still corrected — the strike marks
+where the record moved, and the true statement stands next to it.
+
+**Where a correction is large enough to be its own thing**, it becomes an open
+item and the false record points at it, rather than the item's whole story being
+retold in two places.
+
 ## Open items and families
 
 - Every open item belongs to a family. A new item joins a family or
