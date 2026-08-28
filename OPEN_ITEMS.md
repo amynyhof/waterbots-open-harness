@@ -397,9 +397,26 @@ said nothing" and "she said something unreadable" are different things and the o
 the second; and every failure now logs the token spend against the budget.
 
 **Confirmed after**, on the same questions: the Turkana message fell from 4,194 to 977 and 2,088
-across two runs, and worst-observed headroom went from 51% of the budget to 13%. Abstention
+across two runs, and ~~worst-observed headroom went from 51% of the budget to 13%~~. Abstention
 discipline held — three questions with no covering card all abstained cleanly. A substantive answer
 still placed all six eligibility markers inline.
+
+> **Corrected 28 Aug 2026, under the visible-corrections rule.** ~~Worst-observed headroom went from
+> 51% of the budget to 13%.~~ **There is no headroom. The ceiling is reached.**
+>
+> Measured over sixty requests on 28 Aug 2026: **two requests spent 16,000 of 16,000 output tokens
+> and stopped on `max_tokens`.** They took **102.8 and 109.5 seconds**, against a normal call of
+> about twenty.
+>
+> **The struck sentence was true of four requests in August and was written as though it were true
+> of the budget.** Four runs of one short question are not a worst case; they are four runs. This
+> item's own lesson — *measured rather than reasoned* — was applied to the fix and not to the
+> claim about the fix.
+>
+> **Budget exhaustion is now its own fault with its own answer**, carried by item A6 alongside the
+> empty answers. Raising the number again is not proposed here: at 16,000 the two runs that hit the
+> ceiling were also five times slower than normal, which suggests something is running away rather
+> than something needing more room.
 
 **The two questions this item asked are both answered.**
 
@@ -422,7 +439,8 @@ characters is not empty. The principle held; the guard did not implement it. Tha
 A6.
 
 Opened 24 Aug 2026. ~~Diagnosed and fixed 25 Aug 2026.~~ **One cause diagnosed and fixed
-25 Aug 2026; reopened in substance by item A6 on 28 Aug 2026.**
+25 Aug 2026; reopened in substance by item A6 on 28 Aug 2026, and corrected twice — the "fixed"
+claim on 28 Aug, and the headroom claim the same day.**
 
 ---
 
