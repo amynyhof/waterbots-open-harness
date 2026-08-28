@@ -7,6 +7,50 @@ reading this.
 
 ## How a session opens
 
+**Maintainer's ruling, 28 Aug 2026. The close-out has a ritual; the opening now has one too.**
+**Every session opens in two parts, in order.**
+
+### Part 1 — Orientation
+
+**No building happens in Part 1.** Not a fix, not a proposal, not a branch.
+
+1. **Read the opening documents**, listed below.
+2. **Confirm `main` equals `origin`**, with the two commit identifiers compared and shown, not
+   assumed.
+3. **Report in plain English:** where we left off, what is in flight, what waits on the
+   maintainer's word, and **anything that changed underneath us** since the last session.
+4. **Kill stray dev servers.**
+
+**"Anything that changed underneath us" is the one people skip.** A pull request merged after the
+last close, a setting altered on the platform, a file moved by hand, a provider that stopped being
+free. Every one of those has happened here, and each was found late.
+
+### Part 2 — The plan, then the batch
+
+**Propose the session's plan**: the steps in order, each sized by the standing rule above, marking
+which need a ruling and which are already approved.
+
+**The maintainer approves the plan once. An approved plan is a batch approval.**
+
+**Build through it without stopping between steps** — a commit per step, a pull request per step,
+and her eyeball wherever a step's own gate requires one.
+
+**Interrupt only for three things:**
+
+1. **A ruling that is genuinely needed**, and was not anticipated in the plan.
+2. **A surprise that changes the plan** — not a difficulty, a change of shape.
+3. **A gate failure.**
+
+**This does not loosen anything else.** A step is still sized by risk. A browser check is still a
+browser check. Nothing merges without the maintainer. What the batch removes is the pause between
+steps that were already agreed, not any of the gates inside them.
+
+**The close-out still runs once, at the end.**
+
+---
+
+### The opening documents
+
 Read six documents before doing anything else, every new session:
 [CLAUDE.md](./CLAUDE.md), **this file**,
 [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md),
