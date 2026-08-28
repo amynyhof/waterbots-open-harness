@@ -77,7 +77,8 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 
 | A4 | Phoebe returned an empty answer | Agents | one cause fixed 25 Aug 2026 — **not the only one**, see A6 |
 | A5 | Primer review against the abstention log | Agents | logged 27 Aug 2026, not due |
-| A6 | Phoebe fails about one request in six, and every fault fails late | Agents | **top priority**, diagnosed 28 Aug 2026 |
+| A6 | Phoebe fails about one request in six, and every fault fails late | Agents | fixed 28 Aug 2026 — 12% to 2%; open on the guard scope |
+| A7 | An abstention cited a card | Agents | logged 28 Aug 2026, waiting on a recurrence |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | open |
 | S2 | The shared chat layer | Surfaces | built through Level 2 |
 | S3 | Level 3 citation pop-out | Surfaces | out of scope — paid platform |
@@ -659,6 +660,54 @@ proposal must say for each whether a model or effort change can reach it, or whe
 weather that can only be guarded against. Maintainer's ruling, 28 Aug 2026: **if it is weather, the
 guard proposal — including the near-empty hole — rides next.**
 
+### The fix, ruled and shipped 28 Aug 2026 — Opus 5
+
+**Four measured runs, sixty to seventy-five requests each, same three questions, same instrument.**
+
+| | Sonnet · medium<br>morning | Sonnet · low<br>Option A | Sonnet · medium<br>fresh | **Opus · medium**<br>**Option B** |
+|---|---|---|---|---|
+| Empty answers, 60 | 8 — 13% | 6 — 10% | 7 — 12% | **1 — 2%** |
+| Empty, hard question | 7 in 30 — 23% | 5 in 30 — 17% | 3 in 30 — 10% | **1 in 30 — 3%** |
+| Calls over 240 seconds | 0 | **8** | 0 | **0** |
+| Budget wall | 2 | 0 | 0 | 1 |
+| Median call | ~20s | 7.1s | 14.6s | **8.2s** |
+| Mean output tokens | ~2,000 | 558 | 1,086 | **705** |
+| Cards on hard answers | — | 5.0 | 4.1 | **4.8** |
+| Abstention discipline | — | 15 of 15 | — | **15 of 15** |
+
+**Option A was refused.** It barely moved the rate and produced eight calls over four minutes where
+a same-hour `medium` baseline produced none. Maintainer's ruling: *a four-minute wait is worse than
+the fault it barely dents.*
+
+**Option B was ruled and shipped.** It clears every condition set for it: the hard-question rate
+falls from 23% to 3%, discipline holds at fifteen of fifteen, citation improves rather than
+degrades, and it is faster than the baseline rather than slower.
+
+**The upgrade was the one line the code had named since 21 Aug 2026**, which said to raise the model
+if abstention discipline proved weak. **Discipline was never weak — the answer was.** The same line
+fixed it.
+
+**Cost:** Opus is dearer per token and produced fewer tokens, 705 against 1,086, and answered
+faster. The net is the maintainer's to weigh and is not guessed at here.
+
+### A measurement caveat that outlives this item
+
+**The hard-question rate swung from 23% to 10% on the identical configuration four hours apart.**
+Same model, same effort, same question, same instrument.
+
+**A thirty-request sub-sample cannot carry a decision.** The sixty-request figure is the steady one
+— 13% and 12% on two separate `medium` runs — and the ruling rests on that. Framing 23% as a stable
+target was overconfident, and it is recorded here so the next comparison is sized properly.
+
+### The budget wall is ours, and it is banked
+
+**Effort reaches it.** `low` produced none in seventy-five; `medium` produced two on Sonnet and one
+on Opus. That settles the question the fix proposal owed: **the wall is not upstream weather.**
+
+**It is not fixed and Opus does not remove it** — one request in seventy-five still spent 16,000 of
+16,000. **It belongs to the guard proposal's scope**, along with the near-empty hole and the false
+`API error 400`, which remains weather.
+
 ### What this item is, and is not
 
 **It is a diagnosis, not a fix.** Finding the faults comes first, and any fix is proposed separately
@@ -678,7 +727,38 @@ clean, and were reported as a clean baseline. They were small samples and luck. 
 was wrong, and reporting it as a baseline was wrong**, which is why this item carries the raw twenty
 rather than a summary.
 
-Opened 28 Aug 2026. **Diagnosed 28 Aug 2026. Fix proposal owed; no fix attempted.**
+Opened 28 Aug 2026. **Diagnosed, fixed and shipped 28 Aug 2026 — Opus 5, 12% to 2%. Open on what
+the fix does not reach: the budget wall, the near-empty hole, and the false 400, all of which go to
+the guard proposal.**
+
+---
+
+## A7. An abstention cited a card, once
+
+**Logged 28 Aug 2026. Small, and waiting on a recurrence rather than on anyone.**
+
+**What happened.** During the Option B measurement of item A6, fifteen questions were asked that no
+card covers, to confirm abstention discipline. **All fifteen abstained cleanly.** One of them —
+*"How much does it cost to drill a borehole in Kenya?"* — abstained **and cited one card**.
+
+**It is not a discipline failure.** She abstained, which is the correct outcome, and she invented
+nothing. A citation alongside an abstention may even be right: an agent may point at what she *does*
+cover while declining what she does not.
+
+**What is not known is why**, because the instrument recorded the card count and not the text. Asked
+again immediately afterwards, the same question abstained with no citation at all, so it does not
+reproduce on demand.
+
+**Why it is logged rather than chased.** One occurrence in fifteen, with a correct outcome, does not
+justify spending on a hunt. **And the instrument now captures the reply text**, so the next
+occurrence explains itself rather than needing to be re-measured — which is the whole reason the
+capture was added.
+
+**What "done" looks like:** the next time it happens, read the text. If she is pointing at what she
+covers, that is good behaviour and this item closes as a false alarm. If the citation supports
+something she declined to say, that is a real fault and it becomes its own item.
+
+Logged 28 Aug 2026. **Open, not due, and waiting on a recurrence.**
 
 ---
 
