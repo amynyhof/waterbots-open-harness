@@ -73,7 +73,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | canon, ruled 26 Aug 2026 |
 | A1 | Phoebe abstention loop | Agents | built 25 Aug 2026 |
 | A2 | Final agent staffing | Agents | settled 24 Aug 2026 |
-| A3 | Agent handoff primer | Agents | logged, no build |
+| A3 | Agent handoff primer | Agents | step one written 27 Aug 2026, awaiting review |
 
 | A4 | Phoebe returned an empty answer | Agents | diagnosed and fixed 25 Aug 2026 |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | open |
@@ -85,7 +85,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S5 | The citation line wraps awkwardly in the narrow dock | Surfaces | cosmetic, polish later |
 | S6 | The dev relay resolves imports differently from production | Surfaces | open |
 | S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026, no build |
-| S8 | Brightness pull-up to BRAND.md's published Frost values | Surfaces | canon received 27 Aug 2026, needs a proposal; carries a colour re-review rider |
+| S8 | Brightness pull-up to BRAND.md's published Frost values | Surfaces | shipped 27 Aug 2026; open only on the colour re-review rider |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
@@ -94,9 +94,10 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | O4 | Cosmetic and housekeeping items | Operations | left alone deliberately |
 
 | O5 | The engineer pushed without a commit word, twice | Operations | logged 24 Aug 2026 |
-| O6 | The card gate reports stale cards that are not stale | Operations | ruled 26 Aug 2026, build first next session |
-| O7 | Merged branches pile up, and are now to be cleared | Operations | ruled 26 Aug 2026, not yet done |
-| O8 | The export step in the close-out ritual | Operations | ruled 27 Aug 2026, first half done |
+| O6 | The card gate reports stale cards that are not stale | Operations | fixed 27 Aug 2026, closed |
+| O7 | Merged branches pile up, and are now to be cleared | Operations | done 27 Aug 2026, closed |
+| O8 | The export step in the close-out ritual | Operations | ruled 27 Aug 2026, open on the script question |
+| O9 | The basemap now needs a key, and has a ceiling | Operations | live 27 Aug 2026, standing dependency |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
 > reference to them elsewhere in the repository was updated in the same edit rather than left to
@@ -265,7 +266,52 @@ The output is the primer as a written document, in the same posture as the card 
 reviewed, then inherited by each agent's prompt the way
 [AGENT_RULES.md](./AGENT_RULES.md) already is.
 
-Opened 22 Aug 2026. **Logged only — no build.**
+### Step one written, 27 Aug 2026 — the document
+
+**`agent-primer.md` exists.** Pull request #13, open and not merged at the close of this session;
+the maintainer's in-depth read is the eyeball for it, because every sentence in it is a sentence an
+agent will eventually be allowed to say.
+
+**Writing the document and wiring it into the prompts are two steps**, and only the first has
+happened. **No agent has the primer.** The file says so in its own second section rather than
+leaving it to be discovered, because a document describing handoffs nobody has could otherwise read
+as a capability.
+
+**Scope is a rule, not a list.** Maintainer's correction, 27 Aug 2026: *Bridget covers the basin map
+and everything plotted on it.* Today that is basins and water stress; when organisations, projects
+or funder locations are plotted they become hers on the day they appear, with no rewrite. A list
+would be stale the moment the product grew, and an agent working from a stale list would either
+abstain on something it now covers or claim something it does not.
+
+**Three things the reading turned up that this item had not named:**
+
+1. **Bridget cannot receive a handoff** — her chat is not built. Pointing at her has to mean the map
+   itself, or the primer fails honest states at the exact moment it was meant to help.
+2. **The primer is never cited.** Citation markers belong on card content; the primer is not a
+   source.
+3. **A question outside every entry is still an abstention.** The primer widens rung 2; it does not
+   create a fourth outcome.
+
+**The journey in it stops at quantification.** The north star names a fourth step, but it is the paid
+platform, and this file is inherited into prompts — anything in it is something an agent may say.
+
+**Scope came from the rules, not from real questions**, and the document records that in full. See
+item A5, and item O9's lesson about what a stale instruction is worth.
+
+### Step two, proposed and not approved
+
+Wiring the primer into Phoebe's prompt, replacing the three hard-coded paragraphs in
+`api/_systemPrompt.ts`. The proposed mechanism is the card sets' machinery reused — committed
+source, a generated module the relay imports, and a staleness gate — rather than a second way of
+getting committed words into a prompt, which would be a second way for them to drift.
+
+**[AGENT_RULES.md](./AGENT_RULES.md) is part of step two, not a follow-up.** It currently says there
+is no shared primer and that every handoff but one is not live. That becomes untrue the moment
+Phoebe inherits the primer, and shipping a capability while the published rulebook denies it is the
+drift the one-home rule exists to prevent.
+
+Opened 22 Aug 2026. **Step one written 27 Aug 2026 and awaiting review; step two proposed, not
+approved.**
 
 ## A4. Phoebe returned an empty answer — diagnosed and fixed
 
@@ -683,7 +729,40 @@ log it as a rider."*
 item is the most likely next work to open the rail, and a rider nobody can find is a rider nobody
 rides.
 
-Received 27 Aug 2026. **Logged only — the proposal is not written.**
+### What shipped, 27 Aug 2026
+
+**Two card surfaces pulled to full published white** — pull request #11. The citation line in the
+chat dock and the map's credit strip were each painting a white card at 92%, so the page behind
+tinted them. Both now paint `var(--card)`, with the hairline border already in place doing the
+separating, exactly as BRAND.md pairs them.
+
+**No token was touched, because none was wrong.** `src/styles/tokens.css` already sat at the
+published values — Paper Frost `#FBFBFE`, card `#FFFFFF`, Tide `#2B5BFF`, the published line value
+— and primary actions were already full-strength Tide. The softness was in how tokens were applied.
+**Brightening a value that already matches the book would have moved the site away from BRAND.md
+while appearing to obey the canon**, which is the trap this item was written to name.
+
+**Then the maintainer named the map itself** — the grey base tiles, the pale fills, the grey no-data
+land. That turned out to be a different thing again and is recorded at item O9: the basemap was not
+dark, it was nearly colourless, and it had also stopped being free. The map now runs on CARTO's
+Voyager style, which is the maintainer's ruling of 27 Aug 2026 after walking it.
+
+**The arid and no-data basins were never touched and never will be by this item.** They are
+deliberately near-neutral *and* deliberately low-opacity so the basemap shows through — the palette
+file says so in its own words. They read as grey fog because they were windows onto a grey basemap.
+A living basemap fixes them without weakening the distinction between "not a reading" and "a low
+reading", which covers a fifth of all basins.
+
+**The one open design question is answered.** Voyager's sea and the Low-stress band are both pale
+cyan, and whether they would blur could not be settled by arithmetic. **Maintainer's verdict after
+walking production, 27 Aug 2026: they read apart — the hairline borders on basins separate them from
+open sea at every zoom tried.**
+
+### What keeps this item open
+
+**Only the colour re-review rider below.** The brightness work itself is done.
+
+Received 27 Aug 2026. **Shipped 27 Aug 2026; open on the rider.**
 
 ---
 
@@ -918,7 +997,27 @@ the card gate passing at the same time, on a fresh checkout, without the generat
 re-run. The patch currently in the folder — `api/_cards.generated.ts` showing as modified with zero
 bytes to stage — should disappear as part of this, not be committed.
 
-Logged 26 Aug 2026. **Ruled 26 Aug 2026 — build first thing next session.**
+### Closed — fixed 27 Aug 2026
+
+**A `.gitattributes` file pinning every text file to Unix line endings**, in git and in the working
+folder, on every machine that clones this repository. Merged as pull request #8. The "done" test
+above was met exactly: `git status` clean and the card gate passing together, with the generator
+never re-run.
+
+**The cause was one layer below what this item recorded.** The file in the folder already held Unix
+endings and was byte-for-byte identical to what git stores — the same blob, `557be86f`. Git had
+**cached the Windows length** for it, 44,314 against an actual 44,299, and it compares that cached
+size before it compares content, so it reported the file as modified without ever looking inside.
+
+That single fact explains all three puzzles this item recorded separately: `git diff` showed nothing
+to stage, regenerating the file did not clear it, and switching branches did not undo it. The fix
+still works for the reason the ruling gave, and it also clears the stale cache, because the next
+checkout finally writes the form git expects.
+
+**Nothing tracked in this repository was carrying Windows line endings**, confirmed with
+`git add --renormalize`, so the rule prevents future drift rather than converting anything.
+
+Logged 26 Aug 2026, ruled 26 Aug 2026, **fixed and closed 27 Aug 2026.**
 
 ---
 
@@ -953,7 +1052,21 @@ one by mistake.
 **No build tonight.** Ruled and recorded only. The branch holding this close-out is not one of the
 five — it is still open and becomes deletable once its own pull request merges.
 
-Logged and ruled 26 Aug 2026. **Open until both halves are done.**
+### Closed — both halves done 27 Aug 2026
+
+**Delete-on-merge is on.** Turned on through GitHub's API and read back to confirm: `false` → `true`.
+It has already worked on its own — every branch merged after it was set has been deleted by GitHub
+without anyone asking.
+
+**Every merged branch is gone**, here and on GitHub. The five named above, plus the four this
+session created and merged, each confirmed an ancestor of `main` before deletion rather than
+trusted. `main` is the only branch that remains.
+
+**One thing was not as recorded.** The five branches on GitHub had already been deleted by the time
+the setting was turned on, so the remote half needed nothing. That is noted rather than smoothed
+over: the item's picture of the remote was a session old.
+
+Logged and ruled 26 Aug 2026. **Closed 27 Aug 2026.**
 
 ---
 
@@ -1023,3 +1136,67 @@ here.** It is recorded so it is not lost, and it does not block the ordering que
 second question above — script or hand copy — which has no ruling and is not due.
 
 Proposed and ruled 27 Aug 2026. **Open only on the script question.**
+
+---
+
+## O9. The basemap now needs a key, and the free tier has a ceiling
+
+**Live since 27 Aug 2026.** A standing dependency rather than a task: it is recorded so a later
+session knows the map rests on a keyed third-party service with a limit, and does not rediscover it
+the hard way.
+
+### What happened
+
+**CARTO ended keyless access to their basemaps, and the live site was serving stamped tiles.** Every
+tile came back with "API KEY REQUIRED" written across it. Confirmed on `map.waterbots.ai` with a
+hard reload, not inferred.
+
+**Warm caches are why nobody saw it.** Tiles cache hard and for a long time, so the maintainer's
+browser and the engineer's both held clean tiles from before the change. **A visitor arriving with a
+cold cache saw the stamp, and had been for some days.**
+
+**It was never about the style being changed at the time.** `light_all`, the style this map shipped
+with from launch, is stamped too — checked fresh past cache at every zoom from 0 to 5, both styles,
+twelve tiles, twelve stamps. There was no staying put and no reverting out of it.
+
+### What the dependency is
+
+| | |
+|---|---|
+| Provider | CARTO, Voyager raster style |
+| Setting | `VITE_CARTO_KEY`, **read at build time** |
+| Free allowance | **5 million tile requests a calendar month**, raster and vector combined |
+| Past the limit | CARTO get in touch rather than cutting off; non-commercial projects usually get a higher limit, commercial ones move to an agreement |
+| Condition of the free tier | **CARTO and OpenStreetMap attribution stays visible** |
+
+**The key is baked in by Vite when the bundle is built**, not read at runtime like Phoebe's
+settings. So it must be in the deployment platform's settings *before* the build, and a settings
+change only reaches a deployment that starts after it.
+
+**The key travels to the browser** and is readable in the shipped JavaScript. That is inherent to
+browser map tiles — a rate-limit token, not a secret. It is not held in this repository.
+
+**`scripts/check-basemap-key.mjs` reads the built bundle** and fails if the tile URL ships without a
+key, the same way `check-attribution` guards the licence strings. It was proven in both directions:
+a build with the key blanked fails it, the real build passes it. A guard that only ever passes is
+worse than no guard.
+
+### What is not due yet
+
+**The 5 million ceiling.** There is no usage to reason from — the same condition that holds item O1's
+revisit of the number twenty and item A5's primer review. When there is traffic, this is the third
+thing to look at.
+
+### The lesson, which cost this session twice
+
+**A status check confirmed the tiles served, and they did serve — stamped.** Then a purpose-built
+stamp detector cleared them too, because it counted *dark* pixels and the stamp is soft grey-blue,
+well above the threshold chosen for it.
+
+**Both failures were the same failure: deciding in advance what the fault would look like, then
+measuring for that.** The maintainer found it in seconds by opening the map. This repository already
+had the lesson in another form — the platform's log is evidence and local reasoning is a guess. The
+version to keep is broader: **the instrument that settles a visual question is a pair of eyes on the
+thing itself.**
+
+Logged 27 Aug 2026. **Open as a standing dependency, with nothing due until there is real usage.**

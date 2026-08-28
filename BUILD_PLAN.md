@@ -64,83 +64,63 @@ opened for another reason, which the canon says is explicitly not its own work i
 
 ---
 
-## Just finished — Agents
+## Just finished — a session of five landings
 
-**Phoebe's step 4 is live, and item A4 is closed.** Session of 25 Aug 2026, merged to `main` as
-`a12bfc4` through pull request #2. Confirmed in a preview deployment by the maintainer before merge,
-and confirmed against production after it — the checks are in
-[SESSION_HANDOFF.md](./SESSION_HANDOFF.md) under *Verified live*.
+**Session of 27 Aug 2026.** Five steps landed and one is written and waiting. Taken in order.
 
-**The daily cap is live (item O1).** Twenty messages per visitor per UTC day. A visitor is
-identified by their network address scrambled with a server-held secret; no address is stored.
-Only delivered answers count — anything that fails on our side is given back. At the cap the
-visitor is told the limit, why it exists, and when it returns.
+**The line endings are pinned (item O6, closed).** A `.gitattributes` file, merged as pull request
+#8. The cause turned out to sit one layer below what the item recorded: git had cached the Windows
+length for the file and compares that cached size before it compares content, so it called a
+byte-identical file modified without looking inside. That one fact explained all three puzzles the
+item had listed separately.
 
-**It was taken out of order, and that was the maintainer's call.** The plan below had the empty
-answer first and step 4 unqueued. Phoebe went live and public on 24 Aug with no cap at all, which
-made the cap urgent in a way the ordering had not anticipated.
+**Three process rulings are logged (pull request #9).** A session batches steps and the close-out
+ritual runs once at the end of the sitting; the engineer opens its own pull requests; and every pull
+request description opens with a "For Amy" block in plain English. The export step is named in the
+ritual and its order ruled — **commit first, then regenerate the copies**, so they carry the
+close-out itself. That is item O8.
 
-**Every abstention is now recorded (item A1)**, readable at a guarded address, holding the question
-and no trace of who asked. The grading itself — which gaps become cards — is a maintainer job and is
-where that item now sits.
+**The design canon arrived and is logged (pull request #10).**
+[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) is its home — see the compatibility goal
+above, which no longer waits on anything.
 
-**The empty answer turned out to be the token budget (item A4).** Hidden thinking was spending the
-whole answer budget: the model thinks before it writes, that thinking is not shown, and it is
-charged to the same budget as the reply. The relay never set the parameter, so it inherited the
-default. Three faults in two days had one cause. Measured, fixed, and confirmed — the numbers are in
-the item.
+**The brightness pull-up shipped (item S8, pull request #11)**, and then the map itself turned out to
+be a different problem.
 
-**One lesson worth carrying.** A default nobody wrote down is a decision nobody made. The relay's
-own comment had already noticed 80–90% of the spend going somewhere invisible and had explained it
-wrongly, which is how it survived two sessions.
+**The basemap stopped being free, and the live site was serving watermarked tiles (item O9, pull
+request #12).** CARTO ended keyless access; `map.waterbots.ai` was stamped "API KEY REQUIRED" across
+every tile for anyone arriving with a cold cache. It applied to the style the map shipped with from
+launch, so there was no reverting out of it. The map now runs keyed, on CARTO's Voyager style, which
+the maintainer walked and approved. A new check reads the built bundle and fails a keyless build.
 
-## Just before that — Surfaces
+**Ten checks now**, not nine.
 
-**The shared chat layer (item S2) is built through Level 2** and passed the maintainer's browser
-check on 24 Aug 2026: the contract between an agent and the layer, the chat shell, Phoebe's adapter,
-and the numbered marker that sits inside a sentence and opens one line of citation.
+## Building next — step two of the agent handoff primer
 
-**One defect was found and fixed along the way (item S4):** the console shell was throwing a chat
-dock away whenever you left its surface, so a conversation vanished while the worksheet it had
-filled in survived. Both docks now stay mounted and the off-surface one is hidden, the same
-treatment the map already had.
+**Step one is written and waiting on the maintainer's read: `agent-primer.md`, pull request #13.**
+It is the document [AGENT_RULES.md](./AGENT_RULES.md) names as missing when it publishes rung 2 of
+the abstention ladder as *partly live*. **No agent has it yet.**
 
-**Two items were left open on purpose.** The citation line wraps poorly in the narrow dock (item S5)
-— cosmetic, and worth doing properly alongside the map's legend rather than nudged on its own. And
-the collective-action partner surface (item S1) needs the corporate goals and target geographies
-(item D1, Data), which do not exist yet.
+**Step two wires it into Phoebe's prompt**, replacing the three hard-coded paragraphs in
+`api/_systemPrompt.ts` that are the only live handoff today. It is proposed and not approved, and
+the proposed mechanism is the card sets' machinery reused — committed source, generated module,
+staleness gate — rather than a second way of getting committed words into a prompt.
 
-## Building next — one small fix, then the agent handoff primer
+**[AGENT_RULES.md](./AGENT_RULES.md) is edited as part of step two, not after it.** It says today
+that there is no shared primer and that every handoff but one is not live. That becomes untrue the
+moment Phoebe inherits the primer.
 
-**First, and it is minutes: pin the line endings (item O6).** Maintainer's ruling, 26 Aug 2026. A
-check currently reports stale cards that are not stale on a fresh Windows checkout, because git
-writes the file out in a different line-ending form from the one the check expects. The durable fix
-was chosen over the cheap one: pin the endings so every machine agrees, rather than teach the single
-check to look the other way. **It goes first because a check that cries wolf teaches its reader to
-ignore checks**, not because it is urgent — it changes nothing a visitor sees.
-
-**Then the real work of the session: the agent handoff primer (item A3).**
-
-[AGENT_RULES.md](./AGENT_RULES.md) publishes rung 2 of the abstention ladder as *partly live*, with
-exactly one hard-coded handoff behind it: Phoebe may name Bridget and say Bridget covers the basin
-map and the water-stress data. A published rule describing behaviour no agent has is a promise
-outstanding, and the primer is what settles it.
-
-**It is not blocked.** Final agent staffing (item A2) was settled on 24 Aug 2026 — Bridget on the
-map, Phoebe on eligibility, two posts — so the roster the primer would be written against exists.
-One thing limits its worked example: the funder locations it would point at are item D1, and they do
-not exist yet.
-
-**There is also now a first piece of real evidence to work from.** The abstention log records what
-people actually ask Phoebe that she cannot answer. Some of those gaps will be another agent's
-subject rather than a missing card, which is exactly what a handoff primer is for. Reading the log
-before writing the primer is the cheaper order.
+**The abstention log is no longer a prerequisite.** This file used to say to read it before writing
+the primer, and that was good reasoning about a log with something in it. **It holds only test
+entries**, so reading it teaches nothing about what visitors actually ask. Maintainer's ruling,
+27 Aug 2026: write the primer from the rules, wire it from the rules, and log the review for when
+traffic exists — that is item A5.
 
 ## Not next, and why
 
 | Family | Why it waits |
 |---|---|
 | **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. |
-| **Surfaces** | The bridge (item S7) was ruled on 26 Aug 2026 but has no proposal — the shape of the handoff is coordinated by the maintainer's hand. The rest of the family is polish (item S5) or waits on data that does not exist yet (item S1). |
+| **Surfaces** | The bridge (item S7) was ruled on 26 Aug 2026 but has no proposal — the shape of the handoff is coordinated by the maintainer's hand. The brightness pull-up (item S8) shipped on 27 Aug and stays open only on its rider: both agent identity colours are re-reviewed against the status taxonomy, because an agent colour must never read as a project status and Bridget's soft Surf sits near *Live*. The rest of the family is polish (item S5) or waits on data that does not exist yet (item S1). |
 | **Data** | Blocked on material the maintainer supplies — registry coordinates for the project points (item D2), public disclosures for corporate goals and target geographies (item D1). Not work that can start from inside the repository. |
-| **Operations** | **One item is ruled and goes first next session — see above.** Beyond it: the merged branches are to be deleted and GitHub's delete-on-merge turned on (item O7, ruled 26 Aug 2026, not yet done), half of which is a live setting rather than repository work. Branch protection on `main` was restored on 24 Aug 2026 (item O2) and work now goes through a pull request. The daily cap (item O1) shipped on 25 Aug; what remains of that item is revisiting the number once there is real usage to reason from, which is not yet. |
+| **Operations** | **Nothing is due.** The line endings (item O6) and the merged branches (item O7) are both closed as of 27 Aug 2026, and delete-on-merge now removes branches by itself. What remains waits on real usage that does not exist yet: the number twenty (item O1), the basemap's five-million-request ceiling (item O9), and the primer review against the abstention log (item A5). One question is open and unhurried — whether the export copies should be produced by a script rather than by hand (item O8). |
