@@ -73,10 +73,11 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | canon, ruled 26 Aug 2026 |
 | A1 | Phoebe abstention loop | Agents | built 25 Aug 2026 |
 | A2 | Final agent staffing | Agents | settled 24 Aug 2026 |
-| A3 | Agent handoff primer | Agents | step one merged 28 Aug 2026; step two proposed |
+| A3 | Agent handoff primer | Agents | step one merged; step two built and parked behind A6 |
 
-| A4 | Phoebe returned an empty answer | Agents | diagnosed and fixed 25 Aug 2026 |
+| A4 | Phoebe returned an empty answer | Agents | one cause fixed 25 Aug 2026 — **not the only one**, see A6 |
 | A5 | Primer review against the abstention log | Agents | logged 27 Aug 2026, not due |
+| A6 | Phoebe fails about a third of ordinary questions | Agents | **top priority**, measured 28 Aug 2026 |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | open |
 | S2 | The shared chat layer | Surfaces | built through Level 2 |
 | S3 | Level 3 citation pop-out | Surfaces | out of scope — paid platform |
@@ -311,9 +312,50 @@ is no shared primer and that every handoff but one is not live. That becomes unt
 Phoebe inherits the primer, and shipping a capability while the published rulebook denies it is the
 drift the one-home rule exists to prevent.
 
-Opened 22 Aug 2026. **Step one merged 28 Aug 2026; step two proposed and not approved.**
+### Step two is built and parked, 28 Aug 2026
 
-## A4. Phoebe returned an empty answer — diagnosed and fixed
+**Built in full and deliberately not committed.** It sits in the working tree on branch
+`feat/primer-wired-into-phoebe`, with all ten checks passing. What is built:
+
+- `scripts/build-card-module.mjs` renamed to `scripts/build-prompt-modules.mjs` and generalised to
+  emit both bundles, with all eleven references updated.
+- `api/_primer.generated.ts` generated from an **agent-facing region** of `agent-primer.md`, marked
+  by `<!-- AGENT-FACING: BEGIN -->` and `<!-- AGENT-FACING: END -->`, with the staleness gate
+  covering both bundles and a missing marker throwing rather than embedding the wrong thing.
+- `api/_systemPrompt.ts` wired to the primer, replacing the three hard-coded paragraphs.
+- [AGENT_RULES.md](./AGENT_RULES.md) at a live rung 2, and the primer's own second section rewritten
+  from *not yet inherited* to *inherited by Phoebe*.
+
+**Three of the four live questions passed, and Phoebe's sentence was the maintainer's sentence, word
+for word.** A map question produced the primer's Bridget line exactly and pointed at the map rather
+than at a conversation with her; a funder-location question gave the honest limit instead of pointing
+at Bridget; a question no agent covers was a plain abstention.
+
+**It is parked behind item A6**, on the maintainer's ruling of 28 Aug 2026, because a third of
+ordinary questions failing outranks a handoff that nothing claims to have.
+
+**Why the region split exists**, since it is the least obvious part of what is parked: embedding the
+whole primer produced empty and one-character replies. Embedding only the roster stopped that. The
+outer sections are instructions about the prompt and provenance for human readers, and adding them
+as a second instruction layer destabilised plain answers.
+
+**One line to re-apply when it resumes.** Item O6's quoted check output names
+`build-card-module.mjs`. That is a historical quote of what the check printed on 26 Aug, when the
+script had that name, so it was left alone here on purpose. Decide when step two lands whether a
+historical quote should keep its historical name — this record says it should.
+
+**The two hangs re-test after A6 lands**, since they may share a cause with the faults there.
+
+Opened 22 Aug 2026. **Step one merged 28 Aug 2026; step two built, parked, and uncommitted.**
+
+## A4. Phoebe returned an empty answer — one cause found, ~~and fixed~~ **not the only one**
+
+> **Corrected 28 Aug 2026.** ~~This item was recorded as diagnosed and fixed.~~ **It was not fixed;
+> one of its causes was.** Empty answers were measured again on 28 Aug at 945 and 733 of 16,000
+> output tokens — nowhere near the ceiling that this item identified. The budget fault below was
+> real, was measured, and was fixed. **It was not the whole fault.** The struck words are left
+> visible rather than rewritten, because a record that quietly changes its mind teaches a later
+> reader to trust it less, not more. The live problem is item A6.
 
 **Seen three times in two days of real use**, and all three had one cause. Once on 23 Aug 2026
 during a browser check, and twice more on 25 Aug 2026 during the maintainer's preview check — an
@@ -372,7 +414,15 @@ empty answer by forcing the model to emit something — a full stop, a single wo
 room, turning an honest failure into a meaningless answer that looks real. The empty reply should
 keep failing. It should just fail with the truth.
 
-Opened 24 Aug 2026. Diagnosed and fixed 25 Aug 2026.
+**One thing this item got right, and it matters now.** It refused to put a minimum length on the
+schema's `reply`, on the grounds that forcing the model to emit *something* turns an honest failure
+into a meaningless answer that looks real. **On 28 Aug a seven-character reply reached a caller
+anyway** — not because a minimum was added, but because the guard tests for *empty* and seven
+characters is not empty. The principle held; the guard did not implement it. That is part of item
+A6.
+
+Opened 24 Aug 2026. ~~Diagnosed and fixed 25 Aug 2026.~~ **One cause diagnosed and fixed
+25 Aug 2026; reopened in substance by item A6 on 28 Aug 2026.**
 
 ---
 
@@ -410,6 +460,107 @@ either the primer corrected or a line recording that it held up.
 
 Logged 27 Aug 2026. **Waiting on real usage, which does not exist yet — the same condition that
 holds item O1's revisit of the number twenty.**
+
+---
+
+## A6. Phoebe fails about a third of the time on an ordinary question
+
+**Top priority. Measured 28 Aug 2026, twenty requests, and it is live.**
+
+**This affects real visitors on `map.waterbots.ai` today.** It is not caused by the agent handoff
+primer, it predates it, and it was found only because the primer was being tested against a
+baseline.
+
+### What was measured
+
+One question, asked twenty times through the real relay: *"We are planning to restore 40 hectares of
+wetland upstream of our bottling plant in a water-stressed basin. Would that be eligible to generate
+a countable benefit?"* Ten through `main`'s prompt, ten through the parked step-two prompt. Each
+attempt recorded its HTTP status, elapsed time, reply length and cited-card count.
+
+**`main`, no primer — the code that is deployed:**
+
+| # | Result | Time |
+|---|---|---|
+| 1 | Short — 569 characters, 6 cards | 21.6s |
+| 2 | Full — 1,247 characters | 15.4s |
+| 3 | **HTTP 502 — empty answer, refused** | 12.3s |
+| 4 | **HTTP 502 — API error 400, "Invalid request data"** | 25.2s |
+| 5 | Full — 1,503 characters | 22.0s |
+| 6 | Full — 1,503 characters | 21.5s |
+| 7 | Short — 640 characters, **0 cards** | 48.3s |
+| 8 | Full — 1,331 characters | 18.1s |
+| 9 | **HTTP 502 — empty answer, refused** | 11.7s |
+| 10 | Full — 1,424 characters | 18.6s |
+
+**With the parked primer, for comparison:**
+
+| # | Result | Time |
+|---|---|---|
+| 1 | **Timeout — no response** | 240s |
+| 2 | Full — 1,730 characters | 25.0s |
+| 3 | Full — 1,028 characters | 22.5s |
+| 4 | **Timeout — no response** | 240s |
+| 5 | Full — 1,207 characters | 23.2s |
+| 6 | Full — 1,494 characters | 21.0s |
+| 7 | Full — 1,685 characters | 12.2s |
+| 8 | **Degenerate — 7 characters, delivered** | 23.9s |
+| 9 | Full — 1,222 characters | 15.4s |
+| 10 | Full — 1,831 characters | 22.2s |
+
+**Three failures in ten on each side.** The rate is the same; the shape differs. The primer does not
+make Phoebe less reliable — it changes how she fails.
+
+### Four faults, and they are not one fault
+
+1. **Empty answers far below the budget.** Logged at **945** and **733** of 16,000 output tokens.
+   Item A4 recorded this symptom as fixed, and its cause — hidden thinking exhausting the budget —
+   was real and was fixed. **This is a different cause with the same symptom.** A4 is corrected
+   rather than reopened.
+2. **`API error 400 — Invalid request data`**, request id `req_011CeV9mhFbtJtXQBh1E41qK`. **That is
+   our request being rejected**, not the model answering badly. It has never been seen before and
+   nothing in the repository explains it.
+3. **A seven-character reply was delivered to the caller.** Item A4 deliberately refused to put a
+   minimum length on the schema, arguing that forcing the model to emit something turns an honest
+   failure into a meaningless answer that looks real. **The guard tests for an empty reply, and
+   seven characters is not empty**, so it passed. The principle was right and the guard does not
+   implement it. **This is the same lie the guard exists to stop.**
+4. **Answers vary enormously on identical input** — 569 to 1,503 characters, one citing six cards
+   and another citing none, on the same question through the same prompt.
+
+### One fault that belongs to the parked primer, not here
+
+**Two requests hung with no response at all**, and `main` did not hang once in twenty attempts today.
+The relay logs the line printed immediately before the model is called and then nothing — no error,
+no refusal, no token count. **It is waiting on a call that never returns, and it has no timeout of
+its own to end the wait.**
+
+Locally that is an infinite wait. On the deployment platform it would hit the platform's own function
+limit and return a gateway error, so a visitor would see a failure rather than a hung page.
+
+**It is recorded here because it may share a cause with the faults above** and re-measuring it is
+part of this item's work. It does not belong to the primer until that has been checked.
+
+### What this item is, and is not
+
+**It is a diagnosis, not a fix.** Finding the faults comes first, and any fix is proposed separately
+once there is something to fix rather than something to guess at.
+
+**What "done" looks like for the diagnosis:** each of the four faults above either explained with
+evidence, or shown not to exist. Then, and only then, a proposal.
+
+### Why this outranks everything else in this lane
+
+**A third of visitor questions failing is worse than any feature being missing.** The agent handoff
+primer is built and parked. Nothing published claims it is live, so nothing is dishonest while it
+waits.
+
+**And the honest note about how this was found.** Two earlier baseline runs came back nine-for-nine
+clean, and were reported as a clean baseline. They were small samples and luck. **The clean baseline
+was wrong, and reporting it as a baseline was wrong**, which is why this item carries the raw twenty
+rather than a summary.
+
+Opened 28 Aug 2026. **Top priority, diagnosis not started.**
 
 ---
 

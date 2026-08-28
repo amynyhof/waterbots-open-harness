@@ -95,26 +95,33 @@ the maintainer walked and approved. A new check reads the built bundle and fails
 
 **Ten checks now**, not nine.
 
-## Building next — step two of the agent handoff primer
+## Building next — Phoebe's answer reliability (item A6)
 
-**Step one is done: `agent-primer.md` is on `main`, merged as pull request #13 on 28 Aug 2026.**
-It is the document [AGENT_RULES.md](./AGENT_RULES.md) names as missing when it publishes rung 2 of
-the abstention ladder as *partly live*. **No agent has it yet.**
+**Top priority, on the maintainer's ruling of 28 Aug 2026. A third of visitor questions failing
+outranks everything else in this lane.**
 
-**Step two wires it into Phoebe's prompt**, replacing the three hard-coded paragraphs in
-`api/_systemPrompt.ts` that are the only live handoff today. It is proposed and not approved, and
-the proposed mechanism is the card sets' machinery reused — committed source, generated module,
-staleness gate — rather than a second way of getting committed words into a prompt.
+**Measured, not suspected.** Twenty requests through the real relay on one ordinary eligibility
+question: **three failures in ten on `main`**, the code that is deployed today. Empty answers at 945
+and 733 of 16,000 output tokens, an `API error 400 — Invalid request data` on our own request, a
+seven-character reply delivered to a caller, and answers ranging from 569 to 1,503 characters on
+identical input.
 
-**[AGENT_RULES.md](./AGENT_RULES.md) is edited as part of step two, not after it.** It says today
-that there is no shared primer and that every handoff but one is not live. That becomes untrue the
-moment Phoebe inherits the primer.
+**Item A4 recorded this symptom as fixed.** Its cause — hidden thinking exhausting the budget — was
+real and was fixed. It was not the only cause, and that record is corrected in place rather than
+quietly.
 
-**The abstention log is no longer a prerequisite.** This file used to say to read it before writing
-the primer, and that was good reasoning about a log with something in it. **It holds only test
-entries**, so reading it teaches nothing about what visitors actually ask. Maintainer's ruling,
-27 Aug 2026: write the primer from the rules, wire it from the rules, and log the review for when
-traffic exists — that is item A5.
+**The next step is a diagnosis, not a fix.** Find the four faults before proposing anything, because
+guessing at a cause is what cost two days this week.
+
+## Parked — step two of the agent handoff primer (item A3)
+
+**Built in full, all ten checks passing, deliberately uncommitted** on branch
+`feat/primer-wired-into-phoebe`. Three of the four live questions passed and Phoebe's sentence was
+the maintainer's sentence word for word.
+
+**It waits behind item A6.** Nothing published claims the primer is live, so nothing is dishonest
+while it sits. Two requests hung with no response on the primer side and none on `main`; that is
+re-measured after A6, since it may share a cause.
 
 ## Not next, and why
 
