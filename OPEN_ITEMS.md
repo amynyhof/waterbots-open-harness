@@ -76,6 +76,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | A3 | Agent handoff primer | Agents | logged, no build |
 
 | A4 | Phoebe returned an empty answer | Agents | diagnosed and fixed 25 Aug 2026 |
+| A5 | Primer review against the abstention log | Agents | logged 27 Aug 2026, not due |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | open |
 | S2 | The shared chat layer | Surfaces | built through Level 2 |
 | S3 | Level 3 citation pop-out | Surfaces | out of scope — paid platform |
@@ -327,6 +328,43 @@ room, turning an honest failure into a meaningless answer that looks real. The e
 keep failing. It should just fail with the truth.
 
 Opened 24 Aug 2026. Diagnosed and fixed 25 Aug 2026.
+
+---
+
+## A5. Primer review against the abstention log, once there is real traffic
+
+**Logged 27 Aug 2026, on the maintainer's ruling. Not due, and deliberately not blocking
+anything.**
+
+The agent handoff primer (item A3) was written from the rules: from
+[AGENT_RULES.md](./AGENT_RULES.md), the staffing ruling of 24 Aug 2026, and what each surface
+actually holds. **It was not written from real questions**, and `agent-primer.md` says so in its
+own closing section rather than leaving it to be discovered.
+
+**The reason is that there are no real questions yet.** The abstention log (item A1) holds only
+test entries, so reading it would teach nothing about what visitors actually ask. The build plan's
+instruction to read the log before writing the primer was good reasoning about a log that had
+something in it; it does not apply to one that does not. **Maintainer's ruling, 27 Aug 2026:
+write the primer from the rules, wire it in from the rules, and log this review for later.**
+
+**What the review is.** Once real visitors have been asking Phoebe questions she cannot answer,
+read the log and check the primer against it. Two things to look for:
+
+1. **Gaps that are another agent's subject** rather than a missing card — those are what a primer
+   exists for, and any the primer does not already cover belong in it.
+2. **Anything no agent covers at all** — which is a fact about the product, and belongs in the
+   primer's own list of honest limits rather than being quietly left out.
+
+**What it is not.** It is not the grading of the log, which is item A1's purpose and a maintainer
+job: deciding for each gap whether it is a legitimate limit of the card set or a card to write.
+This item only asks whether the primer's account of who covers what survives contact with real
+questions.
+
+**What "done" looks like:** the log read against the primer once there is traffic to read, and
+either the primer corrected or a line recording that it held up.
+
+Logged 27 Aug 2026. **Waiting on real usage, which does not exist yet — the same condition that
+holds item O1's revisit of the number twenty.**
 
 ---
 
