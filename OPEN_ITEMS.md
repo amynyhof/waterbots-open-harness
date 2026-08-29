@@ -233,6 +233,22 @@ under a retired agent. That is a brand decision, not a staffing one, and it is s
 
 **What this unblocks:** the agent handoff primer (item A3), which was waiting on the roster.
 
+### Calvin — named 28 Aug 2026, canon
+
+**The free calculator agent is named Calvin.** Maintainer's ruling, and it is canon from here.
+
+**The name is all that is settled.** His roster entry, his identity colour and his entry in
+`agent-primer.md` **come by the maintainer's hand when his lane opens**, the way the design canon
+and the brand book arrived. **Nothing about him is invented here in the meantime** — he is not in
+the primer, no agent may name him, and no colour is reserved for him by guesswork.
+
+**Why a name is logged before the rest exists.** A name that is decided and unwritten gets
+re-decided. This records the decision so the next conversation starts from it, and records equally
+plainly that the decision stops at the name.
+
+**His lane is step 3 of the north star** — ex-ante quantification, *what benefit would this project
+produce?* — which is not started. Two posts are staffed today, not three.
+
 ---
 
 ## A3. Agent handoff primer
