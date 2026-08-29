@@ -89,6 +89,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S6 | The dev relay resolves imports differently from production | Surfaces | open |
 | S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026, no build |
 | S8 | Brightness pull-up to BRAND.md's published Frost values | Surfaces | shipped 27 Aug 2026; open only on the colour re-review rider |
+| S9 | The return to the brand book | Surfaces | logged 29 Aug 2026, plan approved and building |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
@@ -1173,6 +1174,10 @@ log it as a rider."*
 item is the most likely next work to open the rail, and a rider nobody can find is a rider nobody
 rides.
 
+> **Handed on 29 Aug 2026.** This item's work is finished, so it is no longer the most likely next
+> work to open the rail. **The rider now sits with item S9**, the return to the brand book. It is
+> still not an item, and S9 is still not it.
+
 ### What shipped, 27 Aug 2026
 
 **Two card surfaces pulled to full published white** — pull request #11. The citation line in the
@@ -1207,6 +1212,140 @@ open sea at every zoom tried.**
 **Only the colour re-review rider below.** The brightness work itself is done.
 
 Received 27 Aug 2026. **Shipped 27 Aug 2026; open on the rider.**
+
+---
+
+## S9. The return to the brand book
+
+**The brand book arrived by the maintainer's hand on 28 Aug 2026 — version 3, one light brand,
+superseding the two-theme era.** It governs both properties and is complete on its own page.
+`BRAND.md` in this repository **is** that book. It is gitignored, as it has always been, so it does
+not publish.
+
+**This item is the work of returning the shipped stylesheet to it.** It is not a second design
+ruling. The book is the ruling; this is the list of places the code has not caught up to it yet,
+and what is being done about each.
+
+**[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) is superseded by the book and says so
+from 29 Aug 2026**, by the maintainer's header, applied verbatim with the original text preserved
+underneath. Until that landed the canon read as binding and was not. **The canon's rulings were not
+wrong** — the left rail, the "<" navigation and the chat dock rules it confirmed were carried into
+the book and live there now. Item S8 below is the canon's work and stays as history; nothing in it
+is restated here.
+
+### What the book changes here, measured against the shipped stylesheet
+
+Read against `src/styles/tokens.css` and `src/styles/base.css` on 29 Aug 2026, not assumed.
+
+| | Ships today | The book | On screen |
+|---|---|---|---|
+| Canvas `--paper` | `#FBFBFE` | **`#F6F5FA`** | Yes — every page |
+| Hairline `--line` | `rgba(11,20,40,0.09)` | **`rgba(11,20,40,0.10)`** | Barely |
+| `--r-md` | `10px` | **`12px`** | Yes — working cards |
+| `--r-lg` | `14px` | **`16px`** | Yes — document cards |
+| Neutrals | `--fg-1` … `--fg-4` | **`--ink`, `--ink-2`, `--ink-3`, `--ink-4`** | No — a rename |
+| The dark theme | `.theme-dark` block, unused | **Gone. One light brand** | No — dead code |
+| Bridget | `#7FD5DF`, provisional | **Surf `#14C8D9`** | Yes — her ring and wash |
+
+**The dark theme was never rendered here.** `App.tsx` sets `theme-light` and nothing sets
+`theme-dark`. The block was kept as correct reference for a signed-in surface that this repository
+does not have and, under a one-theme book, will not get. **The `.theme-light` class goes with it**
+— maintainer's ruling, 29 Aug 2026: *one theme needs no switch*. A theme class with one theme left
+in it is how a second theme quietly grows back.
+
+### Two things are held, not built — both re-carrying by the maintainer's hand
+
+**1. `--chrome`.** This repository derives `--chrome` `#E8E9ED` and paints four surfaces with it —
+the top bar, the navigation rail, the chat dock and the chat shell. **The book allows three planes
+and no fourth**, and names no fill for chrome; §2.3 says only that chrome recedes, flush and square,
+never a card. §0 says to raise what the book does not carry rather than invent it. **The value is
+not touched.**
+
+**One consequence, recorded rather than worked around.** Moving the canvas to `#F6F5FA` brings it
+closer to chrome's `#E8E9ED`. The rail and the dock will separate a little less than they do today.
+The 1px `--line` rule under the chrome carries that separation regardless, and it stays.
+
+**2. The three shadow values.** §4 names `--shadow-sm`, `--shadow-md` and `--shadow-lg` and says
+what each is for. **It publishes no value for any of them.** They cannot be added here without
+inventing three values, which §0 forbids, so they are not.
+
+One real shadow ships today: the basin hover tooltip, at `0 4px 14px rgba(11, 20, 40, 0.1)`,
+hardcoded in `base.css`. It is a genuine `--shadow-md` case — a floating element — and it stays as
+it is until the values arrive.
+
+### A false line in the code, struck 29 Aug 2026
+
+`src/styles/base.css` carried this, in the comment explaining why the chrome takes a bottom rule:
+
+> ~~On Frost, `--chrome` aliases `--paper` (BRAND.md publishes no Frost chrome value), so the fill
+> alone cannot separate navigation from the canvas.~~
+
+**It was true when it was written and has been false since 18 Aug 2026.** On 13 Aug the token was
+literally `--chrome: var(--paper)`, an alias, and the comment described it correctly. The derived
+`#E8E9ED` arrived five days later in the console-shell build and the comment was left behind.
+
+**Nothing rendered wrongly because of it** — the bottom rule is right either way, and the chrome
+does separate from the canvas by fill as well as by rule. The cost is to a reader, who would have
+been told the two fills are the same when they are not, at exactly the moment the `--chrome`
+question above is being taken to production's book. Struck and corrected in place, dated, per the
+visible-corrections rule.
+
+### The rail rider, inherited from item S8
+
+The design canon asked that the left rail be widened modestly **when the rail is next touched for
+another reason**, and said plainly that it is not its own work item. Item S8 carried it because S8
+was the most likely next work to open the rail.
+
+**It moves here.** S8's work is finished; this item is now the most likely next work to open the
+rail. **It is still not an item and this is still not it** — it lives in the canon, and it is named
+here so that a rider nobody can find does not become a rider nobody rides.
+
+**No step in the approved plan opens the rail**, so it does not ride yet.
+
+### The colour re-review rider, answered by the book
+
+Item S8 carries a rider from the maintainer's ruling of 27 Aug 2026: after the brightness pull-up
+lands, both agent identity colours are re-reviewed against the status taxonomy, because **an agent
+colour must never read as a project status** and Bridget's provisional `#7FD5DF` sits near *Live*.
+
+**The book answers it rather than the re-review answering it.** §2.6 rules that the form factor
+carries the meaning: a status may only be a 7–10px dot or a 1px keyline on a data row; an identity
+may only be a bubble, a portrait, a surface accent or a keyline. **Surf's double duty is accepted on
+exactly that basis** — Surf as a dot means *live*, Surf as an identity means *Bridget*.
+
+So after Bridget becomes Surf `#14C8D9`, her colour is not merely near the Live status colour, it
+**is** the Live status colour — and that is the book's intended state, not a collision. Maintainer's
+ruling, 29 Aug 2026: **record the rider as answered by the book's form rule.** Item S8 closes when
+Bridget's step lands.
+
+### The plan, approved 29 Aug 2026
+
+Seven steps, one approval, built through per the ritual. Two need the maintainer's browser check;
+the rest are value swaps and renames that move nothing on screen.
+
+| # | Step | Eyeball |
+|---|---|---|
+| 1 | The superseded header on the design canon | Read only |
+| 2 | This item | Read only |
+| 3 | The false `--chrome` comment struck | No |
+| 4 | Canvas, hairline and the two radii to the book's values | **Yes** |
+| 5 | The dark theme retired and the theme class collapsed | No |
+| 6 | The neutrals renamed `--fg-*` → `--ink-*` | No |
+| 7 | Bridget settled as Surf `#14C8D9` | **Yes** |
+
+**The book's asset tree goes to `brand/assets/`**, which already exists in the shape §8 describes.
+**No step in this plan needs it.** Two things to watch when it lands: `bots/` currently holds
+`phoebe.svg` and `phoebe-card.svg`, and **Phoebe is not on the book's roster**, so a wholesale
+replace would delete a portrait the product ships. And `.gitignore` publishes exactly three files
+out of that tree — `logo/wordmark.svg`, `bots/bridget.svg`, `bots/phoebe.svg`. Everything else
+stays unpublished, and anything new arrives unpublished by default.
+
+**Phoebe stays Anemone `#A04E7E`.** The book's roster is production's crew, and each surface extends
+it with its own agents under the book's rules. **A one-line amendment to close that gap at the
+source is owed by the maintainer's hand** at the master book's next revision. Nothing here waits on
+it.
+
+Logged 29 Aug 2026. **Open — the plan is approved and building.**
 
 ---
 
