@@ -130,10 +130,27 @@ body {
   border-radius: 0;
 }
 
-/* On Frost, --chrome aliases --paper (BRAND.md publishes no Frost chrome
-   value), so the fill alone cannot separate navigation from the canvas. A
-   1px --line rule carries the separation instead — the same device Frost uses
-   for cards. Still flush and square: chrome is never a card. */
+/* CORRECTED 29 Aug 2026, under the visible-corrections rule. This comment read:
+
+     "On Frost, --chrome aliases --paper (BRAND.md publishes no Frost chrome
+      value), so the fill alone cannot separate navigation from the canvas."
+
+   It was true when it was written on 13 Aug 2026, when the token was literally
+   --chrome: var(--paper). It has been FALSE SINCE 18 Aug 2026, when the
+   console-shell build gave --chrome its derived #E8E9ED and this comment was
+   left behind. The two fills are not the same and have not been for a fortnight.
+
+   Nothing rendered wrongly because of it — the rule below is right either way.
+   The cost was to a reader, who was told the fills are identical at exactly the
+   moment the --chrome question is being taken to the brand book.
+
+   What is true: --chrome is a fill of its own, one step below the canvas, and it
+   does separate navigation from the page. The 1px --line rule below stays
+   regardless — it is the same device Frost uses for cards, and it carries the
+   separation if the two fills are ever brought closer. Item S9's canvas move
+   does exactly that: #FBFBFE -> #F6F5FA moves the canvas toward #E8E9ED.
+
+   Still flush and square: chrome is never a card. */
 .theme-light .chrome {
   border-bottom: 1px solid var(--line);
 }
