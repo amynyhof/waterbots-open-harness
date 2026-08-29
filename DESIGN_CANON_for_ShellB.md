@@ -1,3 +1,12 @@
+> SUPERSEDED — by Amy's hand, 28 Aug 2026. The brand book (BRAND.md v3) now
+> governs all design on this site; where this document and the book disagree,
+> the book wins. This canon's rulings stand as history: the left rail, the '<'
+> navigation, and the chat dock rules it confirmed were carried into the book
+> and live there now. Original text preserved below, unedited, per the
+> visible-corrections rule.
+
+---
+
 # DESIGN_CANON_for_ShellB.md — the design canon for the open build
 
 Brought by the maintainer on 27 Aug 2026, written by her hand on
