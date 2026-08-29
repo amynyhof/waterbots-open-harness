@@ -143,7 +143,7 @@ node scripts/check-cards.mjs                # both card sets parse and are compl
 node scripts/check-api-exports.mjs          # the relay can actually answer once deployed
 node scripts/check-visitor-id.mjs           # the scrambled identity is stable, unique, salted
 node scripts/check-cap.mjs                  # 20 pass, 21 refused, refunds work, the log stores no one
-node scripts/build-card-module.mjs --check  # the relay's card copy is not stale
+node scripts/build-prompt-modules.mjs --check  # the relay's cards AND primer are not stale
 npm run build && node scripts/check-attribution.mjs && node scripts/check-basemap-key.mjs
 ```
 
@@ -157,8 +157,8 @@ it. A guard that only ever passes is worse than no guard.
 guards more than it used to: CARTO's free tier is granted **in exchange for** keeping the CARTO and
 OpenStreetMap attribution visible.
 
-**After editing any card, run `node scripts/build-card-module.mjs`** or the relay deploys with stale
-cards while the worksheet shows current ones.
+**After editing any card or the agent primer, run `node scripts/build-prompt-modules.mjs`** or the
+relay deploys with stale words while the worksheet shows current ones.
 
 ---
 

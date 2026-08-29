@@ -36,7 +36,7 @@ import feasibilityRawFile from '../../feasibility-cards-vwba.md?raw';
  * builders. Every pattern below keys off blank lines, and `\n\n` does not
  * match `\r\n\r\n` — so without this the worksheet parses cleanly in
  * production and throws on a Windows checkout. It is the same normalisation
- * scripts/build-card-module.mjs applies for the relay's copy.
+ * scripts/build-prompt-modules.mjs applies for the relay's copy.
  */
 const lf = (text: string) => text.replace(/\r\n/g, '\n');
 

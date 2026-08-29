@@ -142,7 +142,7 @@ for (let i = 1; i <= EXPECT_CONSIDERATIONS; i++) {
    worksheet shows the current ones — a disagreement no visitor could see. */
 const generated = 'api/_cards.generated.ts';
 if (!existsSync(generated)) {
-  note(`${generated} has not been generated — run: node scripts/build-card-module.mjs`);
+  note(`${generated} has not been generated — run: node scripts/build-prompt-modules.mjs`);
 } else {
   const current = readFileSync(generated, 'utf8');
   for (const [name, file] of [
@@ -153,7 +153,7 @@ if (!existsSync(generated)) {
     const source = readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
     const expected = `export const ${name}: string = ${JSON.stringify(source)};`;
     if (!current.includes(expected)) {
-      note(`${generated} is stale for ${file} — run: node scripts/build-card-module.mjs`);
+      note(`${generated} is stale for ${file} — run: node scripts/build-prompt-modules.mjs`);
     }
   }
 }

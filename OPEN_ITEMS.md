@@ -73,7 +73,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | canon, ruled 26 Aug 2026 |
 | A1 | Phoebe abstention loop | Agents | built 25 Aug 2026 |
 | A2 | Final agent staffing | Agents | settled 24 Aug 2026 |
-| A3 | Agent handoff primer | Agents | step one merged; step two built and parked behind A6 |
+| A3 | Agent handoff primer | Agents | shipped 28 Aug 2026 — rung 2 live |
 
 | A4 | Phoebe returned an empty answer | Agents | one cause fixed 25 Aug 2026 — **not the only one**, see A6 |
 | A5 | Primer review against the abstention log | Agents | logged 27 Aug 2026, not due |
@@ -347,7 +347,27 @@ historical quote should keep its historical name — this record says it should.
 
 **The two hangs re-test after A6 lands**, since they may share a cause with the faults there.
 
-Opened 22 Aug 2026. **Step one merged 28 Aug 2026; step two built, parked, and uncommitted.**
+### Step two shipped, 28 Aug 2026 — re-tested on the new engine
+
+**It was parked behind item A6 and unparked once that landed.** The re-test was the same four
+questions through the same instrument, on Opus 5 with the two guards in place.
+
+**The hang is gone.** The hard question was asked ten times: **ten answers, 9.4 to 17.2 seconds,
+none over 120.** The two 240-second stalls that parked this work did not recur, and no guard fired —
+no timeout, no retry, no refused reply. Whether the engine, the guards or both removed it cannot be
+separated, and does not need to be.
+
+**Phoebe's sentence is the maintainer's sentence, compared character by character rather than by
+eye:**
+
+> "The basin map covers that — it is Bridget's. Her chat is not answering yet, but the map itself
+> will show you."
+
+**Q2 gave the honest limit** rather than pointing at Bridget as though the map answered it — funder
+locations are not plotted, so there is no honest answer to give. **Q3 abstained cleanly** with no
+colleague named and no consultant promised.
+
+Opened 22 Aug 2026. **Step one merged and step two shipped, 28 Aug 2026. Rung 2 is live.**
 
 ## A4. Phoebe returned an empty answer — one cause found, ~~and fixed~~ **not the only one**
 

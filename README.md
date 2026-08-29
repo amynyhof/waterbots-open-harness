@@ -133,7 +133,7 @@ node scripts/check-cards.mjs
 node scripts/check-api-exports.mjs
 node scripts/check-visitor-id.mjs
 node scripts/check-cap.mjs
-node scripts/build-card-module.mjs --check
+node scripts/build-prompt-modules.mjs --check
 npm run build && node scripts/check-attribution.mjs && node scripts/check-basemap-key.mjs
 ```
 
