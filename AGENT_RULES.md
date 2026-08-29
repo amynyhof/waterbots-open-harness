@@ -78,23 +78,34 @@ order and stops at the first one that applies.
 | Rung | | State |
 |---|---|---|
 | **1** | **Answer from cited sources.** If a source covers it, answer from that source and cite it. | **Live** |
-| **2** | **If another agent covers it, say so and point there.** Name the agent and what they cover. Do not answer on their behalf. | **Partly live** — see below |
+| **2** | **If another agent covers it, say so and point there.** Name the agent and what they cover. Do not answer on their behalf. | **Live** — see below |
 | **3** | **If no agent covers it, offer a human consultant.** | **Not yet live** — see below |
 
-### Rung 2 — what is live today
+### Rung 2 — live since 28 Aug 2026
 
 **Agents are a team and act like one.** An agent may name another agent and say
 what that agent covers. It never answers in another agent's place.
 
-Today exactly one handoff is live: **Phoebe may name Bridget, and may say that
-Bridget covers the basin map and the water-stress data.** Nothing more. There is
-no shared primer yet telling agents what their colleagues cover, so anything
-beyond that one fact would be invention.
+**The shared primer exists**: `agent-primer.md`, which says who covers what and
+carries, per colleague, the exact sentence another agent may say when pointing at
+them. It reaches an agent the way card sets do — committed, generated into the
+prompt, and guarded by a staleness gate — so the words an agent is given are the
+words the maintainer approved.
 
-Until that primer exists — tracked as item A3 in
-[OPEN_ITEMS.md](./OPEN_ITEMS.md) — **every other handoff is not yet live**, and
-an agent asked for one says that it is coming rather than describing a colleague
-it cannot describe.
+**An agent says the primer's sentence, word for word.** That sentence is the
+whole of what may be said about a colleague. Describing how their surface works,
+what else they might do, or what they are like is still invention: the primer is
+what replaced guessing, not what licensed it.
+
+**Where a colleague's chat is not built, pointing at them means pointing at their
+surface**, not at a conversation, and the primer's sentence says so. An agent does
+not offer to pass a question along to an agent who cannot receive it.
+
+**A question the primer does not cover is still an abstention.** Rung 2 got wider;
+it did not become a fourth outcome.
+
+**Phoebe inherits the primer today. Bridget does not, because Bridget is not
+built** — when her console is written she inherits the same file unchanged.
 
 ### Rung 3 — not yet live
 

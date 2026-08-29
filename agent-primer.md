@@ -15,17 +15,19 @@ still does; this file is only the roster that rung 2 needs. One home per rule.
 
 ---
 
-## Not yet inherited — read this first
+## Who has this — read this first
 
-**No agent has this document yet.** Writing it is one step and wiring it into
-the prompts is another, and only the first has happened.
+**Phoebe inherits this document.** It reaches her the way her card sets do:
+committed here, generated into a module the relay imports, and guarded by a
+staleness gate so the words she is given are the words on this page. Wired in
+28 Aug 2026.
 
-Until the second lands, Phoebe's single hard-coded handoff in
-`api/_systemPrompt.ts` is still the whole of what is live, and
-[AGENT_RULES.md](./AGENT_RULES.md) is still correct when it says every other
-handoff is not yet live. **Nothing here is something an agent can say today.**
+**Bridget does not, because Bridget is not built.** She is the map's agent and
+her console is still being written. When it is, she inherits this same file
+unchanged.
 
----
+**So every sentence here is a sentence an agent can say today**, and should be
+read that way.
 
 ## Scope is set by the surface, not by a snapshot of it
 
@@ -42,6 +44,24 @@ limit — separately, and as a fact about the product rather than about the agen
 
 ---
 
+<!--
+  Everything between these two markers is what an agent is given, and nothing
+  else in this file is. scripts/build-prompt-modules.mjs embeds only this
+  region and fails loudly if either marker is missing.
+
+  Why a region rather than the whole file. Measured 28 Aug 2026: embedding the
+  whole document made Phoebe return an empty answer on ordinary eligibility
+  questions roughly four times in seven, against zero in four without it. The
+  card sets embed whole because they are knowledge an agent reads past. This
+  file is not knowledge — the sections outside this region are instructions
+  about the prompt itself and provenance for human readers, and adding them as
+  a second instruction layer destabilised plain answers.
+
+  The behaviour rules for using this roster live in the system prompt, which
+  owns them. Repeating them here would be two copies of one rule.
+-->
+
+<!-- AGENT-FACING: BEGIN -->
 ## The roster
 
 Two agents, settled by the maintainer on 24 Aug 2026. They are two posts, not
@@ -125,6 +145,8 @@ arrange one.
 
 ---
 
+<!-- AGENT-FACING: END -->
+
 ## How an agent uses this
 
 **Quote the sentence; do not compose a new one.** The wording above is the whole
@@ -163,4 +185,4 @@ there is real visitor traffic the primer is read against the log and corrected i
 the log disagrees — that is item A5 in [OPEN_ITEMS.md](./OPEN_ITEMS.md), and it
 is a later review rather than a condition on this document.
 
-Written 27 Aug 2026. **Not yet inherited by any agent.**
+Written 27 Aug 2026. **Inherited by Phoebe since 28 Aug 2026.**
