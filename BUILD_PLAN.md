@@ -64,7 +64,7 @@ opened for another reason, which the canon says is explicitly not its own work i
 
 ---
 
-## Just finished — a session of five landings
+## Before that — the session of 27 Aug 2026
 
 **Session of 27 Aug 2026.** Five steps landed and one is written and waiting. Taken in order.
 
@@ -95,33 +95,63 @@ the maintainer walked and approved. A new check reads the built bundle and fails
 
 **Ten checks now**, not nine.
 
-## Building next — Phoebe's answer reliability (item A6)
+## Just finished — reliability, the guards, and the primer
 
-**Top priority, on the maintainer's ruling of 28 Aug 2026. A third of visitor questions failing
-outranks everything else in this lane.**
+**Session of 28 Aug 2026.** Six steps landed after the morning's close-out.
 
-**Measured, not suspected.** Twenty requests through the real relay on one ordinary eligibility
-question: **three failures in ten on `main`**, the code that is deployed today. Empty answers at 945
-and 733 of 16,000 output tokens, an `API error 400 — Invalid request data` on our own request, a
-seven-character reply delivered to a caller, and answers ranging from 569 to 1,503 characters on
-identical input.
+**Phoebe was failing about one request in six, and it is fixed (item A6).** Empty answers, a false
+`API error 400`, a budget wall, and replies of one to three characters delivered as answers. Found
+by accident while testing the primer against a baseline, diagnosed over seventy-five instrumented
+requests, and fixed by moving her to **Opus 5**: the empty-answer rate falls from 12% to 2%, and
+she is faster and cites more cards than before.
 
-**Item A4 recorded this symptom as fixed.** Its cause — hidden thinking exhausting the budget — was
-real and was fixed. It was not the only cause, and that record is corrected in place rather than
-quietly.
+**Two guards followed, for what the model change does not reach.** A reply shorter than 40
+characters is refused rather than delivered — the floor comes from 256 measured answers whose ten
+shortest were 1, 1, 3, 3, 3, 3, 21, 221, 293, 295. And the relay now has **a timeout of its own**,
+120 seconds, where it had none at all, plus one narrow retry for a 400 that arrives too late to be
+a malformed request.
 
-**The next step is a diagnosis, not a fix.** Find the four faults before proposing anything, because
-guessing at a cause is what cost two days this week.
+**Eleven checks now.** `check-reply-guard` joined them, and `check-cap` gained two proving a retry
+cannot cost a visitor two of their twenty.
 
-## Parked — step two of the agent handoff primer (item A3)
+**The agent handoff primer is live (item A3).** Step two shipped after the reliability work, and
+rung 2 of the abstention ladder moves from *partly live* to **live** in
+[AGENT_RULES.md](./AGENT_RULES.md). Phoebe says the maintainer's sentence about Bridget word for
+word — compared character by character, not by eye — and the hang that had parked the work did not
+recur in ten attempts.
 
-**Built in full, all ten checks passing, deliberately uncommitted** on branch
-`feat/primer-wired-into-phoebe`. Three of the four live questions passed and Phoebe's sentence was
-the maintainer's sentence word for word.
+**Two rulings were logged**: the session opening became a two-part ritual, and the free calculator
+agent is named **Calvin** — the name only, with everything else coming by the maintainer's hand
+when his lane opens.
 
-**It waits behind item A6.** Nothing published claims the primer is live, so nothing is dishonest
-while it sits. Two requests hung with no response on the primer side and none on `main`; that is
-re-measured after A6, since it may share a cause.
+## Building next — the return to the brand book
+
+**The brand book arrived by the maintainer's hand on 28 Aug 2026: version 3, one light brand,
+superseding the two-theme era.** It governs both properties and is complete on its own page.
+`BRAND.md` in this repository is now that book. It is gitignored, as it has always been, so it does
+not publish.
+
+**[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) is superseded by it and does not yet
+say so.** The superseded header comes by the maintainer's hand, under the visible-corrections rule,
+with the original reasoning preserved.
+
+**What the book changes here, measured against the shipped stylesheet:** the canvas moves from
+`#FBFBFE` to **`#F6F5FA`**, the hairline from 9% to 10%, two radii grow, the neutrals are renamed
+from `--fg-*` to `--ink-*`, shadow tokens appear, **the dark theme retires entirely**, and the
+three-plane rule leaves this repository's derived `--chrome` without a home — which the book says
+to raise rather than invent, and the maintainer is taking to production's book.
+
+**Three things it settles.** Bridget is **Surf `#14C8D9`**, not the provisional lifted value.
+Status and identity are told apart by *form* rather than colour, which closes item S8's rider. And
+the stress ramp survives, because §2.5 still defines warm as a warning **or a sub-par metric**,
+which is what water stress is.
+
+**Phoebe stays Anemone.** The book's roster is production's crew; each surface extends it with its
+own agents under the book's rules. A one-line amendment to close that gap at the source is **owed
+by the maintainer's hand** at the master book's next revision.
+
+**It is proposed as sized steps and none is built.** The assets tree named in the book's §8 is on
+the maintainer's desktop and has not been moved.
 
 ## Not next, and why
 
@@ -130,4 +160,4 @@ re-measured after A6, since it may share a cause.
 | **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. |
 | **Surfaces** | The bridge (item S7) was ruled on 26 Aug 2026 but has no proposal — the shape of the handoff is coordinated by the maintainer's hand. The brightness pull-up (item S8) shipped on 27 Aug and stays open only on its rider: both agent identity colours are re-reviewed against the status taxonomy, because an agent colour must never read as a project status and Bridget's soft Surf sits near *Live*. The rest of the family is polish (item S5) or waits on data that does not exist yet (item S1). |
 | **Data** | Blocked on material the maintainer supplies — registry coordinates for the project points (item D2), public disclosures for corporate goals and target geographies (item D1). Not work that can start from inside the repository. |
-| **Operations** | **Nothing is due.** The line endings (item O6) and the merged branches (item O7) are both closed as of 27 Aug 2026, and delete-on-merge now removes branches by itself. What remains waits on real usage that does not exist yet: the number twenty (item O1), the basemap's five-million-request ceiling (item O9), and the primer review against the abstention log (item A5). One question is open and unhurried — whether the export copies should be produced by a script rather than by hand (item O8). |
+| **Operations** | **Nothing is due.** What remains waits on real usage that does not exist yet: the number twenty (item O1), the basemap's five-million-request ceiling (item O9), and the primer review against the abstention log (item A5). Two questions are open and unhurried — whether the export copies should be produced by a script (item O8), and whether an abstention that cited a card is a fault at all (item A7, waiting on a recurrence). |

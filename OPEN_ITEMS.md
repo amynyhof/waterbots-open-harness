@@ -77,7 +77,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 
 | A4 | Phoebe returned an empty answer | Agents | one cause fixed 25 Aug 2026 — **not the only one**, see A6 |
 | A5 | Primer review against the abstention log | Agents | logged 27 Aug 2026, not due |
-| A6 | Phoebe fails about one request in six, and every fault fails late | Agents | fixed 28 Aug 2026 — 12% to 2%; open on the guard scope |
+| A6 | Phoebe fails about one request in six, and every fault fails late | Agents | fixed and guarded 28 Aug 2026 — 12% to 2% |
 | A7 | An abstention cited a card | Agents | logged 28 Aug 2026, waiting on a recurrence |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | open |
 | S2 | The shared chat layer | Surfaces | built through Level 2 |
@@ -743,6 +743,28 @@ on Opus. That settles the question the fix proposal owed: **the wall is not upst
 **It is not fixed and Opus does not remove it** — one request in seventy-five still spent 16,000 of
 16,000. **It belongs to the guard proposal's scope**, along with the near-empty hole and the false
 `API error 400`, which remains weather.
+
+### The guards, shipped 28 Aug 2026 — what the model change does not reach
+
+**Two steps, run as one approved plan.**
+
+**A reply shorter than 40 characters is refused rather than delivered.** `api/_reply.ts` holds the
+floor as a named constant; `scripts/check-reply-guard.mjs` is the eleventh check and proves it in
+both directions. **This is not the schema minimum item A4 refused** — A4 declined to make the model
+say more, and this refuses to hand a non-answer to a visitor. Same principle, opposite direction.
+
+**The relay has a timeout of its own, 120 seconds, where it had none at all.** Locally that was an
+unbounded wait; on the platform the deployment's own limit ended the request and a visitor got a
+gateway error instead of the honest message this relay gives everywhere else. **A default nobody
+wrote down is a decision nobody made** — this item's own family lesson, unapplied until now.
+
+**One retry, only for a 400 arriving after five seconds**, because a malformed request is rejected
+in milliseconds and the two measured instances came back at 27.8 and 31.4 seconds. **A retry cannot
+cost a visitor two of their twenty**, and `check-cap` now proves it rather than the code merely
+asserting it.
+
+**The budget wall is not closed by any of this.** It is cut off at 120 seconds rather than run to
+completion, which limits its cost without removing its cause.
 
 ### What this item is, and is not
 
