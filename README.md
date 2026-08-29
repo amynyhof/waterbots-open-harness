@@ -116,14 +116,16 @@ visitor identifier at all, so a question can never be traced back to a person.
 
 ### Confirming the build
 
-Ten checks, all of which must pass. Four guard against faults that nothing else here can see:
+Eleven checks, all of which must pass. Five guard against faults that nothing else here can see:
 `check-attribution` reads the built bundle rather than the source, so it catches a refactor that
 drops a required licence statement while leaving the site looking perfectly correct;
 `check-api-exports` catches a relay that would build cleanly and then answer nothing once deployed;
 `check-cap` proves the twentieth message passes and the twenty-first is refused, which would
-otherwise cost twenty-one real messages to confirm by hand; and `check-basemap-key` reads the built
+otherwise cost twenty-one real messages to confirm by hand; `check-basemap-key` reads the built
 bundle for the basemap key, because a build without one produces a map that works, looks healthy,
-and is watermarked on every tile.
+and is watermarked on every tile; and `check-reply-guard` proves the relay refuses an answer too
+short to be one, because that fault shows up in about two requests in a hundred and waiting for it
+is not a test.
 
 ```bash
 node scripts/check-basins.mjs
@@ -133,6 +135,7 @@ node scripts/check-cards.mjs
 node scripts/check-api-exports.mjs
 node scripts/check-visitor-id.mjs
 node scripts/check-cap.mjs
+node scripts/check-reply-guard.mjs
 node scripts/build-prompt-modules.mjs --check
 npm run build && node scripts/check-attribution.mjs && node scripts/check-basemap-key.mjs
 ```
