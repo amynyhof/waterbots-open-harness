@@ -316,7 +316,9 @@ should be checkable on how it works as well as on what it says.
 | [CITATIONS.md](./CITATIONS.md) | What a citation is and how it renders |
 | [BUILD_PLAN.md](./BUILD_PLAN.md) | What is being built next, and why |
 | [OPEN_ITEMS.md](./OPEN_ITEMS.md) | Every open thread, in five families |
-| [SESSION_HANDOFF.md](./SESSION_HANDOFF.md) | Where things stand, for whoever picks the work up |
+| [SESSION_HANDOFF.md](./SESSION_HANDOFF.md) | Where things stand **now**, for whoever picks the work up |
+| [BUILD_LOG.md](./BUILD_LOG.md) | How it came to stand there — append-only, one entry per session |
+| [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) | Superseded by the brand book; kept as history |
 
 ## Not in this repository
 
