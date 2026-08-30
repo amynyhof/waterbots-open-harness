@@ -20,6 +20,8 @@ reading this.
 3. **Report in plain English:** where we left off, what is in flight, what waits on the
    maintainer's word, and **anything that changed underneath us** since the last session.
 4. **Kill stray dev servers.**
+5. **Check for code reading an unpushed migration** — see *the migration gate* below. Nothing here
+   has migrations yet; the check runs anyway, so the first one does not arrive unguarded.
 
 **"Anything that changed underneath us" is the one people skip.** A pull request merged after the
 last close, a setting altered on the platform, a file moved by hand, a provider that stopped being
@@ -32,8 +34,12 @@ which need a ruling and which are already approved.
 
 **The maintainer approves the plan once. An approved plan is a batch approval.**
 
-**Build through it without stopping between steps** — a commit per step, a pull request per step,
-and her eyeball wherever a step's own gate requires one.
+**Build through it without stopping between steps** — a commit per step, ~~a pull request per
+step,~~ **a pull request per checkpoint**, and her eyeball wherever a step's own gate requires one.
+
+> **Corrected 29 Aug 2026.** This said *a pull request per step* until the bundling ruling below.
+> A commit is still per step; the pull request is now per eyeball stop. See *Pull requests bundle by
+> the maintainer's checkpoints, not by step*.
 
 **Interrupt only for three things:**
 
@@ -60,6 +66,10 @@ The session has not started until all six are read.
 
 **This list is the one home for the opening ritual**, and [CLAUDE.md](./CLAUDE.md) points here
 rather than carrying a second copy of the count.
+
+**[BUILD_LOG.md](./BUILD_LOG.md) is deliberately not among them and must not join them.** It is
+history, written at the close and read only when someone goes looking. Adding it would undo the
+rule it exists to serve — see *the opening reads stay thin, forever*.
 
 **The count moved twice on 27 Aug 2026, both times on the maintainer's ruling.** This list said
 four for as long as it existed, leaving itself off its own list, while CLAUDE.md said five and
@@ -126,6 +136,32 @@ turned on so merged branches do not pile up.
 and it is unchanged: opening a pull request is not permission to merge one, and nothing
 merges without her.
 
+#### Pull requests bundle by the maintainer's checkpoints, not by step
+
+**Maintainer's ruling, 29 Aug 2026. Already law on production; law here from now.**
+
+> **Everything between two of the maintainer's eyeball stops ships as one pull request.**
+
+**Invisible groundwork rides with the visible step it serves.** A rename, a dead-code removal or a
+token tidy is not a thing she can look at, so it does not earn a review of its own — it travels
+with the change it was clearing the way for.
+
+**Steps inside a bundle stay separate commits.** The bundle is the review unit; the step is still
+the unit of work, and the history still reads one step at a time.
+
+**A step keeps its own pull request only when it needs its own revert handle.** A migration. A
+large change of appearance, of the kind that would be judged and possibly undone on its own — the
+stress ramp is the example given. A rulebook change is another: canon is exactly the thing you want
+to be able to lift out without lifting anything else with it.
+
+**This does not loosen any gate.** Her eyeball still falls where the plan says it falls, the commit
+word is unchanged, and nothing merges without her. What it removes is a review queue that grew a
+row for every mechanical change.
+
+**It changes nothing about how a step is sized** — see *How big is a step* above. A step is still
+one coherent, testable thing. This rule is about how steps are grouped for review, not about how
+big one may be.
+
 #### Every description opens with a block for the maintainer
 
 **Maintainer's ruling, 27 Aug 2026.** Every pull request description begins with a block
@@ -138,6 +174,14 @@ jargon:
 3. **What to check** — what the "Files changed" tab should say, and anything to eyeball.
 
 **Any term a non-engineer would not know gets one plain-English line of explanation.**
+
+**A pull request that depends on an unpushed migration says so first.** Maintainer's ruling,
+29 Aug 2026: its For Amy block opens with **`DO NOT MERGE YET`** on its own first line, naming what
+it waits on. A pull request whose code reads a migration that has not landed is a green button that
+breaks production, and the only reliable guard is the one a reviewer reads before clicking.
+
+**This repository has no migrations today.** The rule is recorded before the first one rather than
+after it, which is the whole point of writing a rule down.
 
 The engineer-facing detail follows below the block, unchanged. This adds a block; it
 replaces nothing. **A pull request without the block is not ready for review.**
@@ -198,6 +242,24 @@ retold in two places.
 
 ## Open items and families
 
+### Record once, point everywhere else
+
+**Maintainer's ruling, 29 Aug 2026. Already law on production; law here from now.**
+
+> **An incident is recorded fully once, in the item that owns it. Everywhere else carries two lines
+> and a pointer.**
+
+**Why.** A fault told in full in three places is three accounts that drift, and a reader who finds
+them disagreeing cannot tell which is current. It is the same disease *one home per rule* was
+written to cure, applied to what happened rather than to what is required.
+
+**What two lines look like:** what it was, and where the whole story lives. Not a summary that
+grows back into a second account. If a pointer needs a third line to be useful, the owning item is
+the thing to improve.
+
+**It does not license thinness in the owning item.** The full record is still full — the
+measurements, the wrong turns, the dates. It is only told once.
+
 - Every open item belongs to a family. A new item joins a family or
   starts one; starting one is a maintainer decision, recorded with
   its reason.
@@ -208,24 +270,60 @@ retold in two places.
 - Shortcuts are taken only under real pressure, named as shortcuts,
   and logged as debt. Debt is recorded, never quietly kept.
 
+## The opening reads stay thin, forever
+
+**Maintainer's ruling, 29 Aug 2026. Already law on production; law here from now.**
+
+> **A growing opening document is a defect, and it is flagged as one.**
+
+Six documents are read before every session starts. If they grow without bound, the ritual that
+exists to make a session start well becomes the reason it starts slowly, and the parts that matter
+get skimmed. **The reads are a briefing, not an archive.**
+
+**Three rules hold the line.**
+
+1. **[SESSION_HANDOFF.md](./SESSION_HANDOFF.md) is current state only, and is rewritten from
+   scratch at every close.** Not amended, not appended to. Where we are, what is committed and what
+   is not, what waits on the maintainer, what comes next. **A sentence about how something came to
+   be is history and does not belong in it.**
+
+2. **History lives in [BUILD_LOG.md](./BUILD_LOG.md), which is append-only and is never read at the
+   opening.** It is not one of the six. It is written to once per session, at the close, and read
+   only when someone goes looking for how a thing came to be. Nothing in it is ever edited — a
+   correction is a new entry that says what it corrects, which is the visible-corrections rule
+   applied to a log rather than to a claim.
+
+3. **An item's own row carries its own story**, in [OPEN_ITEMS.md](./OPEN_ITEMS.md), recorded once
+   per *record once, point everywhere else* above.
+
+**When OPEN_ITEMS.md gets heavy, sweep the closed items to an archive file.** A closed item is
+finished; it earns a pointer and a home elsewhere, not a place in a document read at the start of
+every session. Sweeping is ordinary tidying and needs no ruling — deciding what a *family* is still
+does.
+
+**Flagging is part of the job.** An engineer who notices an opening document growing says so in the
+Part 1 report, rather than reading it dutifully and saying nothing.
+
 ## How a session closes
 
 **The close-out is one complete act.** Maintainer's ruling, 26 Aug 2026: the ritual below
 includes every step, every time. **A ritual with a skipped step is an unfinished ritual.**
 
 1. Refresh the root docs so they tell the truth: BUILD_PLAN.md,
-   OPEN_ITEMS.md, CLAUDE.md, SESSION_HANDOFF.md, and any rulebook
-   touched this session.
-2. SESSION_HANDOFF.md is rewritten so a cold reader can resume:
-   where we are, what is committed vs. uncommitted, what is waiting
-   on Amy, what comes next.
-3. Commit the checkpoint.
-4. **Then** regenerate the export copies, where the repository keeps them.
+   OPEN_ITEMS.md, CLAUDE.md, and any rulebook touched this session.
+2. **Append this session to [BUILD_LOG.md](./BUILD_LOG.md)** — what was built, what was learned,
+   what was decided. Append only; nothing already in it is edited.
+3. SESSION_HANDOFF.md is **rewritten from scratch**, current state only, so a cold reader can
+   resume: where we are, what is committed vs. uncommitted, what is waiting on Amy, what comes
+   next. **It carries no history** — that is what BUILD_LOG is for.
+4. **Check for code reading an unpushed migration**, the same check Part 1 runs.
+5. Commit the checkpoint.
+6. **Then** regenerate the export copies, where the repository keeps them.
    In this repository that is the `exports/` folder — the maintainer's
    copies of the root documents, which she carries elsewhere by hand.
    It is gitignored, so nothing here refreshes it and no check notices
    when it is stale. That is why it is a named step.
-5. Confirm `main` is equal to `origin`.
+7. Confirm `main` is equal to `origin`.
 
 **The copies are made after the final commit, not before it**, so they carry the close-out
 itself rather than the state just before it. Maintainer's ruling, 27 Aug 2026 — see item O8 in
