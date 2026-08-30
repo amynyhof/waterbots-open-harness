@@ -1273,7 +1273,82 @@ does not have and, under a one-theme book, will not get. **The `.theme-light` cl
 — maintainer's ruling, 29 Aug 2026: *one theme needs no switch*. A theme class with one theme left
 in it is how a second theme quietly grows back.
 
-### Two things are held, not built — both re-carrying by the maintainer's hand
+### The `--chrome` question is answered, and the answer moved once
+
+**It is no longer held.** The maintainer ruled on it rather than waiting on production's loop, and
+the answer changed shape the same day after being built and looked at. Both stages are recorded
+here, because this item is the one home for the story and every comment in the code carries two
+lines and a pointer to it.
+
+**What it was.** This repository derived a fourth plane, `--chrome` `#E8E9ED`, by applying
+BRAND.md's elevation formula downward from the canvas: `color-mix(in srgb, #0B1428 8%, #FBFBFE)`.
+The formula was right — the same 8% step reproduced the published Deep Marine `--card` exactly,
+which is what confirmed it — and the conclusion was wrong, because **BRAND.md v3 §2.3 allows three
+planes and no fourth.** By 29 Aug it also sat only **4.4 points of CIE L\*** from the canvas, down
+from 6.3, because the canvas had moved to `#F6F5FA`. It was doing neither job.
+
+**First answer, ratified and built: chrome takes the canvas.** In a three-plane system the
+mechanism for *chrome recedes* is that content rises onto white cards while chrome stays on the
+canvas. Chrome recedes by not rising.
+
+**Second answer, ruled after the browser check the same day, and it stands.** ~~Chrome takes the
+canvas.~~ **The frame and the content have different grounds.**
+
+| Token | Value | Carries |
+|---|---|---|
+| `--paper` | `#F6F5FA` | The **content** canvas — the map, the worksheet |
+| `--frame` | `#FBFBFE` | The **frame** — top bar, rail, and both docks' ground |
+
+**Why the first answer was wrong, in the maintainer's words:** on production `#F6F5FA` is the
+landing *content's* canvas and the frame around a console stays lighter Frost. Painting the frame
+`#F6F5FA` here put the warm value on the wrong layer, and the pale sea then sat nearly at the
+frame's own tone. **Content warm, frame lighter and receding** — the same relationship as
+production, mirrored for a surface whose content is a map.
+
+**Measured, not judged by eye:**
+
+| | CIE L\* | Chroma |
+|---|---|---|
+| `--card` `#FFFFFF` | 100.00 | 0.0000 |
+| `--frame` `#FBFBFE` | 98.69 | 0.0118 |
+| `--paper` `#F6F5FA` | 96.74 | 0.0200 |
+
+The frame is **1.96 L\* lighter** than the content canvas and carries **41% less chroma**. Both
+lean very slightly blue, so *cooler* is loose wording: the frame recedes by being **lighter and
+less tinted**, and the proposed book line should say so.
+
+**One thing the ruling broke, and its answer.** The active navigation item rises one plane to
+`--card`. Against `--frame` that is a step of **1.31 L\***, very nearly invisible. **It now takes
+the 1px `--line` hairline that §2.3 pairs with a white card** — the border carries the weight, and
+using the fill alone was the incomplete half of a rule the book already states. That is the book
+applied properly rather than a new device, so it needs no separate ratification.
+
+### For the maintainer's hand — the ratification bundle
+
+Carried to the master brand book by the maintainer. **Four items, and the first has been amended
+since it was first ratified.**
+
+1. **The frame and the content have different grounds.** Proposed line: *the warm canvas belongs to
+   content; the frame sits one step lighter and quieter.* **This replaces the earlier "chrome takes
+   the canvas", which she ratified in the morning and superseded the same afternoon.** The part
+   that survives is that chrome gets no plane *below* the canvas.
+2. **An active navigation item rises one plane, to `--card`, with a hairline.** The book covers
+   chips, tags, dots and buttons and says nothing about navigation state.
+3. **The three shadow values.** `--shadow-md` is not invented — it is the value already shipping on
+   the basin tooltip, ink at 10%, the hairline's own alpha. `--shadow-sm` and `--shadow-lg` are one
+   reasoned step either side.
+4. **Driftwood `#8E7147` taken into use for the dry categories** — Arid and Low Water Use, and No
+   Data. The book holds it as a recorded spare, described as *dry warm bronze*, and arid land is
+   literally dryness. Same precedent as Anemone for Phoebe.
+
+### Route C, logged as the future real answer
+
+**A custom CARTO vector basemap, styled to the book.** It is the only route that gives genuine
+control over the sea and the land rather than tinting someone else's raster tiles. It is
+substantially more work and it changes the standing dependency in item O9. **Not proposed and not
+built** — recorded so it is not rediscovered as a new idea.
+
+### Two things were held, and one still is
 
 **1. `--chrome`.** This repository derives `--chrome` `#E8E9ED` and paints four surfaces with it —
 the top bar, the navigation rail, the chat dock and the chat shell. **The book allows three planes

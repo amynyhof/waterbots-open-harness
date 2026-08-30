@@ -125,22 +125,19 @@ body {
 /* Chrome recedes, content rises. Navigation sits BELOW the canvas, flush and
    square — never as a card. */
 .chrome {
-  background: var(--chrome);
+  background: var(--frame);
   border: 0;
   border-radius: 0;
 }
 
-/* Chrome is the canvas, so the fill alone cannot separate navigation from the
-   page. This 1px --line rule carries the separation instead — the same device
-   the book gives cards, and what BRAND.md §2.2 says the hairline is for.
+/* The frame sits one step lighter than the content canvas, so the fill does
+   part of the separating and this 1px --line rule finishes it. Still flush and
+   square: chrome is never a card.
 
-   Still flush and square: chrome is never a card.
-
-   TWICE CORRECTED, and the second correction restored the first one's subject.
-   This comment said --chrome aliased --paper; that was true on 13 Aug 2026,
-   went false on 18 Aug when a fourth plane was derived, was struck on 29 Aug,
-   and became true again the same day when the fourth plane was retired. The
-   sentence is right; it spent eleven days wrong. Recorded once in item S9. */
+   THIS COMMENT HAS BEEN WRONG TWICE AND IS ON ITS THIRD SUBJECT — it has
+   described --chrome aliasing --paper, then a derived fourth plane, then the
+   canvas, and now --frame. Every version was true when written. The record of
+   all of it lives once, in item S9 in OPEN_ITEMS.md. */
 .chrome {
   border-bottom: 1px solid var(--line);
 }
@@ -165,14 +162,24 @@ body {
    chat panel is content and rises like content.
 --------------------------------------------------------------------------- */
 .wb-panel {
-  background: color-mix(in oklab, var(--host-accent, var(--ink-3)) 5%, var(--card));
+  background: color-mix(
+    in oklab,
+    var(--host-accent, var(--ink-3)) 5%,
+    var(--panel-ground, var(--card))
+  );
   border: 1px solid color-mix(in oklab, var(--host-accent, var(--ink-3)) 25%, transparent);
 }
 
 /* A dock is a panel that fills the full height of the shell, so it carries the
    accent on its inner edge only. Flush and square; it takes no radius, and the
-   rule it replaces was a plain --line hairline. */
+   rule it replaces was a plain --line hairline.
+
+   A DOCK IS PART OF THE FRAME, so its ground is --frame rather than --card.
+   Maintainer's ruling, 29 Aug 2026: the frame is the top bar, the rail and both
+   docks' ground. The legend keeps --card, because it sits on the map and the
+   map is content. */
 .wb-dock {
+  --panel-ground: var(--frame);
   border: 0;
   border-left: 1px solid color-mix(in oklab, var(--host-accent, var(--ink-3)) 25%, transparent);
 }
@@ -442,7 +449,10 @@ body {
 /* ---------------------------------------------------------------------------
    Console shell — rail and chat dock
 
-   Both sit on --chrome, below the canvas, flush and square. Never cards.
+   The rail sits on --frame, flush and square, and is never a card. The dock
+   is a host panel and rises like content — §2.3 names chrome as navigation,
+   rails and top bars, and a chat panel is none of those. Corrected
+   29 Aug 2026; both used to sit on the retired --chrome.
 --------------------------------------------------------------------------- */
 
 .wb-rail-toggle {
@@ -488,7 +498,9 @@ body {
   gap: 10px;
   padding: 9px 16px;
   font-family: var(--font-sans);
-  transition: background var(--dur) var(--ease);
+  transition:
+    background var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
 }
 
 /* The legend's collapse control. Full-width so the whole strip is the target

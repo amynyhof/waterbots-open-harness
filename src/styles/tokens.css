@@ -114,30 +114,47 @@
    fill. The book still publishes it that way — §2.3, three planes and no
    fourth, the hairline doing the structural work.
 
-   --chrome IS RETIRED. It is var(--paper) — chrome takes the canvas.
+   THE FRAME AND THE CONTENT HAVE DIFFERENT GROUNDS.
 
-   Ratified by the maintainer 29 Aug 2026, for carrying into the master brand
-   book. BRAND.md v3 §2.3 allows three planes and no fourth and names no chrome
-   fill; the mechanism for "chrome recedes" in a three-plane system is that
-   CONTENT RISES onto white cards while chrome stays on the canvas. Chrome
-   recedes by not rising. It never needed a fill.
+     --paper  #F6F5FA  the CONTENT canvas — the map, the worksheet
+     --frame  #FBFBFE  the FRAME — top bar, rail, and both docks' ground
 
-   This file previously derived a fourth plane, #E8E9ED, from BRAND.md's
-   elevation formula applied downward. That derivation, its arithmetic and the
-   reason it was wrong are recorded once, in item S9 in OPEN_ITEMS.md. Two lines
-   and a pointer here, per record-once: it produced a fourth plane the book does
-   not have, and by 29 Aug it sat 4.4 points of CIE L* from the canvas, doing
-   neither job.
+   Maintainer's ruling, 29 Aug 2026, for ratification into the master book:
+   THE WARM CANVAS BELONGS TO CONTENT; THE FRAME SITS ONE STEP LIGHTER AND
+   QUIETER. Content warm, frame receding. On production the warm value is the
+   landing content's canvas and the frame around a console stays lighter Frost;
+   this is the same relationship, mirrored for a surface whose content is a map.
 
-   The 1px --line rule under .chrome in base.css carries the separation, which
-   is what BRAND.md §2.2 says the hairline is for.
+   Measured, not judged by eye:
+
+     card   #FFFFFF  CIE L* 100.00   chroma 0.0000
+     frame  #FBFBFE  CIE L*  98.69   chroma 0.0118
+     paper  #F6F5FA  CIE L*  96.74   chroma 0.0200
+
+   The frame is 1.96 L* lighter than the content canvas and carries 41% less
+   chroma. Both lean very slightly blue, so "cooler" is loose: the frame is
+   lighter and LESS TINTED, which is what makes it recede.
+
+   CORRECTED THE SAME DAY. Earlier on 29 Aug this file said "--chrome IS
+   RETIRED. It is var(--paper) — chrome takes the canvas", ratified on the
+   reading that a three-plane system has no fill for chrome. ~~That put the warm
+   value on the frame.~~ It was built, looked at, and the frame and the map were
+   found to be tonally fighting — the pale sea sat almost at the frame's own
+   tone. The reading was right that chrome does not get a plane BELOW the
+   canvas; it was wrong that the frame and the content share one ground.
+
+   --chrome is gone as a token either way. The class .chrome still names what
+   the book names — top bar and rail — and it paints --frame.
+
+   The full record, including the #E8E9ED derivation this replaced, is in item
+   S9 in OPEN_ITEMS.md. Two lines and a pointer here, per record-once.
 
    Frost still has no ladder ABOVE the canvas: --card and --raised remain the
    same published white, separated by the 1px --line border. Only the step
    below the canvas is carried by a fill.
 --------------------------------------------------------------------------- */
 :root {
-  --chrome: var(--paper); /* retired as a plane — see the note above */
+  --frame: #fbfbfe; /* the frame's ground — see the note above */
   --paper: #f6f5fa;
   --card: #ffffff;
   --raised: #ffffff;

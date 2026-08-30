@@ -2,10 +2,16 @@
  * The left navigation rail.
  *
  * Chrome recedes, content rises (BRAND.md v3 §2.3): the rail sits ON the
- * canvas, flush and square, never as a card — a rail rendered as a card would
- * float navigation above the work it serves. It recedes by not rising, which
- * is the only mechanism a three-plane system has. The active item rises one
- * plane to --card, never to an accent fill.
+ * frame, flush and square, never as a card — a rail rendered as a card would
+ * float navigation above the work it serves. The active item rises one plane
+ * to --card, never to an accent fill.
+ *
+ * THE ACTIVE ITEM TAKES A HAIRLINE AS WELL AS A FILL. --card and --frame are
+ * only 1.31 points of CIE L* apart, so a fill alone was very nearly invisible
+ * against the lighter frame ruled on 29 Aug. §2.3 pairs a white card with a
+ * 1px --line border and says the border carries the weight; using the fill
+ * alone was the incomplete half of that rule, and it showed as soon as the
+ * frame moved. This is the book applied properly, not a new device.
  *
  * WIDER SINCE 29 Aug 2026. The design canon asked that the rail be widened
  * modestly whenever it was next opened for another reason, and said plainly it
@@ -154,15 +160,13 @@ function RailItem({
       title={collapsed ? label : undefined}
       style={{
         width: '100%',
-        border: 0,
         font: 'inherit',
         cursor: 'pointer',
         textAlign: 'left',
-        /* The subject rises one plane, to --card. Never an accent fill.
-           Ratified 29 Aug 2026 with the retirement of --chrome: the marker used
-           to be --paper standing one step above a chrome fill, and when chrome
-           became the canvas it had nowhere left to stand. */
+        /* The subject rises one plane, to --card, with the hairline §2.3
+           pairs with a white card. Never an accent fill. */
         background: active ? 'var(--card)' : 'transparent',
+        border: active ? '1px solid var(--line)' : '1px solid transparent',
         color: active ? 'var(--ink)' : 'var(--ink-2)',
         justifyContent: collapsed ? 'center' : 'flex-start',
       }}

@@ -262,17 +262,21 @@ by fill — §2.3, three planes and no fourth, with the hairline doing the struc
 BRAND.md does not publish every value this project needed. Where one was missing it was **derived
 from BRAND.md's own formulas**, never invented, and the derivation is recorded so it can be checked:
 
-- **`--chrome` — retired 29 Aug 2026.** Chrome takes the canvas: `--chrome` is `var(--paper)`.
-  BRAND.md v3 §2.3 allows three planes and no fourth and names no chrome fill, and the mechanism for
-  *chrome recedes* in a three-plane system is that **content rises** onto white cards while chrome
-  stays on the canvas. The 1px `--line` rule beneath the chrome carries the separation.
+- **The frame and the content have different grounds** — maintainer's ruling, 29 Aug 2026.
+  `--paper` `#F6F5FA` is the **content** canvas, carried by the map and the worksheet. `--frame`
+  `#FBFBFE` is the **frame**: top bar, rail, and both docks' ground. Measured, the frame is
+  **1.96 CIE L\* lighter** than the content canvas and carries **41% less chroma** — it recedes by
+  being lighter and less tinted rather than by being a darker plane beneath.
 
-  This project previously derived a fourth plane from BRAND.md's elevation formula. **That
-  derivation, its arithmetic, and why it was wrong are recorded once** in item S9 in
-  [OPEN_ITEMS.md](./OPEN_ITEMS.md).
+  > **Corrected the same day.** Earlier on 29 Aug this said ~~"`--chrome` — retired. Chrome takes
+  > the canvas."~~ That reading was right that chrome gets no plane *below* the canvas and wrong
+  > that the frame and the content share one ground. It was built, looked at, and the frame and the
+  > map were found to be tonally fighting.
 
-  **Ratified by the maintainer for carrying into the master brand book**, along with the rule that
-  an active navigation item rises one plane to `--card`, which the book does not cover.
+  **Proposed for the master brand book:** *the warm canvas belongs to content; the frame sits one
+  step lighter and quieter.* The active navigation item rises one plane to `--card` **with the 1px
+  hairline §2.3 pairs with a white card** — a fill alone is 1.31 L\* against the frame and nearly
+  invisible. The full record is item S9 in [OPEN_ITEMS.md](./OPEN_ITEMS.md).
 - **Phoebe's identity colour** — **Anemone `#A04E7E`**, with **Anemone Light `#C36E9F`** on her
   antenna. Anemone was held in BRAND.md as an unclaimed spare, kept so a future role would not have
   to re-open the search; this is that use. Anemone Light is a new value set by the maintainer, one
