@@ -102,6 +102,8 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | O7 | Merged branches pile up, and are now to be cleared | Operations | done 27 Aug 2026, closed |
 | O8 | The export step in the close-out ritual | Operations | ruled 27 Aug 2026, open on the script question |
 | O9 | The basemap now needs a key, and has a ceiling | Operations | live 27 Aug 2026, standing dependency |
+| O10 | Line endings are pinned in git but not in the working folder | Operations | logged 30 Aug 2026, nothing broken |
+| O11 | OPEN_ITEMS.md is heavy and wants an archive | Operations | logged 30 Aug 2026 |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
 > reference to them elsewhere in the repository was updated in the same edit rather than left to
@@ -1394,6 +1396,13 @@ if the calm end is ever lightened again. It is not evidence that a warm off-scal
 it bought was the knowledge that the map read flat because of the *basemap*, not the data — which no
 amount of reasoning about the ladder would have found, and which the eye found in one sitting.
 
+**No images are kept, and that is a ruling rather than an omission.** The design exploration's
+screenshots were to be carried in by the maintainer's hand and captured into a reference document,
+the way the Replit demo was captured into `UI_REFERENCE.md`. **Ruled 30 Aug 2026: they are not
+coming.** The outcome is recorded here in full and the wash it led to is shipped, so there is
+nothing left for images to teach. The folder that had been prepared for them was removed rather than
+left waiting — **an empty seat reserved forever is its own small untruth about what is expected.**
+
 ### Route C, logged as the future real answer
 
 **A custom CARTO vector basemap, styled to the book.** It is the only route that gives genuine
@@ -1931,3 +1940,64 @@ version to keep is broader: **the instrument that settles a visual question is a
 thing itself.**
 
 Logged 27 Aug 2026. **Open as a standing dependency, with nothing due until there is real usage.**
+
+---
+
+## O10. Line endings are pinned in git but not in the working folder
+
+**Found 29 Aug 2026 while editing the stylesheet. Nothing is broken, and it is logged because item
+O6 says something about this that is half untrue.**
+
+**What O6 records as done:** a `.gitattributes` file pinning every text file to Unix line endings,
+"in git and in the working folder, on every machine that clones this repository."
+
+**The working-folder half does not hold.** `.gitattributes` says `* text=auto eol=lf`, and this
+machine has `core.autocrlf=true`. Measured on `src/styles/tokens.css` on 29 Aug: **git's stored blob
+has 239 Unix line endings and zero Windows ones; the file on disk had 239 Windows ones and zero
+Unix.** The same file, two forms.
+
+**Why nothing is broken, and why the fix still works.** `text=auto` normalises on the way in, so
+every commit carries Unix endings and `git status` stays clean — which is exactly the "done" test
+item O6 set, and it is genuinely met. The deployment platform builds from what git stores, which has
+never changed.
+
+**The likely cause.** Git only rewrites a file on checkout when its content changes. Files that have
+not differed between branches since `.gitattributes` landed on 27 Aug have never been rewritten, so
+they still carry the form they had before it existed. The rule prevents future drift; it did not
+convert what was already there.
+
+**What "done" looks like:** either `git add --renormalize .` plus a fresh checkout so the working
+folder matches what the attribute promises, or item O6's sentence corrected to say the rule binds
+what git stores rather than what sits on disk. **The second is probably right** — what git stores is
+what ships, and it is what the rule was written to protect.
+
+**Not urgent, and deliberately not fixed inside a brand step.** It was found mid-session and left
+alone rather than folded into unrelated work.
+
+Logged 30 Aug 2026. **Open, nothing broken, not due.**
+
+---
+
+## O11. OPEN_ITEMS.md is heavy and wants an archive
+
+**Flagged 30 Aug 2026, under the maintainer's ruling that the opening reads stay thin, forever.**
+That ruling says plainly that a growing opening document is a defect and that an engineer who
+notices one says so.
+
+**This file is 1,900-odd lines and grew by about 300 in one session.** It is read at the start of
+every session, and a good part of it is items that are closed and finished: O2, O3, O6, O7, S4, S8,
+and the settled halves of A2, A3 and A4.
+
+**What the ruling prescribes:** sweep closed items to an archive file. A closed item is finished; it
+earns a pointer and a home elsewhere, not a place in a document read at the start of every session.
+
+**Sweeping is ordinary tidying and needs no ruling.** It is logged rather than done because it was
+noticed at a close-out, and moving a third of this file is not a thing to do in the last ten minutes
+of a session. **What does need a decision is nothing** — the families stay as they are; only closed
+rows move.
+
+**What "done" looks like:** an archive file holding the closed items in full, each with its dates and
+its reasoning intact, and a one-line row left behind in the index table here pointing at it. Nothing
+is summarised away in the move.
+
+Logged 30 Aug 2026. **Open, ordinary tidying, not urgent.**

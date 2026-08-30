@@ -16,8 +16,9 @@ be true before a session closes.
 1. This file, CLAUDE.md
 2. [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) — how
    work is run
-3. [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) — which
-   design rules apply here, and at what strength
+3. [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) —
+   **superseded by the brand book on 28 Aug 2026 and still read**, because
+   it is history that explains why three things here are the way they are
 4. [BUILD_PLAN.md](./BUILD_PLAN.md) — what is being built now, what
    comes next, and the compatibility goal
 5. [OPEN_ITEMS.md](./OPEN_ITEMS.md) — every open item, grouped into
@@ -124,16 +125,18 @@ It carries how an agent speaks, the three outcomes, the abstention
 ladder, and what an agent may say about itself and about its
 colleagues. It is published, not engineer-eyes-only.
 
-**Four root documents, one home per rule.** CLAUDE.md owns engineering
+**Three root rulebooks, one home per rule.** CLAUDE.md owns engineering
 work and the language rules; CITATIONS.md owns what a citation is and
-how it renders; AGENT_RULES.md owns how an agent behaves and speaks;
-DESIGN_CANON_for_ShellB.md owns which design rules apply here and at
-what strength. A rule restated in two of them is a defect, not
-thoroughness — the copies drift, and then nobody can tell which one is
-current.
+how it renders; AGENT_RULES.md owns how an agent behaves and speaks. A
+rule restated in two of them is a defect, not thoroughness — the copies
+drift, and then nobody can tell which one is current.
 
-**It became four on 27 Aug 2026**, when the design canon arrived. It
-said three for as long as there were three.
+**The count has moved twice.** ~~It became four on 27 Aug 2026, when the
+design canon arrived.~~ **It is three again from 29 Aug 2026**, because
+the canon was superseded by the brand book and design values now live in
+BRAND.md, which is gitignored and is not a published rulebook. It said
+three for as long as there were three, four for two days, and three
+again.
 
 ## Data licensing — binding display requirements
 
@@ -188,15 +191,28 @@ are reference only — they predate current rules and must be
 reimagined, not copied. Any claim revived from legacy documents must
 be re-founded on cited sources.
 
-## Brand and design — see DESIGN_CANON_for_ShellB.md
+## Brand and design — see BRAND.md, the book
 
 Follow BRAND.md and UI_REFERENCE.md in this repo. They are gitignored
 (engineer-eyes-only, not published). Never invent colors, type, or
 styles outside them.
 
-**[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) is
-binding**, and it is published. It arrived by the maintainer's hand on
-27 Aug 2026, the way the process rules did, and it is the only design
-input from outside this repository. It does not hold values — BRAND.md
-and UI_REFERENCE.md own those. It holds the ruling about which of them
-apply here and at what strength.
+**BRAND.md is the brand book, version 3, and it governs all design on
+this site.** It arrived by the maintainer's hand on 28 Aug 2026, one
+light brand, superseding the two-theme era. It is complete on its own
+page and it governs both properties. It is gitignored and does not
+publish.
+
+~~**[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) is
+binding**, and it is the only design input from outside this
+repository.~~ **Corrected 29 Aug 2026: the canon is SUPERSEDED by the
+book** and says so at its own head, by the maintainer's hand. Its
+rulings were not wrong — the left rail, the "<" navigation and the chat
+dock rules it confirmed were carried into the book and live there now.
+It stays published as history. **Where the canon and the book disagree,
+the book wins.**
+
+**What the book does not carry is raised, never invented** — §0 is
+explicit. Four such rulings were made on 29–30 Aug 2026 and are owed to
+the master book by the maintainer's hand; item S9 in
+[OPEN_ITEMS.md](./OPEN_ITEMS.md) is the one home for them.
