@@ -5,8 +5,9 @@
  * and right chat dock, and only the centre scrolls. Chrome is one hairline
  * row; content starts high with no dead padding above it.
  *
- * Three zones on the surface ladder — the rail and the chat dock sit on
- * --chrome below the canvas, flush and square; the centre is the canvas.
+ * Three planes and no fourth (BRAND.md v3 §2.3). The rail and the top bar sit
+ * ON the canvas, flush and square; content rises onto white cards above it.
+ * --chrome was a fourth plane and was retired on 29 Aug 2026 — item S9.
  *
  * TWO SURFACES, AND NOTHING IS UNMOUNTED WHEN YOU LEAVE IT. Switching surface
  * hides what you left rather than throwing it away — the map, and both chat

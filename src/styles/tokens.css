@@ -94,51 +94,30 @@
    fill. The book still publishes it that way — §2.3, three planes and no
    fourth, the hairline doing the structural work.
 
-   --chrome is DERIVED, not invented. BRAND.md publishes no Frost chrome value
-   — the token and the §8.3a "chrome recedes" rule appear only in the Deep
-   Marine block — so it is produced with BRAND.md's own elevation formula,
-   applied in the opposite direction.
+   --chrome IS RETIRED. It is var(--paper) — chrome takes the canvas.
 
-     Deep Marine, one step UP:   --card = color-mix(#FFFFFF 8%, --paper)
-                                 #1B2340 + 8% white = #2D354F, which is the
-                                 published value exactly — confirming the
-                                 formula rather than assuming it.
+   Ratified by the maintainer 29 Aug 2026, for carrying into the master brand
+   book. BRAND.md v3 §2.3 allows three planes and no fourth and names no chrome
+   fill; the mechanism for "chrome recedes" in a three-plane system is that
+   CONTENT RISES onto white cards while chrome stays on the canvas. Chrome
+   recedes by not rising. It never needed a fill.
 
-     Frost, one step DOWN:       --chrome = color-mix(--ink 8%, --paper)
-                                 #FBFBFE + 8% ink = #E8E9ED
+   This file previously derived a fourth plane, #E8E9ED, from BRAND.md's
+   elevation formula applied downward. That derivation, its arithmetic and the
+   reason it was wrong are recorded once, in item S9 in OPEN_ITEMS.md. Two lines
+   and a pointer here, per record-once: it produced a fourth plane the book does
+   not have, and by 29 Aug it sat 4.4 points of CIE L* from the canvas, doing
+   neither job.
 
-   The same 8% step, inverted. It lands at CIE L* 92.4 against paper's 98.7 —
-   a separation of 6.3, which clears BRAND.md's "at least 6 points of CIE L*
-   between adjacent surfaces" on the brand's own terms rather than by eye.
-
-   CORRECTED 29 Aug 2026, under the visible-corrections rule. The derivation
-   above no longer reproduces, and the separation is no longer 6.3. The canvas
-   moved to the brand book's #F6F5FA on 29 Aug — item S9 in OPEN_ITEMS.md.
-   Both figures below are computed, not estimated:
-
-     - The formula now yields a different value.
-       color-mix(in srgb, #0B1428 8%, #F6F5FA) = #E3E3E9, not #E8E9ED.
-
-     - The separation is 4.4, not 6.3. CIE L*: chrome 92.4, canvas 96.7,
-       where the canvas was 98.7.
-
-   --chrome IS DELIBERATELY LEFT AT #E8E9ED AND IS NOT RE-DERIVED. It is a
-   fourth plane where the book allows three, and the book names no chrome
-   fill, so it is the maintainer's question and not a value to move here. The
-   "at least 6 points of CIE L*" bar quoted above came from the two-theme
-   book; version 3 does not carry it, so what the new number means is itself
-   part of that open question.
-
-   The 1px --line rule under .chrome in base.css carries the separation
-   meanwhile. It was already there.
+   The 1px --line rule under .chrome in base.css carries the separation, which
+   is what BRAND.md §2.2 says the hairline is for.
 
    Frost still has no ladder ABOVE the canvas: --card and --raised remain the
    same published white, separated by the 1px --line border. Only the step
    below the canvas is carried by a fill.
 --------------------------------------------------------------------------- */
 :root {
-  --chrome: #e8e9ed; /* derived from the #FBFBFE canvas; held, not re-derived
-                        against #F6F5FA — see the CORRECTED note above */
+  --chrome: var(--paper); /* retired as a plane — see the note above */
   --paper: #f6f5fa;
   --card: #ffffff;
   --raised: #ffffff;

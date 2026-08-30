@@ -130,27 +130,17 @@ body {
   border-radius: 0;
 }
 
-/* CORRECTED 29 Aug 2026, under the visible-corrections rule. This comment read:
+/* Chrome is the canvas, so the fill alone cannot separate navigation from the
+   page. This 1px --line rule carries the separation instead — the same device
+   the book gives cards, and what BRAND.md §2.2 says the hairline is for.
 
-     "On Frost, --chrome aliases --paper (BRAND.md publishes no Frost chrome
-      value), so the fill alone cannot separate navigation from the canvas."
+   Still flush and square: chrome is never a card.
 
-   It was true when it was written on 13 Aug 2026, when the token was literally
-   --chrome: var(--paper). It has been FALSE SINCE 18 Aug 2026, when the
-   console-shell build gave --chrome its derived #E8E9ED and this comment was
-   left behind. The two fills are not the same and have not been for a fortnight.
-
-   Nothing rendered wrongly because of it — the rule below is right either way.
-   The cost was to a reader, who was told the fills are identical at exactly the
-   moment the --chrome question is being taken to the brand book.
-
-   What is true: --chrome is a fill of its own, one step below the canvas, and it
-   does separate navigation from the page. The 1px --line rule below stays
-   regardless — it is the same device Frost uses for cards, and it carries the
-   separation if the two fills are ever brought closer. Item S9's canvas move
-   does exactly that: #FBFBFE -> #F6F5FA moves the canvas toward #E8E9ED.
-
-   Still flush and square: chrome is never a card. */
+   TWICE CORRECTED, and the second correction restored the first one's subject.
+   This comment said --chrome aliased --paper; that was true on 13 Aug 2026,
+   went false on 18 Aug when a fourth plane was derived, was struck on 29 Aug,
+   and became true again the same day when the fourth plane was retired. The
+   sentence is right; it spent eleven days wrong. Recorded once in item S9. */
 .chrome {
   border-bottom: 1px solid var(--line);
 }

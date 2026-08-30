@@ -262,22 +262,17 @@ by fill — §2.3, three planes and no fourth, with the hairline doing the struc
 BRAND.md does not publish every value this project needed. Where one was missing it was **derived
 from BRAND.md's own formulas**, never invented, and the derivation is recorded so it can be checked:
 
-- **`--chrome` on Frost** — ~~BRAND.md's `--chrome` token and its "chrome recedes" rule exist only in
-  the Deep Marine block. Applying BRAND.md's elevation formula downward gives
-  `color-mix(in srgb, #0B1428 8%, #FBFBFE)` = `#E8E9ED`, at CIE L\* 92.4 against paper's 98.7 — a
-  separation of 6.3, clearing BRAND.md's 6-point minimum between adjacent surfaces. The same 8% step
-  reproduces the published Deep Marine `--card` exactly, which is what confirms the formula.~~
+- **`--chrome` — retired 29 Aug 2026.** Chrome takes the canvas: `--chrome` is `var(--paper)`.
+  BRAND.md v3 §2.3 allows three planes and no fourth and names no chrome fill, and the mechanism for
+  *chrome recedes* in a three-plane system is that **content rises** onto white cards while chrome
+  stays on the canvas. The 1px `--line` rule beneath the chrome carries the separation.
 
-  **Corrected 29 Aug 2026.** The derivation above was sound when it was made and no longer
-  reproduces. The canvas moved to the brand book's `#F6F5FA`, so the same formula now gives
-  `#E3E3E9`, and the separation is **4.4, not 6.3** — CIE L\* 92.4 against a canvas of 96.7 rather
-  than 98.7. The 6-point minimum quoted above came from the two-theme book; version 3 does not
-  carry it.
+  This project previously derived a fourth plane from BRAND.md's elevation formula. **That
+  derivation, its arithmetic, and why it was wrong are recorded once** in item S9 in
+  [OPEN_ITEMS.md](./OPEN_ITEMS.md).
 
-  **`--chrome` is deliberately left at `#E8E9ED` and is not re-derived.** Version 3 allows three
-  planes and no fourth, and names no chrome fill at all, so this is a question with the maintainer
-  rather than a value to move here — see item S9 in [OPEN_ITEMS.md](./OPEN_ITEMS.md). The 1px
-  `--line` rule beneath the chrome carries the separation meanwhile.
+  **Ratified by the maintainer for carrying into the master brand book**, along with the rule that
+  an active navigation item rises one plane to `--card`, which the book does not cover.
 - **Phoebe's identity colour** — **Anemone `#A04E7E`**, with **Anemone Light `#C36E9F`** on her
   antenna. Anemone was held in BRAND.md as an unclaimed spare, kept so a future role would not have
   to re-open the search; this is that use. Anemone Light is a new value set by the maintainer, one

@@ -6,9 +6,10 @@
  * state beats a fabricated one, and a live-looking input that silently does
  * nothing is a false success state.
  *
- * Chrome recedes (BRAND.md §8.3a): the dock sits below the canvas on
- * --chrome, flush and square, in the 360-380px band, with host presence
- * pinned at the top rather than stretched down the panel.
+ * The dock is a host panel, not chrome. BRAND.md v3 §2.3 names chrome as
+ * navigation, rails and top bars; a chat panel is content. It sits in the
+ * 360-380px band with host presence pinned at the top rather than stretched
+ * down the panel.
  *
  * BRIDGET'S CHAT IS NOT BUILT, AND SHE IS NOT A PLACEHOLDER HOST. Staffing was
  * settled on 24 Aug 2026 — she is the map's agent — and her colour was settled
