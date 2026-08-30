@@ -50,8 +50,8 @@
   /* --- Radii — 4-pt grid ------------------------------------------------- */
   --r-xs: 4px;
   --r-sm: 6px;
-  --r-md: 10px;
-  --r-lg: 14px;
+  --r-md: 12px;
+  --r-lg: 16px;
   --r-xl: 20px;
   --r-2xl: 28px;
   --r-pill: 999px;
@@ -99,14 +99,36 @@
    a separation of 6.3, which clears BRAND.md's "at least 6 points of CIE L*
    between adjacent surfaces" on the brand's own terms rather than by eye.
 
+   CORRECTED 29 Aug 2026, under the visible-corrections rule. The derivation
+   above no longer reproduces, and the separation is no longer 6.3. The canvas
+   moved to the brand book's #F6F5FA on 29 Aug — item S9 in OPEN_ITEMS.md.
+   Both figures below are computed, not estimated:
+
+     - The formula now yields a different value.
+       color-mix(in srgb, #0B1428 8%, #F6F5FA) = #E3E3E9, not #E8E9ED.
+
+     - The separation is 4.4, not 6.3. CIE L*: chrome 92.4, canvas 96.7,
+       where the canvas was 98.7.
+
+   --chrome IS DELIBERATELY LEFT AT #E8E9ED AND IS NOT RE-DERIVED. It is a
+   fourth plane where the book allows three, and the book names no chrome
+   fill, so it is the maintainer's question and not a value to move here. The
+   "at least 6 points of CIE L*" bar quoted above came from the two-theme
+   book; version 3 does not carry it, so what the new number means is itself
+   part of that open question.
+
+   The 1px --line rule under .chrome in base.css carries the separation
+   meanwhile. It was already there.
+
    Frost still has no ladder ABOVE the canvas: --card and --raised remain the
    same published white, separated by the 1px --line border. Only the step
    below the canvas is carried by a fill.
 --------------------------------------------------------------------------- */
 .theme-light,
 [data-theme='light'] {
-  --chrome: #e8e9ed; /* derived: color-mix(in srgb, #0B1428 8%, #FBFBFE) */
-  --paper: #fbfbfe;
+  --chrome: #e8e9ed; /* derived from the #FBFBFE canvas; held, not re-derived
+                        against #F6F5FA — see the CORRECTED note above */
+  --paper: #f6f5fa;
   --card: #ffffff;
   --raised: #ffffff;
 
@@ -115,7 +137,7 @@
   --fg-3: #5b6478; /* readability floor */
   --fg-4: #98a0b2; /* disabled / placeholder only */
 
-  --line: rgba(11, 20, 40, 0.09);
+  --line: rgba(11, 20, 40, 0.1);
 
   --tide-ui: var(--tide);
   --tide-text: var(--tide);
