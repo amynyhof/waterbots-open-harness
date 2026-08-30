@@ -77,7 +77,6 @@ export default function App() {
 
   return (
     <div
-      className="theme-light"
       style={{
         height: '100%',
         display: 'flex',
