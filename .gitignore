@@ -3,6 +3,13 @@
 # third-party datasets. Must never be pushed to this public repo.
 legacy/
 
+# Design exploration material brought in by the maintainer — screenshots of
+# work built outside this repository. Engineer-reference only, NOT for
+# publication, and never copied into product code without being re-founded
+# on a ruling. Captured into DESIGN_EXPLORATION_REF.md the way the Replit
+# demo was captured into UI_REFERENCE.md.
+design-ref/
+
 # Local source library — NOT for publication.
 # Copyrighted source PDFs held for local reading and citation only. The
 # repo cites and links them; it never reproduces them. Nothing inside is

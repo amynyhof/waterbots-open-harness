@@ -1337,9 +1337,45 @@ since it was first ratified.**
 3. **The three shadow values.** `--shadow-md` is not invented — it is the value already shipping on
    the basin tooltip, ink at 10%, the hairline's own alpha. `--shadow-sm` and `--shadow-lg` are one
    reasoned step either side.
-4. **Driftwood `#8E7147` taken into use for the dry categories** — Arid and Low Water Use, and No
-   Data. The book holds it as a recorded spare, described as *dry warm bronze*, and arid land is
-   literally dryness. Same precedent as Anemone for Phoebe.
+4. **Slate `#3D5878` as a basemap wash, at 13%.** The book gives Slate the role *quiet monitoring*
+   and says nothing about map washes. Ruled 30 Aug 2026 after walking four strengths. It is warm
+   hues that §2.5 reserves, so a warm wash was never available; Slate is reserved for nothing and
+   holds no agent identity here. **The reasoning lives in `src/lib/basemapWash.ts`.**
+5. ~~**Driftwood `#8E7147` taken into use for the dry categories.**~~ **Withdrawn 30 Aug 2026** —
+   ruled *out for now*. Driftwood stays a recorded spare in the book, unclaimed, and the dry
+   categories keep the fills they shipped with.
+
+### The ramp was explored, and it stands — 30 Aug 2026
+
+**A ramp change was proposed, built, walked and withdrawn on the maintainer's ruling.** The record
+is kept because the finding is worth more than the change would have been.
+
+**What was tried.** Three ramps were put on the real map behind a dev-only switch: the shipping one,
+a proposed one built from deeper brand hues with Marine at the top, and a severity-held variant that
+moved only the calm end. All three were confirmed against `check-palette` first. The maintainer then
+ruled a **hybrid** — her own cool-end hexes from a design exploration built outside this repository,
+with the warm end kept from the proposal — and that was built and gated too, passing all four
+properties.
+
+**The ruling, after walking the map at 13% wash:** ~~the hybrid ramp~~ **the previous ramp stands.**
+In her words: *the wash at 13% was the missing richness, not the ladder.* **`src/lib/stressPalette.ts`
+is byte-identical to what it was before any of this**, confirmed with `git diff` rather than by eye.
+
+**The principle she stated survives the withdrawal, and belongs to the book whatever the ramp does:**
+
+> The calm half of the ladder is the brand's blues; the warning half keeps the field's warm
+> convention. **Warm means worse, as WRI's own maps read, and severity is never something a visitor
+> must learn from a legend.**
+
+**Driftwood is held, not taken.** It was proposed for Arid and No Data and ruled *out for now*, so
+it stays a recorded spare in the book and comes off the ratification list. **The measurement that
+prompted caution is kept:** at the lighter calm end the chroma margin protecting the dry categories
+fell from 1.85 to **1.41**. It still passed, and it is the number to look at first if the calm end is
+ever lightened again.
+
+**What this cost and what it bought.** Two ramps were designed, machine-checked and thrown away. What
+it bought was the knowledge that the map read flat because of the *basemap*, not the data — which no
+amount of reasoning about the ladder would have found, and which the eye found in one sitting.
 
 ### Route C, logged as the future real answer
 

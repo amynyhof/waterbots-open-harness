@@ -11,8 +11,9 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { MapContainer, TileLayer, useMap, useMapEvent } from 'react-leaflet';
+import { MapContainer, Rectangle, TileLayer, useMap, useMapEvent } from 'react-leaflet';
 import { latLngBounds, type LatLngBoundsExpression } from 'leaflet';
+import { BASEMAP_WASH } from '../lib/basemapWash';
 import 'leaflet/dist/leaflet.css';
 import BasinLayer from './BasinLayer';
 import StressLegend from './StressLegend';
@@ -377,6 +378,16 @@ export default function BasinMap({ onStatus }: { onStatus?: (s: MapStatus) => vo
           attribution={SHORT_CREDIT}
         />
 
+        {/* The basemap wash — see src/lib/basemapWash.ts for why it exists and
+            why it is this colour. It sits BETWEEN the tiles and the basins so
+            the publisher's imagery is never recoloured and the attribution
+            control, which is far above every pane, is untouched. */}
+        <WashPane
+          colour={BASEMAP_WASH.colour}
+          opacity={BASEMAP_WASH.opacity}
+          bounds={PAN_BOUNDS}
+        />
+
         {/* The world layer stays mounted until the detail layer is genuinely
             ready, so the map is never blank during the swap. */}
         {!detailReady && world.status === 'ready' && (
@@ -465,5 +476,45 @@ function Overlay({
         )}
       </div>
     </div>
+  );
+}
+
+/**
+ * The basemap wash.
+ *
+ * A brand tint in its own Leaflet pane between the tiles (pane z-index 200) and
+ * the vector overlays (400). The publisher's imagery is not recoloured and no
+ * CSS filter is involved. Leaflet's attribution control lives far above every
+ * pane, so the licence credit cannot be dimmed by it.
+ */
+function WashPane({
+  colour,
+  opacity,
+  bounds,
+}: {
+  colour: string;
+  opacity: number;
+  bounds: LatLngBoundsExpression;
+}) {
+  const map = useMap();
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if (!map.getPane('wash')) {
+      const pane = map.createPane('wash');
+      pane.style.zIndex = '300';
+      pane.style.pointerEvents = 'none';
+    }
+    setReady(true);
+  }, [map]);
+
+  if (!ready) return null;
+  return (
+    <Rectangle
+      pane="wash"
+      bounds={bounds}
+      interactive={false}
+      pathOptions={{ stroke: false, fill: true, fillColor: colour, fillOpacity: opacity }}
+    />
   );
 }
