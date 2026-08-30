@@ -35,6 +35,19 @@
  * wrong would mislead across a fifth of the map. Both take a near-neutral
  * fill AND a reduced opacity, so the basemap shows through and they read as
  * unfilled rather than as a value.
+ *
+ * DO NOT GIVE THESE TWO A WARM FILL. It was tried on 30 Aug 2026 — Driftwood,
+ * the book's "dry warm bronze" spare, on the reasoning that arid land is
+ * literally dryness — and the maintainer refused it on the merits after
+ * walking the map: THE WARM BRONZE MADE ARID READ AS A VALUE, AND THESE TWO
+ * CATEGORIES' JOB IS TO READ AS NO READING AT ALL.
+ *
+ * check-palette PASSED IT. The chroma margin still separated them from every
+ * band. The gate measures separation; it cannot measure what a colour reads
+ * as, and a reader taught two bands above that warm means worse will read a
+ * warm fill as a warm value however far its chroma sits from the ramp.
+ *
+ * The whole record is item S9 in OPEN_ITEMS.md.
  */
 
 export type StressKey =

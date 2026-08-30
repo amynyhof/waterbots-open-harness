@@ -1341,9 +1341,17 @@ since it was first ratified.**
    and says nothing about map washes. Ruled 30 Aug 2026 after walking four strengths. It is warm
    hues that §2.5 reserves, so a warm wash was never available; Slate is reserved for nothing and
    holds no agent identity here. **The reasoning lives in `src/lib/basemapWash.ts`.**
-5. ~~**Driftwood `#8E7147` taken into use for the dry categories.**~~ **Withdrawn 30 Aug 2026** —
-   ruled *out for now*. Driftwood stays a recorded spare in the book, unclaimed, and the dry
-   categories keep the fills they shipped with.
+5. ~~**Driftwood `#8E7147` taken into use for the dry categories.**~~ **Struck 30 Aug 2026 — this
+   ratification is withdrawn and is not carried to the book.**
+
+   > ~~Ruled *out for now*.~~ **Corrected the same day, under the visible-corrections rule.**
+   > *Out for now* said this was deferred. **It was not: it was decided, on the merits.** The
+   > maintainer's finding, in her words — **the warm bronze made Arid read as a value, and the dry
+   > categories' job is to read as no reading at all.** Driftwood returns to the book's shelf as the
+   > recorded spare, unclaimed, and the dry categories keep the fills they shipped with.
+   >
+   > The distinction matters to a later reader. A deferred proposal invites someone to pick it up
+   > again; **a decided one tells them what was learned and why not to.**
 
 ### The ramp was explored, and it stands — 30 Aug 2026
 
@@ -1367,11 +1375,20 @@ is byte-identical to what it was before any of this**, confirmed with `git diff`
 > convention. **Warm means worse, as WRI's own maps read, and severity is never something a visitor
 > must learn from a legend.**
 
-**Driftwood is held, not taken.** It was proposed for Arid and No Data and ruled *out for now*, so
-it stays a recorded spare in the book and comes off the ratification list. **The measurement that
-prompted caution is kept:** at the lighter calm end the chroma margin protecting the dry categories
-fell from 1.85 to **1.41**. It still passed, and it is the number to look at first if the calm end is
-ever lightened again.
+**Driftwood is refused on the merits, ~~held for later~~.** It was proposed for Arid and No Data and
+**decided against, not deferred** — maintainer's ruling, 30 Aug 2026: **the warm bronze made Arid
+read as a value, and the dry categories' job is to read as no reading at all.** It comes off the
+ratification list and returns to the book's shelf as the recorded spare.
+
+**The check passed and the eye refused it, and that is the point worth keeping.** `check-palette`
+confirmed the chroma margin still separated the dry categories from every band — it had fallen from
+1.85 to **1.41**, but it held, so the gate said yes. **The gate measures separation; it cannot
+measure what a colour reads as.** A warm fill on arid land reads as a warm value however far its
+chroma sits from the ramp, because a reader has already been taught that warm means worse two bands
+above it.
+
+**So 1.41 is kept as a number, and demoted as an argument.** It is still the first thing to look at
+if the calm end is ever lightened again. It is not evidence that a warm off-scale fill would work.
 
 **What this cost and what it bought.** Two ramps were designed, machine-checked and thrown away. What
 it bought was the knowledge that the map read flat because of the *basemap*, not the data — which no
