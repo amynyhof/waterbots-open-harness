@@ -113,7 +113,7 @@ export default function AgentChat({
         <HostMark host={host} />
         <div style={{ minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-            <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--fg-1)' }}>{host.name}</span>
+            <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--ink)' }}>{host.name}</span>
             {host.beta && <span className="tag">beta</span>}
           </div>
           <div className="t-caption" style={{ fontSize: 11.5 }}>
@@ -134,7 +134,7 @@ export default function AgentChat({
         )}
 
         {pending && (
-          <p className="t-caption" style={{ margin: '4px 0 0', color: 'var(--fg-3)' }}>
+          <p className="t-caption" style={{ margin: '4px 0 0', color: 'var(--ink-3)' }}>
             {host.thinkingLine}
           </p>
         )}
@@ -210,12 +210,12 @@ export default function AgentChat({
 function ReaderTurn({ text }: { text: string }) {
   return (
     <div style={{ marginBottom: 16 }}>
-      <div className="label" style={{ marginBottom: 4, color: 'var(--fg-3)' }}>
+      <div className="label" style={{ marginBottom: 4, color: 'var(--ink-3)' }}>
         You
       </div>
       <p
         className="t-body"
-        style={{ margin: 0, fontSize: 14, color: 'var(--fg-1)', whiteSpace: 'pre-wrap' }}
+        style={{ margin: 0, fontSize: 14, color: 'var(--ink)', whiteSpace: 'pre-wrap' }}
       >
         {text}
       </p>
@@ -232,7 +232,7 @@ function HostTurn({ host, turn }: { host: AgentHost; turn: AgentTurn }) {
       >
         {host.name}
         {turn.abstained && (
-          <span className="t-caption" style={{ fontSize: 10.5, color: 'var(--fg-3)' }}>
+          <span className="t-caption" style={{ fontSize: 10.5, color: 'var(--ink-3)' }}>
             no card for this
           </span>
         )}

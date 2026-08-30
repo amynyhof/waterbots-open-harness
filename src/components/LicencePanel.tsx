@@ -51,7 +51,7 @@ export default function LicencePanel({
         display: 'grid',
         placeItems: 'center',
         padding: 24,
-        background: 'color-mix(in srgb, var(--fg-1) 26%, transparent)',
+        background: 'color-mix(in srgb, var(--ink) 26%, transparent)',
       }}
     >
       <div
@@ -80,13 +80,13 @@ export default function LicencePanel({
           </button>
         </div>
 
-        <p className="t-body" style={{ color: 'var(--fg-2)', marginTop: 10, marginBottom: 0 }}>
+        <p className="t-body" style={{ color: 'var(--ink-2)', marginTop: 10, marginBottom: 0 }}>
           This map draws on two datasets, published under two different licences. Each carries its
           own attribution requirement.
         </p>
 
         <Section eyebrow="Basin boundaries">
-          <p className="t-body" style={{ margin: '0 0 10px', color: 'var(--fg-2)' }}>
+          <p className="t-body" style={{ margin: '0 0 10px', color: 'var(--ink-2)' }}>
             Watershed boundaries are HydroSHEDS HydroBASINS version 1.c, used under the HydroSHEDS
             License Agreement. The following statement is required by Exhibit B of that agreement.
           </p>
@@ -99,7 +99,7 @@ export default function LicencePanel({
               borderRadius: 'var(--r-xs)',
             }}
           >
-            <p className="t-caption" style={{ margin: 0, color: 'var(--fg-2)', lineHeight: 1.6 }}>
+            <p className="t-caption" style={{ margin: 0, color: 'var(--ink-2)', lineHeight: 1.6 }}>
               {HYDROSHEDS_EXHIBIT_B}
             </p>
           </blockquote>
@@ -110,7 +110,7 @@ export default function LicencePanel({
         </Section>
 
         <Section eyebrow="Water stress">
-          <p className="t-body" style={{ margin: '0 0 10px', color: 'var(--fg-2)' }}>
+          <p className="t-body" style={{ margin: '0 0 10px', color: 'var(--ink-2)' }}>
             {AQUEDUCT_LICENCE} A copy of the licence is at{' '}
             <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">
               creativecommons.org/licenses/by/4.0
@@ -149,7 +149,7 @@ export default function LicencePanel({
         </Section>
 
         <Section eyebrow="Basemap">
-          <p className="t-body" style={{ margin: 0, color: 'var(--fg-2)' }}>
+          <p className="t-body" style={{ margin: 0, color: 'var(--ink-2)' }}>
             Map tiles by{' '}
             <a href="https://carto.com/attributions" target="_blank" rel="noopener">
               CARTO
@@ -163,7 +163,7 @@ export default function LicencePanel({
         </Section>
 
         <Section eyebrow="This software">
-          <p className="t-body" style={{ margin: 0, color: 'var(--fg-2)' }}>
+          <p className="t-body" style={{ margin: 0, color: 'var(--ink-2)' }}>
             The source code of this map is licensed under the Apache License 2.0. The data licences
             above are separate and are not granted by it.
           </p>
@@ -198,7 +198,7 @@ function Citation({ children }: { children: React.ReactNode }) {
 function Derivation({ level, note }: { level: string; note: string }) {
   return (
     <div style={{ marginBottom: 12 }}>
-      <div className="label" style={{ color: 'var(--fg-1)', marginBottom: 2 }}>
+      <div className="label" style={{ color: 'var(--ink)', marginBottom: 2 }}>
         {level}
       </div>
       <p className="t-caption" style={{ margin: 0, lineHeight: 1.6 }}>

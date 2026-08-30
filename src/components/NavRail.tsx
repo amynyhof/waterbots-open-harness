@@ -155,7 +155,7 @@ function RailItem({
         textAlign: 'left',
         /* --paper marks the subject, one step up from chrome. Never an accent. */
         background: active ? 'var(--paper)' : 'transparent',
-        color: active ? 'var(--fg-1)' : 'var(--fg-2)',
+        color: active ? 'var(--ink)' : 'var(--ink-2)',
         justifyContent: collapsed ? 'center' : 'flex-start',
       }}
     >
@@ -165,7 +165,7 @@ function RailItem({
           width: 6,
           height: 6,
           borderRadius: 'var(--r-pill)',
-          background: active ? 'var(--fg-3)' : 'var(--fg-4)',
+          background: active ? 'var(--ink-3)' : 'var(--ink-4)',
           flex: 'none',
         }}
       />

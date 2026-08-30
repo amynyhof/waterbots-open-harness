@@ -51,7 +51,7 @@ export default function ChatPanel() {
       >
         <HostMark />
         <div style={{ minWidth: 0 }}>
-          <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--fg-1)' }}>{HOST.name}</div>
+          <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--ink)' }}>{HOST.name}</div>
           <div className="t-caption" style={{ fontSize: 11.5 }}>
             {HOST.role}
           </div>
@@ -63,7 +63,7 @@ export default function ChatPanel() {
         <div className="eyebrow" style={{ marginBottom: 12 }}>
           Not live yet
         </div>
-        <p className="t-body" style={{ margin: '0 0 12px', color: 'var(--fg-2)', fontSize: 14 }}>
+        <p className="t-body" style={{ margin: '0 0 12px', color: 'var(--ink-2)', fontSize: 14 }}>
           Bridget is not answering yet. This panel is the foundation for the chat console, and it is
           deliberately empty until she can give you a real answer.
         </p>

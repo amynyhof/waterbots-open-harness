@@ -43,7 +43,7 @@ export default function CiteLine({ item, id }: { item: Evidence; id?: string }) 
  */
 export function DataTableNote() {
   return (
-    <p className="t-caption" style={{ margin: '4px 0 0', color: 'var(--fg-3)' }}>
+    <p className="t-caption" style={{ margin: '4px 0 0', color: 'var(--ink-3)' }}>
       This rule rests on a data table. Read it at the source rather than from a summary.
     </p>
   );

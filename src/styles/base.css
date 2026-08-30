@@ -21,7 +21,7 @@ body {
   font-size: var(--fs-body);
   line-height: 1.6;
   letter-spacing: var(--track-body);
-  color: var(--fg-1);
+  color: var(--ink);
   background: var(--paper);
   -webkit-font-smoothing: antialiased;
 }
@@ -60,7 +60,7 @@ body {
 }
 .t-caption {
   font-size: var(--fs-caption);
-  color: var(--fg-3);
+  color: var(--ink-3);
 }
 
 /* Mono is for values: IDs, units, counts, currency, timestamps, citations. */
@@ -80,7 +80,7 @@ body {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--track-eyebrow);
-  color: var(--fg-3);
+  color: var(--ink-3);
 }
 .eyebrow::before {
   content: '';
@@ -98,7 +98,7 @@ body {
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 500;
-  color: var(--fg-3);
+  color: var(--ink-3);
 }
 
 /* ---------------------------------------------------------------------------
@@ -217,13 +217,13 @@ body {
 .chip {
   border-radius: var(--r-pill);
   background: transparent;
-  color: var(--fg-2);
-  border: 1px solid color-mix(in oklab, var(--chip-role, var(--fg-3)) 40%, transparent);
+  color: var(--ink-2);
+  border: 1px solid color-mix(in oklab, var(--chip-role, var(--ink-3)) 40%, transparent);
 }
 
 /* Chips bump their wash on hover — BRAND.md §5. */
 .chip:hover {
-  background: color-mix(in oklab, var(--chip-role, var(--fg-3)) 18%, transparent);
+  background: color-mix(in oklab, var(--chip-role, var(--ink-3)) 18%, transparent);
 }
 
 /* A value — Carbon, VWBA 2.0, §4.2, a count. */
@@ -231,7 +231,7 @@ body {
   border-radius: var(--r-xs);
   border: 1px solid var(--line);
   background: transparent;
-  color: var(--fg-2);
+  color: var(--ink-2);
 }
 
 /* ---------------------------------------------------------------------------
@@ -296,7 +296,7 @@ body {
   border-radius: var(--r-xs);
   background: var(--card);
   border: 1px solid var(--line);
-  color: var(--fg-2);
+  color: var(--ink-2);
   font-family: var(--font-sans);
   font-size: 11px;
   line-height: 1.5;
@@ -334,7 +334,7 @@ body {
   border-radius: var(--r-sm);
   border: 1px solid var(--line);
   background: transparent;
-  color: var(--fg-1);
+  color: var(--ink);
   cursor: pointer;
   transition:
     background var(--dur) var(--ease),
@@ -354,7 +354,7 @@ body {
 }
 
 .btn:disabled {
-  color: var(--fg-4);
+  color: var(--ink-4);
   cursor: not-allowed;
 }
 .btn:disabled:active {
@@ -376,7 +376,7 @@ body {
   font-family: var(--font-sans);
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--fg-1);
+  color: var(--ink);
   text-decoration: none;
 }
 .wordmark .dot-ai {
@@ -399,7 +399,7 @@ body {
   letter-spacing: -0.02em;
 }
 .wb-wordmark .ink {
-  fill: var(--fg-1);
+  fill: var(--ink);
 }
 .wb-wordmark .tide {
   fill: var(--tide-text);
@@ -422,14 +422,14 @@ body {
   background: transparent;
   border: 0;
   border-bottom: 1px solid var(--line);
-  color: var(--fg-3);
+  color: var(--ink-3);
   cursor: pointer;
   font-family: var(--font-sans);
   text-align: left;
   transition: color var(--dur) var(--ease);
 }
 .wb-rail-toggle:hover {
-  color: var(--fg-2);
+  color: var(--ink-2);
 }
 
 .wb-rail-link {
@@ -439,7 +439,7 @@ body {
   padding: 10px 16px;
   font-family: var(--font-sans);
   font-size: 12.5px;
-  color: var(--fg-3);
+  color: var(--ink-3);
   text-decoration: none;
   border-top: 1px solid var(--line);
   transition: color var(--dur) var(--ease);
@@ -486,19 +486,19 @@ body {
   font-family: var(--font-sans);
   font-size: 13.5px;
   line-height: 1.5;
-  color: var(--fg-2);
+  color: var(--ink-2);
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--r-sm);
   padding: 9px 11px;
 }
 .wb-composer:disabled {
-  color: var(--fg-4);
+  color: var(--ink-4);
   background: color-mix(in srgb, var(--paper) 60%, transparent);
   cursor: not-allowed;
 }
 .wb-composer::placeholder {
-  color: var(--fg-4);
+  color: var(--ink-4);
 }
 
 /* ---------------------------------------------------------------------------
@@ -516,7 +516,7 @@ body {
 
 .leaflet-control-attribution {
   background: var(--card);
-  color: var(--fg-2);
+  color: var(--ink-2);
   font-family: var(--font-sans);
   font-size: 11px;
   line-height: 1.5;
@@ -538,7 +538,7 @@ body {
 }
 
 .leaflet-control-zoom a {
-  color: var(--fg-2);
+  color: var(--ink-2);
   background: var(--card);
   border-color: var(--line);
 }
@@ -552,7 +552,7 @@ body {
   border: 1px solid var(--line);
   border-radius: var(--r-sm);
   box-shadow: 0 4px 14px rgba(11, 20, 40, 0.1);
-  color: var(--fg-2);
+  color: var(--ink-2);
   padding: 8px 10px;
   font-family: var(--font-mono);
   font-size: 11px;
@@ -563,7 +563,7 @@ body {
 }
 .wb-basin-tooltip .wb-tt-id {
   display: block;
-  color: var(--fg-1);
+  color: var(--ink);
   font-weight: 500;
 }
 
@@ -575,10 +575,10 @@ body {
   font-family: var(--font-sans);
   font-size: 12.5px;
   font-weight: 500;
-  color: var(--fg-1);
+  color: var(--ink);
   margin-bottom: 3px;
 }
 .wb-basin-tooltip .wb-tt-row {
   display: block;
-  color: var(--fg-3);
+  color: var(--ink-3);
 }

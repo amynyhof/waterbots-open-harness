@@ -82,7 +82,7 @@ export default function App() {
         display: 'flex',
         flexDirection: 'column',
         background: 'var(--paper)',
-        color: 'var(--fg-1)',
+        color: 'var(--ink)',
       }}
     >
       {/* One hairline row. The wordmark anchors flush top-left on every surface. */}
@@ -102,7 +102,7 @@ export default function App() {
 
         {/* The layer readout describes the map, so it only shows on the map. */}
         {onMap && status && (
-          <span className="t-mono" style={{ fontSize: 11, color: 'var(--fg-3)' }}>
+          <span className="t-mono" style={{ fontSize: 11, color: 'var(--ink-3)' }}>
             {status.stressError ? (
               <span style={{ color: 'var(--state-warn)' }}>
                 Water stress data unavailable — basins are shown unfilled

@@ -74,7 +74,7 @@ function Opening() {
       <div className="eyebrow" style={{ marginBottom: 12 }}>
         Where to start
       </div>
-      <p className="t-body" style={{ margin: '0 0 12px', color: 'var(--fg-2)', fontSize: 14 }}>
+      <p className="t-body" style={{ margin: '0 0 12px', color: 'var(--ink-2)', fontSize: 14 }}>
         Tell Phoebe what your project does and where, and she will work through the six criteria
         with you, filling in the worksheet as you go.
       </p>
@@ -84,7 +84,7 @@ function Opening() {
         calculation, another standard — and she will say she does not have that card yet rather
         than guess at it.
       </p>
-      <p className="t-caption" style={{ margin: 0, lineHeight: 1.6, color: 'var(--fg-3)' }}>
+      <p className="t-caption" style={{ margin: 0, lineHeight: 1.6, color: 'var(--ink-3)' }}>
         She is in beta: early access, shaped with founding users.
       </p>
     </>

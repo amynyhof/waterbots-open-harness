@@ -450,7 +450,7 @@ function Overlay({
         <div className="eyebrow" style={{ marginBottom: 10 }}>
           {title}
         </div>
-        <p className="t-body" style={{ margin: 0, color: 'var(--fg-2)' }}>
+        <p className="t-body" style={{ margin: 0, color: 'var(--ink-2)' }}>
           {body}
         </p>
         {detail && (
