@@ -72,15 +72,27 @@
 }
 
 /* ---------------------------------------------------------------------------
-   FROST — the light theme. Public and orientation surfaces.
+   THE SURFACE TOKENS. One light brand.
 
-   THIS IS THE THEME v1 RENDERS ON. The map is a public surface with no login,
-   so BRAND.md's surface rule (light = public, dark = signed-in) puts it here.
+   CORRECTED 29 Aug 2026, under the visible-corrections rule. This block read:
 
-   Note Frost has no four-surface ladder: BRAND.md publishes --card and
-   --raised as the SAME value (#FFFFFF), and the ladder is authored explicitly
-   for Deep Marine. On Frost, separation is carried by the 1px --line border,
-   not by fill. This is BRAND.md's structure, not a simplification of it.
+     "FROST — the light theme. Public and orientation surfaces. THIS IS THE
+      THEME v1 RENDERS ON. The map is a public surface with no login, so
+      BRAND.md's surface rule (light = public, dark = signed-in) puts it here.
+      Note Frost has no four-surface ladder: BRAND.md publishes --card and
+      --raised as the SAME value (#FFFFFF), and the ladder is authored
+      explicitly for Deep Marine."
+
+   Every sentence of that was true of the two-theme book and none of it is
+   true of BRAND.md v3, which is ONE LIGHT BRAND and carries no Deep Marine,
+   no surface rule choosing between two themes, and no four-surface ladder.
+   There is no longer a light theme here, because there is no other theme to
+   be light in contrast to. These are simply the surface tokens.
+
+   What survives unchanged is the structure: --card and --raised are the same
+   #FFFFFF, and separation is carried by the 1px --line border rather than by
+   fill. The book still publishes it that way — §2.3, three planes and no
+   fourth, the hairline doing the structural work.
 
    --chrome is DERIVED, not invented. BRAND.md publishes no Frost chrome value
    — the token and the §8.3a "chrome recedes" rule appear only in the Deep
@@ -124,8 +136,7 @@
    same published white, separated by the 1px --line border. Only the step
    below the canvas is carried by a fill.
 --------------------------------------------------------------------------- */
-.theme-light,
-[data-theme='light'] {
+:root {
   --chrome: #e8e9ed; /* derived from the #FBFBFE canvas; held, not re-derived
                         against #F6F5FA — see the CORRECTED note above */
   --paper: #f6f5fa;
@@ -142,8 +153,6 @@
   --tide-ui: var(--tide);
   --tide-text: var(--tide);
   --tide-hover: #2750e0;
-
-  --wash: 12%;
 
   /* Status taxonomy (brand v2). --state-completed is retired. */
   --state-live: #14c8d9;
@@ -198,64 +207,9 @@
      stroke in her portrait and nothing else. Never set type in it. Her name is
      set in --fg-1 to match the house pattern, as it was before.
 
-     No dark value. The [data-theme='dark'] block deliberately invents none for
-     her, the same as for Bridget and Reggie; this repository ships Frost. */
+     One value, not two. There is one brand and one set of surfaces, so an
+     agent colour is a single value — this needed saying while a second theme
+     existed and no longer does. */
   --bot-phoebe: #a04e7e;
   --bot-phoebe-accent: #c36e9f;
-}
-
-/* ---------------------------------------------------------------------------
-   DEEP MARINE — the dark theme. Signed-in working surfaces.
-
-   NOT RENDERED IN v1. This repo's map is a public, no-login surface and ships
-   on Frost only. These tokens are kept because they are correct reference and
-   will be needed if a signed-in surface is ever added here. No v1 component
-   applies .theme-dark.
-
-   THE FOUR-SURFACE LADDER. Elevation adds white, not blue: raised surfaces are
-   white composited over the canvas, never hand-picked navies. Adjacent
-   surfaces differ by at least 6 points of CIE L* (7.5 → 14.4 → 22.5 → 30.4).
-   Elevation always goes lighter and never inverts.
---------------------------------------------------------------------------- */
-.theme-dark,
-[data-theme='dark'] {
-  --chrome: #0e1329; /* below the canvas — topbar, rails, chat dock */
-  --paper: #1b2340; /* the canvas; also marks an active nav item */
-  --card: color-mix(in srgb, #ffffff 8%, var(--paper)); /* ≈ #2d354f */
-  --raised: color-mix(in srgb, #ffffff 17%, var(--paper)); /* ≈ #424860 */
-
-  --fg-1: #f1f3fb; /* never pure white */
-  --fg-2: #dbe0f0;
-  --fg-3: #b0b8d2; /* readability floor — below this is decoration */
-  --fg-4: #838caa; /* disabled / placeholder only */
-
-  --line: rgba(255, 255, 255, 0.1);
-
-  --tide-ui: #3c5fcc;
-  --tide-text: #6285e8;
-  --tide-hover: #6285e8;
-
-  --wash: 22%;
-
-  /* Status taxonomy on Deep Marine — accents desaturated per rule 5. */
-  --state-live: #55cbd8;
-  --state-approved: #5bcdaf;
-  --state-pending: #e3b26b;
-  --state-locked: #838caa;
-  --state-warn: #e08585;
-
-  /* --- Crew identity on Deep Marine ------------------------------------- */
-  /* Published dark values, from BRAND.md. */
-  --bot-wellington: #a3b4e8;
-  --bot-audrey: #c0b4ec;
-  --bot-vector: #5bcdaf;
-  --bot-monty: #a9b6cc;
-
-  /* UNRESOLVED — deliberately not invented. See README "Open brand questions".
-     --bot-bridget : BRAND.md's Surf-family dark value (#7FD5DF) was published
-                     under the retired agent "Mini". Maintainer has ruled that
-                     Surf carries no agent identity, so whether that value
-                     transfers to Bridget is an open decision. Needed at step 6.
-     --bot-reggie  : no published dim value; BRAND.md flags it for design
-                     review. Maintainer has ruled it out of scope for v1. */
 }

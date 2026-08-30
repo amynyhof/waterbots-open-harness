@@ -151,7 +151,7 @@ body {
    does exactly that: #FBFBFE -> #F6F5FA moves the canvas toward #E8E9ED.
 
    Still flush and square: chrome is never a card. */
-.theme-light .chrome {
+.chrome {
   border-bottom: 1px solid var(--line);
 }
 
@@ -207,21 +207,23 @@ body {
   transition: background var(--dur) var(--ease);
 }
 
-/* A state — Draft, Pending, Verified. Dark: wash fill, no border. */
+/* A state — Draft, Pending, Verified. BRAND.md §7: outlined, 1px at 40% of
+   the role colour, no fill. A wash on near-white goes pastel.
+
+   CORRECTED 29 Aug 2026. This was two rules — a wash-filled chip for the dark
+   theme, overridden to an outline under .theme-light. With one brand there is
+   one chip, and it is the outlined one. WHAT RENDERS IS UNCHANGED: the
+   override already won on every surface this repository ships. */
 .chip {
   border-radius: var(--r-pill);
-  background: color-mix(in oklab, var(--chip-role, var(--fg-3)) var(--wash), transparent);
+  background: transparent;
   color: var(--fg-2);
-  border: 0;
-}
-.chip:hover {
-  background: color-mix(in oklab, var(--chip-role, var(--fg-3)) 18%, transparent);
+  border: 1px solid color-mix(in oklab, var(--chip-role, var(--fg-3)) 40%, transparent);
 }
 
-/* Light theme takes an outline instead — a wash on near-white goes pastel. */
-.theme-light .chip {
-  background: transparent;
-  border: 1px solid color-mix(in oklab, var(--chip-role, var(--fg-3)) 40%, transparent);
+/* Chips bump their wash on hover — BRAND.md §5. */
+.chip:hover {
+  background: color-mix(in oklab, var(--chip-role, var(--fg-3)) 18%, transparent);
 }
 
 /* A value — Carbon, VWBA 2.0, §4.2, a count. */

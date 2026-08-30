@@ -240,13 +240,22 @@ without it produces a working map with every tile watermarked, which is why
 
 ## Theme
 
-The free surfaces render on **Frost**, the light theme. They are public surfaces with no login, and
-BRAND.md's surface rule puts public and orientation surfaces on light. The Deep Marine tokens are
-retained in `src/styles/tokens.css` as correct reference but no component here applies them.
+**There is one brand and it is light.** BRAND.md v3, brought by the maintainer on 28 Aug 2026,
+supersedes the two-theme era, and `src/styles/tokens.css` carries one set of surface tokens with no
+theme class to switch between.
 
-Note that Frost has no four-surface ladder: BRAND.md publishes `--card` and `--raised` as the same
-white, and authors the ladder for Deep Marine only. On Frost, separation is carried by the 1px
-`--line` border rather than by fill.
+> **Corrected 29 Aug 2026.** This section read: ~~"The free surfaces render on **Frost**, the light
+> theme. They are public surfaces with no login, and BRAND.md's surface rule puts public and
+> orientation surfaces on light. The Deep Marine tokens are retained in `src/styles/tokens.css` as
+> correct reference but no component here applies them. Note that Frost has no four-surface ladder:
+> BRAND.md publishes `--card` and `--raised` as the same white, and authors the ladder for Deep
+> Marine only."~~ Every sentence was true of the two-theme book. Version 3 carries no Deep Marine,
+> no surface rule choosing between two themes, and no four-surface ladder, so the Deep Marine tokens
+> were deleted rather than left as reference to a book that no longer exists.
+
+**What survives unchanged is the structure**, because the book still publishes it: `--card` and
+`--raised` are the same `#FFFFFF`, and separation is carried by the 1px `--line` border rather than
+by fill — §2.3, three planes and no fourth, with the hairline doing the structural work.
 
 ## Brand decisions
 
