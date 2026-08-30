@@ -10,11 +10,13 @@
  * --chrome, flush and square, in the 360-380px band, with host presence
  * pinned at the top rather than stretched down the panel.
  *
- * BRIDGET IS A PLACEHOLDER HOST. Final staffing of the map is an open
- * maintainer decision, and her identity colour is provisional — the roster
- * assigns her Surf, which carries no agent identity in this repo, so she
- * inherits the Surf-family lifted value. At 1.68:1 against white it carries
- * her keyline, ring and wash, never text.
+ * BRIDGET'S CHAT IS NOT BUILT, AND SHE IS NOT A PLACEHOLDER HOST. Staffing was
+ * settled on 24 Aug 2026 — she is the map's agent — and her colour was settled
+ * on 29 Aug 2026 as Surf #14C8D9, assigned to her by name in BRAND.md v3 §6.
+ * What is unbuilt is her chat, and the panel says so plainly.
+ *
+ * At 2.04:1 against white her colour carries her keyline, ring and wash, and
+ * never text; her name is set in --ink.
  */
 
 import { PROJECT_MAPPING_NOTE } from '../lib/site';
@@ -119,9 +121,9 @@ export default function ChatPanel() {
  * The portrait is self-contained (its fills are baked in), so it loads as a
  * plain <img> — unlike the wordmark, which needs inlining to pick up styling.
  *
- * The wash and ring behind it come from --bot-bridget. Note the portrait is
- * drawn in Surf #14C8D9 while the token is the lifted #7FD5DF; see the README
- * on why that value is provisional.
+ * The wash and ring behind it come from --bot-bridget, which is Surf — the
+ * same colour the portrait itself is drawn in. They disagreed until
+ * 29 Aug 2026, when the lifted #7FD5DF was retired.
  */
 function HostMark() {
   return (
