@@ -104,7 +104,7 @@
                                  published value exactly — confirming the
                                  formula rather than assuming it.
 
-     Frost, one step DOWN:       --chrome = color-mix(--fg-1 8%, --paper)
+     Frost, one step DOWN:       --chrome = color-mix(--ink 8%, --paper)
                                  #FBFBFE + 8% ink = #E8E9ED
 
    The same 8% step, inverted. It lands at CIE L* 92.4 against paper's 98.7 —
@@ -143,10 +143,13 @@
   --card: #ffffff;
   --raised: #ffffff;
 
-  --fg-1: #0b1428;
-  --fg-2: #2a3146;
-  --fg-3: #5b6478; /* readability floor */
-  --fg-4: #98a0b2; /* disabled / placeholder only */
+  /* Renamed from --fg-1 … --fg-4 on 29 Aug 2026 to the names BRAND.md v3
+     §2.2 publishes. Same four values; only the names moved. An older
+     document referring to --fg-2 means --ink-2. */
+  --ink: #0b1428;
+  --ink-2: #2a3146;
+  --ink-3: #5b6478; /* readability floor */
+  --ink-4: #98a0b2; /* disabled / placeholder only */
 
   --line: rgba(11, 20, 40, 0.1);
 
@@ -177,7 +180,7 @@
      Provisional until final map staffing is decided.
 
      It is a light cyan — 1.68:1 against white — so it carries her keyline,
-     avatar ring and wash, and NEVER text. Her name is set in --fg-1. */
+     avatar ring and wash, and NEVER text. Her name is set in --ink. */
   --bot-bridget: #7fd5df;
 
   /* Phoebe (beta) — Eligibility and Feasibility specialist. Maintainer ruling,
@@ -205,7 +208,7 @@
      and washes. THE ACCENT IS NOT. At 3.36:1 it clears the 3:1 bar for a
      non-text graphic, which is all it is asked to do — it draws the antenna
      stroke in her portrait and nothing else. Never set type in it. Her name is
-     set in --fg-1 to match the house pattern, as it was before.
+     set in --ink to match the house pattern, as it was before.
 
      One value, not two. There is one brand and one set of surfaces, so an
      agent colour is a single value — this needed saying while a second theme

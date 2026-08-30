@@ -47,7 +47,7 @@ export default function AnswerBody({ text, evidence }: { text: string; evidence:
           <div key={p} style={{ marginBottom: 9 }}>
             <p
               className="t-body"
-              style={{ margin: 0, fontSize: 14, color: 'var(--fg-2)', whiteSpace: 'pre-wrap' }}
+              style={{ margin: 0, fontSize: 14, color: 'var(--ink-2)', whiteSpace: 'pre-wrap' }}
             >
               {segments.map((segment, i) =>
                 segment.kind === 'text' ? (
@@ -70,7 +70,7 @@ export default function AnswerBody({ text, evidence }: { text: string; evidence:
 
             {shown.map(({ ref, item }) => (
               <div key={item.id} style={{ marginTop: 6 }}>
-                <div className="t-caption" style={{ marginBottom: 3, color: 'var(--fg-2)' }}>
+                <div className="t-caption" style={{ marginBottom: 3, color: 'var(--ink-2)' }}>
                   ref{ref} · {item.label}
                 </div>
                 <CiteLine item={item} id={`cite-${item.id}`} />
@@ -90,7 +90,7 @@ export default function AnswerBody({ text, evidence }: { text: string; evidence:
           </div>
           {layout.unmarked.map((item) => (
             <div key={item.id} style={{ marginBottom: 8 }}>
-              <div className="t-caption" style={{ marginBottom: 3, color: 'var(--fg-2)' }}>
+              <div className="t-caption" style={{ marginBottom: 3, color: 'var(--ink-2)' }}>
                 {item.label}
               </div>
               <CiteLine item={item} />

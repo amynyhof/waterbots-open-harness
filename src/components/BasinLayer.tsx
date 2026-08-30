@@ -26,7 +26,7 @@ import { styleFor, type StressLookup } from '../lib/stress';
  * geography and the fill alone carries the data.
  */
 const STROKE: Pick<PathOptions, 'color' | 'weight' | 'opacity'> = {
-  color: '#5B6478', // --fg-3
+  color: '#5B6478', // --ink-3
   weight: 0.5,
   opacity: 0.45,
 };

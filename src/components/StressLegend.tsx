@@ -135,7 +135,7 @@ export default function StressLegend({
               </>
             )}
           </p>
-          <p className="t-caption" style={{ margin: '6px 0 0', fontSize: 10, color: 'var(--fg-4)' }}>
+          <p className="t-caption" style={{ margin: '6px 0 0', fontSize: 10, color: 'var(--ink-4)' }}>
             WRI Aqueduct 4.0 · CC BY 4.0
           </p>
         </>
@@ -161,7 +161,7 @@ function Row({ colourKey }: { colourKey: keyof typeof STRESS_PALETTE }) {
           border: '1px solid var(--line)',
         }}
       />
-      <span className="t-caption" style={{ fontSize: 11.5, color: 'var(--fg-2)' }}>
+      <span className="t-caption" style={{ fontSize: 11.5, color: 'var(--ink-2)' }}>
         {s.label}
       </span>
     </div>
@@ -180,7 +180,7 @@ function Chevron({ open }: { open: boolean }) {
         transform: open ? 'rotate(0deg)' : 'rotate(180deg)',
         transition: `transform var(--dur) var(--ease)`,
         flex: 'none',
-        color: 'var(--fg-3)',
+        color: 'var(--ink-3)',
       }}
     >
       <path

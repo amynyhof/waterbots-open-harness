@@ -54,7 +54,7 @@ export default function EligibilityWorksheet({
           <h1 className="t-h3" style={{ margin: '0 0 10px' }}>
             Can this project generate a volumetric water benefit?
           </h1>
-          <p className="t-body" style={{ margin: 0, color: 'var(--fg-2)', maxWidth: '62ch' }}>
+          <p className="t-body" style={{ margin: 0, color: 'var(--ink-2)', maxWidth: '62ch' }}>
             Six criteria decide it, and all six have to be met. Below them sit ten further
             considerations that help you choose well between projects that already qualify — those
             are guidance, and they never decide anything.
@@ -76,7 +76,7 @@ export default function EligibilityWorksheet({
             </p>
             <p className="t-caption" style={{ margin: 0, lineHeight: 1.7, maxWidth: '66ch' }}>
               This worksheet follows one pathway:{' '}
-              <strong style={{ color: 'var(--fg-2)' }}>
+              <strong style={{ color: 'var(--ink-2)' }}>
                 Volumetric Water Benefit Accounting 2.0
               </strong>
               , published by the World Resources Institute and its co-authors. It is the first
@@ -133,7 +133,7 @@ export default function EligibilityWorksheet({
                   flexWrap: 'wrap',
                 }}
               >
-                <h3 style={{ margin: 0, fontSize: 14, fontWeight: 600, color: 'var(--fg-1)' }}>
+                <h3 style={{ margin: 0, fontSize: 14, fontWeight: 600, color: 'var(--ink)' }}>
                   {group.label}
                 </h3>
               </div>
@@ -187,12 +187,12 @@ function CriterionRow({ criterion, status }: { criterion: Criterion; status: Cri
         <span
           className="t-mono"
           aria-hidden
-          style={{ fontSize: 11, color: 'var(--fg-3)', flex: 'none', width: 14 }}
+          style={{ fontSize: 11, color: 'var(--ink-3)', flex: 'none', width: 14 }}
         >
           {criterion.number}
         </span>
 
-        <span style={{ flex: 1, minWidth: 0, fontSize: 14, color: 'var(--fg-1)' }}>
+        <span style={{ flex: 1, minWidth: 0, fontSize: 14, color: 'var(--ink)' }}>
           {criterion.title}
         </span>
 
@@ -203,7 +203,7 @@ function CriterionRow({ criterion, status }: { criterion: Criterion; status: Cri
 
       {open && (
         <div id={panelId} style={{ padding: '2px 16px 16px 44px' }}>
-          <p className="t-body" style={{ margin: '0 0 12px', color: 'var(--fg-2)', fontSize: 14 }}>
+          <p className="t-body" style={{ margin: '0 0 12px', color: 'var(--ink-2)', fontSize: 14 }}>
             {criterion.rule}
           </p>
 
@@ -279,11 +279,11 @@ function ConsiderationRow({ consideration }: { consideration: Consideration }) {
         <span
           className="t-mono"
           aria-hidden
-          style={{ fontSize: 11, color: 'var(--fg-3)', flex: 'none', width: 14 }}
+          style={{ fontSize: 11, color: 'var(--ink-3)', flex: 'none', width: 14 }}
         >
           {consideration.number}
         </span>
-        <span style={{ flex: 1, minWidth: 0, fontSize: 13.5, color: 'var(--fg-2)' }}>
+        <span style={{ flex: 1, minWidth: 0, fontSize: 13.5, color: 'var(--ink-2)' }}>
           {consideration.title}
         </span>
         <Chevron open={open} />
@@ -291,7 +291,7 @@ function ConsiderationRow({ consideration }: { consideration: Consideration }) {
 
       {open && (
         <div id={panelId} style={{ padding: '2px 16px 16px 44px' }}>
-          <p className="t-body" style={{ margin: '0 0 12px', color: 'var(--fg-2)', fontSize: 14 }}>
+          <p className="t-body" style={{ margin: '0 0 12px', color: 'var(--ink-2)', fontSize: 14 }}>
             {consideration.summary}
           </p>
 
@@ -369,7 +369,7 @@ function StateBadge({ state }: { state: CriterionStatus['state'] }) {
         gap: 7,
         flex: 'none',
         fontSize: 12,
-        color: 'var(--fg-2)',
+        color: 'var(--ink-2)',
       }}
     >
       <span
@@ -409,7 +409,7 @@ function EligibleBanner({ onOpenMap }: { onOpenMap: () => void }) {
       }}
     >
       <div>
-        <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--fg-1)', marginBottom: 3 }}>
+        <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink)', marginBottom: 3 }}>
           Your project looks eligible — next stop: Partners
         </div>
         <p className="t-caption" style={{ margin: 0 }}>
@@ -459,7 +459,7 @@ function Chevron({ open }: { open: boolean }) {
       aria-hidden
       style={{
         flex: 'none',
-        color: 'var(--fg-3)',
+        color: 'var(--ink-3)',
         transform: open ? 'rotate(90deg)' : 'rotate(0deg)',
         transition: `transform var(--dur) var(--ease)`,
       }}
