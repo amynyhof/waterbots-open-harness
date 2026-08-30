@@ -1,10 +1,15 @@
 /**
  * The left navigation rail.
  *
- * Chrome recedes, content rises (BRAND.md §8.3a): the rail sits BELOW the
- * canvas on --chrome, flush and square, never as a card — a rail rendered as
- * a card would float navigation above the work it serves. The active item is
- * marked with --paper, one step up, never with an accent fill.
+ * Chrome recedes, content rises (BRAND.md v3 §2.3): the rail sits ON the
+ * canvas, flush and square, never as a card — a rail rendered as a card would
+ * float navigation above the work it serves. It recedes by not rising, which
+ * is the only mechanism a three-plane system has. The active item rises one
+ * plane to --card, never to an accent fill.
+ *
+ * WIDER SINCE 29 Aug 2026. The design canon asked that the rail be widened
+ * modestly whenever it was next opened for another reason, and said plainly it
+ * was not its own work item. Retiring the chrome plane opened it. 208 -> 224.
  *
  * It lists exactly what exists. Two surfaces are built — the basin map and
  * the eligibility worksheet — so there are two items. Inventing a nav item
@@ -17,7 +22,7 @@ import { SITE_LABEL, SITE_URL } from '../lib/site';
 import type { Surface } from '../lib/surfaces';
 import { SURFACES } from '../lib/surfaces';
 
-const EXPANDED = 208;
+const EXPANDED = 224;
 const COLLAPSED = 52;
 
 /**
@@ -153,8 +158,11 @@ function RailItem({
         font: 'inherit',
         cursor: 'pointer',
         textAlign: 'left',
-        /* --paper marks the subject, one step up from chrome. Never an accent. */
-        background: active ? 'var(--paper)' : 'transparent',
+        /* The subject rises one plane, to --card. Never an accent fill.
+           Ratified 29 Aug 2026 with the retirement of --chrome: the marker used
+           to be --paper standing one step above a chrome fill, and when chrome
+           became the canvas it had nowhere left to stand. */
+        background: active ? 'var(--card)' : 'transparent',
         color: active ? 'var(--ink)' : 'var(--ink-2)',
         justifyContent: collapsed ? 'center' : 'flex-start',
       }}

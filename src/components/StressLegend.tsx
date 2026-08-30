@@ -59,8 +59,15 @@ export default function StressLegend({
   return (
     <div
       ref={root}
-      className="card"
+      className="card wb-panel"
       style={{
+        /* The map is Bridget's surface, so its legend carries her accent at the
+           book's 5% — BRAND.md v3 §7. A container, not an emphasis, and never a
+           warm hue: the ramp's own warm bands sit inside it as data.
+
+           It keeps .card's --r-md radius and its padding; .wb-panel replaces
+           only the fill and the border. */
+        ['--host-accent' as string]: 'var(--bot-bridget)',
         position: 'absolute',
         left: 12,
         bottom: 22,
@@ -68,6 +75,9 @@ export default function StressLegend({
         width: open ? 232 : 'auto',
         maxWidth: 'calc(100% - 24px)',
         maxHeight: 'calc(100% - 44px)',
+        /* It floats over the map rather than sitting on the page, so it takes
+           a shadow as well as its hairline — BRAND.md v3 §2.3. */
+        boxShadow: 'var(--shadow-md)',
         overflowY: 'auto',
         padding: open ? 14 : '9px 12px',
       }}

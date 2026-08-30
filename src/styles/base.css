@@ -130,30 +130,56 @@ body {
   border-radius: 0;
 }
 
-/* CORRECTED 29 Aug 2026, under the visible-corrections rule. This comment read:
+/* Chrome is the canvas, so the fill alone cannot separate navigation from the
+   page. This 1px --line rule carries the separation instead — the same device
+   the book gives cards, and what BRAND.md §2.2 says the hairline is for.
 
-     "On Frost, --chrome aliases --paper (BRAND.md publishes no Frost chrome
-      value), so the fill alone cannot separate navigation from the canvas."
+   Still flush and square: chrome is never a card.
 
-   It was true when it was written on 13 Aug 2026, when the token was literally
-   --chrome: var(--paper). It has been FALSE SINCE 18 Aug 2026, when the
-   console-shell build gave --chrome its derived #E8E9ED and this comment was
-   left behind. The two fills are not the same and have not been for a fortnight.
-
-   Nothing rendered wrongly because of it — the rule below is right either way.
-   The cost was to a reader, who was told the fills are identical at exactly the
-   moment the --chrome question is being taken to the brand book.
-
-   What is true: --chrome is a fill of its own, one step below the canvas, and it
-   does separate navigation from the page. The 1px --line rule below stays
-   regardless — it is the same device Frost uses for cards, and it carries the
-   separation if the two fills are ever brought closer. Item S9's canvas move
-   does exactly that: #FBFBFE -> #F6F5FA moves the canvas toward #E8E9ED.
-
-   Still flush and square: chrome is never a card. */
+   TWICE CORRECTED, and the second correction restored the first one's subject.
+   This comment said --chrome aliased --paper; that was true on 13 Aug 2026,
+   went false on 18 Aug when a fourth plane was derived, was struck on 29 Aug,
+   and became true again the same day when the fourth plane was retired. The
+   sentence is right; it spent eleven days wrong. Recorded once in item S9. */
 .chrome {
   border-bottom: 1px solid var(--line);
 }
+
+/* ---------------------------------------------------------------------------
+   Accent-tinted panels — BRAND.md v3 §7.
+
+   "A section panel may take a ~5% fill and a ~25% border of a single accent.
+   It is a container, not an emphasis — one accent per panel, and never a warm
+   hue."
+
+   ONE CLASS, THREE PLACES. Bridget's dock, Phoebe's dock and the map legend.
+   The two docks are still two components — item S2 records that they diverge —
+   so the treatment lives here rather than in either of them, and the styling
+   has one home even while the components have two.
+
+   THE ACCENT IS THE HOST'S, set by the surface as --host-accent. §6: an agent's
+   accent is used wherever that agent speaks, and a surface's accent means who
+   hosts that surface. The legend is the map's, and the map is Bridget's.
+
+   A PANEL IS NOT CHROME. §2.3 names chrome as navigation, rails and top bars; a
+   chat panel is content and rises like content.
+--------------------------------------------------------------------------- */
+.wb-panel {
+  background: color-mix(in oklab, var(--host-accent, var(--ink-3)) 5%, var(--card));
+  border: 1px solid color-mix(in oklab, var(--host-accent, var(--ink-3)) 25%, transparent);
+}
+
+/* A dock is a panel that fills the full height of the shell, so it carries the
+   accent on its inner edge only. Flush and square; it takes no radius, and the
+   rule it replaces was a plain --line hairline. */
+.wb-dock {
+  border: 0;
+  border-left: 1px solid color-mix(in oklab, var(--host-accent, var(--ink-3)) 25%, transparent);
+}
+
+/* Inside a panel, nothing paints a second fill. §2.3: a card cannot contain a
+   card, and one level of containment per region. Dividers and spacing do the
+   work instead — which is why .wb-cite-line goes flat below. */
 
 /* ---------------------------------------------------------------------------
    Status dots — 7–10px with a 3px soft halo.
@@ -294,8 +320,14 @@ body {
   gap: 5px;
   padding: 3px 8px;
   border-radius: var(--r-xs);
-  background: var(--card);
-  border: 1px solid var(--line);
+  /* FLAT SINCE 29 Aug 2026. It painted var(--card) with a hairline, which was
+     right while the dock was chrome. Now the dock is a panel, and a card inside
+     a card breaks §2.3, so the fill goes and a top divider carries the
+     separation. Nothing about the citation's content, order or link changes —
+     CITATIONS.md is untouched. */
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
   color: var(--ink-2);
   font-family: var(--font-sans);
   font-size: 11px;
@@ -522,6 +554,11 @@ body {
   line-height: 1.5;
   padding: 3px 8px;
   border-top-left-radius: var(--r-xs);
+  /* It floats over tiles of every colour, so it takes the smallest shadow —
+     BRAND.md v3 §2.3, floating is hairline plus a shadow. This is a legibility
+     requirement before it is a style one: the licence credit has to stay
+     readable over land, sea and ice alike. */
+  box-shadow: var(--shadow-sm);
 }
 .leaflet-control-attribution a {
   color: var(--tide-text);
@@ -551,7 +588,9 @@ body {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--r-sm);
-  box-shadow: 0 4px 14px rgba(11, 20, 40, 0.1);
+  /* The same value this rule has always carried, now named. It is where
+     --shadow-md came from rather than the other way round. */
+  box-shadow: var(--shadow-md);
   color: var(--ink-2);
   padding: 8px 10px;
   font-family: var(--font-mono);

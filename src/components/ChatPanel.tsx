@@ -6,9 +6,10 @@
  * state beats a fabricated one, and a live-looking input that silently does
  * nothing is a false success state.
  *
- * Chrome recedes (BRAND.md §8.3a): the dock sits below the canvas on
- * --chrome, flush and square, in the 360-380px band, with host presence
- * pinned at the top rather than stretched down the panel.
+ * The dock is a host panel, not chrome. BRAND.md v3 §2.3 names chrome as
+ * navigation, rails and top bars; a chat panel is content. It sits in the
+ * 360-380px band with host presence pinned at the top rather than stretched
+ * down the panel.
  *
  * BRIDGET'S CHAT IS NOT BUILT, AND SHE IS NOT A PLACEHOLDER HOST. Staffing was
  * settled on 24 Aug 2026 — she is the map's agent — and her colour was settled
@@ -30,14 +31,15 @@ const HOST = {
 export default function ChatPanel() {
   return (
     <aside
-      className="chrome"
+      className="wb-panel wb-dock"
       aria-label={`${HOST.name}, ${HOST.role}`}
       style={{
+        /* Bridget hosts the map, so the map's dock is tinted in her accent. */
+        ['--host-accent' as string]: 'var(--bot-bridget)',
         width: 'var(--chat-rail)',
         flex: 'none',
         display: 'flex',
         flexDirection: 'column',
-        borderLeft: '1px solid var(--line)',
       }}
     >
       {/* Host presence, pinned to the top. */}
@@ -129,8 +131,9 @@ function HostMark() {
   return (
     <span
       style={{
-        width: 36,
-        height: 36,
+        /* 40px in chat — BRAND.md v3 §6. It was 36. */
+        width: 40,
+        height: 40,
         borderRadius: 'var(--r-pill)',
         flex: 'none',
         display: 'grid',
@@ -143,8 +146,8 @@ function HostMark() {
       <img
         src={bridgetPortrait}
         alt=""
-        width={30}
-        height={30}
+        width={34}
+        height={34}
         style={{ display: 'block' }}
       />
     </span>
