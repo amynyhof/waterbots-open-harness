@@ -512,6 +512,11 @@ body {
   line-height: 1.5;
   padding: 3px 8px;
   border-top-left-radius: var(--r-xs);
+  /* It floats over tiles of every colour, so it takes the smallest shadow —
+     BRAND.md v3 §2.3, floating is hairline plus a shadow. This is a legibility
+     requirement before it is a style one: the licence credit has to stay
+     readable over land, sea and ice alike. */
+  box-shadow: var(--shadow-sm);
 }
 .leaflet-control-attribution a {
   color: var(--tide-text);
@@ -541,7 +546,9 @@ body {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--r-sm);
-  box-shadow: 0 4px 14px rgba(11, 20, 40, 0.1);
+  /* The same value this rule has always carried, now named. It is where
+     --shadow-md came from rather than the other way round. */
+  box-shadow: var(--shadow-md);
   color: var(--ink-2);
   padding: 8px 10px;
   font-family: var(--font-mono);

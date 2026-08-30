@@ -68,6 +68,9 @@ export default function StressLegend({
         width: open ? 232 : 'auto',
         maxWidth: 'calc(100% - 24px)',
         maxHeight: 'calc(100% - 44px)',
+        /* It floats over the map rather than sitting on the page, so it takes
+           a shadow as well as its hairline — BRAND.md v3 §2.3. */
+        boxShadow: 'var(--shadow-md)',
         overflowY: 'auto',
         padding: open ? 14 : '9px 12px',
       }}

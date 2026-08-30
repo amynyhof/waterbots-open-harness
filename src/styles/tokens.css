@@ -66,6 +66,26 @@
   --measure: 816px; /* the centred console column */
   --chat-rail: 372px; /* agent host seat, 360–380 band */
 
+  /* --- Shadows — for things that genuinely float ------------------------
+     BRAND.md v3 §4 names these three and says what each is for. It publishes
+     NO VALUE for any of them, so these are proposed and ratified by the
+     maintainer on 29 Aug 2026 for carrying into the master book, rather than
+     invented here — §0 forbids inventing what the book does not carry.
+
+     All three are built from ink #0B1428, the same colour as the hairline.
+
+       --shadow-md  IS NOT INVENTED. It is the value already shipping on the
+                    basin hover tooltip, and it is ink at 10% — the hairline's
+                    exact alpha.
+       --shadow-sm  proposed, one step below md.
+       --shadow-lg  proposed, one step above md.
+
+     NOT A DEFAULT. §4: if a shadow is doing work a hairline could do, use the
+     hairline. A flat card gets a hairline and no shadow. */
+  --shadow-sm: 0 1px 2px rgba(11, 20, 40, 0.06);
+  --shadow-md: 0 4px 14px rgba(11, 20, 40, 0.1);
+  --shadow-lg: 0 12px 32px rgba(11, 20, 40, 0.14);
+
   /* --- Motion — restrained, never bouncy -------------------------------- */
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   --dur: 220ms;
