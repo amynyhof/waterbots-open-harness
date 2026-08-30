@@ -89,14 +89,17 @@ export default function AgentChat({
 
   return (
     <aside
-      className="chrome"
+      className="wb-panel wb-dock"
       aria-label={`${host.name}, ${host.role}`}
       style={{
+        /* The host's accent tints the panel it speaks in — BRAND.md v3 §6 and
+           §7. The layer sets it from the host descriptor and never knows which
+           agent it is rendering. */
+        ['--host-accent' as string]: `var(${host.colourToken})`,
         width: 'var(--chat-rail)',
         flex: 'none',
         display: 'flex',
         flexDirection: 'column',
-        borderLeft: '1px solid var(--line)',
         minHeight: 0,
       }}
     >
@@ -254,8 +257,10 @@ function HostMark({ host }: { host: AgentHost }) {
   return (
     <span
       style={{
-        width: 36,
-        height: 36,
+        /* 40px in chat — BRAND.md v3 §6 gives the portrait three sizes and this
+           is the one for a chat panel. It was 36. */
+        width: 40,
+        height: 40,
         borderRadius: 'var(--r-pill)',
         flex: 'none',
         display: 'grid',
@@ -265,7 +270,7 @@ function HostMark({ host }: { host: AgentHost }) {
         overflow: 'hidden',
       }}
     >
-      <img src={host.portrait} alt="" width={30} height={30} style={{ display: 'block' }} />
+      <img src={host.portrait} alt="" width={34} height={34} style={{ display: 'block' }} />
     </span>
   );
 }

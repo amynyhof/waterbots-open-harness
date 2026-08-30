@@ -146,6 +146,42 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
+   Accent-tinted panels — BRAND.md v3 §7.
+
+   "A section panel may take a ~5% fill and a ~25% border of a single accent.
+   It is a container, not an emphasis — one accent per panel, and never a warm
+   hue."
+
+   ONE CLASS, THREE PLACES. Bridget's dock, Phoebe's dock and the map legend.
+   The two docks are still two components — item S2 records that they diverge —
+   so the treatment lives here rather than in either of them, and the styling
+   has one home even while the components have two.
+
+   THE ACCENT IS THE HOST'S, set by the surface as --host-accent. §6: an agent's
+   accent is used wherever that agent speaks, and a surface's accent means who
+   hosts that surface. The legend is the map's, and the map is Bridget's.
+
+   A PANEL IS NOT CHROME. §2.3 names chrome as navigation, rails and top bars; a
+   chat panel is content and rises like content.
+--------------------------------------------------------------------------- */
+.wb-panel {
+  background: color-mix(in oklab, var(--host-accent, var(--ink-3)) 5%, var(--card));
+  border: 1px solid color-mix(in oklab, var(--host-accent, var(--ink-3)) 25%, transparent);
+}
+
+/* A dock is a panel that fills the full height of the shell, so it carries the
+   accent on its inner edge only. Flush and square; it takes no radius, and the
+   rule it replaces was a plain --line hairline. */
+.wb-dock {
+  border: 0;
+  border-left: 1px solid color-mix(in oklab, var(--host-accent, var(--ink-3)) 25%, transparent);
+}
+
+/* Inside a panel, nothing paints a second fill. §2.3: a card cannot contain a
+   card, and one level of containment per region. Dividers and spacing do the
+   work instead — which is why .wb-cite-line goes flat below. */
+
+/* ---------------------------------------------------------------------------
    Status dots — 7–10px with a 3px soft halo.
    Only the Live dot pulses. Nothing else on any surface pulses.
 --------------------------------------------------------------------------- */
@@ -284,8 +320,14 @@ body {
   gap: 5px;
   padding: 3px 8px;
   border-radius: var(--r-xs);
-  background: var(--card);
-  border: 1px solid var(--line);
+  /* FLAT SINCE 29 Aug 2026. It painted var(--card) with a hairline, which was
+     right while the dock was chrome. Now the dock is a panel, and a card inside
+     a card breaks §2.3, so the fill goes and a top divider carries the
+     separation. Nothing about the citation's content, order or link changes —
+     CITATIONS.md is untouched. */
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
   color: var(--ink-2);
   font-family: var(--font-sans);
   font-size: 11px;

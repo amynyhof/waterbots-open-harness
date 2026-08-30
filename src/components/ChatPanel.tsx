@@ -31,14 +31,15 @@ const HOST = {
 export default function ChatPanel() {
   return (
     <aside
-      className="chrome"
+      className="wb-panel wb-dock"
       aria-label={`${HOST.name}, ${HOST.role}`}
       style={{
+        /* Bridget hosts the map, so the map's dock is tinted in her accent. */
+        ['--host-accent' as string]: 'var(--bot-bridget)',
         width: 'var(--chat-rail)',
         flex: 'none',
         display: 'flex',
         flexDirection: 'column',
-        borderLeft: '1px solid var(--line)',
       }}
     >
       {/* Host presence, pinned to the top. */}
@@ -130,8 +131,9 @@ function HostMark() {
   return (
     <span
       style={{
-        width: 36,
-        height: 36,
+        /* 40px in chat — BRAND.md v3 §6. It was 36. */
+        width: 40,
+        height: 40,
         borderRadius: 'var(--r-pill)',
         flex: 'none',
         display: 'grid',
@@ -144,8 +146,8 @@ function HostMark() {
       <img
         src={bridgetPortrait}
         alt=""
-        width={30}
-        height={30}
+        width={34}
+        height={34}
         style={{ display: 'block' }}
       />
     </span>
