@@ -284,8 +284,17 @@ from BRAND.md's own formulas**, never invented, and the derivation is recorded s
   lightness step above Anemone at the same hue — the same step the published Plum-to-Iris pair
   makes. At 5.40:1 on white the head colour is safe on text; **the antenna value is not**, and is
   used only for that stroke.
-- **Bridget's identity colour** — `#7FD5DF`, the Surf-family lifted value. **Provisional** until map
-  staffing is settled. At 1.68:1 against white it carries her keyline, ring and wash, never text.
+- **Bridget's identity colour** — **Surf `#14C8D9`**, assigned to her by name in BRAND.md v3 §6.
+  At 2.04:1 against white it carries her keyline, ring and wash, never text; her name is set in
+  `--ink`. Her portrait was always drawn in Surf, so this makes the ring and the artwork agree.
+
+  > **Corrected 29 Aug 2026.** This read: ~~"`#7FD5DF`, the Surf-family lifted value.
+  > **Provisional** until map staffing is settled."~~ That value came from a retired agent, and the
+  > reason for it expired when the book named Bridget's colour outright.
+
+  It is deliberately the same value as `--state-live`. BRAND.md §2.6 accepts Surf's double duty on
+  the condition that **form carries the meaning**: a status may only be a dot or a keyline on a data
+  row, an identity only a bubble, portrait, surface accent or keyline.
 - **Stress ramp** — five bands derived from Surf, Amber and Coral, with monotonically descending
   lightness and chroma separating the scale from the two categories that are not on it. Both
   properties are asserted by `scripts/check-palette.mjs` rather than trusted to the eye.

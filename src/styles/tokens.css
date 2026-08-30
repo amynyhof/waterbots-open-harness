@@ -174,14 +174,34 @@
   --bot-monty: var(--slate);
   --bot-reggie: var(--plum);
 
-  /* PROVISIONAL (maintainer ruling). The roster assigns Bridget Surf, but Surf
-     carries no agent identity in this repo, so she inherits the Surf-family
-     lifted value published in BRAND.md under the retired agent "Mini".
-     Provisional until final map staffing is decided.
+  /* SETTLED 29 Aug 2026. BRAND.md v3 §6 assigns Bridget Surf outright, so she
+     takes Surf and the provisional value is gone.
 
-     It is a light cyan — 1.68:1 against white — so it carries her keyline,
-     avatar ring and wash, and NEVER text. Her name is set in --ink. */
-  --bot-bridget: #7fd5df;
+     CORRECTED under the visible-corrections rule. This read: ~~"PROVISIONAL
+     (maintainer ruling). The roster assigns Bridget Surf, but Surf carries no
+     agent identity in this repo, so she inherits the Surf-family lifted value
+     published in BRAND.md under the retired agent Mini. Provisional until
+     final map staffing is decided."~~ The retired agent is gone from the book
+     and Surf is hers by name. The reason for the provisional value expired
+     with the roster that caused it.
+
+     HER PORTRAIT WAS ALWAYS DRAWN IN SURF. Only the ring and wash carried the
+     lifted #7FD5DF, so this makes the two agree rather than changing how she
+     looks in the round.
+
+     Still 2.04:1 against white and 1.88:1 against the canvas, so it carries
+     her keyline, avatar ring and wash, and NEVER text. Her name is set in
+     --ink, as before. The bar it has to clear is 3:1 for a non-text graphic;
+     the ring is 1.5px on white and reads as a boundary, not as information,
+     and the name beside it carries the meaning.
+
+     THIS IS NOW THE SAME VALUE AS --state-live, DELIBERATELY. BRAND.md §2.6
+     accepts Surf's double duty on one condition: the form carries the
+     meaning. A status may only be a 7-10px dot or a 1px keyline on a data
+     row; an identity may only be a bubble, a portrait, a surface accent or a
+     keyline. Surf as a dot means live; Surf as a portrait means Bridget.
+     Break the form rule and the collision is real. */
+  --bot-bridget: var(--surf);
 
   /* Phoebe (beta) — Eligibility and Feasibility specialist. Maintainer ruling,
      22 Aug 2026: she is Anemone, the muted berry-magenta BRAND.md holds in

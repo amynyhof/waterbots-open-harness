@@ -72,7 +72,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | K3 | VWB Report Corpus | Knowledge | open, no action yet |
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | canon, ruled 26 Aug 2026 |
 | A1 | Phoebe abstention loop | Agents | built 25 Aug 2026 |
-| A2 | Final agent staffing | Agents | settled 24 Aug 2026 |
+| A2 | Final agent staffing | Agents | settled 24 Aug 2026; Bridget's colour settled 29 Aug 2026 |
 | A3 | Agent handoff primer | Agents | shipped 28 Aug 2026 — rung 2 live |
 
 | A4 | Phoebe returned an empty answer | Agents | one cause fixed 25 Aug 2026 — **not the only one**, see A6 |
@@ -88,7 +88,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S5 | The citation line wraps awkwardly in the narrow dock | Surfaces | cosmetic, polish later |
 | S6 | The dev relay resolves imports differently from production | Surfaces | open |
 | S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026, no build |
-| S8 | Brightness pull-up to BRAND.md's published Frost values | Surfaces | shipped 27 Aug 2026; open only on the colour re-review rider |
+| S8 | Brightness pull-up to BRAND.md's published Frost values | Surfaces | **closed 29 Aug 2026** |
 | S9 | The return to the brand book | Surfaces | logged 29 Aug 2026, plan approved and building |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
@@ -227,10 +227,13 @@ coming. Nothing in the product may imply she answers today.
 
 Her portrait ships from `brand/assets/bots/bridget.svg`.
 
-**One question this ruling does not answer.** Her identity colour `#7FD5DF` is still provisional,
+~~**One question this ruling does not answer.** Her identity colour `#7FD5DF` is still provisional,
 and for a different reason: BRAND.md assigns Surf no agent identity, and her value was published
-under a retired agent. That is a brand decision, not a staffing one, and it is still open. The
-`--bot-bridget` token carries the same note.
+under a retired agent. That is a brand decision, not a staffing one, and it is still open.~~
+
+> **Answered 29 Aug 2026.** BRAND.md v3 §6 assigns Bridget **Surf `#14C8D9`** by name, and the
+> retired agent the old value came from is gone from the book. `--bot-bridget` is Surf. It was a
+> brand decision, as this item said, and the brand book made it.
 
 **What this unblocks:** the agent handoff primer (item A3), which was waiting on the roster.
 
@@ -1207,11 +1210,28 @@ cyan, and whether they would blur could not be settled by arithmetic. **Maintain
 walking production, 27 Aug 2026: they read apart — the hairline borders on basins separate them from
 open sea at every zoom tried.**
 
-### What keeps this item open
+### Closed 29 Aug 2026 — the rider is answered by the book, not by a re-review
 
-**Only the colour re-review rider below.** The brightness work itself is done.
+**The brightness work was done on 27 Aug.** What kept this item open was the rider: both agent
+identity colours re-reviewed against the status taxonomy, because an agent colour must never read
+as a project status and Bridget's provisional `#7FD5DF` sat near *Live*.
 
-Received 27 Aug 2026. **Shipped 27 Aug 2026; open on the rider.**
+**BRAND.md v3 answers it, and the answer is better than the re-review would have been.** §2.6 rules
+that **the form factor carries the meaning**: a status may only be a 7-10px dot or a 1px keyline on
+a data row; an identity may only be a bubble, a portrait, a surface accent or a keyline. Surf as a
+dot means *live*; Surf as a portrait means *Bridget*. **The book accepts Surf's double duty on
+exactly that basis.**
+
+So Bridget's colour is no longer merely *near* the Live colour — since 29 Aug it **is** the Live
+colour, `#14C8D9`, and that is the book's intended state rather than a collision. The check that
+matters is not "are these two colours far enough apart" but "is each one only ever used in its own
+form", and that is a rule to hold rather than a measurement to take.
+
+**Phoebe was re-reviewed too, and stands.** Anemone `#A04E7E` is unclaimed by any state in the
+taxonomy and by any other agent.
+
+Received 27 Aug 2026. Shipped 27 Aug 2026. **Closed 29 Aug 2026**, with the rider answered by
+BRAND.md v3 §2.6 — see item S9.
 
 ---
 
