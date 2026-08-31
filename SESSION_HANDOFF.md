@@ -5,8 +5,9 @@ scratch at every close — maintainer's ruling of 29 Aug 2026, *the opening read
 
 **No history lives here.** How things came to be is in [BUILD_LOG.md](./BUILD_LOG.md), which is
 append-only and is **not** read at the opening. Each open thread's own story is in its row in
-[OPEN_ITEMS.md](./OPEN_ITEMS.md). If this file starts explaining how something happened, that is the
-defect the ruling names.
+[OPEN_ITEMS.md](./OPEN_ITEMS.md); closed items are in
+[OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md), which is also not an opening read. If this file
+starts explaining how something happened, that is the defect the ruling names.
 
 Read it with [CLAUDE.md](./CLAUDE.md), which is the rulebook and takes precedence, with
 [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md), which says how work is run, and with
@@ -20,6 +21,8 @@ Read it with [CLAUDE.md](./CLAUDE.md), which is the rulebook and takes precedenc
 `main` equals `origin`. The working tree is clean apart from two ungraded card drafts. Nothing is
 half-built and no branch is open.
 
+**The site and the brand book agree on every value.** That was not true at the start of the day.
+
 | Surface | State |
 |---|---|
 | Basin map | Live, keyed CARTO Voyager basemap under a Slate 13% wash |
@@ -32,50 +35,49 @@ half-built and no branch is open.
 
 ## The design system as it now stands
 
-**The brand book is the authority, and it is version 4 from 30 Aug 2026.** It lives at
-`brand/BRAND.md`, is gitignored, and does not publish.
+**The brand book is `brand/BRAND.md`, version 4.1.** It is gitignored twice over — by the bare
+`BRAND.md` rule and by `brand/*` — and does not publish. It carries **Windows line endings**;
+nothing normalises it, so edit it preserving them.
 [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) is **superseded** by it, says so at its
 own head, and stays published as history.
 
 - **One light brand.** No dark theme, no theme class. One set of tokens in `src/styles/tokens.css`.
 - **Two grounds.** `--paper` `#F6F5FA` is the **content** canvas — map and worksheet. `--frame`
-  `#FBFBFE` is the **frame** — top bar, rail, and both docks' ground.
-- **Three planes and no fourth.** Canvas, card, floating. The derived `--chrome` plane is retired.
+  `#FBFBFE` is the **frame** — top bar, rail, and both docks' ground. Book §2.3.
+- **Three planes and no fourth.** Canvas, card, floating. `--chrome` is retired in the code and in
+  the book. **Production retires it under this site's name, `--frame`** — their item #161.
 - **Neutrals are `--ink`, `--ink-2`, `--ink-3`, `--ink-4`.** `--ink-3` is the readability floor.
-- **Shadows only on what floats** — the legend, the credit strip, the basin tooltip. Nothing else.
+- **The three shadows are the book's own**, §4, and carry a negative spread. Only what genuinely
+  floats gets one — the legend, the credit strip, the basin tooltip.
 - **Host panels carry their agent's accent** at 5% fill and 25% border: Phoebe's dock in Anemone
   `#A04E7E`, Bridget's dock and the map legend in Surf `#14C8D9`.
+- **A role colour set as TYPE is darkened** — book §2.5. Only `--state-warn-text` `#BF4949` is used
+  here so far, on the map's two error messages.
 - **The stress ramp is unchanged** and is gated by `scripts/check-palette.mjs`.
 
 **Do not give Arid or No Data a warm fill.** It was tried, it passed the gate, and it was refused on
 the merits: the warm bronze made Arid read as a value, and those two categories must read as no
 reading at all. The note lives in `src/lib/stressPalette.ts` where the next hand would reach.
 
+**Design work starts from an image** — canon from 30 Aug 2026, in
+[PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md). Any step whose point is how something
+looks begins from a captured visual reference, and approval of a look is given on pixels.
+
 ## Waiting on the maintainer
 
-**Version 4 of the brand book arrived by her hand on 30 Aug 2026**, and it is in the repository at
-`brand/BRAND.md`. It carries every ruling this site owed it.
+**Nothing is owed to the brand book, and no design ruling is outstanding.**
 
-**The design-exploration screenshots are not coming**, and no folder waits for them — maintainer's
-ruling, 30 Aug 2026. The exploration's outcome is recorded in full in item S9 and the wash it led to
-is shipped, so there is nothing left for images to teach.
-
-**The four rulings owed to the master book are all in version 4** — the two grounds and the active
-navigation item in §2.3, the three shadow values in §4, and the Slate wash in §7. **Phoebe's roster
-gap is closed too**, by the roster-extension rule in §6. Item S9 records where each one sits.
-
-**Two fresh raises replaced them, both in item S9.** The book's `--shadow-md` and `--shadow-lg` do
-not match this site's token file, though §4 says they do — **ruled 30 Aug 2026, the book wins**, and
-the swap is its own step. And coral set as text measures **3.52:1** where §9 asks 4.5:1; a darkened
-value is proposed and carried up by hand, never invented here.
-
-**Also outstanding:** Calvin's roster entry, colour and primer entry when his lane opens; grading the
-two card drafts, which stay uncommitted until then; and whether the export copies should be a script
-(item O8).
+- **Calvin's roster entry, colour and primer entry**, when his lane opens.
+- **Grading the two card drafts** — `activity-cards-vwba-DRAFT.md` and
+  `definitions-cards-vwba-DRAFT.md`. They stay uncommitted until then.
+- **Whether the export copies should be produced by a script** (item O8).
 
 **Four things wait on real visitors, not on anyone**, and come due together: the number twenty
 (item O1), the basemap's five-million-request ceiling (item O9), the primer review against the
 abstention log (item A5), and whether an abstention that cited a card is a fault (item A7).
+
+**One thing waits on production, not here.** The bridge (item S7) is on their desk as their **#149**.
+No work queues behind it, and rule zero holds while it sits there.
 
 ## Phoebe — settings that are stated rather than inherited
 
@@ -87,8 +89,8 @@ abstention log (item A5), and whether an abstention that cited a card is a fault
   their twenty, and `check-cap` proves it.
 - **She never writes a citation.** She returns a card number and places a marker; the browser
   renders the citation from the committed file.
-- **Her colour is Anemone `#A04E7E`.** She is not on the book's roster; that gap is closed at the
-  master book by the maintainer's hand.
+- **Her colour is Anemone `#A04E7E`**, and she is on the book's roster from version 4, under the
+  roster-extension rule in §6.
 
 ## Confirming the build
 
@@ -111,13 +113,15 @@ npm run build && node scripts/check-attribution.mjs && node scripts/check-basema
 
 ## Running it locally
 
+The API key must be in the environment before the server starts, then `npx vite`:
+
 ```powershell
 $env:ANTHROPIC_API_KEY = [Environment]::GetEnvironmentVariable('ANTHROPIC_API_KEY','User')
-npm run dev
+npx vite
 ```
 
-**Phoebe's key must be in the environment before the server starts.** An env file does not work: Vite
-puts env files into the browser's `import.meta.env`, and the relay is Node code reading `process.env`.
+**An env file does not work for Phoebe's key.** Vite puts env files into the browser's
+`import.meta.env`, and the relay is Node code reading `process.env`.
 
 **The basemap key is the opposite case** and lives in `.env.local` as `VITE_CARTO_KEY`, baked into
 the bundle at build time. Without it the map works and every tile is watermarked.
@@ -129,8 +133,14 @@ question, only its length. It is named in the code as debt to remove.
 > the engineer touches nothing.
 >
 > **And only one dev server at a time.** A second cannot take the port, exits, and requests silently
-> go to the first. **Start it as `npx vite`, not `npm run dev`** — the npm wrapper died on 29 Aug and
-> left an orphaned server that was still serving but whose output could not be read.
+> go to the first. **Start it as `npx vite`, not `npm run dev`.**
+
+## Housekeeping — where things are on this machine
+
+- **`gh` is installed and signed in but is not on the shell's PATH.** Call it at
+  `C:\Program Files\GitHub CLI\gh.exe`. Called bare it reports "command not found" and looks,
+  wrongly, like a missing tool. The line is also in [CLAUDE.md](./CLAUDE.md).
+- **`brand/BRAND.md` carries Windows line endings** and is gitignored, so nothing normalises it.
 
 ## Deployment
 
@@ -170,7 +180,10 @@ question, only its length. It is named in the code as debt to remove.
   **Raising it buys a longer runaway**, not more room.
 - **Phoebe gets a marked region of the primer, not the whole file.** Embedding the whole document
   destabilised ordinary answers.
-- **The working folder carries Windows line endings; git stores Unix.** Nothing is broken. Item O10.
+- **Basins are drawn on canvas, not as SVG paths.** Hit-testing is Leaflet's; a selector like
+  `path.leaflet-interactive` finds nothing, and that does not mean the map is empty.
+- **Seven tracked text files still carry Windows line endings on disk**, out of 81. Nothing is
+  broken — every git blob is Unix, and that is what ships. Item O10 is closed on that basis.
 
 ## The documents, and which one owns what
 
@@ -179,18 +192,18 @@ question, only its length. It is named in the code as debt to remove.
 
 | File | Owns | Published |
 |---|---|---|
-| [CLAUDE.md](./CLAUDE.md) | Engineering rules, rule zero, the language rules | Yes |
-| [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) | How work is run; both rituals; visible corrections; bundling; record-once; thin reads | Yes |
+| [CLAUDE.md](./CLAUDE.md) | Engineering rules, rule zero, the language rules, machine housekeeping | Yes |
+| [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) | How work is run; both rituals; visible corrections; bundling; record-once; thin reads; **images first** | Yes |
 | [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) | **Superseded by the brand book. Kept as history** | Yes |
 | [AGENT_RULES.md](./AGENT_RULES.md) | How an agent behaves and speaks, the abstention ladder | Yes |
 | [CITATIONS.md](./CITATIONS.md) | What a citation is and how it renders | Yes |
 | [BUILD_PLAN.md](./BUILD_PLAN.md) | What is being built now and next | Yes |
 | [OPEN_ITEMS.md](./OPEN_ITEMS.md) | Every **open** item, in five families, and the north star | Yes |
-| [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) | **Closed items, in full. NOT read at the opening** | Yes |
 | **This file** | Where things stand **now** | Yes |
+| [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) | **Closed items, in full. NOT read at the opening** | Yes |
 | [BUILD_LOG.md](./BUILD_LOG.md) | **How they came to stand there. NOT read at the opening** | Yes |
 
-**The brand book (`brand/BRAND.md`) and UI_REFERENCE.md are gitignored and never publish.**
+**The brand book and UI_REFERENCE.md are gitignored and never publish.**
 **`agent-primer.md` is lowercase on purpose** — committed content an agent inherits, not a rulebook.
 
 ## What to do first
@@ -201,17 +214,15 @@ equals `origin` with the identifiers compared, report where things stand and **w
 underneath us**, kill stray dev servers, and **check for code reading an unpushed migration**.
 **No building in Part 1.**
 
-**Version 4 of the brand book has landed** and what ships has been read against it. Two things
-disagree with it and both are open in item S9.
-
-**Then Part 2 — propose the session's plan.** Nothing is scheduled and no family is due, so the plan
-follows from what the version 4 book changes.
+**Then Part 2 — propose the session's plan.** Nothing is scheduled, no family is due, and nothing is
+owed to or from the brand book. The plan follows from what the maintainer wants next.
 
 ## Working agreements that are easy to lose
 
 - **No mock or fabricated data, ever.**
 - **Propose, approve, build, eyeball, commit word.** An approved plan is a batch approval; it
   loosens nothing else.
+- **Design work starts from an image**, and approval of a look is given on pixels, not prose.
 - **Pull requests bundle by the maintainer's checkpoints, not by step.** Invisible groundwork rides
   with the visible step it serves; steps inside a bundle stay separate commits.
 - **Record once, point everywhere else.** An incident is told in full in the item that owns it.
@@ -219,7 +230,11 @@ follows from what the version 4 book changes.
 - **Every pull request opens with a "For Amy" block.** Without it, it is not ready for review.
 - **A gate that passes is not a verdict.** `check-palette` passed a fill the maintainer refused on
   sight. The gate measures separation; it cannot measure what a colour reads as.
-- **Look at the thing itself.** Twice this week a change was reported as landed when the browser was
-  showing something else. Ask the running server what it is serving.
+- **Measure the book too.** Version 4 said its shadow values matched this file and they did not, and
+  said its live and approved text values cleared 4.5:1 and they did not. **The book is authority,
+  not evidence** — where it states a measurement, check the measurement.
+- **Look at the thing itself.** Ask the running server what it is serving.
 - **A default nobody wrote down is a decision nobody made.**
 - **Scope is a rule, not a list.**
+- **Never `git add -A`.** Stage named files. It swept two ungraded card drafts into a commit on
+  30 Aug 2026.

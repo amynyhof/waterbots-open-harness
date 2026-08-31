@@ -240,9 +240,9 @@ without it produces a working map with every tile watermarked, which is why
 
 ## Theme
 
-**There is one brand and it is light.** The brand book, **version 4 from 30 Aug 2026**, supersedes
-the two-theme era, and `src/styles/tokens.css` carries one set of surface tokens with no theme class
-to switch between. ~~BRAND.md v3, brought by the maintainer on 28 Aug 2026~~ — version 3 brought the
+**There is one brand and it is light.** The brand book, **version 4.1 from 30 Aug 2026**,
+supersedes the two-theme era, and `src/styles/tokens.css` carries one set of surface tokens with no
+theme class to switch between. ~~BRAND.md v3, brought by the maintainer on 28 Aug 2026~~ — version 3 brought the
 one light brand on 28 Aug and held for two days; version 4 kept it and added what this site had
 worked out.
 
@@ -301,6 +301,24 @@ book's own — each says so below:
   It is deliberately the same value as `--state-live`. The book's §2.6 accepts Surf's double duty on
   the condition that **form carries the meaning**: a status may only be a dot or a keyline on a data
   row, an identity only a bubble, portrait, surface accent or keyline.
+- **Warning text is a darkened coral** — **`#BF4949`**, in `--state-warn-text`. The book's §2.5
+  rule is that a role colour used as **type** is darkened to clear 4.5:1, the same hue mixed toward
+  ink, while the dot or fill value is unchanged. Coral `#E25858` set as 11px type measured
+  **3.52:1** against the frame; `#BF4949` measures **4.77:1** there and clears 4.5:1 on every ground
+  this brand has. Hue is held exactly; lightness and chroma are reduced together.
+
+  > **This one went the other way.** The book published no darkened coral, so the value was
+  > proposed, measured and ruled before it was used. Measuring the book's own three darkened values
+  > at the same time showed that **live and approved did not reach the contrast §2.5 promises** —
+  > 3.99:1 and 3.83:1 against the frame. Corrected values were accepted into the book at
+  > **version 4.1**, and **verification was measured and left unchanged**. Nothing on this site
+  > rendered wrongly: neither colour is used as type here. Item S9 in
+  > [OPEN_ITEMS.md](./OPEN_ITEMS.md) carries it.
+
+- **The three shadow values** — `--shadow-sm`, `--shadow-md` and `--shadow-lg` are the book's own,
+  published in §4 on 30 Aug 2026. Two of them replaced values this repository had derived and sent
+  up for ratification; the book's carry a **negative spread**, which §4 says is what keeps a shadow
+  from reading as a grey box.
 - **Stress ramp** — five bands derived from Surf, Amber and Coral, with monotonically descending
   lightness and chroma separating the scale from the two categories that are not on it. Both
   properties are asserted by `scripts/check-palette.mjs` rather than trusted to the eye.

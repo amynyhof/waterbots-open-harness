@@ -93,9 +93,9 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 
 | S5 | The citation line wraps awkwardly in the narrow dock | Surfaces | cosmetic, polish later |
 | S6 | The dev relay resolves imports differently from production | Surfaces | open |
-| S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026, no build |
+| S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026; **waiting on production's desk as their #149** |
 | S8 | Brightness pull-up to the book's published Frost values | Surfaces | closed 29 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
-| S9 | The return to the brand book | Surfaces | plan built 30 Aug 2026; **open on two raises against version 4** |
+| S9 | The return to the brand book | Surfaces | **closed 30 Aug 2026** — both raises shipped, book at v4.1 |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
@@ -1068,7 +1068,15 @@ bridge is how someone steps over.
 is coordinated by the maintainer's hand, not designed in this repository. Rule zero holds while it
 is.
 
-Logged 26 Aug 2026. **Ruled — no build.**
+**It has a number on the other side, and it is on their desk — production's #149.** Recorded
+30 Aug 2026 by the maintainer's note. **Nothing about that changes what happens here:** the shape is
+still theirs to settle, this repository still designs none of it, and rule zero still holds. What
+the number buys is that a later session can tell **waiting on production** apart from **nobody has
+picked this up**, which are the same silence from inside this repo and are not the same thing.
+
+**This item does not wait on an engineer here**, and no work is queued behind it.
+
+Logged 26 Aug 2026. **Ruled — no build. Waiting on production's desk as their #149.**
 
 ---
 
@@ -1273,6 +1281,14 @@ is presumably true of the other property and was carried across without being re
 the map legend and the basin hover tooltip; `--shadow-lg` is used nowhere yet, so nothing moves for
 it. `--shadow-sm`, on the credit strip, does not change at all.
 
+**Closed 30 Aug 2026 — shipped as pull request #41.** Captured before and after in the same
+viewport, same map view, same basin, and approved on the pixels. It was the first step built under
+the images-first ruling of the same day, and the capture was what the approval was given on.
+
+**A false comment went with it.** `base.css` said the basin tooltip's rule was where `--shadow-md`
+came from rather than the other way round. True until §4 published a different value; struck and
+corrected in place.
+
 ### Raise 2 — coral set as text does not clear the book's own bar
 
 **Found 30 Aug 2026, reading version 4 against the shipped stylesheet.**
@@ -1304,6 +1320,37 @@ book by the maintainer's hand as a §2.5 addition** before anything ships. Maint
 **The dot and fill value is untouched either way** — §2.5 is explicit that darkening is for type
 only. Everywhere else coral appears here it is a 2px keyline or a dot, which is §2.6 working
 correctly.
+
+### Closed 30 Aug 2026 — and it corrected the book rather than only this site
+
+**`#BF4949` was proposed, measured, ruled and shipped as pull request #42**, through a new
+`--state-warn-text` token named to match the existing `--tide-text`. **`--state-warn` is unchanged**
+and still draws every dot, fill and keyline.
+
+**The maintainer ruled not to wait for the book**, so the site shipped ahead of it and the token
+file says so where the next hand would reach. The book caught up the same day at **version 4.1**.
+
+**Measuring the book's own three values turned out to matter more than the coral did.** Live and
+approved are published in §2.5 as *darkened to clear 4.5:1*, and neither does:
+
+| The book's value at v4 | frame | paper | card | |
+|---|---|---|---|---|
+| live `#0E8A96` | 3.99:1 | 3.80:1 | 4.12:1 | **fails** |
+| approved `#1E9077` | 3.83:1 | 3.65:1 | 3.95:1 | **fails** |
+| verification `#6A47E0` | 5.66:1 | 5.39:1 | 5.85:1 | clears |
+
+**Corrected values were proposed by the same method and accepted** — live **`#087C87`**, approved
+**`#177F68`** — and **verification was left alone**, because a published value that already works
+should not be changed for symmetry. All three plus coral are written into **§2.5 at version 4.1**.
+
+**Nothing on this site rendered wrongly because of it**, which is why it was a proposal rather than
+a fix. `--state-approved` appears here as a 7px dot and a 3px keyline; `--state-live` is not used at
+all yet. Both are correct forms under §2.6, so there was nothing to repair — the fault was in the
+book, and the book is where it was fixed.
+
+**Version 4.1 is the first amendment written into the book from inside this repository**, on the
+maintainer's explicit instruction. It is the exception. Everything else still arrives by her hand,
+and rule zero is untouched.
 
 ### The ramp was explored, and it stands — 30 Aug 2026
 
@@ -1469,8 +1516,24 @@ agent — with **Phoebe's own entry beneath it**. §6 also settles the asset spl
 worked out by hand: **a shared agent's portrait lives with the shared assets, a surface's own
 agent's portrait lives with that surface**, which is why `phoebe.svg` ships from here.
 
-Logged 29 Aug 2026. **Open on two raises against version 4**, both logged 30 Aug 2026 and both
-recorded above. The seven-step plan is built and merged, and the ratification bundle is delivered.
+### Closed — 30 Aug 2026
+
+**Everything this item was opened to carry is done.** The seven-step plan is built and merged, the
+ratification bundle is delivered into version 4, and both raises against version 4 are shipped —
+the shadow values as pull request #41 and the darkened coral as #42, with the book amended to
+version 4.1 to match.
+
+**What it cost and what it bought, since this item is the one home for the story.** The return to
+the book ran to thirteen pull requests across three sessions, #27 to #42. Two stress ramps were
+designed, machine-checked and thrown away, and the finding that ended the exploration — that the map
+read flat because of the basemap rather than the ladder — is what the basemap wash came from. **That
+finding is also why design work now starts from an image**, which is canon from 30 Aug 2026 and
+lives in [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md).
+
+**One rider is still not an item and is still unridden.** The rail-width rider, inherited from item
+S8, rides whenever the rail is next opened for another reason. No work in this item opened it.
+
+Logged 29 Aug 2026, **closed 30 Aug 2026.**
 
 ---
 
