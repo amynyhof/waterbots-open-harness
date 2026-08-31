@@ -143,7 +143,7 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
-   Accent-tinted panels — BRAND.md v3 §7.
+   Accent-tinted panels — BRAND.md §7.
 
    "A section panel may take a ~5% fill and a ~25% border of a single accent.
    It is a container, not an emphasis — one accent per panel, and never a warm
@@ -567,7 +567,7 @@ body {
   padding: 3px 8px;
   border-top-left-radius: var(--r-xs);
   /* It floats over tiles of every colour, so it takes the smallest shadow —
-     BRAND.md v3 §2.3, floating is hairline plus a shadow. This is a legibility
+     BRAND.md §2.3, floating is hairline plus a shadow. This is a legibility
      requirement before it is a style one: the licence credit has to stay
      readable over land, sea and ice alike. */
   box-shadow: var(--shadow-sm);

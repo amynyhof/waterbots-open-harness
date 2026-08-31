@@ -6,14 +6,14 @@
  * state beats a fabricated one, and a live-looking input that silently does
  * nothing is a false success state.
  *
- * The dock is a host panel, not chrome. BRAND.md v3 §2.3 names chrome as
+ * The dock is a host panel, not chrome. BRAND.md §2.3 names chrome as
  * navigation, rails and top bars; a chat panel is content. It sits in the
  * 360-380px band with host presence pinned at the top rather than stretched
  * down the panel.
  *
  * BRIDGET'S CHAT IS NOT BUILT, AND SHE IS NOT A PLACEHOLDER HOST. Staffing was
  * settled on 24 Aug 2026 — she is the map's agent — and her colour was settled
- * on 29 Aug 2026 as Surf #14C8D9, assigned to her by name in BRAND.md v3 §6.
+ * on 29 Aug 2026 as Surf #14C8D9, assigned to her by name in BRAND.md §6.
  * What is unbuilt is her chat, and the panel says so plainly.
  *
  * At 2.04:1 against white her colour carries her keyline, ring and wash, and
@@ -131,7 +131,7 @@ function HostMark() {
   return (
     <span
       style={{
-        /* 40px in chat — BRAND.md v3 §6. It was 36. */
+        /* 40px in chat — BRAND.md §6. It was 36. */
         width: 40,
         height: 40,
         borderRadius: 'var(--r-pill)',
