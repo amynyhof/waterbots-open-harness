@@ -192,6 +192,35 @@
   --state-locked: #98a0b2;
   --state-warn: #e25858;
 
+  /* A ROLE COLOUR SET AS TYPE IS DARKENED. BRAND.md §2.5: "on light surfaces,
+     roles used as TYPE are darkened to clear 4.5:1 — the same hue mixed toward
+     ink, not a new colour. The dot or fill value is unchanged."
+
+     THE BOOK PUBLISHES NO DARKENED CORAL. It publishes three — live #0E8A96,
+     approved #1E9077, verification #6A47E0 — and coral is not among them.
+     §0 forbids inventing what the book does not carry, so this value was
+     PROPOSED, MEASURED AND RULED rather than derived here and used quietly:
+     maintainer's ruling, 30 Aug 2026, and it is carried into the master book
+     as a §2.5 coral entry AT VERSION 4.1, WHICH IS PENDING. This file is
+     ahead of the book by her instruction, not by accident.
+
+     HOW IT WAS DERIVED, so it can be checked rather than trusted. Coral's hue
+     is held exactly — 23.3 degrees in OKLCH, unmoved — and its lightness and
+     chroma are reduced together until every ground clears 4.5:1:
+
+                          frame      paper      card
+       --state-warn       3.52:1     3.35:1     3.64:1   FAILS as type
+       --state-warn-text  4.77:1     4.54:1     4.92:1   clears everywhere
+
+     IT CLEARS ON ALL THREE GROUNDS ON PURPOSE. The two messages that use it
+     today sit on the frame, where the bar is met at 4.56:1 by a shallower
+     darkening. A token gets reached for in places nobody predicted, so it is
+     set where it is safe on any surface this brand has.
+
+     --state-warn IS UNCHANGED and stays the dot, the fill and the keyline.
+     §2.6: the form carries the meaning. This value is for type only. */
+  --state-warn-text: #bf4949;
+
   /* --- Crew identity on Frost -------------------------------------------
      The roster's base hues. Read from the token, never by re-typing a hex,
      so a roster change lands everywhere at once. */

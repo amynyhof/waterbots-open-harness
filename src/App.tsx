@@ -107,11 +107,11 @@ export default function App() {
         {onMap && status && (
           <span className="t-mono" style={{ fontSize: 11, color: 'var(--ink-3)' }}>
             {status.stressError ? (
-              <span style={{ color: 'var(--state-warn)' }}>
+              <span style={{ color: 'var(--state-warn-text)' }}>
                 Water stress data unavailable — basins are shown unfilled
               </span>
             ) : status.detailError ? (
-              <span style={{ color: 'var(--state-warn)' }}>
+              <span style={{ color: 'var(--state-warn-text)' }}>
                 Detailed basins unavailable — showing the world view
               </span>
             ) : status.loadingDetail ? (
