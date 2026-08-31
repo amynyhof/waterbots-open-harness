@@ -113,6 +113,51 @@ fix is one step. **Two unrelated fixes are never one step**, however small eithe
 is — they are checked separately and they are undone separately, so they are
 proposed separately.
 
+### Design work starts from an image
+
+**Maintainer's ruling, 30 Aug 2026. Into canon.**
+
+> **Any step whose point is how something looks begins from a captured visual reference, and the
+> maintainer's approval of a look is given on pixels, not prose.**
+
+**Which steps this binds.** A step whose *point* is appearance — a colour, a fill, a ramp, a
+spacing, a shadow, a layout. Not every step that happens to touch a stylesheet: a token rename, a
+dead-code removal or a value swap that moves nothing on screen is not design work, and it does not
+need an image. **The test is whether the thing being decided is how it looks.** If it is, there is a
+picture before there is a proposal.
+
+**What "a captured visual reference" means.** A screenshot, a mockup, or a rendered comparison that
+exists as a file — not a description of one, and not a memory of one. It is captured **before** the
+proposal is written, because the proposal is meant to argue from it. Where a change alters something
+already on screen, the capture is a **before and an after**, in the same viewport, so that the only
+difference between the two frames is the change itself.
+
+**And approval is given on pixels.** A written argument that a colour will read as quieter is not a
+thing the maintainer can approve, because it is not the thing being decided. **She approves the
+image.**
+
+**Why this is worth a rule, in one sentence: it has already cost this repository two ramps.** Two
+stress ramps were designed, machine-checked against `check-palette`, and thrown away — and the
+finding that ended the exploration was that the map read flat because of the *basemap*, not the
+ladder. **The eye found that in one sitting, and no amount of reasoning about the ladder would have
+found it.** Item S9 in [OPEN_ITEMS.md](./OPEN_ITEMS.md) carries the whole account.
+
+**It is the same lesson a gate already taught.** `check-palette` passed a warm fill on the arid
+basins that the maintainer refused on sight. **A gate measures separation; it cannot measure what a
+colour reads as.** A rule that starts design work from an image is that finding turned into a
+habit rather than a story.
+
+**What it does not license.** It is not a reason to keep a folder of screenshots of finished work.
+The maintainer ruled on 30 Aug 2026 that the design exploration's images were **not** to be carried
+in, because its outcome was recorded in full and the wash it led to was shipped — *"an empty seat
+reserved forever is its own small untruth about what is expected."* **Those are different things.**
+This rule is about what a design step *starts* from; that ruling was about what a finished one
+*leaves behind*. An image earns its place at the beginning of the work, not in the archive at the
+end of it.
+
+**It does not change how a step is sized**, and it does not add a gate. It changes what has to be
+in front of both people before the proposal is written.
+
 ### A session batches steps; the ritual runs once
 
 **Maintainer's ruling, 26 Aug 2026.** A session is one working sitting, and it may land
