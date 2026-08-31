@@ -29,10 +29,21 @@ the Step 2.3 summary box reads softer, and Figure 3 is absolute. The build follo
 | Set | Source | Role | State |
 |---|---|---|---|
 | **Eligibility** | Appendix A | The hard gate. Six absolute criteria; failing any one means not eligible. | This file |
-| **Feasibility** | Appendix B | Selection considerations for explorers — helps rank and choose among projects that already pass the gate. Never a bar to entry. | Planned, **not drafted** |
+| **Feasibility** | Appendix B | Selection considerations for explorers — helps rank and choose among projects that already pass the gate. Never a bar to entry. | ~~Planned, **not drafted**~~ **Drafted, approved and live** — [feasibility-cards-vwba.md](./feasibility-cards-vwba.md) |
 
 Appendix B's considerations are explicitly not eligibility requirements (pp. 20, 34), which is why
-they are a separate set rather than more cards here. Not to be drafted until asked.
+they are a separate set rather than more cards here. ~~Not to be drafted until asked.~~
+
+> **Corrected 31 Aug 2026.** This table said the Feasibility set was *planned, not drafted*, and the
+> sentence above it said the set was *not to be drafted until asked*. **Both stopped being true on
+> 21 Aug 2026**, the day [feasibility-cards-vwba.md](./feasibility-cards-vwba.md) was written and
+> approved by the maintainer — ten cards, one per consideration, none skipped. Phoebe has answered
+> from both sets since 24 Aug 2026, so this file described the product wrongly for ten days.
+>
+> **The false lines are struck rather than deleted**, per *visible corrections over rewritten
+> history* in [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md). What they cost is worth
+> keeping: a card set that describes its own sibling as unwritten is a card set an agent could
+> quote, and this one is inherited into Phoebe's prompt.
 
 ---
 
