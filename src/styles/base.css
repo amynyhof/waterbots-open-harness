@@ -600,8 +600,11 @@ body {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--r-sm);
-  /* The same value this rule has always carried, now named. It is where
-     --shadow-md came from rather than the other way round. */
+  /* ~~The same value this rule has always carried, now named. It is where
+     --shadow-md came from rather than the other way round.~~ CORRECTED
+     30 Aug 2026: true until BRAND.md §4 published its own --shadow-md, which
+     is not the value this rule carried. The arrow points the other way now —
+     this element takes the book's value. Item S9 has the record. */
   box-shadow: var(--shadow-md);
   color: var(--ink-2);
   padding: 8px 10px;
