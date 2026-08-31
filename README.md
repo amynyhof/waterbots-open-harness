@@ -323,6 +323,8 @@ should be checkable on how it works as well as on what it says.
 | [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) | How work moves: propose, approve, build, review, commit |
 | [AGENT_RULES.md](./AGENT_RULES.md) | How an agent speaks, and when it must abstain |
 | [CITATIONS.md](./CITATIONS.md) | What a citation is and how it renders |
+| [OPEN_ITEMS.md](./OPEN_ITEMS.md) | Every open thread, grouped into five families |
+| [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) | Closed items, kept in full rather than deleted |
 | [BUILD_PLAN.md](./BUILD_PLAN.md) | What is being built next, and why |
 | [OPEN_ITEMS.md](./OPEN_ITEMS.md) | Every open thread, in five families |
 | [SESSION_HANDOFF.md](./SESSION_HANDOFF.md) | Where things stand **now**, for whoever picks the work up |

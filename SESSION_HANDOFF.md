@@ -185,7 +185,8 @@ question, only its length. It is named in the code as debt to remove.
 | [AGENT_RULES.md](./AGENT_RULES.md) | How an agent behaves and speaks, the abstention ladder | Yes |
 | [CITATIONS.md](./CITATIONS.md) | What a citation is and how it renders | Yes |
 | [BUILD_PLAN.md](./BUILD_PLAN.md) | What is being built now and next | Yes |
-| [OPEN_ITEMS.md](./OPEN_ITEMS.md) | Every open item, in five families, and the north star | Yes |
+| [OPEN_ITEMS.md](./OPEN_ITEMS.md) | Every **open** item, in five families, and the north star | Yes |
+| [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) | **Closed items, in full. NOT read at the opening** | Yes |
 | **This file** | Where things stand **now** | Yes |
 | [BUILD_LOG.md](./BUILD_LOG.md) | **How they came to stand there. NOT read at the opening** | Yes |
 
