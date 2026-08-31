@@ -89,7 +89,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S6 | The dev relay resolves imports differently from production | Surfaces | open |
 | S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026, no build |
 | S8 | Brightness pull-up to BRAND.md's published Frost values | Surfaces | **closed 29 Aug 2026** |
-| S9 | The return to the brand book | Surfaces | logged 29 Aug 2026, plan approved and building |
+| S9 | The return to the brand book | Surfaces | plan built 30 Aug 2026; **open on two raises against version 4** |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
@@ -1325,9 +1325,27 @@ the 1px `--line` hairline that §2.3 pairs with a white card** — the border ca
 using the fill alone was the incomplete half of a rule the book already states. That is the book
 applied properly rather than a new device, so it needs no separate ratification.
 
-### For the maintainer's hand — the ratification bundle
+### For the maintainer's hand — the ratification bundle. DELIVERED 30 Aug 2026
 
-Carried to the master brand book by the maintainer. **Four items, and the first has been amended
+**All four landed in version 4 of the brand book**, brought by the maintainer's hand on
+30 Aug 2026. This list is kept as the record of what was sent up and where each one came to rest;
+nothing on it is still owed.
+
+| # | Ruling | Where it sits in version 4 |
+|---|---|---|
+| 1 | The frame and the content have different grounds | **§2.3**, her words carried in whole, with the worked example |
+| 2 | An active navigation item rises one plane, with a hairline | **§2.3** |
+| 3 | The three shadow values | **§4** — **and the values came back changed; see the raise below** |
+| 4 | Slate `#3D5878` at 13% as a basemap wash | **§7** |
+| 5 | ~~Driftwood into use~~ | **§2.1**, recorded as proposed and reversed, the strike kept |
+
+**Version 4 closed a fifth thing that was not on this list:** Phoebe's roster gap. §6 now carries a
+**roster-extension rule** — a surface may add its own agents under the book's rules, never replace
+or fork the shared crew — and **Phoebe has her own entry under it**, Anemone by name. The one-line
+amendment that was owed by the maintainer's hand is delivered, and it came back larger than one
+line.
+
+The original bundle, as it was sent up, follows. **Four items, and the first had been amended
 since it was first ratified.**
 
 1. **The frame and the content have different grounds.** Proposed line: *the warm canvas belongs to
@@ -1354,6 +1372,72 @@ since it was first ratified.**
    >
    > The distinction matters to a later reader. A deferred proposal invites someone to pick it up
    > again; **a decided one tells them what was learned and why not to.**
+
+### Raise 1 — the shadow values came back changed, and the book says they did not
+
+**Found 30 Aug 2026, reading version 4 against the shipped stylesheet.** This is the third item of
+the ratification bundle, returning different from how it went up.
+
+**What was sent up** was this repository's shipped `--shadow-md`, argued as not-invented because it
+was already on the basin tooltip at ink 10%, the hairline's own alpha, with `--shadow-sm` and
+`--shadow-lg` one reasoned step either side.
+
+**What version 4 §4 publishes:**
+
+| Token | Version 4 | Ships here | |
+|---|---|---|---|
+| `--shadow-sm` | `0 1px 2px rgba(11, 20, 40, 0.06)` | the same | agrees |
+| `--shadow-md` | `0 8px 24px -8px rgba(11, 20, 40, 0.12)` | `0 4px 14px rgba(11, 20, 40, 0.1)` | **differs** |
+| `--shadow-lg` | `0 24px 48px -12px rgba(11, 20, 40, 0.18)` | `0 12px 32px rgba(11, 20, 40, 0.14)` | **differs** |
+
+**The two that differ are deeper, softer, and pulled in at the edges.** The book explains the pull-in
+itself: *"all three lift more than they darken — the negative spread is what keeps a shadow from
+reading as a grey box."* Ours carry no negative spread. So the change reads as deliberate rather
+than as a slip, which is why it was raised rather than treated as a transcription fault.
+
+**§4 also says: "the token file already agrees with them, so there is nothing to reconcile."** On
+this property's file that sentence is not true. §0 says one token file per property, so the sentence
+is presumably true of the other property and was carried across without being re-checked here.
+**Recorded so the next reader is not misled by the book itself.**
+
+**Ruled 30 Aug 2026: the book wins.** The negative spread was added on purpose. The token file takes
+§4's values exactly.
+
+**It is visible, so it is its own step with the maintainer's eyeball on it.** `--shadow-md` carries
+the map legend and the basin hover tooltip; `--shadow-lg` is used nowhere yet, so nothing moves for
+it. `--shadow-sm`, on the credit strip, does not change at all.
+
+### Raise 2 — coral set as text does not clear the book's own bar
+
+**Found 30 Aug 2026, reading version 4 against the shipped stylesheet.**
+
+**Two map error messages are set in `--state-warn` `#E25858` at 11px mono**, in `src/App.tsx`:
+*"Water stress data unavailable — basins are shown unfilled"* and *"Detailed basins unavailable —
+showing the world view."*
+
+**Measured, not judged by eye:**
+
+| Coral `#E25858` on | Contrast |
+|---|---|
+| `--frame` `#FBFBFE` | **3.52:1** |
+| `--paper` `#F6F5FA` | 3.35:1 |
+| `--card` `#FFFFFF` | 3.64:1 |
+
+**§9 asks 4.5:1 for text.** These are the frame's own error messages, so 3.52:1 is the number that
+matters, and it misses.
+
+**§2.5 already carries the mechanism** — *"on light surfaces, roles used as TYPE are darkened to
+clear 4.5:1 — the same hue mixed toward ink, not a new colour"* — and publishes three darkened
+values: live `#0E8A96`, approved `#1E9077`, verification `#6A47E0`. **It publishes none for coral.**
+
+**So nothing is applied here.** §0 forbids inventing what the book does not carry. A darkened coral
+is proposed following §2.5's own pattern, reported with its measured ratio, and **carried into the
+book by the maintainer's hand as a §2.5 addition** before anything ships. Maintainer's ruling,
+30 Aug 2026.
+
+**The dot and fill value is untouched either way** — §2.5 is explicit that darkening is for type
+only. Everywhere else coral appears here it is a 2px keyline or a dot, which is §2.6 working
+correctly.
 
 ### The ramp was explored, and it stands — 30 Aug 2026
 
@@ -1422,13 +1506,12 @@ not touched.**
 closer to chrome's `#E8E9ED`. The rail and the dock will separate a little less than they do today.
 The 1px `--line` rule under the chrome carries that separation regardless, and it stays.
 
-**2. The three shadow values.** §4 names `--shadow-sm`, `--shadow-md` and `--shadow-lg` and says
+**2. The three shadow values.** ~~§4 names `--shadow-sm`, `--shadow-md` and `--shadow-lg` and says
 what each is for. **It publishes no value for any of them.** They cannot be added here without
-inventing three values, which §0 forbids, so they are not.
+inventing three values, which §0 forbids, so they are not.~~
 
-One real shadow ships today: the basin hover tooltip, at `0 4px 14px rgba(11, 20, 40, 0.1)`,
-hardcoded in `base.css`. It is a genuine `--shadow-md` case — a floating element — and it stays as
-it is until the values arrive.
+**Released 30 Aug 2026 — version 4 §4 publishes all three.** The hold is over, and what came back
+is not what was sent up. See *the shadow values came back changed* below.
 
 ### A false line in the code, struck 29 Aug 2026
 
@@ -1498,11 +1581,17 @@ out of that tree — `logo/wordmark.svg`, `bots/bridget.svg`, `bots/phoebe.svg`.
 stays unpublished, and anything new arrives unpublished by default.
 
 **Phoebe stays Anemone `#A04E7E`.** The book's roster is production's crew, and each surface extends
-it with its own agents under the book's rules. **A one-line amendment to close that gap at the
-source is owed by the maintainer's hand** at the master book's next revision. Nothing here waits on
-it.
+it with its own agents under the book's rules. ~~**A one-line amendment to close that gap at the
+source is owed by the maintainer's hand** at the master book's next revision.~~ **Delivered in
+version 4, 30 Aug 2026, and larger than one line:** §6 carries a **roster-extension rule** — an
+added agent is named, takes one accent from the book's palette, ships a portrait in the house form,
+and obeys §2.6, and a surface may never invent a colour or point an existing accent at a second
+agent — with **Phoebe's own entry beneath it**. §6 also settles the asset split this repository had
+worked out by hand: **a shared agent's portrait lives with the shared assets, a surface's own
+agent's portrait lives with that surface**, which is why `phoebe.svg` ships from here.
 
-Logged 29 Aug 2026. **Open — the plan is approved and building.**
+Logged 29 Aug 2026. **Open on two raises against version 4**, both logged 30 Aug 2026 and both
+recorded above. The seven-step plan is built and merged, and the ratification bundle is delivered.
 
 ---
 
