@@ -78,25 +78,33 @@
      It was true of version 3 and is false of version 4. BRAND.md §4 NOW
      PUBLISHES ALL THREE VALUES, ratified 30 Aug 2026.
 
-     THESE THREE VALUES DO NOT YET MATCH THE BOOK, AND THAT IS KNOWN.
-     --shadow-sm agrees exactly. --shadow-md and --shadow-lg do not: the book's
-     are deeper, softer and pulled in at the edges with a negative spread,
-     which §4 says is what keeps a shadow from reading as a grey box. The book
-     also states that the token file already agrees with it, which is not true
-     of this property's file.
+     ~~THESE THREE VALUES DO NOT YET MATCH THE BOOK, AND THAT IS KNOWN.~~
+     THEY MATCH IT EXACTLY, from 30 Aug 2026. --shadow-sm always agreed;
+     --shadow-md and --shadow-lg were swapped to §4's published values on the
+     maintainer's ruling of the same day — THE BOOK WINS, and the negative
+     spread was added on purpose.
 
-     RULED 30 Aug 2026: THE BOOK WINS. The swap is its own step, with the
-     maintainer's eyeball on it, because it moves the legend and the basin
-     tooltip on screen. Two lines and a pointer: the full record is item S9 in
-     OPEN_ITEMS.md.
+     What was here before, so a later reader knows what moved:
+
+       --shadow-md  ~~0 4px 14px rgba(11, 20, 40, 0.1)~~
+       --shadow-lg  ~~0 12px 32px rgba(11, 20, 40, 0.14)~~
+
+     Those two were this repository's own, sent up for ratification and
+     returned changed. The book's carry a NEGATIVE SPREAD — the -8px and the
+     -12px — which §4 says is what keeps a shadow from reading as a grey box:
+     all three lift more than they darken.
+
+     Two lines and a pointer: the full record, including why the book's own
+     claim that the token file already agreed was not true of this file, is in
+     item S9 in OPEN_ITEMS.md.
 
      All three are built from ink #0B1428, the same colour as the hairline.
 
      NOT A DEFAULT. §4: if a shadow is doing work a hairline could do, use the
      hairline. A flat card gets a hairline and no shadow. */
   --shadow-sm: 0 1px 2px rgba(11, 20, 40, 0.06);
-  --shadow-md: 0 4px 14px rgba(11, 20, 40, 0.1);
-  --shadow-lg: 0 12px 32px rgba(11, 20, 40, 0.14);
+  --shadow-md: 0 8px 24px -8px rgba(11, 20, 40, 0.12);
+  --shadow-lg: 0 24px 48px -12px rgba(11, 20, 40, 0.18);
 
   /* --- Motion — restrained, never bouncy -------------------------------- */
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
