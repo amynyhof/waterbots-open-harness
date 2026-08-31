@@ -102,7 +102,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | O7 | Merged branches pile up, and are now to be cleared | Operations | done 27 Aug 2026, closed |
 | O8 | The export step in the close-out ritual | Operations | ruled 27 Aug 2026, open on the script question |
 | O9 | The basemap now needs a key, and has a ceiling | Operations | live 27 Aug 2026, standing dependency |
-| O10 | Line endings are pinned in git but not in the working folder | Operations | logged 30 Aug 2026, nothing broken |
+| O10 | Line endings are pinned in git but not in the working folder | Operations | **closed 30 Aug 2026** — O6's claim shrunk, the disk left alone |
 | O11 | OPEN_ITEMS.md is heavy and wants an archive | Operations | logged 30 Aug 2026 |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
@@ -1865,10 +1865,18 @@ bytes to stage — should disappear as part of this, not be committed.
 
 ### Closed — fixed 27 Aug 2026
 
-**A `.gitattributes` file pinning every text file to Unix line endings**, in git and in the working
-folder, on every machine that clones this repository. Merged as pull request #8. The "done" test
-above was met exactly: `git status` clean and the card gate passing together, with the generator
-never re-run.
+**A `.gitattributes` file pinning every text file to Unix line endings**, ~~in git and in the
+working folder,~~ **in what git stores**, on every machine that clones this repository. Merged as
+pull request #8. The "done" test above was met exactly: `git status` clean and the card gate passing
+together, with the generator never re-run.
+
+> **Corrected 30 Aug 2026, under the visible-corrections rule.** ~~"in git and in the working
+> folder"~~ claimed more than the rule delivers. **`text=auto eol=lf` binds what git stores, which
+> is what ships and what the rule was written to protect.** It does not reach back and rewrite files
+> already sitting in the working folder — git only rewrites a file on checkout when its content
+> changes, so a file that has not differed between branches since 27 Aug still carries whatever form
+> it had before. **Nothing about the fix or its "done" test is affected**; only the sentence
+> describing its reach was too wide. Item O10 owns the full story.
 
 **The cause was one layer below what this item recorded.** The file in the folder already held Unix
 endings and was byte-for-byte identical to what git stores — the same blob, `557be86f`. Git had
@@ -2100,7 +2108,42 @@ what ships, and it is what the rule was written to protect.
 **Not urgent, and deliberately not fixed inside a brand step.** It was found mid-session and left
 alone rather than folded into unrelated work.
 
-Logged 30 Aug 2026. **Open, nothing broken, not due.**
+### Closed — the claim was shrunk, the disk was left alone. 30 Aug 2026
+
+**Maintainer's ruling, 30 Aug 2026: take the honest fix, not the big one.** Item O6's sentence is
+struck and corrected in place to say the rule binds **what git stores**. `git add --renormalize`
+was **not** run.
+
+**Why the correction and not the renormalize.** Renormalizing would rewrite every tracked text file
+for **zero change in what ships** — git already stores Unix endings for all of them, and the
+deployment platform builds from what git stores. It would produce a large, content-free commit that
+buries the real history of every one of those files, in exchange for tidying a working folder that
+nobody deploys from. **The claim was the thing that was wrong, so the claim is the thing that was
+fixed.**
+
+**Measured across the whole tracked tree on 30 Aug 2026**, rather than on one file as this item
+originally was:
+
+| | Count |
+|---|---|
+| Tracked text files carrying **LF** on disk | **74** |
+| Tracked text files carrying **CRLF** on disk | **7** |
+| Tracked text files whose **git blob** carries CRLF | **0** |
+
+The seven are `api/_abstentions.ts`, `api/_cap.ts`, `api/_store.ts`, `api/_visitor.ts`,
+`api/abstentions.ts`, `eligibility-cards-vwba.md` and `scripts/check-visitor-id.mjs`.
+
+**That is this item's own diagnosis, confirmed by counting.** Every one of the seven is a file that
+has not changed on any branch since `.gitattributes` landed on 27 Aug, so git has never had reason
+to rewrite it. Everything touched since — three-quarters of the tree — converted on its first
+checkout, exactly as predicted. **The rule prevents drift going forward; it does not convert what
+was already there**, and the number of stragglers falls on its own every time one of them is next
+edited.
+
+**Nothing is broken, and nothing here needs watching.** `git status` is clean, every commit carries
+Unix endings, and the card gate that started this whole thread in item O6 passes.
+
+Logged 30 Aug 2026, ruled and **closed 30 Aug 2026.**
 
 ---
 
