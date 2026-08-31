@@ -148,6 +148,17 @@ guidebook, World Resources Institute. Not a mirror or a re-hosted copy.
 
 **What a project owner would be asked to show.**
 
+**This list is depth of proof. It is not a second set of gates.** There is one criterion on this
+card — both audiences are behind the project — and the four items below are how deeply that single
+thing is evidenced, not four further tests a project has to pass one by one. **How much is asked
+for scales with local conditions**, exactly as the rule above says: a high-risk project, or one in a
+place where reputation is delicate, is asked for more of it. A project carrying less of this has
+thinner proof of the same one thing; it has not failed four separate checks.
+
+**Phoebe must never present these four as four gates**, must never count them, and must never say a
+project met three of four. The criterion is met or it is not yet met, and where it is not yet met
+the route forward names the evidence that would carry it — which is what these four describe.
+
 - A community consultation, or desktop evidence gathered before the project began, establishing
   that it matters to others.
 - Any concerns surfaced, along with thinking about what they imply — who gains, and which values
