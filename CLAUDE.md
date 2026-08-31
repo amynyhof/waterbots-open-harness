@@ -134,8 +134,8 @@ drift, and then nobody can tell which one is current.
 **The count has moved twice.** ~~It became four on 27 Aug 2026, when the
 design canon arrived.~~ **It is three again from 29 Aug 2026**, because
 the canon was superseded by the brand book and design values now live in
-BRAND.md, which is gitignored and is not a published rulebook. It said
-three for as long as there were three, four for two days, and three
+the brand book, which is gitignored and is not a published rulebook. It
+said three for as long as there were three, four for two days, and three
 again.
 
 ## Data licensing — binding display requirements
@@ -182,7 +182,7 @@ credit line does not meet any of these bars.
   Phoebe has answered for real since 24 Aug 2026**, from two committed
   card sets, capped at 20 messages a day per visitor. Bridget staffs
   the map and her chat is not built; the panel says so plainly.
-- WaterBots branding per BRAND.md. Standalone deploy. No login.
+- WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material
 
@@ -191,17 +191,32 @@ are reference only — they predate current rules and must be
 reimagined, not copied. Any claim revived from legacy documents must
 be re-founded on cited sources.
 
-## Brand and design — see BRAND.md, the book
+## Brand and design — see the brand book
 
-Follow BRAND.md and UI_REFERENCE.md in this repo. They are gitignored
-(engineer-eyes-only, not published). Never invent colors, type, or
-styles outside them.
+Follow the brand book and UI_REFERENCE.md in this repo. They are
+gitignored (engineer-eyes-only, not published). Never invent colors,
+type, or styles outside them.
 
-**BRAND.md is the brand book, version 3, and it governs all design on
-this site.** It arrived by the maintainer's hand on 28 Aug 2026, one
-light brand, superseding the two-theme era. It is complete on its own
-page and it governs both properties. It is gitignored and does not
-publish.
+**The brand book lives at `brand/BRAND.md`.** ~~It lives at the
+repository root as `BRAND.md`.~~ **Corrected 30 Aug 2026** — it moved
+into `brand/` alongside the asset tree when version 4 arrived. It is
+gitignored twice over, by the bare `BRAND.md` rule and by `brand/*`, so
+it still does not publish.
+
+~~**BRAND.md is the brand book, version 3, and it governs all design on
+this site.**~~ **It is version 4 from 30 Aug 2026**, brought by the
+maintainer's hand, and it governs all design on this site. Version 3
+arrived on 28 Aug 2026 and held for two days. One light brand, still
+superseding the two-theme era. It is complete on its own page and it
+governs both properties.
+
+**What version 4 changed**, all of it carried up from this site's work:
+the roster-extension rule in §6, with **Phoebe's own entry**; `--chrome`
+retired in §2.3, with the frame-versus-content line and its worked
+example; the **three shadow values written into §4**, which had carried
+the names and no values; and the **Slate map wash** recorded in §7. A
+sixth change — Driftwood into use — was proposed and reversed the same
+night, and §2.1 keeps the strike rather than erasing it.
 
 ~~**[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) is
 binding**, and it is the only design input from outside this
@@ -213,6 +228,8 @@ It stays published as history. **Where the canon and the book disagree,
 the book wins.**
 
 **What the book does not carry is raised, never invented** — §0 is
-explicit. Four such rulings were made on 29–30 Aug 2026 and are owed to
-the master book by the maintainer's hand; item S9 in
-[OPEN_ITEMS.md](./OPEN_ITEMS.md) is the one home for them.
+explicit. ~~Four such rulings were made on 29–30 Aug 2026 and are owed to
+the master book by the maintainer's hand~~; **all four landed in version
+4 on 30 Aug 2026.** Item S9 in [OPEN_ITEMS.md](./OPEN_ITEMS.md) remains
+the one home for them, and it now records where each one sits in the
+book. Two fresh raises took their place and are open in the same item.

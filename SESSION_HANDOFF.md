@@ -32,7 +32,8 @@ half-built and no branch is open.
 
 ## The design system as it now stands
 
-**BRAND.md v3 is the authority.** It is gitignored and does not publish.
+**The brand book is the authority, and it is version 4 from 30 Aug 2026.** It lives at
+`brand/BRAND.md`, is gitignored, and does not publish.
 [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) is **superseded** by it, says so at its
 own head, and stays published as history.
 
@@ -52,19 +53,25 @@ reading at all. The note lives in `src/lib/stressPalette.ts` where the next hand
 
 ## Waiting on the maintainer
 
-**Arriving at the next session's open, by her hand: BRAND.md version 4.**
+**Version 4 of the brand book arrived by her hand on 30 Aug 2026**, and it is in the repository at
+`brand/BRAND.md`. It carries every ruling this site owed it.
 
 **The design-exploration screenshots are not coming**, and no folder waits for them — maintainer's
 ruling, 30 Aug 2026. The exploration's outcome is recorded in full in item S9 and the wash it led to
 is shipped, so there is nothing left for images to teach.
 
-**Owed to the master brand book by her hand — four rulings.** Item S9 is the one home for them:
-the two grounds; an active navigation item rising one plane to `--card` with a hairline; the three
-shadow values; and Slate `#3D5878` at 13% as a basemap wash.
+**The four rulings owed to the master book are all in version 4** — the two grounds and the active
+navigation item in §2.3, the three shadow values in §4, and the Slate wash in §7. **Phoebe's roster
+gap is closed too**, by the roster-extension rule in §6. Item S9 records where each one sits.
 
-**Also outstanding:** the one-line master-book amendment closing Phoebe's roster gap; Calvin's roster
-entry, colour and primer entry when his lane opens; grading the two card drafts, which stay
-uncommitted until then; and whether the export copies should be a script (item O8).
+**Two fresh raises replaced them, both in item S9.** The book's `--shadow-md` and `--shadow-lg` do
+not match this site's token file, though §4 says they do — **ruled 30 Aug 2026, the book wins**, and
+the swap is its own step. And coral set as text measures **3.52:1** where §9 asks 4.5:1; a darkened
+value is proposed and carried up by hand, never invented here.
+
+**Also outstanding:** Calvin's roster entry, colour and primer entry when his lane opens; grading the
+two card drafts, which stay uncommitted until then; and whether the export copies should be a script
+(item O8).
 
 **Four things wait on real visitors, not on anyone**, and come due together: the number twenty
 (item O1), the basemap's five-million-request ceiling (item O9), the primer review against the
@@ -182,7 +189,7 @@ question, only its length. It is named in the code as debt to remove.
 | **This file** | Where things stand **now** | Yes |
 | [BUILD_LOG.md](./BUILD_LOG.md) | **How they came to stand there. NOT read at the opening** | Yes |
 
-**BRAND.md and UI_REFERENCE.md are gitignored and never publish.**
+**The brand book (`brand/BRAND.md`) and UI_REFERENCE.md are gitignored and never publish.**
 **`agent-primer.md` is lowercase on purpose** — committed content an agent inherits, not a rulebook.
 
 ## What to do first
@@ -193,8 +200,8 @@ equals `origin` with the identifiers compared, report where things stand and **w
 underneath us**, kill stray dev servers, and **check for code reading an unpushed migration**.
 **No building in Part 1.**
 
-**The thing that will have changed underneath us is BRAND.md version 4**, arriving by the
-maintainer's hand. Read it against what ships before proposing anything.
+**Version 4 of the brand book has landed** and what ships has been read against it. Two things
+disagree with it and both are open in item S9.
 
 **Then Part 2 — propose the session's plan.** Nothing is scheduled and no family is due, so the plan
 follows from what the version 4 book changes.

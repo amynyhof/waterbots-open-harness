@@ -19,7 +19,7 @@
  * logged as such in item S9 — it is substantially more work and it changes a
  * standing dependency.
  *
- * WHY SLATE, AND WHY IT COOLS RATHER THAN WARMS. BRAND.md v3 §2.5 reserves the
+ * WHY SLATE, AND WHY IT COOLS RATHER THAN WARMS. BRAND.md §2.5 reserves the
  * warm hues: "amber and coral mean a warning, a sub-par metric, or an error,
  * never emphasis, never decoration". A warm basemap wash is therefore not
  * available. Driftwood is warm and was proposed for the dry categories on the

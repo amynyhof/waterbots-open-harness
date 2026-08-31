@@ -28,8 +28,9 @@ this shell works out may flow back the other way. **Which parts settle where is
 decided in a design session with the production side** — not in this repository,
 and not by an engineer working in it.
 
-**BRAND.md v3 is the design authority — 28 Aug 2026.** It governs both properties and is complete
-on its own page. ~~The design canon is the outcome of the session this file was waiting on.~~ **The
+**The brand book is the design authority, and it is version 4 from 30 Aug 2026.** ~~BRAND.md v3 is
+the design authority — 28 Aug 2026.~~ Version 3 held for two days. The book governs both properties
+and is complete on its own page. It lives at `brand/BRAND.md`, gitignored, and does not publish. ~~The design canon is the outcome of the session this file was waiting on.~~ **The
 canon is superseded by the book** and says so at its own head; it stays published as history, and
 where the two disagree the book wins.
 
@@ -42,8 +43,8 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 1. **Build to this repository's own rules.** [CLAUDE.md](./CLAUDE.md),
    [AGENT_RULES.md](./AGENT_RULES.md), [CITATIONS.md](./CITATIONS.md),
-   [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) and BRAND.md are
-   what binds. The compatibility goal is a direction, not a specification, and it
+   [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) and the brand book
+   are what binds. The compatibility goal is a direction, not a specification, and it
    does not override any of them. **Still holds.**
 2. **Flag drift as an open item, in its family.** This one was for the design
    session, and the design session has happened. **It is retired as a standing
@@ -82,17 +83,31 @@ never read at the opening. This section says only what is now true.
 **The stress ramp is unchanged.** A ramp change was designed, machine-checked, walked and withdrawn
 — the finding was that the map read flat because of the basemap, not the data. Item S9 carries it.
 
-**Four rulings are owed to the master brand book by the maintainer's hand**, listed once in item S9:
-the two grounds, the active nav item, the three shadow values, and Slate as a basemap wash.
-**Driftwood was proposed and refused on the merits** and is struck from that list.
+~~**Four rulings are owed to the master brand book by the maintainer's hand**, listed once in item
+S9: the two grounds, the active nav item, the three shadow values, and Slate as a basemap wash.~~
+**All four landed in version 4 on 30 Aug 2026** — §2.3, §2.3, §4 and §7. Item S9 records where each
+one sits. **Driftwood was proposed and refused on the merits** and is struck from that list; §2.1
+keeps the strike rather than erasing it.
 
-## Building next — nothing is scheduled
+## Building next — two raises against version 4
 
-**The brand work is done and no family is due.** What comes next is decided at the next session's
-open, and it waits on one thing arriving by the maintainer's hand: **BRAND.md version 4**.
+~~**The brand work is done and no family is due.** What comes next is decided at the next session's
+open, and it waits on one thing arriving by the maintainer's hand: **BRAND.md version 4**.~~
+**Version 4 arrived on 30 Aug 2026** by the maintainer's hand, and this section is rewritten around
+what it changed.
 
-**Until it lands, the shipped surfaces match version 3 of the book** and the open items below are
-what remains.
+**The shipped surfaces match version 4 in almost every value** — all ten accents, both recorded
+spares, the four neutrals, the hairline, all seven radii, the five states, all seven crew hues, the
+two grounds, the active navigation item, the wash at 13%. **Two things do not**, and both are open
+in item S9:
+
+1. **The shadow values.** §4 now publishes all three and says the token file already agrees. It does
+   not: `--shadow-md` and `--shadow-lg` differ here. **Ruled 30 Aug 2026 — the book wins**, and the
+   swap is its own step with the maintainer's eyeball on it.
+2. **Coral set as text.** Two map error messages use `--state-warn` as 11px type at **3.52:1**,
+   under the 4.5:1 §9 asks for. The book publishes a darkened value for live, approved and
+   verification, and **none for coral**, so one is proposed and carried up by hand rather than
+   invented here.
 
 **The design exploration leaves no artefact here, and that is deliberate.** Its outcome — the cool
 end that was ruled, the hybrid that was built, and the finding that withdrew it — is recorded in

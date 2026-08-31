@@ -92,7 +92,7 @@ export default function AgentChat({
       className="wb-panel wb-dock"
       aria-label={`${host.name}, ${host.role}`}
       style={{
-        /* The host's accent tints the panel it speaks in — BRAND.md v3 §6 and
+        /* The host's accent tints the panel it speaks in — BRAND.md §6 and
            §7. The layer sets it from the host descriptor and never knows which
            agent it is rendering. */
         ['--host-accent' as string]: `var(${host.colourToken})`,
@@ -257,7 +257,7 @@ function HostMark({ host }: { host: AgentHost }) {
   return (
     <span
       style={{
-        /* 40px in chat — BRAND.md v3 §6 gives the portrait three sizes and this
+        /* 40px in chat — BRAND.md §6 gives the portrait three sizes and this
            is the one for a chat panel. It was 36. */
         width: 40,
         height: 40,

@@ -67,18 +67,30 @@
   --chat-rail: 372px; /* agent host seat, 360–380 band */
 
   /* --- Shadows — for things that genuinely float ------------------------
-     BRAND.md v3 §4 names these three and says what each is for. It publishes
-     NO VALUE for any of them, so these are proposed and ratified by the
-     maintainer on 29 Aug 2026 for carrying into the master book, rather than
-     invented here — §0 forbids inventing what the book does not carry.
+     CORRECTED 30 Aug 2026, under the visible-corrections rule. This block read:
+
+       ~~"BRAND.md v3 §4 names these three and says what each is for. It
+        publishes NO VALUE for any of them, so these are proposed and ratified
+        by the maintainer on 29 Aug 2026 for carrying into the master book,
+        rather than invented here — §0 forbids inventing what the book does
+        not carry."~~
+
+     It was true of version 3 and is false of version 4. BRAND.md §4 NOW
+     PUBLISHES ALL THREE VALUES, ratified 30 Aug 2026.
+
+     THESE THREE VALUES DO NOT YET MATCH THE BOOK, AND THAT IS KNOWN.
+     --shadow-sm agrees exactly. --shadow-md and --shadow-lg do not: the book's
+     are deeper, softer and pulled in at the edges with a negative spread,
+     which §4 says is what keeps a shadow from reading as a grey box. The book
+     also states that the token file already agrees with it, which is not true
+     of this property's file.
+
+     RULED 30 Aug 2026: THE BOOK WINS. The swap is its own step, with the
+     maintainer's eyeball on it, because it moves the legend and the basin
+     tooltip on screen. Two lines and a pointer: the full record is item S9 in
+     OPEN_ITEMS.md.
 
      All three are built from ink #0B1428, the same colour as the hairline.
-
-       --shadow-md  IS NOT INVENTED. It is the value already shipping on the
-                    basin hover tooltip, and it is ink at 10% — the hairline's
-                    exact alpha.
-       --shadow-sm  proposed, one step below md.
-       --shadow-lg  proposed, one step above md.
 
      NOT A DEFAULT. §4: if a shadow is doing work a hairline could do, use the
      hairline. A flat card gets a hairline and no shadow. */

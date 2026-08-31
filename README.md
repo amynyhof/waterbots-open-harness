@@ -240,9 +240,11 @@ without it produces a working map with every tile watermarked, which is why
 
 ## Theme
 
-**There is one brand and it is light.** BRAND.md v3, brought by the maintainer on 28 Aug 2026,
-supersedes the two-theme era, and `src/styles/tokens.css` carries one set of surface tokens with no
-theme class to switch between.
+**There is one brand and it is light.** The brand book, **version 4 from 30 Aug 2026**, supersedes
+the two-theme era, and `src/styles/tokens.css` carries one set of surface tokens with no theme class
+to switch between. ~~BRAND.md v3, brought by the maintainer on 28 Aug 2026~~ — version 3 brought the
+one light brand on 28 Aug and held for two days; version 4 kept it and added what this site had
+worked out.
 
 > **Corrected 29 Aug 2026.** This section read: ~~"The free surfaces render on **Frost**, the light
 > theme. They are public surfaces with no login, and BRAND.md's surface rule puts public and
@@ -259,8 +261,10 @@ by fill — §2.3, three planes and no fourth, with the hairline doing the struc
 
 ## Brand decisions
 
-BRAND.md does not publish every value this project needed. Where one was missing it was **derived
-from BRAND.md's own formulas**, never invented, and the derivation is recorded so it can be checked:
+The brand book does not publish every value this project needed. Where one was missing it was
+**derived from the book's own formulas**, never invented, and the derivation is recorded so it can
+be checked. **Several of these were carried up into version 4 on 30 Aug 2026** and are now the
+book's own — each says so below:
 
 - **The frame and the content have different grounds** — maintainer's ruling, 29 Aug 2026.
   `--paper` `#F6F5FA` is the **content** canvas, carried by the map and the worksheet. `--frame`
@@ -273,17 +277,20 @@ from BRAND.md's own formulas**, never invented, and the derivation is recorded s
   > that the frame and the content share one ground. It was built, looked at, and the frame and the
   > map were found to be tonally fighting.
 
-  **Proposed for the master brand book:** *the warm canvas belongs to content; the frame sits one
-  step lighter and quieter.* The active navigation item rises one plane to `--card` **with the 1px
+  ~~**Proposed for the master brand book:**~~ **In the book from version 4, §2.3** — *the warm
+  canvas belongs to content; the frame sits one step lighter and quieter*, carried in whole in the
+  maintainer's own words. The active navigation item rises one plane to `--card` **with the 1px
   hairline §2.3 pairs with a white card** — a fill alone is 1.31 L\* against the frame and nearly
-  invisible. The full record is item S9 in [OPEN_ITEMS.md](./OPEN_ITEMS.md).
+  invisible; that is in §2.3 too. The full record is item S9 in [OPEN_ITEMS.md](./OPEN_ITEMS.md).
 - **Phoebe's identity colour** — **Anemone `#A04E7E`**, with **Anemone Light `#C36E9F`** on her
-  antenna. Anemone was held in BRAND.md as an unclaimed spare, kept so a future role would not have
-  to re-open the search; this is that use. Anemone Light is a new value set by the maintainer, one
+  antenna. Anemone was held in the book as an unclaimed spare, kept so a future role would not have
+  to re-open the search; this is that use. **Version 4 §6 puts Phoebe on the roster by name**, under
+  a rule that lets a surface extend the shared crew with its own agents, so she is no longer an
+  agent the book does not know about. Anemone Light is a new value set by the maintainer, one
   lightness step above Anemone at the same hue — the same step the published Plum-to-Iris pair
   makes. At 5.40:1 on white the head colour is safe on text; **the antenna value is not**, and is
   used only for that stroke.
-- **Bridget's identity colour** — **Surf `#14C8D9`**, assigned to her by name in BRAND.md v3 §6.
+- **Bridget's identity colour** — **Surf `#14C8D9`**, assigned to her by name in the book's §6.
   At 2.04:1 against white it carries her keyline, ring and wash, never text; her name is set in
   `--ink`. Her portrait was always drawn in Surf, so this makes the ring and the artwork agree.
 
@@ -291,16 +298,19 @@ from BRAND.md's own formulas**, never invented, and the derivation is recorded s
   > **Provisional** until map staffing is settled."~~ That value came from a retired agent, and the
   > reason for it expired when the book named Bridget's colour outright.
 
-  It is deliberately the same value as `--state-live`. BRAND.md §2.6 accepts Surf's double duty on
+  It is deliberately the same value as `--state-live`. The book's §2.6 accepts Surf's double duty on
   the condition that **form carries the meaning**: a status may only be a dot or a keyline on a data
   row, an identity only a bubble, portrait, surface accent or keyline.
 - **Stress ramp** — five bands derived from Surf, Amber and Coral, with monotonically descending
   lightness and chroma separating the scale from the two categories that are not on it. Both
   properties are asserted by `scripts/check-palette.mjs` rather than trusted to the eye.
 
-**Bridget is the map's agent**, confirmed 24 Aug 2026. Her identity colour stays marked provisional
-above because BRAND.md assigns Surf no agent identity and her value was published under a retired
-agent — that is a brand question, separate from staffing, and it is still open.
+**Bridget is the map's agent**, confirmed 24 Aug 2026. ~~Her identity colour stays marked
+provisional above because BRAND.md assigns Surf no agent identity and her value was published under
+a retired agent — that is a brand question, separate from staffing, and it is still open.~~
+**Struck 30 Aug 2026.** It was left behind when the value settled: the book assigns Bridget Surf by
+name, the provisional value is gone from the code, and nothing above is marked provisional any more.
+**She is one agent shared across both properties**, not a copy — version 4 §6 says so outright.
 
 ## How this repository is run
 

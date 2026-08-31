@@ -1,7 +1,7 @@
 /**
  * The left navigation rail.
  *
- * Chrome recedes, content rises (BRAND.md v3 §2.3): the rail sits ON the
+ * Chrome recedes, content rises (BRAND.md §2.3): the rail sits ON the
  * frame, flush and square, never as a card — a rail rendered as a card would
  * float navigation above the work it serves. The active item rises one plane
  * to --card, never to an accent fill.

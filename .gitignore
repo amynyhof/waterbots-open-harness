@@ -12,6 +12,11 @@ sources-local/
 
 # Engineer-reference only — NOT for publication.
 # Brand and UI specifications. Engineer-eyes-only; never published.
+#
+# The brand book moved from the repository root into brand/ when version 4
+# arrived on 30 Aug 2026. This bare rule has no leading slash, so it matches
+# the book at either path, and the brand/* rule below catches it a second
+# time. It is ignored twice over and publishes from neither place.
 BRAND.md
 UI_REFERENCE.md
 

@@ -5,7 +5,7 @@
  * and right chat dock, and only the centre scrolls. Chrome is one hairline
  * row; content starts high with no dead padding above it.
  *
- * Three planes and no fourth (BRAND.md v3 §2.3), and two grounds. The frame —
+ * Three planes and no fourth (BRAND.md §2.3), and two grounds. The frame —
  * top bar, rail, both docks — sits on --frame #FBFBFE. The content canvas is
  * --paper #F6F5FA, and the map and the worksheet sit on it. Content warm,
  * frame lighter and receding. Maintainer's ruling, 29 Aug 2026; the record is
