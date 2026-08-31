@@ -79,3 +79,85 @@ endings while git stores Unix, although `.gitattributes` says `eol=lf`. Nothing 
 normalises on the way in and `git status` stays clean — but item O6 records the fix as pinning them
 "in the working folder", and that half is not true of files git has had no reason to rewrite. Logged
 as item O10.
+
+---
+
+## Session of 30 Aug 2026 (second sitting) — version 4 arrives, and the book gets corrected back
+
+**Four pull requests, #39 to #42, all merged.** The brand book's version 4 came in by the
+maintainer's hand, and the session's work was receiving it, reconciling to it, and — in one place —
+correcting it.
+
+**What changed underneath us, found in Part 1.** Pull request #38 had been merged on GitHub after
+the previous session closed, so local `main` was two commits behind and the session opened standing
+on a branch that no longer existed remotely. And **BRAND.md had moved**: no longer at the repository
+root, now at `brand/BRAND.md`, still gitignored twice over. Every root document pointed at the old
+path and said "version 3".
+
+**Version 4 carried every ruling this site owed it.** The two grounds and the active navigation item
+into §2.3, the three shadow values into §4, the Slate wash into §7, Driftwood's reversal kept as a
+strike in §2.1. It also closed Phoebe's roster gap, and came back larger than the one-line amendment
+that had been owed: §6 gained a **roster-extension rule**, with her entry under it, and settled the
+portrait-asset split this repository had worked out by hand.
+
+**Reading the shipped stylesheet against the book turned up two disagreements, and only two.**
+
+**The first: the shadow values came back changed.** What went up for ratification was this
+repository's own `--shadow-md`, argued as not-invented because it was already on the basin tooltip.
+What §4 published was deeper, softer, and pulled in at the edges with a **negative spread** — and §4
+explained why: *the negative spread is what keeps a shadow from reading as a grey box.* The book
+also stated that the token file already agreed with it, **which was not true of this property's
+file**. Raised rather than fixed quietly; ruled **the book wins**; shipped as #41 with a before-and-
+after capture the approval was given on.
+
+**The second: coral set as type was too faint.** Two map error messages measured **3.52:1** against
+the frame where §9 asks 4.5:1. §2.5 carries the mechanism and publishes darkened values for live,
+approved and verification — **and none for coral**. Nothing was invented. A value was proposed,
+measured, ruled, and shipped as #42 through a new `--state-warn-text` token, with `--state-warn`
+left untouched as the dot, fill and keyline.
+
+**And then the measurement went the other way, which is the thing worth keeping from this session.**
+Checking the book's own three darkened values found that **live `#0E8A96` and approved `#1E9077` do
+not reach 4.5:1 on any ground** — 3.99:1 and 3.83:1 against the frame — although §2.5 says they are
+darkened to clear it. Verification was measured too and **clears everywhere, so it was left alone**;
+correcting all three for symmetry would have been tidiness dressed as rigour. Corrected values were
+proposed by the same method, accepted, and written into the book at **version 4.1**, together with
+the coral. **Nothing on this site had rendered wrongly** — neither colour is used as type here — so
+it was a proposal and never a fix. The fault was in the book, and the book is where it was fixed.
+
+**Version 4.1 is the first amendment written into the book from inside this repository**, on the
+maintainer's explicit instruction, and it is recorded as the exception rather than a new practice.
+Everything else still arrives by her hand and rule zero is untouched.
+
+**One process ruling entered canon: design work starts from an image.** Any step whose point is how
+something looks begins from a captured visual reference, and approval of a look is given on pixels,
+not prose. The reason was already paid for — two stress ramps designed, machine-checked and thrown
+away, and a gate that passed a warm arid fill the maintainer refused on sight. It took effect
+immediately: the shadow step was captured before and after in the same viewport, same map view, same
+basin, and approved on that pair.
+
+**Two documents were made thinner.** Item O11's first sweep moved six finished items — S4, S8, O2,
+O3, O6, O7 — into a new `OPEN_ITEMS_ARCHIVE.md`, in full, each leaving a one-line row and a stub
+behind. `OPEN_ITEMS.md` ended the day **shorter than it started** despite gaining the version 4
+raises. The settled halves of A2, A3 and A4 stayed put: each sits inside a live item, and the ruling
+licenses moving closed items rather than editing open ones.
+
+**Item O10 was closed by shrinking a claim rather than by doing work.** Item O6 said the
+`.gitattributes` rule pinned line endings "in git and in the working folder"; the working-folder half
+is false. `git add --renormalize` was **not** run — it would rewrite every tracked text file for zero
+change in what ships. Measured across the whole tree: **74** text files carry Unix endings on disk,
+**7** carry Windows ones, **0** git blobs carry Windows ones, and all seven stragglers are files git
+has had no reason to rewrite since 27 Aug. The item's own diagnosis, confirmed by counting.
+
+**One mistake, self-reported.** The first attempt at the version 4 receipt used `git add -A` and
+swept in the two ungraded card drafts. Caught immediately, the commit unwound, recommitted without
+them. Nothing was pushed and the drafts are untracked, as they were.
+
+**One machine fact worth a line, now in CLAUDE.md.** The GitHub command-line tool is installed and
+signed in but is not on the shell's PATH; called bare it reports "command not found" and looks like a
+missing tool. It lives at `C:\Program Files\GitHub CLI\gh.exe`.
+
+**The bridge got a number on the other side.** Item S7 sits on production's desk as their **#149**.
+Nothing about the work here changes — what the number buys is that a later session can tell *waiting
+on production* apart from *nobody has picked this up*, which are the same silence from inside this
+repository and are not the same thing.

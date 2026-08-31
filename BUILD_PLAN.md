@@ -28,9 +28,10 @@ this shell works out may flow back the other way. **Which parts settle where is
 decided in a design session with the production side** — not in this repository,
 and not by an engineer working in it.
 
-**The brand book is the design authority, and it is version 4 from 30 Aug 2026.** ~~BRAND.md v3 is
-the design authority — 28 Aug 2026.~~ Version 3 held for two days. The book governs both properties
-and is complete on its own page. It lives at `brand/BRAND.md`, gitignored, and does not publish. ~~The design canon is the outcome of the session this file was waiting on.~~ **The
+**The brand book is the design authority, and it is version 4.1 from 30 Aug 2026.** ~~BRAND.md v3 is
+the design authority — 28 Aug 2026.~~ ~~It is version 4.~~ Version 3 held for two days; version 4 and
+then 4.1 both landed on 30 Aug. The book governs both properties and is complete on its own page.
+It lives at `brand/BRAND.md`, gitignored, and does not publish. ~~The design canon is the outcome of the session this file was waiting on.~~ **The
 canon is superseded by the book** and says so at its own head; it stays published as history, and
 where the two disagree the book wins.
 
@@ -89,25 +90,28 @@ S9: the two grounds, the active nav item, the three shadow values, and Slate as 
 one sits. **Driftwood was proposed and refused on the merits** and is struck from that list; §2.1
 keeps the strike rather than erasing it.
 
-## Building next — two raises against version 4
+## Building next — nothing is scheduled
 
-~~**The brand work is done and no family is due.** What comes next is decided at the next session's
-open, and it waits on one thing arriving by the maintainer's hand: **BRAND.md version 4**.~~
-**Version 4 arrived on 30 Aug 2026** by the maintainer's hand, and this section is rewritten around
-what it changed.
+**The site and the book agree, and no family is due.** Version 4 arrived on 30 Aug 2026 and version
+4.1 followed it the same day. Every value the shipped stylesheet carries now matches the book, and
+the two places they disagreed are closed.
 
-**The shipped surfaces match version 4 in almost every value** — all ten accents, both recorded
-spares, the four neutrals, the hairline, all seven radii, the five states, all seven crew hues, the
-two grounds, the active navigation item, the wash at 13%. **Two things do not**, and both are open
-in item S9:
+**What comes next is decided at the next session's open**, and it waits on nothing.
 
-1. **The shadow values.** §4 now publishes all three and says the token file already agrees. It does
-   not: `--shadow-md` and `--shadow-lg` differ here. **Ruled 30 Aug 2026 — the book wins**, and the
-   swap is its own step with the maintainer's eyeball on it.
-2. **Coral set as text.** Two map error messages use `--state-warn` as 11px type at **3.52:1**,
-   under the 4.5:1 §9 asks for. The book publishes a darkened value for live, approved and
-   verification, and **none for coral**, so one is proposed and carried up by hand rather than
-   invented here.
+**What the reconciliation found, kept short because item S9 is its one home.** The shipped surfaces
+already matched the book in almost every value — the ten accents, both recorded spares, the four
+neutrals, the hairline, the seven radii, the five states, the seven crew hues, the two grounds, the
+active navigation item, the wash. **Two did not, and both are shipped:** the shadow values took the
+book's §4 (pull request #41), and coral gained a darkened text value at 4.5:1 (#42).
+
+**The second of those corrected the book rather than the site.** Measuring §2.5 showed that the
+published live and approved text values did not reach the contrast the same sentence promises.
+Corrected values were accepted and written into **version 4.1**, along with the new coral;
+verification was measured and left alone. **Nothing here rendered wrongly** — neither value is used
+as type on this site — so it was a proposal, not a fix.
+
+**Version 4.1 is the only amendment written into the book from inside this repository**, on the
+maintainer's explicit instruction, and it is the exception rather than a new practice.
 
 **The design exploration leaves no artefact here, and that is deliberate.** Its outcome — the cool
 end that was ruled, the hybrid that was built, and the finding that withdrew it — is recorded in
@@ -119,6 +123,6 @@ is nothing left for images to teach.** No folder waits for them.
 | Family | Why it waits |
 |---|---|
 | **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. |
-| **Surfaces** | The bridge (item S7) was ruled on 26 Aug 2026 but has no proposal — the shape of the handoff is coordinated by the maintainer's hand. The brightness pull-up (item S8) is **closed**, and the return to the book (item S9) is **open on two raises against version 4** — the shadow values, ruled and awaiting its own step, and coral set as text, awaiting a value carried into the book by hand. The rest of the family is polish (item S5), the dev-relay gap (item S6), or waits on data that does not exist yet (item S1). |
+| **Surfaces** | The bridge (item S7) was ruled on 26 Aug 2026 and **sits on production's desk as their #149** — the shape of the handoff is theirs to settle, and no work here queues behind it. The brightness pull-up (item S8) and the return to the book (item S9) are both **closed**. The rest of the family is polish (item S5), the dev-relay gap (item S6), or waits on data that does not exist yet (item S1). |
 | **Data** | Blocked on material the maintainer supplies — registry coordinates for the project points (item D2), public disclosures for corporate goals and target geographies (item D1). Not work that can start from inside the repository. |
 | **Operations** | **Nothing is due.** What remains waits on real usage that does not exist yet: the number twenty (item O1), the basemap's five-million-request ceiling (item O9), and the primer review against the abstention log (item A5). Two questions are open and unhurried — whether the export copies should be produced by a script (item O8), and whether an abstention that cited a card is a fault at all (item A7, waiting on a recurrence). |

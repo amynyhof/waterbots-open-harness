@@ -204,11 +204,11 @@ gitignored twice over, by the bare `BRAND.md` rule and by `brand/*`, so
 it still does not publish.
 
 ~~**BRAND.md is the brand book, version 3, and it governs all design on
-this site.**~~ **It is version 4 from 30 Aug 2026**, brought by the
-maintainer's hand, and it governs all design on this site. Version 3
-arrived on 28 Aug 2026 and held for two days. One light brand, still
-superseding the two-theme era. It is complete on its own page and it
-governs both properties.
+this site.**~~ ~~**It is version 4 from 30 Aug 2026.**~~ **It is version
+4.1**, and it governs all design on this site. Version 3 arrived on
+28 Aug 2026 and held for two days; version 4 and then 4.1 both landed on
+30 Aug. One light brand, still superseding the two-theme era. It is
+complete on its own page and it governs both properties.
 
 **What version 4 changed**, all of it carried up from this site's work:
 the roster-extension rule in §6, with **Phoebe's own entry**; `--chrome`
@@ -217,6 +217,16 @@ example; the **three shadow values written into §4**, which had carried
 the names and no values; and the **Slate map wash** recorded in §7. A
 sixth change — Driftwood into use — was proposed and reversed the same
 night, and §2.1 keeps the strike rather than erasing it.
+
+**What version 4.1 changed, and it is the first amendment written into
+the book from inside this repository.** §2.5 only. Coral gained a text
+value it had never had, and the published live and approved text values
+were corrected, because measuring them against a shipped surface showed
+they did not reach the 4.5:1 the same sentence promises. Verification was
+measured too and is unchanged — a published value that already works is
+left alone. Maintainer's ruling, 30 Aug 2026; **the engineer wrote it
+into the book by her instruction, which is the exception, not the rule.**
+Everything else still arrives by her hand.
 
 ~~**[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) is
 binding**, and it is the only design input from outside this
@@ -232,4 +242,23 @@ explicit. ~~Four such rulings were made on 29–30 Aug 2026 and are owed to
 the master book by the maintainer's hand~~; **all four landed in version
 4 on 30 Aug 2026.** Item S9 in [OPEN_ITEMS.md](./OPEN_ITEMS.md) remains
 the one home for them, and it now records where each one sits in the
-book. Two fresh raises took their place and are open in the same item.
+book. ~~Two fresh raises took their place and are open in the same
+item.~~ **Both are closed as of 30 Aug 2026** — the shadow values took the
+book's, and coral gained a darkened text value at 4.5:1. Item S9 carries
+both.
+
+## Housekeeping — machine facts, not rules
+
+**Small facts about this machine that cost a session's time when they
+have to be rediscovered.** Rules live above and in the rulebooks; this is
+only where things are.
+
+- **The GitHub command-line tool is installed and signed in, but is not
+  on the shell's PATH.** Call it at
+  `C:\Program Files\GitHub CLI\gh.exe`. Found 30 Aug 2026, when
+  `gh` alone reported "command not found" and looked, wrongly, like a
+  missing tool. The rule about who opens pull requests is unchanged and
+  lives in
+  [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md).
+- **The brand book carries Windows line endings** and is gitignored, so
+  nothing normalises it. Edit it preserving them.
