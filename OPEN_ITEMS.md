@@ -1325,6 +1325,30 @@ the 1px `--line` hairline that §2.3 pairs with a white card** — the border ca
 using the fill alone was the incomplete half of a rule the book already states. That is the book
 applied properly rather than a new device, so it needs no separate ratification.
 
+### Both properties settle on one word for it — production's #161
+
+**Maintainer's note, 30 Aug 2026. Nothing to build here; it is recorded so the two sides do not
+drift into two names for one thing.**
+
+> **Production retires `--chrome` in code under the name `--frame` — this site's own token — so both
+> sites speak one word.** Logged as production's item #161.
+
+**The word travelled the same way the ruling did.** This repository needed a name for the frame's
+ground when the two grounds were separated on 29 Aug, minted `--frame`, and sent the *relationship*
+up rather than the value. Version 4 §2.3 carries the relationship and the worked example, and is
+deliberate about the rest: the frame value is **"recorded as an example, deliberately NOT minted as
+a token"**, because naming one is a design question belonging to the sweep that removes `--chrome`
+from the product. That sweep is #161, and it takes `--frame` with it.
+
+**What this repository does about it: nothing.** The token is already called `--frame` and already
+holds `#FBFBFE`. The note exists so that a later reader who finds `--frame` here and `--chrome` in
+an older production file knows they are the same idea, one step apart in time, and not two
+competing devices.
+
+**The book still carries no name for the frame value**, and that is not a gap to fill from here.
+Until it does, this site states the relationship — *one step lighter than its canvas* — exactly as
+§2.3 instructs.
+
 ### For the maintainer's hand — the ratification bundle. DELIVERED 30 Aug 2026
 
 **All four landed in version 4 of the brand book**, brought by the maintainer's hand on
@@ -1494,17 +1518,30 @@ control over the sea and the land rather than tinting someone else's raster tile
 substantially more work and it changes the standing dependency in item O9. **Not proposed and not
 built** — recorded so it is not rediscovered as a new idea.
 
-### Two things were held, and one still is
+### ~~Two things were held, and one still is~~ Both were held, and neither is now
 
-**1. `--chrome`.** This repository derives `--chrome` `#E8E9ED` and paints four surfaces with it —
+**Corrected 30 Aug 2026.** Both holds are released — the first by the maintainer's ruling of
+29 Aug, the second by version 4 of the book. The original text is kept because it records what was
+believed while each was still open.
+
+**1. `--chrome`.** ~~This repository derives `--chrome` `#E8E9ED` and paints four surfaces with it —
 the top bar, the navigation rail, the chat dock and the chat shell. **The book allows three planes
 and no fourth**, and names no fill for chrome; §2.3 says only that chrome recedes, flush and square,
 never a card. §0 says to raise what the book does not carry rather than invent it. **The value is
-not touched.**
+not touched.**~~
 
-**One consequence, recorded rather than worked around.** Moving the canvas to `#F6F5FA` brings it
+**Released 29 Aug 2026 and long since built.** `--chrome` is retired as a token here, the frame
+takes `--frame` `#FBFBFE`, and **version 4 §2.3 retires it in the book too** — *"chrome recedes, and
+it recedes by going QUIET, not by going DOWN"* — with the reason this repository could not see from
+inside: a plane below the canvas is a fourth plane, and the rule and the token had been
+contradicting each other since the table was written. Production retires the token under this site's
+name for it; see *both properties settle on one word for it* above.
+
+~~**One consequence, recorded rather than worked around.** Moving the canvas to `#F6F5FA` brings it
 closer to chrome's `#E8E9ED`. The rail and the dock will separate a little less than they do today.
-The 1px `--line` rule under the chrome carries that separation regardless, and it stays.
+The 1px `--line` rule under the chrome carries that separation regardless, and it stays.~~
+**Moot from 29 Aug 2026** — there is no `#E8E9ED` left to close on. The 1px `--line` rule under the
+frame does stay, and it is what separates the rail and the dock now.
 
 **2. The three shadow values.** ~~§4 names `--shadow-sm`, `--shadow-md` and `--shadow-lg` and says
 what each is for. **It publishes no value for any of them.** They cannot be added here without
