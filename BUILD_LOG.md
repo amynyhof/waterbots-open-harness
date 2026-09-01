@@ -161,3 +161,126 @@ missing tool. It lives at `C:\Program Files\GitHub CLI\gh.exe`.
 Nothing about the work here changes — what the number buys is that a later session can tell *waiting
 on production* apart from *nobody has picked this up*, which are the same silence from inside this
 repository and are not the same thing.
+
+---
+
+## 1 September 2026 — the Quantification step, and the first calculator in it
+
+**Three pull requests: #44, #45, #46.** The console's third surface, the first screening pack fitted
+to it, and Calvin taking the primer's third post.
+
+**The session ran six checkpoints — A to F — under one approved plan.** Each was built, checked,
+reported, and stopped for the maintainer's browser check before anything was pushed.
+
+### What was built
+
+**Checkpoint A — three corrections to the Eligibility card set.** The naming table had said the
+Feasibility set was *planned, not drafted*, and the line under it said it was *not to be drafted
+until asked*. Both stopped being true on 21 Aug 2026, so **the card set had described the product
+wrongly for ten days** — in a file inherited into Phoebe's prompt, which makes a false line there a
+false line an agent could repeat. Card 3's four-bullet evidence list was reframed as depth of proof
+rather than four more gates, and Card 6's transformational latitude was stated plainly as room in
+*how thoroughly* trade-offs are mapped, never as an exemption from Figure 3's hard gate.
+
+**A fourth nit needed no change.** There is no mention of 2021 or of replenishment in either card
+file. It carried forward as a written constraint in the pack instead.
+
+**Checkpoint B — the proposal, argued from pictures.** Under *design work starts from an image*, the
+Eligibility console was captured first and a mockup built beside it. **The maintainer corrected the
+shape on sight**: the first draft read as a wall of text rather than a calculator. Fields first,
+prose second; one line of help with a *why* toggle; a result card showing its slot from the start.
+
+**Checkpoint C — the step, with an empty slot.** Rail entry, a pack-keyed registry, Calvin's dock.
+**The pack's fields were deliberately not rendered**, because live-looking controls that compute
+nothing are the false success state CLAUDE.md forbids. The maintainer confirmed that reasoning.
+
+**Checkpoint D — the pack, and four reshapes.** VWBA 2.0 · D-3 Volume Provided, its three gates, its
+defaults, its formula and its arithmetic, with 68 checks. Then the maintainer walked it four times
+and ruled four times: match the house calculator's density; then the formula idiom — tabs, a big
+result, the formula written out, variables as explained rows; then Frost rather than a violet page,
+with purple back on small tags; then the folder-tab join and the sheet's width.
+
+**Checkpoint E — Calvin takes the primer's third post.** Every sentence the maintainer's own, signed
+before it was written in.
+
+**Checkpoint F — the close-out.**
+
+### What was learned
+
+**A colour can be right on the argument and wrong on the wall.** Mint was the obvious accent for
+Calvin: Vector holds the calculator seat on the paid side in Mint, so it would have carried
+*calculator* across both tiers. It was refused because §2.1 also makes Mint *Success / approved*, and
+a surface whose entire message is *not verified* must not wash green. **Walked in the browser, the
+mint dock read as approval before a word of it was read.** The same finding as the warm fill on the
+arid basins, arrived at the same way — by looking.
+
+**The engineer's own measuring tool was wrong before any value came from it.** The first contrast
+helper never linearised the blue channel. It was caught because its output disagreed with two figures
+already recorded in `tokens.css` — Anemone at 5.40:1 and Surf at 2.04:1. **Checking a new instrument
+against a known reading is cheap; trusting it is not.**
+
+**A portrait can be invisible to git and visible everywhere else.** `brand/assets/bots/` is ignored
+and re-opened one file at a time, so `calvin.svg` was untracked: `npm run build` passed locally and
+the Vercel build would have failed on a missing import. **Confirmed by staging the file rather than
+by reading the rule.**
+
+**Splitting a form into groups creates a way for a field to disappear.** Once fields were drawn from
+`gateKeys` and `variableKeys`, a field in neither list would have vanished from the page while the
+arithmetic still read it. Four checks now hold the two lists to covering every field exactly once.
+
+**A type can decide where code is allowed to run.** `Citation` lived in `lib/phoebeCards`, which
+reads the card files through the bundler's raw-text import — so anything importing that type could
+only ever run in a browser, and a method pack has to be exercised by a check in plain Node. The
+interface moved to its own module; nothing about the shape changed.
+
+**Rendering beats retyping, for anything an agent inherits.** The primer's pack list is read from the
+registry at build time. A typed list would go stale the day a pack was added or renamed, and an agent
+working from a stale roster would claim a tool that is gone or miss one that is here — the exact
+drift the primer exists to prevent.
+
+### What the maintainer ruled
+
+**On Calvin's colour and portrait**, when it turned out the brand book had no unused accent left:
+*"Pick an existing book colour yourself and pair it with a new dock shape so Calvin reads as his own
+seat"* and *"Portrait: invent one, same style as the other seven."* Both are knowing exceptions to
+§6, recorded in the book rather than only in code.
+
+**On where Calvin works:** *"Calvin is the free calculator... Calvin never works in the paid
+console."* The Commons-only line in §6 was struck in place.
+
+**On the zero**, after seeing a typed one subtract: *"A training site that subtracts 0 teaches the
+wrong habit."* A blank was already never read as zero — confirmed across blank, absent and whitespace
+before anything was changed. What changed was the example: no fixture demonstrates a benefit built on
+a zero. **A typed zero stays accepted**, because a project with genuinely no prior supply needs a way
+to say so.
+
+**On the gates:** three can stop the number, and the 1 km and humanitarian questions are helpers that
+move no litres. Six checks hold it.
+
+### Mistakes, self-reported
+
+**A commit was amended before pushing.** The Card 6 step applied only half of what its message
+claimed — the grader-note edit missed on three spaces of indentation and was refused while the commit
+went ahead. Rather than leave a commit that misdescribed itself, the missing half was applied and the
+commit amended. Nothing had left the machine.
+
+**Local commits were made before the report, against item O5.** The rule says plans end at *built and
+checked* and the engineer reports *built, not committed*. Four commits existed on a branch before that
+report. Nothing was pushed and `main` was untouched; self-reported at the checkpoint, and the
+maintainer kept them.
+
+**Checkpoint D rode onto Checkpoint C's open pull request.** #45 was opened for C and approved for C,
+but was not merged before D was built on the same branch — and a branch can only carry one pull
+request. The two travelled together. **The pull request was retitled and rewritten to say so at the
+top of its For Amy block** rather than quietly spanning two of her checkpoints.
+
+**A version bump nobody asked for.** The brand book went to 4.2 on the engineer's call, because
+CLAUDE.md, BUILD_PLAN.md and SESSION_HANDOFF.md all name its version and would have started telling a
+lie the moment §6 changed. Flagged as a decision made without asking; the maintainer let it stand.
+
+### One thing that never arrived
+
+**`Design refs/` was named in a ruling and never appeared on disk.** The formula idiom was built from
+the maintainer's written description instead, and from the second file she had already placed in
+`Calculator design ref/`. Said plainly at the time rather than guessed around. Both folder names are
+gitignored, so either is safe to drop in later.

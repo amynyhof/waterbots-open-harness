@@ -28,7 +28,7 @@ this shell works out may flow back the other way. **Which parts settle where is
 decided in a design session with the production side** — not in this repository,
 and not by an engineer working in it.
 
-**The brand book is the design authority, and it is version 4.1 from 30 Aug 2026.** ~~BRAND.md v3 is
+**The brand book is the design authority, and it is version 4.2 from 31 Aug 2026.** ~~BRAND.md v3 is
 the design authority — 28 Aug 2026.~~ ~~It is version 4.~~ Version 3 held for two days; version 4 and
 then 4.1 both landed on 30 Aug. The book governs both properties and is complete on its own page.
 It lives at `brand/BRAND.md`, gitignored, and does not publish. ~~The design canon is the outcome of the session this file was waiting on.~~ **The
@@ -60,7 +60,31 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — the return to the brand book
+## Just finished — the Quantification step and its first pack
+
+**Session of 1 Sep 2026. Three pull requests, #44 to #46.** The console's third surface, the first
+screening calculator inside it, and Calvin taking the primer's third post.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md)**, which is append-only and is
+never read at the opening. This section says only what is now true.
+
+- **Three surfaces.** Basin map, Eligibility, **Quantification**. The rail says three.
+- **The step is pack-keyed and knows no method.** Fields, gates, defaults, formula and arithmetic
+  all come from the pack. Item S10.
+- **One pack is fitted:** VWBA 2.0 · D-3 Volume Provided — household and community water supply,
+  ex-ante, Option 3. Item K5. **Carbon screening is named on the tab strip and marked planned**; it
+  carries nothing and is not clickable.
+- **Everything the step produces is a screening estimate**, anticipated and never verified, with a
+  consultant-review tag wherever it renders.
+- **A blank without-project volume is never read as zero**, and no example anywhere subtracts one.
+- **Calvin staffs it.** Plum `#5848A8`, a portrait in the house form, the primer's third post. His
+  chat is not built and the panel says so.
+- **The brand book is version 4.2**, §6 filled in with Calvin's row and two recorded exceptions.
+
+**Twelve checks now, not eleven.** `check-vwba-d3` is at 68 and guards the arithmetic, the gates,
+the formula, the tab strip and the primer's rendered pack list.
+
+## Previously — the return to the brand book
 
 **Sessions of 29 and 30 Aug 2026. Eleven pull requests, #27 to #37, all merged.** The brand book
 arrived on 28 Aug and this is the work of bringing the shipped stylesheet to it.
@@ -90,14 +114,6 @@ S9: the two grounds, the active nav item, the three shadow values, and Slate as 
 one sits. **Driftwood was proposed and refused on the merits** and is struck from that list; §2.1
 keeps the strike rather than erasing it.
 
-## Building next — nothing is scheduled
-
-**The site and the book agree, and no family is due.** Version 4 arrived on 30 Aug 2026 and version
-4.1 followed it the same day. Every value the shipped stylesheet carries now matches the book, and
-the two places they disagreed are closed.
-
-**What comes next is decided at the next session's open**, and it waits on nothing.
-
 **What the reconciliation found, kept short because item S9 is its one home.** The shipped surfaces
 already matched the book in almost every value — the ten accents, both recorded spares, the four
 neutrals, the hairline, the seven radii, the five states, the seven crew hues, the two grounds, the
@@ -118,11 +134,25 @@ end that was ruled, the hybrid that was built, and the finding that withdrew it 
 full in item S9. Maintainer's ruling, 30 Aug 2026: **the screenshots are not coming, because there
 is nothing left for images to teach.** No folder waits for them.
 
+## Building next — nothing is scheduled
+
+**No family is due.** The quantification family landed on 1 Sep 2026 and nothing queues behind it.
+
+**Three things are the obvious candidates, and none is chosen:**
+
+1. **Calvin's chat**, which would move the step's gates into his conversation and fill the toggles
+   from his answers. It is the largest of the three and it is not scheduled.
+2. **A second method pack**, which is the first real test of whether the seat is as pack-keyed as it
+   claims. Item K2 names the candidates.
+3. **Bridget's chat**, unchanged and still not scheduled.
+
+**What comes next is decided at the next session's open**, and it waits on nothing.
+
 ## Not next, and why
 
 | Family | Why it waits |
 |---|---|
-| **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. |
+| **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. **The first method pack (item K5) landed 1 Sep 2026 outside that order, because the maintainer scoped it herself.** |
 | **Surfaces** | The bridge (item S7) was ruled on 26 Aug 2026 and **sits on production's desk as their #149** — the shape of the handoff is theirs to settle, and no work here queues behind it. The brightness pull-up (item S8) and the return to the book (item S9) are both **closed**. The rest of the family is polish (item S5), the dev-relay gap (item S6), or waits on data that does not exist yet (item S1). |
 | **Data** | Blocked on material the maintainer supplies — registry coordinates for the project points (item D2), public disclosures for corporate goals and target geographies (item D1). Not work that can start from inside the repository. |
 | **Operations** | **Nothing is due.** What remains waits on real usage that does not exist yet: the number twenty (item O1), the basemap's five-million-request ceiling (item O9), and the primer review against the abstention log (item A5). Two questions are open and unhurried — whether the export copies should be produced by a script (item O8), and whether an abstention that cited a card is a fault at all (item A7, waiting on a recurrence). |

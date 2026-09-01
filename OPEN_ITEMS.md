@@ -37,7 +37,7 @@ individual pieces of work can be read against where they are meant to lead.
 |---|---|---|---|
 | 1 | **Eligibility** — can this project generate a countable benefit? | Free | Worksheet built; the agent behind it is in progress |
 | 2 | **Basin map / Partners** — where is the water stress, and who else is working there? | Free | Map built; the partner layer is item D1 |
-| 3 | **Ex-ante quantification** — what benefit would this project produce? | Free | Not started |
+| 3 | **Ex-ante quantification** — what benefit would this project produce? | Free | ~~Not started~~ **Built 1 Sep 2026.** The step, and one screening pack in it. Calvin's post; his chat is not built |
 | 4 | **Project management** — running the project after it starts | Paid | Not started |
 
 **The free tier ends where step 4 begins.** Everything up to and including quantification is open
@@ -77,6 +77,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | K2 | Co-benefit quantification module | Knowledge | open |
 | K3 | VWB Report Corpus | Knowledge | open, no action yet |
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | canon, ruled 26 Aug 2026 |
+| K5 | The VWBA 2.0 D-3 screening pack | Knowledge | **built 1 Sep 2026** — the first pack in the slot |
 | A1 | Phoebe abstention loop | Agents | built 25 Aug 2026 |
 | A2 | Final agent staffing | Agents | settled 24 Aug 2026; Bridget's colour settled 29 Aug 2026 |
 | A3 | Agent handoff primer | Agents | shipped 28 Aug 2026 — rung 2 live |
@@ -96,6 +97,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026; **waiting on production's desk as their #149** |
 | S8 | Brightness pull-up to the book's published Frost values | Surfaces | closed 29 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
 | S9 | The return to the brand book | Surfaces | **closed 30 Aug 2026** — both raises shipped, book at v4.1 |
+| S10 | The Quantification step | Surfaces | **built 1 Sep 2026** — the third surface, pack-keyed |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
@@ -173,6 +175,55 @@ most on the Commons surfaces that do not exist yet. No retroactive rewording pas
 
 Ruled 26 Aug 2026. **Canon — no build.**
 
+## K5. The VWBA 2.0 D-3 screening pack
+
+**The first method pack fitted to the Quantification step.** Household and community water supply,
+ex-ante, Option 3 of Table D3.3: people × litres per person per day × days, capped by the system's
+yearly capacity where that is known. Built 1 Sep 2026.
+
+**What it refuses, by name.** Sanitation is method D-6. Putting water back into the ground is D-4.
+Irrigation is a different table. Metered supply is Option 1 and is the better route where a meter
+exists — a project that is any of these is told which method fits instead of being handed a number
+from this one.
+
+**Everything it produces is a screening estimate** — anticipated, never delivered and never verified
+— and it carries a consultant-review tag wherever it renders. The guidebook is cited and linked
+under CC BY 4.0, with the changes indicated. It is not quoted at length, its tables are not
+reproduced, and no page of it is pasted into the code or the interface.
+
+### The without-project volume is the whole difficulty
+
+**It is required, it may be left empty, and an empty one is NEVER zero.** A pack that quietly read a
+blank as zero would report the entire with-project volume as benefit — the single easiest way for
+this method to produce a large, confident, wrong number with nothing looking broken.
+
+**A zero typed on purpose is still honoured**, because a project with genuinely no prior supply
+needs a way to say so, and refusing it would leave that project reading as incomplete forever.
+Maintainer's ruling, 1 Sep 2026: *"Typed 0 stays accepted; blank stays a dash."*
+
+**But no example anywhere subtracts a zero.** Her ruling the same day: *"A training site that
+subtracts 0 teaches the wrong habit."* The fixture that demonstrates a benefit uses a real
+without-project figure.
+
+### Three questions can stop the number, not five
+
+Household or community water, clean enough for that use, and can people get it. **The 1 km question
+and the humanitarian question are helpers, not gates** — the first helps prove access and moves no
+litres either way, the second only lets the Sphere rates in. Both are marked optional. Maintainer's
+ruling, 1 Sep 2026, after her walk; six checks hold the line.
+
+### What confirms it
+
+`scripts/check-vwba-d3.mjs` — **68 checks** against the real compiled module rather than a second
+copy of the arithmetic. Its numbers are round, obviously fake and labelled as examples; **no real
+project's figures appear anywhere in this repository.**
+
+**Not in this pack, and deliberately:** sanitation, irrigation, recharge, a metered path, Sphere
+rates outside a humanitarian answer, carbon terms, cost-share or attribution fields, and any
+reconciliation of the 2021 replenishment guidance into 2.0.
+
+Opened and built 1 Sep 2026. **Open as the home for the pack's story**; the next packs are item K2.
+
 ---
 
 # Family: Agents
@@ -249,17 +300,30 @@ under a retired agent. That is a brand decision, not a staffing one, and it is s
 
 **The free calculator agent is named Calvin.** Maintainer's ruling, and it is canon from here.
 
-**The name is all that is settled.** His roster entry, his identity colour and his entry in
-`agent-primer.md` **come by the maintainer's hand when his lane opens**, the way the design canon
-and the brand book arrived. **Nothing about him is invented here in the meantime** — he is not in
-the primer, no agent may name him, and no colour is reserved for him by guesswork.
+~~**The name is all that is settled.**~~ **Settled in full on 1 Sep 2026, when his lane opened.** He
+staffs the Quantification step (item S10), his accent is **Plum `#5848A8`**, his portrait is
+`brand/assets/bots/calvin.svg` drawn in the house form, and **he holds the primer's third post** —
+every sentence of it the maintainer's own, signed before it was written in. His chat is not built and
+the panel says so.
+
+**Two of those were knowing exceptions to the brand book**, ruled by her and recorded in the book at
+§6 rather than only in code: the accent is pointed at a second agent, which §6 forbids, paired with a
+dock shape of his own; and the portrait was drawn here, where §6 says it arrives with the Commons
+design.
+
+~~His roster entry, his identity colour and his entry in `agent-primer.md` **come by the maintainer's
+hand when his lane opens**, the way the design canon and the brand book arrived. **Nothing about him
+is invented here in the meantime** — he is not in the primer, no agent may name him, and no colour is
+reserved for him by guesswork.~~ **All three arrived on 1 Sep 2026.** The struck line is kept because
+it was the right rule while it held: nothing about him was invented before she ruled.
 
 **Why a name is logged before the rest exists.** A name that is decided and unwritten gets
 re-decided. This records the decision so the next conversation starts from it, and records equally
 plainly that the decision stops at the name.
 
-**His lane is step 3 of the north star** — ex-ante quantification, *what benefit would this project
-produce?* — which is not started. Two posts are staffed today, not three.
+~~**His lane is step 3 of the north star** — ex-ante quantification, *what benefit would this project
+produce?* — which is not started. Two posts are staffed today, not three.~~ **Step 3 was built on
+1 Sep 2026 and three posts are staffed**, though only Phoebe's chat answers.
 
 ---
 
@@ -1534,6 +1598,70 @@ lives in [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md).
 S8, rides whenever the rail is next opened for another reason. No work in this item opened it.
 
 Logged 29 Aug 2026, **closed 30 Aug 2026.**
+
+---
+
+## S10. The Quantification step
+
+**The console's third surface, built 1 Sep 2026.** Step 3 of the north star: *what benefit would
+this project produce?* Same shell as Eligibility — left rail, centre worksheet, right agent dock. No
+wizard, no standalone calculator page, no second layout, no new URL.
+
+**The step is Quantification. A pack is one tool inside it.** That separation is the point: the same
+seat has to hold carbon screening, the other D-methods, and methods from standards this console does
+not carry yet. **The surface is pack-keyed and knows nothing about any one method** — the fields,
+the gates, the groupings, the defaults, the formula and the arithmetic all come from the pack. The
+first pack is item K5.
+
+**What is on it, top to bottom** — the maintainer's ruling of 1 Sep 2026, after two walks: a tab
+strip of packs so the family is visible from the first day; a header with the pack's name, what it
+measures and the big result; a short method strip saying the method once; the gates as one compact
+row; the formula written out with live values dropped in; the variables as explained rows; the
+result with its citation and screening tag.
+
+**A failed gate replaces the formula and the variables with a stop card**, so nobody fills in a form
+that cannot produce an answer.
+
+### The look, and where it came from
+
+**Two design references arrived by the maintainer's hand** on 1 Sep 2026 and are gitignored. **What
+was taken is the look only** — row density, the card-tab shape, the formula idiom. **Not their data,
+their revenue block, their "verified" language or their agent panel.** Rule zero is unchanged: the
+engineer never fetches or guesses at the production side, and these arrived because she carried them
+across, which is the one sanctioned route.
+
+**Three corrections came out of her walks**, each recorded because each was a real fault: the first
+build read as a wall of text rather than a calculator; the second washed a violet page behind the
+numbers when purple belongs on small tags; and the sheet sat narrower than the Eligibility
+worksheet, so two free surfaces on one console did not share a margin.
+
+**The selected tab and the sheet are one joined white surface**, the tab painting its bottom edge in
+the sheet's own white so it covers the sheet's top hairline. An unselected tab sits back on the
+Frost ground with its hairline, so the two read as different planes.
+
+### Calvin's dock has a shape of its own
+
+Phoebe's and Bridget's docks are top-anchored. **Calvin's adds a footer strip that never scrolls**,
+carrying the one line that must not leave the screen: *screening estimate · not verified.* A
+calculator cannot let those words scroll out of sight, and a chat dock's shape allows exactly that.
+It is why the maintainer approved a new shape rather than a recoloured one.
+
+**His chat is not built**, and the panel says so plainly — the same posture as Bridget's. **The
+gates move into his conversation when it goes live**, and the toggles fill from his answers then.
+Not this sprint.
+
+### Two faults this work created, and closed
+
+1. **A portrait that would have failed only on deploy.** `brand/assets/bots/` is ignored and
+   re-opened one file at a time, so `calvin.svg` was invisible to git: the build passed locally and
+   the Vercel build would have failed on a missing import. It has its own negation now, confirmed by
+   staging it rather than by reading the rule.
+2. **A field that could vanish from the page.** Splitting the fields into gates and variables meant
+   a field in neither list would disappear while the arithmetic still read it. Four checks hold the
+   two lists to covering every field exactly once.
+
+Built 1 Sep 2026. **Open as the home for the surface's story.** What remains is Calvin's chat, which
+is not scheduled.
 
 ---
 
