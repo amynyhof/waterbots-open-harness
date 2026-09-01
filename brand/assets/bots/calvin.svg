@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Calvin">
+
+    <line x1="60" y1="26" x2="60" y2="42" stroke="#5848A8" stroke-width="2" stroke-linecap="round"></line>
+    <circle cx="60" cy="20" r="4.5" fill="none" stroke="#5848A8" stroke-width="2.2"></circle>
+
+    <rect x="26" y="42" width="68" height="52" rx="8" fill="#5848A8"></rect>
+
+    <circle cx="46" cy="60" r="2.8" fill="white"></circle>
+    <circle cx="74" cy="60" r="2.8" fill="white"></circle>
+
+    <path d="M 48 74 Q 54 70 60 74 Q 66 78 72 74" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"></path>
+    <path d="M 48 82 Q 54 78 60 82 Q 66 86 72 82" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"></path></svg>
