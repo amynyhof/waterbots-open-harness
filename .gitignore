@@ -38,6 +38,17 @@ brand/assets/bots/*
 !brand/assets/bots/phoebe.svg
 !brand/assets/bots/calvin.svg
 
+# The calculator design reference — engineer-eyes-only, never published.
+#
+# A saved copy of a production page, brought in BY THE MAINTAINER'S HAND on
+# 1 Sep 2026 so the free calculator and the paid one look like cousins. That is
+# the sanctioned route and the only one: rule zero forbids the engineer
+# fetching, matching or guessing at the production side, and it is unchanged.
+#
+# It is a LOOK reference and nothing else — spacing, shapes, type, and the
+# number card. Not its questions, not its logic, not its paid-side features.
+Calculator design ref/
+
 # Dependencies
 node_modules/
 
