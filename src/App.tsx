@@ -11,9 +11,14 @@
  * frame lighter and receding. Maintainer's ruling, 29 Aug 2026; the record is
  * item S9.
  *
- * TWO SURFACES, AND NOTHING IS UNMOUNTED WHEN YOU LEAVE IT. Switching surface
- * hides what you left rather than throwing it away — the map, and both chat
- * docks alongside it.
+ * THREE SURFACES, AND WHAT HOLDS STATE IS NOT UNMOUNTED WHEN YOU LEAVE IT.
+ * Switching surface hides what you left rather than throwing it away — the
+ * map, and all three chat docks alongside it.
+ *
+ * The quantification step is the exception, and deliberately: its slot is
+ * empty, it holds no state of its own, and there is nothing in it for
+ * unmounting to lose. It is mounted only while you are on it. When a method
+ * pack lands and it starts holding a visitor's figures, it joins the others.
  *
  * For the map, unmounting would throw away the Level 6 layer and re-fetch
  * 8.44 MB on the way back, which is a real cost to a visitor on a metered
@@ -30,9 +35,10 @@
  * no-memory-across-visits ruling of 21 Aug 2026 and it stands. Stepping over to
  * the map and back is not a new visit, so it must not behave like one.
  *
- * Each surface brings its own host: Bridget sits with the map, Phoebe with
- * the worksheet. Phoebe answers from her cards through the relay; Bridget is
- * still a placeholder and says so.
+ * Each surface brings its own host: Bridget sits with the map, Phoebe with the
+ * eligibility worksheet, Calvin with the quantification step. Phoebe answers
+ * from her cards through the relay; Bridget's and Calvin's chats are not built
+ * and both panels say so.
  */
 
 import { useCallback, useState } from 'react';
@@ -41,6 +47,8 @@ import NavRail from './components/NavRail';
 import ChatPanel from './components/ChatPanel';
 import PhoebePanel from './components/PhoebePanel';
 import EligibilityWorksheet from './components/EligibilityWorksheet';
+import QuantificationWorksheet from './components/QuantificationWorksheet';
+import CalvinPanel from './components/CalvinPanel';
 import Wordmark from './components/Wordmark';
 import { DEFAULT_SURFACE, type Surface } from './lib/surfaces';
 import { CRITERIA } from './lib/phoebeCards';
@@ -77,6 +85,8 @@ export default function App() {
   }, []);
 
   const onMap = surface === 'map';
+  const onEligibility = surface === 'eligibility';
+  const onQuantification = surface === 'quantification';
 
   return (
     <div
@@ -145,14 +155,23 @@ export default function App() {
             <BasinMap onStatus={onStatus} />
           </div>
 
-          {!onMap && (
+          {onEligibility && (
             <div style={{ position: 'absolute', inset: 0 }}>
               <EligibilityWorksheet statuses={statuses} onOpenMap={openMap} />
             </div>
           )}
+
+          {/* The quantification step. It holds no state of its own yet — the
+              slot is empty — so unlike the map and the docks there is nothing
+              here that unmounting would throw away. */}
+          {onQuantification && (
+            <div style={{ position: 'absolute', inset: 0 }}>
+              <QuantificationWorksheet />
+            </div>
+          )}
         </main>
 
-        {/* Both docks stay mounted; the one you are not on is hidden. Same
+        {/* All three docks stay mounted; the ones you are not on are hidden. Same
             treatment as the map above, for the same reason. `visibility:
             hidden` takes the hidden dock out of the tab order as well as out
             of sight, so nobody can type into a composer they cannot see. */}
@@ -167,8 +186,11 @@ export default function App() {
           <Dock visible={onMap}>
             <ChatPanel />
           </Dock>
-          <Dock visible={!onMap}>
+          <Dock visible={onEligibility}>
             <PhoebePanel onCriteriaUpdate={applyUpdates} />
+          </Dock>
+          <Dock visible={onQuantification}>
+            <CalvinPanel />
           </Dock>
         </div>
       </div>

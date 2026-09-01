@@ -48,25 +48,14 @@ const CRITERIA_EXPECTED = 6;
 const CONSIDERATIONS_EXPECTED = 10;
 
 /**
- * A citation broken into the parts CITATIONS.md renders as tags.
- *
- * `document` and `section` and `page` each become their own .tag — a value,
- * bordered and unfilled, never a .chip. Chips carry state; citations do not.
+ * The citation shape now lives in lib/citation, and is re-exported here so
+ * every existing import of it keeps resolving. Moved 1 Sep 2026 because this
+ * module reads the card files through the bundler's raw-text import, which
+ * only the bundler can resolve — so a method pack could not import the type
+ * from here and still be exercised by a check script in plain Node.
  */
-export interface Citation {
-  /** "VWBA 2.0" — the short document name. */
-  document: string;
-  /** "Version 1, September 2025" — part of the four-part shape. */
-  version: string;
-  /** "Appendix A · criterion 1" — where in the document. */
-  section: string;
-  /** "p. 32" — the printed page, which matches the PDF page 1:1. */
-  page: string;
-  /** The source line as written on the card, for the title attribute. */
-  full: string;
-  /** The publisher's canonical URL. */
-  href: string;
-}
+export type { Citation } from './citation';
+import type { Citation } from './citation';
 
 export interface Criterion {
   /** 1-6, the manual's own numbering. */

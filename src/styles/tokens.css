@@ -300,4 +300,35 @@
      existed and no longer does. */
   --bot-phoebe: #a04e7e;
   --bot-phoebe-accent: #c36e9f;
+
+  /* Calvin — the free screening calculator, and the host of the Quantification
+     step. Maintainer's ruling, 31 Aug 2026, signed on pixels.
+
+     PLUM IS A KNOWING EXCEPTION TO BRAND.md §6. The book gives Plum to Reggie
+     and says a surface "may not point an existing accent at a second agent".
+     The maintainer ruled the exception and paired it with a dock shape of
+     Calvin's own — a caveat strip that never scrolls — so he reads as his own
+     seat rather than as Reggie in a different room. The exception is recorded
+     in the book at §6, not only here. Reggie does not appear on this site.
+
+     MINT WAS THE OBVIOUS PICK AND WAS REFUSED ON THE MERITS. Vector holds the
+     calculator seat on the paid side in Mint, so Mint would have meant
+     "calculator" across both tiers. But §2.1 also makes Mint "Success /
+     approved", and this step's entire message is that its number is NOT
+     verified. Walked in the browser, the mint dock washed pale green and read
+     as approval before a word of it was read. Same finding as the warm fill on
+     the arid basins: a gate measures separation, not what a colour reads as.
+
+     Contrast, computed rather than assumed:
+
+       --bot-calvin   7.22:1 on white, 6.66:1 on --paper
+
+     It clears 4.5:1, so unlike Surf (2.04:1) and unlike Anemone's light accent
+     it MAY carry text. The dock's caveat line is set in it deliberately — the
+     one line that must never be missed is the one line an accent this dark can
+     safely carry.
+
+     Form still carries the meaning, per §2.6: Plum as a portrait, a keyline, a
+     wash or that caveat line means Calvin. It is never a status dot. */
+  --bot-calvin: var(--plum);
 }

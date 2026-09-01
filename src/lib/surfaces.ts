@@ -9,11 +9,12 @@
  * routing cannot fall out of step.
  */
 
-export type Surface = 'map' | 'eligibility';
+export type Surface = 'map' | 'eligibility' | 'quantification';
 
 export const SURFACES: { key: Surface; label: string }[] = [
   { key: 'map', label: 'Basin map' },
   { key: 'eligibility', label: 'Eligibility' },
+  { key: 'quantification', label: 'Quantification' },
 ];
 
 /** The surface the console opens on. */
