@@ -175,6 +175,19 @@ export interface MethodPack extends PackListing {
   scope: string;
   /** One plain sentence: what this pack measures. */
   measures: string;
+  /**
+   * One clause naming what this pack does, for the agent primer's roster.
+   *
+   * THE PRIMER'S PACK LIST IS RENDERED FROM THIS REGISTRY AND IS NEVER
+   * HAND-TYPED. Maintainer's ruling, 1 Sep 2026. A list of packs typed into a
+   * document an agent inherits would go stale the day a pack was added or
+   * renamed, and a stale roster is exactly what the primer exists to prevent —
+   * an agent would either claim a pack that is gone or miss one that is here.
+   *
+   * It reads after an em dash: "VWBA 2.0 · D-3 Volume Provided — <this>."
+   * So it is a clause, lower case, with no full stop.
+   */
+  primerLine: string;
   tier: PackTier;
   /** The source, in the shape CITATIONS.md fixes. The console renders it. */
   citation: Citation;
