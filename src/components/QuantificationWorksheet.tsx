@@ -79,6 +79,19 @@ export default function QuantificationWorksheet() {
 
         <PackTabs headline={headline} />
 
+        {/* THE SHEET THE SELECTED TAB OPENS INTO. One white surface, joined to
+            its tab with no line between them — maintainer's ruling, 1 Sep 2026.
+            Everything inside it is separated by hairlines rather than by a
+            second fill: a card cannot contain a card. */}
+        <div
+          style={{
+            background: 'var(--card)',
+            border: '1px solid var(--line)',
+            borderRadius: 'var(--r-md)',
+            borderTopLeftRadius: METHOD_PACKS[0]?.state === 'live' ? 0 : 'var(--r-md)',
+            padding: '18px 20px 22px',
+          }}
+        >
         {!pack ? (
           <EmptySlot />
         ) : (
@@ -140,6 +153,7 @@ export default function QuantificationWorksheet() {
             <ResultBlock pack={pack} result={result} blocked={Boolean(blocked)} />
           </>
         )}
+        </div>
       </div>
     </div>
   );
@@ -166,9 +180,9 @@ function PackTabs({ headline }: { headline: string | null }) {
         display: 'flex',
         alignItems: 'flex-end',
         gap: 4,
-        borderBottom: '1px solid var(--line)',
-        marginBottom: 16,
         flexWrap: 'wrap',
+        position: 'relative',
+        zIndex: 1,
       }}
     >
       {METHOD_PACKS.map((p) => {
@@ -187,11 +201,17 @@ function PackTabs({ headline }: { headline: string | null }) {
               flex: 'none',
               padding: '8px 12px',
               borderRadius: 'var(--r-md) var(--r-md) 0 0',
-              border: '1px solid',
-              borderColor: live ? 'color-mix(in oklab, var(--bot-calvin) 45%, transparent)' : 'var(--line)',
-              background: live ? 'var(--card)' : 'transparent',
-              boxShadow: live ? 'inset 0 -2px 0 var(--bot-calvin)' : 'none',
               cursor: live ? 'default' : 'not-allowed',
+              /* THE SELECTED TAB OPENS INTO THE SHEET. It is the same white,
+                 and its bottom edge is painted in that white so it covers the
+                 sheet's own top hairline — the join a folder tab makes.
+                 An unselected tab sits back on the Frost ground and keeps its
+                 hairline, so the two read as different planes. */
+              background: live ? 'var(--card)' : 'transparent',
+              borderTop: `1px solid ${live ? 'var(--line)' : 'transparent'}`,
+              borderLeft: `1px solid ${live ? 'var(--line)' : 'transparent'}`,
+              borderRight: `1px solid ${live ? 'var(--line)' : 'transparent'}`,
+              borderBottom: `1px solid ${live ? 'var(--card)' : 'var(--line)'}`,
               marginBottom: -1,
             }}
           >
@@ -246,12 +266,11 @@ function PackTabs({ headline }: { headline: string | null }) {
 function MethodStrip({ pack, hasCapacity }: { pack: MethodPack; hasCapacity: boolean }) {
   return (
     <div
+      /* No fill and no box: the sheet is already the white surface, and a card
+         cannot contain a card. A hairline separates it instead. */
       style={{
-        border: '1px solid var(--line)',
-        borderRadius: 'var(--r-md)',
-        background: 'var(--card)',
-        padding: '11px 14px',
-        marginTop: 14,
+        borderBottom: '1px solid var(--line)',
+        padding: '11px 0 12px',
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 14, alignItems: 'baseline' }}>
@@ -344,11 +363,11 @@ function Header({ pack, result }: { pack: MethodPack; result: PackResult | null 
               marginTop: 5,
               padding: '8px 14px',
               borderRadius: 'var(--r-sm)',
-              background: 'var(--card)',
+              background: 'transparent',
               border:
                 benefit === null
                   ? '1px dashed color-mix(in oklab, var(--ink-4) 65%, transparent)'
-                  : '1px solid var(--line)',
+                  : '1px solid transparent',
               color: benefit === null ? 'var(--ink-4)' : 'var(--ink)',
             }}
           >
@@ -427,7 +446,7 @@ function StopCard({ stopReason, routeForward }: { stopReason: string; routeForwa
         marginTop: 16,
         border: '1px solid var(--line)',
         borderRadius: 'var(--r-md)',
-        background: 'var(--card)',
+        background: 'transparent',
         padding: '15px 17px',
       }}
     >

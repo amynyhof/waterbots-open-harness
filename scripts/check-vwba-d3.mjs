@@ -259,11 +259,24 @@ expect(
   'a deliberate zero was thrown away'
 );
 
+/* A typed zero is a real answer and is still honoured — it is how a project
+   with genuinely no prior supply is stated. It is checked here ONLY to hold
+   the blank-versus-zero distinction apart.
+
+   IT IS NOT USED AS THE EXAMPLE THAT SHOWS A BENEFIT. Maintainer's ruling,
+   1 Sep 2026: a training site that subtracts 0 teaches the wrong habit, so
+   the fixture that demonstrates a benefit uses a real without-project figure
+   — the 100,000 L/year in check 2 above. */
 const typedZero = run({ without_lpy: '0' });
 expect(
-  '7. and a typed zero completes, with the whole volume as benefit',
-  typedZero.kind === 'complete' && typedZero.benefitLitres === 730000,
-  `got ${typedZero.kind} / ${typedZero.benefitLitres}`
+  '7. a typed zero is honoured as an answer, unlike a blank',
+  typedZero.kind === 'complete' && run().kind === 'incomplete',
+  `typed 0 gave ${typedZero.kind}, blank gave ${run().kind}`
+);
+expect(
+  '7. the example that shows a benefit uses a real figure, not 0',
+  two.benefitLitres === 630000 && readNumber({ without_lpy: '100000' }, 'without_lpy') === 100000,
+  'the benefit example rests on a zero'
 );
 
 /* ---------------------------------------------------------------------------
