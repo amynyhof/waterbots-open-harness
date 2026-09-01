@@ -17,10 +17,15 @@
  * modestly whenever it was next opened for another reason, and said plainly it
  * was not its own work item. Retiring the chrome plane opened it. 208 -> 224.
  *
- * It lists exactly what exists. Two surfaces are built — the basin map and
- * the eligibility worksheet — so there are two items. Inventing a nav item
- * for something unbuilt would be a fabricated claim about the product, which
- * is the same rule that keeps fabricated data off the map.
+ * It lists exactly what exists. Three surfaces are built — the basin map, the
+ * eligibility worksheet and the quantification step — so there are three
+ * items. Inventing a nav item for something unbuilt would be a fabricated
+ * claim about the product, which is the same rule that keeps fabricated data
+ * off the map.
+ *
+ * QUANTIFICATION IS A REAL SURFACE WITH AN EMPTY SLOT, which is a different
+ * thing from an unbuilt one. The step exists and says truthfully that no
+ * method pack is fitted to it yet.
  */
 
 import { useEffect, useState } from 'react';
@@ -118,7 +123,7 @@ export default function NavRail({
           className="t-caption"
           style={{ margin: 0, padding: '10px 14px 12px', fontSize: 10.5, lineHeight: 1.5 }}
         >
-          Two surfaces are built so far. The chat console is next.
+          Three surfaces are built so far. The chat console is next.
         </p>
       )}
     </nav>
