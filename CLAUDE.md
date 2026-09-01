@@ -181,7 +181,17 @@ credit line does not meet any of these bars.
   rail. **Foundation meant the shell, and v1 shipped that way — but
   Phoebe has answered for real since 24 Aug 2026**, from two committed
   card sets, capped at 20 messages a day per visitor. Bridget staffs
-  the map and her chat is not built; the panel says so plainly.
+  the map and Calvin staffs quantification; neither chat is built, and
+  both panels say so plainly.
+- **Quantification, the third surface, from 1 Sep 2026.** The step holds
+  **method packs** — one tool per way of working a number out — and the
+  first is fitted: VWBA 2.0 · D-3 Volume Provided, for household and
+  community water supply, ex-ante. **The surface is pack-keyed and is
+  never typed to one method**, because the same seat must later hold
+  carbon screening and the other D-methods. **Everything it produces is
+  a screening estimate** — anticipated, never delivered and never
+  verified — and it carries a consultant-review tag wherever it renders.
+  **A blank without-project volume is never read as zero.**
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material
@@ -204,11 +214,12 @@ gitignored twice over, by the bare `BRAND.md` rule and by `brand/*`, so
 it still does not publish.
 
 ~~**BRAND.md is the brand book, version 3, and it governs all design on
-this site.**~~ ~~**It is version 4 from 30 Aug 2026.**~~ **It is version
-4.1**, and it governs all design on this site. Version 3 arrived on
-28 Aug 2026 and held for two days; version 4 and then 4.1 both landed on
-30 Aug. One light brand, still superseding the two-theme era. It is
-complete on its own page and it governs both properties.
+this site.**~~ ~~**It is version 4 from 30 Aug 2026.**~~ ~~**It is version
+4.1**~~ **It is version 4.2 from 31 Aug 2026**, and it governs all design on
+this site. Version 3 arrived on 28 Aug 2026 and held for two days; version 4
+and then 4.1 both landed on 30 Aug; 4.2 followed on 31 Aug. One light brand,
+still superseding the two-theme era. It is complete on its own page and it
+governs both properties.
 
 **What version 4 changed**, all of it carried up from this site's work:
 the roster-extension rule in §6, with **Phoebe's own entry**; `--chrome`
@@ -218,7 +229,22 @@ the names and no values; and the **Slate map wash** recorded in §7. A
 sixth change — Driftwood into use — was proposed and reversed the same
 night, and §2.1 keeps the strike rather than erasing it.
 
-**What version 4.1 changed, and it is the first amendment written into
+**What version 4.2 changed, and it is the second amendment written into the
+book from inside this repository.** §6 only. **Calvin's row is filled in** — he
+is the free calculator, giving screening-level estimates **on the open site as
+well as in the Commons**, and he **never works in the paid console**. The
+Commons-only line is struck in place. His accent is **Plum `#5848A8`** and his
+portrait was **drawn here in the house form**, both by the maintainer's ruling
+of 31 Aug 2026 and both **knowing exceptions to §6's own rules** — the book
+forbids pointing an accent at a second agent, and says his portrait arrives
+with the Commons design. They are recorded in the book as exceptions rather
+than folded in silently. **Mint was the obvious pick and was refused on the
+merits**: §2.1 also makes Mint *Success / approved*, and a screening surface
+whose whole message is *not verified* must not wash green. The version bump
+itself was the engineer's call, made so the documents naming the book's version
+did not start telling a lie; the maintainer let it stand.
+
+**What version 4.1 changed, and it was the first amendment written into
 the book from inside this repository.** §2.5 only. Coral gained a text
 value it had never had, and the published live and approved text values
 were corrected, because measuring them against a shipped surface showed

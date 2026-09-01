@@ -26,8 +26,15 @@ Knowledge, Agents, Surfaces, Data and Operations. What is being built next, and 
 The largest gap: **project points are not placed**, because nothing goes on the map until there is
 registry-verified source data with published coordinates.
 
-**Bridget is the map's agent.** Her console is not built yet — the panel is there, she is named in
-it, and it says plainly that she is not answering. Her chat is coming; it does not exist today.
+**The quantification step is live**, and it is the third surface. It carries one screening
+calculator — the water volume a household or community supply project provides, worked from the
+project's own figures. **Every number it produces is a screening estimate**: anticipated, not
+delivered, not verified, and needing consultant review. Nothing is filled in for a visitor, and
+reloading clears it.
+
+**Bridget is the map's agent and Calvin is the quantification step's.** Neither console is built yet
+— each panel is there, each agent is named in it, and each says plainly that it is not answering.
+Their chats are coming; they do not exist today.
 
 ## What is built
 
@@ -41,6 +48,12 @@ it, and it says plainly that she is not answering. Her chat is coming; it does n
   choose well between projects that already qualify.
 - **Phoebe (beta).** The eligibility and feasibility agent, answering from a fixed set of rule cards
   and abstaining when none covers the question.
+- **Quantification step.** A method pack fitted to a slot: **VWBA 2.0 · D-3 Volume Provided**, for
+  household and community water supply, ex-ante, Option 3. Three questions can stop the number
+  outright, and a project they stop is told which method fits instead. The formula is written out
+  with the visitor's own figures in it. **A blank without-project volume is never read as zero** —
+  the benefit stays a dash and says it is incomplete, because reading a blank as zero would report
+  the whole with-project volume as benefit.
 - **A shared chat layer** that every agent on this site uses, so citations are rendered one way
   rather than reinvented per agent.
 
@@ -116,7 +129,8 @@ visitor identifier at all, so a question can never be traced back to a person.
 
 ### Confirming the build
 
-Eleven checks, all of which must pass. Five guard against faults that nothing else here can see:
+~~Eleven checks~~ **Twelve checks**, all of which must pass. Six guard against faults that nothing
+else here can see:
 `check-attribution` reads the built bundle rather than the source, so it catches a refactor that
 drops a required licence statement while leaving the site looking perfectly correct;
 `check-api-exports` catches a relay that would build cleanly and then answer nothing once deployed;
@@ -125,7 +139,9 @@ otherwise cost twenty-one real messages to confirm by hand; `check-basemap-key` 
 bundle for the basemap key, because a build without one produces a map that works, looks healthy,
 and is watermarked on every tile; and `check-reply-guard` proves the relay refuses an answer too
 short to be one, because that fault shows up in about two requests in a hundred and waiting for it
-is not a test.
+is not a test; and `check-vwba-d3` proves the screening calculator answers the way the method says —
+above all that a blank without-project volume is never treated as zero, which is the one way this
+calculation can produce a large, confident, wrong number with nothing looking broken.
 
 ```bash
 node scripts/check-basins.mjs
@@ -136,6 +152,7 @@ node scripts/check-api-exports.mjs
 node scripts/check-visitor-id.mjs
 node scripts/check-cap.mjs
 node scripts/check-reply-guard.mjs
+node scripts/check-vwba-d3.mjs
 node scripts/build-prompt-modules.mjs --check
 npm run build && node scripts/check-attribution.mjs && node scripts/check-basemap-key.mjs
 ```
