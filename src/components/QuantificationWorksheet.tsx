@@ -72,7 +72,11 @@ export default function QuantificationWorksheet() {
 
   return (
     <div style={{ height: '100%', overflowY: 'auto' }}>
-      <div style={{ maxWidth: 780, margin: '0 auto', padding: '20px var(--gutter) 64px' }}>
+      {/* THE SAME BOX AS THE ELIGIBILITY WORKSHEET — 880px wide, the same
+          gutter — so the sheet's left and right edges land exactly where that
+          worksheet's content does. Two free surfaces on one console that do
+          not share a margin read as two different products. */}
+      <div style={{ maxWidth: 880, margin: '0 auto', padding: '28px var(--gutter) 64px' }}>
         <div className="eyebrow" style={{ marginBottom: 12 }}>
           Quantification
         </div>
