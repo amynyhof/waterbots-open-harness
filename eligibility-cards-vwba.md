@@ -29,10 +29,21 @@ the Step 2.3 summary box reads softer, and Figure 3 is absolute. The build follo
 | Set | Source | Role | State |
 |---|---|---|---|
 | **Eligibility** | Appendix A | The hard gate. Six absolute criteria; failing any one means not eligible. | This file |
-| **Feasibility** | Appendix B | Selection considerations for explorers — helps rank and choose among projects that already pass the gate. Never a bar to entry. | Planned, **not drafted** |
+| **Feasibility** | Appendix B | Selection considerations for explorers — helps rank and choose among projects that already pass the gate. Never a bar to entry. | ~~Planned, **not drafted**~~ **Drafted, approved and live** — [feasibility-cards-vwba.md](./feasibility-cards-vwba.md) |
 
 Appendix B's considerations are explicitly not eligibility requirements (pp. 20, 34), which is why
-they are a separate set rather than more cards here. Not to be drafted until asked.
+they are a separate set rather than more cards here. ~~Not to be drafted until asked.~~
+
+> **Corrected 31 Aug 2026.** This table said the Feasibility set was *planned, not drafted*, and the
+> sentence above it said the set was *not to be drafted until asked*. **Both stopped being true on
+> 21 Aug 2026**, the day [feasibility-cards-vwba.md](./feasibility-cards-vwba.md) was written and
+> approved by the maintainer — ten cards, one per consideration, none skipped. Phoebe has answered
+> from both sets since 24 Aug 2026, so this file described the product wrongly for ten days.
+>
+> **The false lines are struck rather than deleted**, per *visible corrections over rewritten
+> history* in [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md). What they cost is worth
+> keeping: a card set that describes its own sibling as unwritten is a card set an agent could
+> quote, and this one is inherited into Phoebe's prompt.
 
 ---
 
@@ -137,6 +148,17 @@ guidebook, World Resources Institute. Not a mirror or a re-hosted copy.
 
 **What a project owner would be asked to show.**
 
+**This list is depth of proof. It is not a second set of gates.** There is one criterion on this
+card — both audiences are behind the project — and the four items below are how deeply that single
+thing is evidenced, not four further tests a project has to pass one by one. **How much is asked
+for scales with local conditions**, exactly as the rule above says: a high-risk project, or one in a
+place where reputation is delicate, is asked for more of it. A project carrying less of this has
+thinner proof of the same one thing; it has not failed four separate checks.
+
+**Phoebe must never present these four as four gates**, must never count them, and must never say a
+project met three of four. The criterion is met or it is not yet met, and where it is not yet met
+the route forward names the evidence that would carry it — which is what these four describe.
+
 - A community consultation, or desktop evidence gathered before the project began, establishing
   that it matters to others.
 - Any concerns surfaced, along with thinking about what they imply — who gains, and which values
@@ -223,6 +245,18 @@ guidebook, World Resources Institute. Not a mirror or a re-hosted copy.
 - Note that the guidance allows extra latitude for transformational, very large-scale projects
   where mapping every trade-off is impractical or not feasible.
 
+**The latitude does not open the gate.** Figure 3 (p. 19) is absolute, and the maintainer's ruling
+of 20 Aug 2026 is that the build follows Figure 3 — so **criterion 6 is a hard gate for a
+transformational project exactly as it is for any other.** What the latitude changes is **how
+exhaustively trade-offs must be mapped** where mapping every one of them is impractical. It does not
+change whether they were looked for, understood, and cut back. A project that skipped that work has
+not met criterion 6, however large or transformational it is.
+
+**Phoebe must never offer the latitude as an exemption**, and must never let project scale stand in
+for the evidence. Where a very large project cannot map every trade-off, the honest answer says what
+*was* assessed and what was left — it does not report the criterion met on the strength of the
+project's size.
+
 ---
 
 ## Notes for the grader
@@ -258,6 +292,13 @@ guidebook, World Resources Institute. Not a mirror or a re-hosted copy.
    gate, with a route forward attached to every failure. See the design decision at the top of this
    file. The tension in the source is recorded here so the ruling is understood as a choice made
    against a genuinely ambiguous source, not as the only reading of it.
+
+   **The flexibility page 20 describes is about depth of evidence, not about the gate.** Added
+   31 Aug 2026, because this note names that flexibility and then leaves a reader to work out what
+   it touches. It touches **how much proof is asked for** on the two criteria the page names —
+   consultation, which is Card 3, and trade-off identification, which is Card 6. It never makes
+   either criterion optional. Both cards now say so on their own face, so an agent reading one card
+   cannot miss it by not reading this note.
 
 3. **Criterion 4 is the one with real exceptions in it.** The other five are single-clause tests.
    Card 4 carries two carve-outs that could each be its own sub-rule if the card set needs finer
