@@ -27,7 +27,81 @@
  *   node scripts/build-prompt-modules.mjs --check  # exit 1 if either would change
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { readFileSync, writeFileSync, existsSync, mkdtempSync, rmSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
+/* ---------------------------------------------------------------------------
+   The pack list the primer renders.
+
+   THE PRIMER'S PACK LIST IS NEVER HAND-TYPED. Maintainer's ruling, 1 Sep 2026.
+   A list of packs typed into a document an agent inherits would go stale the
+   day a pack was added or renamed, and an agent would then either claim a pack
+   that is gone or miss one that is here — the exact drift the primer exists to
+   prevent.
+
+   So the primer carries a marker and this reads the registry itself. The packs
+   are TypeScript in src/, whose imports name no file extension because a
+   bundler resolves them, so they are compiled to CommonJS in a temporary
+   folder and read from there — the same way the pack's own check does it.
+
+   Only packs that can actually answer are listed. A planned pack is named on
+   the surface's tab strip, where it is visibly marked planned; an agent that
+   named it in conversation would be claiming a tool that does not exist.
+--------------------------------------------------------------------------- */
+
+const PACKS_MARKER = '{{FITTED_PACKS}}';
+
+const COUNT_WORD = ['no', 'one', 'two', 'three', 'four', 'five', 'six'];
+
+function fittedPackSentence() {
+  const out = mkdtempSync(join(tmpdir(), 'wb-packs-'));
+  try {
+    const compile = spawnSync(
+      process.execPath,
+      [
+        join('node_modules', 'typescript', 'bin', 'tsc'),
+        join('src', 'lib', 'methodPacks.ts'),
+        '--outDir', out,
+        '--module', 'commonjs',
+        '--moduleResolution', 'node',
+        '--target', 'es2022',
+        '--skipLibCheck',
+        '--esModuleInterop',
+      ],
+      { encoding: 'utf8' }
+    );
+    if (compile.status !== 0) {
+      throw new Error(
+        'The method pack registry did not compile, so the primer’s pack list ' +
+          'could not be read from it.\n' +
+          (compile.stdout || compile.stderr)
+      );
+    }
+    writeFileSync(join(out, 'package.json'), '{"type":"commonjs"}');
+    const { METHOD_PACKS } = createRequire(import.meta.url)(join(out, 'methodPacks.js'));
+
+    const live = METHOD_PACKS.filter((p) => p.state === 'live');
+    if (live.length === 0) return 'No pack is fitted to the step yet.';
+
+    const missing = live.find((p) => !p.primerLine);
+    if (missing) {
+      throw new Error(
+        `The pack "${missing.name}" has no primerLine, so the primer cannot describe it. ` +
+          'Every live pack owes one clause for the roster.'
+      );
+    }
+
+    const word = COUNT_WORD[live.length] ?? String(live.length);
+    const noun = live.length === 1 ? 'pack' : 'packs';
+    const listed = live.map((p) => `**${p.name}** — ${p.primerLine}`).join('; ');
+    return `Today that is ${word} ${noun}: ${listed}.`;
+  } finally {
+    rmSync(out, { recursive: true, force: true });
+  }
+}
 
 /**
  * Each bundle is one generated module built from one or more markdown files.
@@ -96,6 +170,16 @@ function render({ target, sources }) {
           );
         }
         text = text.slice(from + begin.length, to).trim() + '\n';
+      }
+
+      /* The pack list comes from the registry, never from typed prose. A
+         marker left unreplaced would ship a literal {{FITTED_PACKS}} to an
+         agent, so this throws rather than embedding it. */
+      if (text.includes(PACKS_MARKER)) {
+        text = text.split(PACKS_MARKER).join(fittedPackSentence());
+      }
+      if (text.includes('{{')) {
+        throw new Error(`${file} still carries an unreplaced marker: ${text.match(/\{\{[^}]*\}\}/)}`);
       }
       /* JSON.stringify gives a correctly escaped TypeScript string literal —
          backslashes, quotes, newlines and any stray control characters included. */

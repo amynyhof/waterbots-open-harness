@@ -23,7 +23,7 @@
  */
 
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -502,6 +502,41 @@ expect(
     [m.indicator, m.definition, m.optionLine, m.capacityLine, m.optionName].join(' ')
   ),
   'the method strip overclaims'
+);
+
+/* ---------------------------------------------------------------------------
+   The primer an agent inherits names the live packs and no planned one.
+
+   The pack list in agent-primer.md is rendered from this registry rather than
+   typed. These confirm the rendering actually happened and said the right
+   thing — a literal marker reaching an agent, or a planned pack named as
+   though it existed, are both things that would build cleanly and be wrong.
+--------------------------------------------------------------------------- */
+
+const primerSource = readFileSync('api/_primer.generated.ts', 'utf8');
+const primerText = JSON.parse(primerSource.match(/AGENT_PRIMER_MD: string = (.*);\s*$/s)[1]);
+
+expect(
+  'no unreplaced marker reaches the agent',
+  !primerText.includes('{{'),
+  'a literal marker is in the text an agent is given'
+);
+expect(
+  'the primer names every live pack',
+  METHOD_PACKS.filter((p) => p.state === 'live').every((p) => primerText.includes(p.name)),
+  'a fitted pack is missing from the roster an agent reads'
+);
+expect(
+  'the primer names no planned pack',
+  METHOD_PACKS.filter((p) => p.state === 'planned').every((p) => !primerText.includes(p.name)),
+  'an agent could name a pack that does not exist'
+);
+expect(
+  'every live pack owes the primer a clause',
+  METHOD_PACKS.filter((p) => p.state === 'live').every(
+    (p) => typeof p.primerLine === 'string' && p.primerLine.length > 10
+  ),
+  'a pack has no clause for the roster'
 );
 
 /* ------------------------------------------------------------------------- */

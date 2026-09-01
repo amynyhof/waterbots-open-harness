@@ -237,6 +237,8 @@ export const VWBA_D3: MethodPack = {
   measures:
     'How much water a year a supply project provides to the people it serves, ' +
     'over and above what they were already getting without it.',
+  /* The maintainer's own clause, signed 1 Sep 2026. The primer renders it. */
+  primerLine: 'the water volume a household or community supply project provides',
   tier: 'screening',
 
   /* The method said once, in its own terms. Not a paste of the guidebook —
