@@ -1,0 +1,333 @@
+/**
+ * Confirms the VWBA 2.0 D-3 screening pack answers the way the method says.
+ *
+ *   node scripts/check-vwba-d3.mjs
+ *
+ * WHY THIS EXISTS. This pack turns a handful of answers into a water volume,
+ * and the ways it can be wrong are quiet ones. The worst of them is treating a
+ * blank without-project field as zero, which would report the whole
+ * with-project volume as benefit — a large, confident, wrong number, produced
+ * without anything looking broken. That failure has its own check below and is
+ * the reason this file exists.
+ *
+ * THE NUMBERS HERE ARE OBVIOUSLY FAKE AND ARE LABELLED AS EXAMPLES. A hundred
+ * people, twenty litres, three hundred and sixty-five days. They are round
+ * because they are arithmetic fixtures and nothing else. NONE of this is a
+ * real project, none of it ships, and none of it is an answer key — no real
+ * project's figures appear anywhere in this repository.
+ *
+ * WHY IT COMPILES FIRST. The pack is TypeScript in src/, whose imports name no
+ * file extension because a bundler resolves them. Plain Node cannot, so the
+ * pack is compiled to CommonJS in a temporary folder and loaded from there.
+ * This tests the real module rather than a second copy of its arithmetic.
+ */
+
+import { spawnSync } from 'node:child_process';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
+const problems = [];
+let checks = 0;
+
+function expect(label, condition, detail) {
+  checks += 1;
+  if (condition) {
+    console.log(`  ok    ${label}`);
+  } else {
+    console.log(`  FAIL  ${label}`);
+    problems.push(`${label} — ${detail}`);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Compile the pack and load it.
+--------------------------------------------------------------------------- */
+
+const out = mkdtempSync(join(tmpdir(), 'wb-d3-'));
+
+const compile = spawnSync(
+  process.execPath,
+  [
+    join('node_modules', 'typescript', 'bin', 'tsc'),
+    join('src', 'lib', 'vwbaD3.ts'),
+    '--outDir',
+    out,
+    '--module',
+    'commonjs',
+    '--moduleResolution',
+    'node',
+    '--target',
+    'es2022',
+    '--skipLibCheck',
+    '--esModuleInterop',
+  ],
+  { encoding: 'utf8' }
+);
+
+if (compile.status !== 0) {
+  console.error('\n  FAILED — the pack did not compile, so nothing below could be checked.\n');
+  console.error(compile.stdout || compile.stderr);
+  rmSync(out, { recursive: true, force: true });
+  process.exit(1);
+}
+
+writeFileSync(join(out, 'package.json'), '{"type":"commonjs"}');
+const require_ = createRequire(import.meta.url);
+const { VWBA_D3, readNumber } = require_(join(out, 'vwbaD3.js'));
+
+console.log('\nVWBA 2.0 · D-3 Volume Provided — screening pack\n');
+console.log('  Example data only. Round, obviously fake, and not an answer key.\n');
+
+/* ---------------------------------------------------------------------------
+   Fixtures. Every one of these is made up.
+--------------------------------------------------------------------------- */
+
+/** Full access, a hundred people, the published defaults, nothing else given. */
+const FULL_BASE = {
+  activity_is_wash_supply: 'yes',
+  quality_ok: 'yes',
+  access_ok: 'yes',
+  people: '100',
+  access_level: 'full',
+  lpcd: '',
+  days: '',
+  capacity_lpy: '',
+  without_lpy: '',
+};
+
+const run = (extra = {}) => VWBA_D3.compute({ ...FULL_BASE, ...extra });
+
+/* ---------------------------------------------------------------------------
+   1 — the plain case, without-project left blank.
+--------------------------------------------------------------------------- */
+
+const one = run();
+expect(
+  '1. full access, 100 people, defaults — with-project is 730,000 L/year',
+  one.withProjectLitres === 730000,
+  `got ${one.withProjectLitres}`
+);
+expect(
+  '1. with-project is 730 m³/year',
+  one.withProjectLitres / 1000 === 730,
+  `got ${one.withProjectLitres / 1000}`
+);
+expect(
+  '1. a blank without-project leaves the benefit incomplete',
+  one.kind === 'incomplete',
+  `got ${one.kind}`
+);
+expect(
+  '1. the incomplete answer says what is missing',
+  typeof one.missing === 'string' && one.missing.toLowerCase().includes('without-project'),
+  'no plain explanation of the missing figure'
+);
+
+/* ---------------------------------------------------------------------------
+   2 — the same, with a without-project volume given.
+--------------------------------------------------------------------------- */
+
+const two = run({ without_lpy: '100000' });
+expect('2. with a without-project volume, the answer completes', two.kind === 'complete', two.kind);
+expect(
+  '2. benefit is 730,000 − 100,000 = 630,000 L/year',
+  two.benefitLitres === 630000,
+  `got ${two.benefitLitres}`
+);
+expect(
+  '2. the with-project figure is unchanged by it',
+  two.withProjectLitres === 730000,
+  `got ${two.withProjectLitres}`
+);
+
+/* ---------------------------------------------------------------------------
+   3 — capacity caps the with-project volume.
+--------------------------------------------------------------------------- */
+
+const three = run({ capacity_lpy: '500000' });
+expect(
+  '3. a capacity below demand caps with-project at 500,000 L/year',
+  three.withProjectLitres === 500000,
+  `got ${three.withProjectLitres}`
+);
+expect(
+  '3. with capacity given and without-project blank, it is still incomplete',
+  three.kind === 'incomplete',
+  `got ${three.kind}`
+);
+
+const threeHigh = run({ capacity_lpy: '900000' });
+expect(
+  '3. a capacity above demand does not raise the figure',
+  threeHigh.withProjectLitres === 730000,
+  `got ${threeHigh.withProjectLitres}`
+);
+
+/* ---------------------------------------------------------------------------
+   4 — limited access.
+--------------------------------------------------------------------------- */
+
+const four = VWBA_D3.compute({
+  ...FULL_BASE,
+  access_level: 'limited',
+  days: '200',
+});
+expect(
+  '4. limited access, 100 people, default 2 L, 200 days — 40,000 L/year',
+  four.withProjectLitres === 40000,
+  `got ${four.withProjectLitres}`
+);
+expect('4. and the benefit is incomplete', four.kind === 'incomplete', `got ${four.kind}`);
+
+expect(
+  '4. limited access has NO default number of days',
+  VWBA_D3.defaultFor('days', { access_level: 'limited' }) === null,
+  'a default appeared where the method gives none'
+);
+expect(
+  '4. full access does default to 365 days',
+  VWBA_D3.defaultFor('days', { access_level: 'full' }) === '365',
+  'the full-access default is missing'
+);
+
+/* ---------------------------------------------------------------------------
+   5 and 6 — the gates. Pass or fail, never a multiplier.
+--------------------------------------------------------------------------- */
+
+const quality = run({ quality_ok: 'no' });
+expect('5. quality = no produces no volume', quality.kind === 'blocked', `got ${quality.kind}`);
+expect(
+  '5. and it gives a route forward',
+  typeof quality.routeForward === 'string' && quality.routeForward.length > 20,
+  'a refusal with no way forward'
+);
+expect(
+  '5. a blocked answer carries no figure at all',
+  quality.withProjectLitres === undefined && quality.benefitLitres === undefined,
+  'a blocked project was given a number'
+);
+
+const access = run({ access_ok: 'no' });
+expect('6. access = no produces no volume', access.kind === 'blocked', `got ${access.kind}`);
+expect(
+  '6. and it gives a route forward',
+  typeof access.routeForward === 'string' && access.routeForward.length > 20,
+  'a refusal with no way forward'
+);
+
+const activity = run({ activity_is_wash_supply: 'no' });
+expect(
+  '6b. a project that is not household or community supply is stopped',
+  activity.kind === 'blocked',
+  `got ${activity.kind}`
+);
+expect(
+  '6b. and it is pointed at the method that does fit',
+  /D-6|D-4|irrigation/i.test(activity.routeForward),
+  'no method named for the project to go to'
+);
+
+/* ---------------------------------------------------------------------------
+   7 — the one that matters most. A blank is never zero.
+--------------------------------------------------------------------------- */
+
+expect(
+  '7. a blank without-project reads as null, not 0',
+  readNumber({ without_lpy: '' }, 'without_lpy') === null,
+  'a blank became a number'
+);
+expect(
+  '7. an absent without-project reads as null, not 0',
+  readNumber({}, 'without_lpy') === null,
+  'an absent field became a number'
+);
+expect(
+  '7. whitespace is still blank',
+  readNumber({ without_lpy: '   ' }, 'without_lpy') === null,
+  'whitespace became a number'
+);
+expect(
+  '7. a blank never produces a benefit equal to the whole with-project volume',
+  one.kind === 'incomplete' && one.benefitLitres === undefined,
+  'the entire with-project volume was reported as benefit'
+);
+expect(
+  '7. a real zero, typed on purpose, IS still zero',
+  readNumber({ without_lpy: '0' }, 'without_lpy') === 0,
+  'a deliberate zero was thrown away'
+);
+
+const typedZero = run({ without_lpy: '0' });
+expect(
+  '7. and a typed zero completes, with the whole volume as benefit',
+  typedZero.kind === 'complete' && typedZero.benefitLitres === 730000,
+  `got ${typedZero.kind} / ${typedZero.benefitLitres}`
+);
+
+/* ---------------------------------------------------------------------------
+   8 — Sphere copy stays off unless the project is humanitarian.
+--------------------------------------------------------------------------- */
+
+expect(
+  '8. humanitarian = no shows no Sphere note',
+  VWBA_D3.conditionalHelp('lpcd', { humanitarian: 'no' }) === null,
+  'Sphere copy appeared on an ordinary project'
+);
+expect(
+  '8. an unanswered humanitarian question shows no Sphere note either',
+  VWBA_D3.conditionalHelp('lpcd', {}) === null,
+  'Sphere copy appeared by default'
+);
+
+const sphere = VWBA_D3.conditionalHelp('lpcd', { humanitarian: 'yes' });
+expect(
+  '8. humanitarian = yes shows the note',
+  typeof sphere === 'string' && /sphere/i.test(sphere),
+  'the note is missing where it applies'
+);
+expect(
+  '8. and even then it changes no default',
+  VWBA_D3.defaultFor('lpcd', { access_level: 'full', humanitarian: 'yes' }) === '20',
+  'a default switched itself under the visitor'
+);
+
+/* ---------------------------------------------------------------------------
+   The pack says what it is.
+--------------------------------------------------------------------------- */
+
+expect('the pack is screening tier', VWBA_D3.tier === 'screening', VWBA_D3.tier);
+expect(
+  'the citation carries all four parts and the canonical link',
+  Boolean(
+    VWBA_D3.citation.document &&
+      VWBA_D3.citation.version &&
+      VWBA_D3.citation.section &&
+      VWBA_D3.citation.page
+  ) && VWBA_D3.citation.href === 'https://doi.org/10.46830/wrigb.23.00112',
+  'the citation is incomplete'
+);
+expect(
+  'the without-project field is required AND may be left empty',
+  VWBA_D3.fields.find((f) => f.key === 'without_lpy')?.required === true,
+  'the field that must never be guessed is not marked required'
+);
+expect(
+  'no field carries a default value typed into it',
+  VWBA_D3.fields.every((f) => !('value' in f)),
+  'a field ships with a figure already in it'
+);
+
+/* ------------------------------------------------------------------------- */
+
+rmSync(out, { recursive: true, force: true });
+
+console.log('');
+if (problems.length) {
+  console.log(`FAILED — ${problems.length} of ${checks} checks did not hold.\n`);
+  for (const p of problems) console.log(`  · ${p}`);
+  console.log('');
+  process.exit(1);
+}
+console.log(`PASSED — ${checks} checks. The pack answers the way the method says.\n`);
