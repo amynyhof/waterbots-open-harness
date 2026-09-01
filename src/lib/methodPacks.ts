@@ -96,13 +96,60 @@ export type PackResult =
   | { kind: 'incomplete'; withProjectLitres: number; missing: string }
   | { kind: 'complete'; withProjectLitres: number; benefitLitres: number };
 
-export interface MethodPack {
+/**
+ * What every registered pack has, whether or not it can answer yet.
+ *
+ * The tab strip is drawn from these, so the family of tools is visible from
+ * the first day rather than appearing all at once later. A planned pack is
+ * named and marked planned; it is never clickable into something that looks
+ * like a working tool, which would be the same false success state a
+ * live-looking composer would be.
+ */
+export interface PackListing {
   /** Stable key. Data and UI are keyed on this, never on a pack's position. */
   key: string;
   /** How the pack names itself on the surface. */
   name: string;
+  /** `live` answers; `planned` is named and honest about not being built. */
+  state: 'live' | 'planned';
+}
+
+/** A pack that is named but cannot answer yet. It carries no fields at all. */
+export interface PlannedPack extends PackListing {
+  state: 'planned';
+  /** One plain line about what it will do. Never a claim that it does it. */
+  note: string;
+}
+
+/**
+ * One line of a pack's formula, with the visitor's own figures dropped in.
+ *
+ * THE PACK WRITES ITS OWN FORMULA; the worksheet only draws it. If the surface
+ * knew that D-3 multiplies people by litres by days, it would be a D-3 surface
+ * wearing a general name, and the next pack would have to fight it.
+ *
+ * A blank term is an em dash, never a zero — the same rule the arithmetic
+ * follows, said out loud on screen so a visitor can see which figure is
+ * missing rather than wondering why no answer appeared.
+ */
+export interface FormulaStep {
+  /** What this line works out, e.g. "With the project". */
+  label: string;
+  /** The formula in words, e.g. "people × litres per person per day × days". */
+  terms: string;
+  /** The same line with live values in it, e.g. "100 × 20 × 365". */
+  live: string;
+  /** The answer, already grouped for reading, or null when it cannot be had. */
+  value: string | null;
+  unit?: string;
+}
+
+export interface MethodPack extends PackListing {
+  state: 'live';
   /** What it covers and what it does not, in one plain line. */
   scope: string;
+  /** One plain sentence: what this pack measures. */
+  measures: string;
   tier: PackTier;
   /** The source, in the shape CITATIONS.md fixes. The console renders it. */
   citation: Citation;
@@ -112,6 +159,12 @@ export interface MethodPack {
   gates: PackGate[];
   /** The pack's own arithmetic. Pure: same answers in, same result out. */
   compute: (values: PackValues) => PackResult;
+  /** The pack's formula, written out with the visitor's figures in it. */
+  formula: (values: PackValues) => FormulaStep[];
+  /** The field keys that are gates, in the order they are asked. */
+  gateKeys: string[];
+  /** The field keys that are variables — the figures the formula reads. */
+  variableKeys: string[];
   /**
    * The default that follows from another answer, or null for none.
    *
@@ -123,17 +176,39 @@ export interface MethodPack {
   conditionalHelp: (fieldKey: string, values: PackValues) => string | null;
 }
 
+/** Any pack the strip knows about, answering or not. */
+export type RegisteredPack = MethodPack | PlannedPack;
+
+/**
+ * Carbon screening — named, planned, and not built.
+ *
+ * It is here so the tab strip shows the family from the first day: this seat
+ * holds more than one tool, and a strip with a single tab in it hides that.
+ * It carries no fields, no arithmetic and no figures, and the strip will not
+ * open it — a planned pack that could be clicked into something resembling a
+ * working tool would be exactly the false success state this console refuses
+ * everywhere else.
+ *
+ * Naming a planned thing is allowed and is not a claim. Honest states are the
+ * rule: "planned" and "not live yet" are said plainly, never simulated.
+ */
+export const CARBON_SCREENING: PlannedPack = {
+  key: 'carbon-screening',
+  name: 'Carbon screening',
+  state: 'planned',
+  note: 'Planned. Not built, and it produces no figures.',
+};
+
 /**
  * Every pack this console carries.
  *
- * Adding a pack here is what fits it to the slot — there is no second place to
- * register one.
+ * Adding a pack here adds its tab — there is no second place to register one.
  */
-export const METHOD_PACKS: MethodPack[] = [VWBA_D3];
+export const METHOD_PACKS: RegisteredPack[] = [CARBON_SCREENING, VWBA_D3];
 
-/** The pack currently fitted to the step, or null when the slot is empty. */
+/** The pack currently fitted to the step, or null when none can answer. */
 export function fittedPack(): MethodPack | null {
-  return METHOD_PACKS[0] ?? null;
+  return (METHOD_PACKS.find((p) => p.state === 'live') as MethodPack) ?? null;
 }
 
 /** Litres to cubic metres. The result is shown in both. */

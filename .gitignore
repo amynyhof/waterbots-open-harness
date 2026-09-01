@@ -48,6 +48,7 @@ brand/assets/bots/*
 # It is a LOOK reference and nothing else — spacing, shapes, type, and the
 # number card. Not its questions, not its logic, not its paid-side features.
 Calculator design ref/
+Design refs/
 
 # Dependencies
 node_modules/

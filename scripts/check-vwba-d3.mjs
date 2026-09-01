@@ -319,6 +319,110 @@ expect(
   'a field ships with a figure already in it'
 );
 
+/* ---------------------------------------------------------------------------
+   The worksheet draws fields from gateKeys and variableKeys, so a field in
+   neither list would silently vanish from the page while still being read by
+   the arithmetic — a question nobody could answer and no error to show for it.
+--------------------------------------------------------------------------- */
+
+const grouped = [...VWBA_D3.gateKeys, ...VWBA_D3.variableKeys];
+const declared = VWBA_D3.fields.map((f) => f.key);
+
+expect(
+  'every field appears in the gates or the variables',
+  declared.every((k) => grouped.includes(k)),
+  `not shown anywhere: ${declared.filter((k) => !grouped.includes(k)).join(', ')}`
+);
+expect(
+  'no field is listed in both groups',
+  new Set(grouped).size === grouped.length,
+  'a field would be drawn twice'
+);
+expect(
+  'every grouped key is a real field',
+  grouped.every((k) => declared.includes(k)),
+  `named but missing: ${grouped.filter((k) => !declared.includes(k)).join(', ')}`
+);
+expect(
+  'every hard gate is in the gate row',
+  VWBA_D3.gates.every((g) => VWBA_D3.gateKeys.includes(g.fieldKey)),
+  'a gate that blocks the answer is not on screen to be answered'
+);
+
+/* ---------------------------------------------------------------------------
+   The formula, written out.
+--------------------------------------------------------------------------- */
+
+const blankFormula = VWBA_D3.formula({});
+expect(
+  'the formula shows before anything is entered',
+  blankFormula.length >= 2,
+  `got ${blankFormula.length} lines`
+);
+expect(
+  'an empty formula line reads as an em dash, never as a zero',
+  blankFormula.every((s) => s.value === null) && blankFormula[0].live.includes('—'),
+  `got "${blankFormula[0].live}"`
+);
+expect(
+  'no formula line shows a 0 where a figure is missing',
+  !blankFormula.some((s) => /(^|[^\d])0([^\d]|$)/.test(s.live)),
+  `a zero appeared: ${blankFormula.map((s) => s.live).join(' | ')}`
+);
+
+const fullFormula = VWBA_D3.formula({ ...FULL_BASE, without_lpy: '100000' });
+expect(
+  'live values drop into the formula line',
+  fullFormula[0].live === '100 × 20 × 365',
+  `got "${fullFormula[0].live}"`
+);
+expect(
+  'the with-project line carries its answer',
+  fullFormula[0].value === '730,000',
+  `got ${fullFormula[0].value}`
+);
+expect(
+  'the benefit line subtracts the without-project figure',
+  fullFormula[fullFormula.length - 1].live === '730,000 − 100,000',
+  `got "${fullFormula[fullFormula.length - 1].live}"`
+);
+expect(
+  'a blank without-project shows as an em dash in the benefit line',
+  VWBA_D3.formula(FULL_BASE).at(-1).live.endsWith('− —'),
+  `got "${VWBA_D3.formula(FULL_BASE).at(-1).live}"`
+);
+expect(
+  'the capacity line appears only when a capacity was given',
+  VWBA_D3.formula(FULL_BASE).length === 2 &&
+    VWBA_D3.formula({ ...FULL_BASE, capacity_lpy: '500000' }).length === 3,
+  'the capped line is drawn when there is no capacity to cap with'
+);
+
+/* ---------------------------------------------------------------------------
+   The tab strip. A planned pack is named and carries nothing that could be
+   mistaken for a working tool.
+--------------------------------------------------------------------------- */
+
+const { METHOD_PACKS, CARBON_SCREENING } = require_(join(out, 'methodPacks.js'));
+
+expect(
+  'the strip shows more than one pack, so the family is visible',
+  METHOD_PACKS.length >= 2,
+  `got ${METHOD_PACKS.length}`
+);
+expect(
+  'exactly one pack is live',
+  METHOD_PACKS.filter((p) => p.state === 'live').length === 1,
+  'more than one pack claims to answer'
+);
+expect(
+  'the planned pack carries no fields, no gates and no arithmetic',
+  !('fields' in CARBON_SCREENING) &&
+    !('compute' in CARBON_SCREENING) &&
+    !('formula' in CARBON_SCREENING),
+  'a planned pack carries machinery it could be mistaken for using'
+);
+
 /* ------------------------------------------------------------------------- */
 
 rmSync(out, { recursive: true, force: true });

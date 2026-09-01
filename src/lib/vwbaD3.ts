@@ -30,7 +30,7 @@
  * are not reproduced, and no page of it is pasted into this file or the UI.
  */
 
-import type { MethodPack, PackResult, PackValues } from './methodPacks';
+import type { FormulaStep, MethodPack, PackResult, PackValues } from './methodPacks';
 
 /* --------------------------------------------------------------------------
    The published defaults.
@@ -166,13 +166,77 @@ function compute(values: PackValues): PackResult {
 }
 
 /* --------------------------------------------------------------------------
+   The formula, written out.
+   -------------------------------------------------------------------------- */
+
+/** A figure grouped for reading, or an em dash where there is none. */
+const show = (n: number | null): string => (n === null ? '—' : n.toLocaleString('en-GB'));
+
+/**
+ * The formula with the visitor's own figures dropped into it.
+ *
+ * Every blank shows as an em dash rather than vanishing or reading as zero, so
+ * someone looking at an unfinished line can see exactly which figure the
+ * answer is waiting on.
+ */
+function formula(values: PackValues): FormulaStep[] {
+  const people = readNumber(values, 'people');
+  const lpcd = effectiveLpcd(values);
+  const days = effectiveDays(values);
+  const capacity = readNumber(values, 'capacity_lpy');
+  const without = readNumber(values, 'without_lpy');
+
+  const peopleWater =
+    people === null || lpcd === null || days === null ? null : people * lpcd * days;
+
+  const steps: FormulaStep[] = [
+    {
+      label: 'What people would use',
+      terms: 'people × litres per person per day × days',
+      live: `${show(people)} × ${show(lpcd)} × ${show(days)}`,
+      value: show(peopleWater) === '—' ? null : show(peopleWater),
+      unit: 'L / year',
+    },
+  ];
+
+  /* The cap only appears when a capacity was given. An absent capacity means
+     unknown, so there is no line to draw — not a line reading "no limit". */
+  const withProject = capacity === null ? peopleWater : peopleWater === null ? null : Math.min(peopleWater, capacity);
+
+  if (capacity !== null) {
+    steps.push({
+      label: 'With the project, capped by what the system can deliver',
+      terms: 'the smaller of what people would use and the system’s capacity',
+      live: `min(${show(peopleWater)}, ${show(capacity)})`,
+      value: show(withProject) === '—' ? null : show(withProject),
+      unit: 'L / year',
+    });
+  }
+
+  steps.push({
+    label: 'Anticipated benefit',
+    terms: 'with the project − without the project',
+    live: `${show(withProject)} − ${show(without)}`,
+    value:
+      withProject === null || without === null ? null : show(withProject - without),
+    unit: 'L / year',
+  });
+
+  return steps;
+}
+
+/* --------------------------------------------------------------------------
    The pack.
    -------------------------------------------------------------------------- */
 
 export const VWBA_D3: MethodPack = {
   key: 'vwba-2.0-d3-volume-provided',
   name: 'VWBA 2.0 · D-3 Volume Provided',
+  state: 'live',
   scope: 'WASH — household or community water supply · ex-ante',
+  measures:
+    'How much water a year a supply project provides to the people it serves, ' +
+    'over and above what they were already getting without it.',
   tier: 'screening',
 
   citation: {
@@ -349,6 +413,12 @@ export const VWBA_D3: MethodPack = {
   ],
 
   compute,
+  formula,
+
+  /* Which questions decide whether the pack fits, and which carry figures.
+     The worksheet groups by these rather than by guessing from field kinds. */
+  gateKeys: ['activity_is_wash_supply', 'quality_ok', 'access_ok', 'within_1km', 'humanitarian'],
+  variableKeys: ['people', 'access_level', 'lpcd', 'days', 'capacity_lpy', 'without_lpy'],
 
   defaultFor(fieldKey, values) {
     if (fieldKey === 'lpcd') {
