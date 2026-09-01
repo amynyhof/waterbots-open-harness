@@ -423,6 +423,74 @@ expect(
   'a planned pack carries machinery it could be mistaken for using'
 );
 
+/* ---------------------------------------------------------------------------
+   Three questions can stop the number. The other two are helpers.
+--------------------------------------------------------------------------- */
+
+expect(
+  'exactly three questions can stop the number',
+  VWBA_D3.gates.length === 3,
+  `got ${VWBA_D3.gates.length}`
+);
+expect(
+  'the 1 km question cannot stop the number',
+  !VWBA_D3.gates.some((g) => g.fieldKey === 'within_1km'),
+  'a helper was made into a gate'
+);
+expect(
+  'the humanitarian question cannot stop the number',
+  !VWBA_D3.gates.some((g) => g.fieldKey === 'humanitarian'),
+  'a helper was made into a gate'
+);
+expect(
+  'answering No to the 1 km helper still produces a figure',
+  run({ within_1km: 'no' }).withProjectLitres === 730000,
+  'a helper changed the volume'
+);
+expect(
+  'the 1 km helper changes no litres either way',
+  run({ within_1km: 'yes' }).withProjectLitres === run({ within_1km: 'no' }).withProjectLitres,
+  'a helper moved the figure'
+);
+expect(
+  'both helpers are marked optional',
+  ['within_1km', 'humanitarian'].every(
+    (k) => VWBA_D3.fields.find((f) => f.key === k)?.required === false
+  ),
+  'a helper is marked required'
+);
+
+/* ---------------------------------------------------------------------------
+   The method strip says the method once, and does not paste the guidebook.
+--------------------------------------------------------------------------- */
+
+const m = VWBA_D3.method;
+expect('the indicator is named', m.indicator === 'Volume provided', m.indicator);
+expect('and reported in m³ per year', m.indicatorUnit === 'm³ per year', m.indicatorUnit);
+expect(
+  'the defining line is with-project minus without-project',
+  /with the project/.test(m.definition) && /without the project/.test(m.definition),
+  m.definition
+);
+expect(
+  'the option in use is written out',
+  /people/.test(m.optionLine) && /days/.test(m.optionLine),
+  m.optionLine
+);
+expect('the option is named', /Option 3/.test(m.optionName), m.optionName);
+expect(
+  'the strip is short — it is not a paste of the guidebook',
+  [m.definition, m.optionLine, m.capacityLine].every((line) => line.length < 130),
+  'a line long enough to be an excerpt'
+);
+expect(
+  'nothing in the strip claims the figure is verified or delivered',
+  !/verified|delivered|approved/i.test(
+    [m.indicator, m.definition, m.optionLine, m.capacityLine, m.optionName].join(' ')
+  ),
+  'the method strip overclaims'
+);
+
 /* ------------------------------------------------------------------------- */
 
 rmSync(out, { recursive: true, force: true });

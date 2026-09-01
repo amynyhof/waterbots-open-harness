@@ -65,6 +65,11 @@ export default function QuantificationWorksheet() {
   const blocked = result?.kind === 'blocked' ? result : null;
   const field = (key: string) => pack?.fields.find((f) => f.key === key);
 
+  const benefit = result?.kind === 'complete' ? result.benefitLitres : null;
+  /* The tab carries the pack's own headline figure, in the reported unit. */
+  const headline = benefit === null ? null : `${cubes(benefit)} m³/yr`;
+  const hasCapacity = (values.capacity_lpy ?? '').trim() !== '';
+
   return (
     <div style={{ height: '100%', overflowY: 'auto' }}>
       <div style={{ maxWidth: 780, margin: '0 auto', padding: '20px var(--gutter) 64px' }}>
@@ -72,13 +77,15 @@ export default function QuantificationWorksheet() {
           Quantification
         </div>
 
-        <PackTabs />
+        <PackTabs headline={headline} />
 
         {!pack ? (
           <EmptySlot />
         ) : (
           <>
             <Header pack={pack} result={result} />
+
+            <MethodStrip pack={pack} hasCapacity={hasCapacity} />
 
             <SectionHead>Does this pack fit?</SectionHead>
             <div
@@ -152,11 +159,12 @@ export default function QuantificationWorksheet() {
  * opened into something resembling a working tool would be the same false
  * success state a live-looking composer would be.
  */
-function PackTabs() {
+function PackTabs({ headline }: { headline: string | null }) {
   return (
     <div
       style={{
         display: 'flex',
+        alignItems: 'flex-end',
         gap: 4,
         borderBottom: '1px solid var(--line)',
         marginBottom: 16,
@@ -172,32 +180,105 @@ function PackTabs() {
             aria-current={live ? 'page' : undefined}
             title={live ? undefined : 'Planned. Not built yet.'}
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 7,
-              padding: '7px 12px',
-              fontSize: 11.5,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              gap: 4,
+              flex: 'none',
+              padding: '8px 12px',
+              borderRadius: 'var(--r-md) var(--r-md) 0 0',
+              border: '1px solid',
+              borderColor: live ? 'color-mix(in oklab, var(--bot-calvin) 45%, transparent)' : 'var(--line)',
+              background: live ? 'var(--card)' : 'transparent',
+              boxShadow: live ? 'inset 0 -2px 0 var(--bot-calvin)' : 'none',
               cursor: live ? 'default' : 'not-allowed',
-              color: live ? 'var(--ink)' : 'var(--ink-4)',
-              borderBottom: live ? '2px solid var(--bot-calvin)' : '2px solid transparent',
               marginBottom: -1,
             }}
           >
-            {p.name}
+            {/* The small tag is where the accent lives. */}
             <span
               className="t-mono"
               style={{
-                fontSize: 8.5,
-                letterSpacing: '0.14em',
+                fontSize: 8,
+                letterSpacing: '0.1em',
                 textTransform: 'uppercase',
-                color: live ? 'var(--bot-calvin)' : 'var(--ink-4)',
+                padding: '1px 5px',
+                borderRadius: 'var(--r-pill)',
+                color: 'var(--ink)',
+                background: live
+                  ? 'color-mix(in oklab, var(--bot-calvin) 12%, transparent)'
+                  : 'color-mix(in oklab, var(--ink-4) 14%, transparent)',
+                boxShadow: live
+                  ? 'inset 0 0 0 1px color-mix(in oklab, var(--bot-calvin) 40%, transparent)'
+                  : 'inset 0 0 0 1px color-mix(in oklab, var(--ink-4) 40%, transparent)',
               }}
             >
               {live ? 'live' : 'planned'}
             </span>
+            <span style={{ fontSize: 13, color: live ? 'var(--ink)' : 'var(--ink-3)' }}>
+              {p.name}
+            </span>
+            <span
+              className="t-mono"
+              style={{
+                fontSize: 13,
+                fontWeight: 700,
+                color: live ? 'var(--ink)' : 'var(--ink-4)',
+              }}
+            >
+              {live ? (headline ?? '—') : 'not built'}
+            </span>
           </span>
         );
       })}
+    </div>
+  );
+}
+
+/**
+ * The method, said once.
+ *
+ * Not more questions and not a paste of the guidebook: what the pack reports,
+ * the defining line in the method's own terms, and the one option actually in
+ * use — so a reader can tell which of the method's several routes produced
+ * their figure. The capping step appears only when a capacity was given.
+ */
+function MethodStrip({ pack, hasCapacity }: { pack: MethodPack; hasCapacity: boolean }) {
+  return (
+    <div
+      style={{
+        border: '1px solid var(--line)',
+        borderRadius: 'var(--r-md)',
+        background: 'var(--card)',
+        padding: '11px 14px',
+        marginTop: 14,
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 14, alignItems: 'baseline' }}>
+        <span style={{ fontSize: 11.5, color: 'var(--ink-2)' }}>
+          Indicator — <strong style={{ color: 'var(--ink)' }}>{pack.method.indicator}</strong>
+        </span>
+        <span className="t-mono" style={{ fontSize: 10.5, color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>
+          {pack.method.indicatorUnit}
+        </span>
+      </div>
+      <div
+        className="t-mono"
+        style={{ fontSize: 10, lineHeight: 1.7, color: 'var(--ink-2)', marginTop: 7 }}
+      >
+        {pack.method.definition}
+      </div>
+      <div className="t-mono" style={{ fontSize: 10, lineHeight: 1.7, color: 'var(--ink-3)' }}>
+        {pack.method.optionLine}
+      </div>
+      {hasCapacity && (
+        <div className="t-mono" style={{ fontSize: 10, lineHeight: 1.7, color: 'var(--ink-3)' }}>
+          {pack.method.capacityLine}
+        </div>
+      )}
+      <div className="t-caption" style={{ fontSize: 9.5, marginTop: 5 }}>
+        {pack.method.optionName} · anticipated, screening, not verified.
+      </div>
     </div>
   );
 }
@@ -250,14 +331,25 @@ function Header({ pack, result }: { pack: MethodPack; result: PackResult | null 
           >
             Anticipated benefit
           </div>
+          {/* The number sits on white in ink. The accent belongs on the small
+              tags, not behind a figure this size — maintainer's ruling,
+              1 Sep 2026. An empty slot keeps its dashed outline, so the eye
+              knows a number lands here before one does. */}
           <div
             className="t-mono"
             style={{
               fontSize: 38,
               fontWeight: 500,
-              lineHeight: 1.15,
-              marginTop: 4,
-              color: benefit === null ? 'var(--ink-4)' : 'var(--bot-calvin)',
+              lineHeight: 1.1,
+              marginTop: 5,
+              padding: '8px 14px',
+              borderRadius: 'var(--r-sm)',
+              background: 'var(--card)',
+              border:
+                benefit === null
+                  ? '1px dashed color-mix(in oklab, var(--ink-4) 65%, transparent)'
+                  : '1px solid var(--line)',
+              color: benefit === null ? 'var(--ink-4)' : 'var(--ink)',
             }}
           >
             {benefit === null ? '—' : cubes(benefit)}
@@ -333,9 +425,9 @@ function StopCard({ stopReason, routeForward }: { stopReason: string; routeForwa
     <div
       style={{
         marginTop: 16,
-        border: '1px solid color-mix(in oklab, var(--bot-calvin) 30%, transparent)',
+        border: '1px solid var(--line)',
         borderRadius: 'var(--r-md)',
-        background: 'color-mix(in oklab, var(--bot-calvin) 4%, var(--card))',
+        background: 'var(--card)',
         padding: '15px 17px',
       }}
     >

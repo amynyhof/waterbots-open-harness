@@ -239,6 +239,19 @@ export const VWBA_D3: MethodPack = {
     'over and above what they were already getting without it.',
   tier: 'screening',
 
+  /* The method said once, in its own terms. Not a paste of the guidebook —
+     one defining line, the one option in use, and what is reported. */
+  method: {
+    indicator: 'Volume provided',
+    indicatorUnit: 'm³ per year',
+    definition:
+      'Volumetric water benefit = volume provided with the project − volume provided without the project',
+    optionLine: 'volume provided = people × litres per person per day × days',
+    capacityLine:
+      'with the project = the smaller of that figure and the system’s yearly capacity',
+    optionName: 'Table D3.3, Option 3',
+  },
+
   citation: {
     document: 'Volumetric Water Benefit Accounting 2.0',
     version: 'Version 1, September 2025',

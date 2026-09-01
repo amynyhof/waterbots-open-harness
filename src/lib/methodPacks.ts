@@ -144,8 +144,33 @@ export interface FormulaStep {
   unit?: string;
 }
 
+/**
+ * The method, said once, in the method's own terms.
+ *
+ * A short strip, not a second set of questions and not a paste of the
+ * guidebook. It names what the pack reports, defines it in one line, and shows
+ * the one option actually in use — so a reader can see which of a method's
+ * several routes produced their figure without opening the source.
+ */
+export interface PackMethod {
+  /** What the pack reports, e.g. "Volume provided". */
+  indicator: string;
+  /** The unit it is reported in, e.g. "m³ per year". */
+  indicatorUnit: string;
+  /** The defining line, in the method's own terms. */
+  definition: string;
+  /** The one option in use, of the several the method allows. */
+  optionLine: string;
+  /** The capping step. Shown only when a capacity has been given. */
+  capacityLine: string;
+  /** Which option this is, e.g. "Table D3.3, Option 3". */
+  optionName: string;
+}
+
 export interface MethodPack extends PackListing {
   state: 'live';
+  /** The method strip. */
+  method: PackMethod;
   /** What it covers and what it does not, in one plain line. */
   scope: string;
   /** One plain sentence: what this pack measures. */
