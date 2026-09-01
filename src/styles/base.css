@@ -546,6 +546,55 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
+   The calculator's controls.
+
+   Small, dense and mono, so the free calculator and the paid one read as
+   cousins. Taken from the reference the maintainer brought in by hand on
+   1 Sep 2026 — the LOOK only: an 11px right-aligned mono field on the card
+   plane, a hairline border, and Tide on focus.
+
+   Right-aligned because these are quantities. A column of numbers that agree
+   at their last digit can be compared down the page; one ragged on the right
+   cannot, which is why every value on this surface ends at the same edge.
+--------------------------------------------------------------------------- */
+
+.wb-calc-input {
+  width: 108px;
+  flex: none;
+  font-size: 11px;
+  text-align: right;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 3px 7px;
+  outline: none;
+}
+.wb-calc-input::placeholder {
+  color: var(--ink-4);
+}
+.wb-calc-input:focus {
+  border-color: var(--tide);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--tide) 30%, transparent);
+}
+
+/* A segmented answer — Yes/No, Full/Limited. The pressed one carries the
+   host's accent as a wash and a border, never as a filled block: an accent
+   is an identity here, and a solid fill would read as a status. */
+.wb-calc-seg {
+  font-size: 11px;
+  line-height: 1.2;
+  padding: 4px 13px;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.wb-calc-seg:focus-visible {
+  outline: 2px solid var(--tide);
+  outline-offset: 1px;
+}
+
+/* ---------------------------------------------------------------------------
    Leaflet overrides — brand type and surfaces on map chrome.
 
    The attribution control is never hidden. It is styled to be legible, not
