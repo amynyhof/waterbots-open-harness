@@ -23,25 +23,34 @@
  * is absent. THE BIG RESULT NUMBER IS THIS SITE'S OWN — her ruling of 31 Aug
  * stands over the reference, which carries no large number anywhere.
  *
- * THE FORMULA IDIOM — a tab strip, a big result, the formula written out with
- * live values in it, variables as explained rows — came from the prototype's
- * calculator. Its data, its revenue block, its "verified" language and its
- * agent panel were NOT taken and do not belong on this site.
- *
  * NOTHING HERE IS TYPED TO ANY ONE METHOD. The fields, the gates, the
- * groupings, the defaults, the formula and the arithmetic all come from the
- * pack. This file knows how to draw a question, a formula line and a result;
- * it does not know what D-3 is, and it must never learn.
+ * groupings, the defaults, the formula, the arithmetic, the headline and its
+ * unit all come from the pack. This file knows how to draw a question, a
+ * formula line and a figure; it does not know what D-3 or a tonne of CO₂ is,
+ * and it must never learn.
+ *
+ * THREE LIVE TABS FROM 2 Sep 2026 — the water pack and two carbon packs (item
+ * K6) — so the strip is now selectable, and the selected pack is held by the
+ * shell as part of the visit. A COMPARISON CARD appears when two packs the
+ * registry pairs both have a complete answer. It reads two headlines and
+ * subtracts; it never fills a side in.
+ *
+ * THE ANSWERS LIVE IN THE SHELL, not here — part of the visit
+ * (src/lib/visit.ts), so the desk can read Calvin's figure and a step away
+ * to the map and back does not lose what was typed. Item S11.
  *
  * THE GATES MOVE INTO CALVIN'S CONVERSATION when his chat goes live, and these
  * toggles fill from his answers then. Not this sprint.
  */
 
 import { useMemo, useState } from 'react';
+import type { Citation } from '../lib/citation';
 import {
   METHOD_PACKS,
-  cubicMetres,
-  fittedPack,
+  PACK_COMPARISONS,
+  livePacks,
+  packByKey,
+  type Figure,
   type FormulaStep,
   type MethodPack,
   type PackField,
@@ -49,26 +58,46 @@ import {
   type PackValues,
 } from '../lib/methodPacks';
 
-const group = (n: number) => n.toLocaleString('en-GB');
-const cubes = (n: number) => cubicMetres(n).toLocaleString('en-GB', { maximumFractionDigits: 2 });
+const num = (n: number, decimals: number) =>
+  n.toLocaleString('en-GB', { maximumFractionDigits: decimals });
 
-export default function QuantificationWorksheet() {
-  const pack = fittedPack();
-  const [values, setValues] = useState<PackValues>({});
+export default function QuantificationWorksheet({
+  activeKey,
+  onSelect,
+  allValues,
+  onChange,
+}: {
+  /** The selected pack's key, held by the shell. */
+  activeKey: string;
+  onSelect: (key: string) => void;
+  /** Every pack's answers, keyed by pack, held by the shell as part of the visit. */
+  allValues: Record<string, PackValues>;
+  onChange: (packKey: string, values: PackValues) => void;
+}) {
+  const pack = packByKey(activeKey) ?? livePacks()[0] ?? null;
+  const values: PackValues = (pack && allValues[pack.key]) || {};
 
-  const set = (key: string, value: string) =>
-    setValues((current) => ({ ...current, [key]: value }));
+  const set = (key: string, value: string) => pack && onChange(pack.key, { ...values, [key]: value });
 
   const result = useMemo(() => pack?.compute(values) ?? null, [pack, values]);
   const steps = useMemo(() => pack?.formula(values) ?? [], [pack, values]);
 
   const blocked = result?.kind === 'blocked' ? result : null;
   const field = (key: string) => pack?.fields.find((f) => f.key === key);
+  const visible = (f: PackField) => !f.when || f.when(values);
 
-  const benefit = result?.kind === 'complete' ? result.benefitLitres : null;
-  /* The tab carries the pack's own headline figure, in the reported unit. */
-  const headline = benefit === null ? null : `${cubes(benefit)} m³/yr`;
-  const hasCapacity = (values.capacity_lpy ?? '').trim() !== '';
+  /* Every live pack's headline, for the tab strip and the comparison card. */
+  const headlines = useMemo(() => {
+    const out: Record<string, Figure | null> = {};
+    for (const p of livePacks()) {
+      const r = p.compute(allValues[p.key] || {});
+      out[p.key] = r.kind === 'complete' ? r.headline : null;
+    }
+    return out;
+  }, [allValues]);
+
+  const exampleOn =
+    pack?.example !== undefined && sameValues(values, pack.example.values);
 
   return (
     <div style={{ height: '100%', overflowY: 'auto' }}>
@@ -81,7 +110,7 @@ export default function QuantificationWorksheet() {
           Quantification
         </div>
 
-        <PackTabs headline={headline} />
+        <PackTabs activeKey={pack?.key ?? ''} headlines={headlines} onSelect={onSelect} />
 
         {/* THE SHEET THE SELECTED TAB OPENS INTO. One white surface, joined to
             its tab with no line between them — maintainer's ruling, 1 Sep 2026.
@@ -92,75 +121,107 @@ export default function QuantificationWorksheet() {
             background: 'var(--card)',
             border: '1px solid var(--line)',
             borderRadius: 'var(--r-md)',
-            borderTopLeftRadius: METHOD_PACKS[0]?.state === 'live' ? 0 : 'var(--r-md)',
+            borderTopLeftRadius: pack && METHOD_PACKS[0]?.key === pack.key ? 0 : 'var(--r-md)',
             padding: '18px 20px 22px',
           }}
         >
-        {!pack ? (
-          <EmptySlot />
-        ) : (
-          <>
-            <Header pack={pack} result={result} />
-
-            <MethodStrip pack={pack} hasCapacity={hasCapacity} />
-
-            <SectionHead>Does this pack fit?</SectionHead>
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '12px 24px',
-                padding: '10px 0 12px',
-                borderBottom: '1px solid var(--line)',
-              }}
-            >
-              {pack.gateKeys.map((key) => {
-                const f = field(key);
-                return f ? (
-                  <GateToggle
-                    key={key}
-                    field={f}
-                    value={values[key] ?? ''}
-                    onChange={(v) => set(key, v)}
-                  />
-                ) : null;
+          {!pack ? (
+            <EmptySlot />
+          ) : (
+            <>
+              {/* The transition delta, as the production calculator carries it:
+                  one line under the tabs, on either side of the comparison,
+                  and only when both sides have a complete answer. */}
+              {PACK_COMPARISONS.filter(
+                (c) => c.minuendKey === pack.key || c.subtrahendKey === pack.key
+              ).map((c) => {
+                const a = headlines[c.minuendKey];
+                const b = headlines[c.subtrahendKey];
+                const left = packByKey(c.minuendKey);
+                const right = packByKey(c.subtrahendKey);
+                if (!a || !b || !left || !right) return null;
+                return <DeltaLine key={c.key} title={c.title} note={c.note} a={a} b={b} />;
               })}
-            </div>
 
-            {blocked ? (
-              <StopCard stopReason={blocked.stopReason} routeForward={blocked.routeForward} />
-            ) : (
-              <>
-                <SectionHead>The formula</SectionHead>
-                {steps.map((step) => (
-                  <FormulaRow key={step.label} step={step} />
-                ))}
+              <Header pack={pack} result={result} exampleOn={exampleOn} />
 
-                <SectionHead>The variables</SectionHead>
-                {pack.variableKeys.map((key) => {
+              {pack.tiles && result && <Tiles figures={pack.tiles(values, result)} />}
+
+              <MethodStrip pack={pack} values={values} />
+
+              {pack.example && (
+                <ExampleRow
+                  pack={pack}
+                  on={exampleOn}
+                  onLoad={() => onChange(pack.key, { ...pack.example!.values })}
+                  onClear={() => onChange(pack.key, {})}
+                />
+              )}
+
+              <SectionHead>Does this pack fit?</SectionHead>
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '12px 24px',
+                  padding: '10px 0 12px',
+                  borderBottom: '1px solid var(--line)',
+                }}
+              >
+                {pack.gateKeys.map((key) => {
                   const f = field(key);
-                  return f ? (
-                    <Variable
+                  return f && visible(f) ? (
+                    <GateToggle
                       key={key}
                       field={f}
                       value={values[key] ?? ''}
-                      fallback={pack.defaultFor(key, values)}
-                      extraHelp={pack.conditionalHelp(key, values)}
                       onChange={(v) => set(key, v)}
                     />
                   ) : null;
                 })}
-              </>
-            )}
+              </div>
 
-            <SectionHead>The result</SectionHead>
-            <ResultBlock pack={pack} result={result} blocked={Boolean(blocked)} />
-          </>
-        )}
+              {blocked ? (
+                <StopCard stopReason={blocked.stopReason} routeForward={blocked.routeForward} />
+              ) : (
+                <>
+                  <SectionHead>The formula</SectionHead>
+                  {steps.map((step) => (
+                    <FormulaRow key={step.label} step={step} />
+                  ))}
+
+                  <SectionHead>The variables</SectionHead>
+                  {pack.variableKeys.map((key) => {
+                    const f = field(key);
+                    return f && visible(f) ? (
+                      <Variable
+                        key={key}
+                        field={f}
+                        value={values[key] ?? ''}
+                        fallback={pack.defaultFor(key, values)}
+                        extraHelp={pack.conditionalHelp(key, values)}
+                        onChange={(v) => set(key, v)}
+                      />
+                    ) : null;
+                  })}
+                </>
+              )}
+
+              <SectionHead>The result</SectionHead>
+              <ResultBlock pack={pack} result={result} blocked={Boolean(blocked)} />
+            </>
+          )}
         </div>
+
       </div>
     </div>
   );
+}
+
+function sameValues(a: PackValues, b: PackValues): boolean {
+  const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
+  for (const k of keys) if ((a[k] ?? '') !== (b[k] ?? '')) return false;
+  return true;
 }
 
 /* --------------------------------------------------------------------------
@@ -173,13 +234,22 @@ export default function QuantificationWorksheet() {
  * The strip exists so the family is visible from the first day: this seat holds
  * more than one tool, and a strip with a single tab hides that.
  *
- * A PLANNED PACK IS NAMED, MARKED PLANNED, AND IS NOT CLICKABLE. A tab that
- * opened into something resembling a working tool would be the same false
- * success state a live-looking composer would be.
+ * A LIVE TAB IS SELECTABLE. A PLANNED PACK IS NAMED, MARKED PLANNED, AND IS
+ * NOT CLICKABLE — a tab that opened into something resembling a working tool
+ * would be the same false success state a live-looking composer would be.
  */
-function PackTabs({ headline }: { headline: string | null }) {
+function PackTabs({
+  activeKey,
+  headlines,
+  onSelect,
+}: {
+  activeKey: string;
+  headlines: Record<string, Figure | null>;
+  onSelect: (key: string) => void;
+}) {
   return (
     <div
+      role="tablist"
       style={{
         display: 'flex',
         alignItems: 'flex-end',
@@ -191,12 +261,19 @@ function PackTabs({ headline }: { headline: string | null }) {
     >
       {METHOD_PACKS.map((p) => {
         const live = p.state === 'live';
+        const on = live && p.key === activeKey;
+        const h = live ? headlines[p.key] : null;
+        const Tag = live ? 'button' : 'span';
         return (
-          <span
+          <Tag
             key={p.key}
+            type={live ? 'button' : undefined}
+            role={live ? 'tab' : undefined}
+            aria-selected={live ? on : undefined}
             aria-disabled={!live}
-            aria-current={live ? 'page' : undefined}
+            onClick={live ? () => onSelect(p.key) : undefined}
             title={live ? undefined : 'Planned. Not built yet.'}
+            className={live ? 'wb-pack-tab' : undefined}
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -205,18 +282,20 @@ function PackTabs({ headline }: { headline: string | null }) {
               flex: 'none',
               padding: '8px 12px',
               borderRadius: 'var(--r-md) var(--r-md) 0 0',
-              cursor: live ? 'default' : 'not-allowed',
+              cursor: live ? (on ? 'default' : 'pointer') : 'not-allowed',
               /* THE SELECTED TAB OPENS INTO THE SHEET. It is the same white,
                  and its bottom edge is painted in that white so it covers the
                  sheet's own top hairline — the join a folder tab makes.
                  An unselected tab sits back on the Frost ground and keeps its
                  hairline, so the two read as different planes. */
-              background: live ? 'var(--card)' : 'transparent',
-              borderTop: `1px solid ${live ? 'var(--line)' : 'transparent'}`,
-              borderLeft: `1px solid ${live ? 'var(--line)' : 'transparent'}`,
-              borderRight: `1px solid ${live ? 'var(--line)' : 'transparent'}`,
-              borderBottom: `1px solid ${live ? 'var(--card)' : 'var(--line)'}`,
+              background: on ? 'var(--card)' : 'transparent',
+              borderTop: `1px solid ${on ? 'var(--line)' : 'transparent'}`,
+              borderLeft: `1px solid ${on ? 'var(--line)' : 'transparent'}`,
+              borderRight: `1px solid ${on ? 'var(--line)' : 'transparent'}`,
+              borderBottom: `1px solid ${on ? 'var(--card)' : 'var(--line)'}`,
               marginBottom: -1,
+              font: 'inherit',
+              textAlign: 'left',
             }}
           >
             {/* The small tag is where the accent lives. */}
@@ -237,9 +316,9 @@ function PackTabs({ headline }: { headline: string | null }) {
                   : 'inset 0 0 0 1px color-mix(in oklab, var(--ink-4) 40%, transparent)',
               }}
             >
-              {live ? 'live' : 'planned'}
+              {live ? (p as MethodPack).category : 'planned'}
             </span>
-            <span style={{ fontSize: 13, color: live ? 'var(--ink)' : 'var(--ink-3)' }}>
+            <span style={{ fontSize: 13, color: live ? (on ? 'var(--ink)' : 'var(--ink-2)') : 'var(--ink-3)' }}>
               {p.name}
             </span>
             <span
@@ -247,12 +326,12 @@ function PackTabs({ headline }: { headline: string | null }) {
               style={{
                 fontSize: 13,
                 fontWeight: 700,
-                color: live ? 'var(--ink)' : 'var(--ink-4)',
+                color: live ? (h ? 'var(--ink)' : 'var(--ink-4)') : 'var(--ink-4)',
               }}
             >
-              {live ? (headline ?? '—') : 'not built'}
+              {live ? (h ? `${num(h.value, h.decimals)} ${h.unit}` : '—') : 'not built'}
             </span>
-          </span>
+          </Tag>
         );
       })}
     </div>
@@ -263,11 +342,10 @@ function PackTabs({ headline }: { headline: string | null }) {
  * The method, said once.
  *
  * Not more questions and not a paste of the guidebook: what the pack reports,
- * the defining line in the method's own terms, and the one option actually in
- * use — so a reader can tell which of the method's several routes produced
- * their figure. The capping step appears only when a capacity was given.
+ * the defining line in the method's own terms, and the lines the pack adds for
+ * the current answers — the option in use, a cap, a stated simplification.
  */
-function MethodStrip({ pack, hasCapacity }: { pack: MethodPack; hasCapacity: boolean }) {
+function MethodStrip({ pack, values }: { pack: MethodPack; values: PackValues }) {
   return (
     <div
       /* No fill and no box: the sheet is already the white surface, and a card
@@ -291,17 +369,48 @@ function MethodStrip({ pack, hasCapacity }: { pack: MethodPack; hasCapacity: boo
       >
         {pack.method.definition}
       </div>
-      <div className="t-mono" style={{ fontSize: 10, lineHeight: 1.7, color: 'var(--ink-3)' }}>
-        {pack.method.optionLine}
-      </div>
-      {hasCapacity && (
-        <div className="t-mono" style={{ fontSize: 10, lineHeight: 1.7, color: 'var(--ink-3)' }}>
-          {pack.method.capacityLine}
+      {pack.method.lines(values).map((line, i) => (
+        <div key={i} className="t-mono" style={{ fontSize: 10, lineHeight: 1.7, color: 'var(--ink-3)' }}>
+          {line}
         </div>
-      )}
+      ))}
       <div className="t-caption" style={{ fontSize: 9.5, marginTop: 5 }}>
         {pack.method.optionName} · anticipated, screening, not verified.
       </div>
+    </div>
+  );
+}
+
+/** The worked example, offered and labelled. Loading it is one click; so is clearing it. */
+function ExampleRow({
+  pack,
+  on,
+  onLoad,
+  onClear,
+}: {
+  pack: MethodPack;
+  on: boolean;
+  onLoad: () => void;
+  onClear: () => void;
+}) {
+  const ex = pack.example!;
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 14,
+        padding: '9px 0',
+        borderBottom: '1px solid var(--line)',
+      }}
+    >
+      <span className="t-caption" style={{ fontSize: 10.5, lineHeight: 1.5 }}>
+        {ex.note}
+      </span>
+      <button type="button" className="wb-row-action" style={{ flex: 'none' }} onClick={on ? onClear : onLoad}>
+        {on ? 'Clear the example' : `Use the example figures`}
+      </button>
     </div>
   );
 }
@@ -310,8 +419,16 @@ function MethodStrip({ pack, hasCapacity }: { pack: MethodPack; hasCapacity: boo
    The header, carrying the big result.
    -------------------------------------------------------------------------- */
 
-function Header({ pack, result }: { pack: MethodPack; result: PackResult | null }) {
-  const benefit = result?.kind === 'complete' ? result.benefitLitres : null;
+function Header({
+  pack,
+  result,
+  exampleOn,
+}: {
+  pack: MethodPack;
+  result: PackResult | null;
+  exampleOn: boolean;
+}) {
+  const h = result?.kind === 'complete' ? result.headline : null;
 
   return (
     <div style={{ borderBottom: '1px solid var(--line)', paddingBottom: 16 }}>
@@ -336,8 +453,9 @@ function Header({ pack, result }: { pack: MethodPack; result: PackResult | null 
           >
             {pack.measures}
           </p>
-          <div style={{ marginTop: 9 }}>
+          <div style={{ marginTop: 9, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <Chip>Screening · not verified</Chip>
+            {exampleOn && pack.example && <Chip muted>{pack.example.label}</Chip>}
           </div>
         </div>
 
@@ -352,7 +470,7 @@ function Header({ pack, result }: { pack: MethodPack; result: PackResult | null 
               color: 'var(--ink-3)',
             }}
           >
-            Anticipated benefit
+            {pack.headlineLabel}
           </div>
           {/* The number sits on white in ink. The accent belongs on the small
               tags, not behind a figure this size — maintainer's ruling,
@@ -369,19 +487,19 @@ function Header({ pack, result }: { pack: MethodPack; result: PackResult | null 
               borderRadius: 'var(--r-sm)',
               background: 'transparent',
               border:
-                benefit === null
+                h === null
                   ? '1px dashed color-mix(in oklab, var(--ink-4) 65%, transparent)'
                   : '1px solid transparent',
-              color: benefit === null ? 'var(--ink-4)' : 'var(--ink)',
+              color: h === null ? 'var(--ink-4)' : 'var(--ink)',
             }}
           >
-            {benefit === null ? '—' : cubes(benefit)}
+            {h === null ? '—' : num(h.value, h.decimals)}
           </div>
           <div className="t-mono" style={{ fontSize: 10.5, color: 'var(--ink-3)', marginTop: 2 }}>
-            m³ / year
+            {h === null ? '' : h.unit}
           </div>
           <div className="t-mono" style={{ fontSize: 10.5, color: 'var(--ink-4)', marginTop: 3 }}>
-            {benefit === null ? '—' : group(benefit)} L / year
+            {h?.secondary ?? '—'}
           </div>
         </div>
       </div>
@@ -476,19 +594,33 @@ function StopCard({ stopReason, routeForward }: { stopReason: string; routeForwa
   );
 }
 
-/** One line of the formula: what it works out, then the same line with values. */
+/**
+ * One line of the formula, in the production calculator's row anatomy: the
+ * method's symbol, what the line works out, the equation number, the value.
+ * Then the same line with the visitor's figures in it. A pack with no symbol
+ * or equation number simply leaves those columns empty.
+ */
 function FormulaRow({ step }: { step: FormulaStep }) {
   return (
     <div style={{ borderBottom: '1px solid var(--line)', padding: '7px 0' }}>
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
-          gap: 16,
+          gap: 12,
           alignItems: 'baseline',
         }}
       >
-        <span style={{ fontSize: 11.5, color: 'var(--ink-2)' }}>{step.label}</span>
+        {step.symbol && (
+          <span className="t-mono" style={{ fontSize: 11, color: 'var(--ink)', flex: 'none', minWidth: 34 }}>
+            {step.symbol}
+          </span>
+        )}
+        <span style={{ fontSize: 11.5, color: 'var(--ink-2)', flex: 1, minWidth: 0 }}>{step.label}</span>
+        {step.eq && (
+          <span className="t-mono" style={{ fontSize: 10, color: 'var(--ink-4)', flex: 'none' }}>
+            {step.eq}
+          </span>
+        )}
         <span
           className="t-mono"
           style={{
@@ -505,7 +637,7 @@ function FormulaRow({ step }: { step: FormulaStep }) {
       </div>
       <div
         className="t-mono"
-        style={{ fontSize: 10, color: 'var(--ink-3)', marginTop: 2, lineHeight: 1.55 }}
+        style={{ fontSize: 10, color: 'var(--ink-3)', marginTop: 2, lineHeight: 1.55, overflowWrap: 'anywhere' }}
       >
         {step.terms}
         <span style={{ color: 'var(--ink-4)' }}> · </span>
@@ -533,118 +665,134 @@ function Variable({
   const provenance = value.trim() !== '' ? 'Entered' : fallback ? `Default — ${fallback}` : null;
 
   return (
-    <div style={{ borderBottom: '1px solid var(--line)', padding: '7px 0 6px' }}>
-      <div
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}
-      >
-        <label style={{ fontSize: 12, color: 'var(--ink-2)', lineHeight: 1.45 }}>
-          {field.label}
-          {field.required && (
-            <span
+    <>
+      {field.group && (
+        <div
+          className="t-mono"
+          style={{
+            fontSize: 9.5,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'var(--ink-3)',
+            padding: '12px 0 2px',
+          }}
+        >
+          {field.group}
+        </div>
+      )}
+      <div style={{ borderBottom: '1px solid var(--line)', padding: '7px 0 6px' }}>
+        <div
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}
+        >
+          <label style={{ fontSize: 12, color: 'var(--ink-2)', lineHeight: 1.45 }}>
+            {field.label}
+            {field.required && (
+              <span
+                className="t-mono"
+                style={{
+                  fontSize: 8.5,
+                  letterSpacing: '0.16em',
+                  textTransform: 'uppercase',
+                  color: 'var(--ink-4)',
+                  marginLeft: 7,
+                }}
+              >
+                required
+              </span>
+            )}
+          </label>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 7, flex: 'none' }}>
+            {field.kind === 'number' ? (
+              <input
+                className="t-mono wb-calc-input"
+                type="text"
+                inputMode="decimal"
+                value={value}
+                placeholder={fallback ?? field.placeholder ?? ''}
+                onChange={(e) => onChange(e.target.value)}
+                aria-label={field.label}
+              />
+            ) : (
+              <Segmented
+                options={field.choices ?? []}
+                value={value}
+                onChange={onChange}
+                label={field.label}
+              />
+            )}
+            {field.unit && field.kind === 'number' && (
+              <span
+                className="t-mono"
+                style={{ fontSize: 10, color: 'var(--ink-4)', whiteSpace: 'nowrap', width: 84 }}
+              >
+                {field.unit}
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div style={{ fontSize: 9.5, lineHeight: 1.55, color: 'var(--ink-3)', marginTop: 2 }}>
+          {field.help}
+          {provenance && (
+            <span className="t-mono" style={{ marginLeft: 8, color: 'var(--ink-4)', fontSize: 9 }}>
+              {provenance}
+            </span>
+          )}
+          {field.why && (
+            <button
+              type="button"
+              onClick={() => setWhy((v) => !v)}
+              aria-expanded={why}
               className="t-mono"
               style={{
-                fontSize: 8.5,
-                letterSpacing: '0.16em',
+                marginLeft: 8,
+                padding: 0,
+                border: 0,
+                background: 'none',
+                cursor: 'pointer',
+                fontSize: 9,
+                letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: 'var(--ink-4)',
-                marginLeft: 7,
+                color: 'var(--bot-calvin)',
               }}
             >
-              required
-            </span>
-          )}
-        </label>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: 7, flex: 'none' }}>
-          {field.kind === 'number' ? (
-            <input
-              className="t-mono wb-calc-input"
-              type="text"
-              inputMode="decimal"
-              value={value}
-              placeholder={fallback ?? field.placeholder ?? ''}
-              onChange={(e) => onChange(e.target.value)}
-              aria-label={field.label}
-            />
-          ) : (
-            <Segmented
-              options={field.choices ?? []}
-              value={value}
-              onChange={onChange}
-              label={field.label}
-            />
-          )}
-          {field.unit && field.kind === 'number' && (
-            <span
-              className="t-mono"
-              style={{ fontSize: 10, color: 'var(--ink-4)', whiteSpace: 'nowrap', width: 84 }}
-            >
-              {field.unit}
-            </span>
+              why
+            </button>
           )}
         </div>
-      </div>
 
-      <div style={{ fontSize: 9.5, lineHeight: 1.55, color: 'var(--ink-3)', marginTop: 2 }}>
-        {field.help}
-        {provenance && (
-          <span className="t-mono" style={{ marginLeft: 8, color: 'var(--ink-4)', fontSize: 9 }}>
-            {provenance}
-          </span>
-        )}
-        {field.why && (
-          <button
-            type="button"
-            onClick={() => setWhy((v) => !v)}
-            aria-expanded={why}
-            className="t-mono"
+        {why && field.why && (
+          <p
             style={{
-              marginLeft: 8,
-              padding: 0,
-              border: 0,
-              background: 'none',
-              cursor: 'pointer',
-              fontSize: 9,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: 'var(--bot-calvin)',
+              margin: '5px 0 3px',
+              fontSize: 10.5,
+              lineHeight: 1.65,
+              color: 'var(--ink-3)',
+              maxWidth: '68ch',
             }}
           >
-            why
-          </button>
+            {field.why}
+          </p>
+        )}
+
+        {extraHelp && (
+          <p
+            style={{
+              margin: '5px 0 3px',
+              fontSize: 10.5,
+              lineHeight: 1.65,
+              color: 'var(--ink-3)',
+              maxWidth: '68ch',
+              borderLeft: '2px solid color-mix(in oklab, var(--bot-calvin) 35%, transparent)',
+              paddingLeft: 8,
+            }}
+          >
+            {extraHelp}
+          </p>
         )}
       </div>
-
-      {why && field.why && (
-        <p
-          style={{
-            margin: '5px 0 3px',
-            fontSize: 10.5,
-            lineHeight: 1.65,
-            color: 'var(--ink-3)',
-            maxWidth: '68ch',
-          }}
-        >
-          {field.why}
-        </p>
-      )}
-
-      {extraHelp && (
-        <p
-          style={{
-            margin: '5px 0 3px',
-            fontSize: 10.5,
-            lineHeight: 1.65,
-            color: 'var(--ink-3)',
-            maxWidth: '68ch',
-            borderLeft: '2px solid color-mix(in oklab, var(--bot-calvin) 35%, transparent)',
-            paddingLeft: 8,
-          }}
-        >
-          {extraHelp}
-        </p>
-      )}
-    </div>
+    </>
   );
 }
 
@@ -657,35 +805,24 @@ function ResultBlock({
   result: PackResult | null;
   blocked: boolean;
 }) {
-  const withProject =
-    result && (result.kind === 'incomplete' || result.kind === 'complete')
-      ? result.withProjectLitres
-      : null;
-  const benefit = result?.kind === 'complete' ? result.benefitLitres : null;
+  const figures =
+    result && (result.kind === 'incomplete' || result.kind === 'complete') ? result.figures : [];
+  const missing = result?.kind === 'incomplete' ? result.missing : null;
 
   return (
     <div style={{ paddingTop: 4 }}>
-      {!blocked && (
-        <>
+      {!blocked &&
+        figures.map((f) => (
           <Row
-            label="With the project"
-            value={withProject === null ? null : group(withProject)}
-            unit="L / year"
-            note={withProject === null ? undefined : `${cubes(withProject)} m³ / year`}
+            key={f.key}
+            label={f.label}
+            value={num(f.value, f.decimals)}
+            unit={f.unit}
+            note={f.note ?? f.secondary}
           />
-          <Row
-            label="Anticipated benefit"
-            value={benefit === null ? null : group(benefit)}
-            unit="L / year"
-            note={
-              result?.kind === 'incomplete'
-                ? result.missing
-                : benefit === null
-                  ? undefined
-                  : `${cubes(benefit)} m³ / year`
-            }
-          />
-        </>
+        ))}
+      {!blocked && missing && (
+        <Row label="Still needed" value={null} note={missing} />
       )}
 
       <div
@@ -697,20 +834,91 @@ function ResultBlock({
         </span>
       </div>
 
-      <p
-        className="t-caption"
-        style={{ margin: '10px 0 0', fontSize: 9.5, lineHeight: 1.55, color: 'var(--ink-3)' }}
-      >
-        {pack.citation.document} · {pack.citation.version} · {pack.citation.section} ·{' '}
-        {pack.citation.page} ·{' '}
-        <a className="wb-cite-link" href={pack.citation.href} target="_blank" rel="noreferrer">
-          {pack.citation.href}
-        </a>{' '}
-        · CC BY 4.0. Screening estimate produced by this console, not by the publisher.
+      <CiteLine citation={pack.citation} lead="Method" />
+      {pack.alsoCites?.map((c) => (
+        <CiteLine key={c.href + c.section} citation={c} lead="Defaults" />
+      ))}
+      <p className="t-caption" style={{ margin: '6px 0 0', fontSize: 9.5, lineHeight: 1.55 }}>
+        Screening estimate produced by this console, not by the publisher. No standards body endorses
+        or certifies it.
       </p>
     </div>
   );
 }
+
+function CiteLine({ citation, lead }: { citation: Citation; lead: string }) {
+  return (
+    <p
+      className="t-caption"
+      style={{ margin: '10px 0 0', fontSize: 9.5, lineHeight: 1.55, color: 'var(--ink-3)' }}
+    >
+      <span style={{ color: 'var(--ink-4)' }}>{lead} · </span>
+      {citation.document} · {citation.version} · {citation.section} · {citation.page} ·{' '}
+      <a className="wb-cite-link" href={citation.href} target="_blank" rel="noreferrer" title={citation.full}>
+        {citation.href}
+      </a>
+    </p>
+  );
+}
+
+/* --------------------------------------------------------------------------
+   The transition delta line and the stat tiles — the production calculator's
+   idiom, from the saved page the maintainer brought in by hand on 2 Sep 2026.
+   The look only: a caption, a mono figure with its percent in brackets, and a
+   one-line note; then a row of small tiles, value over label over unit.
+   -------------------------------------------------------------------------- */
+
+function DeltaLine({ title, note, a, b }: { title: string; note: string; a: Figure; b: Figure }) {
+  const delta = a.value - b.value;
+  const pct = b.value === 0 ? null : (delta / b.value) * 100;
+  const sign = (n: number) => (n > 0 ? '+' : n < 0 ? '−' : '');
+  const same = a.unit === b.unit;
+  return (
+    <div style={{ padding: '2px 0 12px', borderBottom: '1px solid var(--line)', marginBottom: 14 }}>
+      <div className="t-caption" style={{ fontSize: 11, color: 'var(--ink-3)' }}>
+        {title}:{' '}
+        <span className="t-mono" style={{ color: 'var(--ink)', fontSize: 12 }}>
+          {same ? `${sign(delta)}${num(Math.abs(delta), a.decimals)} ${a.unit}` : '—'}
+          {same && pct !== null && ` (${sign(pct)}${num(Math.abs(pct), 1)}%)`}
+        </span>
+      </div>
+      <div className="t-caption" style={{ fontSize: 10, color: 'var(--ink-4)', marginTop: 3 }}>
+        {note}
+      </div>
+    </div>
+  );
+}
+
+function Tiles({ figures }: { figures: Figure[] }) {
+  if (figures.length === 0) return null;
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: `repeat(${Math.min(figures.length, 4)}, minmax(0, 1fr))`,
+        gap: 12,
+        padding: '12px 0',
+        borderBottom: '1px solid var(--line)',
+      }}
+    >
+      {figures.map((f) => (
+        <div key={f.key} style={{ minWidth: 0 }}>
+          <div className="t-mono" style={{ fontSize: 15, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {num(f.value, f.decimals)}
+          </div>
+          <div style={{ fontSize: 10.5, color: 'var(--ink-4)', marginTop: 2, lineHeight: 1.35 }}>{f.label}</div>
+          <div className="t-mono" style={{ fontSize: 10, color: 'var(--ink-4)' }}>{f.unit}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* --------------------------------------------------------------------------
+   The comparison card. RETIRED 2 Sep 2026 by the look pass — the production
+   calculator carries the transition as one line under the tabs, and so does
+   this worksheet now. Kept out of the tree; DeltaLine replaced it.
+   -------------------------------------------------------------------------- */
 
 /* --------------------------------------------------------------------------
    Small shared pieces.
@@ -728,7 +936,7 @@ function Segmented({
   label: string;
 }) {
   return (
-    <div style={{ display: 'flex', flex: 'none' }} role="group" aria-label={label}>
+    <div style={{ display: 'flex', flex: 'none', flexWrap: 'wrap', justifyContent: 'flex-end' }} role="group" aria-label={label}>
       {options.map((option, i) => {
         const on = value === option.value;
         return (
@@ -818,7 +1026,7 @@ function SectionHead({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Chip({ children }: { children: React.ReactNode }) {
+function Chip({ children, muted }: { children: React.ReactNode; muted?: boolean }) {
   return (
     <span
       className="t-mono"
@@ -829,8 +1037,10 @@ function Chip({ children }: { children: React.ReactNode }) {
         whiteSpace: 'nowrap',
         padding: '4px 9px',
         borderRadius: 'var(--r-pill)',
-        color: 'var(--bot-calvin)',
-        background: 'color-mix(in oklab, var(--bot-calvin) 8%, transparent)',
+        color: muted ? 'var(--ink-2)' : 'var(--bot-calvin)',
+        background: muted
+          ? 'color-mix(in oklab, var(--ink-4) 14%, transparent)'
+          : 'color-mix(in oklab, var(--bot-calvin) 8%, transparent)',
         flex: 'none',
       }}
     >

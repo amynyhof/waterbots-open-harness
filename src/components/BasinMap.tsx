@@ -16,6 +16,7 @@ import { latLngBounds, type LatLngBoundsExpression } from 'leaflet';
 import { BASEMAP_WASH } from '../lib/basemapWash';
 import 'leaflet/dist/leaflet.css';
 import BasinLayer from './BasinLayer';
+import type { MapPin } from '../lib/visit';
 import StressLegend from './StressLegend';
 import LicencePanel from './LicencePanel';
 import { cached, loadBasins } from '../lib/loadBasins';
@@ -259,7 +260,17 @@ export interface MapStatus {
   stressError: string | null;
 }
 
-export default function BasinMap({ onStatus }: { onStatus?: (s: MapStatus) => void }) {
+export default function BasinMap({
+  onStatus,
+  pinnedHybas,
+  onPin,
+}: {
+  onStatus?: (s: MapStatus) => void;
+  /** The visit's pinned basin, drawn with the Tide stroke. Held by the shell. */
+  pinnedHybas: number | null;
+  /** A click on a basin pins it for this visit; a click on the pinned one unpins. */
+  onPin?: (pin: MapPin | null) => void;
+}) {
   const [zoom, setZoom] = useState(3);
   const [wantDetail, setWantDetail] = useState(false);
   const [rendered, setRendered] = useState(0);
@@ -394,8 +405,11 @@ export default function BasinMap({ onStatus }: { onStatus?: (s: MapStatus) => vo
           <BasinLayer
             data={world.data}
             stress={worldStress}
+            level={4}
             filterToViewport={false}
             onVisibleCount={setRendered}
+            pinnedHybas={pinnedHybas}
+            onPin={onPin}
           />
         )}
 
@@ -403,8 +417,11 @@ export default function BasinMap({ onStatus }: { onStatus?: (s: MapStatus) => vo
           <BasinLayer
             data={detail.data}
             stress={detailStress}
+            level={6}
             filterToViewport
             onVisibleCount={setRendered}
+            pinnedHybas={pinnedHybas}
+            onPin={onPin}
           />
         )}
       </MapContainer>

@@ -37,8 +37,12 @@ individual pieces of work can be read against where they are meant to lead.
 |---|---|---|---|
 | 1 | **Eligibility** — can this project generate a countable benefit? | Free | Worksheet built; the agent behind it is in progress |
 | 2 | **Basin map / Partners** — where is the water stress, and who else is working there? | Free | Map built; the partner layer is item D1 |
-| 3 | **Ex-ante quantification** — what benefit would this project produce? | Free | ~~Not started~~ **Built 1 Sep 2026.** The step, and one screening pack in it. Calvin's post; his chat is not built |
+| 3 | **Ex-ante quantification** — what benefit would this project produce? | Free | ~~Not started~~ **Built 1 Sep 2026.** The step, and ~~one screening pack~~ **three screening packs (2 Sep 2026)** in it. Calvin's post; his chat is not built |
 | 4 | **Project management** — running the project after it starts | Paid | Not started |
+
+**The desk sits in front of all four steps from 2 Sep 2026** — Wellington's dispatch desk, the console's
+fourth surface, where the visit's next steps collect and the save door to the paid platform stands.
+It is item S11 and is not a step of the journey; it is where the journey is looked at.
 
 **The free tier ends where step 4 begins.** Everything up to and including quantification is open
 to anyone; managing a live project is where the paid platform takes over.
@@ -78,6 +82,8 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | K3 | VWB Report Corpus | Knowledge | open, no action yet |
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | canon, ruled 26 Aug 2026 |
 | K5 | The VWBA 2.0 D-3 screening pack | Knowledge | **built 1 Sep 2026** — the first pack in the slot |
+| K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | **built 2 Sep 2026** — two packs, one module, the transition delta |
+| K7 | A carbon card pass in Phoebe's card format | Knowledge | **logged 2 Sep 2026 as debt** — after Thursday, not built |
 | A1 | Phoebe abstention loop | Agents | built 25 Aug 2026 |
 | A2 | Final agent staffing | Agents | settled 24 Aug 2026; Bridget's colour settled 29 Aug 2026 |
 | A3 | Agent handoff primer | Agents | shipped 28 Aug 2026 — rung 2 live |
@@ -97,7 +103,8 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026; **waiting on production's desk as their #149** |
 | S8 | Brightness pull-up to the book's published Frost values | Surfaces | closed 29 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
 | S9 | The return to the brand book | Surfaces | **closed 30 Aug 2026** — both raises shipped, book at v4.1 |
-| S10 | The Quantification step | Surfaces | **built 1 Sep 2026** — the third surface, pack-keyed |
+| S10 | The Quantification step | Surfaces | **built 1 Sep 2026** — the third surface, pack-keyed; three packs from 2 Sep |
+| S11 | The free desk, and the console in the production shape | Surfaces | **built 2 Sep 2026** — Wellington's desk, the journey bar, four tabs |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
@@ -110,8 +117,8 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | O7 | Merged branches pile up, and are now to be cleared | Operations | closed 27 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
 | O8 | The export step in the close-out ritual | Operations | ruled 27 Aug 2026, open on the script question |
 | O9 | The basemap now needs a key, and has a ceiling | Operations | live 27 Aug 2026, standing dependency |
-| O10 | Line endings are pinned in git but not in the working folder | Operations | **closed 30 Aug 2026** — O6's claim shrunk, the disk left alone |
-| O11 | OPEN_ITEMS.md is heavy and wants an archive | Operations | **first sweep done 30 Aug 2026** |
+| O10 | Line endings are pinned in git but not in the working folder | Operations | closed 30 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
+| O11 | OPEN_ITEMS.md is heavy and wants an archive | Operations | **two sweeps done** — 30 Aug and 2 Sep 2026 |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
 > reference to them elsewhere in the repository was updated in the same edit rather than left to
@@ -223,6 +230,79 @@ rates outside a humanitarian answer, carbon terms, cost-share or attribution fie
 reconciliation of the 2021 replenishment guidance into 2.0.
 
 Opened and built 1 Sep 2026. **Open as the home for the pack's story**; the next packs are item K2.
+
+## K6. The Gold Standard safe-drinking-water carbon packs — Legacy V1 and PAA v2.0
+
+**Two screening packs from one module, built 2 Sep 2026.** Gold Standard's *Emission Reductions
+from Safe Drinking Water Supply*, in its legacy version 1.0 and its Paris-aligned version 2.0
+(PAA-M400-12), as two tabs in the Quantification step: **Carbon · Legacy V1** and **Carbon · PAA
+v2.0**. Both are ex-ante, screening tier, consultant review, not verified. Maintainer's spec of
+2 Sep 2026 and her rulings D, E and F the same day.
+
+**One equation, one differing input.** Emission reductions are the baseline less project emissions
+less leakage; the baseline is litres supplied times an emission factor per litre times one minus
+the share of people already on safe water. Method 1 (community supply) sums premises × people ×
+litres × operating days, capped by capacity; Method 2 (treatment in the home) takes units × usage ×
+the smaller of what the unit makes and what the people drink × days present. **What moves between
+the two versions is the fraction of non-renewable biomass.** The PAA tab fills it from the MoFuSS
+assessment's Table 5, cited to the project's own site (ruling 2). The legacy tab fills Uganda,
+Kenya and Malawi from the CDM's list of expired default country values, cited to the UNFCCC page
+and marked historical — which is exactly why they are the legacy shares — and asks for a typed
+share for any other country (ruling F, widened once the list was read). A typed share is always
+honoured and labelled as the visitor's own.
+
+**The emission factor is derived, and labelled derived.** Under a stated standard profile — wood
+80% and charcoal 20% by energy, the methodology's default stove efficiencies, 360.83 kJ to boil a
+litre — the methodology's own factor equation reduces to a straight line in the non-renewable
+share. The two constants were recovered from the profile and hold at all seven recorded points to
+better than one part in a billion; `scripts/check-gs-sdws.mjs` proves it (ruling E).
+
+**The PAA tab says what it does not apply**, on the tab itself: the water-quality modifier, the
+usage-rate adjustment for Method 1, statistical conservativeness, the downward adjustment factor
+and the lower-of-two crediting baseline. The credited figure is lower, never higher.
+
+**Blank is never zero, anywhere in the module.** The one zero default — project emissions for a
+zero-emission technology — is v2.0 §8.2.1's own rule, appears only once the technology gate is
+answered, and shows as a default.
+
+**The half-day premises build from the methodology's sum.** The reference tool's half-day cell
+omits the premises count and the operating days; the pack builds from Eq. 5 instead, and the
+field's why-note records the deviation. The school-mix reference row, whose inputs were not
+recorded, is deliberately not a fixture.
+
+**The transition delta** is one line under the tabs, in the production calculator's idiom, shown on
+either carbon tab only when both have a complete answer. The worked example — Uganda, made up,
+labelled on the header and prefixed on the desk's rows — gives the demo figures.
+
+**The v2.0 citation carries the cover date, 9 July 2026**, by the maintainer's errata ruling for the
+document; the running header says 7 July.
+
+**What confirms it:** `scripts/check-gs-sdws.mjs`, **109 checks**, against the real compiled module —
+every reference row that carries its inputs, to four decimals; the seven factors; the transition;
+both leakage routes; the gates; the tiles; the citations; blank-never-zero in every place it could
+fail.
+
+**The two clauses Phoebe's roster renders for these packs are the maintainer's, signed as drafted on
+2 Sep 2026.**
+
+**Not in these packs, deliberately:** suppressed-demand baselines, the institutional age tiers,
+embodied-emission deductions, the downward adjustment factor, monitoring, registration, and any
+reconciliation between the versions beyond the one input that moves.
+
+Opened and built 2 Sep 2026. **Open as the home for the packs' story.**
+
+## K7. A carbon card pass in Phoebe's card format
+
+**Debt, logged 2 Sep 2026 and not built.** After Thursday's C4SW walk: a card pass in Phoebe's
+card format, drafted from the two Gold Standard PDFs in `sources-local/methodology/`, graded by
+the maintainer, and carried through the same pipeline as the VWBA cards — committed source, a
+generated module, a staleness gate. Until it lands Phoebe has no carbon cards and abstains on
+carbon questions, which is the correct outcome.
+
+**Why it is a row and not a task.** The maintainer asked for one open-items row so it is not
+lost. It waits for Thursday and on her word.
+
+Logged 2 Sep 2026. **Not started.**
 
 ---
 
@@ -1660,8 +1740,56 @@ Not this sprint.
    a field in neither list would disappear while the arithmetic still read it. Four checks hold the
    two lists to covering every field exactly once.
 
+**From 2 Sep 2026 the slot holds three packs** (item K6), the tabs are selectable, a pack's result
+is figures with units and a headline rather than litres by name, and ~~carbon screening is named
+on the tab strip and marked planned~~ the planned placeholder is gone. The step's answers moved
+into the visit (item S11) so the desk can read them.
+
 Built 1 Sep 2026. **Open as the home for the surface's story.** What remains is Calvin's chat, which
 is not scheduled.
+
+## S11. The free desk, and the console in the production shape
+
+**The console's fourth surface and its new shape, built 2 Sep 2026.** Maintainer's brief and
+rulings A, B and C of that day; look pass against the saved production pages the same evening.
+
+**The shape is production's.** Under the top bar the centre carries a journey bar of six phases —
+Eligibility, Partners, Quantify open this site's surfaces; Plan, Monitor, Communicate are named,
+quieter, do not click, and one caption says they open with a saved project — and a row of four
+tabs: Dispatch, Eligibility, Partners (Map), Quantify, with a hairline after Dispatch and the row on
+its Tide rule. The desk opens first (ruling B). The left rail names the visit's project only,
+unsaved, this visit. **Production is canon for the console's shape**: the journey bar's measure,
+the tab row, the row anatomy and the calculator's idiom were read from the saved markup and matched
+— the look only, never their data, composers, organisations, roles or saving.
+
+**Wellington's desk.** His header — **Team Lead**, the maintainer's naming ruling of 2 Sep 2026,
+struck into the book's §6 the same day — a project-context card (name, place, standard of
+interest; ruling A), a "Needs you" card of dispatch rows, the desk chat, and the one composer at
+the bottom of the centre, honestly disabled with the maintainer's own sentence: *Wellington answers
+on the paid site — here he organizes your next steps.* No live model is called. The right column on
+the desk is the crew — Wellington, Phoebe, Bridget, Calvin — each face opening its own surface;
+Wellington's count is the number of rows. **Wellington is extended, never forked**: the shared
+portrait and the Tide accent, read from the token. He is not a post in the primer; Phoebe cannot
+name him until the maintainer's sentence comes with the desk's second pass.
+
+**The visit lives in the shell** (`src/lib/visit.ts`): context, the pinned basin, the eligibility
+rows and every pack's answers, kept for this visit only. Nothing is written to storage; a reload
+starts over and the page says so. **Rows derive from the visit and are never invented** — Phoebe's
+once a criterion moves, Bridget's once a basin is pinned, Calvin's once a pack has a figure, and
+always last **"Save this project and sign up"**, which opens waterbots.ai in a new window and says
+that nothing is carried across yet. That is the two-window fallback until the bridge (item S7) is
+real. A row built from a pack's worked example says so first.
+
+**The map pin.** A click on a basin pins it for the visit with the Tide stroke; a click on the
+pinned basin unpins. The pin fills the place field if it was blank and never overwrites a typed
+place. The pin is part of the basin layer's key, because a pin is a style and a handler and the
+layer re-reads neither without a rebuild.
+
+**Not exercised on screen:** Phoebe's row, which only her live answers move; the sitting made no
+live model calls.
+
+Built 2 Sep 2026. **Open as the home for the surface's story.** What remains is the desk's second
+pass — Wellington's primer sentence, and whatever Thursday teaches.
 
 ---
 
@@ -1946,73 +2074,10 @@ Logged 27 Aug 2026. **Open as a standing dependency, with nothing due until ther
 
 ---
 
-## O10. Line endings are pinned in git but not in the working folder
+## O10. Line endings are pinned in git but not in the working folder — closed, swept to the archive
 
-**Found 29 Aug 2026 while editing the stylesheet. Nothing is broken, and it is logged because item
-O6 says something about this that is half untrue.**
-
-**What O6 records as done:** a `.gitattributes` file pinning every text file to Unix line endings,
-"in git and in the working folder, on every machine that clones this repository."
-
-**The working-folder half does not hold.** `.gitattributes` says `* text=auto eol=lf`, and this
-machine has `core.autocrlf=true`. Measured on `src/styles/tokens.css` on 29 Aug: **git's stored blob
-has 239 Unix line endings and zero Windows ones; the file on disk had 239 Windows ones and zero
-Unix.** The same file, two forms.
-
-**Why nothing is broken, and why the fix still works.** `text=auto` normalises on the way in, so
-every commit carries Unix endings and `git status` stays clean — which is exactly the "done" test
-item O6 set, and it is genuinely met. The deployment platform builds from what git stores, which has
-never changed.
-
-**The likely cause.** Git only rewrites a file on checkout when its content changes. Files that have
-not differed between branches since `.gitattributes` landed on 27 Aug have never been rewritten, so
-they still carry the form they had before it existed. The rule prevents future drift; it did not
-convert what was already there.
-
-**What "done" looks like:** either `git add --renormalize .` plus a fresh checkout so the working
-folder matches what the attribute promises, or item O6's sentence corrected to say the rule binds
-what git stores rather than what sits on disk. **The second is probably right** — what git stores is
-what ships, and it is what the rule was written to protect.
-
-**Not urgent, and deliberately not fixed inside a brand step.** It was found mid-session and left
-alone rather than folded into unrelated work.
-
-### Closed — the claim was shrunk, the disk was left alone. 30 Aug 2026
-
-**Maintainer's ruling, 30 Aug 2026: take the honest fix, not the big one.** Item O6's sentence is
-struck and corrected in place to say the rule binds **what git stores**. `git add --renormalize`
-was **not** run.
-
-**Why the correction and not the renormalize.** Renormalizing would rewrite every tracked text file
-for **zero change in what ships** — git already stores Unix endings for all of them, and the
-deployment platform builds from what git stores. It would produce a large, content-free commit that
-buries the real history of every one of those files, in exchange for tidying a working folder that
-nobody deploys from. **The claim was the thing that was wrong, so the claim is the thing that was
-fixed.**
-
-**Measured across the whole tracked tree on 30 Aug 2026**, rather than on one file as this item
-originally was:
-
-| | Count |
-|---|---|
-| Tracked text files carrying **LF** on disk | **74** |
-| Tracked text files carrying **CRLF** on disk | **7** |
-| Tracked text files whose **git blob** carries CRLF | **0** |
-
-The seven are `api/_abstentions.ts`, `api/_cap.ts`, `api/_store.ts`, `api/_visitor.ts`,
-`api/abstentions.ts`, `eligibility-cards-vwba.md` and `scripts/check-visitor-id.mjs`.
-
-**That is this item's own diagnosis, confirmed by counting.** Every one of the seven is a file that
-has not changed on any branch since `.gitattributes` landed on 27 Aug, so git has never had reason
-to rewrite it. Everything touched since — three-quarters of the tree — converted on its first
-checkout, exactly as predicted. **The rule prevents drift going forward; it does not convert what
-was already there**, and the number of stragglers falls on its own every time one of them is next
-edited.
-
-**Nothing is broken, and nothing here needs watching.** `git status` is clean, every commit carries
-Unix endings, and the card gate that started this whole thread in item O6 passes.
-
-Logged 30 Aug 2026, ruled and **closed 30 Aug 2026.**
+**Closed 30 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) on 2 Sep 2026**, in full,
+with its dates and its measurements intact. Nothing was summarised away in the move.
 
 ---
 
@@ -2065,5 +2130,12 @@ next sweep.
 
 **The families did not change**, exactly as this item predicted: only closed rows moved.
 
-Logged 30 Aug 2026, **first sweep done 30 Aug 2026.** Open as a standing habit — the next sweep runs
-when this file gets heavy again.
+### The second sweep — 2 Sep 2026
+
+**Item O10 moved in full**, the obvious candidate the first sweep named. Three items joined the file
+the same day — K6, K7 and S11 — so the file did not get shorter, and it stays over 2,000 lines. The
+next candidates are the settled halves the first sweep declined to split, which still need the
+maintainer's word.
+
+Logged 30 Aug 2026, **first sweep done 30 Aug 2026, second sweep done 2 Sep 2026.** Open as a
+standing habit — the next sweep runs when this file gets heavy again.

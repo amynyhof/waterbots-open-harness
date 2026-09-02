@@ -1,56 +1,43 @@
 /**
- * The left navigation rail.
+ * The left rail — the visit's project, and nothing else.
  *
- * Chrome recedes, content rises (BRAND.md §2.3): the rail sits ON the
- * frame, flush and square, never as a card — a rail rendered as a card would
- * float navigation above the work it serves. The active item rises one plane
- * to --card, never to an accent fill.
+ * RESHAPED 2 Sep 2026, maintainer's ruling C. The surfaces moved out of the
+ * rail and into the tab row under the journey bar, matching the production
+ * console, so the rail now does what the production rail does: it names the
+ * project you are working on. Here that is the current visit's project only —
+ * unsaved, session-only, cleared by a reload — and the rail says so on the
+ * card rather than implying a project list that does not exist.
  *
- * THE ACTIVE ITEM TAKES A HAIRLINE AS WELL AS A FILL. --card and --frame are
- * only 1.31 points of CIE L* apart, so a fill alone was very nearly invisible
- * against the lighter frame ruled on 29 Aug. §2.3 pairs a white card with a
- * 1px --line border and says the border carries the weight; using the fill
- * alone was the incomplete half of that rule, and it showed as soon as the
- * frame moved. This is the book applied properly, not a new device.
+ * THE SHAPE is the production rail's, from the saved page the maintainer
+ * brought in by hand: a small eyebrow, a raised project card with a dot, the
+ * name, and a state chip. Production shows an organisation block above it;
+ * there are no organisations here, so there is none.
+ *
+ * Chrome recedes, content rises (BRAND.md §2.3): the rail sits ON the frame,
+ * flush and square, never as a card. The project card inside it rises one
+ * plane to --card with the hairline §2.3 pairs with a white card.
  *
  * WIDER SINCE 29 Aug 2026. The design canon asked that the rail be widened
- * modestly whenever it was next opened for another reason, and said plainly it
- * was not its own work item. Retiring the chrome plane opened it. 208 -> 224.
- *
- * It lists exactly what exists. Three surfaces are built — the basin map, the
- * eligibility worksheet and the quantification step — so there are three
- * items. Inventing a nav item for something unbuilt would be a fabricated
- * claim about the product, which is the same rule that keeps fabricated data
- * off the map.
- *
- * QUANTIFICATION IS A REAL SURFACE WITH AN EMPTY SLOT, which is a different
- * thing from an unbuilt one. The step exists and says truthfully that no
- * method pack is fitted to it yet.
+ * modestly whenever it was next opened; 208 -> 224. Unchanged today.
  */
 
 import { useEffect, useState } from 'react';
 import { SITE_LABEL, SITE_URL } from '../lib/site';
-import type { Surface } from '../lib/surfaces';
-import { SURFACES } from '../lib/surfaces';
 
 const EXPANDED = 224;
 const COLLAPSED = 52;
 
 /**
- * Below this the rail starts collapsed. The rail and the chat dock together
- * take 580px; on a narrow window that leaves the map too little to be worth
- * looking at, and the map is the work these surfaces serve. The reader can
- * still expand it.
+ * Below this the rail starts collapsed. The rail and the right column together
+ * take about 600px; on a narrow window that leaves the centre too little to be
+ * worth looking at. The reader can still expand it.
  */
 const AUTO_COLLAPSE_BELOW = 1180;
 
-export default function NavRail({
-  active,
-  onNavigate,
-}: {
-  active: Surface;
-  onNavigate: (surface: Surface) => void;
-}) {
+/** What the card says when the visit has not named its project. Not a value. */
+const UNNAMED = 'Unnamed project';
+
+export default function NavRail({ projectName }: { projectName: string }) {
   const [open, setOpen] = useState(
     () => typeof window === 'undefined' || window.innerWidth >= AUTO_COLLAPSE_BELOW
   );
@@ -64,16 +51,19 @@ export default function NavRail({
     return () => window.removeEventListener('resize', onResize);
   }, [touched]);
 
+  const name = projectName.trim() || UNNAMED;
+
   return (
     <nav
       className="chrome"
-      aria-label="Sections"
+      aria-label="This visit"
       style={{
         width: open ? EXPANDED : COLLAPSED,
         flex: 'none',
         display: 'flex',
         flexDirection: 'column',
         borderRight: '1px solid var(--line)',
+        borderBottom: 0,
         transition: `width var(--dur) var(--ease)`,
         overflow: 'hidden',
       }}
@@ -85,52 +75,110 @@ export default function NavRail({
           setOpen((v) => !v);
         }}
         aria-expanded={open}
-        aria-label={open ? 'Collapse the navigation rail' : 'Expand the navigation rail'}
+        aria-label={open ? 'Collapse the project rail' : 'Expand the project rail'}
         title={open ? 'Collapse' : 'Expand'}
       >
         <Chevron open={open} />
         {open && <span className="t-caption">Collapse</span>}
       </button>
 
-      {SURFACES.map((surface) => (
-        <RailItem
-          key={surface.key}
-          label={surface.label}
-          active={surface.key === active}
-          collapsed={!open}
-          onSelect={() => onNavigate(surface.key)}
-        />
-      ))}
+      {open ? (
+        <div style={{ padding: '14px 12px 0' }}>
+          {/* One word. The card's own chip says the rest, and a second line
+              here wrapped in the 224px rail. */}
+          <div className="eyebrow" style={{ marginBottom: 10, paddingLeft: 4 }}>
+            Project
+          </div>
+
+          {/* The project card. One card, one project — the visit's. */}
+          <div
+            style={{
+              background: 'var(--card)',
+              border: '1px solid var(--line)',
+              borderRadius: 'var(--r-md)',
+              padding: '12px 14px 11px',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+              <span
+                aria-hidden
+                style={{
+                  width: 7,
+                  height: 7,
+                  borderRadius: 'var(--r-pill)',
+                  background: 'var(--ink-4)',
+                  flex: 'none',
+                }}
+              />
+              <span
+                style={{
+                  fontSize: 14,
+                  fontWeight: 600,
+                  lineHeight: 1.3,
+                  color: projectName.trim() ? 'var(--ink)' : 'var(--ink-3)',
+                  overflowWrap: 'anywhere',
+                }}
+              >
+                {name}
+              </span>
+            </div>
+            <div
+              className="t-mono"
+              style={{
+                fontSize: 9.5,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: 'var(--ink-3)',
+                marginTop: 8,
+              }}
+            >
+              unsaved · this visit
+            </div>
+          </div>
+
+          <p
+            className="t-caption"
+            style={{ margin: '12px 0 0', padding: '0 4px', fontSize: 10.5, lineHeight: 1.55 }}
+          >
+            Nothing is kept between visits. A reload starts over.
+          </p>
+        </div>
+      ) : (
+        <div
+          title={`${name} · unsaved, this visit`}
+          aria-label={`${name}, unsaved, this visit`}
+          style={{ display: 'grid', placeItems: 'center', padding: '16px 0' }}
+        >
+          <span
+            aria-hidden
+            style={{
+              width: 7,
+              height: 7,
+              borderRadius: 'var(--r-pill)',
+              background: 'var(--ink-4)',
+            }}
+          />
+        </div>
+      )}
 
       <div style={{ flex: 1 }} />
 
-      {/* The production site this map is linked from. The reverse link is the
-          marketing site's to make, not this repository's. */}
+      {/* The production site this console is linked from, and where saving
+          happens. The reverse link is the marketing site's to make. */}
       <a
         className="wb-rail-link"
         href={SITE_URL}
         target="_blank"
         rel="noopener noreferrer"
-        title={collapsedTitle(open)}
+        title={open ? undefined : SITE_LABEL}
         style={{ justifyContent: open ? 'flex-start' : 'center' }}
       >
         <ExternalIcon />
         {open && <span>{SITE_LABEL}</span>}
       </a>
-
-      {open && (
-        <p
-          className="t-caption"
-          style={{ margin: 0, padding: '10px 14px 12px', fontSize: 10.5, lineHeight: 1.5 }}
-        >
-          Three surfaces are built so far. The chat console is next.
-        </p>
-      )}
     </nav>
   );
 }
-
-const collapsedTitle = (open: boolean) => (open ? undefined : SITE_LABEL);
 
 function ExternalIcon() {
   return (
@@ -143,51 +191,6 @@ function ExternalIcon() {
         strokeLinejoin="round"
       />
     </svg>
-  );
-}
-
-function RailItem({
-  label,
-  active,
-  collapsed,
-  onSelect,
-}: {
-  label: string;
-  active?: boolean;
-  collapsed: boolean;
-  onSelect: () => void;
-}) {
-  return (
-    <button
-      className="wb-rail-item"
-      onClick={onSelect}
-      aria-current={active ? 'page' : undefined}
-      title={collapsed ? label : undefined}
-      style={{
-        width: '100%',
-        font: 'inherit',
-        cursor: 'pointer',
-        textAlign: 'left',
-        /* The subject rises one plane, to --card, with the hairline §2.3
-           pairs with a white card. Never an accent fill. */
-        background: active ? 'var(--card)' : 'transparent',
-        border: active ? '1px solid var(--line)' : '1px solid transparent',
-        color: active ? 'var(--ink)' : 'var(--ink-2)',
-        justifyContent: collapsed ? 'center' : 'flex-start',
-      }}
-    >
-      <span
-        aria-hidden
-        style={{
-          width: 6,
-          height: 6,
-          borderRadius: 'var(--r-pill)',
-          background: active ? 'var(--ink-3)' : 'var(--ink-4)',
-          flex: 'none',
-        }}
-      />
-      {!collapsed && <span style={{ fontSize: 13.5 }}>{label}</span>}
-    </button>
   );
 }
 

@@ -20,7 +20,7 @@ sources-local/
 BRAND.md
 UI_REFERENCE.md
 
-# Brand assets — ignored EXCEPT the ~~two~~ THREE files the product actually ships.
+# Brand assets — ignored EXCEPT the ~~two~~ ~~THREE~~ FOUR files the product actually ships.
 #
 # Git cannot re-include a file whose parent directory is excluded, so the
 # tree is opened level by level and re-closed at each one. Everything else
@@ -37,16 +37,26 @@ brand/assets/bots/*
 !brand/assets/bots/bridget.svg
 !brand/assets/bots/phoebe.svg
 !brand/assets/bots/calvin.svg
+# Wellington hosts the free desk from 2 Sep 2026. Without this line his
+# portrait builds locally and fails on deploy — the trap that caught Calvin's.
+!brand/assets/bots/wellington.svg
 
-# The calculator design reference — engineer-eyes-only, never published.
+# Design references — engineer-eyes-only, never published.
 #
-# A saved copy of a production page, brought in BY THE MAINTAINER'S HAND on
-# 1 Sep 2026 so the free calculator and the paid one look like cousins. That is
-# the sanctioned route and the only one: rule zero forbids the engineer
-# fetching, matching or guessing at the production side, and it is unchanged.
+# Saved production pages and mockups, brought in BY THE MAINTAINER'S HAND —
+# the calculator page on 1 Sep 2026, the dispatch desk and console on
+# 2 Sep 2026 — so the free surfaces and the paid ones read as one family.
+# That is the sanctioned route and the only one: rule zero forbids the
+# engineer fetching, matching or guessing at the production side, and it is
+# unchanged.
 #
-# It is a LOOK reference and nothing else — spacing, shapes, type, and the
-# number card. Not its questions, not its logic, not its paid-side features.
+# They are LOOK references and nothing else — layout, row anatomy, rail and
+# chat-box density. Not their data, not their live composers, not
+# organisations, roles or saving.
+#
+# ~~The calculator reference sits at the repository root.~~ Moved inside
+# Design refs/ by the maintainer's hand on 2 Sep 2026. The root rule is kept
+# in case it is ever dropped there again; it matches nothing today.
 Calculator design ref/
 Design refs/
 

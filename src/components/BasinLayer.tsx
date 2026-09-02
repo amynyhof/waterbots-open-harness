@@ -20,6 +20,7 @@ import {
   type Bbox,
 } from '../lib/basins';
 import { styleFor, type StressLookup } from '../lib/stress';
+import type { MapPin } from '../lib/visit';
 
 /**
  * One stroke for every basin regardless of value, so the boundary reads as
@@ -31,12 +32,28 @@ const STROKE: Pick<PathOptions, 'color' | 'weight' | 'opacity'> = {
   opacity: 0.45,
 };
 
+/**
+ * The pinned basin's stroke. Tide, the primary action, because pinning is the
+ * one action a visitor takes on this map; the fill is untouched so the stress
+ * reading underneath still reads. Identity and status stay off it — §2.6.
+ */
+const PINNED_STROKE: Pick<PathOptions, 'color' | 'weight' | 'opacity'> = {
+  color: '#2B5BFF', // --tide
+  weight: 2.2,
+  opacity: 1,
+};
+
 const km2 = (n: number) => `${Math.round(n).toLocaleString()} km²`;
 
-function styleForFeature(stress: StressLookup, f?: Feature<Geometry, BasinProps>): PathOptions {
+function styleForFeature(
+  stress: StressLookup,
+  pinnedHybas: number | null,
+  f?: Feature<Geometry, BasinProps>
+): PathOptions {
   const key = f ? stress[String(f.properties.PFAF_ID)] : undefined;
   const s = styleFor(key);
-  return { ...STROKE, fillColor: s.fill, fillOpacity: s.fillOpacity };
+  const stroke = f && f.properties.HYBAS_ID === pinnedHybas ? PINNED_STROKE : STROKE;
+  return { ...stroke, fillColor: s.fill, fillOpacity: s.fillOpacity };
 }
 
 function padded(b: Bbox, ratio: number): Bbox {
@@ -48,13 +65,25 @@ function padded(b: Bbox, ratio: number): Bbox {
 export default function BasinLayer({
   data,
   stress,
+  level,
   filterToViewport,
   onVisibleCount,
+  pinnedHybas,
+  onPin,
 }: {
   data: BasinCollection;
   stress: StressLookup;
+  level: 4 | 6;
   filterToViewport: boolean;
   onVisibleCount?: (n: number) => void;
+  /** The HYBAS_ID of the visit's pinned basin, or null. Drawn with the Tide stroke. */
+  pinnedHybas: number | null;
+  /**
+   * A click pins a basin for this visit — or unpins it, on the pinned one.
+   * The pin is the visit's, held by the shell (src/lib/visit.ts); the map
+   * only reports the click and draws the result.
+   */
+  onPin?: (pin: MapPin | null) => void;
 }) {
   const map = useMap();
 
@@ -123,21 +152,38 @@ export default function BasinLayer({
         { sticky: true, className: 'wb-basin-tooltip' }
       );
 
+      const pinned = p.HYBAS_ID === pinnedHybas;
       layer.on({
-        mouseover: (e) => e.target.setStyle({ weight: 1.6, opacity: 0.95 }),
-        mouseout: (e) => e.target.setStyle(STROKE),
+        mouseover: (e) => e.target.setStyle(pinned ? PINNED_STROKE : { weight: 1.6, opacity: 0.95 }),
+        mouseout: (e) => e.target.setStyle(pinned ? PINNED_STROKE : STROKE),
+        click: () => {
+          if (!onPin) return;
+          onPin(
+            pinned
+              ? null
+              : {
+                  hybasId: p.HYBAS_ID,
+                  pfafId: p.PFAF_ID,
+                  level,
+                  stressLabel: s.label,
+                  subAreaKm2: p.SUB_AREA,
+                }
+          );
+        },
       });
     },
-    [stress]
+    [stress, level, pinnedHybas, onPin]
   );
 
   /* Re-keying on the subset size forces Leaflet to rebuild the layer when the
      visible set changes. GeoJSON does not diff its `data` prop. */
+  /* The pin is part of the key too: a pin is a style and a handler, and
+     GeoJSON re-reads neither without being rebuilt. */
   return (
     <GeoJSON
-      key={`${subset.features.length}-${validFor?.join(',') ?? 'all'}`}
+      key={`${subset.features.length}-${validFor?.join(',') ?? 'all'}-${pinnedHybas ?? 'none'}`}
       data={subset}
-      style={(f) => styleForFeature(stress, f as Feature<Geometry, BasinProps>)}
+      style={(f) => styleForFeature(stress, pinnedHybas, f as Feature<Geometry, BasinProps>)}
       onEachFeature={onEachBasin}
     />
   );

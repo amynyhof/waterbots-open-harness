@@ -685,3 +685,121 @@ body {
   display: block;
   color: var(--ink-3);
 }
+
+/* ---------------------------------------------------------------------------
+   The console's journey bar, tab row and crew rail — 2 Sep 2026, item S11.
+
+   The look is the production console's, from the saved desk the maintainer
+   brought in by hand. A phase marker is a hollow status dot; a tab is quiet
+   text that takes Tide when current; a crew row rises one plane when current.
+   Nothing here paints an accent fill behind a name — §2.6, the form factor
+   carries the meaning.
+--------------------------------------------------------------------------- */
+
+.wb-phase {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 4px;
+  background: transparent;
+  border: 0;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: color var(--dur) var(--ease);
+}
+.wb-phase[aria-disabled='true'] {
+  cursor: default;
+}
+button.wb-phase:hover span:last-child {
+  color: var(--ink);
+}
+
+.wb-phase-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-4);
+  flex: none;
+  transition:
+    border-color var(--dur) var(--ease),
+    background var(--dur) var(--ease);
+}
+
+.wb-tab {
+  padding: 6px 2px 8px;
+  background: transparent;
+  border: 0;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--dur) var(--ease);
+}
+.wb-tab:hover {
+  color: var(--ink);
+}
+
+.wb-crew-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: var(--r-md);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition:
+    background var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+.wb-crew-row:hover {
+  background: color-mix(in oklab, var(--card) 60%, transparent);
+}
+
+/* The desk's project-context fields and a dispatch row's one action.
+
+   The field is the calculator's input made sans and left-aligned — these are
+   words, not quantities. The action is a quiet text link in Tide, one per
+   row, exactly as the reference carries it. */
+.wb-context-input {
+  width: 260px;
+  max-width: 44vw;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 5px 9px;
+  transition: border-color var(--dur) var(--ease);
+}
+.wb-context-input:focus {
+  border-color: var(--tide-ui);
+  outline: none;
+}
+.wb-context-input::placeholder {
+  color: var(--ink-4);
+}
+
+.wb-row-action {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--tide-text);
+  cursor: pointer;
+  text-decoration: none;
+}
+.wb-row-action:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* A live pack tab is a button; an unselected one lifts a little on hover. */
+.wb-pack-tab:hover span:nth-child(2) {
+  color: var(--ink);
+}

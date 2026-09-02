@@ -60,7 +60,33 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — the Quantification step and its first pack
+## Just finished — the free desk, the production shape, and the carbon packs
+
+**Session of 2 Sep 2026. One pull request, on `feat/free-desk`, open as this is written.** The
+console's fourth surface and its new shape, the two carbon packs, and a look pass against the saved
+production pages. Items S11 and K6.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md)**, which is append-only and is
+never read at the opening. This section says only what is now true.
+
+- **Four surfaces, in the production shape.** A journey bar of six phases across the top of the
+  centre — three open this site's surfaces, three say they open with a saved project — and four
+  tabs beneath it: Dispatch, Eligibility, Partners (Map), Quantify. The desk opens first.
+- **Wellington's desk.** Project context, rows derived from the visit and never invented, and the
+  save door to waterbots.ai as the last row, carrying nothing across. Wellington is Team Lead,
+  extended and never forked; his chat is on the paid site and the composer says so.
+- **The visit lives in the shell.** Context, pin, eligibility rows and every pack's answers, kept
+  for this visit only. A click on the map pins a basin.
+- **Three packs in the slot.** The water pack and two carbon packs from one module — Gold
+  Standard's safe-drinking-water methodology, legacy and Paris-aligned — differing in one cited
+  input, with the transition delta as one line under the tabs. A pack's result is now figures with
+  units and a headline; the surface knows no method.
+- **Thirteen checks now, not twelve.** `check-gs-sdws` reproduces every recorded reference figure
+  to four decimals and proves blank is never zero.
+- **Production is canon for the console's shape.** Journey bar, tab row, row anatomy and the
+  calculator's idiom were read from the saved pages and matched — the look only.
+
+## Previously — the Quantification step and its first pack
 
 **Session of 1 Sep 2026. Three pull requests, #44 to #46.** The console's third surface, the first
 screening calculator inside it, and Calvin taking the primer's third post.
@@ -136,15 +162,24 @@ is nothing left for images to teach.** No folder waits for them.
 
 ## Building next — nothing is scheduled
 
-**No family is due.** The quantification family landed on 1 Sep 2026 and nothing queues behind it.
+**No family is due.** The desk and the carbon packs landed on 2 Sep 2026 and nothing queues behind
+them. **Thursday's C4SW walk is on waterbots.ai, not on this site.**
 
-**Three things are the obvious candidates, and none is chosen:**
+**Five things are the candidates, and none is chosen:**
 
-1. **Calvin's chat**, which would move the step's gates into his conversation and fill the toggles
-   from his answers. It is the largest of the three and it is not scheduled.
-2. **A second method pack**, which is the first real test of whether the seat is as pack-keyed as it
-   claims. Item K2 names the candidates.
-3. **Bridget's chat**, unchanged and still not scheduled.
+1. **The desk's second pass** — Wellington's primer sentence, by the maintainer's hand, so Phoebe
+   can name him; and whatever the Thursday walk teaches.
+2. **The carbon card pass** (item K7) — cards in Phoebe's format drafted from the two Gold Standard
+   PDFs, graded by the maintainer, through the same pipeline as the VWBA cards. Logged as debt,
+   after Thursday.
+3. **Calvin's chat**, which would move the step's gates into his conversation. The largest, and not
+   scheduled.
+4. **A further method pack** — the second carbon pack was the test of the seat, and the seat held.
+   Item K2 names the remaining candidates.
+5. **Bridget's chat**, unchanged and still not scheduled.
+
+**A note for later, not this sitting**, from the maintainer on 2 Sep 2026: the dream entrance is
+typing into a chat box on the landing page and arriving at the desk.
 
 **What comes next is decided at the next session's open**, and it waits on nothing.
 
@@ -152,7 +187,7 @@ is nothing left for images to teach.** No folder waits for them.
 
 | Family | Why it waits |
 |---|---|
-| **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. **The first method pack (item K5) landed 1 Sep 2026 outside that order, because the maintainer scoped it herself.** |
+| **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. **The first method pack (item K5) landed 1 Sep 2026 and the two carbon packs (item K6) on 2 Sep, both outside that order, because the maintainer scoped them herself.** The carbon card pass (item K7) waits for Thursday. |
 | **Surfaces** | The bridge (item S7) was ruled on 26 Aug 2026 and **sits on production's desk as their #149** — the shape of the handoff is theirs to settle, and no work here queues behind it. The brightness pull-up (item S8) and the return to the book (item S9) are both **closed**. The rest of the family is polish (item S5), the dev-relay gap (item S6), or waits on data that does not exist yet (item S1). |
 | **Data** | Blocked on material the maintainer supplies — registry coordinates for the project points (item D2), public disclosures for corporate goals and target geographies (item D1). Not work that can start from inside the repository. |
 | **Operations** | **Nothing is due.** What remains waits on real usage that does not exist yet: the number twenty (item O1), the basemap's five-million-request ceiling (item O9), and the primer review against the abstention log (item A5). Two questions are open and unhurried — whether the export copies should be produced by a script (item O8), and whether an abstention that cited a card is a fault at all (item A7, waiting on a recurrence). |
