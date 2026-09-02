@@ -13,6 +13,14 @@
  * the maintainer's hand; nothing else of it is — not its data, not its live
  * composer, not organisations, roles or saving.
  *
+ * THE VISIT LIVES HERE. Everything this console knows about the project in
+ * front of it — the eligibility rows Phoebe is filling in, the pinned basin,
+ * the calculator's answers, the project context — is plain component state
+ * in this file, so that the desk can derive its rows from it and no two
+ * surfaces can disagree about it. Nothing writes it to storage. A reload
+ * starts over, and the page says so: that is the no-memory-across-visits
+ * ruling of 21 Aug 2026, unchanged. The shape is src/lib/visit.ts.
+ *
  * Three planes and no fourth (BRAND.md §2.3), and two grounds. The frame —
  * top bar, journey bar, rail, and the right column's ground — sits on --frame
  * #FBFBFE. The content canvas is --paper #F6F5FA, and the map, the desk and
@@ -21,12 +29,8 @@
  *
  * FOUR SURFACES, AND WHAT HOLDS STATE IS NOT UNMOUNTED WHEN YOU LEAVE IT.
  * Switching surface hides what you left rather than throwing it away — the
- * map, and all three chat docks alongside it.
- *
- * The quantification step is the exception, and deliberately: it holds no
- * state the shell cares about yet, so it is mounted only while you are on it.
- * When its figures lift into the visit (checkpoint 2 of item S11), it joins
- * the others.
+ * map, and all three chat docks alongside it. The desk and the two worksheets
+ * hold no state of their own any more, so they are mounted only while open.
  *
  * For the map, unmounting would throw away the Level 6 layer and re-fetch
  * 8.44 MB on the way back, which is a real cost to a visitor on a metered
@@ -39,10 +43,6 @@
  * not, because it is held inside the dock. That mismatch read as the product
  * losing someone's work (found 23 Aug 2026, item S4).
  *
- * A REFRESH STILL EMPTIES EVERYTHING, and the page says so. That is the
- * no-memory-across-visits ruling of 21 Aug 2026 and it stands. Stepping over to
- * the map and back is not a new visit, so it must not behave like one.
- *
  * Each surface brings its own host: Wellington at the desk, Bridget with the
  * map, Phoebe with the eligibility worksheet, Calvin with the quantification
  * step. Phoebe answers from her cards through the relay; Wellington answers
@@ -50,7 +50,7 @@
  * panel says so.
  */
 
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import BasinMap, { type MapStatus } from './components/BasinMap';
 import NavRail from './components/NavRail';
 import JourneyBar from './components/JourneyBar';
@@ -66,6 +66,18 @@ import { DEFAULT_SURFACE, type Surface } from './lib/surfaces';
 import { CRITERIA } from './lib/phoebeCards';
 import { initialStatuses, type CriterionStatus } from './lib/criteriaState';
 import type { CriterionUpdate } from './lib/phoebeClient';
+import { METHOD_PACKS, fittedPack, type MethodPack, type PackValues } from './lib/methodPacks';
+import {
+  EMPTY_VISIT,
+  deskRows,
+  describePin,
+  journeyProgress,
+  type MapPin,
+  type Visit,
+  type VisitContext,
+} from './lib/visit';
+
+const LIVE_PACKS = METHOD_PACKS.filter((p): p is MethodPack => p.state === 'live');
 
 export default function App() {
   const [status, setStatus] = useState<MapStatus | null>(null);
@@ -95,6 +107,45 @@ export default function App() {
       return next;
     });
   }, []);
+
+  /* The rest of the visit: the project context, the pin, the pack answers. */
+  const [visit, setVisit] = useState<Visit>(EMPTY_VISIT);
+
+  const setContext = useCallback((context: VisitContext) => {
+    setVisit((v) => ({ ...v, context }));
+  }, []);
+
+  /* A pin fills the place if the visitor left it blank — ruling A, 2 Sep
+     2026 — and never overwrites a place they typed. Unpinning clears only a
+     place the pin wrote. */
+  const setPin = useCallback((pin: MapPin | null) => {
+    setVisit((v) => {
+      const wroteBefore = v.pin !== null && v.context.place === describePin(v.pin);
+      const place =
+        pin === null
+          ? wroteBefore
+            ? ''
+            : v.context.place
+          : v.context.place.trim() === '' || wroteBefore
+            ? describePin(pin)
+            : v.context.place;
+      return { ...v, pin, context: { ...v.context, place } };
+    });
+  }, []);
+
+  const fitted = fittedPack();
+  const packValues: PackValues = (fitted && visit.packValues[fitted.key]) || {};
+  const setPackValues = useCallback(
+    (values: PackValues) => {
+      if (!fitted) return;
+      setVisit((v) => ({ ...v, packValues: { ...v.packValues, [fitted.key]: values } }));
+    },
+    [fitted]
+  );
+
+  /* Derived, never typed. */
+  const rows = useMemo(() => deskRows(visit, statuses, LIVE_PACKS), [visit, statuses]);
+  const progress = useMemo(() => journeyProgress(visit, statuses, LIVE_PACKS), [visit, statuses]);
 
   const onDesk = surface === 'desk';
   const onMap = surface === 'map';
@@ -145,6 +196,8 @@ export default function App() {
                 {status.level === 4 ? 'world view' : 'detail view'} &middot;{' '}
                 {status.rendered.toLocaleString()} basins drawn &middot; zoom{' '}
                 {status.zoom.toFixed(1)}
+                {visit.pin && <> &middot; click a basin to pin it, or the pinned one to unpin</>}
+                {!visit.pin && <> &middot; click a basin to pin it for this visit</>}
               </>
             )}
           </span>
@@ -158,18 +211,21 @@ export default function App() {
           map. The rail collapses instead, and the map holds a zoom floor so it
           stays readable rather than shrinking to a postage stamp. */}
       <div style={{ flex: 1, minHeight: 0, display: 'flex', overflow: 'hidden' }}>
-        <NavRail projectName="" />
+        <NavRail projectName={visit.context.name} />
 
         <div style={{ flex: 1, minWidth: 0, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-          <JourneyBar active={surface} onNavigate={setSurface} />
+          <JourneyBar active={surface} progress={progress} onNavigate={setSurface} />
 
           <div style={{ flex: 1, minHeight: 0, display: 'flex', overflow: 'hidden' }}>
             <main style={{ flex: 1, minWidth: 0, minHeight: 0, position: 'relative' }}>
-              {/* The desk holds no state of its own yet; the rows it will show
-                  live in the shell. Mounted only while open. */}
               {onDesk && (
                 <div style={{ position: 'absolute', inset: 0 }}>
-                  <Desk />
+                  <Desk
+                    context={visit.context}
+                    onContext={setContext}
+                    rows={rows}
+                    onNavigate={setSurface}
+                  />
                 </div>
               )}
 
@@ -178,7 +234,7 @@ export default function App() {
                 style={{ position: 'absolute', inset: 0, visibility: onMap ? 'visible' : 'hidden' }}
                 aria-hidden={!onMap}
               >
-                <BasinMap onStatus={onStatus} />
+                <BasinMap onStatus={onStatus} pinnedHybas={visit.pin?.hybasId ?? null} onPin={setPin} />
               </div>
 
               {onEligibility && (
@@ -189,7 +245,7 @@ export default function App() {
 
               {onQuantification && (
                 <div style={{ position: 'absolute', inset: 0 }}>
-                  <QuantificationWorksheet />
+                  <QuantificationWorksheet values={packValues} onChange={setPackValues} />
                 </div>
               )}
             </main>
@@ -209,7 +265,7 @@ export default function App() {
               }}
             >
               <Dock visible={onDesk}>
-                <CrewRail active={surface} openCount={null} onNavigate={setSurface} />
+                <CrewRail active={surface} openCount={rows.length} onNavigate={setSurface} />
               </Dock>
               <Dock visible={onMap}>
                 <ChatPanel />

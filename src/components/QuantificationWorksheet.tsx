@@ -35,6 +35,11 @@
  *
  * THE GATES MOVE INTO CALVIN'S CONVERSATION when his chat goes live, and these
  * toggles fill from his answers then. Not this sprint.
+ *
+ * THE ANSWERS LIVE IN THE SHELL FROM 2 Sep 2026, not here. They are part of
+ * the visit (src/lib/visit.ts), so the desk can read Calvin's figure and so a
+ * step away to the map and back does not lose what was typed. This file still
+ * owns how a question is drawn; it no longer owns what was answered. Item S11.
  */
 
 import { useMemo, useState } from 'react';
@@ -52,12 +57,17 @@ import {
 const group = (n: number) => n.toLocaleString('en-GB');
 const cubes = (n: number) => cubicMetres(n).toLocaleString('en-GB', { maximumFractionDigits: 2 });
 
-export default function QuantificationWorksheet() {
+export default function QuantificationWorksheet({
+  values,
+  onChange,
+}: {
+  /** The fitted pack's answers, held by the shell as part of the visit. */
+  values: PackValues;
+  onChange: (values: PackValues) => void;
+}) {
   const pack = fittedPack();
-  const [values, setValues] = useState<PackValues>({});
 
-  const set = (key: string, value: string) =>
-    setValues((current) => ({ ...current, [key]: value }));
+  const set = (key: string, value: string) => onChange({ ...values, [key]: value });
 
   const result = useMemo(() => pack?.compute(values) ?? null, [pack, values]);
   const steps = useMemo(() => pack?.formula(values) ?? [], [pack, values]);

@@ -756,3 +756,45 @@ button.wb-phase:hover span:last-child {
 .wb-crew-row:hover {
   background: color-mix(in oklab, var(--card) 60%, transparent);
 }
+
+/* The desk's project-context fields and a dispatch row's one action.
+
+   The field is the calculator's input made sans and left-aligned — these are
+   words, not quantities. The action is a quiet text link in Tide, one per
+   row, exactly as the reference carries it. */
+.wb-context-input {
+  width: 260px;
+  max-width: 44vw;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 5px 9px;
+  transition: border-color var(--dur) var(--ease);
+}
+.wb-context-input:focus {
+  border-color: var(--tide-ui);
+  outline: none;
+}
+.wb-context-input::placeholder {
+  color: var(--ink-4);
+}
+
+.wb-row-action {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--tide-text);
+  cursor: pointer;
+  text-decoration: none;
+}
+.wb-row-action:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

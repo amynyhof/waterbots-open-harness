@@ -15,8 +15,9 @@
  *
  * A PHASE MARKER IS A HOLLOW DOT UNTIL THE VISIT HAS SOMETHING FOR IT. It is
  * a status, so it obeys BRAND.md §2.6 — a dot, never a portrait. What fills
- * it comes from the visit (item S11, checkpoint 2); at checkpoint 1 every
- * marker is hollow because nothing has happened yet, which is the truth.
+ * it derives from the visit (src/lib/visit.ts): a criterion moved, a basin
+ * pinned, a pack with a figure. A filled dot means "something is here", never
+ * "done" — this console certifies nothing, and a phase does not pass.
  */
 
 import { GATED_NOTE, JOURNEY } from '../lib/journey';
@@ -24,9 +25,12 @@ import { SURFACES, type Surface } from '../lib/surfaces';
 
 export default function JourneyBar({
   active,
+  progress,
   onNavigate,
 }: {
   active: Surface;
+  /** Which open phases have something from this visit, keyed by phase key. */
+  progress: Record<string, boolean>;
   onNavigate: (surface: Surface) => void;
 }) {
   return (
@@ -45,16 +49,21 @@ export default function JourneyBar({
         {JOURNEY.map((phase, i) => {
           const gated = phase.surface === null;
           const current = phase.surface !== null && phase.surface === active;
+          const has = Boolean(progress[phase.key]);
           const inner = (
             <>
               <span
                 aria-hidden
                 className="wb-phase-dot"
                 style={{
-                  borderColor: current ? 'var(--tide-ui)' : 'var(--ink-4)',
-                  background: current
-                    ? 'color-mix(in oklab, var(--tide-ui) 18%, transparent)'
-                    : 'transparent',
+                  borderColor: current || has ? 'var(--tide-ui)' : 'var(--ink-4)',
+                  /* Something from the visit fills the dot solid; the current
+                     phase with nothing in it yet takes only a wash. */
+                  background: has
+                    ? 'var(--tide-ui)'
+                    : current
+                      ? 'color-mix(in oklab, var(--tide-ui) 18%, transparent)'
+                      : 'transparent',
                 }}
               />
               <span
