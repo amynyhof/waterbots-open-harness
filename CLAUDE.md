@@ -192,6 +192,22 @@ credit line does not meet any of these bars.
   a screening estimate** — anticipated, never delivered and never
   verified — and it carries a consultant-review tag wherever it renders.
   **A blank without-project volume is never read as zero.**
+  **Three packs from 2 Sep 2026:** two carbon packs joined, Gold
+  Standard's safe-drinking-water methodology in its legacy and its
+  Paris-aligned versions, one module differing in one cited input, with
+  the transition delta between them. **Blank is never zero on any pack**,
+  and a default with no source asks instead.
+- **The free desk, the fourth surface, from 2 Sep 2026 — and the console
+  in the production shape.** A journey bar of six phases across the top
+  of the centre, four tabs beneath it, the desk first. **Wellington,
+  Team Lead, hosts it, extended from the shared crew and never forked**;
+  he answers on the paid site, and the one composer says so. **Rows
+  derive from this visit and are never invented**, the last is always
+  the save door to waterbots.ai, and nothing is persisted here. **Production
+  is canon for the console's shape** — layout, row anatomy and density
+  are taken from saved production pages brought in by the maintainer's
+  hand, and none of their data, composers, organisations, roles or
+  saving.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material
@@ -228,6 +244,11 @@ example; the **three shadow values written into §4**, which had carried
 the names and no values; and the **Slate map wash** recorded in §7. A
 sixth change — Driftwood into use — was proposed and reversed the same
 night, and §2.1 keeps the strike rather than erasing it.
+
+**One line of §6 was struck and corrected in place on 2 Sep 2026**, by the
+maintainer's ruling: Wellington's role label is **"Team Lead"** everywhere he
+is named — not "Floor manager", not "Host" as a title. The book stays at
+version 4.2; the strike is kept.
 
 **What version 4.2 changed, and it is the second amendment written into the
 book from inside this repository.** §6 only. **Calvin's row is filled in** — he

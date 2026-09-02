@@ -1,6 +1,6 @@
 # Session handoff
 
-**Current state only.** Rewritten from scratch at the close of 1 Sep 2026, and rewritten from
+**Current state only.** Rewritten from scratch at the close of 2 Sep 2026, and rewritten from
 scratch at every close — maintainer's ruling of 29 Aug 2026, *the opening reads stay thin, forever*.
 
 **No history lives here.** How things came to be is in [BUILD_LOG.md](./BUILD_LOG.md), which is
@@ -17,95 +17,103 @@ Read it with [CLAUDE.md](./CLAUDE.md), which is the rulebook and takes precedenc
 
 ## Where things stand
 
-**Everything is live at [map.waterbots.ai](https://map.waterbots.ai)**, deployed from `main`. The
-working tree is clean apart from two ungraded card drafts.
+**Everything on `main` is live at [map.waterbots.ai](https://map.waterbots.ai)**, deployed from
+`main`. The working tree is clean apart from two ungraded card drafts.
 
-**The console has three surfaces now.** Quantification joined on 1 Sep 2026.
+> **One pull request is open as this is written: the free desk, the console in the production
+> shape, and the two carbon packs — the whole of 2 Sep 2026, on `feat/free-desk`.** Until it
+> merges, every row marked *2 Sep* below is true on that branch and not yet on `main` or on the
+> live site. **Thursday's C4SW walk is on waterbots.ai, not here.**
 
-> **Two pull requests are open as this is written, so two rows below are true on a branch and not
-> yet on `main`.** #46 gives Calvin the primer's third post — until it merges, the primer carries
-> two posts and Phoebe cannot name him. This close-out is the other. Everything else here is on
-> `main` and deployed.
+**The console has four surfaces, in the production shape.** A journey bar of six phases across the
+top of the centre, four tabs beneath it — Dispatch, Eligibility, Partners (Map), Quantify — and
+the desk opens first.
 
 | Surface | State |
 |---|---|
-| Basin map | Live, keyed CARTO Voyager basemap under a Slate 13% wash |
+| **The desk (Dispatch)** | **2 Sep.** Wellington's desk: project context, rows derived from the visit, the save door. His chat is on the paid site, and the composer says so |
+| Basin map (Partners) | Live, keyed CARTO Voyager basemap under a Slate 13% wash. **2 Sep:** a click pins a basin for the visit |
 | Eligibility worksheet | Live |
-| **Quantification step** | **Live. One method pack fitted; carbon screening named and marked planned** |
-| Phoebe, Eligibility and Feasibility | Live on Opus 5, capped at 20 messages a day |
+| Quantification (Quantify) | Live. **2 Sep:** three packs — VWBA 2.0 D-3, Carbon · Legacy V1, Carbon · PAA v2.0 — and the transition delta between the two carbon packs |
+| Phoebe, Eligibility and Feasibility | Live on Opus 5, capped at 20 messages a day. **2 Sep:** her roster sentence names all three packs, the two carbon clauses signed |
+| Wellington, Team Lead | **2 Sep.** Hosts the desk, extended from the shared crew, never forked. Not a post in the primer; Phoebe cannot name him yet |
 | Bridget, the map's agent | Named in the map's dock; **her chat is not built** |
-| **Calvin, the quantification agent** | **Named in his dock; his chat is not built** |
-| Agent handoff primer | Live — Phoebe inherits it. **Calvin's third post is in #46, not yet merged** |
+| Calvin, the quantification agent | Named in his dock; **his chat is not built** |
+| Agent handoff primer | Live — Phoebe inherits it. Three posts; the pack list renders from the registry |
 | Shared chat layer | Live, built through Level 2 |
 | Project points | Not started — blocked on registry data (item D2) |
+
+## The visit, and what the desk may say
+
+**Everything the console knows about the project in front of it is the visit**, held by the shell
+in `src/App.tsx` and shaped in `src/lib/visit.ts`: the project context (name, place, standard of
+interest), the pinned basin, the eligibility rows, and every pack's answers. **Nothing is written to
+storage. A reload starts over, and the page says so.**
+
+- **Rows derive from the visit and are never invented.** Phoebe's row once a criterion moves;
+  Bridget's once a basin is pinned; Calvin's once a pack has a figure, or a row saying what it still
+  needs. **The last row is always "Save this project and sign up"**, which opens waterbots.ai in a
+  new window and says plainly that nothing is carried across yet — the two-window fallback until the
+  bridge (item S7) is real.
+- **A row built from a pack's worked example says so first.** The example is labelled on the
+  worksheet; the desk must not drop the label.
+- **A pin fills the place if it was blank and never overwrites a typed place.**
+- **Wellington's count is the number of rows.** An empty visit reads one next step, the save door.
+- **Phoebe's row has not been seen on screen.** It derives from the statuses only her live answers
+  move, and the sitting made no live model calls.
 
 ## The Quantification step, and what it may say
 
 **The step is Quantification. A pack is one tool inside it.** The surface is pack-keyed and knows
-nothing about any one method — fields, gates, defaults, formula and arithmetic all come from the
-pack. **Do not type the surface to a method**; the same seat has to hold carbon screening and the
-other D-methods later. Items S10 and K5.
+nothing about any method — fields, gates, defaults, formula, arithmetic, headline and unit all come
+from the pack. **A result is a list of figures, each with its unit, and one is the headline**; the
+water pack reports cubic metres and the carbon packs report tonnes of CO₂-equivalent, and the
+worksheet draws either without knowing which. Items S10, K5 and K6.
 
-**One pack is fitted: VWBA 2.0 · D-3 Volume Provided.** Household and community water supply,
-ex-ante, Option 3 of Table D3.3. It refuses sanitation (D-6), recharge (D-4), irrigation and metered
-supply by name, and tells a project which method fits instead of handing it a number.
+**The two carbon packs are one module, `src/lib/gsSdws.ts`, and differ in one input** — the
+non-renewable share of biomass. The PAA tab fills it from MoFuSS Table 5, cited; the legacy tab
+fills Uganda, Kenya and Malawi from the CDM's expired default list, cited, and asks for a typed
+share elsewhere. **The emission factor is derived and labelled derived** — a straight line in that
+share under a stated standard profile. **The PAA tab says which v2.0 adjustments it does not apply**
+and that the credited figure is lower, never higher.
 
-- **Everything it produces is a screening estimate** — anticipated, never delivered, never verified —
-  and it carries a consultant-review tag wherever it renders.
-- **A blank without-project volume is NEVER zero.** It leaves the benefit as a dash and says the
-  answer is incomplete. Reading a blank as zero would report the whole with-project volume as
-  benefit — a large, confident, wrong number with nothing looking broken.
-- **A typed zero IS accepted**, because a project with genuinely no prior supply needs a way to say
-  so. **But no example anywhere subtracts a zero** — a training site that does teaches the wrong
-  habit. Maintainer's ruling, 1 Sep 2026.
-- **Three questions can stop the number**, not five. The 1 km and humanitarian questions are helpers:
-  the first moves no litres either way, the second only lets the Sphere rates in.
-- **Defaults are returned, never written into a visitor's answers**, so a default is always visibly a
-  default. Limited access deliberately has no default number of days.
-
-**The pack writes its own formula and the worksheet only draws it.** If the surface knew that D-3
-multiplies people by litres by days, it would be a D-3 surface wearing a general name.
-
-**Calvin's dock has a shape of its own** — a footer strip that never scrolls, carrying *screening
-estimate · not verified*. A calculator cannot let those words scroll out of sight.
+- **Blank is never zero, anywhere.** The one zero default — project emissions for a zero-emission
+  technology — is the methodology's own rule and shows as a default.
+- **The half-day premises build from the methodology's sum**, not from the reference tool's
+  defective cell. The field's why-note records the deviation.
+- **The transition delta is one line under the tabs**, on either carbon tab, only when both have a
+  complete answer. The worked example, Uganda and made up, gives the demo figures.
+- **The v2.0 citation carries the cover date, 9 July 2026**, by the errata ruling.
+- **Everything the step produces is a screening estimate**, anticipated and never verified, with a
+  consultant-review tag wherever it renders.
 
 ## The design system as it now stands
 
 **The brand book is `brand/BRAND.md`, version 4.2.** It is gitignored twice over and does not
-publish. It carries **Windows line endings**; nothing normalises it, so edit it preserving them.
-[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) is **superseded** by it and stays
+publish. It carries **Windows line endings**; edit it preserving them. **§6's role label for
+Wellington is struck and corrected in place to "Team Lead"**, the maintainer's ruling of 2 Sep 2026.
+[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) is **superseded** by the book and stays
 published as history.
 
-- **One light brand.** No dark theme, no theme class. One set of tokens in `src/styles/tokens.css`.
-- **Two grounds.** `--paper` `#F6F5FA` is the **content** canvas. `--frame` `#FBFBFE` is the frame —
-  top bar, rail, and all three docks' ground. Book §2.3.
-- **Three planes and no fourth.** Canvas, card, floating. **A card cannot contain a card** — inside a
-  white sheet, separate with hairlines rather than a second fill.
-- **Neutrals are `--ink`, `--ink-2`, `--ink-3`, `--ink-4`.** `--ink-3` is the readability floor.
-- **Host panels carry their agent's accent** at 5% fill and 25% border: Phoebe **Anemone `#A04E7E`**,
-  Bridget **Surf `#14C8D9`**, Calvin **Plum `#5848A8`**.
-- **Big numbers sit on white, in ink.** An accent belongs on small tags — chips, pills, keylines —
-  never as a wash behind a figure. Maintainer's ruling, 1 Sep 2026.
+- **One light brand.** No dark theme. One set of tokens in `src/styles/tokens.css`.
+- **Two grounds.** `--paper` is the content canvas; `--frame` is the frame — top bar, journey bar,
+  rail, and the right column's ground.
+- **Three planes and no fourth.** A card cannot contain a card.
+- **Host panels carry their agent's accent** at 5% fill and 25% border: Wellington **Tide**, Phoebe
+  **Anemone**, Bridget **Surf**, Calvin **Plum**.
+- **Production is canon for the console's shape.** Journey bar, tab row, row anatomy and the
+  calculator's idiom are taken from the saved production pages in `Design refs/` — the look only.
+- **Big numbers sit on white, in ink.** An accent belongs on small tags.
 - **The stress ramp is unchanged** and is gated by `scripts/check-palette.mjs`.
-
-**Calvin's Plum is a knowing exception to book §6**, which gives Plum to Reggie and forbids pointing
-an accent at a second agent. So is his portrait, drawn here rather than carried in. Both are the
-maintainer's rulings of 31 Aug 2026 and both are recorded in the book at §6.
-
-**Do not give Calvin Mint.** It was the obvious pick — Vector holds the calculator seat on the paid
-side in Mint — and it was refused on the merits: §2.1 also makes Mint *Success / approved*, and this
-step's whole message is that its number is not verified. Walked in the browser, it read as approval.
-
-**Do not give Arid or No Data a warm fill.** Tried, passed the gate, refused on the merits. The note
-lives in `src/lib/stressPalette.ts`.
 
 **Design work starts from an image**, and approval of a look is given on pixels.
 
 ## Waiting on the maintainer
 
-- **Pull request #46** — Calvin takes the primer's third post. Open, checked in her browser, waiting
-  on review and merge.
-- **This close-out** — its own pull request, once opened.
+- **The open pull request** — the free desk and the carbon packs. Checked in her browser at three
+  checkpoints; waiting on review and merge.
+- **Wellington's primer sentence**, for the desk's second pass. Until it comes, Phoebe cannot name
+  him.
 - **Grading the two card drafts** — `activity-cards-vwba-DRAFT.md` and
   `definitions-cards-vwba-DRAFT.md`. They stay uncommitted until then.
 - **Whether the export copies should be produced by a script** (item O8).
@@ -116,28 +124,21 @@ whether an abstention that cited a card is a fault (item A7).
 
 **One thing waits on production.** The bridge (item S7) is on their desk as their **#149**.
 
-**One thing was named and never arrived.** `Design refs/` was named in a ruling of 1 Sep 2026 and is
-not on disk. The work it was meant to inform was built from the maintainer's written description and
-from the second file already in `Calculator design ref/`. Both folder names are gitignored, so either
-is safe to drop in.
+**One thing waits on C4SW, Thursday.** The legacy fNRB shares are the CDM's expired defaults; the
+maintainer asks C4SW whether those are the figures the legacy projects were assessed with.
 
 ## Phoebe — settings that are stated rather than inherited
 
 - **Claude Opus 5**, thinking adaptively at **medium** effort, budget **16,000** output tokens,
-  **call timeout 120 seconds**. All four are written in `api/phoebe.ts` with the measurements that
-  chose them. **A default nobody wrote down is a decision nobody made.**
+  **call timeout 120 seconds**. All four are written in `api/phoebe.ts`.
 - **A reply shorter than 40 characters is refused**, not delivered. The floor is in `api/_reply.ts`.
-- **One retry, only for a 400 arriving after five seconds.** `check-cap` proves it cannot cost a
-  visitor two of their twenty.
-- **She never writes a citation.** She returns a card number and places a marker; the browser renders
-  the citation from the committed file.
-- **Once #46 merges she can name Calvin and point at the Quantification step**, which she cannot do
-  today. She still quotes no figure from it — the worksheet keeps nothing between visits and no agent
-  can see what a visitor entered. Confirmed in the browser on the branch.
+- **One retry, only for a 400 arriving after five seconds.** `check-cap` proves it.
+- **She never writes a citation.** She returns a card number and places a marker.
+- **She names Calvin's three packs from the registry.** She quotes no figure from any of them.
 
 ## Confirming the build
 
-**Twelve checks. All must pass.** Three need a build first because they read `dist/`.
+**Thirteen checks. All must pass.** Three need a build first because they read `dist/`.
 
 ```bash
 node scripts/check-basins.mjs               # counts, fields, geometry, Level 6 to 4 nesting
@@ -148,16 +149,15 @@ node scripts/check-api-exports.mjs          # the relay can actually answer once
 node scripts/check-visitor-id.mjs           # the scrambled identity is stable, unique, salted
 node scripts/check-cap.mjs                  # 20 pass, 21 refused, refunds, no double charge
 node scripts/check-reply-guard.mjs          # an answer too short to be one is refused
-node scripts/check-vwba-d3.mjs              # the screening pack answers the way the method says
+node scripts/check-vwba-d3.mjs              # the water pack answers the way the method says
+node scripts/check-gs-sdws.mjs              # both carbon packs reproduce every reference row
 node scripts/build-prompt-modules.mjs --check   # cards AND primer are not stale
 npm run build && node scripts/check-attribution.mjs && node scripts/check-basemap-key.mjs
 ```
 
-**After editing any card or the agent primer, run `node scripts/build-prompt-modules.mjs`.**
-
-**From #46, that script also reads the method pack registry** and renders the primer's pack list from
-it, so a renamed pack makes the staleness gate fail until the module is rebuilt. It also adds four
-checks to `check-vwba-d3`, taking it from 63 to 68.
+**After editing any card, the agent primer, or the pack registry, run
+`node scripts/build-prompt-modules.mjs`.** The primer's pack list renders from the registry, so a
+renamed pack makes the staleness gate fail until the module is rebuilt.
 
 ## Running it locally
 
@@ -174,29 +174,33 @@ npx vite
 **The basemap key is the opposite case** and lives in `.env.local` as `VITE_CARTO_KEY`, baked into
 the bundle at build time. Without it the map works and every tile is watermarked.
 
-**`PHOEBE_DIAGNOSE=1` turns on failure diagnosis logging.** Off by default. It never logs a visitor's
-question, only its length. It is named in the code as debt to remove.
+**`PHOEBE_DIAGNOSE=1` turns on failure diagnosis logging.** Off by default. Named in the code as
+debt to remove.
 
 > **Two people cannot work in this folder at once.** While the maintainer is checking in the browser,
 > the engineer touches nothing.
 >
-> **And only one dev server at a time.** A second cannot take the port, exits, and requests silently
-> go to the first. **Start it as `npx vite`, not `npm run dev`.**
+> **And only one dev server at a time.** Start it as `npx vite`, not `npm run dev`.
 
 ## Housekeeping — where things are on this machine
 
 - **`gh` is installed and signed in but is not on the shell's PATH.** Call it at
-  `C:\Program Files\GitHub CLI\gh.exe`. Called bare it reports "command not found" and looks,
-  wrongly, like a missing tool.
+  `C:\Program Files\GitHub CLI\gh.exe`.
 - **`brand/BRAND.md` carries Windows line endings** and is gitignored, so nothing normalises it.
-- **`brand/assets/bots/` is ignored and re-opened one file at a time.** A new portrait needs its own
-  `!` line in `.gitignore` or the build passes locally and fails on deploy. Three are allow-listed:
-  `bridget.svg`, `phoebe.svg`, `calvin.svg`.
-- **`Calculator design ref/` and `Design refs/` are gitignored.** Engineer-eyes-only look references,
-  brought in by the maintainer's hand. Rule zero is unchanged: the engineer never fetches or guesses
-  at the production side.
-- **Other Node processes on this machine may belong to `WaterBotsAI`**, which is a different
-  repository. They are not this repo's dev servers and are not the engineer's to stop.
+- **`brand/assets/bots/` is ignored and re-opened one file at a time.** Four portraits are
+  allow-listed: `bridget.svg`, `phoebe.svg`, `calvin.svg`, `wellington.svg`. A new one needs its own
+  `!` line or the build passes locally and fails on deploy.
+- **`Design refs/` is gitignored** and holds the saved production pages and captures, brought in by
+  the maintainer's hand: the dispatch desk and console, the calculator, and the PAA transition and
+  legacy calculator pages. Look references only. **The saved pages route away on hydration if
+  served**, so read their markup rather than rendering them.
+- **`sources-local/methodology/` holds the Gold Standard sources**, the MoFuSS report, the CDM fNRB
+  page transcribed, and the synthetic matrix. Never committed. The matrix is synthetic and
+  anonymised: never quote provenance from it, never invent identities around it.
+- **The browser extension refuses `file://` pages and any local port it has not been allowed**, and
+  a tab can end up zoomed to 200% after a renderer timeout; a fresh tab reads at 100%.
+- **Other Node processes on this machine may belong to `WaterBotsAI`**, a different repository.
+  Not this repo's dev servers and not the engineer's to stop.
 
 ## Deployment
 
@@ -217,7 +221,7 @@ question, only its length. It is named in the code as debt to remove.
 | `VITE_CARTO_KEY` | The basemap, **at build time** | The map works, every tile watermarked |
 
 **A settings change only reaches a deployment that starts after it**, and doubly so for
-`VITE_CARTO_KEY`, which is read when the bundle is built rather than when a request arrives.
+`VITE_CARTO_KEY`, which is read when the bundle is built.
 
 ## Known conditions, recorded so they are not rediscovered as bugs
 
@@ -230,18 +234,16 @@ question, only its length. It is named in the code as debt to remove.
 - **The basemap wash sits under those two categories**, so it tints what shows through them.
 - **The basemap needs a key and has a five-million-request monthly ceiling.** Item O9.
 - **The output budget is 16,000 and the ceiling is genuinely reached**, about once in seventy-five.
-- **Phoebe gets a marked region of the primer, not the whole file.** Embedding the whole document
-  destabilised ordinary answers.
+- **Phoebe gets a marked region of the primer, not the whole file.**
 - **Basins are drawn on canvas, not as SVG paths.** A selector like `path.leaflet-interactive` finds
   nothing, and that does not mean the map is empty.
-- **The Quantification surface is mounted only while you are on it**, unlike the map and the docks,
-  because it holds no state worth preserving yet. When a visitor's figures need to survive a step
-  away, it joins the others.
-- **Seven tracked text files still carry Windows line endings on disk.** Nothing is broken — every
-  git blob is Unix, and that is what ships. Item O10 is closed on that basis.
-- **Browser screenshot capture on this machine sometimes returns a page rendered at roughly 200%**,
-  always immediately after a renderer timeout. It is a capture artefact, not the build. Take the
-  screenshot again.
+- **The basin layer rebuilds on a pin.** The pin is part of the layer's key, because a pin is a
+  style and a handler and the layer re-reads neither without a rebuild.
+- **The desk and the two worksheets hold no state of their own** and are mounted only while open;
+  the visit holds it. The map and the docks stay mounted.
+- **Seven tracked text files still carry Windows line endings on disk.** Nothing is broken.
+- **Browser screenshot capture on this machine sometimes returns a page at roughly 200%.** Take it
+  again, or open a fresh tab.
 
 ## The documents, and which one owns what
 
@@ -264,9 +266,8 @@ question, only its length. It is named in the code as debt to remove.
 **The brand book and UI_REFERENCE.md are gitignored and never publish.**
 **`agent-primer.md` is lowercase on purpose** — committed content an agent inherits, not a rulebook.
 
-**[OPEN_ITEMS.md](./OPEN_ITEMS.md) is over 2,000 lines again** and grew by about 200 this session.
-The first sweep on 30 Aug took it from 2,173 to about 1,850. Item O11 is the standing habit and the
-next sweep is due; item O10 is the obvious first candidate.
+**[OPEN_ITEMS.md](./OPEN_ITEMS.md) is over 2,000 lines.** Item O10 was swept to the archive on
+2 Sep 2026 and three items joined; item O11 is the standing habit and the next sweep is due.
 
 ## What to do first
 
@@ -276,27 +277,33 @@ equals `origin` with the identifiers compared, report where things stand and **w
 underneath us**, kill stray dev servers, and **check for code reading an unpushed migration**.
 **No building in Part 1.**
 
-**Then Part 2 — propose the session's plan.** Nothing is scheduled and no family is due. The three
-obvious candidates are named in [BUILD_PLAN.md](./BUILD_PLAN.md) and none is chosen.
+**Then Part 2 — propose the session's plan.** Nothing is scheduled. The candidates are named in
+[BUILD_PLAN.md](./BUILD_PLAN.md) and none is chosen.
 
 ## Working agreements that are easy to lose
 
-- **No mock or fabricated data, ever.**
+- **No mock or fabricated data, ever.** A worked example is labelled as made up wherever it renders,
+  on the desk included.
 - **Propose, approve, build, eyeball, commit word.** An approved plan is a batch approval; it
   loosens nothing else.
-- **Plans end at "built and checked."** The engineer reports *built, not committed* and stops, even
-  when the maintainer has already said go. Item O5.
+- **Plans end at "built and checked."** The engineer reports *built, not committed* and stops.
 - **Merge a checkpoint's pull request before building the next one on the same branch**, or the two
-  travel together whether or not that was intended.
+  travel together.
 - **Design work starts from an image**, and approval of a look is given on pixels, not prose.
+- **Production is canon for the console's shape.** Match layout, row anatomy and density from the
+  saved pages; take none of their data, composers, organisations, roles or saving.
 - **A form that looks like it works and does not is a false success state.** Fields ship with the
   arithmetic behind them or they do not ship.
+- **Blank is never zero.** Any pack, any field.
+- **Cite or it does not ship.** A default with no source asks instead.
 - **Record once, point everywhere else.** **Visible corrections over rewritten history.**
 - **Every pull request opens with a "For Amy" block.**
 - **A gate that passes is not a verdict.** It measures separation; it cannot measure what a colour
   reads as.
-- **Measure the book too**, and **check a new instrument against a known reading** before trusting a
-  number it produces.
-- **Look at the thing itself.** Ask the running server what it is serving.
+- **Measure the book too**, and **check a new instrument against a known reading** before trusting
+  it. A check's reference figure rounded by hand will disagree with the unrounded arithmetic at the
+  fourth decimal; compare against the module's own figure.
+- **Look at the thing itself.** A hot reload does not rebuild a map layer; a fault seen right after
+  an edit may be the old layer.
 - **Anything an agent inherits is rendered from its source, not retyped.**
 - **Never `git add -A`.** Stage named files.

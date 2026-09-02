@@ -284,3 +284,81 @@ lie the moment §6 changed. Flagged as a decision made without asking; the maint
 the maintainer's written description instead, and from the second file she had already placed in
 `Calculator design ref/`. Said plainly at the time rather than guessed around. Both folder names are
 gitignored, so either is safe to drop in later.
+
+---
+
+## 2 September 2026 — the free desk, the production shape, and the carbon packs
+
+**One sitting, one pull request on `feat/free-desk`, seven commits, three of the maintainer's
+checkpoints.** Items S11, K6 and K7. Thursday's C4SW walk is on waterbots.ai; this sitting's brief
+was that if it slipped, the map site was not the demo, and the desk came before carbon.
+
+### What was built
+
+**Checkpoint 1 — the empty console in the production shape.** A fourth surface, the desk; a journey
+bar of six phases across the top of the centre; four tabs beneath it; the left rail reduced to the
+visit's project card; Wellington's header, an honest "Needs you" card, the one disabled composer
+carrying the maintainer's sentence; the crew rail. Ruling C upgraded the shape mid-plan from
+desk-first-in-the-rail to the production console's bar-and-tabs, and it was built that way from the
+first checkpoint. Her pixel fix: the hairline after Dispatch, the row on its rule.
+
+**Checkpoint 2 — rows and the save action.** The visit lifted into the shell; the project context;
+the map pin; rows derived from the visit; the save door. Wellington renamed Team Lead everywhere,
+the book's §6 struck in place.
+
+**Checkpoint 3 — the carbon tabs and the delta.** One module for both versions of Gold Standard's
+safe-drinking-water methodology; the pack shape generalised to figures with units; three selectable
+tabs; the transition delta; the worked example; 109 checks. Then the look pass against the saved
+production pages: journey measure, tab row, category pills, the delta as one line under the tabs,
+the stat row, and formula rows in production's symbol–description–equation–value anatomy.
+
+### What was learned
+
+**The synthetic matrix reproduces from its own recorded equation** — once the 5% clean-boiling share
+is read into the baseline — and the emission factor is exactly linear in the non-renewable share
+across all seven recorded values. That is what let one module serve both tabs with one differing
+input.
+
+**The legacy share's source was found by reading, not guessing.** The only fNRB table in the
+sources gave Uganda a figure that was not the legacy one; the maintainer sent the engineer to the
+CDM's own page, which carries Uganda at 82%, expired 2017 — and Kenya and Malawi besides. The page
+sits behind bot protection, so it was read in a normal browser visit and transcribed with the date.
+
+**Saved production pages route away on hydration.** Served locally they navigate to a project URL
+before a screenshot lands. Their server-rendered markup carries the anatomy anyway, and that is what
+the look pass was read from.
+
+**A hot reload does not rebuild a map layer.** The first pin click looked like a fault and was the
+old layer; a reload fixed it before any code was touched.
+
+**A check's reference rounded by hand disagrees at the fourth decimal.** Twice. Compare against the
+module's own unrounded figure.
+
+### What was decided
+
+Rulings A to F and the four follow-ups, all in items S11 and K6: the desk's context fields; the desk
+first; the production shape; both methodology documents cited from one Gold Standard page; the
+factor as a cited line; the legacy shares from the CDM list, historical and said so; MoFuSS at its
+own site; the v2.0 cover date; Wellington as Team Lead; Phoebe's two carbon clauses signed as
+drafted; the carbon card pass logged as debt (item K7). The dream entrance — a chat box on the
+landing page that arrives at the desk — noted for later.
+
+### Mistakes, self-reported
+
+**Steps 3 and 4 went into one commit, and so did 5 to 7.** The groundwork and the visible step could
+not compile apart, and the commit messages say so rather than pretending to a split that was not
+there.
+
+**A tab zoomed itself to 200% mid-sitting**, the known capture artefact, and one capture went out at
+that zoom before it was caught; a fresh tab read at 100% and the captures were retaken.
+
+**A throwaway static server was run on a second port** to render the saved pages, against the
+one-server habit, and stopped as soon as it proved useless.
+
+**Phoebe's two carbon clauses were drafted by the engineer** because the staleness gate demanded a
+rendered roster; they were read back verbatim and the maintainer signed them as written.
+
+### Housekeeping
+
+The two stale merged branches deleted; item O10 swept to the archive; the export copies regenerated
+after the close-out commit, so the primer copy is no longer a merge behind.
