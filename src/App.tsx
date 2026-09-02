@@ -1,24 +1,32 @@
 /**
  * The console shell.
  *
- * Working Surface Standard §1 and §2: a full-viewport frame, fixed left rail
- * and right chat dock, and only the centre scrolls. Chrome is one hairline
- * row; content starts high with no dead padding above it.
+ * Working Surface Standard §1 and §2: a full-viewport frame, a fixed left rail
+ * and a fixed right column, and only the centre scrolls. Chrome is one
+ * hairline row; content starts high with no dead padding above it.
+ *
+ * THE PRODUCTION SHAPE, FROM 2 Sep 2026 — maintainer's ruling C, item S11.
+ * Under the top bar the centre carries a journey bar of six phases and a row
+ * of four tabs, and the surfaces open beneath them. The left rail names the
+ * visit's project; the right column is the host's dock, or the crew list when
+ * the desk is open. The look is the saved production desk's, brought in by
+ * the maintainer's hand; nothing else of it is — not its data, not its live
+ * composer, not organisations, roles or saving.
  *
  * Three planes and no fourth (BRAND.md §2.3), and two grounds. The frame —
- * top bar, rail, both docks — sits on --frame #FBFBFE. The content canvas is
- * --paper #F6F5FA, and the map and the worksheet sit on it. Content warm,
- * frame lighter and receding. Maintainer's ruling, 29 Aug 2026; the record is
- * item S9.
+ * top bar, journey bar, rail, and the right column's ground — sits on --frame
+ * #FBFBFE. The content canvas is --paper #F6F5FA, and the map, the desk and
+ * the worksheets sit on it. Content warm, frame lighter and receding.
+ * Maintainer's ruling, 29 Aug 2026; the record is item S9.
  *
- * THREE SURFACES, AND WHAT HOLDS STATE IS NOT UNMOUNTED WHEN YOU LEAVE IT.
+ * FOUR SURFACES, AND WHAT HOLDS STATE IS NOT UNMOUNTED WHEN YOU LEAVE IT.
  * Switching surface hides what you left rather than throwing it away — the
  * map, and all three chat docks alongside it.
  *
- * The quantification step is the exception, and deliberately: its slot is
- * empty, it holds no state of its own, and there is nothing in it for
- * unmounting to lose. It is mounted only while you are on it. When a method
- * pack lands and it starts holding a visitor's figures, it joins the others.
+ * The quantification step is the exception, and deliberately: it holds no
+ * state the shell cares about yet, so it is mounted only while you are on it.
+ * When its figures lift into the visit (checkpoint 2 of item S11), it joins
+ * the others.
  *
  * For the map, unmounting would throw away the Level 6 layer and re-fetch
  * 8.44 MB on the way back, which is a real cost to a visitor on a metered
@@ -35,15 +43,19 @@
  * no-memory-across-visits ruling of 21 Aug 2026 and it stands. Stepping over to
  * the map and back is not a new visit, so it must not behave like one.
  *
- * Each surface brings its own host: Bridget sits with the map, Phoebe with the
- * eligibility worksheet, Calvin with the quantification step. Phoebe answers
- * from her cards through the relay; Bridget's and Calvin's chats are not built
- * and both panels say so.
+ * Each surface brings its own host: Wellington at the desk, Bridget with the
+ * map, Phoebe with the eligibility worksheet, Calvin with the quantification
+ * step. Phoebe answers from her cards through the relay; Wellington answers
+ * on the paid site, and Bridget's and Calvin's chats are not built. Every
+ * panel says so.
  */
 
 import { useCallback, useState } from 'react';
 import BasinMap, { type MapStatus } from './components/BasinMap';
 import NavRail from './components/NavRail';
+import JourneyBar from './components/JourneyBar';
+import Desk from './components/Desk';
+import CrewRail from './components/CrewRail';
 import ChatPanel from './components/ChatPanel';
 import PhoebePanel from './components/PhoebePanel';
 import EligibilityWorksheet from './components/EligibilityWorksheet';
@@ -84,6 +96,7 @@ export default function App() {
     });
   }, []);
 
+  const onDesk = surface === 'desk';
   const onMap = surface === 'map';
   const onEligibility = surface === 'eligibility';
   const onQuantification = surface === 'quantification';
@@ -138,60 +151,77 @@ export default function App() {
         )}
       </header>
 
-      {/* Rails are fixed; only the centre scrolls. The centre takes no minimum
-          width — a full-viewport working shell must never scroll sideways, and
-          a horizontal scrollbar is a worse failure than a narrow map. The
-          rail collapses instead, and the map holds a zoom floor so it stays
-          readable rather than shrinking to a postage stamp. */}
+      {/* The rail is fixed; the column beside it carries the journey bar, the
+          tabs, and then the centre and the right column. The centre takes no
+          minimum width — a full-viewport working shell must never scroll
+          sideways, and a horizontal scrollbar is a worse failure than a narrow
+          map. The rail collapses instead, and the map holds a zoom floor so it
+          stays readable rather than shrinking to a postage stamp. */}
       <div style={{ flex: 1, minHeight: 0, display: 'flex', overflow: 'hidden' }}>
-        <NavRail active={surface} onNavigate={setSurface} />
+        <NavRail projectName="" />
 
-        <main style={{ flex: 1, minWidth: 0, minHeight: 0, position: 'relative' }}>
-          {/* Kept mounted, hidden when off-surface — see the note above. */}
-          <div
-            style={{ position: 'absolute', inset: 0, visibility: onMap ? 'visible' : 'hidden' }}
-            aria-hidden={!onMap}
-          >
-            <BasinMap onStatus={onStatus} />
+        <div style={{ flex: 1, minWidth: 0, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+          <JourneyBar active={surface} onNavigate={setSurface} />
+
+          <div style={{ flex: 1, minHeight: 0, display: 'flex', overflow: 'hidden' }}>
+            <main style={{ flex: 1, minWidth: 0, minHeight: 0, position: 'relative' }}>
+              {/* The desk holds no state of its own yet; the rows it will show
+                  live in the shell. Mounted only while open. */}
+              {onDesk && (
+                <div style={{ position: 'absolute', inset: 0 }}>
+                  <Desk />
+                </div>
+              )}
+
+              {/* Kept mounted, hidden when off-surface — see the note above. */}
+              <div
+                style={{ position: 'absolute', inset: 0, visibility: onMap ? 'visible' : 'hidden' }}
+                aria-hidden={!onMap}
+              >
+                <BasinMap onStatus={onStatus} />
+              </div>
+
+              {onEligibility && (
+                <div style={{ position: 'absolute', inset: 0 }}>
+                  <EligibilityWorksheet statuses={statuses} onOpenMap={openMap} />
+                </div>
+              )}
+
+              {onQuantification && (
+                <div style={{ position: 'absolute', inset: 0 }}>
+                  <QuantificationWorksheet />
+                </div>
+              )}
+            </main>
+
+            {/* The right column. On the desk it is the crew; elsewhere it is
+                the host's dock. All three docks stay mounted and the ones you
+                are not on are hidden — same treatment as the map above, for the
+                same reason. `visibility: hidden` takes a hidden dock out of the
+                tab order as well as out of sight, so nobody can type into a
+                composer they cannot see. */}
+            <div
+              style={{
+                width: 'var(--chat-rail)',
+                flex: 'none',
+                position: 'relative',
+                minHeight: 0,
+              }}
+            >
+              <Dock visible={onDesk}>
+                <CrewRail active={surface} openCount={null} onNavigate={setSurface} />
+              </Dock>
+              <Dock visible={onMap}>
+                <ChatPanel />
+              </Dock>
+              <Dock visible={onEligibility}>
+                <PhoebePanel onCriteriaUpdate={applyUpdates} />
+              </Dock>
+              <Dock visible={onQuantification}>
+                <CalvinPanel />
+              </Dock>
+            </div>
           </div>
-
-          {onEligibility && (
-            <div style={{ position: 'absolute', inset: 0 }}>
-              <EligibilityWorksheet statuses={statuses} onOpenMap={openMap} />
-            </div>
-          )}
-
-          {/* The quantification step. It holds no state of its own yet — the
-              slot is empty — so unlike the map and the docks there is nothing
-              here that unmounting would throw away. */}
-          {onQuantification && (
-            <div style={{ position: 'absolute', inset: 0 }}>
-              <QuantificationWorksheet />
-            </div>
-          )}
-        </main>
-
-        {/* All three docks stay mounted; the ones you are not on are hidden. Same
-            treatment as the map above, for the same reason. `visibility:
-            hidden` takes the hidden dock out of the tab order as well as out
-            of sight, so nobody can type into a composer they cannot see. */}
-        <div
-          style={{
-            width: 'var(--chat-rail)',
-            flex: 'none',
-            position: 'relative',
-            minHeight: 0,
-          }}
-        >
-          <Dock visible={onMap}>
-            <ChatPanel />
-          </Dock>
-          <Dock visible={onEligibility}>
-            <PhoebePanel onCriteriaUpdate={applyUpdates} />
-          </Dock>
-          <Dock visible={onQuantification}>
-            <CalvinPanel />
-          </Dock>
         </div>
       </div>
     </div>
@@ -199,7 +229,7 @@ export default function App() {
 }
 
 /**
- * One chat dock, shown or hidden without being unmounted.
+ * One right-column occupant, shown or hidden without being unmounted.
  *
  * Hidden means hidden from everyone: `visibility: hidden` removes it from the
  * tab order and from the accessibility tree, and `aria-hidden` says so
