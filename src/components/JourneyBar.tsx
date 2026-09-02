@@ -36,13 +36,17 @@ export default function JourneyBar({
   return (
     <div className="chrome" style={{ flex: 'none' }}>
       {/* The six phases. */}
+      {/* Production's measure, from the saved console: 12px phase labels,
+          7px hollow dots, hairlines that stretch to fill, 8px of vertical
+          padding, and a hairline under the row. Look pass, 2 Sep 2026. */}
       <nav
         aria-label="Journey"
         style={{
           display: 'flex',
           alignItems: 'center',
           gap: 0,
-          padding: '10px var(--gutter) 0',
+          padding: '8px var(--gutter)',
+          borderBottom: '1px solid var(--line)',
           overflowX: 'auto',
         }}
       >
@@ -68,8 +72,9 @@ export default function JourneyBar({
               />
               <span
                 style={{
-                  fontSize: 13,
-                  color: gated ? 'var(--ink-4)' : current ? 'var(--ink)' : 'var(--ink-2)',
+                  fontSize: 12,
+                  fontWeight: current ? 500 : 400,
+                  color: gated ? 'var(--ink-4)' : current ? 'var(--ink)' : 'var(--ink-3)',
                   whiteSpace: 'nowrap',
                 }}
               >
@@ -78,7 +83,18 @@ export default function JourneyBar({
             </>
           );
           return (
-            <div key={phase.key} style={{ display: 'flex', alignItems: 'center', flex: 'none' }}>
+            <div
+              key={phase.key}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                /* Each phase keeps its own width; only the hairline between
+                   phases stretches. Squeezed, the row scrolls rather than
+                   letting labels collide. */
+                flex: i < JOURNEY.length - 1 ? '1 1 auto' : 'none',
+                minWidth: 'max-content',
+              }}
+            >
               {gated ? (
                 <span
                   className="wb-phase"
@@ -104,11 +120,11 @@ export default function JourneyBar({
                 <span
                   aria-hidden
                   style={{
-                    width: 'clamp(16px, 4vw, 64px)',
+                    flex: '1 1 8px',
+                    minWidth: 8,
                     height: 1,
                     background: 'var(--line)',
-                    margin: '0 6px',
-                    flex: 'none',
+                    margin: '0 8px',
                   }}
                 />
               )}
@@ -117,7 +133,7 @@ export default function JourneyBar({
         })}
         <span
           className="t-caption"
-          style={{ marginLeft: 'auto', paddingLeft: 18, fontSize: 10.5, whiteSpace: 'nowrap' }}
+          style={{ flex: 'none', paddingLeft: 24, fontSize: 10.5, whiteSpace: 'nowrap' }}
         >
           Plan, Monitor and Communicate open with a saved project.
         </span>
@@ -134,15 +150,15 @@ export default function JourneyBar({
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 22,
-          padding: '8px var(--gutter) 0',
-          borderBottom: '3px solid var(--tide-ui)',
+          gap: 20,
+          padding: '6px var(--gutter) 0',
+          borderBottom: '2px solid var(--tide-ui)',
         }}
       >
         {SURFACES.map((surface, i) => {
           const on = surface.key === active;
           return (
-            <div key={surface.key} style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
+            <div key={surface.key} style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
               <button
                 type="button"
                 className="wb-tab"
@@ -158,7 +174,7 @@ export default function JourneyBar({
               {i === 0 && (
                 <span
                   aria-hidden
-                  style={{ width: 1, height: 18, background: 'var(--line)', flex: 'none' }}
+                  style={{ width: 1, height: 14, background: 'var(--line)', flex: 'none', marginLeft: -6 }}
                 />
               )}
             </div>
