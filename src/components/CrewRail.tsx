@@ -40,7 +40,8 @@ interface CrewMember {
 const CREW: CrewMember[] = [
   {
     name: 'Wellington',
-    role: 'Floor manager',
+    /* "Team Lead" — maintainer's naming ruling, 2 Sep 2026. */
+    role: 'Team Lead',
     portrait: wellingtonPortrait,
     token: '--bot-wellington',
     nameInAccent: true,
