@@ -30,7 +30,7 @@
  * are not reproduced, and no page of it is pasted into this file or the UI.
  */
 
-import type { FormulaStep, MethodPack, PackResult, PackValues } from './methodPacks';
+import type { Figure, FormulaStep, MethodPack, PackResult, PackValues } from './methodPacks';
 
 /* --------------------------------------------------------------------------
    The published defaults.
@@ -144,6 +144,17 @@ function compute(values: PackValues): PackResult {
   const withProject = withProjectLitres(values);
   if (withProject === null) return { kind: 'pending' };
 
+  const litreFigure = (key: string, label: string, litres: number): Figure => ({
+    key,
+    label,
+    value: litres,
+    unit: 'L / year',
+    decimals: 0,
+    secondary: `${(litres / 1000).toLocaleString('en-GB', { maximumFractionDigits: 2 })} m³ / year`,
+  });
+
+  const figures: Figure[] = [litreFigure('with', 'With the project', withProject)];
+
   /* The without-project volume. Required, empty allowed, NEVER zero by
      default. A blank stops the benefit from being worked out; it does not
      make the benefit equal to the whole with-project volume. */
@@ -151,18 +162,27 @@ function compute(values: PackValues): PackResult {
   if (without === null) {
     return {
       kind: 'incomplete',
-      withProjectLitres: withProject,
+      figures,
       missing:
         'The benefit needs the without-project volume. Leave it blank until you have it — ' +
         'a blank is not zero, and this step will not treat it as one.',
     };
   }
 
-  return {
-    kind: 'complete',
-    withProjectLitres: withProject,
-    benefitLitres: withProject - without,
+  const benefit = withProject - without;
+  /* The headline is the benefit in cubic metres, the reported unit, with the
+     litres beside it. */
+  const headline: Figure = {
+    key: 'benefit',
+    label: 'Anticipated benefit',
+    value: benefit / 1000,
+    unit: 'm³ / year',
+    decimals: 2,
+    secondary: `${benefit.toLocaleString('en-GB')} L / year`,
   };
+  figures.push(litreFigure('benefit-litres', 'Anticipated benefit', benefit));
+
+  return { kind: 'complete', figures, headline };
 }
 
 /* --------------------------------------------------------------------------
@@ -248,11 +268,18 @@ export const VWBA_D3: MethodPack = {
     indicatorUnit: 'm³ per year',
     definition:
       'Volumetric water benefit = volume provided with the project − volume provided without the project',
-    optionLine: 'volume provided = people × litres per person per day × days',
-    capacityLine:
-      'with the project = the smaller of that figure and the system’s yearly capacity',
+    /* The option in use, then the capping step only when a capacity was given. */
+    lines: (values) => {
+      const out = ['volume provided = people × litres per person per day × days'];
+      if ((values.capacity_lpy ?? '').trim() !== '') {
+        out.push('with the project = the smaller of that figure and the system’s yearly capacity');
+      }
+      return out;
+    },
     optionName: 'Table D3.3, Option 3',
   },
+  headlineLabel: 'Anticipated benefit',
+  category: 'Water',
 
   citation: {
     document: 'Volumetric Water Benefit Accounting 2.0',

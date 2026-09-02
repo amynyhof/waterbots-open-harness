@@ -700,7 +700,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 2px 8px;
+  padding: 4px 4px;
   background: transparent;
   border: 0;
   font-family: var(--font-sans);
@@ -716,10 +716,10 @@ button.wb-phase:hover span:last-child {
 
 .wb-phase-dot {
   display: inline-block;
-  width: 11px;
-  height: 11px;
+  width: 7px;
+  height: 7px;
   border-radius: var(--r-pill);
-  border: 1.5px solid var(--ink-4);
+  border: 1px solid var(--ink-4);
   flex: none;
   transition:
     border-color var(--dur) var(--ease),
@@ -727,11 +727,11 @@ button.wb-phase:hover span:last-child {
 }
 
 .wb-tab {
-  padding: 6px 2px 9px;
+  padding: 6px 2px 8px;
   background: transparent;
   border: 0;
   font-family: var(--font-sans);
-  font-size: 15px;
+  font-size: 13px;
   cursor: pointer;
   white-space: nowrap;
   transition: color var(--dur) var(--ease);
@@ -797,4 +797,9 @@ button.wb-phase:hover span:last-child {
 .wb-row-action:hover {
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+/* A live pack tab is a button; an unselected one lifts a little on hover. */
+.wb-pack-tab:hover span:nth-child(2) {
+  color: var(--ink);
 }

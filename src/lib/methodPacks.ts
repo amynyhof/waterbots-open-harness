@@ -10,6 +10,13 @@
  * shape of its answer — and no method's arithmetic. Each pack brings its own
  * `compute`, and the worksheet renders whatever the registry holds.
  *
+ * GENERALISED 2 Sep 2026, when the two carbon packs joined the one water pack
+ * (item K6). A result used to be litres by name; it is now a list of figures,
+ * each carrying its own unit, with one of them named as the headline. The
+ * water pack reports cubic metres a year and the carbon packs report tonnes
+ * of CO₂-equivalent a year, and the worksheet draws either without knowing
+ * which is which.
+ *
  * A pack that rendered fields it could not compute would be worse than
  * nothing: a form that looks like it works and does not, which is the false
  * success state CLAUDE.md forbids. A pack ships its fields and its arithmetic
@@ -18,6 +25,7 @@
 
 import type { Citation } from './citation';
 import { VWBA_D3 } from './vwbaD3';
+import { GS_SDWS_LEGACY_V1, GS_SDWS_PAA_V2 } from './gsSdws';
 
 /**
  * How confident a pack's output is allowed to sound.
@@ -60,6 +68,14 @@ export interface PackField {
   choices?: FieldChoice[];
   /** Placeholder text. Never a value; a number typed here would be fabricated. */
   placeholder?: string;
+  /**
+   * Only shown when this returns true for the current answers. A field that
+   * belongs to one branch of a method — Method 1's households, Method 2's
+   * units — is hidden on the other branch rather than asked for nothing.
+   */
+  when?: (values: PackValues) => boolean;
+  /** A short heading drawn above this field, opening a group. Optional. */
+  group?: string;
 }
 
 /**
@@ -81,20 +97,39 @@ export interface PackGate {
 export type PackValues = Record<string, string>;
 
 /**
+ * One figure a pack reports.
+ *
+ * `value` is the number in `unit`. `secondary` is the same figure said
+ * another way — litres beside cubic metres — and `note` is one line of
+ * context that renders under the row.
+ */
+export interface Figure {
+  key: string;
+  label: string;
+  value: number;
+  unit: string;
+  /** How many decimals to show. Litres want none; tonnes want one. */
+  decimals: number;
+  secondary?: string;
+  note?: string;
+}
+
+/**
  * What a pack says back.
  *
  * `blocked`    — a gate failed. No number, a reason, and a route forward.
  * `pending`    — not enough answered yet to say anything.
- * `incomplete` — the with-project figure stands, the benefit cannot be worked
- *                out, and the pack says which answer is missing. It NEVER
- *                fills the gap with zero.
- * `complete`   — both figures. Still anticipated, still needing review.
+ * `incomplete` — some figures stand, the headline cannot be worked out, and
+ *                the pack says which answer is missing. It NEVER fills the
+ *                gap with zero.
+ * `complete`   — every figure, and the one that is the headline. Still
+ *                anticipated, still needing review.
  */
 export type PackResult =
   | { kind: 'blocked'; stopReason: string; routeForward: string }
   | { kind: 'pending' }
-  | { kind: 'incomplete'; withProjectLitres: number; missing: string }
-  | { kind: 'complete'; withProjectLitres: number; benefitLitres: number };
+  | { kind: 'incomplete'; figures: Figure[]; missing: string }
+  | { kind: 'complete'; figures: Figure[]; headline: Figure };
 
 /**
  * What every registered pack has, whether or not it can answer yet.
@@ -133,6 +168,10 @@ export interface PlannedPack extends PackListing {
  * missing rather than wondering why no answer appeared.
  */
 export interface FormulaStep {
+  /** The method's own symbol for this line, e.g. "Q_y" or "EF_b". Optional. */
+  symbol?: string;
+  /** The equation number in the cited document, e.g. "Eq. 5". Optional. */
+  eq?: string;
   /** What this line works out, e.g. "With the project". */
   label: string;
   /** The formula in words, e.g. "people × litres per person per day × days". */
@@ -149,8 +188,8 @@ export interface FormulaStep {
  *
  * A short strip, not a second set of questions and not a paste of the
  * guidebook. It names what the pack reports, defines it in one line, and shows
- * the one option actually in use — so a reader can see which of a method's
- * several routes produced their figure without opening the source.
+ * the route actually in use — so a reader can see which of a method's several
+ * routes produced their figure without opening the source.
  */
 export interface PackMethod {
   /** What the pack reports, e.g. "Volume provided". */
@@ -159,12 +198,19 @@ export interface PackMethod {
   indicatorUnit: string;
   /** The defining line, in the method's own terms. */
   definition: string;
-  /** The one option in use, of the several the method allows. */
-  optionLine: string;
-  /** The capping step. Shown only when a capacity has been given. */
-  capacityLine: string;
+  /** Further lines, given the current answers — the option in use, a cap, a simplification. */
+  lines: (values: PackValues) => string[];
   /** Which option this is, e.g. "Table D3.3, Option 3". */
   optionName: string;
+}
+
+/** A worked example a pack may offer. Round, obviously made up, and labelled. */
+export interface PackExample {
+  /** The label on the button and the chip, e.g. "Example · Uganda, made up". */
+  label: string;
+  /** One line saying what it is and that it is not a real project. */
+  note: string;
+  values: PackValues;
 }
 
 export interface MethodPack extends PackListing {
@@ -175,6 +221,8 @@ export interface MethodPack extends PackListing {
   scope: string;
   /** One plain sentence: what this pack measures. */
   measures: string;
+  /** The words over the big number, e.g. "Anticipated benefit". */
+  headlineLabel: string;
   /**
    * One clause naming what this pack does, for the agent primer's roster.
    *
@@ -191,6 +239,8 @@ export interface MethodPack extends PackListing {
   tier: PackTier;
   /** The source, in the shape CITATIONS.md fixes. The console renders it. */
   citation: Citation;
+  /** Further sources the pack's defaults rest on, rendered under the first. */
+  alsoCites?: Citation[];
   /** The questions, in the order they are asked. */
   fields: PackField[];
   /** The gates, checked before any arithmetic runs. */
@@ -212,42 +262,74 @@ export interface MethodPack extends PackListing {
   defaultFor: (fieldKey: string, values: PackValues) => string | null;
   /** Help that only applies in some circumstances. Never a silent default. */
   conditionalHelp: (fieldKey: string, values: PackValues) => string | null;
+  /** A worked example, if the pack offers one. */
+  example?: PackExample;
+  /**
+   * Small figures for the header's stat row — the production calculator's
+   * idiom: value, label, unit. Optional; drawn only when the pack returns any.
+   */
+  tiles?: (values: PackValues, result: PackResult) => Figure[];
+  /** The one-word category on the tab's pill, e.g. "Water" or "Carbon". */
+  category: string;
 }
 
 /** Any pack the strip knows about, answering or not. */
 export type RegisteredPack = MethodPack | PlannedPack;
 
 /**
- * Carbon screening — named, planned, and not built.
- *
- * It is here so the tab strip shows the family from the first day: this seat
- * holds more than one tool, and a strip with a single tab in it hides that.
- * It carries no fields, no arithmetic and no figures, and the strip will not
- * open it — a planned pack that could be clicked into something resembling a
- * working tool would be exactly the false success state this console refuses
- * everywhere else.
- *
- * Naming a planned thing is allowed and is not a claim. Honest states are the
- * rule: "planned" and "not live yet" are said plainly, never simulated.
- */
-export const CARBON_SCREENING: PlannedPack = {
-  key: 'carbon-screening',
-  name: 'Carbon screening',
-  state: 'planned',
-  note: 'Planned. Not built, and it produces no figures.',
-};
-
-/**
  * Every pack this console carries.
  *
  * Adding a pack here adds its tab — there is no second place to register one.
+ *
+ * ~~Carbon screening is named, planned, and not built.~~ Two carbon packs are
+ * live from 2 Sep 2026 and the planned placeholder they replace is gone with
+ * them. The water pack keeps the first tab.
  */
-export const METHOD_PACKS: RegisteredPack[] = [CARBON_SCREENING, VWBA_D3];
+export const METHOD_PACKS: RegisteredPack[] = [VWBA_D3, GS_SDWS_LEGACY_V1, GS_SDWS_PAA_V2];
 
-/** The pack currently fitted to the step, or null when none can answer. */
-export function fittedPack(): MethodPack | null {
-  return (METHOD_PACKS.find((p) => p.state === 'live') as MethodPack) ?? null;
+/** The packs that can answer, in tab order. */
+export function livePacks(): MethodPack[] {
+  return METHOD_PACKS.filter((p): p is MethodPack => p.state === 'live');
 }
+
+/** The first pack that can answer, or null when none can. */
+export function fittedPack(): MethodPack | null {
+  return livePacks()[0] ?? null;
+}
+
+/** A pack by key, if it is live. */
+export function packByKey(key: string): MethodPack | null {
+  return livePacks().find((p) => p.key === key) ?? null;
+}
+
+/**
+ * A comparison the worksheet draws between two packs' headlines.
+ *
+ * It is registered here, pack-keyed, so the surface knows that two figures
+ * may be compared and nothing about why. The card appears only when both
+ * packs have a complete answer; it never fills a side in.
+ */
+export interface PackComparison {
+  key: string;
+  title: string;
+  /** The pack whose figure comes first — "this minus that". */
+  minuendKey: string;
+  subtrahendKey: string;
+  /** One line under the card saying what the difference means. */
+  note: string;
+}
+
+export const PACK_COMPARISONS: PackComparison[] = [
+  {
+    key: 'carbon-transition',
+    title: 'Transition delta (PAA − Legacy)',
+    minuendKey: GS_SDWS_PAA_V2.key,
+    subtrahendKey: GS_SDWS_LEGACY_V1.key,
+    note:
+      'Difference attributable to the methodology transition, computed on identical project data. ' +
+      'Here the whole difference is the non-renewable share of biomass; nothing else moves.',
+  },
+];
 
 /** Litres to cubic metres. The result is shown in both. */
 export const cubicMetres = (litres: number): number => litres / 1000;

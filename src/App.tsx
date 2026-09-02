@@ -66,7 +66,7 @@ import { DEFAULT_SURFACE, type Surface } from './lib/surfaces';
 import { CRITERIA } from './lib/phoebeCards';
 import { initialStatuses, type CriterionStatus } from './lib/criteriaState';
 import type { CriterionUpdate } from './lib/phoebeClient';
-import { METHOD_PACKS, fittedPack, type MethodPack, type PackValues } from './lib/methodPacks';
+import { fittedPack, livePacks, type PackValues } from './lib/methodPacks';
 import {
   EMPTY_VISIT,
   deskRows,
@@ -77,7 +77,7 @@ import {
   type VisitContext,
 } from './lib/visit';
 
-const LIVE_PACKS = METHOD_PACKS.filter((p): p is MethodPack => p.state === 'live');
+const LIVE_PACKS = livePacks();
 
 export default function App() {
   const [status, setStatus] = useState<MapStatus | null>(null);
@@ -133,15 +133,11 @@ export default function App() {
     });
   }, []);
 
-  const fitted = fittedPack();
-  const packValues: PackValues = (fitted && visit.packValues[fitted.key]) || {};
-  const setPackValues = useCallback(
-    (values: PackValues) => {
-      if (!fitted) return;
-      setVisit((v) => ({ ...v, packValues: { ...v.packValues, [fitted.key]: values } }));
-    },
-    [fitted]
-  );
+  /* Which pack's tab is open. Held here so a step away and back keeps it. */
+  const [activePack, setActivePack] = useState<string>(() => fittedPack()?.key ?? '');
+  const setPackValues = useCallback((packKey: string, values: PackValues) => {
+    setVisit((v) => ({ ...v, packValues: { ...v.packValues, [packKey]: values } }));
+  }, []);
 
   /* Derived, never typed. */
   const rows = useMemo(() => deskRows(visit, statuses, LIVE_PACKS), [visit, statuses]);
@@ -245,7 +241,12 @@ export default function App() {
 
               {onQuantification && (
                 <div style={{ position: 'absolute', inset: 0 }}>
-                  <QuantificationWorksheet values={packValues} onChange={setPackValues} />
+                  <QuantificationWorksheet
+                    activeKey={activePack}
+                    onSelect={setActivePack}
+                    allValues={visit.packValues}
+                    onChange={setPackValues}
+                  />
                 </div>
               )}
             </main>

@@ -25,7 +25,6 @@
 
 import type { CriterionStatus } from './criteriaState';
 import type { MethodPack, PackValues } from './methodPacks';
-import { cubicMetres } from './methodPacks';
 import { SITE_LABEL, SITE_URL } from './site';
 import type { Surface } from './surfaces';
 
@@ -106,7 +105,6 @@ export interface DeskRow {
 }
 
 const group = (n: number) => n.toLocaleString('en-GB');
-const cubes = (n: number) => cubicMetres(n).toLocaleString('en-GB', { maximumFractionDigits: 2 });
 
 /**
  * The rows, derived from the visit and from nothing else.
@@ -158,23 +156,35 @@ export function deskRows(
     });
   }
 
-  /* Calvin — each live pack that has produced a figure. */
+  /* Calvin — each live pack that has produced a figure. The row reads the
+     pack's own headline and unit; it knows nothing about any method. */
   for (const pack of packs) {
     const values = visit.packValues[pack.key];
     if (!values) continue;
     const result = pack.compute(values);
+    /* A row built from a pack's worked example says so first. The example is
+       labelled on the worksheet; a row that dropped the label would put a
+       made-up figure on the desk looking like the visitor's own. */
+    const example =
+      pack.example !== undefined &&
+      Object.keys({ ...values, ...pack.example.values }).every(
+        (k) => (values[k] ?? '') === (pack.example!.values[k] ?? '')
+      );
+    const lead = example ? 'Example figures, not a real project: ' : '';
     if (result.kind === 'complete') {
+      const h = result.headline;
+      const figure = h.value.toLocaleString('en-GB', { maximumFractionDigits: h.decimals });
       rows.push({
         key: `calvin-${pack.key}`,
         from: 'calvin',
-        sentence: `${pack.name} gives an anticipated benefit of ${cubes(result.benefitLitres)} m³ a year — a screening estimate, not verified.`,
+        sentence: `${lead}${pack.name} screens at ${figure} ${h.unit} for ${h.label.toLowerCase()} — a screening estimate, not verified.`,
         action: { kind: 'surface', label: 'Open Quantify', surface: 'quantification' },
       });
     } else if (result.kind === 'incomplete') {
       rows.push({
         key: `calvin-${pack.key}`,
         from: 'calvin',
-        sentence: `${pack.name} has a with-project figure of ${cubes(result.withProjectLitres)} m³ a year and still needs the without-project volume before it can say the benefit.`,
+        sentence: `${lead}${pack.name} is part-way through and still needs an answer before it can say its figure. ${result.missing}`,
         action: { kind: 'surface', label: 'Open Quantify', surface: 'quantification' },
       });
     }

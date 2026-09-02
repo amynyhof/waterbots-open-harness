@@ -51,7 +51,7 @@ const compile = spawnSync(
   process.execPath,
   [
     join('node_modules', 'typescript', 'bin', 'tsc'),
-    join('src', 'lib', 'vwbaD3.ts'),
+    join('src', 'lib', 'methodPacks.ts'),
     '--outDir',
     out,
     '--module',
@@ -76,6 +76,12 @@ if (compile.status !== 0) {
 writeFileSync(join(out, 'package.json'), '{"type":"commonjs"}');
 const require_ = createRequire(import.meta.url);
 const { VWBA_D3, readNumber } = require_(join(out, 'vwbaD3.js'));
+
+/* The generalised result shape (2 Sep 2026): figures with units, and a named
+   headline. These read the litres back out of it so the checks below keep
+   saying what they always said. */
+const withLitres = (r) => r.figures?.find((f) => f.key === 'with')?.value;
+const benefitLitres = (r) => r.figures?.find((f) => f.key === 'benefit-litres')?.value;
 
 console.log('\nVWBA 2.0 · D-3 Volume Provided — screening pack\n');
 console.log('  Example data only. Round, obviously fake, and not an answer key.\n');
@@ -106,13 +112,13 @@ const run = (extra = {}) => VWBA_D3.compute({ ...FULL_BASE, ...extra });
 const one = run();
 expect(
   '1. full access, 100 people, defaults — with-project is 730,000 L/year',
-  one.withProjectLitres === 730000,
-  `got ${one.withProjectLitres}`
+  withLitres(one) === 730000,
+  `got ${withLitres(one)}`
 );
 expect(
   '1. with-project is 730 m³/year',
-  one.withProjectLitres / 1000 === 730,
-  `got ${one.withProjectLitres / 1000}`
+  withLitres(one) / 1000 === 730,
+  `got ${withLitres(one) / 1000}`
 );
 expect(
   '1. a blank without-project leaves the benefit incomplete',
@@ -133,13 +139,13 @@ const two = run({ without_lpy: '100000' });
 expect('2. with a without-project volume, the answer completes', two.kind === 'complete', two.kind);
 expect(
   '2. benefit is 730,000 − 100,000 = 630,000 L/year',
-  two.benefitLitres === 630000,
-  `got ${two.benefitLitres}`
+  benefitLitres(two) === 630000,
+  `got ${benefitLitres(two)}`
 );
 expect(
   '2. the with-project figure is unchanged by it',
-  two.withProjectLitres === 730000,
-  `got ${two.withProjectLitres}`
+  withLitres(two) === 730000,
+  `got ${withLitres(two)}`
 );
 
 /* ---------------------------------------------------------------------------
@@ -149,8 +155,8 @@ expect(
 const three = run({ capacity_lpy: '500000' });
 expect(
   '3. a capacity below demand caps with-project at 500,000 L/year',
-  three.withProjectLitres === 500000,
-  `got ${three.withProjectLitres}`
+  withLitres(three) === 500000,
+  `got ${withLitres(three)}`
 );
 expect(
   '3. with capacity given and without-project blank, it is still incomplete',
@@ -161,8 +167,8 @@ expect(
 const threeHigh = run({ capacity_lpy: '900000' });
 expect(
   '3. a capacity above demand does not raise the figure',
-  threeHigh.withProjectLitres === 730000,
-  `got ${threeHigh.withProjectLitres}`
+  withLitres(threeHigh) === 730000,
+  `got ${withLitres(threeHigh)}`
 );
 
 /* ---------------------------------------------------------------------------
@@ -176,8 +182,8 @@ const four = VWBA_D3.compute({
 });
 expect(
   '4. limited access, 100 people, default 2 L, 200 days — 40,000 L/year',
-  four.withProjectLitres === 40000,
-  `got ${four.withProjectLitres}`
+  withLitres(four) === 40000,
+  `got ${withLitres(four)}`
 );
 expect('4. and the benefit is incomplete', four.kind === 'incomplete', `got ${four.kind}`);
 
@@ -205,7 +211,7 @@ expect(
 );
 expect(
   '5. a blocked answer carries no figure at all',
-  quality.withProjectLitres === undefined && quality.benefitLitres === undefined,
+  quality.figures === undefined && quality.headline === undefined,
   'a blocked project was given a number'
 );
 
@@ -250,7 +256,7 @@ expect(
 );
 expect(
   '7. a blank never produces a benefit equal to the whole with-project volume',
-  one.kind === 'incomplete' && one.benefitLitres === undefined,
+  one.kind === 'incomplete' && benefitLitres(one) === undefined && one.headline === undefined,
   'the entire with-project volume was reported as benefit'
 );
 expect(
@@ -275,7 +281,7 @@ expect(
 );
 expect(
   '7. the example that shows a benefit uses a real figure, not 0',
-  two.benefitLitres === 630000 && readNumber({ without_lpy: '100000' }, 'without_lpy') === 100000,
+  benefitLitres(two) === 630000 && readNumber({ without_lpy: '100000' }, 'without_lpy') === 100000,
   'the benefit example rests on a zero'
 );
 
@@ -416,7 +422,7 @@ expect(
    mistaken for a working tool.
 --------------------------------------------------------------------------- */
 
-const { METHOD_PACKS, CARBON_SCREENING } = require_(join(out, 'methodPacks.js'));
+const { METHOD_PACKS } = require_(join(out, 'methodPacks.js'));
 
 expect(
   'the strip shows more than one pack, so the family is visible',
@@ -424,16 +430,21 @@ expect(
   `got ${METHOD_PACKS.length}`
 );
 expect(
-  'exactly one pack is live',
-  METHOD_PACKS.filter((p) => p.state === 'live').length === 1,
-  'more than one pack claims to answer'
+  'this pack is live and first in the strip',
+  METHOD_PACKS[0] === VWBA_D3 && VWBA_D3.state === 'live',
+  'the water pack lost its tab'
 );
 expect(
-  'the planned pack carries no fields, no gates and no arithmetic',
-  !('fields' in CARBON_SCREENING) &&
-    !('compute' in CARBON_SCREENING) &&
-    !('formula' in CARBON_SCREENING),
+  'every planned pack, if any, carries no fields, no gates and no arithmetic',
+  METHOD_PACKS.filter((p) => p.state === 'planned').every(
+    (p) => !('fields' in p) && !('compute' in p) && !('formula' in p)
+  ),
   'a planned pack carries machinery it could be mistaken for using'
+);
+expect(
+  'the headline is the benefit in cubic metres with the litres beside it',
+  two.headline.unit === 'm³ / year' && two.headline.value === 630 && /630,000 L/.test(two.headline.secondary),
+  `got ${JSON.stringify(two.headline)}`
 );
 
 /* ---------------------------------------------------------------------------
@@ -457,12 +468,12 @@ expect(
 );
 expect(
   'answering No to the 1 km helper still produces a figure',
-  run({ within_1km: 'no' }).withProjectLitres === 730000,
+  withLitres(run({ within_1km: 'no' })) === 730000,
   'a helper changed the volume'
 );
 expect(
   'the 1 km helper changes no litres either way',
-  run({ within_1km: 'yes' }).withProjectLitres === run({ within_1km: 'no' }).withProjectLitres,
+  withLitres(run({ within_1km: 'yes' })) === withLitres(run({ within_1km: 'no' })),
   'a helper moved the figure'
 );
 expect(
@@ -485,21 +496,22 @@ expect(
   /with the project/.test(m.definition) && /without the project/.test(m.definition),
   m.definition
 );
+const strip = m.lines({});
 expect(
   'the option in use is written out',
-  /people/.test(m.optionLine) && /days/.test(m.optionLine),
-  m.optionLine
+  strip.some((l) => /people/.test(l) && /days/.test(l)),
+  strip.join(' | ')
 );
 expect('the option is named', /Option 3/.test(m.optionName), m.optionName);
 expect(
   'the strip is short — it is not a paste of the guidebook',
-  [m.definition, m.optionLine, m.capacityLine].every((line) => line.length < 130),
+  [m.definition, ...m.lines({ capacity_lpy: '1' })].every((line) => line.length < 130),
   'a line long enough to be an excerpt'
 );
 expect(
   'nothing in the strip claims the figure is verified or delivered',
   !/verified|delivered|approved/i.test(
-    [m.indicator, m.definition, m.optionLine, m.capacityLine, m.optionName].join(' ')
+    [m.indicator, m.definition, ...m.lines({ capacity_lpy: '1' }), m.optionName].join(' ')
   ),
   'the method strip overclaims'
 );
