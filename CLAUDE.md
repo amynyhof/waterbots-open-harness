@@ -200,14 +200,21 @@ credit line does not meet any of these bars.
 - **The free desk, the fourth surface, from 2 Sep 2026 — and the console
   in the production shape.** A journey bar of six phases across the top
   of the centre, four tabs beneath it, the desk first. **Wellington,
-  Team Lead, hosts it, extended from the shared crew and never forked**;
-  he answers on the paid site, and the one composer says so. **Rows
+  Team Lead, hosts it, extended from the shared crew and never forked.**
+  ~~He answers on the paid site, and the one composer says so.~~ **His chat
+  is live on the desk from 3 Sep 2026**, on Phoebe's pattern: his own
+  endpoint, thirty a day, the same guards, every setting stated. He routes
+  and learns; the console acts on fields, never on his prose. **Rows
   derive from this visit and are never invented**, the last is always
   the save door to waterbots.ai, and nothing is persisted here. **Production
   is canon for the console's shape** — layout, row anatomy and density
   are taken from saved production pages brought in by the maintainer's
   hand, and none of their data, composers, organisations, roles or
   saving.
+- **Agents phrase the roster's facts themselves, from 3 Sep 2026.** An
+  agent is given facts and rules and writes its own two or three plain
+  sentences; the maintainer approves rules, not wording, and no prompt
+  says word for word. The rule lives in AGENT_RULES.md.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material

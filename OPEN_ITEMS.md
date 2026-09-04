@@ -91,7 +91,10 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | A4 | Phoebe returned an empty answer | Agents | one cause fixed 25 Aug 2026 — **not the only one**, see A6 |
 | A5 | Primer review against the abstention log | Agents | logged 27 Aug 2026, not due |
 | A6 | Phoebe fails about one request in six, and every fault fails late | Agents | fixed and guarded 28 Aug 2026 — 12% to 2% |
-| A7 | An abstention cited a card | Agents | logged 28 Aug 2026, waiting on a recurrence |
+| A7 | An abstention cited a card | Agents | logged 28 Aug 2026; **recurred 3 Sep 2026, benign branch** — reading owed |
+| A8 | Wellington's chat, live on the desk | Agents | **built 3 Sep 2026** — on Phoebe's pattern, thirty a day |
+| A9 | Agents phrase the roster's facts themselves | Agents | **canon, ruled 3 Sep 2026** — no word-for-word lines anywhere |
+| A10 | Wellington's answers run long | Agents | **logged 3 Sep 2026 as debt** — tightening comes later |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | open |
 | S2 | The shared chat layer | Surfaces | built through Level 2 |
 | S3 | Level 3 citation pop-out | Surfaces | out of scope — paid platform |
@@ -104,7 +107,10 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S8 | Brightness pull-up to the book's published Frost values | Surfaces | closed 29 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
 | S9 | The return to the brand book | Surfaces | **closed 30 Aug 2026** — both raises shipped, book at v4.1 |
 | S10 | The Quantification step | Surfaces | **built 1 Sep 2026** — the third surface, pack-keyed; three packs from 2 Sep |
-| S11 | The free desk, and the console in the production shape | Surfaces | **built 2 Sep 2026** — Wellington's desk, the journey bar, four tabs |
+| S11 | The free desk, and the console in the production shape | Surfaces | **built 2 Sep 2026** — Wellington's desk, the journey bar, four tabs; **his chat live on it from 3 Sep** |
+| S12 | The hero chat — a full page that is the conversation | Surfaces | **logged 3 Sep 2026, not built** — waits on the maintainer's reference file |
+| S13 | The handoff receiver — a question carried in from the production landing | Surfaces | **logged 3 Sep 2026, not built** — the save door in reverse; each shell builds its side |
+| S14 | Typing dots — the book's third motion exception | Surfaces | **ruled 3 Sep 2026** — waits on the maintainer's hand into §5 |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
@@ -972,7 +978,104 @@ capture was added.
 covers, that is good behaviour and this item closes as a false alarm. If the citation supports
 something she declined to say, that is a real fault and it becomes its own item.
 
-Logged 28 Aug 2026. **Open, not due, and waiting on a recurrence.**
+### It recurred, 3 Sep 2026 — and the text was read
+
+**The same question, through the measured walk of Wellington's build**: *"How much does it cost
+to drill a borehole in Kenya?"*, asked of Phoebe once on the final prompts. She abstained and cited
+one card, exactly as on 28 Aug. This time the instrument kept the text:
+
+> "I do not have a card for that — drilling costs in a specific country sit outside what I cover,
+> and I would only be guessing if I answered. What I can do is work through whether a project can
+> generate a volumetric water benefit, using the six eligibility criteria, and talk about the
+> considerations that help you choose between eligible projects."
+
+**That is the benign branch this item named:** she is pointing at what she does cover, and the
+citation supports the thing she offered, not the thing she declined. **The reading is the
+maintainer's to confirm** — it is her call whether this closes as a false alarm — and it is
+recorded here rather than closed by the engineer. The walk's log carried the full reply.
+
+Logged 28 Aug 2026. **Recurred 3 Sep 2026; the text reads as the benign branch. Waiting on the
+maintainer's reading to close.**
+
+## A8. Wellington's chat, live on the desk
+
+**Built 3 Sep 2026, on Phoebe's proven pattern — a real agent on real machinery.** The composer's
+disabled state is gone. Maintainer's brief of 2 Sep 2026 and her rulings the same day: cap
+thirty, Opus 5 at medium, abstention logging only for a question outside every lane.
+
+**His endpoint** is `api/wellington.ts`: Opus 5 at medium effort, a 16,000-token budget, a
+120-second timeout, one retry for a late 400, the 40-character reply floor, thirty a day under his
+own counter, and a refund on anything undelivered. Every setting is stated in code with its reason.
+**Thirty, not twenty**, because his prompt carries no card sets — a message to him costs about a
+twentieth of one to Phoebe — and a routing conversation runs longer in turns and shorter in words.
+The counters are not a pool: `check-cap` proves a visitor who spent all of Phoebe's twenty still has
+all of his thirty. **Opus, not a cheaper tier**, for the measured reason in item A6: Sonnet at medium
+went empty about one time in eight on Phoebe's work, and a host who speaks first cannot be the one
+who goes silent. Dropping the tier is one line and a later ruling.
+
+**His answer is structured.** A route field — eligibility, quantification, map, paid, or none —
+and a learned-context field, both checked against closed lists in the relay and again in the
+browser. An unknown route becomes none; an unknown kind is dropped; an essay is not a project name.
+Nothing is read out of his prose. A route renders as one quiet action under his turn; what he
+learned writes into the visit under item S11's provenance rule.
+
+**Only a question outside every lane is logged**, marked as his. His routings are not abstentions
+and are not written down — ruling C, 2 Sep 2026.
+
+**One conversation, held by the shell.** The desk is a frame around it and starts none of its own;
+any second frame — the hero chat, item S12 — shows the same thread. Never a second panel, never
+duplicated. The desk stays mounted so a step to a tab he sent the visitor to, and back, keeps the
+transcript: the item S4 fault, found again in the first walk and fixed the same way.
+
+**What confirms it:** `scripts/check-wellington.mjs`, **41 checks** on the machinery without a
+model call, and `scripts/measure-wellington.mjs`, the walk with real calls — not a gate, run by hand
+before an eyeball and reported with counts. On the final prompts, three runs each: a carbon figure
+routed to Quantify three of three; an eligibility judgment to Phoebe three of three; a basin
+question to the map three of three; a carbon price abstained three of three; a first-turn project
+description learned all three context fields three of three. No reply quoted a figure. Median
+call under seven seconds. Phoebe's three standing questions held.
+
+**Not exercised on screen:** Phoebe's desk row, which only her live answers move.
+
+**Debt named here, owned elsewhere:** his answers run long (item A10).
+
+Built 3 Sep 2026. **Open as the home for his chat's story.**
+
+## A9. Agents phrase the roster's facts themselves — canon
+
+**Maintainer's ruling 1, 3 Sep 2026, and it covers every agent.** An agent is given facts and
+rules and phrases the words itself: two or three plain sentences a twelve-year-old could read,
+warm and teaching, at or under a sixth-grade reading level. The maintainer approves the rules an
+agent keeps and the facts it holds; she does not sign its sentences. Nothing an agent inherits is
+a script.
+
+**What changed on the day.** Every quoted "what another agent may say" sentence in
+`agent-primer.md` was struck in place and replaced with facts — what the colleague covers, whether
+they answer, where they are found. Wellington's own region of the primer was rewritten the same way
+before it ever deployed: facts about the crew and the rules he keeps, no welcome line, no lane
+sentences. Both prompts say "in your own plain words" where they said "word for word".
+[AGENT_RULES.md](./AGENT_RULES.md) records the ruling under rung 2 with the old rule struck.
+`check-wellington` refuses any prompt that still says word for word.
+
+**Why it is worth a rule.** A signed sentence is honest on the day it is signed and a script
+forever after. Facts stay true as the site grows; the wording follows the visitor.
+
+**The rule itself lives in [AGENT_RULES.md](./AGENT_RULES.md)**; this row records the ruling and
+points there. **Canon — no build.**
+
+## A10. Wellington's answers run long
+
+**Logged 3 Sep 2026 as debt, by the maintainer's instruction. Not for now.**
+
+The target is two or three plain sentences. On the walk his replies ran to four, sometimes five,
+against that target — the first-turn reply in the captures was four. Every one routed correctly
+and quoted no figure; the fault is length, not substance.
+
+**What "done" looks like:** a measured pass on the prompt's length rule, reported the way item A6
+was — counts, not impressions — and a check that reads sentence counts off a walk. Tightening
+comes later, on the maintainer's word.
+
+Logged 3 Sep 2026. **Open, not due.**
 
 ---
 
@@ -1788,8 +1891,86 @@ layer re-reads neither without a rebuild.
 **Not exercised on screen:** Phoebe's row, which only her live answers move; the sitting made no
 live model calls.
 
-Built 2 Sep 2026. **Open as the home for the surface's story.** What remains is the desk's second
-pass — Wellington's primer sentence, and whatever Thursday teaches.
+**Wellington's chat is live on it from 3 Sep 2026** — item A8 is its home. The composer's disabled
+state and copy are gone; his replies land on the desk under production's divider, never on a row;
+a route is one action under his turn. **The "standard of interest" chips died as a form concept the
+same day**, by the maintainer's brief: the form keeps name and place, the kind of project lives in
+his plain question, and a visitor who never chats loses nothing that blocks them. **The context
+card says where each field came from** — typed, from the conversation, from the map pin — and a
+typed entry is never overwritten by what he heard.
+
+**The hero chat is a separate surface, not this one** — item S12. The console carry stands as
+built: entering the console, the conversation comes along as the desk thread, and the desk drops
+the noise around it.
+
+Built 2 Sep 2026. **Open as the home for the surface's story.** What remains is whatever the hero
+page (item S12) asks of the desk.
+
+## S12. The hero chat — a full page that is the conversation
+
+**Logged 3 Sep 2026, by the maintainer's confirmed shape. Not built. Waits on a demo reference
+arriving in `Design refs/` by her hand.**
+
+**The shape, for the record.** A visitor who types into the production landing's question box is
+handed to this site with the question carried (item S13). This site receives it and opens the hero
+chat as its own full page: **the whole viewport is the conversation** — not a section beneath a
+landing, not a boxed panel on a page. Built to the demo reference, which sets the bar for its look:
+signed agent bubbles with a name-and-role eyebrow, distinct visitor bubbles, typing dots while
+Wellington thinks (item S14), a simple input. This site's own visitors can reach the same page.
+Beneath the chat, two quiet doors: sign up or sign in on waterbots.ai, and explore the open console.
+
+**The console carry stays as built.** Entering the console, the conversation comes along as the desk
+thread — one thread, never a second panel, never duplicated. The machinery for that is already
+live: the shell holds Wellington's one conversation (item A8), and any second frame around him
+shows it.
+
+**What was rejected, and why it is recorded.** On 3 Sep 2026 the engineer built a landing page in
+front of the desk — a headline, a question box, a boxed chat section beneath it, two doors — and
+the maintainer rejected it entirely: a new landing was invented, and a small boxed section is not a
+hero chat. Nothing of it was kept or committed. **The current landing does not change — not its
+headline, not its copy, not its layout — ever, without her word.** Recorded so it is not rebuilt
+from the same misreading.
+
+**What "done" looks like:** the page built to the reference, the pixels approved, and one thread
+from the porch into the desk confirmed in the browser.
+
+Logged 3 Sep 2026. **Not built. Waiting on the reference file.**
+
+## S13. The handoff receiver — a question carried in from the production landing
+
+**Logged 3 Sep 2026, by the maintainer's confirmed shape. Not built.**
+
+**The shape.** The production landing keeps its question box. Typing there hands the visitor to
+this site with the question carried — **a URL handoff, the save door in reverse.** This site
+receives it and opens the hero chat (item S12) with the question already sent and Wellington
+answering. No retyping.
+
+**Each shell builds only its side.** Production builds the sender; this site builds the receiver.
+Rule zero is unchanged: the shape of what is carried, and how, travels by the maintainer's hand,
+the way the bridge (item S7) does. Nothing here is designed from a guess at the production side.
+
+**What "done" looks like:** a receiver that takes a carried question, opens the hero chat, and
+sends it; a check that a malformed or absent carry opens the page honestly empty rather than
+inventing a question; and the sender's shape recorded here when it arrives.
+
+Logged 3 Sep 2026. **Not built. Waits on item S12 and on the sender's shape by the maintainer's
+hand.**
+
+## S14. Typing dots — the book's third motion exception
+
+**Ruled 3 Sep 2026, by the maintainer. Waits on her hand into the brand book's §5.**
+
+BRAND.md §5 says almost nothing moves on its own and names two exceptions: the live dot and the
+landing hero's ripple. **Typing dots while an agent thinks are the third**, ruled for the hero
+chat (item S12): **three dots fading in turn, by opacity only — nothing slides, nothing bounces —
+and stopped under reduced motion**, where the agent's thinking line reads in their place so the
+state is never silent.
+
+**They were drawn once and discarded with the rejected landing surface**, so nothing in the code
+carries them today. When the hero chat is built, the comment where the dots live records this
+exception until the book carries it.
+
+Ruled 3 Sep 2026. **Waits on the maintainer's hand into §5. No build until item S12.**
 
 ---
 

@@ -60,11 +60,33 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — the free desk, the production shape, and the carbon packs
+## Just finished — Wellington live on the desk
 
-**Session of 2 Sep 2026. One pull request, on `feat/free-desk`, open as this is written.** The
-console's fourth surface and its new shape, the two carbon packs, and a look pass against the saved
-production pages. Items S11 and K6.
+**Session of 3 Sep 2026. One pull request, on `feat/wellington-live`, open as this is written.**
+Wellington's chat on Phoebe's proven pattern, the rule that agents phrase the roster's facts
+themselves, and one conversation held by the shell. Items A8, A9 and S11.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md)**, which is append-only and is
+never read at the opening. This section says only what is now true.
+
+- **Wellington answers on the desk.** His own endpoint, thirty a day under his own counter, the
+  reply floor, the retry rule and the timeout, all stated in code. Opus 5 at medium, for item A6's
+  measured reason.
+- **He routes; the console acts.** A route and what he learned come back as fields, checked against
+  closed lists twice. A route is one action under his turn; what he learned fills the visit without
+  ever overwriting a typed entry.
+- **Facts and rules, not lines.** Every agent phrases the roster's facts itself. No prompt says word
+  for word, and a check refuses one that does.
+- **One conversation.** The shell holds his thread; the desk is a frame around it, and the hero
+  chat, when it comes, will be another.
+- **The standard-of-interest chips are gone.** The kind of project lives in his plain question.
+- **A landing surface was built and rejected entirely.** Nothing of it shipped; item S12 records the
+  confirmed shape instead.
+
+## Previously — the free desk, the production shape, and the carbon packs
+
+**Session of 2 Sep 2026. Pull request #48, merged.** The console's fourth surface and its new
+shape, the two carbon packs, and a look pass against the saved production pages. Items S11 and K6.
 
 **The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md)**, which is append-only and is
 never read at the opening. This section says only what is now true.
@@ -160,34 +182,34 @@ end that was ruled, the hybrid that was built, and the finding that withdrew it 
 full in item S9. Maintainer's ruling, 30 Aug 2026: **the screenshots are not coming, because there
 is nothing left for images to teach.** No folder waits for them.
 
-## Building next — nothing is scheduled
+## Building next — the hero chat, when its reference arrives
 
-**No family is due.** The desk and the carbon packs landed on 2 Sep 2026 and nothing queues behind
-them. **Thursday's C4SW walk is on waterbots.ai, not on this site.**
+**One family is queued and blocked.** The hero chat (item S12) is the next build and it waits on a
+demo reference arriving in `Design refs/` by the maintainer's hand. Nothing is built toward it
+until she says the file is in. Its receiver (item S13) waits on it in turn.
 
-**Five things are the candidates, and none is chosen:**
+**The confirmed shape, for the record:** the production landing's question box hands a visitor to
+this site with the question carried; this site opens the hero chat as its own full page, the whole
+viewport the conversation, built to the reference; the console carry stays as built. Each shell
+builds only its side.
 
-1. **The desk's second pass** — Wellington's primer sentence, by the maintainer's hand, so Phoebe
-   can name him; and whatever the Thursday walk teaches.
-2. **The carbon card pass** (item K7) — cards in Phoebe's format drafted from the two Gold Standard
-   PDFs, graded by the maintainer, through the same pipeline as the VWBA cards. Logged as debt,
-   after Thursday.
+**The other candidates, none chosen:**
+
+1. **The carbon card pass** (item K7) — cards in Phoebe's format drafted from the two Gold Standard
+   PDFs, graded by the maintainer, through the same pipeline as the VWBA cards. Logged as debt.
+2. **Tightening Wellington's answers** (item A10) — logged as debt, not for now.
 3. **Calvin's chat**, which would move the step's gates into his conversation. The largest, and not
    scheduled.
-4. **A further method pack** — the second carbon pack was the test of the seat, and the seat held.
-   Item K2 names the remaining candidates.
+4. **A further method pack** — item K2 names the remaining candidates.
 5. **Bridget's chat**, unchanged and still not scheduled.
 
-**A note for later, not this sitting**, from the maintainer on 2 Sep 2026: the dream entrance is
-typing into a chat box on the landing page and arriving at the desk.
-
-**What comes next is decided at the next session's open**, and it waits on nothing.
+**What comes next is decided at the next session's open.**
 
 ## Not next, and why
 
 | Family | Why it waits |
 |---|---|
 | **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. **The first method pack (item K5) landed 1 Sep 2026 and the two carbon packs (item K6) on 2 Sep, both outside that order, because the maintainer scoped them herself.** The carbon card pass (item K7) waits for Thursday. |
-| **Surfaces** | The bridge (item S7) was ruled on 26 Aug 2026 and **sits on production's desk as their #149** — the shape of the handoff is theirs to settle, and no work here queues behind it. The brightness pull-up (item S8) and the return to the book (item S9) are both **closed**. The rest of the family is polish (item S5), the dev-relay gap (item S6), or waits on data that does not exist yet (item S1). |
+| **Surfaces** | **The hero chat (item S12) is next and waits on the maintainer's reference file**; its receiver (item S13) waits on it; the typing-dots exception (item S14) waits on her hand into the book. The bridge (item S7) **sits on production's desk as their #149**. The brightness pull-up (item S8) and the return to the book (item S9) are both **closed**. The rest of the family is polish (item S5), the dev-relay gap (item S6), or waits on data that does not exist yet (item S1). |
 | **Data** | Blocked on material the maintainer supplies — registry coordinates for the project points (item D2), public disclosures for corporate goals and target geographies (item D1). Not work that can start from inside the repository. |
-| **Operations** | **Nothing is due.** What remains waits on real usage that does not exist yet: the number twenty (item O1), the basemap's five-million-request ceiling (item O9), and the primer review against the abstention log (item A5). Two questions are open and unhurried — whether the export copies should be produced by a script (item O8), and whether an abstention that cited a card is a fault at all (item A7, waiting on a recurrence). |
+| **Operations** | **Nothing is due.** What remains waits on real usage that does not exist yet: the number twenty (item O1), the basemap's five-million-request ceiling (item O9), and the primer review against the abstention log (item A5). Two questions are open and unhurried — whether the export copies should be produced by a script (item O8), and whether an abstention that cited a card is a fault at all (item A7 — it recurred on 3 Sep and reads as the benign branch; the maintainer's reading closes it). |

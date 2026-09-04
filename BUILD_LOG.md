@@ -362,3 +362,74 @@ rendered roster; they were read back verbatim and the maintainer signed them as 
 
 The two stale merged branches deleted; item O10 swept to the archive; the export copies regenerated
 after the close-out commit, so the primer copy is no longer a merge behind.
+
+---
+
+## 3 September 2026 — Wellington live, facts not lines, and a landing built and rejected
+
+**One sitting, one pull request on `feat/wellington-live`, two build commits and a close-out.**
+Items A8, A9, A10, S11, S12, S13, S14 and the A7 recurrence. The session broke between the build
+commits and the close-out; the close-out ran the next morning against an unchanged tree.
+
+### What was built
+
+**Wellington's chat, on Phoebe's pattern.** His own endpoint with every setting stated — Opus 5 at
+medium, thirty a day under his own counter, the reply floor, the late-400 retry, the 120-second
+timeout, refunds. The cap generalised to take an agent; the dev relay generalised to serve any relay
+on its list; the chat layer split into a machine and its frames. His answer structured as a route
+and a learned context, checked twice. The desk composer live, replies on the desk, a route as one
+action, learned context into the visit with provenance, the standard-of-interest chips retired.
+
+**Facts and rules, not lines — ruling 1.** Every quoted colleague sentence struck from the primer;
+Wellington's first region, which carried a scripted welcome and lane sentences, replaced before it
+deployed; both prompts and AGENT_RULES.md moved from "word for word" to "in your own plain words".
+
+**One conversation, held by the shell.** Lifted out of the desk so that any second frame shows the
+same thread.
+
+**41 checks on his machinery** and a measured walk with real calls: fifteen to him, three to
+Phoebe, every question routed as wanted, no figure quoted, Phoebe unchanged.
+
+### What was built and rejected
+
+**A landing page.** Ruling 2 said the landing's question box was the entry and the visitor should be
+carried into a hero chat. The engineer read that as license to build a landing on this site — a
+headline, a question box, a boxed chat section beneath, two doors — and built it, with a glide on
+the brand's curve and typing dots. **Rejected entirely on the eyeball:** the current landing does not
+change without the maintainer's word, and a boxed section is not a hero chat. Discarded the same
+hour; nothing of it committed. The confirmed shape went into items S12 and S13 instead: a URL
+handoff from the production landing, received here as a full-page conversation, built to a
+reference she brings by hand. Each shell builds its side.
+
+### What was learned
+
+**A brief that says "the landing's question box" can mean a landing that already exists elsewhere.**
+This repository has never had a landing page, and the engineer built one rather than asking which
+landing was meant. The question cost nothing; the build cost an hour and an eyeball.
+
+**A signed sentence is a script the day after it is signed.** Ruling 1 replaced signatures on
+wording with approval of facts and rules, and the walk showed the agent phrasing the same facts five
+different ways, all correct.
+
+**A conversation held inside a surface dies with it.** The desk unmounted on a step away and the
+thread went with it — the item S4 fault, three sessions later, in a new component. Found in the
+first browser walk, fixed by keeping the desk mounted.
+
+**A check's reference rounded by hand disagrees at the fourth decimal.** Twice on 2 Sep and once
+more here, in the tile check; compare against the module's own figure.
+
+### Mistakes, self-reported
+
+**The landing, above.** Built without asking which landing the brief meant.
+
+**A file the brief named did not exist.** The brief cited "AGENTS_SPEC voice rules". No such file is
+in this repository or its reference folders; the rule was built from the words in the brief and the
+brand book's §1, and the report said so.
+
+**Ruling C's copy was drafted for a surface that was then rejected.** The headline and placeholder
+went to the maintainer with the captures, as asked, and were moot within the hour.
+
+### Housekeeping
+
+The close-out itself, run the morning after the session broke: docs refreshed, five items opened,
+the handoff rewritten, the exports regenerated after the checkpoint commit, the dev server stopped.
