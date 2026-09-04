@@ -125,8 +125,8 @@ expect(
 
 expect(
   'the counter key carries the day and the identity, and nothing else',
-  counterKey(id, utcDayStamp(lateOnTheDay)) === `phoebe:count:2026-08-25:${id}`,
-  `got "${counterKey(id, utcDayStamp(lateOnTheDay))}"`
+  counterKey('phoebe', id, utcDayStamp(lateOnTheDay)) === `phoebe:count:2026-08-25:${id}`,
+  `got "${counterKey('phoebe', id, utcDayStamp(lateOnTheDay))}"`
 );
 
 console.log('\n  When the count comes back\n');

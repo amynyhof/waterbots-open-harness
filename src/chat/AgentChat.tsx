@@ -1,10 +1,12 @@
 /**
- * The shared chat layer.
+ * The shared chat layer — the dock frame.
  *
- * ONE COMPONENT, EVERY AGENT. Phoebe uses it now, Bridget uses it next, and
- * anyone after them uses the same one. Built twice, two chats diverge — and the
- * part that diverges is the part that carries citations, which is exactly the
- * part that must not.
+ * ONE COMPONENT, EVERY AGENT IN A DOCK. Phoebe uses it now, Bridget and
+ * Calvin use it when their chats are built. The machinery — turns, pending,
+ * the honest error, the abort on unmount — lives in useConversation, and the
+ * turns are drawn by Transcript; this file is the dock-shaped frame around
+ * them. The desk is the other frame around the same machine, so a chat built
+ * in the centre of the console is not a second chat.
  *
  * IT DOES NOT KNOW WHICH AGENT IT IS RENDERING. Identity arrives as an
  * AgentHost; answers arrive through an Ask. Anything specific to one agent —
@@ -14,17 +16,14 @@
  * NOTHING CITATION-RELATED LIVES IN AN AGENT'S PANEL. Markers and citations are
  * rendered in AnswerBody and CiteLine, and nowhere else.
  *
- * NO SCRIPTED MESSAGES AND NO FAKE TYPING. What is on screen is a real exchange
- * or an honest statement that something failed. A failed turn keeps the question
- * in the transcript so the reader can see what was asked.
- *
- * NO MEMORY. Nothing is stored, here or anywhere else. A reload empties the
+ * NO SCRIPTED MESSAGES AND NO FAKE TYPING. NO MEMORY. A reload empties the
  * conversation, and the composer note says so.
  */
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
-import AnswerBody from './AnswerBody';
-import type { AgentHost, AgentTurn, Ask, Turn } from './evidence';
+import { useEffect, useRef, type ReactNode } from 'react';
+import Transcript from './Transcript';
+import type { AgentHost, Ask } from './evidence';
+import { useConversation } from './useConversation';
 
 export default function AgentChat({
   host,
@@ -39,53 +38,12 @@ export default function AgentChat({
   /** Unique per mounted chat, so two chats on one page keep valid label ids. */
   composerId: string;
 }) {
-  const [turns, setTurns] = useState<Turn[]>([]);
-  const [draft, setDraft] = useState('');
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { turns, draft, setDraft, pending, error, send } = useConversation(ask, host.name);
 
   const scroller = useRef<HTMLDivElement>(null);
-  const inFlight = useRef<AbortController | null>(null);
-
   useEffect(() => {
     scroller.current?.scrollTo({ top: scroller.current.scrollHeight, behavior: 'smooth' });
   }, [turns, pending, error]);
-
-  useEffect(() => () => inFlight.current?.abort(), []);
-
-  async function send() {
-    const question = draft.trim();
-    if (!question || pending) return;
-
-    const history: Turn[] = [...turns, { role: 'user', text: question }];
-    setTurns(history);
-    setDraft('');
-    setError(null);
-    setPending(true);
-
-    const controller = new AbortController();
-    inFlight.current = controller;
-
-    try {
-      const answer: AgentTurn = await ask(
-        history.map((turn) => ({ role: turn.role, text: turn.text })),
-        controller.signal
-      );
-      setTurns([...history, answer]);
-    } catch (failure) {
-      if (failure instanceof DOMException && failure.name === 'AbortError') return;
-      /* An adapter throws only messages already fit for a reader. Anything
-         else gets a plain one rather than a stack trace or a silence. */
-      setError(
-        failure instanceof Error && failure.message
-          ? failure.message
-          : `Something went wrong reaching ${host.name}. Nothing has been recorded.`
-      );
-    } finally {
-      setPending(false);
-      inFlight.current = null;
-    }
-  }
 
   return (
     <aside
@@ -127,37 +85,7 @@ export default function AgentChat({
 
       <div ref={scroller} style={{ flex: 1, overflowY: 'auto', padding: '18px 16px', minHeight: 0 }}>
         {turns.length === 0 && opening}
-
-        {turns.map((turn, i) =>
-          turn.role === 'user' ? (
-            <ReaderTurn key={i} text={turn.text} />
-          ) : (
-            <HostTurn key={i} host={host} turn={turn} />
-          )
-        )}
-
-        {pending && (
-          <p className="t-caption" style={{ margin: '4px 0 0', color: 'var(--ink-3)' }}>
-            {host.thinkingLine}
-          </p>
-        )}
-
-        {error && (
-          <div
-            role="alert"
-            style={{
-              marginTop: 14,
-              padding: '10px 12px',
-              borderLeft: '2px solid var(--state-warn)',
-              background: 'var(--paper)',
-              borderRadius: 'var(--r-xs)',
-            }}
-          >
-            <p className="t-caption" style={{ margin: 0, lineHeight: 1.6 }}>
-              {error}
-            </p>
-          </div>
-        )}
+        <Transcript host={host} turns={turns} pending={pending} error={error} />
       </div>
 
       <div style={{ padding: '12px 16px 16px', borderTop: '1px solid var(--line)', flex: 'none' }}>
@@ -203,46 +131,6 @@ export default function AgentChat({
         </div>
       </div>
     </aside>
-  );
-}
-
-/* -------------------------------------------------------------------------
-   Turns.
-------------------------------------------------------------------------- */
-
-function ReaderTurn({ text }: { text: string }) {
-  return (
-    <div style={{ marginBottom: 16 }}>
-      <div className="label" style={{ marginBottom: 4, color: 'var(--ink-3)' }}>
-        You
-      </div>
-      <p
-        className="t-body"
-        style={{ margin: 0, fontSize: 14, color: 'var(--ink)', whiteSpace: 'pre-wrap' }}
-      >
-        {text}
-      </p>
-    </div>
-  );
-}
-
-function HostTurn({ host, turn }: { host: AgentHost; turn: AgentTurn }) {
-  return (
-    <div style={{ marginBottom: 18 }}>
-      <div
-        className="label"
-        style={{ marginBottom: 4, color: `var(${host.colourToken})`, display: 'flex', gap: 7 }}
-      >
-        {host.name}
-        {turn.abstained && (
-          <span className="t-caption" style={{ fontSize: 10.5, color: 'var(--ink-3)' }}>
-            no card for this
-          </span>
-        )}
-      </div>
-
-      <AnswerBody text={turn.text} evidence={turn.evidence} />
-    </div>
   );
 }
 
