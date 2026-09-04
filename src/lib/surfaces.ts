@@ -21,7 +21,10 @@
 
 export type Surface = 'desk' | 'eligibility' | 'map' | 'quantification';
 
-export const SURFACES: { key: Surface; label: string }[] = [
+/** The console's surfaces — the same four; the alias names what a route may open. */
+export type ConsoleSurface = Surface;
+
+export const SURFACES: { key: ConsoleSurface; label: string }[] = [
   { key: 'desk', label: 'Dispatch' },
   { key: 'eligibility', label: 'Eligibility' },
   { key: 'map', label: 'Partners (Map)' },
@@ -33,5 +36,9 @@ export const SURFACES: { key: Surface; label: string }[] = [
  *
  * The desk, from 2 Sep 2026 — Wellington is the host, and the host's desk is
  * where a visit starts. Maintainer's ruling B of that day. It was the map.
+ *
+ * A landing surface was built in front of it on 3 Sep 2026 and rejected the
+ * same day, entirely; nothing of it was kept. The hero chat that replaces
+ * that idea waits on a reference the maintainer brings by hand.
  */
 export const DEFAULT_SURFACE: Surface = 'desk';

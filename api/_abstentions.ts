@@ -51,6 +51,14 @@ const QUESTION_CHARS = 500;
 export interface Abstention {
   /** When, in UTC. */
   at: string;
+  /**
+   * Which agent declined, when it was not Phoebe. Absent on Phoebe's own
+   * records, which is how they were written before 3 Sep 2026 and how they
+   * stay. Wellington writes here only when a question falls outside every
+   * lane — his ordinary routings are not abstentions and are not logged.
+   * Maintainer's ruling C, 2 Sep 2026.
+   */
+  agent?: string;
   /** What Phoebe said it was about, in her own few words. May be absent. */
   topic?: string;
   /** The question as it was typed. */
@@ -69,17 +77,20 @@ export interface Abstention {
 export async function recordAbstention(
   question: string,
   topic: string | undefined,
-  now: Date
+  now: Date,
+  agent?: string
 ): Promise<void> {
   const store = storeConfig();
+  const who = agent ?? 'phoebe';
   if (!store) {
-    console.error('phoebe: an abstention could not be recorded — the shared store is not set here');
+    console.error(`${who}: an abstention could not be recorded — the shared store is not set here`);
     return;
   }
 
   const trimmed = question.trim();
   const entry: Abstention = {
     at: now.toISOString(),
+    ...(agent ? { agent } : {}),
     ...(topic ? { topic } : {}),
     question: trimmed.slice(0, QUESTION_CHARS),
     ...(trimmed.length > QUESTION_CHARS ? { truncated: true as const } : {}),
@@ -89,7 +100,7 @@ export async function recordAbstention(
     await appendCapped(store, KEY, JSON.stringify(entry), KEPT);
   } catch (error) {
     console.error(
-      'phoebe: an abstention could not be recorded —',
+      `${who}: an abstention could not be recorded —`,
       error instanceof Error ? error.message : error
     );
   }

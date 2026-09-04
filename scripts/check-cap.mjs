@@ -149,7 +149,8 @@ process.env.PHOEBE_LOG_KEY = LOG_KEY;
 delete process.env.PHOEBE_TEST_CAP;
 delete process.env.VERCEL;
 
-const { countOneMessage, DAILY_CAP, timeUntilReset } = await load('_cap.js');
+const { countOneMessage, DAILY_CAP, WELLINGTON_DAILY_CAP, PHOEBE, WELLINGTON, timeUntilReset } =
+  await load('_cap.js');
 const { recordAbstention, readAbstentions, KEPT } = await load('_abstentions.js');
 const { storeConfig } = await load('_store.js');
 const abstentionsRoute = await load('abstentions.js');
@@ -267,6 +268,56 @@ expect(
 );
 
 /* ---------------------------------------------------------------------------
+   Wellington counts separately, to thirty.
+
+   His cap is the maintainer's ruling of 2 Sep 2026. The same visitor who has
+   used all of Phoebe's twenty still has every one of Wellington's thirty, and
+   the other way round: two counters under two names, never one pool.
+--------------------------------------------------------------------------- */
+
+console.log('\n  Wellington counts separately, to thirty\n');
+
+const wellingtonDecisions = [];
+for (let i = 0; i < WELLINGTON_DAILY_CAP + 1; i += 1) {
+  wellingtonDecisions.push(await countOneMessage(ask('203.0.113.7'), NOW, WELLINGTON));
+}
+expect(
+  `the visitor who spent Phoebe's ${DAILY_CAP} still has all ${WELLINGTON_DAILY_CAP} of Wellington's`,
+  wellingtonDecisions.slice(0, WELLINGTON_DAILY_CAP).every((d) => d.kind === 'allowed'),
+  `got ${[...new Set(wellingtonDecisions.slice(0, WELLINGTON_DAILY_CAP).map((d) => d.kind))].join(', ')}`
+);
+expect(
+  `Wellington's message ${WELLINGTON_DAILY_CAP + 1} is refused, naming his cap`,
+  wellingtonDecisions[WELLINGTON_DAILY_CAP].kind === 'refused' &&
+    wellingtonDecisions[WELLINGTON_DAILY_CAP].cap === WELLINGTON_DAILY_CAP,
+  `got ${wellingtonDecisions[WELLINGTON_DAILY_CAP].kind} with cap ${wellingtonDecisions[WELLINGTON_DAILY_CAP].cap}`
+);
+const wellingtonKey = [...numbers.keys()].find((k) => k.startsWith('wellington:count:'));
+expect(
+  'his counter lives under his own name, with a day and a scramble and no address',
+  /^wellington:count:2026-08-25:[0-9a-f]{32}$/.test(wellingtonKey ?? '') && !String(wellingtonKey).includes('203.0.113.7'),
+  `the key is "${wellingtonKey}"`
+);
+expect(
+  "Phoebe's counter for the same visitor is untouched by his thirty",
+  numbers.get(capKey) === DAILY_CAP,
+  `Phoebe's count reads ${numbers.get(capKey)}`
+);
+const wSpent = await countOneMessage(ask('192.0.2.77'), NOW, WELLINGTON);
+const wKey = [...numbers.keys()].find((k) => k.startsWith('wellington:count:') && k !== wellingtonKey);
+await wSpent.refund();
+expect(
+  'a Wellington message that fails on our side is given back',
+  numbers.get(wKey) === 0,
+  `read ${numbers.get(wKey)} after the refund`
+);
+expect(
+  'the default agent is still Phoebe, so nothing that called this before has moved',
+  PHOEBE.name === 'phoebe' && PHOEBE.cap === DAILY_CAP,
+  'the default changed under existing callers'
+);
+
+/* ---------------------------------------------------------------------------
    When the store is missing, and where that matters.
 --------------------------------------------------------------------------- */
 
@@ -326,7 +377,7 @@ expect(
   !visitorScrambles.some((id) => storedText.includes(id)) &&
     !/\b\d{1,3}(\.\d{1,3}){3}\b/.test(storedText) &&
     report.abstentions.every((entry) => Object.keys(entry).every((field) =>
-      ['at', 'topic', 'question', 'truncated'].includes(field)
+      ['at', 'agent', 'topic', 'question', 'truncated'].includes(field)
     )),
   'a record carried a field beyond when, what about, and the question'
 );

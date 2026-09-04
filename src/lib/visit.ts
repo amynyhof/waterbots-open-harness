@@ -32,24 +32,98 @@ import type { Surface } from './surfaces';
    The project context — what a visit says about its project.
    -------------------------------------------------------------------------- */
 
-/** The standard the visitor is interested in. An interest, not a capability. */
-export type StandardInterest = '' | 'water' | 'carbon' | 'unsure';
+/**
+ * What kind of project it is, in the visitor's own answer to Wellington's
+ * plain question. The console maps the answer to a standard internally; the
+ * visitor never needs the word. "unsure" is a first-class answer and routes to
+ * Phoebe. Maintainer's brief, 2 Sep 2026 — the "standard of interest" chips
+ * died as a form concept the same day.
+ */
+export type ProjectKind = '' | 'water' | 'carbon' | 'unsure';
 
-export const STANDARD_CHOICES: { value: StandardInterest; label: string }[] = [
-  { value: 'water', label: 'Water benefit · VWBA' },
-  { value: 'carbon', label: 'Carbon' },
-  { value: 'unsure', label: 'Not sure yet' },
-];
+export const KIND_LABEL: Record<Exclude<ProjectKind, ''>, string> = {
+  water: 'A water benefit in a basin',
+  carbon: 'Safe drinking water that stops boiling · carbon',
+  unsure: 'Not sure yet — Phoebe’s criteria settle it',
+};
+
+/**
+ * Where a context field came from. Provenance stays honest on the card:
+ * "typed" is the visitor's own entry on the form, "chat" is their own words to
+ * Wellington, "pin" is the basin they clicked. Empty means empty.
+ */
+export type Provenance = '' | 'typed' | 'chat' | 'pin';
 
 export interface VisitContext {
   /** What the visitor calls the project. Empty until they say. */
   name: string;
   /** Where it is, in their words — or the pinned basin's, if they left it blank. */
   place: string;
-  standard: StandardInterest;
+  kind: ProjectKind;
+  provenance: { name: Provenance; place: Provenance; kind: Provenance };
 }
 
-export const EMPTY_CONTEXT: VisitContext = { name: '', place: '', standard: '' };
+export const EMPTY_CONTEXT: VisitContext = {
+  name: '',
+  place: '',
+  kind: '',
+  provenance: { name: '', place: '', kind: '' },
+};
+
+/** What Wellington learned this turn, from the visitor's own words. */
+export interface Learned {
+  name?: string;
+  place?: string;
+  kind?: Exclude<ProjectKind, ''>;
+}
+
+/**
+ * The visitor typed a field on the form. Their entry, their provenance.
+ * A blank clears the field and its provenance.
+ */
+export function typedContext(context: VisitContext, field: 'name' | 'place', value: string): VisitContext {
+  return {
+    ...context,
+    [field]: value,
+    provenance: { ...context.provenance, [field]: value.trim() === '' ? '' : 'typed' },
+  };
+}
+
+/**
+ * Wellington learned something. ONE SOURCE OF TRUTH, TWO WRITERS, ONE RULE:
+ * a typed entry is never overwritten by what he heard; a blank field, or one
+ * he filled earlier, or one the pin filled, takes the visitor's words to him.
+ * Only the visitor's own words fill a field — the relay and the client both
+ * check that his context came back as stated, never inferred.
+ */
+export function learnedContext(context: VisitContext, learned: Learned): VisitContext {
+  let next = context;
+  const take = (field: 'name' | 'place' | 'kind', value: string) => {
+    if (next.provenance[field] === 'typed') return;
+    next = {
+      ...next,
+      [field]: value,
+      provenance: { ...next.provenance, [field]: 'chat' },
+    };
+  };
+  if (learned.name) take('name', learned.name);
+  if (learned.place) take('place', learned.place);
+  if (learned.kind) take('kind', learned.kind);
+  return next;
+}
+
+/**
+ * The pin filled the place, or cleared what it had filled. Never touches a
+ * typed place, and never a place the visitor told Wellington.
+ */
+export function pinnedContext(context: VisitContext, pin: MapPin | null): VisitContext {
+  const wrote = context.provenance.place === 'pin';
+  if (pin === null) {
+    return wrote ? { ...context, place: '', provenance: { ...context.provenance, place: '' } } : context;
+  }
+  if (context.provenance.place === 'typed' || context.provenance.place === 'chat') return context;
+  return { ...context, place: describePin(pin), provenance: { ...context.provenance, place: 'pin' } };
+}
 
 /* --------------------------------------------------------------------------
    The map pin — the one basin this visit is about.

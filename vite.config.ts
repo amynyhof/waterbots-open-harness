@@ -1,4 +1,4 @@
-import { defineConfig, type Plugin } from 'vite';
+import { defineConfig, type Plugin, type ViteDevServer } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -30,14 +30,29 @@ import tailwindcss from '@tailwindcss/vite';
  *      returns anything else, say so loudly instead of coping.
  *   3. This file may not grow logic that belongs in the handler.
  */
+/**
+ * Which relays the dev server will serve. ONE ROW PER AGENT WITH AN ENDPOINT.
+ * Anything not on this list is a 404 here, as it would be on the platform
+ * with no file behind it. Wellington joined on 3 Sep 2026.
+ */
+const RELAYS = ['phoebe', 'wellington'] as const;
+
 function phoebeDevRelay(): Plugin {
   return {
-    name: 'phoebe-dev-relay',
+    name: 'agent-dev-relay',
     apply: 'serve',
     configureServer(server) {
-      server.middlewares.use('/api/phoebe', async (req, res) => {
+      for (const relay of RELAYS) serveRelay(server, relay);
+    },
+  };
+}
+
+function serveRelay(server: ViteDevServer, relay: string): void {
+  const path = `/api/${relay}`;
+  const file = `/api/${relay}.ts`;
+  server.middlewares.use(path, async (req, res) => {
         try {
-          const module = await server.ssrLoadModule('/api/phoebe.ts');
+          const module = await server.ssrLoadModule(file);
 
           /* Route by method, the way Vercel does. It invokes the named HTTP
              method export and uses the Response it returns; a default export
@@ -53,7 +68,7 @@ function phoebeDevRelay(): Plugin {
             res.setHeader('content-type', 'application/json');
             res.end(
               JSON.stringify({
-                error: `api/phoebe.ts exports no ${method} handler. Vercel routes by method; add a named export or use a method that exists.`,
+                error: `${file.slice(1)} exports no ${method} handler. Vercel routes by method; add a named export or use a method that exists.`,
               })
             );
             return;
@@ -71,7 +86,7 @@ function phoebeDevRelay(): Plugin {
             else if (Array.isArray(value)) for (const v of value) headers.append(key, v);
           }
 
-          const request = new Request(`http://localhost${req.url ?? '/api/phoebe'}`, {
+          const request = new Request(`http://localhost${req.url ?? path}`, {
             method: req.method,
             headers,
             body: chunks.length ? Buffer.concat(chunks) : undefined,
@@ -84,7 +99,7 @@ function phoebeDevRelay(): Plugin {
              here instead of being quietly tolerated. */
           if (!(result instanceof Response)) {
             throw new Error(
-              'api/phoebe.ts did not return a Response. Vercel invokes this handler with a ' +
+              `${file.slice(1)} did not return a Response. Vercel invokes this handler with a ` +
                 'web Request and uses what it returns; anything else hangs in production.'
             );
           }
@@ -94,19 +109,16 @@ function phoebeDevRelay(): Plugin {
         } catch (error) {
           /* An honest failure. The console shows the message rather than
              hanging or inventing a reply. */
-          server.config.logger.error(`[phoebe-dev-relay] ${String(error)}`);
+          server.config.logger.error(`[${relay}-dev-relay] ${String(error)}`);
           res.statusCode = 500;
           res.setHeader('content-type', 'application/json');
           res.end(
             JSON.stringify({
-              error:
-                'The local relay failed before reaching Phoebe. The dev server log has the details.',
+              error: `The local relay failed before reaching ${relay}. The dev server log has the details.`,
             })
           );
         }
-      });
-    },
-  };
+  });
 }
 
 // Port is pinned deliberately. Port 3000 belongs to a different project and is

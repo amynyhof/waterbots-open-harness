@@ -84,9 +84,17 @@ export function utcDayStamp(now: Date): string {
   return now.toISOString().slice(0, 10);
 }
 
-/** Where one visitor's count for one day lives. */
-export function counterKey(visitor: string, day: string): string {
-  return `phoebe:count:${day}:${visitor}`;
+/**
+ * Where one visitor's count for one day lives, for one agent.
+ *
+ * EACH AGENT COUNTS SEPARATELY, under its own name — Phoebe's twenty and
+ * Wellington's thirty are two counters, not a pool. The agent's name is the
+ * first segment so the store can be read by agent. Generalised 3 Sep 2026;
+ * until then the key was Phoebe's by name, because she was the only agent
+ * who answered.
+ */
+export function counterKey(agent: string, visitor: string, day: string): string {
+  return `${agent}:count:${day}:${visitor}`;
 }
 
 /**

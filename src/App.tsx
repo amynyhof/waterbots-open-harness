@@ -29,8 +29,9 @@
  *
  * FOUR SURFACES, AND WHAT HOLDS STATE IS NOT UNMOUNTED WHEN YOU LEAVE IT.
  * Switching surface hides what you left rather than throwing it away — the
- * map, and all three chat docks alongside it. The desk and the two worksheets
- * hold no state of their own any more, so they are mounted only while open.
+ * map, all three chat docks, and from 3 Sep 2026 the desk, which holds
+ * Wellington's conversation. The two worksheets hold no state of their own,
+ * so they are mounted only while open.
  *
  * For the map, unmounting would throw away the Level 6 layer and re-fetch
  * 8.44 MB on the way back, which is a real cost to a visitor on a metered
@@ -62,7 +63,9 @@ import EligibilityWorksheet from './components/EligibilityWorksheet';
 import QuantificationWorksheet from './components/QuantificationWorksheet';
 import CalvinPanel from './components/CalvinPanel';
 import Wordmark from './components/Wordmark';
-import { DEFAULT_SURFACE, type Surface } from './lib/surfaces';
+import { DEFAULT_SURFACE, type ConsoleSurface, type Surface } from './lib/surfaces';
+import { useConversation } from './chat/useConversation';
+import { WELLINGTON, wellingtonAsk } from './lib/wellington';
 import { CRITERIA } from './lib/phoebeCards';
 import { initialStatuses, type CriterionStatus } from './lib/criteriaState';
 import type { CriterionUpdate } from './lib/phoebeClient';
@@ -70,11 +73,13 @@ import { fittedPack, livePacks, type PackValues } from './lib/methodPacks';
 import {
   EMPTY_VISIT,
   deskRows,
-  describePin,
   journeyProgress,
+  learnedContext,
+  pinnedContext,
+  typedContext,
+  type Learned,
   type MapPin,
   type Visit,
-  type VisitContext,
 } from './lib/visit';
 
 const LIVE_PACKS = livePacks();
@@ -111,26 +116,21 @@ export default function App() {
   /* The rest of the visit: the project context, the pin, the pack answers. */
   const [visit, setVisit] = useState<Visit>(EMPTY_VISIT);
 
-  const setContext = useCallback((context: VisitContext) => {
-    setVisit((v) => ({ ...v, context }));
+  /* Three writers into one context, each under its own rule in
+     src/lib/visit.ts: the visitor's typing, Wellington's hearing, the pin. */
+  const onTyped = useCallback((field: 'name' | 'place', value: string) => {
+    setVisit((v) => ({ ...v, context: typedContext(v.context, field, value) }));
+  }, []);
+
+  const onLearned = useCallback((learned: Learned) => {
+    setVisit((v) => ({ ...v, context: learnedContext(v.context, learned) }));
   }, []);
 
   /* A pin fills the place if the visitor left it blank — ruling A, 2 Sep
-     2026 — and never overwrites a place they typed. Unpinning clears only a
-     place the pin wrote. */
+     2026 — and never overwrites a place they typed or told Wellington.
+     Unpinning clears only a place the pin wrote. */
   const setPin = useCallback((pin: MapPin | null) => {
-    setVisit((v) => {
-      const wroteBefore = v.pin !== null && v.context.place === describePin(v.pin);
-      const place =
-        pin === null
-          ? wroteBefore
-            ? ''
-            : v.context.place
-          : v.context.place.trim() === '' || wroteBefore
-            ? describePin(pin)
-            : v.context.place;
-      return { ...v, pin, context: { ...v.context, place } };
-    });
+    setVisit((v) => ({ ...v, pin, context: pinnedContext(v.context, pin) }));
   }, []);
 
   /* Which pack's tab is open. Held here so a step away and back keeps it. */
@@ -138,6 +138,15 @@ export default function App() {
   const setPackValues = useCallback((packKey: string, values: PackValues) => {
     setVisit((v) => ({ ...v, packValues: { ...v.packValues, [packKey]: values } }));
   }, []);
+
+  /* WELLINGTON'S ONE CONVERSATION, held here rather than inside the desk so
+     that any second frame around it — the hero chat, when its reference
+     arrives — shows the same thread: never a second panel, never duplicated.
+     Maintainer's ruling, 3 Sep 2026. A route in his answer opens the console
+     at that tab. */
+  const goConsole = useCallback((s: ConsoleSurface) => setSurface(s), []);
+  const ask = useMemo(() => wellingtonAsk(onLearned, goConsole), [onLearned, goConsole]);
+  const chat = useConversation(ask, WELLINGTON.name);
 
   /* Derived, never typed. */
   const rows = useMemo(() => deskRows(visit, statuses, LIVE_PACKS), [visit, statuses]);
@@ -214,16 +223,23 @@ export default function App() {
 
           <div style={{ flex: 1, minHeight: 0, display: 'flex', overflow: 'hidden' }}>
             <main style={{ flex: 1, minWidth: 0, minHeight: 0, position: 'relative' }}>
-              {onDesk && (
-                <div style={{ position: 'absolute', inset: 0 }}>
+              {/* THE DESK STAYS MOUNTED, hidden when off-surface, because it
+                  holds Wellington's conversation. Unmounting threw the
+                  transcript away when a visitor stepped to a tab he had sent
+                  them to and came back — the item S4 fault, found again on
+                  3 Sep 2026 in the first browser walk and fixed the same way. */}
+              <div
+                style={{ position: 'absolute', inset: 0, visibility: onDesk ? 'visible' : 'hidden' }}
+                aria-hidden={!onDesk}
+              >
                   <Desk
                     context={visit.context}
-                    onContext={setContext}
+                    onTyped={onTyped}
+                    chat={chat}
                     rows={rows}
                     onNavigate={setSurface}
                   />
-                </div>
-              )}
+              </div>
 
               {/* Kept mounted, hidden when off-surface — see the note above. */}
               <div

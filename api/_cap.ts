@@ -1,9 +1,13 @@
 /**
- * Twenty messages a day.
+ * A daily cap per visitor, per agent.
  *
- * The maintainer's ruling of 21 Aug 2026, and item O1 in OPEN_ITEMS.md. Phoebe
- * is free, public and open to anyone, and every message she answers costs money.
- * The cap is what keeps her open.
+ * Twenty for Phoebe — the maintainer's ruling of 21 Aug 2026, item O1 in
+ * OPEN_ITEMS.md. Thirty for Wellington — her ruling of 2 Sep 2026: his prompt
+ * carries no card sets, so a message to him costs about a twentieth of one to
+ * Phoebe, and a routing conversation runs longer in turns and shorter in words.
+ * Each agent counts under its own key; the counters are not a pool. Every
+ * agent here is free, public and open to anyone, and every message costs
+ * money. The cap is what keeps them open.
  *
  * WHAT IS COUNTED. Answers actually delivered, and nothing else. The count goes
  * up at the last moment before the model is called, and comes back down if that
@@ -40,8 +44,21 @@ import {
   visitorId,
 } from './_visitor.js';
 
-/** The maintainer's ruling of 21 Aug 2026. Item O1 revisits the number later. */
+/** Phoebe's cap. The maintainer's ruling of 21 Aug 2026. Item O1 revisits the number later. */
 export const DAILY_CAP = 20;
+
+/** Wellington's cap. The maintainer's ruling of 2 Sep 2026, on the reasoning above. */
+export const WELLINGTON_DAILY_CAP = 30;
+
+/** Which agent is counting, and how many a visitor gets. */
+export interface CapAgent {
+  /** The key prefix and the name in log lines, e.g. "phoebe". */
+  name: string;
+  cap: number;
+}
+
+export const PHOEBE: CapAgent = { name: 'phoebe', cap: DAILY_CAP };
+export const WELLINGTON: CapAgent = { name: 'wellington', cap: WELLINGTON_DAILY_CAP };
 
 export type CapDecision =
   /** Counted. Call `refund` if no answer is delivered. */
@@ -73,7 +90,11 @@ function onThePlatform(): boolean {
  * conversation that has run too long — is already out of the way. A malformed
  * request must not cost anyone one of their twenty.
  */
-export async function countOneMessage(req: Request, now: Date): Promise<CapDecision> {
+export async function countOneMessage(
+  req: Request,
+  now: Date,
+  agent: CapAgent = PHOEBE
+): Promise<CapDecision> {
   const store = storeConfig();
   const salt = process.env.PHOEBE_VISITOR_SALT;
 
@@ -93,7 +114,7 @@ export async function countOneMessage(req: Request, now: Date): Promise<CapDecis
     return { kind: 'uncounted', why: 'the request carried no address header' };
   }
 
-  const key = counterKey(visitorId(address, salt), utcDayStamp(now));
+  const key = counterKey(agent.name, visitorId(address, salt), utcDayStamp(now));
 
   let count: number;
   try {
@@ -102,7 +123,7 @@ export async function countOneMessage(req: Request, now: Date): Promise<CapDecis
     return { kind: 'uncounted', why: describe(error) };
   }
 
-  if (count > DAILY_CAP) {
+  if (count > agent.cap) {
     /* Put it back, so the stored number keeps meaning what it says — messages
        counted — rather than climbing while someone keeps trying. If the refund
        itself fails the number reads high for the rest of the day, which changes
@@ -110,9 +131,9 @@ export async function countOneMessage(req: Request, now: Date): Promise<CapDecis
     try {
       await refundMessage(store, key);
     } catch (error) {
-      console.error('phoebe: could not put back a refused message —', describe(error));
+      console.error(`${agent.name}: could not put back a refused message —`, describe(error));
     }
-    return { kind: 'refused', cap: DAILY_CAP, secondsToReset: secondsUntilMidnight(now) };
+    return { kind: 'refused', cap: agent.cap, secondsToReset: secondsUntilMidnight(now) };
   }
 
   return {
@@ -123,7 +144,7 @@ export async function countOneMessage(req: Request, now: Date): Promise<CapDecis
       } catch (error) {
         /* The visitor keeps their answer either way; they have simply been
            charged for something that failed. Worth a log line, not a failure. */
-        console.error('phoebe: could not refund an undelivered message —', describe(error));
+        console.error(`${agent.name}: could not refund an undelivered message —`, describe(error));
       }
     },
   };

@@ -24,7 +24,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { recordAbstention } from './_abstentions.js';
 import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
-import { countOneMessage, timeUntilReset } from './_cap.js';
+import { PHOEBE, countOneMessage, timeUntilReset } from './_cap.js';
 import { RESPONSE_SCHEMA, SYSTEM_PROMPT } from './_systemPrompt.js';
 
 /**
@@ -280,7 +280,7 @@ export async function POST(req: Request): Promise<Response> {
   /* The cap, counted at the last moment before the model — after everything a
      request can be refused for on its own terms, so a malformed message never
      costs anyone one of their twenty. */
-  const decision = await countOneMessage(req, new Date());
+  const decision = await countOneMessage(req, new Date(), PHOEBE);
 
   if (decision.kind === 'misconfigured') {
     console.error(

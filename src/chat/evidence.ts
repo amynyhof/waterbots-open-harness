@@ -78,6 +78,20 @@ export interface AgentTurn {
   evidence: Evidence[];
   /** True when the agent declined because no source covered the question. */
   abstained?: boolean;
+  /**
+   * One action under the turn — a route, drawn as the same quiet text link
+   * the desk's rows use. An agent's adapter builds it from a structured field,
+   * never from prose. Either a link out or something to do here.
+   */
+  action?: TurnAction;
+}
+
+export interface TurnAction {
+  label: string;
+  /** A link out, opened in a new window. */
+  href?: string;
+  /** Something to do on this console. The layer calls it and knows no more. */
+  go?: () => void;
 }
 
 export type Turn = UserTurn | AgentTurn;
@@ -98,6 +112,8 @@ export interface AgentHost {
   composerNote: string;
   /** Shown while a request is in flight. Agent-specific wording. */
   thinkingLine: string;
+  /** The small label beside an abstained turn. Phoebe's is "no card for this". */
+  abstainedLabel?: string;
 }
 
 /**

@@ -40,10 +40,14 @@ transition delta between the two. **Every number it produces is a screening esti
 not delivered, not verified, and needing consultant review. Nothing is filled in for a visitor, and
 reloading clears it.
 
-**Wellington is the Team Lead and answers on the paid site**; here his desk organises the visit's
-next steps, and its composer says so. **Bridget is the map's agent and Calvin is the quantification
-step's.** Neither console is built yet — each panel is there, each agent is named in it, and each
-says plainly that it is not answering. Their chats are coming; they do not exist today.
+**Wellington is the Team Lead, and his chat is live on the desk** from 3 Sep 2026. He welcomes a
+visitor, learns the project in plain words, and routes: Phoebe for whether it can count, the
+Quantify tab for figures, the map for basins, waterbots.ai for saving and for his full desk. He
+quotes no figure from any worksheet, invents no teammate or capability, uses screening language
+only, and never presses anyone to sign up. Thirty messages a day, counted separately from Phoebe's
+twenty, and nothing kept between visits. **Bridget is the map's agent and Calvin is the
+quantification step's.** Neither console is built yet — each panel is there, each agent is named in
+it, and each says plainly that it is not answering.
 
 ## What is built
 
@@ -58,8 +62,10 @@ says plainly that it is not answering. Their chats are coming; they do not exist
 - **Phoebe (beta).** The eligibility and feasibility agent, answering from a fixed set of rule cards
   and abstaining when none covers the question.
 - **The desk.** Wellington's dispatch desk, in the shape of the production console's: the visit's
-  project context, rows that derive from this visit only, and the save door to waterbots.ai. A
-  click on the map pins a basin for the visit.
+  project context, rows that derive from this visit only, his live chat under the desk divider —
+  replies land on the desk, never on a row — and the save door to waterbots.ai. A click on the map
+  pins a basin for the visit. What the visitor tells him fills the context card, labelled as from
+  the conversation, and never overwrites what they typed.
 - **Quantification step.** Three method packs in one pack-keyed slot. **VWBA 2.0 · D-3 Volume
   Provided**, for household and community water supply, ex-ante, Option 3: three questions can stop
   the number outright, the formula is written out with the visitor's own figures in it, and **a
@@ -145,8 +151,8 @@ visitor identifier at all, so a question can never be traced back to a person.
 
 ### Confirming the build
 
-~~Eleven checks~~ ~~Twelve checks~~ **Thirteen checks**, all of which must pass. Seven guard against
-faults that nothing else here can see:
+~~Eleven checks~~ ~~Twelve checks~~ ~~Thirteen checks~~ **Fourteen checks**, all of which must pass.
+Eight guard against faults that nothing else here can see:
 `check-attribution` reads the built bundle rather than the source, so it catches a refactor that
 drops a required licence statement while leaving the site looking perfectly correct;
 `check-api-exports` catches a relay that would build cleanly and then answer nothing once deployed;
@@ -160,7 +166,10 @@ that a blank without-project volume is never treated as zero, which is the one w
 can produce a large, confident, wrong number with nothing looking broken; and `check-gs-sdws` proves
 both carbon packs reproduce every recorded reference figure to four decimal places, that the
 derived emission factor lands on every recorded point, and that a blank share, a blank leakage
-figure or an unchosen method leaves the result honest rather than zero.
+figure or an unchosen method leaves the result honest rather than zero; and `check-wellington`
+proves his relay checks the model's output rather than trusting it, that his region of the primer
+reaches him and only him, that no prompt tells any agent to say anything word for word, that a typed
+context entry is never overwritten by what he heard, and that the shell holds his one conversation.
 
 ```bash
 node scripts/check-basins.mjs
@@ -173,6 +182,7 @@ node scripts/check-cap.mjs
 node scripts/check-reply-guard.mjs
 node scripts/check-vwba-d3.mjs
 node scripts/check-gs-sdws.mjs
+node scripts/check-wellington.mjs
 node scripts/build-prompt-modules.mjs --check
 npm run build && node scripts/check-attribution.mjs && node scripts/check-basemap-key.mjs
 ```
