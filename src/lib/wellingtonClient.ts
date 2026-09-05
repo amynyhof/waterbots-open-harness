@@ -16,6 +16,7 @@ export type WellingtonRoute = 'none' | 'eligibility' | 'quantification' | 'map' 
 export type LearnedKind = 'water' | 'carbon' | 'unsure';
 
 export interface Learned {
+  does?: string;
   name?: string;
   place?: string;
   kind?: LearnedKind;
@@ -84,6 +85,7 @@ export async function askWellington(
   const learned: Learned = {};
   if (typeof data.context === 'object' && data.context !== null) {
     const c = data.context as Record<string, unknown>;
+    if (typeof c.does === 'string' && c.does.trim()) learned.does = c.does.trim();
     if (typeof c.name === 'string' && c.name.trim()) learned.name = c.name.trim();
     if (typeof c.place === 'string' && c.place.trim()) learned.place = c.place.trim();
     if (KINDS.includes(c.kind as LearnedKind)) learned.kind = c.kind as LearnedKind;

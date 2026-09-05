@@ -55,23 +55,31 @@ export const KIND_LABEL: Record<Exclude<ProjectKind, ''>, string> = {
 export type Provenance = '' | 'typed' | 'chat' | 'pin';
 
 export interface VisitContext {
+  /**
+   * What the project does, in the visitor's own words to Wellington. The
+   * first thing his interview asks, because it is the first thing Phoebe
+   * needs. Never typed on a form; only heard. Added 4 Sep 2026.
+   */
+  does: string;
   /** What the visitor calls the project. Empty until they say. */
   name: string;
   /** Where it is, in their words — or the pinned basin's, if they left it blank. */
   place: string;
   kind: ProjectKind;
-  provenance: { name: Provenance; place: Provenance; kind: Provenance };
+  provenance: { does: Provenance; name: Provenance; place: Provenance; kind: Provenance };
 }
 
 export const EMPTY_CONTEXT: VisitContext = {
+  does: '',
   name: '',
   place: '',
   kind: '',
-  provenance: { name: '', place: '', kind: '' },
+  provenance: { does: '', name: '', place: '', kind: '' },
 };
 
 /** What Wellington learned this turn, from the visitor's own words. */
 export interface Learned {
+  does?: string;
   name?: string;
   place?: string;
   kind?: Exclude<ProjectKind, ''>;
@@ -98,7 +106,7 @@ export function typedContext(context: VisitContext, field: 'name' | 'place', val
  */
 export function learnedContext(context: VisitContext, learned: Learned): VisitContext {
   let next = context;
-  const take = (field: 'name' | 'place' | 'kind', value: string) => {
+  const take = (field: 'does' | 'name' | 'place' | 'kind', value: string) => {
     if (next.provenance[field] === 'typed') return;
     next = {
       ...next,
@@ -106,6 +114,7 @@ export function learnedContext(context: VisitContext, learned: Learned): VisitCo
       provenance: { ...next.provenance, [field]: 'chat' },
     };
   };
+  if (learned.does) take('does', learned.does);
   if (learned.name) take('name', learned.name);
   if (learned.place) take('place', learned.place);
   if (learned.kind) take('kind', learned.kind);
