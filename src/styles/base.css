@@ -803,3 +803,44 @@ button.wb-phase:hover span:last-child {
 .wb-pack-tab:hover span:nth-child(2) {
   color: var(--ink);
 }
+
+/* The rail's record inputs — quiet, on the frame, a hairline only beneath.
+   A visitor who never chats can still say the name and the place here. */
+.wb-rail-input {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 3px 0 3px;
+  margin-top: 2px;
+  outline: none;
+  transition: border-color var(--dur) var(--ease);
+}
+.wb-rail-input:focus {
+  border-bottom-color: var(--tide-ui);
+}
+.wb-rail-input::placeholder {
+  color: var(--ink-4);
+}
+
+/* The journey bar collapsed: each phase is its number in a 18px ring. The
+   ring takes the dot's colours — Tide when current or filled, quiet
+   otherwise — and the label moves to the title. Ruling 2b, 5 Sep 2026. */
+.wb-phase-number {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-4);
+  font-size: 9.5px;
+  line-height: 1;
+  flex: none;
+  transition:
+    border-color var(--dur) var(--ease),
+    background var(--dur) var(--ease);
+}

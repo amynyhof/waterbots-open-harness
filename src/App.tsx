@@ -216,7 +216,7 @@ export default function App() {
           map. The rail collapses instead, and the map holds a zoom floor so it
           stays readable rather than shrinking to a postage stamp. */}
       <div style={{ flex: 1, minHeight: 0, display: 'flex', overflow: 'hidden' }}>
-        <NavRail projectName={visit.context.name} />
+        <NavRail context={visit.context} onTyped={onTyped} />
 
         <div style={{ flex: 1, minWidth: 0, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
           <JourneyBar active={surface} progress={progress} onNavigate={setSurface} />
@@ -232,13 +232,7 @@ export default function App() {
                 style={{ position: 'absolute', inset: 0, visibility: onDesk ? 'visible' : 'hidden' }}
                 aria-hidden={!onDesk}
               >
-                  <Desk
-                    context={visit.context}
-                    onTyped={onTyped}
-                    chat={chat}
-                    rows={rows}
-                    onNavigate={setSurface}
-                  />
+                  <Desk chat={chat} />
               </div>
 
               {/* Kept mounted, hidden when off-surface — see the note above. */}
@@ -282,7 +276,7 @@ export default function App() {
               }}
             >
               <Dock visible={onDesk}>
-                <CrewRail active={surface} openCount={rows.length} onNavigate={setSurface} />
+                <CrewRail active={surface} openCount={rows.length} rows={rows} onNavigate={setSurface} />
               </Dock>
               <Dock visible={onMap}>
                 <ChatPanel />
