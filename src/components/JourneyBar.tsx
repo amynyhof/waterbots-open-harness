@@ -20,8 +20,18 @@
  * "done" — this console certifies nothing, and a phase does not pass.
  */
 
+import { useEffect, useRef, useState } from 'react';
 import { GATED_NOTE, JOURNEY } from '../lib/journey';
 import { SURFACES, type Surface } from '../lib/surfaces';
+
+/**
+ * Below this many pixels of bar the six labels no longer fit, and the bar
+ * collapses to numbered indicators — (1) to (6) — rather than scrolling.
+ * THE BAR NEVER SCROLLS: maintainer's ruling 2b, 5 Sep 2026. Measured on the
+ * labels' own width at their type size, with the joining hairlines at their
+ * minimum.
+ */
+const COMPACT_BELOW = 960;
 
 export default function JourneyBar({
   active,
@@ -33,13 +43,32 @@ export default function JourneyBar({
   progress: Record<string, boolean>;
   onNavigate: (surface: Surface) => void;
 }) {
+  const bar = useRef<HTMLElement>(null);
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const el = bar.current;
+    if (!el) return;
+    const measure = () => setCompact(el.clientWidth < COMPACT_BELOW);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   return (
     <div className="chrome" style={{ flex: 'none' }}>
       {/* The six phases. */}
       {/* Production's measure, from the saved console: 12px phase labels,
           7px hollow dots, hairlines that stretch to fill, 8px of vertical
-          padding, and a hairline under the row. Look pass, 2 Sep 2026. */}
+          padding, and a hairline under the row. Look pass, 2 Sep 2026.
+
+          THE BAR NEVER SCROLLS. When the labels no longer fit, each phase
+          collapses to its number in a ring — (1) to (6) — and the label moves
+          to the title. Ruling 2b, 5 Sep 2026. The caption that said the last
+          three phases open with a saved project is gone — ruling 2a; the
+          gated phases still carry it as their title. */}
       <nav
+        ref={bar}
         aria-label="Journey"
         style={{
           display: 'flex',
@@ -47,14 +76,30 @@ export default function JourneyBar({
           gap: 0,
           padding: '8px var(--gutter)',
           borderBottom: '1px solid var(--line)',
-          overflowX: 'auto',
+          overflow: 'hidden',
         }}
       >
         {JOURNEY.map((phase, i) => {
           const gated = phase.surface === null;
           const current = phase.surface !== null && phase.surface === active;
           const has = Boolean(progress[phase.key]);
-          const inner = (
+          const inner = compact ? (
+            <span
+              className="wb-phase-number t-mono"
+              aria-label={phase.label}
+              style={{
+                borderColor: current || has ? 'var(--tide-ui)' : 'var(--ink-4)',
+                background: has
+                  ? 'var(--tide-ui)'
+                  : current
+                    ? 'color-mix(in oklab, var(--tide-ui) 18%, transparent)'
+                    : 'transparent',
+                color: has ? '#ffffff' : gated ? 'var(--ink-4)' : current ? 'var(--tide-text)' : 'var(--ink-3)',
+              }}
+            >
+              {i + 1}
+            </span>
+          ) : (
             <>
               <span
                 aria-hidden
@@ -89,8 +134,8 @@ export default function JourneyBar({
                 display: 'flex',
                 alignItems: 'center',
                 /* Each phase keeps its own width; only the hairline between
-                   phases stretches. Squeezed, the row scrolls rather than
-                   letting labels collide. */
+                   phases stretches. Squeezed past the labels' width, the bar
+                   collapses to numbers rather than scrolling. */
                 flex: i < JOURNEY.length - 1 ? '1 1 auto' : 'none',
                 minWidth: 'max-content',
               }}
@@ -98,7 +143,7 @@ export default function JourneyBar({
               {gated ? (
                 <span
                   className="wb-phase"
-                  title={GATED_NOTE}
+                  title={`${phase.label} — ${GATED_NOTE}`}
                   aria-disabled
                   style={{ cursor: 'default' }}
                 >
@@ -108,6 +153,7 @@ export default function JourneyBar({
                 <button
                   type="button"
                   className="wb-phase"
+                  title={compact ? phase.label : undefined}
                   onClick={() => phase.surface && onNavigate(phase.surface)}
                   aria-current={current ? 'step' : undefined}
                 >
@@ -131,12 +177,6 @@ export default function JourneyBar({
             </div>
           );
         })}
-        <span
-          className="t-caption"
-          style={{ flex: 'none', paddingLeft: 24, fontSize: 10.5, whiteSpace: 'nowrap' }}
-        >
-          Plan, Monitor and Communicate open with a saved project.
-        </span>
       </nav>
 
       {/* The tabs. The active one takes the primary accent and the row sits
