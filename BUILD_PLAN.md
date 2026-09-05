@@ -93,7 +93,7 @@ never read at the opening. This section says only what is now true.
 
 - **Four surfaces, in the production shape.** A journey bar of six phases across the top of the
   centre — three open this site's surfaces, three say they open with a saved project — and four
-  tabs beneath it: Dispatch, Eligibility, Partners (Map), Quantify. The desk opens first.
+  tabs beneath it: Dispatches, Eligibility, Partners (Map), Quantify. The desk opens first.
 - **Wellington's desk.** Project context, rows derived from the visit and never invented, and the
   save door to waterbots.ai as the last row, carrying nothing across. Wellington is Team Lead,
   extended and never forked; his chat is on the paid site and the composer says so.

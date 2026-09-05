@@ -28,7 +28,7 @@ Read it with [CLAUDE.md](./CLAUDE.md), which is the rulebook and takes precedenc
 
 | Surface | State |
 |---|---|
-| The desk (Dispatch) | Wellington's desk: project context, rows derived from the visit, the save door. **3 Sep: his chat is live on it** |
+| The desk (Dispatches) | Wellington's desk: project context, rows derived from the visit, the save door. **3 Sep: his chat is live on it** |
 | Basin map (Partners) | Live, keyed CARTO Voyager basemap under a Slate 13% wash; a click pins a basin for the visit |
 | Eligibility worksheet | Live |
 | Quantification (Quantify) | Live. Three packs and the transition delta between the two carbon packs |

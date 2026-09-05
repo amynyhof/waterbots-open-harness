@@ -27,7 +27,7 @@ The largest gap: **project points are not placed**, because nothing goes on the 
 registry-verified source data with published coordinates.
 
 **The console has four surfaces, in the production shape**, from 2 Sep 2026: a journey bar of six
-phases across the top, four tabs beneath it — Dispatch, Eligibility, Partners (Map), Quantify — and
+phases across the top, four tabs beneath it — Dispatches, Eligibility, Partners (Map), Quantify — and
 the desk opens first. **Wellington's desk** holds the visit's project context and rows that derive
 from the visit and are never invented: Phoebe's eligibility result, the basin pinned on the map,
 Calvin's screening figure, and always, last, *Save this project and sign up*, which opens

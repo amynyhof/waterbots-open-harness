@@ -24,8 +24,14 @@ export type Surface = 'desk' | 'eligibility' | 'map' | 'quantification';
 /** The console's surfaces — the same four; the alias names what a route may open. */
 export type ConsoleSurface = Surface;
 
+/**
+ * THE SIX PHASE NAMES ARE CANON and agents say them as written — Eligibility,
+ * Partners, Quantify, Plan, Monitor, Communicate. The tab row names three of
+ * them; the desk's tab is "Dispatches". Maintainer's ruling, 5 Sep 2026.
+ */
 export const SURFACES: { key: ConsoleSurface; label: string }[] = [
-  { key: 'desk', label: 'Dispatch' },
+  /* "Dispatches", matching production — maintainer's naming ruling, 5 Sep 2026. */
+  { key: 'desk', label: 'Dispatches' },
   { key: 'eligibility', label: 'Eligibility' },
   { key: 'map', label: 'Partners (Map)' },
   { key: 'quantification', label: 'Quantify' },
