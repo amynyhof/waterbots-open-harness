@@ -25,6 +25,7 @@ import calvinPortrait from '../../brand/assets/bots/calvin.svg';
 import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
 import wellingtonPortrait from '../../brand/assets/bots/wellington.svg';
 import type { Surface } from '../lib/surfaces';
+import type { DeskRow } from '../lib/visit';
 
 interface CrewMember {
   name: string;
@@ -77,11 +78,18 @@ const CREW: CrewMember[] = [
 export default function CrewRail({
   active,
   openCount,
+  rows,
   onNavigate,
 }: {
   active: Surface;
   /** Open next steps on Wellington's desk. Null hides the count. */
   openCount: number | null;
+  /**
+   * The desk's rows, moved here from the centre on 4 Sep 2026 so the centre
+   * is the conversation only. Slice 2 re-derives them per seat, in
+   * methodology order; until then they are the same rows in a new home.
+   */
+  rows: DeskRow[];
   onNavigate: (surface: Surface) => void;
 }) {
   return (
@@ -186,6 +194,62 @@ export default function CrewRail({
             </button>
           );
         })}
+      </div>
+
+      {/* The next steps, under the crew. Only rows the visit actually
+          produced; an empty visit shows the save door alone, and says why. */}
+      <div
+        className="t-mono"
+        style={{
+          fontSize: 10.5,
+          letterSpacing: '0.16em',
+          textTransform: 'uppercase',
+          color: 'var(--ink-3)',
+          padding: '22px 18px 8px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+        }}
+      >
+        <span aria-hidden style={{ width: 22, height: 1, background: 'var(--ink-4)' }} />
+        Next steps
+        <span style={{ marginLeft: 'auto', color: 'var(--ink-4)', letterSpacing: '0.08em' }}>{rows.length}</span>
+      </div>
+      <div style={{ padding: '0 12px', overflowY: 'auto', minHeight: 0 }}>
+        {rows.filter((r) => r.key !== 'save').length === 0 && (
+          <p className="t-caption" style={{ margin: '0 6px 10px', fontSize: 10.5, lineHeight: 1.55 }}>
+            Rows land here from this visit only, as Wellington learns the project. None is ever
+            invented.
+          </p>
+        )}
+        {rows.map((row) => (
+          <div
+            key={row.key}
+            style={{
+              padding: '10px 6px 11px',
+              borderTop: '1px solid var(--line)',
+            }}
+          >
+            <p style={{ margin: 0, fontSize: 12.5, lineHeight: 1.5, color: 'var(--ink)' }}>{row.sentence}</p>
+            <div style={{ marginTop: 6 }}>
+              {row.action.kind === 'surface' ? (
+                <button
+                  type="button"
+                  className="wb-row-action"
+                  style={{ fontSize: 12 }}
+                  onClick={() => row.action.kind === 'surface' && onNavigate(row.action.surface)}
+                >
+                  {row.action.label}
+                </button>
+              ) : (
+                <a className="wb-row-action" style={{ fontSize: 12 }} href={row.action.href} target="_blank" rel="noopener noreferrer">
+                  {row.action.label}
+                  <span aria-hidden> ↗</span>
+                </a>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
 
       <div style={{ flex: 1 }} />

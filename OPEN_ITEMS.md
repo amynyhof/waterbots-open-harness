@@ -1899,6 +1899,40 @@ his plain question, and a visitor who never chats loses nothing that blocks them
 card says where each field came from** — typed, from the conversation, from the map pin — and a
 typed entry is never overwritten by what he heard.
 
+### The desk becomes the conversation — slice 1, 5 Sep 2026
+
+**Maintainer's ruling 3 of 4 Sep 2026, from the reference she brought in by hand: the centre is the
+conversation and nothing else.** The project context left the centre for the rail, where it is the
+record Wellington's interview populates; the dispatch rows left for the crew column. The centre is
+his header, the desk divider, his turns, the one composer. Eyeballed on four captures at one
+viewport and given the commit word on 5 Sep.
+
+**The project-context fields — ruled 5 Sep 2026, from Bob, and logged here and in the primer.**
+Must-have at screening, asked in this order:
+
+| # | Field | Who needs it |
+|---|---|---|
+| 1 | What it does — a short activity line | Phoebe, Calvin |
+| 2 | Kind — water, carbon, or not sure; "not sure" stays valid | Phoebe, Calvin |
+| 3 | Place — a country or named place, in words | Phoebe, Bridget before any pin, Calvin |
+| 4 | Name | the desk only |
+
+Slice 2 adds a fifth: the basin pin, via Bridget's map, after a place exists. **Off the rail until
+Quantify:** rough people or household counts, the technology. **Never asked at screening:**
+sign-up details, programmes or consortiums, a crediting period, baseline shares, project or leakage
+emissions, planning or monitoring documents, worksheet numbers, published emission factors.
+**Standing rules:** never invent a value; "not sure" is always a real answer; every field stays
+typeable with no chat.
+
+**One standing rule is not yet met, and is recorded rather than hidden.** "What it does" and "kind"
+are heard only; the rail carries no control for them. Ruling 4 the same day shipped slice 1 with
+fields 1 to 4 as built and no new controls, so the two typeable controls are owed to a later slice.
+
+**Two look rulings the same day, built into the same pull request:** the caption saying the last
+three phases open with a saved project is gone from the journey bar, and **the bar never scrolls** —
+below the width its labels need it collapses to numbered rings, (1) to (6), with the label in the
+title.
+
 **The hero chat is a separate surface, not this one** — item S12. The console carry stands as
 built: entering the console, the conversation comes along as the desk thread, and the desk drops
 the noise around it.

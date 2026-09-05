@@ -15,6 +15,8 @@ const KINDS: Kind[] = ['water', 'carbon', 'unsure'];
 
 /** What the visitor stated, in their own words. Every field optional. */
 export interface LearnedContext {
+  /** What the project does, in the visitor's own words. Added 4 Sep 2026. */
+  does?: string;
   name?: string;
   place?: string;
   kind?: Kind;
@@ -28,8 +30,10 @@ export interface Answer {
   abstentionTopic?: string;
 }
 
-/** A learned field is kept only if it is short enough to be a name or a place, never an essay. */
+/** A learned name or place is kept only if it is short enough to be one, never an essay. */
 const MAX_CONTEXT_CHARS = 160;
+/** What it does may run a sentence or two; more than that is a description, not a record. */
+const MAX_DOES_CHARS = 280;
 
 export function validate(value: unknown): Answer | null {
   if (typeof value !== 'object' || value === null) return null;
@@ -44,6 +48,8 @@ export function validate(value: unknown): Answer | null {
   if (typeof v.context === 'object' && v.context !== null) {
     const c = v.context as Record<string, unknown>;
     const out: LearnedContext = {};
+    const does = typeof c.does === 'string' ? c.does.trim() : '';
+    if (does && does.length <= MAX_DOES_CHARS) out.does = does;
     const name = typeof c.name === 'string' ? c.name.trim() : '';
     const place = typeof c.place === 'string' ? c.place.trim() : '';
     if (name && name.length <= MAX_CONTEXT_CHARS) out.name = name;
