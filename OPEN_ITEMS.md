@@ -95,7 +95,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | A8 | Wellington's chat, live on the desk | Agents | **built 3 Sep 2026** — on Phoebe's pattern, thirty a day |
 | A9 | Agents phrase the roster's facts themselves | Agents | **canon, ruled 3 Sep 2026** — no word-for-word lines anywhere |
 | A10 | Wellington's answers run long | Agents | **logged 3 Sep 2026 as debt** — tightening comes later |
-| A11 | The phase names are canon, and the desk tab is Dispatches | Agents | **ruled and resolved 5 Sep 2026**, same pull request |
+| A11 | The phase names are canon; the tabs are production's tool names | Agents | **ruled and resolved 5 Sep 2026**, amended the same day, same pull request |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | open |
 | S2 | The shared chat layer | Surfaces | built through Level 2 |
 | S3 | Level 3 citation pop-out | Surfaces | out of scope — paid platform |
@@ -1078,9 +1078,10 @@ comes later, on the maintainer's word.
 
 Logged 3 Sep 2026. **Open, not due.**
 
-## A11. The phase names are canon, and the desk tab is Dispatches
+## A11. The phase names are canon; the tabs are production's tool names
 
-**Maintainer's naming ruling, 5 Sep 2026, and resolved in the same pull request.**
+**Maintainer's naming ruling, 5 Sep 2026, amended the same day, and resolved in the same pull
+request.**
 
 1. **The six phase names stay as written:** Eligibility, Partners, Quantify, Plan, Monitor,
    Communicate.
@@ -1089,12 +1090,17 @@ Logged 3 Sep 2026. **Open, not due.**
 3. **Agents say the phase names, never their own versions** — "Quantify" not "the quantification
    step", "Partners" not "the basin map" when naming the phase. Describing what a phase does is
    fine; the phase's name is fixed.
+4. **Amendment, the same day: the tab row reads Dispatches · Eligibility · Map · Calculator.** Tab
+   words match production's tool names; the journey bar above keeps the phase names. Tabs name the
+   tool, the bar names the phase — the same rule as production. The tabs had read "Partners (Map)"
+   and "Quantify" for the length of one commit.
 
 **The rule itself lives in [AGENT_RULES.md](./AGENT_RULES.md) under Speech**, one home; this row
-records the ruling and what moved. What moved: the tab label in `src/lib/surfaces.ts`; the
-primer's roster region (Wellington's routing line, Calvin's two lines, the journey table's two
-rows) and one line in his own region; four places in Wellington's prompt, and a rule sentence
-added to it; README, BUILD_PLAN, SESSION_HANDOFF and item S11's own text. The generated primer
+records the ruling and what moved. What moved: the tab labels in `src/lib/surfaces.ts`; the
+primer's roster region (Wellington's routing line, Bridget's and Calvin's "where" lines, the
+journey table's two rows, the crew facts) and two lines in his own region; Wellington's prompt,
+where it names surfaces or points at a tab, and a rule paragraph added to it; README, BUILD_PLAN,
+SESSION_HANDOFF and item S11's own text. The generated primer
 modules were rebuilt and the staleness gate is green. Phoebe's own prompt text named no phase and
 needed no change; she inherits the corrected roster.
 
@@ -1885,7 +1891,8 @@ rulings A, B and C of that day; look pass against the saved production pages the
 **The shape is production's.** Under the top bar the centre carries a journey bar of six phases —
 Eligibility, Partners, Quantify open this site's surfaces; Plan, Monitor, Communicate are named,
 quieter, do not click, and one caption says they open with a saved project — and a row of four
-tabs: ~~Dispatch~~ Dispatches (renamed 5 Sep 2026, item A11), Eligibility, Partners (Map), Quantify, with a hairline after the first and the row on
+tabs: ~~Dispatch~~ Dispatches, Eligibility, ~~Partners (Map)~~ Map, ~~Quantify~~ Calculator (the tab words are
+production's tool names from 5 Sep 2026, item A11), with a hairline after the first and the row on
 its Tide rule. The desk opens first (ruling B). The left rail names the visit's project only,
 unsaved, this visit. **Production is canon for the console's shape**: the journey bar's measure,
 the tab row, the row anatomy and the calculator's idiom were read from the saved markup and matched

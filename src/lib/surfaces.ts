@@ -25,16 +25,18 @@ export type Surface = 'desk' | 'eligibility' | 'map' | 'quantification';
 export type ConsoleSurface = Surface;
 
 /**
- * THE SIX PHASE NAMES ARE CANON and agents say them as written — Eligibility,
- * Partners, Quantify, Plan, Monitor, Communicate. The tab row names three of
- * them; the desk's tab is "Dispatches". Maintainer's ruling, 5 Sep 2026.
+ * THE TAB WORDS ARE PRODUCTION'S TOOL NAMES — Dispatches, Eligibility, Map,
+ * Calculator. The journey bar above keeps the six phase names — Eligibility,
+ * Partners, Quantify, Plan, Monitor, Communicate — and agents say those as
+ * written. Tabs name the tool; the bar names the phase, the same rule as
+ * production. Maintainer's ruling, 5 Sep 2026, amended the same day.
  */
 export const SURFACES: { key: ConsoleSurface; label: string }[] = [
   /* "Dispatches", matching production — maintainer's naming ruling, 5 Sep 2026. */
   { key: 'desk', label: 'Dispatches' },
   { key: 'eligibility', label: 'Eligibility' },
-  { key: 'map', label: 'Partners (Map)' },
-  { key: 'quantification', label: 'Quantify' },
+  { key: 'map', label: 'Map' },
+  { key: 'quantification', label: 'Calculator' },
 ];
 
 /**

@@ -27,7 +27,7 @@ The largest gap: **project points are not placed**, because nothing goes on the 
 registry-verified source data with published coordinates.
 
 **The console has four surfaces, in the production shape**, from 2 Sep 2026: a journey bar of six
-phases across the top, four tabs beneath it — Dispatches, Eligibility, Partners (Map), Quantify — and
+phases across the top, four tabs beneath it — Dispatches, Eligibility, Map, Calculator — and
 the desk opens first. **Wellington's desk** holds the visit's project context and rows that derive
 from the visit and are never invented: Phoebe's eligibility result, the basin pinned on the map,
 Calvin's screening figure, and always, last, *Save this project and sign up*, which opens
@@ -42,7 +42,7 @@ reloading clears it.
 
 **Wellington is the Team Lead, and his chat is live on the desk** from 3 Sep 2026. He welcomes a
 visitor, learns the project in plain words, and routes: Phoebe for whether it can count, the
-Quantify tab for figures, the map for basins, waterbots.ai for saving and for his full desk. He
+the Calculator tab for figures, the Map tab for basins, waterbots.ai for saving and for his full desk. He
 quotes no figure from any worksheet, invents no teammate or capability, uses screening language
 only, and never presses anyone to sign up. Thirty messages a day, counted separately from Phoebe's
 twenty, and nothing kept between visits. **Bridget is the map's agent and Calvin is the
