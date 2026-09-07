@@ -28,7 +28,7 @@ Read it with [CLAUDE.md](./CLAUDE.md), which is the rulebook and takes precedenc
 
 | Surface | State |
 |---|---|
-| The desk (Dispatch) | Wellington's desk: project context, rows derived from the visit, the save door. **3 Sep: his chat is live on it** |
+| The desk (Dispatches) | Wellington's desk: project context, rows derived from the visit, the save door. **3 Sep: his chat is live on it** |
 | Basin map (Partners) | Live, keyed CARTO Voyager basemap under a Slate 13% wash; a click pins a basin for the visit |
 | Eligibility worksheet | Live |
 | Quantification (Quantify) | Live. Three packs and the transition delta between the two carbon packs |
@@ -47,9 +47,9 @@ which covers every agent (item A9). Two or three plain sentences a twelve-year-o
 and teaching. The maintainer approves rules and facts, never wording. No prompt says word for word,
 and `check-wellington` refuses one that does.
 
-- **His facts:** Phoebe covers whether a project can count, live on the Eligibility tab. The Quantify
-  tab gives a screening figure from the visitor's own numbers; Calvin's, his chat not live. The
-  Partners tab is the basin map; Bridget's, her chat not live. Saving and his full desk live on
+- **His facts:** Phoebe covers whether a project can count, live on the Eligibility step. The Quantify
+  step gives a screening figure from the visitor's own numbers; Calvin's, his chat not live. The
+  Partners step is the basin map; Bridget's, her chat not live. Saving and his full desk live on
   waterbots.ai.
 - **His rules:** no figure from any worksheet; no invented teammate, capability or place; abstain and
   route outside his lane; screening language only; never press a visitor to sign up.

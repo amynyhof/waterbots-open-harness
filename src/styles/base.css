@@ -687,7 +687,7 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
-   The console's journey bar, tab row and crew rail — 2 Sep 2026, item S11.
+   The console's journey bar and crew rail — 2 Sep 2026, item S11; the tab row left on 7 Sep, item S15.
 
    The look is the production console's, from the saved desk the maintainer
    brought in by hand. A phase marker is a hollow status dot; a tab is quiet
@@ -724,20 +724,6 @@ button.wb-phase:hover span:last-child {
   transition:
     border-color var(--dur) var(--ease),
     background var(--dur) var(--ease);
-}
-
-.wb-tab {
-  padding: 6px 2px 8px;
-  background: transparent;
-  border: 0;
-  font-family: var(--font-sans);
-  font-size: 13px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: color var(--dur) var(--ease);
-}
-.wb-tab:hover {
-  color: var(--ink);
 }
 
 .wb-crew-row {

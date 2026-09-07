@@ -7,7 +7,7 @@
  *
  * THE PRODUCTION SHAPE, FROM 2 Sep 2026 — maintainer's ruling C, item S11.
  * Under the top bar the centre carries a journey bar of six phases and a row
- * of four tabs, and the surfaces open beneath them. The left rail names the
+ * ~~of four tabs~~ — one row from 7 Sep 2026, item S15 — and the surfaces open beneath it. The left rail names the
  * visit's project; the right column is the host's dock, or the crew list when
  * the desk is open. The look is the saved production desk's, brought in by
  * the maintainer's hand; nothing else of it is — not its data, not its live

@@ -41,6 +41,14 @@ agent is given facts and rules, and phrases the words itself.** The maintainer
 approves the rules an agent keeps and the facts it holds; she does not sign its
 sentences. Nothing an agent inherits is a script.
 
+**The six phase names are canon, and an agent says them as written.** Eligibility,
+Partners, Quantify, Plan, Monitor, Communicate — never a version of its own:
+not "the quantification step", not "the basin map" when the phase is meant.
+Describing what a phase does is fine; the phase's name is fixed. On the open site
+the journey bar is the navigation and there is no tab row: an agent points people
+at a step by its phase name — "the Eligibility step" — never at a tab, and the
+desk is Dispatches. Maintainer's rulings, 5 and 7 Sep 2026.
+
 **Complete sentences.** No fragments, no exclamation marks, no emoji. This
 applies to every piece of copy a person reads, not only to what an agent says.
 

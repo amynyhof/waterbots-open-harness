@@ -1,22 +1,21 @@
 /**
  * The surfaces this console actually has.
  *
- * The tab row lists exactly what is built and nothing else. A tab for
- * something unbuilt would be a fabricated claim about the product — the same
- * rule that keeps fabricated data off the map.
+ * Four surfaces from 2 Sep 2026: the desk joined the map, the eligibility
+ * worksheet and the quantification step, and the console took the production
+ * shape on the maintainer's ruling of that day. Item S11. The left rail
+ * carries the visit's project and nothing else.
  *
- * Adding a surface here adds it to the tab row, so this list and the shell's
- * routing cannot fall out of step.
+ * ONE ROW OPENS THEM, from 7 Sep 2026 — the journey bar, which is the
+ * navigation (src/components/JourneyBar.tsx). Dispatches sits first, the desk,
+ * then the six phases from src/lib/journey.ts, of which Eligibility, Partners
+ * and Quantify open this site's tools. The tab row that listed the surfaces
+ * beneath the bar is gone, and with it the list that lived here; a surface
+ * with nothing on the bar to open it would be unreachable, and the bar reads
+ * the journey, so the two cannot fall out of step. Item S15.
  *
- * FOUR SURFACES FROM 2 Sep 2026. The desk joined, and the console took the
- * production shape on the maintainer's ruling of the same day: a journey bar
- * across the top of the centre, and the surfaces as tabs beneath it rather
- * than as items in the left rail. The rail now carries the visit's project
- * and nothing else. Item S11.
- *
- * THE TAB NAMES ARE THE JOURNEY'S NAMES, not the surfaces' old ones. The map
- * is the Partners phase of the journey, so its tab says so, with the map named
- * in brackets so nobody looking for it is lost. The two consoles should rhyme.
+ * NO TOOL NAME SITS ON THE ROW. The phase names are canon (item A11), and the
+ * desk's own word is the one label that is not a phase.
  */
 
 export type Surface = 'desk' | 'eligibility' | 'map' | 'quantification';
@@ -24,12 +23,11 @@ export type Surface = 'desk' | 'eligibility' | 'map' | 'quantification';
 /** The console's surfaces — the same four; the alias names what a route may open. */
 export type ConsoleSurface = Surface;
 
-export const SURFACES: { key: ConsoleSurface; label: string }[] = [
-  { key: 'desk', label: 'Dispatch' },
-  { key: 'eligibility', label: 'Eligibility' },
-  { key: 'map', label: 'Partners (Map)' },
-  { key: 'quantification', label: 'Quantify' },
-];
+/**
+ * The desk's word on the journey bar. "Dispatches", matching production —
+ * maintainer's naming ruling, 5 Sep 2026. It is the desk, not a phase.
+ */
+export const DESK_LABEL = 'Dispatches';
 
 /**
  * The surface the console opens on.
