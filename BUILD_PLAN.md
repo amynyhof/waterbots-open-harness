@@ -91,9 +91,9 @@ shape, the two carbon packs, and a look pass against the saved production pages.
 **The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md)**, which is append-only and is
 never read at the opening. This section says only what is now true.
 
-- **Four surfaces, in the production shape.** A journey bar of six phases across the top of the
-  centre — three open this site's surfaces, three say they open with a saved project — and four
-  tabs beneath it: Dispatches, Eligibility, Map, Calculator. The desk opens first.
+- **Four surfaces, in the production shape.** One row across the top of the centre from
+  7 Sep 2026 — Dispatches first, then six phases; three open this site's surfaces, three are named
+  and quiet — and no tab row. The desk opens first.
 - **Wellington's desk.** Project context, rows derived from the visit and never invented, and the
   save door to waterbots.ai as the last row, carrying nothing across. Wellington is Team Lead,
   extended and never forked; his chat is on the paid site and the composer says so.
@@ -105,7 +105,7 @@ never read at the opening. This section says only what is now true.
   units and a headline; the surface knows no method.
 - **Thirteen checks now, not twelve.** `check-gs-sdws` reproduces every recorded reference figure
   to four decimals and proves blank is never zero.
-- **Production is canon for the console's shape.** Journey bar, tab row, row anatomy and the
+- **Production is canon for the console's shape.** Journey bar, ~~tab row~~ (removed 7 Sep 2026, item S15), row anatomy and the
   calculator's idiom were read from the saved pages and matched — the look only.
 
 ## Previously — the Quantification step and its first pack

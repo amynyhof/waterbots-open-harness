@@ -95,7 +95,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | A8 | Wellington's chat, live on the desk | Agents | **built 3 Sep 2026** — on Phoebe's pattern, thirty a day |
 | A9 | Agents phrase the roster's facts themselves | Agents | **canon, ruled 3 Sep 2026** — no word-for-word lines anywhere |
 | A10 | Wellington's answers run long | Agents | **logged 3 Sep 2026 as debt** — tightening comes later |
-| A11 | The phase names are canon; the tabs are production's tool names | Agents | **ruled and resolved 5 Sep 2026**, amended the same day, same pull request |
+| A11 | The phase names are canon, and agents point at the step, never a tab | Agents | **ruled and resolved 5 Sep 2026**, amended 7 Sep, same pull request |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | open |
 | S2 | The shared chat layer | Surfaces | built through Level 2 |
 | S3 | Level 3 citation pop-out | Surfaces | out of scope — paid platform |
@@ -108,10 +108,11 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S8 | Brightness pull-up to the book's published Frost values | Surfaces | closed 29 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
 | S9 | The return to the brand book | Surfaces | **closed 30 Aug 2026** — both raises shipped, book at v4.1 |
 | S10 | The Quantification step | Surfaces | **built 1 Sep 2026** — the third surface, pack-keyed; three packs from 2 Sep |
-| S11 | The free desk, and the console in the production shape | Surfaces | **built 2 Sep 2026** — Wellington's desk, the journey bar, four tabs; **his chat live on it from 3 Sep** |
+| S11 | The free desk, and the console in the production shape | Surfaces | **built 2 Sep 2026** — Wellington's desk, the journey bar, ~~four tabs~~ one row from 7 Sep; **his chat live on it from 3 Sep** |
 | S12 | The hero chat — a full page that is the conversation | Surfaces | **logged 3 Sep 2026, not built** — waits on the maintainer's reference file |
 | S13 | The handoff receiver — a question carried in from the production landing | Surfaces | **logged 3 Sep 2026, not built** — the save door in reverse; each shell builds its side |
 | S14 | Typing dots — the book's third motion exception | Surfaces | **ruled 3 Sep 2026** — waits on the maintainer's hand into §5 |
+| S15 | One row — the journey bar is the navigation; a candidate for production | Surfaces | **built 7 Sep 2026** — the tab row removed; offered to production by the maintainer's hand, later |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
@@ -1078,10 +1079,10 @@ comes later, on the maintainer's word.
 
 Logged 3 Sep 2026. **Open, not due.**
 
-## A11. The phase names are canon; the tabs are production's tool names
+## A11. The phase names are canon, and agents point at the step, never a tab
 
-**Maintainer's naming ruling, 5 Sep 2026, amended the same day, and resolved in the same pull
-request.**
+**Maintainer's naming ruling, 5 Sep 2026, amended the same day and again on 7 Sep, and resolved
+in the same pull request.**
 
 1. **The six phase names stay as written:** Eligibility, Partners, Quantify, Plan, Monitor,
    Communicate.
@@ -1090,16 +1091,18 @@ request.**
 3. **Agents say the phase names, never their own versions** — "Quantify" not "the quantification
    step", "Partners" not "the basin map" when naming the phase. Describing what a phase does is
    fine; the phase's name is fixed.
-4. **Amendment, the same day: the tab row reads Dispatches · Eligibility · Map · Calculator.** Tab
-   words match production's tool names; the journey bar above keeps the phase names. Tabs name the
-   tool, the bar names the phase — the same rule as production. The tabs had read "Partners (Map)"
-   and "Quantify" for the length of one commit.
+4. ~~**Amendment, the same day: the tab row reads Dispatches · Eligibility · Map · Calculator.** Tab
+   words match production's tool names; the journey bar above keeps the phase names.~~ **Replaced
+   7 Sep 2026** — the tab row lasted two commits on a branch and never merged.
+5. **There is no tab row, from 7 Sep 2026.** The journey bar is the navigation, one row: Dispatches
+   first with a hairline after it, then the six phases. Agents point people at the step by its phase
+   name — "the Eligibility step" — never at a tab. The shape itself is item S15.
 
 **The rule itself lives in [AGENT_RULES.md](./AGENT_RULES.md) under Speech**, one home; this row
-records the ruling and what moved. What moved: the tab labels in `src/lib/surfaces.ts`; the
-primer's roster region (Wellington's routing line, Bridget's and Calvin's "where" lines, the
-journey table's two rows, the crew facts) and two lines in his own region; Wellington's prompt,
-where it names surfaces or points at a tab, and a rule paragraph added to it; README, BUILD_PLAN,
+records the ruling and what moved. What moved: the tab row and its list in `src/lib/surfaces.ts`,
+gone; the primer's roster region (Wellington's routing line, every "where" line, the journey
+table's two rows, the crew facts) and two lines in his own region; Wellington's prompt, where it
+names surfaces or points anywhere, and a rule paragraph added to it; README, BUILD_PLAN,
 SESSION_HANDOFF and item S11's own text. The generated primer
 modules were rebuilt and the staleness gate is green. Phoebe's own prompt text named no phase and
 needed no change; she inherits the corrected roster.
@@ -1890,12 +1893,12 @@ rulings A, B and C of that day; look pass against the saved production pages the
 
 **The shape is production's.** Under the top bar the centre carries a journey bar of six phases —
 Eligibility, Partners, Quantify open this site's surfaces; Plan, Monitor, Communicate are named,
-quieter, do not click, and one caption says they open with a saved project — and a row of four
-tabs: ~~Dispatch~~ Dispatches, Eligibility, ~~Partners (Map)~~ Map, ~~Quantify~~ Calculator (the tab words are
-production's tool names from 5 Sep 2026, item A11), with a hairline after the first and the row on
-its Tide rule. The desk opens first (ruling B). The left rail names the visit's project only,
+quieter, do not click, and ~~one caption says~~ their title says they open with a saved project — ~~and a
+row of four tabs: Dispatch, Eligibility, Partners (Map), Quantify, with a hairline after the first
+and the row on its Tide rule~~ **and, from 7 Sep 2026, no tab row: the same row carries Dispatches
+first, a hairline, then the six phases — item S15.** The desk opens first (ruling B). The left rail names the visit's project only,
 unsaved, this visit. **Production is canon for the console's shape**: the journey bar's measure,
-the tab row, the row anatomy and the calculator's idiom were read from the saved markup and matched
+~~the tab row~~ (gone 7 Sep 2026), the row anatomy and the calculator's idiom were read from the saved markup and matched
 — the look only, never their data, composers, organisations, roles or saving.
 
 **Wellington's desk.** His header — **Team Lead**, the maintainer's naming ruling of 2 Sep 2026,
@@ -2038,6 +2041,33 @@ carries them today. When the hero chat is built, the comment where the dots live
 exception until the book carries it.
 
 Ruled 3 Sep 2026. **Waits on the maintainer's hand into §5. No build until item S12.**
+
+## S15. One row — the journey bar is the navigation; a candidate for production
+
+**Maintainer's ruling, 7 Sep 2026, built the same day on pull request #51's branch.** The open
+site has one row, not two. The tab row is removed; the journey bar is the navigation. The row reads
+Dispatches | Eligibility · Partners · Quantify · Plan · Monitor · Communicate.
+
+- **Dispatches sits first with a hairline after it.** It is the desk, not a phase: no dot, no
+  number, and it never fills.
+- **Eligibility, Partners and Quantify click** and open the screening tools — Phoebe's screen, the
+  map, the calculator. The phase names stay canon (item A11); no tool name sits on this row.
+- **Plan, Monitor and Communicate stay named, quiet, no click, no caption.** Their title says they
+  open with a saved project.
+- **At narrow widths the bar collapses to rings (1) to (6)**, and Dispatches keeps its own mark — a
+  ring holding a dot rather than a number, the engineer's reading of "its own mark", because the
+  desk has no number on the road.
+- **The tab row's Tide rule left with the tab row.** The bar keeps its own hairline. The engineer's
+  call; the rule was the tab row's device, not the bar's.
+
+**A candidate for production, later — Shell B to Shell A.** Production carries two rows, the journey
+bar and a tab row of tool names. This one-row shape is offered to production by the maintainer's
+hand when she chooses; nothing here fetches from or writes to the other repository (rule zero).
+Logged, not scheduled.
+
+**Agents point at the step, never at a tab** — "the Eligibility step", "the Partners step", "the
+Quantify step"; the desk is "the desk" or Dispatches. The rule sits in
+[AGENT_RULES.md](./AGENT_RULES.md) under Speech; item A11 records the naming rulings it belongs to.
 
 ---
 

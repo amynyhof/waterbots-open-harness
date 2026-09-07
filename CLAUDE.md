@@ -199,7 +199,7 @@ credit line does not meet any of these bars.
   and a default with no source asks instead.
 - **The free desk, the fourth surface, from 2 Sep 2026 — and the console
   in the production shape.** A journey bar of six phases across the top
-  of the centre, four tabs beneath it, the desk first. **Wellington,
+  of the centre, ~~four tabs beneath it~~ **one row from 7 Sep 2026**, the desk first. **Wellington,
   Team Lead, hosts it, extended from the shared crew and never forked.**
   ~~He answers on the paid site, and the one composer says so.~~ **His chat
   is live on the desk from 3 Sep 2026**, on Phoebe's pattern: his own

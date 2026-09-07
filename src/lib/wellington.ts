@@ -42,7 +42,7 @@ export function actionFor(
 ): TurnAction | undefined {
   switch (route) {
     case 'eligibility':
-      return { label: 'Open the Eligibility tab', go: () => go('eligibility') };
+      return { label: 'Open the Eligibility step', go: () => go('eligibility') };
     case 'quantification':
       return { label: 'Open Quantify', go: () => go('quantification') };
     case 'map':

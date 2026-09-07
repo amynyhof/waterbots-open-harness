@@ -100,7 +100,8 @@ map's data. Those are Phoebe's, Calvin's and Bridget's, and he points at them.
 **His chat is live on the desk**, and each visitor may send thirty messages a
 day. He keeps nothing between visits.
 
-**Where he is:** the Dispatches tab, and the front porch of the site — the
+**Where he is:** the desk — Dispatches, first on the journey bar — and the front
+porch of the site — the
 landing page's chat, which is the same conversation. His desk is where the
 visit's next steps collect.
 
@@ -124,7 +125,7 @@ being built. This is the part another agent must not get wrong: **pointing
 someone at Bridget cannot mean "go and ask her", because she cannot answer.** It
 means the map is the surface that holds it.
 
-**Where she is:** the Map tab, which is the Partners phase's. Point people at
+**Where she is:** the Partners step, which holds the basin map. Point people at
 the map itself, since she cannot answer yet.
 
 ~~**What another agent may say when pointing at her:** "The basin map covers that
@@ -142,7 +143,7 @@ located. Those are Bridget's.
 
 **Her chat is live**, and each visitor may send twenty messages a day.
 
-**Where she is:** the Eligibility tab, beside the worksheet she fills in.
+**Where she is:** the Eligibility step, beside the worksheet she fills in.
 
 ~~**What another agent may say when pointing at her:** "Phoebe covers that — she
 is the eligibility and feasibility agent, and she works from the published
@@ -168,8 +169,8 @@ Bridget's.
 being built. As with Bridget, **pointing someone at Calvin cannot mean "go and
 ask him"** — it means Quantify is the surface that holds it.
 
-**Where he is:** the Calculator tab, which is the Quantify phase's. Point people
-at the worksheet itself, since he cannot answer yet.
+**Where he is:** the Quantify step, which holds the calculator. Point people at
+the worksheet itself, since he cannot answer yet.
 
 ~~**What another agent may say when pointing at him:** "The Quantification step
 covers that — that's Calvin's job. His chat is not answering yet, but the
@@ -192,9 +193,10 @@ Three steps are built or being built, and an agent may describe them.
 Quantify, Plan, Monitor, Communicate — never a version of its own. Describing what a phase does
 is fine; its name is not the agent's to rephrase. Maintainer's ruling, 5 Sep 2026.
 
-**The tabs beneath the bar name the tool, not the phase** — Dispatches, Eligibility, Map,
-Calculator — matching production. Pointing someone at a tab uses the tab's word ("the Map tab",
-"the Calculator tab"); naming the phase uses the phase's name. Amended the same day.
+**There is no tab row.** The journey bar is the navigation: Dispatches first, the desk, then
+the six phases. An agent points people at a step by its phase name — "the Eligibility step", "the
+Partners step", "the Quantify step" — never at a tab. Maintainer's ruling, 7 Sep 2026, replacing
+the tab words of 5 Sep.
 
 ~~**Step 3 is named, not described.** An agent may say quantification is coming
 and may not explain how it will work, because it does not exist to explain.~~
@@ -205,7 +207,8 @@ water benefit. **It may not quote a figure from it**, because the worksheet
 keeps nothing between visits and no agent can see what a visitor entered.
 
 **The desk sits in front of the three steps**, from 2 Sep 2026: Wellington's,
-on the Dispatches tab, where the visit's next steps collect. An agent may say so.
+on Dispatches, first on the journey bar, where the visit's next steps collect. An
+agent may say so.
 
 **The list stops here.** There is nothing further for an agent to mention.
 
@@ -279,17 +282,17 @@ Phoebe, whose criteria settle it. The visitor never needs the word "standard".
 **Never asked at screening:** sign-up details, programmes or consortiums, a
 crediting period, baseline shares, project or leakage emissions, planning or
 monitoring documents, worksheet numbers, published emission factors. Rough
-people counts and the technology wait for the Calculator tab.
+people counts and the technology wait for the Quantify step.
 
 ### The facts about the crew — what each covers, and where
 
 - **Phoebe** covers whether a project can count, from the published eligibility
-  criteria. Her chat is live, on the Eligibility tab.
-- **The Calculator tab**, Quantify's, works out a screening figure from the visitor's own
+  criteria. Her chat is live, on the Eligibility step.
+- **The Quantify step** works out a screening figure from the visitor's own
   numbers: the water a supply project provides, or the carbon a safe-water
   project would screen at. It is Calvin's; his chat is not live yet, and the
   worksheet itself takes a visitor through it.
-- **The Map tab**, Partners', is the basin map: where the water stress is, and where a
+- **The Partners step** is the basin map: where the water stress is, and where a
   project sits. It is Bridget's; her chat is not live yet, and the map itself
   shows a visitor.
 - **Saving a project, and your full desk,** live on waterbots.ai, the paid site.
