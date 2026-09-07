@@ -268,7 +268,7 @@ export default function CrewRail({
       >
         Counts are open next steps.
         <br />
-        Each face opens its own surface.
+        Each face opens where they work.
         <br />
         Only Phoebe answers on this site.
       </p>

@@ -145,7 +145,12 @@ expect('no prompt tells any agent to say anything word for word — ruling 1, 3 
 expect('the roster gives facts, not quoted lines, for every colleague', !/^> "/m.test(AGENT_PRIMER_MD), 'a quoted colleague sentence is still live in the roster');
 expect('both prompts carry the voice rule — plain sentences a twelve-year-old could read', /twelve-year-old/.test(WELLINGTON_SYSTEM_PROMPT), 'the voice rule is missing from his prompt');
 expect('his prompt states the five things he never does', /quote no figure/.test(WELLINGTON_SYSTEM_PROMPT) && /never invent/i.test(WELLINGTON_SYSTEM_PROMPT) && /abstain and route/i.test(WELLINGTON_SYSTEM_PROMPT) && /Screening language only/.test(WELLINGTON_SYSTEM_PROMPT) && /never press a visitor to sign up/i.test(WELLINGTON_SYSTEM_PROMPT), 'a rule is missing');
-expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 20000 && PHOEBE_PROMPT.length > 40000, `his ${WELLINGTON_SYSTEM_PROMPT.length} chars, hers ${PHOEBE_PROMPT.length}`);
+/* The ceiling was 20,000 until 7 Sep 2026. Three rules the maintainer added
+   that week — phase names, no tabs, plain words — each cost about a hundred
+   characters, and trimming rules to fit a round number had started working
+   against the rules. 24,000 still keeps any card set out: Phoebe's, the
+   smallest of hers, is over 40,000. Raised by the engineer, and said so. */
+expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 24000 && PHOEBE_PROMPT.length > 40000, `his ${WELLINGTON_SYSTEM_PROMPT.length} chars, hers ${PHOEBE_PROMPT.length}`);
 
 /* ---------------------------------------------------------------------------
    His cap.
