@@ -104,7 +104,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 
 | S5 | The citation line wraps awkwardly in the narrow dock | Surfaces | cosmetic, polish later |
 | S6 | The dev relay resolves imports differently from production | Surfaces | open |
-| S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026; **waiting on production's desk as their #149** |
+| S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026; **the contract ruled 7 Sep 2026** from production's proposal, by hand; this side builds after slice 3 |
 | S8 | Brightness pull-up to the book's published Frost values | Surfaces | closed 29 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
 | S9 | The return to the brand book | Surfaces | **closed 30 Aug 2026** — both raises shipped, book at v4.1 |
 | S10 | The Quantification step | Surfaces | **built 1 Sep 2026** — the third surface, pack-keyed; three packs from 2 Sep |
@@ -1357,9 +1357,46 @@ still theirs to settle, this repository still designs none of it, and rule zero 
 the number buys is that a later session can tell **waiting on production** apart from **nobody has
 picked this up**, which are the same silence from inside this repo and are not the same thing.
 
-**This item does not wait on an engineer here**, and no work is queued behind it.
+~~**This item does not wait on an engineer here**, and no work is queued behind it.~~
 
-Logged 26 Aug 2026. **Ruled — no build. Waiting on production's desk as their #149.**
+**The contract, ruled 7 Sep 2026.** Production is building its half of "Save this project and
+sign up" — their #149 — and the shape below came from their proposal, carried by the maintainer's
+hand, which is how rule zero says it travels. This side builds its half **after slice 3 of the desk
+plan, unless the maintainer says otherwise.** Recorded here as the ruled contract; not built.
+
+1. **The button and one consent line** telling the visitor what crosses.
+2. **On click, the visit is sealed** under a random ticket id in the existing short-lived store —
+   the same store the daily caps use — **good for one hour.** The seal holds:
+   - the four record fields — what it does, what kind, where it is, what it is called — each with
+     its source tag: typed, told Wellington, or from the pin;
+   - the basin pin: the HydroSHEDS and Pfafstetter ids, the level, the stress label, the area —
+     ids only, as this site holds it today;
+   - Phoebe's worksheet: each criterion's state and its way forward;
+   - each calculator pack's answers, flagged complete or incomplete, and flagged worked-example
+     where that is what they are;
+   - a sealed-at timestamp.
+   **Never a computed number. Never the conversation's turns.**
+3. **The visitor goes to production's sign-up with only the ticket id in the address.**
+4. **A hand-over-once endpoint behind a shared key.** Production claims the ticket server to
+   server; this side hands the seal over and deletes it. One claim, then gone.
+5. **The key lives in settings, never in code** — the same way the model key and the store's
+   settings do.
+
+**Visitor identity comes from sign-up on production's side.** This site never holds it, and needs
+none of it.
+
+**What this side can send exactly as ruled, checked against the code on 7 Sep 2026:** every
+field in the seal exists in the visit today — the four fields carry their source tags; the pin is
+ids, level, label and area; each criterion holds its state and, when it is not yet met, its way
+forward; each pack's answers are strings and the worked-example test already exists for the desk
+rows. The store speaks raw commands over its REST pipeline, so a one-hour expiry and a
+get-and-delete are ordinary calls. Two things the build will have to say plainly: the complete or
+incomplete flag on a pack is worked out by the pack, so it is a classification, not a number; and
+a Level 4 pin's stress label is derived from its Level 6 basins, which the level in the seal lets
+production see. **Local development has no store**, so the save door on a developer's machine
+will have to state that it cannot seal, the honest way the caps already fail closed.
+
+Logged 26 Aug 2026. **Contract ruled 7 Sep 2026. Not built; builds after slice 3.**
 
 ---
 
