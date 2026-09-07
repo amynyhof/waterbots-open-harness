@@ -28,7 +28,7 @@ export const WELLINGTON: AgentHost = {
   composerPlaceholder: 'Reply to Wellington',
   composerNote: 'Nothing is kept between visits. Thirty messages a day.',
   thinkingLine: 'Wellington is thinking…',
-  abstainedLabel: 'not something this console holds',
+  abstainedLabel: 'not something this site holds',
 };
 
 /**

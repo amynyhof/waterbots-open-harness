@@ -192,8 +192,10 @@ const group = (n: number) => n.toLocaleString('en-GB');
 /**
  * The rows, derived from the visit and from nothing else.
  *
- * Phoebe's row exists once any criterion has moved. Bridget's once a basin is
- * pinned. Calvin's once a pack has a with-project figure — and it says whether
+ * Phoebe's row exists once any criterion has moved. Bridget's once a place is
+ * known — typed, heard by Wellington, or pinned — and a pinned basin fills it
+ * (slice 2, maintainer's ruling of 7 Sep 2026; before that, only a pin made
+ * her row). Calvin's once a pack has a with-project figure — and it says whether
  * the benefit is complete or still waiting on the without-project volume,
  * because a row that named a number while the benefit was incomplete would be
  * claiming more than the worksheet does. The save row is always last.
@@ -227,7 +229,11 @@ export function deskRows(
     });
   }
 
-  /* Bridget — the pinned basin. */
+  /* Bridget — the place, then the pinned basin. Her row appears once a place
+     is known, from wherever it came, and asks for the pin; the pin fills it
+     with the basin's published reading. A row with no place would have
+     nothing real to say, so there is none. */
+  const place = visit.context.place.trim();
   if (visit.pin) {
     const pin = visit.pin;
     const derived = pin.level === 4 ? ' The Level 4 reading is derived from its Level 6 basins.' : '';
@@ -235,6 +241,13 @@ export function deskRows(
       key: 'bridget',
       from: 'bridget',
       sentence: `The pinned basin is HYBAS ${pin.hybasId}, ${group(Math.round(pin.subAreaKm2))} km², reading ${pin.stressLabel} for water stress.${derived}`,
+      action: { kind: 'surface', label: 'Open the map', surface: 'map' },
+    });
+  } else if (place !== '') {
+    rows.push({
+      key: 'bridget',
+      from: 'bridget',
+      sentence: `The project is in ${place}. Pin its basin on the map, and this row will carry the basin's water-stress reading.`,
       action: { kind: 'surface', label: 'Open the map', surface: 'map' },
     });
   }

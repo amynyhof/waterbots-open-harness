@@ -127,6 +127,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | O9 | The basemap now needs a key, and has a ceiling | Operations | live 27 Aug 2026, standing dependency |
 | O10 | Line endings are pinned in git but not in the working folder | Operations | closed 30 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
 | O11 | OPEN_ITEMS.md is heavy and wants an archive | Operations | **two sweeps done** — 30 Aug and 2 Sep 2026 |
+| O12 | The map page is heavy — the renderer stalls on a basin redraw | Operations | **logged 7 Sep 2026**, not this slice |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
 > reference to them elsewhere in the repository was updated in the same edit rather than left to
@@ -1973,6 +1974,17 @@ title.
 built: entering the console, the conversation comes along as the desk thread, and the desk drops
 the noise around it.
 
+**Slice 2, built 7 Sep 2026 — the basin pin via Bridget.** Her row appears once a place is known,
+from typing, from Wellington's interview, or from a pin, and asks for the pin; a pinned basin fills
+it with the basin's published reading, the Level 4 line still saying derived. A visit with no place
+shows no row of hers. Three eyeball rulings from the same day landed in the same pull request:
+**the desk's composer is production's to the pixel** — one line, 13px, the card plane, 816px, the
+desk column narrowed to match; **plain words in Wellington's prompt** — never "seat", "console",
+"dispatch", "rail" or "surface", facts and rules only, no scripted line, and the same words taken
+out of what he reads and out of the desk's own page copy; and **the prompt size gate raised to
+24,000 characters** — the engineer's call, accepted after the fact, and gates change on the
+maintainer's word from here. Bridget's and Calvin's dock copy still says "console"; not this slice.
+
 Built 2 Sep 2026. **Open as the home for the surface's story.** What remains is whatever the hero
 page (item S12) asks of the desk.
 
@@ -2417,3 +2429,17 @@ maintainer's word.
 
 Logged 30 Aug 2026, **first sweep done 30 Aug 2026, second sweep done 2 Sep 2026.** Open as a
 standing habit — the next sweep runs when this file gets heavy again.
+
+## O12. The map page is heavy — the renderer stalls on a basin redraw
+
+**Logged 7 Sep 2026, from slice 2's captures. Not this slice.** With the Partners step open at
+world view — 1,342 Level 4 basins drawn — a click that pins a basin, and the redraw that follows,
+froze the page long enough that the browser's screenshot command timed out at thirty seconds,
+twice, and once returned a tiled fragment. The pin itself landed and the desk read it back
+correctly; the cost is the redraw. The desk, kept mounted behind the map, then stalled once more on
+its own capture, which suggests the hidden map keeps working after the switch.
+
+**What to look at when it is picked up:** whether the pin redraws every polygon or only the two
+that changed; whether the map keeps rendering while hidden (item S4's keep-mounted rule is right,
+but a hidden map need not draw); and whether the world-view layer wants simplifying. Nothing here
+changes any data or any attribution. Recorded rather than fixed, by the maintainer's word.

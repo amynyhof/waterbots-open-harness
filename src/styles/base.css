@@ -545,6 +545,45 @@ body {
   color: var(--ink-4);
 }
 
+/* THE DESK'S COMPOSER IS PRODUCTION'S TO THE PIXEL — maintainer's ruling 2a,
+   7 Sep 2026, read from the saved desk: one line, 13px on 1.5, 8px by 12px
+   inside, the card plane, the hairline, the medium radius, Tide ring on
+   focus. The Send button beside it: 13px medium on Tide, 8px by 16px, the
+   same radius, faded to 45% while it cannot send. Phoebe's dock keeps the
+   dock composer above; this is the desk's only. */
+.wb-composer-desk {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--card);
+  border-radius: var(--r-md);
+  padding: 8px 12px;
+}
+.wb-composer-desk:focus-visible {
+  outline: 2px solid var(--tide-ui);
+  outline-offset: 0;
+}
+.wb-send-desk {
+  flex: none;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: var(--r-md);
+  background: var(--tide-ui);
+  color: #ffffff;
+  cursor: pointer;
+  transition: opacity var(--dur) var(--ease);
+}
+.wb-send-desk:hover:not(:disabled) {
+  background: var(--tide-hover);
+}
+.wb-send-desk:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 /* ---------------------------------------------------------------------------
    The calculator's controls.
 

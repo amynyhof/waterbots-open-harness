@@ -23,6 +23,13 @@
  * THE LOOK is the production desk's, from the saved page the maintainer
  * brought in on 2 Sep 2026 — its header, its divider, its composer — and the
  * brand book governs every pixel.
+ *
+ * THE COMPOSER IS PRODUCTION'S TO THE PIXEL — maintainer's eyeball ruling 2a,
+ * 7 Sep 2026: one line tall, 13px on 1.5, 8px by 12px inside, on the card
+ * plane with the hairline and the medium radius; the Send button 13px medium
+ * on Tide, faded to 45% while it cannot send; the pair 816px wide, which is
+ * production's desk column, so the transcript box above takes the same width.
+ * Read from the saved markup, not guessed.
  */
 
 import { useEffect, useRef } from 'react';
@@ -31,6 +38,9 @@ import Transcript from '../chat/Transcript';
 import type { AgentHost } from '../chat/evidence';
 import type { Conversation } from '../chat/useConversation';
 import { WELLINGTON } from '../lib/wellington';
+
+/** Production's desk column, read from the saved page: 816px. */
+const DESK_COLUMN = 816;
 
 export default function Desk({ chat }: { chat: Conversation }) {
   const scroller = useRef<HTMLDivElement>(null);
@@ -43,33 +53,35 @@ export default function Desk({ chat }: { chat: Conversation }) {
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
       <div ref={scroller} style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
-        {/* THE SAME BOX AS THE WORKSHEETS — 880px wide, the same gutter — so
-            every centre surface shares one margin. */}
-        <div style={{ maxWidth: 880, margin: '0 auto', padding: '26px var(--gutter) 24px' }}>
+        {/* PRODUCTION'S DESK COLUMN — 816px, the composer's width, so the
+            transcript and the composer share one edge. The worksheets keep
+            their 880. */}
+        <div style={{ maxWidth: DESK_COLUMN, margin: '0 auto', padding: '26px var(--gutter) 24px' }}>
           <HostHeader />
           <DeskChat host={WELLINGTON} turns={chat.turns} pending={chat.pending} error={chat.error} />
         </div>
       </div>
 
-      {/* The one composer, at the bottom of the centre. Live. */}
+      {/* The one composer, at the bottom of the centre. Live. Production's
+          measure: a hairline above, 12px by 16px around, the textarea and the
+          button on one baseline. The label is for screen readers; production
+          carries none on the page. The note beneath states the settings —
+          every setting is stated, Phoebe's pattern — at caption size. */}
       <div
         className="chrome"
         style={{
           flex: 'none',
           borderTop: '1px solid var(--line)',
           borderBottom: 0,
-          padding: '12px 0 14px',
+          padding: '12px 0',
         }}
       >
-        <div style={{ maxWidth: 880, margin: '0 auto', padding: '0 var(--gutter)' }}>
-          <label htmlFor="wb-desk-composer" className="label" style={{ display: 'block', marginBottom: 6 }}>
-            Message {WELLINGTON.name}
-          </label>
+        <div style={{ maxWidth: DESK_COLUMN, margin: '0 auto', padding: '0 var(--gutter)' }}>
           <div style={{ display: 'flex', gap: 8, alignItems: 'flex-end' }}>
             <textarea
               id="wb-desk-composer"
-              className="wb-composer"
-              rows={2}
+              className="wb-composer wb-composer-desk"
+              rows={1}
               value={chat.draft}
               disabled={chat.pending}
               onChange={(e) => chat.setDraft(e.target.value)}
@@ -80,19 +92,20 @@ export default function Desk({ chat }: { chat: Conversation }) {
                 }
               }}
               placeholder={WELLINGTON.composerPlaceholder}
+              aria-label={`Message ${WELLINGTON.name}`}
               aria-describedby="wb-desk-composer-note"
-              style={{ flex: 1 }}
+              style={{ flex: 1, minWidth: 0 }}
             />
             <button
-              className="btn btn-primary"
+              type="button"
+              className="wb-send-desk"
               onClick={() => void chat.send()}
               disabled={chat.pending || chat.draft.trim() === ''}
-              style={{ flex: 'none' }}
             >
               {chat.pending ? 'Sending…' : 'Send'}
             </button>
           </div>
-          <p id="wb-desk-composer-note" className="t-caption" style={{ margin: '7px 0 0', fontSize: 11 }}>
+          <p id="wb-desk-composer-note" className="t-caption" style={{ margin: '6px 0 0', fontSize: 11 }}>
             {WELLINGTON.composerNote}
           </p>
         </div>
@@ -184,8 +197,8 @@ function DeskChat({
       {empty ? (
         <p style={{ margin: '8px 0 14px', fontSize: 12, lineHeight: 1.55, color: 'var(--ink-4)' }}>
           Tell Wellington what your project does and where it is. He asks the rest, what he learns
-          fills the project record on the left, and the crew on the right take up their seats as he
-          learns it. Nothing is kept between visits.
+          fills the project record on the left, and each person on the right picks up their part as
+          he learns it. Nothing is kept between visits.
         </p>
       ) : (
         <div style={{ height: 14 }} />
