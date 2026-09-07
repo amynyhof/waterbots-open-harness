@@ -282,7 +282,10 @@ export default function App() {
                 <ChatPanel />
               </Dock>
               <Dock visible={onEligibility}>
-                <PhoebePanel onCriteriaUpdate={applyUpdates} />
+                {/* THE LOOP — slice 3, 7 Sep 2026: the record goes to Phoebe
+                    with every ask; her verdicts come back through applyUpdates
+                    to the criteria, and her row on the desk follows. */}
+                <PhoebePanel onCriteriaUpdate={applyUpdates} record={visit.context} />
               </Dock>
               <Dock visible={onQuantification}>
                 <CalvinPanel />

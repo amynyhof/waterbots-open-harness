@@ -26,6 +26,7 @@ import { recordAbstention } from './_abstentions.js';
 import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
 import { PHOEBE, countOneMessage, timeUntilReset } from './_cap.js';
 import { RESPONSE_SCHEMA, SYSTEM_PROMPT } from './_systemPrompt.js';
+import { readRecord, recordBlock } from './_record.js';
 
 /**
  * Claude Sonnet 5 — the maintainer's ruling of 21 Aug 2026.
@@ -221,9 +222,9 @@ export async function GET(): Promise<Response> {
 }
 
 export async function POST(req: Request): Promise<Response> {
-  let body: { messages?: IncomingMessage[] };
+  let body: { messages?: IncomingMessage[]; record?: unknown };
   try {
-    body = (await req.json()) as { messages?: IncomingMessage[] };
+    body = (await req.json()) as { messages?: IncomingMessage[]; record?: unknown };
   } catch {
     return problem(400, 'That request could not be read.');
   }
@@ -260,6 +261,12 @@ export async function POST(req: Request): Promise<Response> {
   if (clean.length === 0 || clean[clean.length - 1].role !== 'user') {
     return problem(400, 'No question was sent.');
   }
+
+  /* THE RECORD THE DESK CARRIES IN — slice 3, 7 Sep 2026. The visitor's own
+     words about the project, checked in _record.ts, or null. It rides as a
+     second system block AFTER the cache breakpoint, so her cards stay cached
+     and only this small block changes between visitors. */
+  const record = readRecord(body.record);
 
 
   /* The configuration check sits AFTER the request is validated, on purpose.
@@ -329,7 +336,10 @@ export async function POST(req: Request): Promise<Response> {
         max_tokens: MAX_TOKENS,
         /* The cache breakpoint. Everything above it is byte-identical between
            requests; the conversation below it is not cached. */
-        system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
+        system: [
+          { type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
+          ...(record ? [{ type: 'text' as const, text: recordBlock(record) }] : []),
+        ],
         messages: clean,
         /* Stated rather than inherited. This model thinks adaptively whether
            or not it is asked to, and that thinking is spent from MAX_TOKENS

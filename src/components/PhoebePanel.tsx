@@ -22,7 +22,8 @@ import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
 import AgentChat from '../chat/AgentChat';
 import type { AgentHost, AgentTurn } from '../chat/evidence';
 import { CONSIDERATIONS, CRITERIA } from '../lib/phoebeCards';
-import { askPhoebe, type CriterionUpdate } from '../lib/phoebeClient';
+import { askPhoebe, carriedRecord, type CarriedRecord, type CriterionUpdate } from '../lib/phoebeClient';
+import type { VisitContext } from '../lib/visit';
 
 const PHOEBE: AgentHost = {
   name: 'Phoebe',
@@ -37,9 +38,19 @@ const PHOEBE: AgentHost = {
 
 export default function PhoebePanel({
   onCriteriaUpdate,
+  record,
 }: {
   onCriteriaUpdate: (updates: CriterionUpdate[]) => void;
+  /**
+   * The visit's project record, carried to Phoebe with every ask — slice 3,
+   * 7 Sep 2026. What Wellington learned, or the visitor typed, goes with her
+   * request so nobody says it twice; her verdicts come back through the
+   * criteria to her row on the desk. That is the loop.
+   */
+  record: VisitContext;
 }) {
+  const carried = carriedRecord(record);
+
   async function ask(
     history: { role: 'user' | 'agent'; text: string }[],
     signal: AbortSignal
@@ -49,6 +60,7 @@ export default function PhoebePanel({
         role: role === 'agent' ? ('assistant' as const) : ('user' as const),
         content: text,
       })),
+      carried,
       signal
     );
 
@@ -64,20 +76,43 @@ export default function PhoebePanel({
     };
   }
 
-  return <AgentChat host={PHOEBE} ask={ask} composerId="wb-phoebe-composer" opening={<Opening />} />;
+  return (
+    <AgentChat
+      host={PHOEBE}
+      ask={ask}
+      composerId="wb-phoebe-composer"
+      opening={<Opening carried={carried} />}
+    />
+  );
 }
 
-/** The empty state. Agent-specific, so Phoebe supplies it rather than the layer. */
-function Opening() {
+/**
+ * The empty state. Agent-specific, so Phoebe supplies it rather than the
+ * layer. When the desk has a record, it says so and shows what is carried —
+ * the visitor's own words, read back — so nobody is asked twice.
+ */
+function Opening({ carried }: { carried: CarriedRecord | null }) {
+  /* The visitor's own sentence, less its full stop, so it sits inside ours. */
+  const does = carried?.does.replace(/[.!]+$/, '') ?? '';
+  const said = carried
+    ? [does, carried.place ? `in ${carried.place}` : ''].filter(Boolean).join(', ')
+    : '';
   return (
     <>
       <div className="eyebrow" style={{ marginBottom: 12 }}>
         Where to start
       </div>
-      <p className="t-body" style={{ margin: '0 0 12px', color: 'var(--ink-2)', fontSize: 14 }}>
-        Tell Phoebe what your project does and where, and she will work through the six criteria
-        with you, filling in the worksheet as you go.
-      </p>
+      {said ? (
+        <p className="t-body" style={{ margin: '0 0 12px', color: 'var(--ink-2)', fontSize: 14 }}>
+          Phoebe already has what you told Wellington — {said} — and starts from it. Ask her
+          about a criterion, or add what is missing, and she fills in the worksheet as you go.
+        </p>
+      ) : (
+        <p className="t-body" style={{ margin: '0 0 12px', color: 'var(--ink-2)', fontSize: 14 }}>
+          Tell Phoebe what your project does and where, and she will work through the six criteria
+          with you, filling in the worksheet as you go.
+        </p>
+      )}
       <p className="t-caption" style={{ margin: '0 0 14px', lineHeight: 1.6 }}>
         She reads from {CRITERIA.length} eligibility criteria and {CONSIDERATIONS.length} selection
         considerations, and nothing else. Ask her something outside those — an activity type, a
