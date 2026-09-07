@@ -34,8 +34,32 @@ export interface PhoebeAnswer {
 /** Thrown with a message that is already fit to show a reader. */
 export class PhoebeError extends Error {}
 
+/**
+ * The project record as the desk holds it, carried to Phoebe with every ask —
+ * slice 3, 7 Sep 2026. The visitor's own words, never a verdict or a figure.
+ * The relay checks it again (api/_record.ts); this side only sends what
+ * is there, and sends nothing when nothing is.
+ */
+export interface CarriedRecord {
+  does: string;
+  kind: string;
+  place: string;
+  name: string;
+}
+
+export function carriedRecord(context: CarriedRecord): CarriedRecord | null {
+  const record = {
+    does: context.does.trim(),
+    kind: context.kind,
+    place: context.place.trim(),
+    name: context.name.trim(),
+  };
+  return record.does || record.kind || record.place || record.name ? record : null;
+}
+
 export async function askPhoebe(
   history: { role: 'user' | 'assistant'; content: string }[],
+  record: CarriedRecord | null,
   signal?: AbortSignal
 ): Promise<PhoebeAnswer> {
   let response: Response;
@@ -43,7 +67,7 @@ export async function askPhoebe(
     response = await fetch('/api/phoebe', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ messages: history }),
+      body: JSON.stringify(record ? { messages: history, record } : { messages: history }),
       signal,
     });
   } catch (error) {

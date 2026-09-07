@@ -153,6 +153,19 @@ expect('his prompt states the five things he never does', /quote no figure/.test
 expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 24000 && PHOEBE_PROMPT.length > 40000, `his ${WELLINGTON_SYSTEM_PROMPT.length} chars, hers ${PHOEBE_PROMPT.length}`);
 
 /* ---------------------------------------------------------------------------
+   The record the desk carries to Phoebe — slice 3, 7 Sep 2026.
+--------------------------------------------------------------------------- */
+
+console.log('\n  The record carried to Phoebe\n');
+const { readRecord, recordBlock, RECORD_HEADING } = await loadApi('_record.js');
+expect('a junk record is nothing, never a block', readRecord('x') === null && readRecord({}) === null && readRecord({ does: '   ' }) === null && readRecord(null) === null, 'junk passed');
+expect('kind comes only from the closed set', readRecord({ kind: 'gold' }) === null && readRecord({ kind: 'water' })?.kind === 'water', 'an unknown kind leaked');
+expect('an over-long field is dropped whole, never cut', readRecord({ does: 'x'.repeat(281) }) === null && readRecord({ does: 'x'.repeat(280) })?.does.length === 280, 'length handling');
+const block = recordBlock(readRecord({ does: 'Boreholes for households', place: 'Kampala, Uganda' }));
+expect('the block carries only what was said, and says it is never a verdict', block.includes('Boreholes for households') && block.includes('Kampala, Uganda') && !block.includes('What kind') && !block.includes('What it is called') && /never a verdict/.test(block), block);
+expect("Phoebe's prompt names the block and keeps the cards as the only judge", PHOEBE_PROMPT.includes(RECORD_HEADING) && /only the cards decide that/.test(PHOEBE_PROMPT), 'her prompt does not know the block');
+
+/* ---------------------------------------------------------------------------
    His cap.
 --------------------------------------------------------------------------- */
 
