@@ -81,6 +81,10 @@ never an action here.
   the topic alone.
 - **Honest states.** No silent failures, no false success messages.
   The product must tell you what happened.
+- **A check's threshold changes only on the maintainer's word.** Report the
+  trip and propose the number; do not move the bar and say so after.
+  Maintainer's ruling, 7 Sep 2026, made when the engineer raised
+  Wellington's prompt-size gate first and asked second.
 - **Docs never drift.** At every session close, refresh the root docs
   (CLAUDE.md, README) to match what actually shipped. They must never
   be more than one session behind the build. Doc edits are proposed
@@ -215,6 +219,16 @@ credit line does not meet any of these bars.
   agent is given facts and rules and writes its own two or three plain
   sentences; the maintainer approves rules, not wording, and no prompt
   says word for word. The rule lives in AGENT_RULES.md.
+- **The desk plan's three slices landed 5–7 Sep 2026.** The desk is the
+  conversation and the rail is the record Wellington's interview fills, in
+  the order the seats need; **one row is the navigation and the tab row is
+  gone**; Bridget's row asks for the pin once a place is known; **the
+  record goes to Phoebe with every ask and her verdicts come back to her
+  row.** Agents say the six phase names as written, point at the step and
+  never at a tab, and speak plain words — never "seat", "console",
+  "dispatch", "rail" or "surface". **The bridge's contract is ruled**
+  (item S7) and its sender builds next, once the maintainer carries
+  production's sign-up address, claim endpoint and key name.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material
