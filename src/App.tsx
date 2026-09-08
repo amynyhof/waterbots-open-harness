@@ -64,7 +64,7 @@ import EligibilityWorksheet from './components/EligibilityWorksheet';
 import QuantificationWorksheet from './components/QuantificationWorksheet';
 import CalvinPanel from './components/CalvinPanel';
 import Wordmark from './components/Wordmark';
-import { DEFAULT_SURFACE, type ConsoleSurface, type Surface } from './lib/surfaces';
+import { DEFAULT_SURFACE, type Surface } from './lib/surfaces';
 import { useConversation } from './chat/useConversation';
 import { WELLINGTON, wellingtonAsk } from './lib/wellington';
 import { CRITERIA } from './lib/phoebeCards';
@@ -145,8 +145,9 @@ export default function App() {
      arrives — shows the same thread: never a second panel, never duplicated.
      Maintainer's ruling, 3 Sep 2026. A route in his answer opens the console
      at that tab. */
-  const goConsole = useCallback((s: ConsoleSurface) => setSurface(s), []);
-  const ask = useMemo(() => wellingtonAsk(onLearned, goConsole), [onLearned, goConsole]);
+  /* Look pass, 8 Sep 2026: his route no longer draws a button under his turn.
+     He names the step in words, and the next steps live in the right rail. */
+  const ask = useMemo(() => wellingtonAsk(onLearned), [onLearned]);
   const chat = useConversation(ask, WELLINGTON.name);
 
   /* Derived, never typed. */
@@ -221,14 +222,9 @@ export default function App() {
             ) : status.loadingDetail ? (
               'Loading detailed basins…'
             ) : (
-              <>
-                HydroSHEDS Level {status.level} &middot;{' '}
-                {status.level === 4 ? 'world view' : 'detail view'} &middot;{' '}
-                {status.rendered.toLocaleString()} basins drawn &middot; zoom{' '}
-                {status.zoom.toFixed(1)}
-                {visit.pin && <> &middot; click a basin to pin it, or the pinned one to unpin</>}
-                {!visit.pin && <> &middot; click a basin to pin it for this visit</>}
-              </>
+              /* One plain line — look pass, 8 Sep 2026. The level, the count and
+                 the zoom were the engineer's readout, not a visitor's. */
+              <>{visit.pin ? 'Click the pinned basin to unpin it, or another basin to pin that one.' : 'Click a basin to pin it.'}</>
             )}
           </span>
         )}

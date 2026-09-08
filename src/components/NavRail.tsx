@@ -34,12 +34,22 @@ const AUTO_COLLAPSE_BELOW = 1180;
 /** What the card says when the visit has not named its project. Not a value. */
 const UNNAMED = 'Unnamed project';
 
+/**
+ * What sits under a row. Look pass, 8 Sep 2026: "from the conversation" and
+ * "typed" are gone — a value is a value. The map pin keeps its line, because a
+ * place the pin wrote is the basin's own name for itself and a visitor should
+ * know it was not theirs.
+ */
 const PROVENANCE_LABEL: Record<Provenance, string> = {
   '': '',
-  typed: 'typed',
-  chat: 'from the conversation',
+  typed: '',
+  chat: '',
   pin: 'from the map pin',
 };
+
+/** The record's explainer, behind the (i) — look pass, 8 Sep 2026. */
+const RECORD_EXPLAINER =
+  'Wellington asks for these in the chat, and what you tell him lands here. Nothing is kept between visits.';
 
 export default function NavRail({
   context,
@@ -118,36 +128,52 @@ export default function NavRail({
                   flex: 'none',
                 }}
               />
-              <span
-                style={{
-                  fontSize: 14,
-                  fontWeight: 600,
-                  lineHeight: 1.3,
-                  color: context.name.trim() ? 'var(--ink)' : 'var(--ink-3)',
-                  overflowWrap: 'anywhere',
-                }}
-              >
-                {name}
-              </span>
-            </div>
-            <div
-              className="t-mono"
-              style={{
-                fontSize: 9.5,
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                color: 'var(--ink-3)',
-                marginTop: 8,
-              }}
-            >
-              unsaved · this visit
+              {/* THE NAME SHOWS ONCE, HERE — look pass, 8 Sep 2026. The card
+                  is where a visitor names the project, by typing or by telling
+                  Wellington; the record below no longer repeats it. A name he
+                  heard reads as a value; a blank or typed one is an input. */}
+              {context.provenance.name === 'chat' ? (
+                <span
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    lineHeight: 1.3,
+                    color: 'var(--ink)',
+                    overflowWrap: 'anywhere',
+                  }}
+                >
+                  {name}
+                </span>
+              ) : (
+                <input
+                  className="wb-rail-input wb-rail-name"
+                  type="text"
+                  value={context.name}
+                  onChange={(e) => onTyped('name', e.target.value)}
+                  placeholder={UNNAMED}
+                  aria-label="Project name"
+                  maxLength={160}
+                />
+              )}
             </div>
           </div>
 
-          {/* THE RECORD his interview populates. Four rows; a dash until he
-              has heard it; the source under each value. */}
-          <div className="eyebrow" style={{ margin: '18px 0 6px', paddingLeft: 4 }}>
+          {/* THE RECORD his interview populates. Three rows; a dash until he
+              has heard it. The explainer sits behind the (i). */}
+          <div
+            className="eyebrow"
+            style={{ margin: '18px 0 6px', paddingLeft: 4, display: 'flex', alignItems: 'center', gap: 6 }}
+          >
             Project record
+            <span
+              className="wb-info"
+              role="img"
+              tabIndex={0}
+              aria-label={RECORD_EXPLAINER}
+              title={RECORD_EXPLAINER}
+            >
+              i
+            </span>
           </div>
 
           {/* THE ORDER IS THE SEATS' — ruled 5 Sep 2026, from Bob: what it
@@ -165,27 +191,13 @@ export default function NavRail({
             value={context.place}
             provenance={context.provenance.place}
             editable={{ value: context.place, onChange: (v) => onTyped('place', v), placeholder: 'or type it' }}
-          />
-          <RecordRow
-            label="What it is called"
-            value={context.name}
-            provenance={context.provenance.name}
-            editable={{ value: context.name, onChange: (v) => onTyped('name', v), placeholder: 'or type it' }}
             last
           />
-
-          <p
-            className="t-caption"
-            style={{ margin: '12px 0 0', padding: '0 4px', fontSize: 10.5, lineHeight: 1.55 }}
-          >
-            Wellington asks for these in the chat, and what you tell him lands here. Nothing is kept
-            between visits.
-          </p>
         </div>
       ) : (
         <div
-          title={`${name} · unsaved, this visit`}
-          aria-label={`${name}, unsaved, this visit`}
+          title={name}
+          aria-label={name}
           style={{ display: 'grid', placeItems: 'center', padding: '16px 0' }}
         >
           <span
@@ -270,9 +282,11 @@ function RecordRow({
           {value || '—'}
         </div>
       )}
-      <div className="t-caption" style={{ fontSize: 9.5, marginTop: 2, color: 'var(--ink-4)' }}>
-        {provenance ? PROVENANCE_LABEL[provenance] : 'Wellington asks this'}
-      </div>
+      {(provenance ? PROVENANCE_LABEL[provenance] : 'Wellington asks this') !== '' && (
+        <div className="t-caption" style={{ fontSize: 9.5, marginTop: 2, color: 'var(--ink-4)' }}>
+          {provenance ? PROVENANCE_LABEL[provenance] : 'Wellington asks this'}
+        </div>
+      )}
     </div>
   );
 }

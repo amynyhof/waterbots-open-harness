@@ -233,7 +233,7 @@ export default function CrewRail({
         <span style={{ marginLeft: 'auto', color: 'var(--ink-4)', letterSpacing: '0.08em' }}>{rows.length}</span>
       </div>
       <div style={{ padding: '0 12px', overflowY: 'auto', minHeight: 0 }}>
-        {rows.filter((r) => r.key !== 'save').length === 0 && (
+        {rows.length === 0 && (
           <p className="t-caption" style={{ margin: '0 6px 10px', fontSize: 10.5, lineHeight: 1.55 }}>
             Rows land here from this visit only, as Wellington learns the project. None is ever
             invented.
@@ -265,37 +265,6 @@ export default function CrewRail({
                   <span aria-hidden> ↗</span>
                 </a>
               )}
-              {row.action.kind === 'seal' && (
-                /* THE BRIDGE (item S7). A primary button — solid Tide, the
-                   book's §7 — because it is the one action on this site that
-                   takes the visitor somewhere else with their work. The
-                   consent line sits under it, before the click. Every state
-                   is shown; the page moves only once a ticket is back. */
-                <div style={{ marginTop: 4 }}>
-                  <button
-                    type="button"
-                    className="wb-save-button"
-                    onClick={onSeal}
-                    disabled={sealing.kind === 'sealing' || sealing.kind === 'sealed'}
-                    aria-busy={sealing.kind === 'sealing' || undefined}
-                  >
-                    {sealing.kind === 'sealing' && 'Saving your project…'}
-                    {sealing.kind === 'sealed' && 'Saved. Taking you to waterbots.ai…'}
-                    {(sealing.kind === 'idle' || sealing.kind === 'failed') && row.action.label}
-                  </button>
-                  <p className="t-caption" style={{ margin: '8px 0 0', fontSize: 10.5, lineHeight: 1.55 }}>
-                    {CONSENT_LINE}
-                  </p>
-                  {sealing.kind === 'failed' && (
-                    <p
-                      role="alert"
-                      style={{ margin: '8px 0 0', fontSize: 12, lineHeight: 1.5, color: 'var(--state-pending)' }}
-                    >
-                      {sealing.message}
-                    </p>
-                  )}
-                </div>
-              )}
             </div>
           </div>
         ))}
@@ -303,24 +272,35 @@ export default function CrewRail({
 
       <div style={{ flex: 1 }} />
 
-      <p
-        className="t-mono"
-        style={{
-          margin: 0,
-          padding: '12px 18px 16px',
-          fontSize: 10,
-          letterSpacing: '0.1em',
-          textTransform: 'uppercase',
-          lineHeight: 1.8,
-          color: 'var(--ink-4)',
-        }}
-      >
-        Counts are open next steps.
-        <br />
-        Each face opens where they work.
-        <br />
-        Only Phoebe answers on this site.
-      </p>
+      {/* THE BRIDGE (item S7), at the foot of the rail — look pass, 8 Sep 2026.
+          It was the last of the next-step rows and the three-line footer sat
+          under it; now the footer is gone and the save button lives here, in
+          view without scrolling at laptop height. A primary button — solid
+          Tide, the book's §7 — because it is the one action on this site that
+          takes the visitor somewhere else with their work. The consent line
+          sits under it, before the click. Every state is shown; the page moves
+          only once a ticket is back. */}
+      <div style={{ flex: 'none', padding: '12px 18px 16px', borderTop: '1px solid var(--line)' }}>
+        <button
+          type="button"
+          className="wb-save-button"
+          onClick={onSeal}
+          disabled={sealing.kind === 'sealing' || sealing.kind === 'sealed'}
+          aria-busy={sealing.kind === 'sealing' || undefined}
+        >
+          {sealing.kind === 'sealing' && 'Saving your project…'}
+          {sealing.kind === 'sealed' && 'Saved. Taking you to waterbots.ai…'}
+          {(sealing.kind === 'idle' || sealing.kind === 'failed') && 'Save this project and sign up'}
+        </button>
+        <p className="t-caption" style={{ margin: '8px 0 0', fontSize: 10.5, lineHeight: 1.55 }}>
+          {CONSENT_LINE}
+        </p>
+        {sealing.kind === 'failed' && (
+          <p role="alert" style={{ margin: '8px 0 0', fontSize: 12, lineHeight: 1.5, color: 'var(--state-pending)' }}>
+            {sealing.message}
+          </p>
+        )}
+      </div>
     </aside>
   );
 }
