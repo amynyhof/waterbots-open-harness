@@ -60,7 +60,26 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — the bridge sender
+## Just finished — the canon and the look pass
+
+**Second sitting of 8 Sep 2026. Pull requests #58 and #59, merged.** Item S16 logged.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
+is now true.
+
+- **Four canon rules on pace and posture** bind every agent, in AGENT_RULES.md: short replies, one
+  question at a time, every reply ends with the next step; "I don't know" is a valid answer; a
+  planned project is normal and the criteria are things to do, not a quiz; status lines in a
+  visitor's words. Phoebe and Wellington hold them as rules.
+- **The desk after the look pass.** Wellington opens warmly and names the next step in words; the
+  project name shows once, in the card; the record has three rows and its explainer behind an (i);
+  the save button sits at the foot of the right rail, in view at laptop height; the phase names show
+  at laptop width; next steps live in the right rail only; the map's line is one plain sentence; no
+  intro paragraph above the conversation.
+- **Every capture for the maintainer's eyeball goes inside the For Amy block as an image**, by her
+  ruling; the rule is in PROCESS_RULES.md.
+
+## Previously — the bridge sender
 
 **Session of 8 Sep 2026. Pull request #56, merged.** Item S7, closed and archived.
 
@@ -238,7 +257,12 @@ is nothing left for images to teach.** No folder waits for them.
 she carries three facts from production.~~ **The three facts landed and the sender shipped on
 8 Sep 2026** (#56). Item S7 is closed.
 
-**The hero chat is next**, as below, and it still waits on the maintainer's reference file. Nothing
+**The phase-screens proposal (item S16) is next**, by the maintainer's word of 8 Sep 2026: every
+phase page as a screen with the agent's chat in the middle and its tool as a tab, "Next phase" on
+every step, save reachable from every step, chat bubbles. **Proposal first, images first**; nothing
+is built until she has approved the pictures.
+
+**The hero chat follows**, as below, and it still waits on the maintainer's reference file. Nothing
 is built toward it until she says the file is in. **What comes next is decided at the next session's
 open.**
 

@@ -237,6 +237,18 @@ credit line does not meet any of these bars.
   conversation, and this site keeps no copy. Ten seals a day per visitor.
   **Lines a visitor reads say what happens, in plain words** — never
   "seal", "ticket", "store" or "claim"; maintainer's ruling, 8 Sep 2026.
+- **The look pass of 8 Sep 2026, and four canon rules the same day.** Wellington
+  opens warmly and names the next step in words; the project name shows once,
+  in the card; the record has three rows and an (i); the save button sits at
+  the foot of the right rail; the phase names show at laptop width; next steps
+  live in the right rail only; the map's line is one plain sentence; no intro
+  paragraph above the conversation. **Every agent keeps four rules on pace and
+  posture** — short, one question at a time, ends with the next step; "I don't
+  know" is an answer; a planned project is normal and criteria are things to
+  do; status lines in a visitor's words — in AGENT_RULES.md. **Every capture
+  for the maintainer's eyeball is attached inside the pull request's For Amy
+  block as an image**; the rule and the way of doing it are in
+  PROCESS_RULES_for_ShellB.md.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material
