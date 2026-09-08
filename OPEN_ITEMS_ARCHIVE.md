@@ -22,6 +22,7 @@ identifiers — S4 stays S4. Identifiers are never reused.
 
 **First sweep: 30 Aug 2026**, six items — S4, S8, O2, O3, O6, O7.
 **Second sweep: 2 Sep 2026**, one item — O10.
+**Third sweep: 8 Sep 2026**, one item — S7.
 
 ---
 
@@ -204,6 +205,115 @@ taxonomy and by any other agent.
 
 Received 27 Aug 2026. Shipped 27 Aug 2026. **Closed 29 Aug 2026**, with the rider answered by
 BRAND.md v3 §2.6 — see item S9.
+
+---
+
+## S7. The bridge — handing a finished screening to the paid platform
+
+**Ruled by the maintainer, 26 Aug 2026, and free by that decision.** At the end of a completed
+screening the visitor is offered one thing: *"Save this project and sign up?"* If they choose it,
+their own project context and their projection go across to the paid platform, and the journey on
+this site ends there.
+
+**It is one-way, and it happens only on their click.** Nothing crosses unless the visitor asks for
+it.
+
+**It does not change the no-memory rule.** This site still keeps nothing between visits. The handoff
+carries what the visitor built in front of them, at the moment they ask for it, and this site keeps
+no copy of it.
+
+This is the crossing the north star already names — the free tier ends where step 4 begins, and the
+bridge is how someone steps over.
+
+**No proposal yet.** The shape of the handoff — what crosses, how, and what the paid side receives —
+is coordinated by the maintainer's hand, not designed in this repository. Rule zero holds while it
+is.
+
+**It has a number on the other side, and it is on their desk — production's #149.** Recorded
+30 Aug 2026 by the maintainer's note. **Nothing about that changes what happens here:** the shape is
+still theirs to settle, this repository still designs none of it, and rule zero still holds. What
+the number buys is that a later session can tell **waiting on production** apart from **nobody has
+picked this up**, which are the same silence from inside this repo and are not the same thing.
+
+~~**This item does not wait on an engineer here**, and no work is queued behind it.~~
+
+**The contract, ruled 7 Sep 2026.** Production is building its half of "Save this project and
+sign up" — their #149 — and the shape below came from their proposal, carried by the maintainer's
+hand, which is how rule zero says it travels. This side builds its half **after slice 3 of the desk
+plan, unless the maintainer says otherwise.** Recorded here as the ruled contract; not built.
+
+1. **The button and one consent line** telling the visitor what crosses.
+2. **On click, the visit is sealed** under a random ticket id in the existing short-lived store —
+   the same store the daily caps use — **good for one hour.** The seal holds:
+   - the four record fields — what it does, what kind, where it is, what it is called — each with
+     its source tag: typed, told Wellington, or from the pin;
+   - the basin pin: the HydroSHEDS and Pfafstetter ids, the level, the stress label, the area —
+     ids only, as this site holds it today;
+   - Phoebe's worksheet: each criterion's state and its way forward;
+   - each calculator pack's answers, flagged complete or incomplete, and flagged worked-example
+     where that is what they are;
+   - a sealed-at timestamp.
+   **Never a computed number. Never the conversation's turns.**
+3. **The visitor goes to production's sign-up with only the ticket id in the address.**
+4. **A hand-over-once endpoint behind a shared key.** Production claims the ticket server to
+   server; this side hands the seal over and deletes it. One claim, then gone.
+5. **The key lives in settings, never in code** — the same way the model key and the store's
+   settings do.
+
+**Visitor identity comes from sign-up on production's side.** This site never holds it, and needs
+none of it.
+
+**What this side can send exactly as ruled, checked against the code on 7 Sep 2026:** every
+field in the seal exists in the visit today — the four fields carry their source tags; the pin is
+ids, level, label and area; each criterion holds its state and, when it is not yet met, its way
+forward; each pack's answers are strings and the worked-example test already exists for the desk
+rows. The store speaks raw commands over its REST pipeline, so a one-hour expiry and a
+get-and-delete are ordinary calls. Two things the build will have to say plainly: the complete or
+incomplete flag on a pack is worked out by the pack, so it is a classification, not a number; and
+a Level 4 pin's stress label is derived from its Level 6 basins, which the level in the seal lets
+production see. **Local development has no store**, so the save door on a developer's machine
+will have to state that it cannot seal, the honest way the caps already fail closed.
+
+**Built 8 Sep 2026, pull request #56, merged the same day.** The three facts landed by the
+maintainer's hand that morning — the landing `https://www.waterbots.ai/welcome?handoff=<ticketId>`,
+with the ticket 16 to 128 characters of `A–Z a–z 0–9 _ -` and the visitor going through sign-in
+first; the claim `GET https://map.waterbots.ai/api/handoff/<ticketId>` with
+`Authorization: Bearer <BRIDGE_KEY>` and `Accept: application/json`, called once from production's
+server, answering 200 with the sealed body once and then 404, 404 for unknown, expired or already
+claimed, 401 for a wrong key; and the key's name, `BRIDGE_KEY`, set on this project's Production
+settings with the value production holds. The sender was built the same day in one pull request,
+three steps, one eyeball on the button and the consent line.
+
+**Her rulings of 8 Sep 2026.** Ten seals a day per visitor, under the counter `handoff`, the same
+shape as the chat caps. The pack's own word goes across, all four — complete, incomplete, pending,
+blocked — with the worked-example flag beside it: a label, never a figure. The same window: the
+link became a button, the click seals, and the page moves to the landing. And on the pixels: **the
+lines a visitor reads say what happens, in plain words** — no "seal", "ticket", "store" or "claim"
+where a first-time visitor reads. The consent line reads *Going with you: what you said about the
+project, the basin you pinned, where each eligibility criterion stands, and the numbers you typed
+in. Not the results worked out here, and not your conversation. Nothing stays on this site.* The
+test copy says *Saving only works on the live site, not on this test copy. Nothing was kept.*
+
+**What shipped.** `api/_handoff.ts` holds the seal's shape and the reader; a key that is not on the
+list refuses the whole seal, so a body carrying `messages`, `figures` or `headline` is turned
+away, never trimmed. `api/handoff/index.ts` seals, with `SET … EX 3600 NX` so a repeated ticket is
+refused rather than overwritten. `api/handoff/[ticketId].ts` claims, with `GETDEL` so two racing
+claims cannot both win, the key checked first and in constant time over hashes, and nothing but the
+outcome logged. `src/lib/handoff.ts` is the one place the visit becomes a seal; it reads no figure.
+The row's button and consent line live in the crew rail. `scripts/check-handoff.mjs` runs 65 checks
+against the stand-in store, including the desk's own seal going through the route and the whole
+round trip. The dev relay and the api-exports gate learned routes in a subfolder. Two things
+production reads off the seal, as promised above: a pack's `status` is the pack's classification
+and never a number, and a Level 4 pin carries `stressDerived: true`.
+
+**Confirmed on the live site after merge, 8 Sep 2026.** A seal from an empty visit came back with a
+32-character ticket and an hour's expiry; a wrong key and a missing key both answered 401; a GET on
+the seal address answered 405; a path two segments deep answered 404. **The two right-key claims —
+200 once, then 404 — were not run by the engineer, who never holds the key and found it in no
+environment on the machine.** They are the maintainer's to run, and until she has, the real store's
+answer to `GETDEL` is confirmed only by the stand-in — item S6's standing gap, in one more place.
+
+Logged 26 Aug 2026. Contract ruled 7 Sep 2026. ~~**Not built; builds after slice 3.**~~ **Built 8 Sep 2026, pull request #56. Closed and moved to the archive the same day.**
 
 ---
 

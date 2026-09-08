@@ -1,6 +1,6 @@
 # Session handoff
 
-**Current state only.** Rewritten from scratch at the close of the 7 Sep 2026 sitting, and
+**Current state only.** Rewritten from scratch at the close of the 8 Sep 2026 sitting, and
 rewritten from scratch at every close — maintainer's ruling of 29 Aug 2026, *the opening reads stay
 thin, forever*.
 
@@ -18,8 +18,8 @@ Read it with [CLAUDE.md](./CLAUDE.md), which is the rulebook and takes precedenc
 ## Where things stand
 
 **Everything on `main` is live at [map.waterbots.ai](https://map.waterbots.ai)**, deployed from
-`main`. Pull requests #50 to #54 are merged. The working tree is clean apart from two ungraded card
-drafts. **One pull request is open as this is written: this close-out**, docs only.
+`main`. Pull request #56, the bridge sender, is merged. The working tree is clean apart from two
+ungraded card drafts. **One pull request is open as this is written: this close-out**, docs only.
 
 **The console has four surfaces and one row**, and the desk opens first.
 
@@ -27,9 +27,10 @@ drafts. **One pull request is open as this is written: this close-out**, docs on
 |---|---|
 | The desk (Dispatches) | Wellington's conversation in the centre; the project record on the left rail, filled by his interview; the crew and the next-step rows on the right. His chat is live |
 | Basin map (Partners) | Live, keyed CARTO Voyager basemap under a Slate 13% wash; a click pins a basin for the visit |
-| Eligibility worksheet | Live. **Phoebe receives the desk's record with every ask** |
+| Eligibility worksheet | Live. Phoebe receives the desk's record with every ask |
 | Quantification (Quantify) | Live. Three packs and the transition delta between the two carbon packs |
-| **Wellington, Team Lead** | Live on the desk. Opus 5, thirty messages a day under his own counter. He asks for four fields in the seats' order, routes, and answers nothing in a colleague's place |
+| **The bridge** | **Live from 8 Sep 2026.** The save row is a button with a consent line; the click seals the visit for an hour and moves the page to production's welcome with only a ticket in the address; production claims it once behind `BRIDGE_KEY` |
+| Wellington, Team Lead | Live on the desk. Opus 5, thirty messages a day under his own counter |
 | Phoebe, Eligibility and Feasibility | Live on Opus 5, twenty a day. Starts from the record, moves a criterion only on evidence |
 | Bridget, the map's agent | Named in the map's dock; **her chat is not built**. Her row on the desk asks for the pin once a place is known |
 | Calvin, the quantification agent | Named in his dock; **his chat is not built** |
@@ -38,8 +39,24 @@ drafts. **One pull request is open as this is written: this close-out**, docs on
 
 **The journey bar is the navigation.** One row: Dispatches first with a hairline after it, then
 Eligibility, Partners, Quantify, which click, and Plan, Monitor, Communicate, which are named and
-quiet. No tab row, no caption. Collapsed, the phases are rings (1) to (6) and Dispatches keeps a
-ring holding a dot.
+quiet.
+
+## The bridge, as it now runs
+
+- **What crosses** is the visit and nothing else: the four record fields with their source tags,
+  the pin as ids with `stressDerived` said outright, each criterion's state and way forward, each
+  pack's answers as typed with the pack's own word (complete, incomplete, pending, blocked) and the
+  worked-example flag, a sealed-at timestamp. **Never a computed number, never the conversation.**
+  The reader in `api/_handoff.ts` refuses a seal carrying anything else, whole.
+- **The seal** is `POST /api/handoff`: ten a day per visitor under the counter `handoff`, one hour
+  in the store, a 32-character ticket back. **The claim** is `GET /api/handoff/<ticketId>` with
+  `Authorization: Bearer <BRIDGE_KEY>`: 200 with the seal once, then 404; 401 for a wrong key; the
+  key checked first. **This site keeps no copy.**
+- **The lines a visitor reads say what happens, in plain words** — never "seal", "ticket", "store"
+  or "claim". The consent line and the local-only line are in `src/components/CrewRail.tsx` and
+  `api/handoff/index.ts`; every message on the row says "saving" and what happened.
+- **On a laptop the row says saving only works on the live site.** There is no store locally.
+- **The check** is `node scripts/check-handoff.mjs`, 65 checks, in the gate list below.
 
 ## The loop, as it now runs
 
@@ -47,37 +64,23 @@ ring holding a dot.
   that order, and what he hears fills the rail. A typed entry is never overwritten. "What it does"
   and "kind" are heard only; their typeable controls are owed (item S11).
 - **The record goes to Phoebe** with every ask, as a second system block after her cache breakpoint,
-  checked on the relay in `api/_record.ts`: strings only, capped, the kind from the closed set, an
-  over-long field dropped whole. Never a verdict, never a figure, never the desk conversation.
+  checked on the relay in `api/_record.ts`.
 - **Her verdicts come back** through the criteria to the worksheet and to her row on the desk.
-- **Bridget's row** appears once a place is known and asks for the pin; a pin fills it with the
-  basin's published reading, the Level 4 line saying derived.
-- **Rows derive from the visit and are never invented.** The save row is always last and carries
-  nothing across. Nothing is kept between visits.
+- **Bridget's row** appears once a place is known and asks for the pin.
+- **Rows derive from the visit and are never invented.** The save row is always last. Nothing is
+  kept between visits.
 
 ## What the agents may say
 
-**Facts and rules, never lines** (item A9). Two or three plain sentences a twelve-year-old could
-read. The six phase names as written — Eligibility, Partners, Quantify, Plan, Monitor, Communicate
-— and a person is pointed at "the Eligibility step", never at a tab. Wellington uses plain words a
-first-time visitor knows: never "seat", "console", "dispatch", "rail" or "surface". His first turn
-is a rule, not a script. The rules live in AGENT_RULES.md and in each agent's prompt file.
+**Facts and rules, never lines** (item A9). The six phase names as written; a person is pointed at
+"the Eligibility step", never at a tab. Wellington uses plain words a first-time visitor knows:
+never "seat", "console", "dispatch", "rail" or "surface". The rules live in AGENT_RULES.md and in
+each agent's prompt file.
 
 **Settings, stated in `api/wellington.ts` and `api/phoebe.ts` with their reasons:** Claude Opus 5,
 medium effort, 16,000 output tokens, 120-second call timeout, one retry for a late 400, the reply
 floor, caps thirty and twenty. **Wellington's prompt-size gate is 24,000 characters**, and a gate
 changes only on the maintainer's word.
-
-## The bridge — ruled, not built
-
-**Item S7 carries the contract**, from production's proposal by the maintainer's hand: a button and
-a consent line; the visit sealed under a random ticket in the short-lived store for one hour —
-record fields with source tags, the pin as ids, the worksheet's states and ways forward, each pack's
-answers flagged complete or incomplete and worked-example, a timestamp; never a computed number,
-never the conversation; the visitor sent to production's sign-up with only the ticket in the
-address; a hand-over-once endpoint behind a shared key kept in settings. Every field exists in the
-visit today. **Local development has no store**, so the save door on a laptop will say it cannot
-seal.
 
 ## The design system as it now stands
 
@@ -86,9 +89,10 @@ seal.
 
 - One light brand; two grounds; three planes; host panels at 5% fill and 25% border in the host's
   accent — Wellington Tide, Phoebe Anemone, Bridget Surf, Calvin Plum.
-- **Production is canon for the console's shape**, from the saved pages in `Design refs/`. The desk's
-  composer is production's to the pixel, in production's 816px column. The one-row shape is this
-  site's own, offered to production later (item S15).
+- **The bridge's button is the book's §7 primary**: solid Tide, light label, `--r-md`, hover
+  darkens, press scales to 0.98. It is the one primary action on the site, because it is the one
+  that takes the visitor somewhere else with their work.
+- **Production is canon for the console's shape**, from the saved pages in `Design refs/`.
 - **The current landing does not change** without the maintainer's word. It is production's.
 - **Typing dots are the book's third motion exception** (item S14); waits on her hand into §5.
 - **Design work starts from an image**, and approval is given on pixels.
@@ -96,8 +100,13 @@ seal.
 ## Waiting on the maintainer
 
 - **This close-out's pull request** — review and merge.
-- **Three facts from production for the bridge sender** (item S7): the sign-up address, the claim
-  endpoint's shape, the key's name. The sender starts when they land, and not before.
+- **The two right-key claims on the live site.** The engineer never holds `BRIDGE_KEY`, so they were
+  not run. From anywhere with the key, seal from the live desk, then:
+  ```
+  curl -i https://map.waterbots.ai/api/handoff/<ticketId> -H "Authorization: Bearer <BRIDGE_KEY>" -H "Accept: application/json"
+  ```
+  First call 200 with the JSON, second call 404. That is the only proof the real store answers the
+  read-and-delete command the way the stand-in does (item S6's standing gap).
 - **The hero chat's reference file** into `Design refs/` (item S12). Nothing is built toward it.
 - **The sender's shape for the handoff receiver** (item S13).
 - **Typing dots into the brand book's §5** (item S14).
@@ -105,32 +114,32 @@ seal.
   `definitions-cards-vwba-DRAFT.md`. They stay uncommitted until then.
 - **Whether the export copies should be produced by a script** (item O8), and item O11's next sweep.
 
-**Four things wait on real visitors**: the numbers twenty and thirty (item O1), the basemap ceiling
-(item O9), and the primer review against the abstention log (item A5).
+**Four things wait on real visitors**: the numbers twenty, thirty and now ten (item O1), the
+basemap ceiling (item O9), and the primer review against the abstention log (item A5).
 
 ## Confirming the build
 
-**Fourteen commands. All must pass.** Three need a build first because they read `dist/`.
+**Fifteen commands. All must pass.** Three need a build first because they read `dist/`.
 
 ```bash
 node scripts/check-basins.mjs
 node scripts/check-stress.mjs
 node scripts/check-palette.mjs
 node scripts/check-cards.mjs
-node scripts/check-api-exports.mjs
+node scripts/check-api-exports.mjs          # walks api/ subfolders too
 node scripts/check-visitor-id.mjs
 node scripts/check-cap.mjs                  # Phoebe's twenty AND Wellington's thirty, separate counters
 node scripts/check-reply-guard.mjs
 node scripts/check-vwba-d3.mjs
 node scripts/check-gs-sdws.mjs
 node scripts/check-wellington.mjs           # his machinery and the record carried to Phoebe, no model call
+node scripts/check-handoff.mjs              # the bridge: seal, cap, claim, round trip, against the stand-in store
 node scripts/build-prompt-modules.mjs --check   # cards, primer AND Wellington's region are not stale
 npm run build && node scripts/check-attribution.mjs && node scripts/check-basemap-key.mjs
 ```
 
 **After editing any card, the agent primer, or the pack registry, run
-`node scripts/build-prompt-modules.mjs`.** Three bundles: the cards, the roster region, and
-Wellington's own region.
+`node scripts/build-prompt-modules.mjs`.**
 
 **The measured walk is not a gate.** `node scripts/measure-wellington.mjs [runs]` against a running
 dev server spends real calls and prints counts; run it before an eyeball, never in the loop. **Every
@@ -147,26 +156,29 @@ The key must be in the environment before the server starts; an env file does no
 The basemap key is the opposite case, in `.env.local` as `VITE_CARTO_KEY`. **Start it as `npx vite`,
 not `npm run dev`, and only one at a time.**
 
-**The dev relay serves every relay on its list in `vite.config.ts`** — `phoebe` and `wellington`.
-**There is no store locally**; the caps say so and let messages through, development only.
+**The dev relay serves every relay on its list in `vite.config.ts`** — `phoebe`, `wellington`, and
+`handoff` with its ticket route below it. A flat route answers 404 below itself, as production does.
+**There is no store locally**; the caps say so and let messages through, and the save row says
+saving only works on the live site. `BRIDGE_KEY` is not on this machine, so the local claim answers
+503 and names the setting.
 
 ## Housekeeping — where things are on this machine
 
 - **`gh` is at `C:\Program Files\GitHub CLI\gh.exe`**, not on PATH.
 - **`brand/assets/bots/` is ignored and re-opened one file at a time.** Four portraits are
   allow-listed: `bridget.svg`, `phoebe.svg`, `calvin.svg`, `wellington.svg`.
-- **`Design refs/` is gitignored** and holds the saved production pages; read their markup. The
-  desk's composer and column were read from
-  `Design refs/Production site dispatch, console/`. **The hero chat's reference is not in it yet.**
+- **`Design refs/` is gitignored** and holds the saved production pages; read their markup. **The
+  hero chat's reference is not in it yet.**
 - **`sources-local/methodology/` holds the Gold Standard sources** and the synthetic matrix. Never
   committed.
 - **`exports/` is gitignored** and holds the maintainer's copies of the root documents, regenerated
   after each close-out's checkpoint commit.
-- **Port 3000 belongs to `WaterBotsAI`**, a different repository. Not this repo's server.
-- **The browser extension**: a tab can zoom itself to 200% and a fresh tab reads at 100%; a batch
-  cannot wait more than ten seconds at a time; **captures on the map page time out on a basin
-  redraw** (item O12) — read the state by script and capture the desk instead. The window will not
-  shrink below the screen; narrow the document by script for a collapsed capture.
+- **Port 3000 belongs to `WaterBotsAI`**, a different repository. Not this repo's server. **Port 5174
+  was another repository's dev server on 8 Sep** — not ours, not touched.
+- **The browser extension**: a fresh tab reads at 100%; a batch cannot wait more than ten seconds at
+  a time; **captures on the map page time out on a basin redraw** (item O12) — read the state by
+  script and capture the desk instead. A click by element reference did not always land on the
+  save button; a click by coordinate did.
 
 ## Deployment
 
@@ -181,13 +193,11 @@ not `npm run dev`, and only one at a time.**
 | Setting | For | If missing |
 |---|---|---|
 | `ANTHROPIC_API_KEY` | Phoebe's and Wellington's relays | Each says it is not connected |
-| `KV_REST_API_URL` / `KV_REST_API_TOKEN` | The shared store | Neither answers at all |
-| `PHOEBE_VISITOR_SALT` | The scrambled visitor identity, both counters | Same. **Set once, never changed** |
+| `KV_REST_API_URL` / `KV_REST_API_TOKEN` | The shared store | Neither agent answers; the save row says saving is not working |
+| `PHOEBE_VISITOR_SALT` | The scrambled visitor identity, all three counters | Same. **Set once, never changed** |
 | `PHOEBE_LOG_KEY` | Opens the abstention log | That address returns nothing |
+| `BRIDGE_KEY` | The claim, `GET /api/handoff/<ticketId>` | That address answers 503 and names the setting. **Production only** — a preview deploy's claim answers 503 by design |
 | `VITE_CARTO_KEY` | The basemap, **at build time** | The map works, every tile watermarked |
-
-**The bridge will add one setting**, the shared key production claims with. Its name comes from
-production by the maintainer's hand; it is not yet known here.
 
 ## Known conditions, recorded so they are not rediscovered as bugs
 
@@ -201,13 +211,17 @@ production by the maintainer's hand; it is not yet known here.
   record block, uncached, after her cards.
 - **Basins are drawn on canvas, not as SVG paths.** The world-view redraw after a pin is heavy
   (item O12).
-- **The basin layer rebuilds on a pin**; the pin is part of the layer's key.
-- **The desk, the map and the docks stay mounted**; the desk holds Wellington's conversation. The
-  two worksheets are mounted only while open. A git checkout under the dev server reloads the page
-  and empties every conversation.
+- **The desk, the map and the docks stay mounted**; the desk holds Wellington's conversation. A git
+  checkout under the dev server reloads the page and empties every conversation.
+- **A seal expires after an hour, and a claim deletes it sooner.** A visitor who takes longer than
+  an hour to sign up finds nothing waiting; production sees a 404 and this site cannot tell the
+  cases apart. By design.
+- **The real store's `GETDEL` and `SET … NX` are confirmed only by the stand-in** until the
+  maintainer runs the right-key claims. Item S6's gap, in one more place.
 - **Phoebe's relay still says `validate()`** in old code (item O13); a later hygiene pass.
-- **Bridget's and Calvin's dock copy still says "console"**; the plain-words rule was applied to the
-  desk and to Wellington, not to the docks.
+- **Bridget's and Calvin's dock copy still says "console"**, and the crew rail's footer still says
+  only Phoebe answers on this site; the plain-words rule was applied to the desk, to Wellington and
+  to the bridge, not to the docks or the footer.
 - **Seven tracked text files still carry Windows line endings on disk.** Nothing is broken.
 
 ## The documents, and which one owns what
@@ -228,18 +242,19 @@ production by the maintainer's hand; it is not yet known here.
 | [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) | **Closed items, in full. NOT read at the opening** | Yes |
 | [BUILD_LOG.md](./BUILD_LOG.md) | **How they came to stand there. NOT read at the opening** | Yes |
 
-**[OPEN_ITEMS.md](./OPEN_ITEMS.md) is about 2,500 lines.** Items S15, O12 and O13 joined this
-sitting and none left; item O11's next sweep is due.
+**[OPEN_ITEMS.md](./OPEN_ITEMS.md) is about 2,450 lines.** Item S7 left for the archive this
+sitting, the third sweep; none joined. Item O11's next sweep is still due.
 
 ## What to do first
 
 **Run Part 1 of the opening ritual**, in
-[PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md). **No building in Part 1.**
+[PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md). **No building in Part 1.** Ask whether
+the maintainer has run the two right-key claims on the live site; if she has, record the answer in
+item S6's row.
 
-**Then Part 2: the bridge sender (item S7)**, and only once the maintainer has carried production's
-three facts — the sign-up address, the claim endpoint's shape, and the key's name. If they are not
-in, do not start it and do not guess at them. Propose against item S7's recorded contract, one step
-at a time: the button and consent line first.
+**Then Part 2**, decided at the open. The hero chat (item S12) is next and waits on the maintainer's
+reference file; if it is not in, do not start it. The candidates that need no file are in
+[BUILD_PLAN.md](./BUILD_PLAN.md).
 
 ## Working agreements that are easy to lose
 
@@ -251,6 +266,8 @@ at a time: the button and consent line first.
 - **The current landing never changes without the maintainer's word.** It is not this site's.
 - **Agents get facts and rules, not lines.** No prompt says word for word; the check refuses it.
 - **Agents say phase names as written, point at the step, and use a visitor's words.**
+- **Every line a visitor reads says what happens, in plain words.** Not how it works. This caught
+  the bridge's first capture.
 - **One conversation per agent, held by the shell.** A frame never starts its own.
 - **A typed entry is never overwritten by what an agent heard.**
 - **What crosses to another agent or another site is the visitor's own words** — never a verdict,

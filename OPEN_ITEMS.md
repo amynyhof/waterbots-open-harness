@@ -104,7 +104,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 
 | S5 | The citation line wraps awkwardly in the narrow dock | Surfaces | cosmetic, polish later |
 | S6 | The dev relay resolves imports differently from production | Surfaces | open |
-| S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026; **the contract ruled 7 Sep 2026** from production's proposal, by hand; this side builds after slice 3 |
+| S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026; the contract ruled 7 Sep 2026; **built 8 Sep 2026, #56** — [archived](./OPEN_ITEMS_ARCHIVE.md) |
 | S8 | Brightness pull-up to the book's published Frost values | Surfaces | closed 29 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
 | S9 | The return to the brand book | Surfaces | **closed 30 Aug 2026** — both raises shipped, book at v4.1 |
 | S10 | The Quantification step | Surfaces | **built 1 Sep 2026** — the third surface, pack-keyed; three packs from 2 Sep |
@@ -1331,73 +1331,11 @@ larger; the second is cheap and partial. Neither is designed yet.
 **What not to do.** Do not fix this by giving development its own copy of the handler. Two copies
 that drift is a worse problem than one copy resolved two ways.
 
-## S7. The bridge — handing a finished screening to the paid platform
+## S7. The bridge — handing a finished screening to the paid platform — closed, swept to the archive
 
-**Ruled by the maintainer, 26 Aug 2026, and free by that decision.** At the end of a completed
-screening the visitor is offered one thing: *"Save this project and sign up?"* If they choose it,
-their own project context and their projection go across to the paid platform, and the journey on
-this site ends there.
-
-**It is one-way, and it happens only on their click.** Nothing crosses unless the visitor asks for
-it.
-
-**It does not change the no-memory rule.** This site still keeps nothing between visits. The handoff
-carries what the visitor built in front of them, at the moment they ask for it, and this site keeps
-no copy of it.
-
-This is the crossing the north star already names — the free tier ends where step 4 begins, and the
-bridge is how someone steps over.
-
-**No proposal yet.** The shape of the handoff — what crosses, how, and what the paid side receives —
-is coordinated by the maintainer's hand, not designed in this repository. Rule zero holds while it
-is.
-
-**It has a number on the other side, and it is on their desk — production's #149.** Recorded
-30 Aug 2026 by the maintainer's note. **Nothing about that changes what happens here:** the shape is
-still theirs to settle, this repository still designs none of it, and rule zero still holds. What
-the number buys is that a later session can tell **waiting on production** apart from **nobody has
-picked this up**, which are the same silence from inside this repo and are not the same thing.
-
-~~**This item does not wait on an engineer here**, and no work is queued behind it.~~
-
-**The contract, ruled 7 Sep 2026.** Production is building its half of "Save this project and
-sign up" — their #149 — and the shape below came from their proposal, carried by the maintainer's
-hand, which is how rule zero says it travels. This side builds its half **after slice 3 of the desk
-plan, unless the maintainer says otherwise.** Recorded here as the ruled contract; not built.
-
-1. **The button and one consent line** telling the visitor what crosses.
-2. **On click, the visit is sealed** under a random ticket id in the existing short-lived store —
-   the same store the daily caps use — **good for one hour.** The seal holds:
-   - the four record fields — what it does, what kind, where it is, what it is called — each with
-     its source tag: typed, told Wellington, or from the pin;
-   - the basin pin: the HydroSHEDS and Pfafstetter ids, the level, the stress label, the area —
-     ids only, as this site holds it today;
-   - Phoebe's worksheet: each criterion's state and its way forward;
-   - each calculator pack's answers, flagged complete or incomplete, and flagged worked-example
-     where that is what they are;
-   - a sealed-at timestamp.
-   **Never a computed number. Never the conversation's turns.**
-3. **The visitor goes to production's sign-up with only the ticket id in the address.**
-4. **A hand-over-once endpoint behind a shared key.** Production claims the ticket server to
-   server; this side hands the seal over and deletes it. One claim, then gone.
-5. **The key lives in settings, never in code** — the same way the model key and the store's
-   settings do.
-
-**Visitor identity comes from sign-up on production's side.** This site never holds it, and needs
-none of it.
-
-**What this side can send exactly as ruled, checked against the code on 7 Sep 2026:** every
-field in the seal exists in the visit today — the four fields carry their source tags; the pin is
-ids, level, label and area; each criterion holds its state and, when it is not yet met, its way
-forward; each pack's answers are strings and the worked-example test already exists for the desk
-rows. The store speaks raw commands over its REST pipeline, so a one-hour expiry and a
-get-and-delete are ordinary calls. Two things the build will have to say plainly: the complete or
-incomplete flag on a pack is worked out by the pack, so it is a classification, not a number; and
-a Level 4 pin's stress label is derived from its Level 6 basins, which the level in the seal lets
-production see. **Local development has no store**, so the save door on a developer's machine
-will have to state that it cannot seal, the honest way the caps already fail closed.
-
-Logged 26 Aug 2026. **Contract ruled 7 Sep 2026. Not built; builds after slice 3.**
+**Built 8 Sep 2026, pull request #56. Moved to [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) the
+same day**, in full, with the contract, the three facts, the rulings and the live-site check intact.
+Nothing was summarised away in the move.
 
 ---
 
@@ -1954,9 +1892,10 @@ name him until the maintainer's sentence comes with the desk's second pass.
 rows and every pack's answers, kept for this visit only. Nothing is written to storage; a reload
 starts over and the page says so. **Rows derive from the visit and are never invented** — Phoebe's
 once a criterion moves, Bridget's once a basin is pinned, Calvin's once a pack has a figure, and
-always last **"Save this project and sign up"**, which opens waterbots.ai in a new window and says
-that nothing is carried across yet. That is the two-window fallback until the bridge (item S7) is
-real. A row built from a pack's worked example says so first.
+always last **"Save this project and sign up"**. ~~That opens waterbots.ai in a new window and says
+that nothing is carried across yet — the two-window fallback until the bridge (item S7) is real.~~
+**From 8 Sep 2026 the row is the bridge**: the click seals the visit and the page moves to
+production's sign-up with only a ticket in the address (item S7, archived). A row built from a pack's worked example says so first.
 
 **The map pin.** A click on a basin pins it for the visit with the Tide stroke; a click on the
 pinned basin unpins. The pin fills the place field if it was blank and never overwrites a typed

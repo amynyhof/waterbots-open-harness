@@ -30,8 +30,15 @@ registry-verified source data with published coordinates.
 first, then six phases, of which Eligibility, Partners and Quantify open this site's tools — and
 the desk opens first. **Wellington's desk** holds the visit's project context and rows that derive
 from the visit and are never invented: Phoebe's eligibility result, the basin pinned on the map,
-Calvin's screening figure, and always, last, *Save this project and sign up*, which opens
-waterbots.ai and carries nothing across. Nothing is kept between visits.
+Calvin's screening figure, and always, last, *Save this project and sign up*. ~~That opens
+waterbots.ai and carries nothing across.~~ **From 8 Sep 2026 that row is the bridge to the paid
+site**: a button with one line under it saying what goes with the visitor — what they said about
+the project, the basin they pinned, where each eligibility criterion stands, and the numbers they
+typed in — and the two things that never do: the results worked out here, and the conversation.
+The click keeps the visit for one hour under a random code and moves the page to waterbots.ai's
+welcome with only that code in the address; the paid site collects it once, server to server,
+behind a shared key, and it is deleted on hand-over. Ten saves a day per visitor. This site keeps
+no copy, and nothing is kept between visits.
 
 **The quantification step carries three screening packs** — the water volume a household or
 community supply project provides, and the carbon reduction a safe-drinking-water project screens
@@ -149,6 +156,7 @@ serving a public endpoint with no limit.
 | `KV_REST_API_URL` and `KV_REST_API_TOKEN` | The shared store that holds the daily count and the abstention log. `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` are read as an alternative pair. |
 | `PHOEBE_VISITOR_SALT` | A long random secret mixed into the scrambled visitor identity. **Set once and never changed** — changing it makes every visitor look new and resets every count to zero. |
 | `PHOEBE_LOG_KEY` | The secret that opens `/api/abstentions`. Without it that address returns nothing. |
+| `BRIDGE_KEY` | The shared key the paid site presents to collect a saved visit from `/api/handoff/<ticketId>`, as `Authorization: Bearer <key>`. Its name and value come from the paid site. Without it that address answers 503 and names the setting; saving itself still works, but nothing can be collected. |
 | `VITE_CARTO_KEY` | The basemap key. **Read at build time, not at runtime** — Vite bakes `VITE_`-prefixed settings into the bundle when it builds, so it must be present before the build runs. Without it the map still works and every tile is watermarked. |
 
 No visitor's network address is ever stored. It is scrambled together with the secret above and

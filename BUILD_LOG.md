@@ -518,3 +518,81 @@ item A11 make sense.
 The close-out itself: items O13 and the slice notes, the build plan's "just finished" and "next",
 the README and CLAUDE.md refreshed, the handoff rewritten fresh, the exports regenerated after the
 checkpoint. The migration gate ran and found no migrations.
+
+## 8 September 2026 — the bridge sender
+
+**One sitting. Pull request #56, merged; this close-out is #57.** Item S7 built, closed and
+archived. No real model calls.
+
+### What was built
+
+**The bridge sender (#56)**, in one pull request and three steps, on the maintainer's approved
+plan. The three facts from production arrived by her hand at the open: the landing address, the
+claim's shape and answers, and the key's name, `BRIDGE_KEY`, already set on Production.
+
+*Step 1, the seal.* `POST /api/handoff` reads the visit as a seal — the four record fields with
+their source tags, the pin as ids with `stressDerived` said outright, each criterion's state and way
+forward, each pack's answers as typed with the pack's own word and the worked-example flag — and
+refuses anything beyond that whole: a key not on the list turns the seal away rather than being
+trimmed. A good seal is kept for one hour under a 32-character random ticket with `SET … EX NX`, so
+a repeated ticket refuses rather than overwrites. Ten a day per visitor under the counter
+`handoff`, charged after the shape check so a bad body costs nobody. The dev relay and the
+api-exports gate learned routes in a subfolder, and a flat route now answers 404 below itself as
+production does.
+
+*Step 2, the button and the consent line.* The save row's link became the book's primary button
+with the consent line under it; the click seals and moves the same window to production's welcome
+with only the ticket in the address. Every state shows. The first capture was not approved: the
+lines used "seal", "store" and "machine". Rewritten in a visitor's words, recaptured, approved.
+
+*Step 3, the claim.* `GET /api/handoff/<ticketId>` behind the key, compared in constant time over
+hashes and checked before anything else; `GETDEL` hands the seal over and deletes it in one
+command; 200 once, then 404; 401 for a wrong key; nothing but the outcome logged.
+
+**The check.** `scripts/check-handoff.mjs`, 65 checks against the stand-in store, including the
+desk's own seal built by the compiled client going through the compiled route, and the whole round
+trip ending with the seal gone.
+
+**After merge, on the live site.** A seal from an empty visit came back with a ticket and an hour's
+expiry; a wrong key and a missing key answered 401; the route's edges answered 405 and 404. The
+right-key claims were left to the maintainer — the engineer never holds the key.
+
+### What was decided
+
+- **The plan, and the shape of the pull request.** One PR, not two: a button that seals before the
+  claim exists sends a visitor to a door that does not open, and a claim with no button is
+  invisible. One revert handle, one eyeball.
+- **Ten seals a day**, own counter, same shape as the chat caps.
+- **The pack's own word crosses**, all four, a label and never a figure.
+- **The same window**, because the journey on this site ends there and browsers block a new tab
+  opened after a network call.
+- **Lines a visitor reads say what happens, in plain words.** No "seal", "ticket", "store" or
+  "claim". Now in CLAUDE.md's scope note for the bridge.
+
+### What was learned
+
+**A gate that only looks at the top level waves through what it cannot see.** The api-exports gate
+read `api/*.ts` and would have passed the first subfolder route unchecked. It walks now.
+
+**Connect strips the mount path.** The dev relay handed the handler `req.url` with the mount gone;
+a route that reads its ticket off the path would have read nothing. The relay now builds the
+request from `originalUrl`, the way the platform gives it.
+
+**The key is nowhere on the machine, and that is right.** The post-merge check that needs it is the
+maintainer's, and the report says so instead of pretending the round trip was seen.
+
+### Mistakes, self-reported
+
+**The first capture's words.** The consent line and the local-only line were written in the
+engineer's vocabulary. The rule was already on the desk — plain words a first-time visitor knows —
+and it was applied to Wellington and not to the row. Caught by the maintainer at the eyeball.
+
+**The crew rail's props were typed and not destructured**, and the check script reused a name.
+Both caught by the type check and the script's own run before anything was committed.
+
+### Housekeeping
+
+The close-out itself: item S7 closed and moved to the archive in full, the third sweep; the build
+plan's "just finished" and "next"; the README's desk paragraph and settings table; CLAUDE.md's
+scope note; the handoff rewritten fresh; the exports regenerated after the checkpoint. The
+migration gate ran and found no migrations.

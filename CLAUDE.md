@@ -226,9 +226,17 @@ credit line does not meet any of these bars.
   record goes to Phoebe with every ask and her verdicts come back to her
   row.** Agents say the six phase names as written, point at the step and
   never at a tab, and speak plain words — never "seat", "console",
-  "dispatch", "rail" or "surface". **The bridge's contract is ruled**
+  "dispatch", "rail" or "surface". ~~**The bridge's contract is ruled**
   (item S7) and its sender builds next, once the maintainer carries
-  production's sign-up address, claim endpoint and key name.
+  production's sign-up address, claim endpoint and key name.~~ **The bridge
+  is built, 8 Sep 2026** (item S7, archived): the save row is a button with
+  a consent line in a visitor's words; the click seals the visit for one
+  hour under a random ticket and moves the page to production's welcome
+  with only the ticket in the address; production claims it once behind
+  `BRIDGE_KEY`, then it is gone. Never a computed number, never the
+  conversation, and this site keeps no copy. Ten seals a day per visitor.
+  **Lines a visitor reads say what happens, in plain words** — never
+  "seal", "ticket", "store" or "claim"; maintainer's ruling, 8 Sep 2026.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material
