@@ -57,6 +57,7 @@ import NavRail from './components/NavRail';
 import JourneyBar from './components/JourneyBar';
 import Desk from './components/Desk';
 import CrewRail from './components/CrewRail';
+import { HandoffError, buildSeal, handoffAddress, sealVisit, type SealState } from './lib/handoff';
 import ChatPanel from './components/ChatPanel';
 import PhoebePanel from './components/PhoebePanel';
 import EligibilityWorksheet from './components/EligibilityWorksheet';
@@ -151,6 +152,30 @@ export default function App() {
   /* Derived, never typed. */
   const rows = useMemo(() => deskRows(visit, statuses, LIVE_PACKS), [visit, statuses]);
   const progress = useMemo(() => journeyProgress(visit, statuses, LIVE_PACKS), [visit, statuses]);
+
+  /* THE BRIDGE (item S7, built 8 Sep 2026). The click seals the visit as it
+     stands — the record with its source tags, the pin, the worksheet, each
+     pack's answers as typed — and on a ticket coming back moves this window
+     to production's sign-up with only the ticket in the address. Nothing is
+     kept here, and every state on the way is shown on the row. */
+  const [sealing, setSealing] = useState<SealState>({ kind: 'idle' });
+  const onSeal = useCallback(async () => {
+    setSealing({ kind: 'sealing' });
+    try {
+      const seal = buildSeal(visit, statuses, CRITERIA.map((c) => c.number), LIVE_PACKS);
+      const { ticketId } = await sealVisit(seal);
+      setSealing({ kind: 'sealed' });
+      window.location.assign(handoffAddress(ticketId));
+    } catch (error) {
+      setSealing({
+        kind: 'failed',
+        message:
+          error instanceof HandoffError
+            ? error.message
+            : 'Something went wrong on our side. Nothing was kept.',
+      });
+    }
+  }, [visit, statuses]);
 
   const onDesk = surface === 'desk';
   const onMap = surface === 'map';
@@ -276,7 +301,14 @@ export default function App() {
               }}
             >
               <Dock visible={onDesk}>
-                <CrewRail active={surface} openCount={rows.length} rows={rows} onNavigate={setSurface} />
+                <CrewRail
+                  active={surface}
+                  openCount={rows.length}
+                  rows={rows}
+                  onNavigate={setSurface}
+                  sealing={sealing}
+                  onSeal={onSeal}
+                />
               </Dock>
               <Dock visible={onMap}>
                 <ChatPanel />

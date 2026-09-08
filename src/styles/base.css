@@ -824,6 +824,34 @@ button.wb-phase:hover span:last-child {
   text-underline-offset: 2px;
 }
 
+/* The bridge's button on the save row (item S7, 8 Sep 2026). The book's §7
+   primary: solid Tide, light label ink, --r-md, hover darkens, press scales to
+   0.98. The one primary action on this site that takes the visitor somewhere
+   else with their work, so it is the one that looks like one. */
+.wb-save-button {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: var(--r-md);
+  background: var(--tide-ui);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.wb-save-button:hover:not(:disabled) {
+  background: var(--tide-hover);
+}
+.wb-save-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.wb-save-button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
 /* A live pack tab is a button; an unselected one lifts a little on hover. */
 .wb-pack-tab:hover span:nth-child(2) {
   color: var(--ink);

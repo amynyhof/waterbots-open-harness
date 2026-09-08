@@ -16,9 +16,13 @@
  * Vercel's own build log said it plainly in the end. This turns that warning
  * into a build failure, locally, in about a second.
  *
- * WHAT IT CHECKS. Every .ts file directly under api/ that is a route — that is,
- * not one of the underscore-prefixed helper modules — must export at least one
- * named HTTP method and must not export a default.
+ * WHAT IT CHECKS. Every .ts file under api/ that is a route — that is, not one
+ * of the underscore-prefixed helper modules — must export at least one named
+ * HTTP method and must not export a default. Subfolders are walked, because
+ * the platform routes them too: api/handoff/index.ts answers /api/handoff and
+ * api/handoff/[ticketId].ts answers /api/handoff/<anything>. The bridge
+ * brought the first subfolder on 8 Sep 2026, and a gate that only looked at
+ * the top level would have waved its routes through unchecked.
  */
 
 import { readdirSync, readFileSync } from 'node:fs';
@@ -33,7 +37,21 @@ const isRoute = (name) => name.endsWith('.ts') && !name.startsWith('_');
 const problems = [];
 let routes = 0;
 
-const files = readdirSync(API_DIR).filter(isRoute).sort();
+/** Every route file under a folder, as a path relative to that folder. */
+function routeFiles(dir, prefix = '') {
+  const found = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isDirectory()) {
+      if (entry.name.startsWith('_')) continue;
+      found.push(...routeFiles(join(dir, entry.name), `${prefix}${entry.name}/`));
+    } else if (isRoute(entry.name)) {
+      found.push(`${prefix}${entry.name}`);
+    }
+  }
+  return found;
+}
+
+const files = routeFiles(API_DIR).sort();
 
 if (files.length === 0) {
   console.error(`\n  FAILED — no route files found in ${API_DIR}/.`);
@@ -73,7 +91,7 @@ for (const file of files) {
     continue;
   }
 
-  console.log(`  ${path.padEnd(24)} ${found.join(', ')}`);
+  console.log(`  ${path.padEnd(32)} ${found.join(', ')}`);
 }
 
 console.log('');
