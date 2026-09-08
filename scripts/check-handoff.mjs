@@ -351,7 +351,7 @@ await refused(
 await refused('a seal missing a part is turned away', { record: sample().record }, 400, 'missing');
 await refused('a body that is not a seal at all is turned away', '"just a string"', 400, 'not an object');
 await refused('an unreadable body is turned away', '{not json', 400, 'could not be read');
-await refused('a body heavier than a seal can be is turned away', 'x'.repeat(MAX_SEAL_BYTES + 1), 413, 'larger');
+await refused('a body heavier than a seal can be is turned away', 'x'.repeat(MAX_SEAL_BYTES + 1), 413, 'more than');
 
 expect('none of those refusals stored anything', values.size === before, `the store grew from ${before} to ${values.size}`);
 expect(
@@ -430,13 +430,13 @@ delete process.env.VERCEL;
 process.env.KV_REST_API_URL = storeUrl;
 
 expect(
-  'on a laptop the door says it cannot seal on this machine',
-  onLaptop.status === 503 && onLaptopBody.error.includes('on this machine'),
+  'on a laptop the row says saving only works on the live site',
+  onLaptop.status === 503 && onLaptopBody.error.includes('live site'),
   `got ${onLaptop.status}: ${onLaptopBody.error}`
 );
 expect(
   'on the platform a missing store is a configuration fault, said plainly',
-  onPlatform.status === 503 && onPlatformBody.error.includes('configuration problem on our side'),
+  onPlatform.status === 503 && onPlatformBody.error.includes('problem on our side'),
   `got ${onPlatform.status}: ${onPlatformBody.error}`
 );
 

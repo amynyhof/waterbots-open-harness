@@ -143,14 +143,14 @@ export async function sealVisit(seal: SealBody, signal?: AbortSignal): Promise<T
     });
   } catch (error) {
     if (error instanceof DOMException && error.name === 'AbortError') throw error;
-    throw new HandoffError('The save could not be reached. That is usually the connection. Nothing was kept.');
+    throw new HandoffError('Saving could not be reached. That is usually the connection. Nothing was kept.');
   }
 
   let payload: unknown;
   try {
     payload = await response.json();
   } catch {
-    throw new HandoffError('The save answered something that could not be read. Nothing was kept.');
+    throw new HandoffError('Saving did not work just now. Nothing was kept.');
   }
 
   const body = (payload ?? {}) as { ticketId?: unknown; expiresAt?: unknown; error?: unknown };
@@ -160,7 +160,7 @@ export async function sealVisit(seal: SealBody, signal?: AbortSignal): Promise<T
     );
   }
   if (typeof body.ticketId !== 'string' || body.ticketId === '') {
-    throw new HandoffError('The save answered without a ticket. Nothing was kept.');
+    throw new HandoffError('Saving did not work just now. Nothing was kept.');
   }
   return { ticketId: body.ticketId, expiresAt: typeof body.expiresAt === 'string' ? body.expiresAt : '' };
 }

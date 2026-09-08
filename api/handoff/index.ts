@@ -35,7 +35,7 @@ import { StoreError, putOnce, storeConfig } from '../_store.js';
 
 /** Someone opening the URL in a browser gets a straight answer, not a 404. */
 export async function GET(): Promise<Response> {
-  return problem(405, 'This endpoint takes POST requests only. A claim goes to /api/handoff/<ticketId>.');
+  return problem(405, 'This address takes POST requests only.');
 }
 
 export async function POST(req: Request): Promise<Response> {
@@ -47,7 +47,7 @@ export async function POST(req: Request): Promise<Response> {
     return problem(400, 'That request could not be read.');
   }
   if (raw.length > MAX_SEAL_BYTES) {
-    return problem(413, 'That is larger than a project seal can be. Nothing was kept.');
+    return problem(413, 'That is more than can be saved at once. Nothing was kept.');
   }
 
   let body: unknown;
@@ -61,7 +61,7 @@ export async function POST(req: Request): Promise<Response> {
      refusal names the field. */
   const reading = readSeal(body);
   if ('problem' in reading) {
-    return problem(400, `That could not be sealed: ${reading.problem}. Nothing was kept.`);
+    return problem(400, `That could not be saved: ${reading.problem}. Nothing was kept.`);
   }
 
   /* The store. On a laptop there is none, and the honest answer is that the
@@ -72,12 +72,12 @@ export async function POST(req: Request): Promise<Response> {
       console.error('handoff: the shared store is not configured, so nothing can be sealed');
       return problem(
         503,
-        'Saving is not working right now. The short-lived store this site seals a project into is not set up in this environment. This is a configuration problem on our side, not something you did.'
+        'Saving is not working right now. This is a problem on our side, not something you did. Nothing was kept.'
       );
     }
     return problem(
       503,
-      'This project cannot be sealed on this machine: there is no store here to seal it into. On the live site this works. Nothing was kept.'
+      'Saving only works on the live site, not on this test copy. Nothing was kept.'
     );
   }
 
@@ -88,7 +88,7 @@ export async function POST(req: Request): Promise<Response> {
     console.error(`handoff: ${decision.missing} is not configured, so the daily cap cannot be enforced. Refusing to seal without it.`);
     return problem(
       503,
-      'Saving is not working right now. The daily limit that keeps this site open to everyone is not running in this environment, and nothing is sealed without it. This is a configuration problem on our side, not something you did.'
+      'Saving is not working right now. The daily limit that keeps this site open to everyone is not running, and nothing is saved without it. This is a problem on our side, not something you did.'
     );
   }
 
@@ -124,7 +124,7 @@ export async function POST(req: Request): Promise<Response> {
       const why = error instanceof StoreError ? error.message : String(error);
       console.error(`handoff: the seal could not be written — ${why}`);
       return undelivered(
-        problem(503, 'This project could not be sealed just now: the store did not answer. Nothing was kept. Trying again usually works.')
+        problem(503, 'Saving did not work just now. Nothing was kept. Trying again usually works.')
       );
     }
     if (landed) {
@@ -137,7 +137,7 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   console.error('handoff: two fresh tickets were both already taken, which should not be possible');
-  return undelivered(problem(503, 'This project could not be sealed just now. Nothing was kept. Trying again usually works.'));
+  return undelivered(problem(503, 'Saving did not work just now. Nothing was kept. Trying again usually works.'));
 }
 
 /* -------------------------------------------------------------------------

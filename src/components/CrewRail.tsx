@@ -35,9 +35,9 @@ import type { DeskRow } from '../lib/visit';
  * things it never holds. If the seal ever changes, this line changes with it.
  */
 const CONSENT_LINE =
-  'What goes across: your answers about the project, the pinned basin, where each ' +
-  'eligibility criterion stands, and the figures you typed into the calculator. Never a ' +
-  'calculated result and never your conversation. Nothing is kept on this site.';
+  'Going with you: what you said about the project, the basin you pinned, where each ' +
+  'eligibility criterion stands, and the numbers you typed in. Not the results worked out ' +
+  'here, and not your conversation. Nothing stays on this site.';
 
 interface CrewMember {
   name: string;
@@ -279,8 +279,8 @@ export default function CrewRail({
                     disabled={sealing.kind === 'sealing' || sealing.kind === 'sealed'}
                     aria-busy={sealing.kind === 'sealing' || undefined}
                   >
-                    {sealing.kind === 'sealing' && 'Sealing your project…'}
-                    {sealing.kind === 'sealed' && 'Sealed. Taking you across…'}
+                    {sealing.kind === 'sealing' && 'Saving your project…'}
+                    {sealing.kind === 'sealed' && 'Saved. Taking you to waterbots.ai…'}
                     {(sealing.kind === 'idle' || sealing.kind === 'failed') && row.action.label}
                   </button>
                   <p className="t-caption" style={{ margin: '8px 0 0', fontSize: 10.5, lineHeight: 1.55 }}>

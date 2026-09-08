@@ -305,7 +305,7 @@ export function deskRows(
   rows.push({
     key: 'save',
     from: 'wellington',
-    sentence: `Save this project and sign up on ${SITE_LABEL}. What you have built here goes across with you, and this site keeps no copy.`,
+    sentence: `Save this project and sign up on ${SITE_LABEL}. What you built here goes with you, and nothing stays on this site.`,
     action: { kind: 'seal', label: 'Save this project and sign up' },
   });
 
