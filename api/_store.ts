@@ -174,6 +174,43 @@ export async function appendCapped(
   ]);
 }
 
+/**
+ * Write a value under a key that must not already exist, with a lifetime.
+ *
+ * FOR THE BRIDGE'S SEALS (item S7). The ticket is random and the store is
+ * told not to overwrite — `NX` — so if the impossible happens and a ticket
+ * repeats, the second seal is refused rather than the first one silently
+ * replaced. Returns whether the write landed. The lifetime is set in the same
+ * command, so there is no moment where a seal exists with no expiry.
+ */
+export async function putOnce(
+  config: StoreConfig,
+  key: string,
+  value: string,
+  ttlSeconds: number
+): Promise<boolean> {
+  const [result] = await run(config, [['SET', key, value, 'EX', ttlSeconds, 'NX']]);
+  if (result === 'OK') return true;
+  if (result === null) return false;
+  throw new StoreError('the store did not say whether the write landed');
+}
+
+/**
+ * Read a value and delete it in the same breath.
+ *
+ * FOR THE BRIDGE'S CLAIM. One command, `GETDEL`, so two claims racing for the
+ * same ticket cannot both win: the store hands the seal to exactly one and
+ * the other reads nothing. Null means there was nothing under the key —
+ * unknown, expired, or already claimed, which the caller cannot tell apart
+ * and does not need to.
+ */
+export async function takeOnce(config: StoreConfig, key: string): Promise<string | null> {
+  const [result] = await run(config, [['GETDEL', key]]);
+  if (result === null) return null;
+  if (typeof result !== 'string') throw new StoreError('the store did not return text');
+  return result;
+}
+
 /** Read a capped list back, newest first. */
 export async function readList(
   config: StoreConfig,

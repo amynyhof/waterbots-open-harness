@@ -57,8 +57,18 @@ export interface CapAgent {
   cap: number;
 }
 
+/**
+ * The bridge's cap. The maintainer's ruling of 8 Sep 2026: ten seals a day
+ * per visitor, under their own counter, the same shape as the chat caps. A
+ * seal is a public write into the shared store, and a visitor who means it
+ * seals once; ten leaves room for a second thought and refuses a flood.
+ */
+export const HANDOFF_DAILY_CAP = 10;
+
 export const PHOEBE: CapAgent = { name: 'phoebe', cap: DAILY_CAP };
 export const WELLINGTON: CapAgent = { name: 'wellington', cap: WELLINGTON_DAILY_CAP };
+/** Not an agent, but it counts the same way. The key prefix is "handoff". */
+export const HANDOFF: CapAgent = { name: 'handoff', cap: HANDOFF_DAILY_CAP };
 
 export type CapDecision =
   /** Counted. Call `refund` if no answer is delivered. */
