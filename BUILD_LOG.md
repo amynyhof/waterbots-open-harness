@@ -433,3 +433,88 @@ went to the maintainer with the captures, as asked, and were moot within the hou
 
 The close-out itself, run the morning after the session broke: docs refreshed, five items opened,
 the handoff rewritten, the exports regenerated after the checkpoint commit, the dev server stopped.
+
+## 5–7 September 2026 — the desk plan's three slices, one row, and the bridge's contract
+
+Three sittings across three days, one engineer, five pull requests (#50 to #54), all merged by the
+maintainer.
+
+### What was built
+
+**Slice 1 — the desk is the conversation, the rail is the record (#50).** The centre lost its
+context card and its rows; Wellington's turns and the one composer are what remains. The left rail
+holds the project card and four record rows — what it does, what kind, where it is, what it is
+called — in the order the seats need them, ruled from Bob; each row says where its value came from,
+and name and place keep a quiet typing box. The journey bar lost its caption and never scrolls,
+collapsing to numbered rings.
+
+**The naming ruling, then the one row (#51).** The six phase names became canon and agents say them
+as written. The desk tab was renamed "Dispatches" to match production; the same day the tab words
+became production's tool names, Map and Calculator; two days later the tab row went altogether.
+The journey bar is the navigation: Dispatches first with a hairline after it, then the six phases.
+Agents point people at the step, never at a tab.
+
+**Slice 2 — the basin pin via Bridget (#52).** Her row appears once a place is known and asks for
+the pin; a pinned basin fills it. Three eyeball rulings rode along: the desk's composer matched to
+production's to the pixel and the desk column narrowed to 816 to share its edge; a plain-words rule
+for Wellington — never "seat", "console", "dispatch", "rail" or "surface" — with the same words
+taken out of what he reads and out of the desk's page copy; and the prompt-size gate raised to
+24,000 characters.
+
+**The bridge's contract (#53).** Production's proposal, carried by hand, recorded in item S7 as the
+ruled contract and checked field by field against the code. Not built.
+
+**Slice 3 — Phoebe's row closes the loop (#54).** The four record fields ride with each of her
+requests as a second system block after the cache breakpoint, checked on the relay in a new
+`api/_record.ts`; her prompt gained one rule; her opening reads the record back. Walked with real
+calls: she started from the record, moved nothing until she had evidence, then moved one criterion
+to met and one to not yet, and the desk showed her row.
+
+### What was decided
+
+- **Phase names are canon; tabs are gone; the bar is the navigation.** One row, offered to
+  production later as item S15.
+- **Wellington's words are a first-time visitor's.** Facts and rules only, no scripted line; his
+  greeting is not scripted and never was — his first turn is a rule in his prompt.
+- **Gates change on the maintainer's word.** The engineer raised one first and asked second; she
+  accepted it and ruled for next time. It is now in CLAUDE.md's non-negotiables.
+- **The bridge's shape**, five points, in item S7. The sender builds next, once she carries
+  production's sign-up address, claim endpoint and key name.
+- **The map's heaviness is logged, not fixed** (item O12), and the old `validate()` in Phoebe's relay
+  is a later hygiene pass (item O13).
+
+### What was learned
+
+**The loop was one-way and nobody had noticed.** Phoebe's verdicts reached the desk from the first
+day; nothing the desk learned reached her, and her panel asked the visitor to say it all again.
+Slice 3 was named "Phoebe's row" and the row was already there; the missing half was the other
+direction.
+
+**A rule that grows a prompt trips a size gate.** Three rulings in a week each cost a hundred
+characters. Trimming duplicated sentences was fine twice; the third time the right move was to ask
+for the gate to move, and the engineer moved it instead.
+
+**The visitor's own full stop meets our comma.** Read-back copy that embeds a sentence has to strip
+its end, or it reads "households., in Kampala".
+
+**The browser extension's captures fail on the map page.** The world-view redraw after a pin froze
+the renderer past the screenshot timeout twice and once returned a tiled fragment; reading the DOM
+by script got the state, and the desk captured once the map was hidden. Recorded as item O12.
+
+### Mistakes, self-reported
+
+**The prompt-size gate, raised without asking.** Above; accepted, and ruled for next time.
+
+**A branch deleted on a wrong reading of "merged".** The maintainer wrote that #51 was merged; the
+fetch showed it open, the sync deleted the local branch anyway, and it was restored from origin
+with nothing lost. The report said so and she merged it later.
+
+**The tab-row amendment lasted two commits.** Map and Calculator were built on the maintainer's
+amendment and replaced by her next ruling before merge. Not a fault; recorded so the strikes in
+item A11 make sense.
+
+### Housekeeping
+
+The close-out itself: items O13 and the slice notes, the build plan's "just finished" and "next",
+the README and CLAUDE.md refreshed, the handoff rewritten fresh, the exports regenerated after the
+checkpoint. The migration gate ran and found no migrations.

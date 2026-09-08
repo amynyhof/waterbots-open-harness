@@ -49,6 +49,12 @@ twenty, and nothing kept between visits. **Bridget is the map's agent and Calvin
 quantification step's.** Neither console is built yet — each panel is there, each agent is named in
 it, and each says plainly that it is not answering.
 
+**From 7 Sep 2026 the desk closes its loop.** What Wellington learns goes to Phoebe with every ask,
+as the visitor's own words and never a verdict; her verdicts move the worksheet and her row on the
+desk. Bridget's row asks for the basin pin once a place is known, and a pin fills it. Agents say the
+six phase names as written, point people at a step and never at a tab, and use plain words a
+first-time visitor knows.
+
 ## What is built
 
 - **Basin map.** HydroSHEDS HydroBASINS Level 4 at world view, swapping to Level 6 from zoom 5.

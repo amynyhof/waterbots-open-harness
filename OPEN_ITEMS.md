@@ -108,7 +108,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S8 | Brightness pull-up to the book's published Frost values | Surfaces | closed 29 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
 | S9 | The return to the brand book | Surfaces | **closed 30 Aug 2026** — both raises shipped, book at v4.1 |
 | S10 | The Quantification step | Surfaces | **built 1 Sep 2026** — the third surface, pack-keyed; three packs from 2 Sep |
-| S11 | The free desk, and the console in the production shape | Surfaces | **built 2 Sep 2026** — Wellington's desk, the journey bar, ~~four tabs~~ one row from 7 Sep; **his chat live on it from 3 Sep** |
+| S11 | The free desk, and the console in the production shape | Surfaces | **built 2 Sep 2026** — Wellington's desk, the journey bar, ~~four tabs~~ one row from 7 Sep; **his chat live on it from 3 Sep; the desk plan's three slices landed 5–7 Sep** |
 | S12 | The hero chat — a full page that is the conversation | Surfaces | **logged 3 Sep 2026, not built** — waits on the maintainer's reference file |
 | S13 | The handoff receiver — a question carried in from the production landing | Surfaces | **logged 3 Sep 2026, not built** — the save door in reverse; each shell builds its side |
 | S14 | Typing dots — the book's third motion exception | Surfaces | **ruled 3 Sep 2026** — waits on the maintainer's hand into §5 |
@@ -128,6 +128,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | O10 | Line endings are pinned in git but not in the working folder | Operations | closed 30 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
 | O11 | OPEN_ITEMS.md is heavy and wants an archive | Operations | **two sweeps done** — 30 Aug and 2 Sep 2026 |
 | O12 | The map page is heavy — the renderer stalls on a basin redraw | Operations | **logged 7 Sep 2026**, not this slice |
+| O13 | Phoebe's relay still says `validate()` — a banned word in old code | Operations | **logged 7 Sep 2026** — rename to "check" in a later hygiene pass, not now |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
 > reference to them elsewhere in the repository was updated in the same edit rather than left to
@@ -2022,8 +2023,19 @@ out of what he reads and out of the desk's own page copy; and **the prompt size 
 24,000 characters** — the engineer's call, accepted after the fact, and gates change on the
 maintainer's word from here. Bridget's and Calvin's dock copy still says "console"; not this slice.
 
-Built 2 Sep 2026. **Open as the home for the surface's story.** What remains is whatever the hero
-page (item S12) asks of the desk.
+**Slice 3, built 7 Sep 2026 — Phoebe's row closes the loop.** Her verdicts had reached her row
+through the criteria since 2 Sep; nothing Wellington learned reached her, and her panel asked the
+visitor to say it all again. Now the four record fields ride with each of her requests as a second
+system block after the cache breakpoint — the visitor's own words, checked on the relay in
+`api/_record.ts`, never a verdict, never a figure, never the desk conversation's turns — and her
+opening reads the record back. Walked with real calls: she started from the record, moved nothing
+until she had evidence, then moved one criterion to met and one to not yet, and the desk showed
+her row. Pull request #54.
+
+**The three slices are done.** What remains of the desk plan is the two typeable controls owed
+for "what it does" and "kind", and whatever the hero page (item S12) asks of the desk.
+
+Built 2 Sep 2026. **Open as the home for the surface's story.**
 
 ## S12. The hero chat — a full page that is the conversation
 
@@ -2480,3 +2492,17 @@ its own capture, which suggests the hidden map keeps working after the switch.
 that changed; whether the map keeps rendering while hidden (item S4's keep-mounted rule is right,
 but a hidden map need not draw); and whether the world-view layer wants simplifying. Nothing here
 changes any data or any attribution. Recorded rather than fixed, by the maintainer's word.
+
+## O13. Phoebe's relay still says `validate()` — a banned word in old code
+
+**Logged 7 Sep 2026, by the maintainer's word: rename in a later hygiene pass, not now.** The
+language rules in CLAUDE.md retire "validate" and "validation"; say "check" or point at the test
+suite. Phoebe's relay, `api/phoebe.ts`, predates the rule and carries a `validate()` function, its
+call, and four comments that name it, plus the same shape in `api/_wellingtonAnswer.ts` and the
+check that loads it. None of it reaches a visitor. Slice 3 kept the word out of its own files and
+left these alone, because a rename inside a working relay is its own small change with its own
+eyeball, not a rider on a feature.
+
+**What the pass does when it comes:** rename the functions to `checkAnswer` or the like, reword
+the comments, and update `scripts/check-wellington.mjs`, which imports one of them by name. No
+behaviour changes. Recorded here rather than done, by the maintainer's word.
