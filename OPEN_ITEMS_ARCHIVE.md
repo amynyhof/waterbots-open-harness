@@ -310,8 +310,11 @@ and never a number, and a Level 4 pin carries `stressDerived: true`.
 32-character ticket and an hour's expiry; a wrong key and a missing key both answered 401; a GET on
 the seal address answered 405; a path two segments deep answered 404. **The two right-key claims —
 200 once, then 404 — were not run by the engineer, who never holds the key and found it in no
-environment on the machine.** They are the maintainer's to run, and until she has, the real store's
-answer to `GETDEL` is confirmed only by the stand-in — item S6's standing gap, in one more place.
+environment on the machine.** ~~They are the maintainer's to run, and until she has, the real store's
+answer to `GETDEL` is confirmed only by the stand-in — item S6's standing gap, in one more place.~~
+**Confirmed by the maintainer's own walk, 8 Sep 2026, later the same day: she saved a screening from
+the live desk and it reached production.** The crossing works end to end, and the real store's
+`GETDEL` answered as the stand-in does. No curl was needed.
 
 Logged 26 Aug 2026. Contract ruled 7 Sep 2026. ~~**Not built; builds after slice 3.**~~ **Built 8 Sep 2026, pull request #56. Closed and moved to the archive the same day.**
 
