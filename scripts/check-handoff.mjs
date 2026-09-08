@@ -555,6 +555,80 @@ expect(
 /* And the whole way through: the desk's seal into the route. */
 const throughRoute = await post(built, '192.0.2.99');
 expect('the desk’s seal goes through the route and comes back with a ticket', throughRoute.status === 200, `got ${throughRoute.status}: ${JSON.stringify(await throughRoute.clone().json())}`);
+const throughTicket = (await throughRoute.json()).ticketId;
+
+/* ---------------------------------------------------------------------------
+   The claim: once, behind the key, then gone.
+
+   Production calls GET /api/handoff/<ticketId> with
+   `Authorization: Bearer <BRIDGE_KEY>` from its server. The answers are the
+   contract's three: 200 with the seal once, 404 for unknown, expired or
+   already claimed, 401 for a wrong key.
+--------------------------------------------------------------------------- */
+
+console.log('\n  The claim: once, behind the key, then gone\n');
+
+const KEY = 'a-test-bridge-key-that-is-not-the-real-one';
+process.env.BRIDGE_KEY = KEY;
+const claimRoute = await load('handoff/[ticketId].js');
+const claim = (ticket, auth) =>
+  claimRoute.GET(
+    new Request(`https://example.invalid/api/handoff/${ticket}`, {
+      method: 'GET',
+      headers: { accept: 'application/json', ...(auth === undefined ? {} : { authorization: auth }) },
+    })
+  );
+
+const won = await claim(throughTicket, `Bearer ${KEY}`);
+const wonText = await won.text();
+expect('the right key claims the seal, 200', won.status === 200, `got ${won.status}: ${wonText}`);
+expect('what comes back is JSON and is not to be cached', won.headers.get('content-type') === 'application/json' && won.headers.get('cache-control') === 'no-store', `${won.headers.get('content-type')} / ${won.headers.get('cache-control')}`);
+let claimed = {};
+try {
+  claimed = JSON.parse(wonText);
+} catch {
+  /* the expectation below reports it */
+}
+expect(
+  'the body is the seal as stored — shape, sealed-at, and the visit the desk built',
+  claimed.shape === SEAL_SHAPE && typeof claimed.sealedAt === 'string' &&
+    JSON.stringify({ record: claimed.record, pin: claimed.pin, worksheet: claimed.worksheet, packs: claimed.packs }) === JSON.stringify(built),
+  wonText.slice(0, 200)
+);
+expect('the seal is gone from the store once claimed', !values.has(sealKey(throughTicket)), 'the seal is still in the store');
+
+const again = await claim(throughTicket, `Bearer ${KEY}`);
+expect('a second claim on the same ticket is 404', again.status === 404, `got ${again.status}`);
+
+expect('a wrong key is 401', (await claim(firstBody.ticketId, 'Bearer not-the-key')).status === 401, 'a wrong key was not refused');
+expect('a missing key is 401', (await claim(firstBody.ticketId)).status === 401, 'a missing key was not refused');
+expect('a key of the wrong shape is 401', (await claim(firstBody.ticketId, KEY)).status === 401, 'a bare key without Bearer was accepted');
+expect('a refused claim leaves the seal where it was', values.has(sealKey(firstBody.ticketId)), 'a refused claim removed the seal');
+expect('a wrong key names the scheme it wanted', (await claim(firstBody.ticketId, 'Bearer nope')).headers.get('www-authenticate') === 'Bearer', 'no www-authenticate header');
+
+expect('an unknown ticket is 404', (await claim('ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ', `Bearer ${KEY}`)).status === 404, 'an unknown ticket was not 404');
+expect('a ticket that is not shaped like one is 404, not 400', (await claim('short', `Bearer ${KEY}`)).status === 404, 'a malformed ticket was not 404');
+expect('a ticket with characters outside the alphabet is 404', (await claim('abc%2Fdef' + 'x'.repeat(20), `Bearer ${KEY}`)).status === 404, 'a ticket with a slash was not 404');
+expect('a POST on the claim is 405', (await claimRoute.POST()).status === 405, 'a POST was not refused');
+
+/* Without the key set, nothing is answered — and the key is checked before
+   the store, so a caller without it learns nothing. */
+delete process.env.BRIDGE_KEY;
+const unset = await claim(firstBody.ticketId, `Bearer ${KEY}`);
+expect('with BRIDGE_KEY unset, the claim is 503 and names the setting', unset.status === 503 && (await unset.json()).error.includes('BRIDGE_KEY'), `got ${unset.status}`);
+process.env.BRIDGE_KEY = KEY;
+
+const claimStoreUrl = process.env.KV_REST_API_URL;
+delete process.env.KV_REST_API_URL;
+expect('with no store, a right key gets 503', (await claim(firstBody.ticketId, `Bearer ${KEY}`)).status === 503, 'no store did not answer 503');
+expect('with no store, a wrong key still gets 401 — the key is checked first', (await claim(firstBody.ticketId, 'Bearer nope')).status === 401, 'a wrong key learned the store was down');
+process.env.KV_REST_API_URL = claimStoreUrl;
+
+/* The full round trip, once more, from the desk's seal to production's hands. */
+const roundTripIn = await post(built, '192.0.2.100');
+const roundTripTicket = (await roundTripIn.json()).ticketId;
+const roundTripOut = await claim(roundTripTicket, `Bearer ${KEY}`);
+expect('seal, claim, gone: the whole bridge in one pass', roundTripOut.status === 200 && (await claim(roundTripTicket, `Bearer ${KEY}`)).status === 404, 'the round trip did not end with the seal gone');
 
 /* ---------------------------------------------------------------------------
    Done.
@@ -570,4 +644,4 @@ if (problems.length > 0) {
   console.error(`\nFAILED — ${problems.length} of ${checks} checks did not pass.\n`);
   process.exit(1);
 }
-console.log(`PASSED — ${checks} checks: the bridge seals what was ruled, keeps it an hour, counts to ${HANDOFF_DAILY_CAP}, and fails closed.\n`);
+console.log(`PASSED — ${checks} checks: the bridge seals what was ruled, keeps it an hour, counts to ${HANDOFF_DAILY_CAP}, hands it over once behind the key, and fails closed.\n`);
