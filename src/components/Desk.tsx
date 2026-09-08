@@ -176,7 +176,9 @@ function DeskChat({
   pending: boolean;
   error: string | null;
 }) {
-  const empty = turns.length === 0 && !pending && !error;
+  /* The grey intro paragraph that sat here for an empty conversation is gone —
+     maintainer's ruling, 8 Sep 2026: Wellington's first words replace it. The
+     composer's placeholder is the only prompt to speak. */
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -194,15 +196,7 @@ function DeskChat({
         </span>
         <span aria-hidden style={{ flex: 1, height: 1, background: 'var(--line)' }} />
       </div>
-      {empty ? (
-        <p style={{ margin: '8px 0 14px', fontSize: 12, lineHeight: 1.55, color: 'var(--ink-4)' }}>
-          Tell Wellington what your project does and where it is. He asks the rest, what he learns
-          fills the project record on the left, and each person on the right picks up their part as
-          he learns it. Nothing is kept between visits.
-        </p>
-      ) : (
-        <div style={{ height: 14 }} />
-      )}
+      <div style={{ height: 14 }} />
       <Transcript host={host} turns={turns} pending={pending} error={error} />
     </div>
   );
