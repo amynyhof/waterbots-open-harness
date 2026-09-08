@@ -28,7 +28,6 @@
 
 import type { CriterionStatus } from './criteriaState';
 import type { MethodPack, PackValues } from './methodPacks';
-import { SITE_LABEL } from './site';
 import type { Surface } from './surfaces';
 
 /* --------------------------------------------------------------------------
@@ -180,9 +179,7 @@ export type RowSender = 'phoebe' | 'bridget' | 'calvin' | 'wellington';
 
 export type RowAction =
   | { kind: 'surface'; label: string; surface: Surface }
-  | { kind: 'link'; label: string; href: string }
-  /** The bridge: seal the visit and go to production's sign-up. */
-  | { kind: 'seal'; label: string };
+  | { kind: 'link'; label: string; href: string };
 
 /**
  * Whether a pack's answers are exactly its worked example.
@@ -299,16 +296,9 @@ export function deskRows(
     }
   }
 
-  /* Wellington — the bridge. Always last, always there. The click seals the
-     visit and moves the page to production's sign-up; the consent line under
-     the button says what crosses, and it is worded in src/components/CrewRail.tsx. */
-  rows.push({
-    key: 'save',
-    from: 'wellington',
-    sentence: `Save this project and sign up on ${SITE_LABEL}. What you built here goes with you, and nothing stays on this site.`,
-    action: { kind: 'seal', label: 'Save this project and sign up' },
-  });
-
+  /* The save door is no longer a row. Look pass, 8 Sep 2026: the bridge's
+     button sits at the foot of the crew rail, always in view, and the rows
+     here are only what the visit produced. */
   return rows;
 }
 

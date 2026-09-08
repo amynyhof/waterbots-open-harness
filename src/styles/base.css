@@ -824,6 +824,45 @@ button.wb-phase:hover span:last-child {
   text-underline-offset: 2px;
 }
 
+/* The project's name, typed in the card itself — look pass, 8 Sep 2026. The
+   rail input's quiet look at the card's title size. */
+.wb-rail-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  min-width: 0;
+  flex: 1;
+}
+.wb-rail-name::placeholder {
+  color: var(--ink-3);
+  font-weight: 600;
+}
+
+/* The (i) beside the record's eyebrow. Its explainer is the title, on hover
+   and on focus, and the accessible label carries the same words. */
+.wb-info {
+  display: inline-grid;
+  place-items: center;
+  width: 13px;
+  height: 13px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-4);
+  color: var(--ink-3);
+  font-family: var(--font-serif, Georgia, serif);
+  font-style: italic;
+  font-size: 9px;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: 0;
+  cursor: help;
+}
+.wb-info:hover,
+.wb-info:focus-visible {
+  border-color: var(--ink-2);
+  color: var(--ink);
+  outline: none;
+}
+
 /* The bridge's button on the save row (item S7, 8 Sep 2026). The book's §7
    primary: solid Tide, light label ink, --r-md, hover darkens, press scales to
    0.98. The one primary action on this site that takes the visitor somewhere

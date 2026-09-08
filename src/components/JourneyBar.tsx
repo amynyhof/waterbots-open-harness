@@ -42,7 +42,14 @@ import { DESK_LABEL, type Surface } from '../lib/surfaces';
  * labels' own width at their type size, with the joining hairlines at their
  * minimum, plus the desk's word and its hairline.
  */
-const COMPACT_BELOW = 1080;
+/* Was 1080 until the look pass of 8 Sep 2026. */
+/**
+ * Look pass, 8 Sep 2026: the names must show at laptop width. With the left
+ * rail open the bar is about 1,056px on a 1,280px laptop, which the old
+ * 1,080 turned into rings. The seven labels with their dots and their
+ * minimum hairlines fit in well under 900; the collapse point moves there.
+ */
+const COMPACT_BELOW = 880;
 
 export default function JourneyBar({
   active,
