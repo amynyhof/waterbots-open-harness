@@ -60,7 +60,28 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — the desk plan's three slices, one row, and the bridge's contract
+## Just finished — the bridge sender
+
+**Session of 8 Sep 2026. Pull request #56, merged.** Item S7, closed and archived.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
+is now true.
+
+- **The save row is the bridge.** "Save this project and sign up" is a button with a consent line
+  under it in a first-time visitor's words. The click seals the visit — the four record fields with
+  their source tags, the pin as ids, each criterion's state and way forward, each pack's answers as
+  typed with the pack's own word and the worked-example flag — keeps it for one hour under a random
+  ticket in the short-lived store, and moves the page to production's welcome with only the ticket
+  in the address. Never a computed number, never the conversation. This site keeps no copy.
+- **Production claims it once**, server to server, behind `BRIDGE_KEY`: 200 with the seal, then
+  404; 401 for a wrong key. The key is checked first and in constant time.
+- **Ten seals a day per visitor**, under their own counter. Anything beyond the contract refuses
+  the whole seal. On a test copy the row says saving only works on the live site.
+- **The claim's right-key round trip on the live site is the maintainer's to run.** The engineer
+  never holds the key. Until she has, the real store's answer to the read-and-delete command is
+  confirmed only by the stand-in.
+
+## Previously — the desk plan's three slices, one row, and the bridge's contract
 
 **Sessions of 5–7 Sep 2026. Pull requests #50 to #54, all merged.** Items S11, S15, A11, S7.
 
@@ -87,7 +108,7 @@ is now true.
   store for an hour — record fields with source tags, the pin as ids, the worksheet's states and
   ways forward, each pack's answers flagged, a timestamp; never a computed number, never the
   conversation; the visitor sent to sign-up with only the ticket in the address; a hand-over-once
-  endpoint behind a key kept in settings. Not built.
+  endpoint behind a key kept in settings. ~~Not built.~~ **Built 8 Sep 2026; see above.**
 
 ## Previously — Wellington live on the desk
 
@@ -212,14 +233,15 @@ end that was ruled, the hybrid that was built, and the finding that withdrew it 
 full in item S9. Maintainer's ruling, 30 Aug 2026: **the screenshots are not coming, because there
 is nothing left for images to teach.** No folder waits for them.
 
-## Building next — the bridge sender, then the hero chat
+## Building next — the hero chat, when its reference arrives
 
-**The bridge sender (item S7) is next**, by the maintainer's word of 7 Sep 2026, and it starts when
-she carries three facts from production: the sign-up address the visitor is sent to, the claim
-endpoint's shape, and the key's name. Until those land it is not started. The contract it builds to
-is recorded in item S7 and needs nothing this site does not already hold.
+~~**The bridge sender (item S7) is next**, by the maintainer's word of 7 Sep 2026, and it starts when
+she carries three facts from production.~~ **The three facts landed and the sender shipped on
+8 Sep 2026** (#56). Item S7 is closed.
 
-**Then the hero chat**, as below.
+**The hero chat is next**, as below, and it still waits on the maintainer's reference file. Nothing
+is built toward it until she says the file is in. **What comes next is decided at the next session's
+open.**
 
 ## Previously planned next — the hero chat, when its reference arrives
 
@@ -249,6 +271,6 @@ builds only its side.
 | Family | Why it waits |
 |---|---|
 | **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. **The first method pack (item K5) landed 1 Sep 2026 and the two carbon packs (item K6) on 2 Sep, both outside that order, because the maintainer scoped them herself.** The carbon card pass (item K7) waits for Thursday. |
-| **Surfaces** | **The hero chat (item S12) is next and waits on the maintainer's reference file**; its receiver (item S13) waits on it; the typing-dots exception (item S14) waits on her hand into the book. The bridge (item S7) **has its contract ruled, 7 Sep 2026; its sender builds next, once the maintainer carries production's three facts**. The brightness pull-up (item S8) and the return to the book (item S9) are both **closed**. The rest of the family is polish (item S5), the dev-relay gap (item S6), or waits on data that does not exist yet (item S1). |
+| **Surfaces** | **The hero chat (item S12) is next and waits on the maintainer's reference file**; its receiver (item S13) waits on it; the typing-dots exception (item S14) waits on her hand into the book. The bridge (item S7) ~~has its contract ruled, 7 Sep 2026; its sender builds next~~ **shipped 8 Sep 2026 and is closed**. The brightness pull-up (item S8) and the return to the book (item S9) are both **closed**. The rest of the family is polish (item S5), the dev-relay gap (item S6), or waits on data that does not exist yet (item S1). |
 | **Data** | Blocked on material the maintainer supplies — registry coordinates for the project points (item D2), public disclosures for corporate goals and target geographies (item D1). Not work that can start from inside the repository. |
 | **Operations** | **Nothing is due.** What remains waits on real usage that does not exist yet: the number twenty (item O1), the basemap's five-million-request ceiling (item O9), and the primer review against the abstention log (item A5). Two questions are open and unhurried — whether the export copies should be produced by a script (item O8), and whether an abstention that cited a card is a fault at all (item A7 — it recurred on 3 Sep and reads as the benign branch; the maintainer's reading closes it). |
