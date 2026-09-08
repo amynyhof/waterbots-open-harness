@@ -77,9 +77,8 @@ is now true.
   404; 401 for a wrong key. The key is checked first and in constant time.
 - **Ten seals a day per visitor**, under their own counter. Anything beyond the contract refuses
   the whole seal. On a test copy the row says saving only works on the live site.
-- **The claim's right-key round trip on the live site is the maintainer's to run.** The engineer
-  never holds the key. Until she has, the real store's answer to the read-and-delete command is
-  confirmed only by the stand-in.
+- ~~**The claim's right-key round trip on the live site is the maintainer's to run.**~~ **Confirmed
+  by her own walk, 8 Sep 2026**: a screening saved from the live desk reached production.
 
 ## Previously — the desk plan's three slices, one row, and the bridge's contract
 

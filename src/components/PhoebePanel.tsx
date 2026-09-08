@@ -33,7 +33,8 @@ const PHOEBE: AgentHost = {
   beta: true,
   composerPlaceholder: 'Tell her about your project, or ask about a criterion.',
   composerNote: 'Nothing is kept between visits.',
-  thinkingLine: 'Phoebe is reading her cards…',
+  /* A visitor's words for what she is doing — canon rule 4, 8 Sep 2026. */
+  thinkingLine: 'Phoebe is reviewing the criteria…',
 };
 
 export default function PhoebePanel({

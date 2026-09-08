@@ -100,13 +100,6 @@ changes only on the maintainer's word.
 ## Waiting on the maintainer
 
 - **This close-out's pull request** — review and merge.
-- **The two right-key claims on the live site.** The engineer never holds `BRIDGE_KEY`, so they were
-  not run. From anywhere with the key, seal from the live desk, then:
-  ```
-  curl -i https://map.waterbots.ai/api/handoff/<ticketId> -H "Authorization: Bearer <BRIDGE_KEY>" -H "Accept: application/json"
-  ```
-  First call 200 with the JSON, second call 404. That is the only proof the real store answers the
-  read-and-delete command the way the stand-in does (item S6's standing gap).
 - **The hero chat's reference file** into `Design refs/` (item S12). Nothing is built toward it.
 - **The sender's shape for the handoff receiver** (item S13).
 - **Typing dots into the brand book's §5** (item S14).
@@ -216,8 +209,8 @@ saving only works on the live site. `BRIDGE_KEY` is not on this machine, so the 
 - **A seal expires after an hour, and a claim deletes it sooner.** A visitor who takes longer than
   an hour to sign up finds nothing waiting; production sees a 404 and this site cannot tell the
   cases apart. By design.
-- **The real store's `GETDEL` and `SET … NX` are confirmed only by the stand-in** until the
-  maintainer runs the right-key claims. Item S6's gap, in one more place.
+- **The bridge's crossing is confirmed end to end**: the maintainer's own walk on 8 Sep 2026 saved
+  a screening from the live desk and it reached production.
 - **Phoebe's relay still says `validate()`** in old code (item O13); a later hygiene pass.
 - **Bridget's and Calvin's dock copy still says "console"**, and the crew rail's footer still says
   only Phoebe answers on this site; the plain-words rule was applied to the desk, to Wellington and
@@ -248,9 +241,8 @@ sitting, the third sweep; none joined. Item O11's next sweep is still due.
 ## What to do first
 
 **Run Part 1 of the opening ritual**, in
-[PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md). **No building in Part 1.** Ask whether
-the maintainer has run the two right-key claims on the live site; if she has, record the answer in
-item S6's row.
+[PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md). **No building in Part 1.** The bridge's
+live crossing was confirmed by the maintainer's own walk on 8 Sep 2026.
 
 **Then Part 2**, decided at the open. The hero chat (item S12) is next and waits on the maintainer's
 reference file; if it is not in, do not start it. The candidates that need no file are in
