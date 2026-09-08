@@ -220,6 +220,15 @@ jargon:
 
 **Any term a non-engineer would not know gets one plain-English line of explanation.**
 
+**Every capture for the maintainer's eyeball is attached inside the For Amy block as an image,
+never printed as a local file path.** Maintainer's ruling, 8 Sep 2026: she reads pull requests from
+where a path on the engineer's machine cannot be opened, and a capture she cannot see is not an
+eyeball. The engineer's way of doing it, until she says otherwise: the capture is committed on the
+branch under `captures/`, named by date and step — `2026-09-08-look-pass-desk.png` — and embedded
+in the block by its raw address at the commit that holds it, so the picture outlives the branch's
+deletion. A capture sent to her in chat is a courtesy, not the record; the record is the block.
+Pull requests before the ruling are not reformatted.
+
 **A pull request that depends on an unpushed migration says so first.** Maintainer's ruling,
 29 Aug 2026: its For Amy block opens with **`DO NOT MERGE YET`** on its own first line, naming what
 it waits on. A pull request whose code reads a migration that has not landed is a green button that

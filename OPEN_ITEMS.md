@@ -113,6 +113,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S13 | The handoff receiver — a question carried in from the production landing | Surfaces | **logged 3 Sep 2026, not built** — the save door in reverse; each shell builds its side |
 | S14 | Typing dots — the book's third motion exception | Surfaces | **ruled 3 Sep 2026** — waits on the maintainer's hand into §5 |
 | S15 | One row — the journey bar is the navigation; a candidate for production | Surfaces | **built 7 Sep 2026** — the tab row removed; offered to production by the maintainer's hand, later |
+| S16 | Phase screens — every phase page is a screen, the agent's chat in the middle and its tool as a tab; a candidate for production | Surfaces | **logged 8 Sep 2026** — proposal owed, images first, on the maintainer's word; not built |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
@@ -2068,6 +2069,36 @@ Logged, not scheduled.
 **Agents point at the step, never at a tab** — "the Eligibility step", "the Partners step", "the
 Quantify step"; the desk is "the desk" or Dispatches. The rule sits in
 [AGENT_RULES.md](./AGENT_RULES.md) under Speech; item A11 records the naming rulings it belongs to.
+
+---
+
+## S16. Phase screens — every phase page is a screen; a candidate for production
+
+**Logged 8 Sep 2026 from the maintainer's brief, item 12 of the day.** In her words: *every phase
+page is a screen: the agent's chat in the middle, its tool (criteria, map, calculator) as a tab.
+Where the agent's chat is not live, the tool shows first with one plain line saying so. "Next
+phase" button on every step. Save reachable from every step. Chat bubbles for visitor and agent.
+Log as a B→A candidate.*
+
+**What it changes.** Today the desk is the one screen with a conversation in the middle; the
+Eligibility, Partners and Quantify steps open a tool in the centre with the agent's dock on the
+right. Under this item every step takes the desk's shape — conversation first, tool as a tab — and
+the three whose agents are not live (Bridget's map, Calvin's calculator; Phoebe's chat is live) show
+the tool first with one plain line saying the agent is not answering yet. A "Next phase" button on
+every step moves the journey forward, and the save button is reachable from every step, not only
+from Dispatches. Chat turns become bubbles, the visitor's and the agent's.
+
+**How it proceeds.** A design pass: **proposal first, images first**, after the look pass of 8 Sep
+2026 (#59, merged). Nothing is built until the maintainer has approved the pictures, and the
+proposal comes on her word. The bubbles are a change to the transcript the desk and the docks
+share; the "not answering yet" line and the "Next phase" button are new copy, written to the
+plain-words rule.
+
+**A candidate for production.** Like the one-row bar (item S15), the shape is this site's to try
+first and production's to take later, by the maintainer's hand; nothing here is designed from a
+guess at the production side.
+
+Logged 8 Sep 2026. **Proposal owed; not built.**
 
 ---
 

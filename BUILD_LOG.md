@@ -596,3 +596,61 @@ The close-out itself: item S7 closed and moved to the archive in full, the third
 plan's "just finished" and "next"; the README's desk paragraph and settings table; CLAUDE.md's
 scope note; the handoff rewritten fresh; the exports regenerated after the checkpoint. The
 migration gate ran and found no migrations.
+
+## 8 September 2026, second sitting — the canon, the look pass, and the capture rule
+
+**Three pull requests, #58, #59 and this close-out.** Items S7's live check logged, S16 logged. Three
+real model calls: two to hear the canon, one for the look pass's first capture.
+
+### What was built
+
+**The canon (#58).** Four rulings on pace and posture, logged in AGENT_RULES.md and given to Phoebe
+and Wellington as rules: short replies, one question at a time, every reply ends with the next step;
+"I don't know" is a valid answer, offer options and move on; a planned project is normal, the
+criteria are things to do and not a quiz, feasibility after eligibility is information and not a
+gate; status lines in a visitor's words. Phoebe's waiting line says she is reviewing the criteria.
+Heard on two real calls: Wellington short and one question; Phoebe right on the posture and long on
+the words.
+
+**The look pass (#59).** Eight changes to the screen, approved on two captures at 1280 by 720:
+Wellington's first words warm and about the site, and the next step named in words; the project name
+once, in the card; nothing under a record value but the pin's line, the explainer behind an (i); the
+footer gone and the save button at the foot of the right rail; the phase names showing at laptop
+width, rings only below 880; next steps in the right rail only, no button under his turn; the map's
+one plain line; and the desk's grey intro paragraph gone.
+
+### What was decided
+
+- **The four canon rules**, above, binding on every agent.
+- **Every capture for the maintainer's eyeball is attached inside the For Amy block as an image.**
+  Ruled at the close, after two captures reached her only as chat attachments and local paths. Logged
+  in PROCESS_RULES.md with the engineer's way of doing it: committed under `captures/`, embedded by
+  raw address at the commit.
+- **Item S16, phase screens**, logged from her item 12 as a candidate for production. Proposal
+  first, images first, on her word.
+
+### What was learned
+
+**The rules were already there and the row was missed.** The plain-words rule had been applied to
+Wellington and not to the desk's own copy, and the first capture used the engineer's words. The
+second ruling of the day, on captures, was the same shape: a thing that reached the maintainer in a
+form she could not use. Both are now written where the next session reads them.
+
+**A branch cut from main before a merge lands still merges cleanly when the two touch different
+sections.** The canon changed Wellington's base rules; the look pass changed his first turn; #58 and
+#59 combined without a conflict.
+
+### Mistakes, self-reported
+
+**Two captures reached the maintainer as file paths.** She could not open them where she reads. She
+ruled; the rule is logged; this close-out has no capture to attach.
+
+**A strike-through was typed into a source file.** The journey bar's old constant was "struck" with
+tildes in TypeScript for one edit before being replaced with a comment. Caught before the type check
+ran.
+
+### Housekeeping
+
+The close-out itself: item S16 logged, the build plan's "just finished" and "next", the README's
+desk paragraph, CLAUDE.md's scope note, PROCESS_RULES.md's capture rule, the handoff rewritten
+fresh, the exports regenerated after the checkpoint. The migration gate ran and found no migrations.
