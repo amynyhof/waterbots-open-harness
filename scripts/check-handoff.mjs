@@ -23,6 +23,7 @@
  */
 
 import { spawnSync } from 'node:child_process';
+import { createRequire } from 'node:module';
 import { createServer } from 'node:http';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -444,11 +445,124 @@ const opened = await sealRoute.GET();
 expect('a GET on the seal address is a plain 405, pointing at the claim', opened.status === 405, `got ${opened.status}`);
 
 /* ---------------------------------------------------------------------------
+   The client half: the seal the desk builds is one the server accepts, and
+   it carries no figure.
+
+   src/lib/handoff.ts is the one place the visit becomes a seal. It is
+   compiled here with the real pack registry, a visit is built the way the
+   desk builds one — a typed name, a heard place, a pin, two criteria moved,
+   a pack's worked example — and what comes out is handed to the server's
+   reader. If the two halves ever disagree about the shape, this is where it
+   shows, not on the live site.
+--------------------------------------------------------------------------- */
+
+console.log('\n  The seal the desk builds\n');
+
+const libOut = mkdtempSync(join(tmpdir(), 'wb-handoff-lib-'));
+const compileLib = spawnSync(
+  process.execPath,
+  [
+    join('node_modules', 'typescript', 'bin', 'tsc'),
+    join('src', 'lib', 'handoff.ts'),
+    join('src', 'lib', 'methodPacks.ts'),
+    '--outDir', libOut,
+    '--module', 'commonjs',
+    '--moduleResolution', 'node',
+    '--target', 'es2022',
+    '--skipLibCheck',
+    '--esModuleInterop',
+  ],
+  { encoding: 'utf8' }
+);
+if (compileLib.status !== 0) {
+  console.error('\n  FAILED — src/lib/handoff.ts did not compile.\n');
+  console.error(compileLib.stdout || compileLib.stderr);
+  server.close();
+  rmSync(out, { recursive: true, force: true });
+  rmSync(libOut, { recursive: true, force: true });
+  process.exit(1);
+}
+writeFileSync(join(libOut, 'package.json'), '{"type":"commonjs"}');
+const requireLib = createRequire(import.meta.url);
+const { buildSeal, handoffAddress } = requireLib(join(libOut, 'handoff.js'));
+const { livePacks } = requireLib(join(libOut, 'methodPacks.js'));
+const { EMPTY_VISIT, typedContext, learnedContext, pinnedContext } = requireLib(join(libOut, 'visit.js'));
+
+const packs = livePacks();
+const examplePack = packs.find((p) => p.example !== undefined);
+const pin = { hybasId: 1040041430, pfafId: 1, level: 4, stressLabel: 'Arid and Low Water Use', subAreaKm2: 87466 };
+let context = typedContext(EMPTY_VISIT.context, 'name', 'Test spring');
+context = learnedContext(context, { does: 'Protects a spring and pipes it to a village', kind: 'water' });
+context = pinnedContext(context, pin);
+const visit = {
+  context,
+  pin,
+  packValues: examplePack ? { [examplePack.key]: { ...examplePack.example.values } } : {},
+};
+const sheet = [
+  { state: 'met' },
+  { state: 'not-yet', routeForward: 'Show the basin has a published stress reading.' },
+  { state: 'unchecked' },
+  { state: 'unchecked' },
+  { state: 'unchecked' },
+  { state: 'unchecked' },
+];
+const built = buildSeal(visit, sheet, [1, 2, 3, 4, 5, 6], packs);
+const reading = readSeal(built);
+
+expect('the seal the desk builds is one the server accepts', 'seal' in reading, JSON.stringify(reading));
+expect(
+  'the record carries its source tags — typed, chat, pin',
+  built.record.name.source === 'typed' && built.record.does.source === 'chat' && built.record.place.source === 'pin',
+  JSON.stringify(built.record)
+);
+expect('a Level 4 pin says its label is derived', built.pin.level === 4 && built.pin.stressDerived === true, JSON.stringify(built.pin));
+expect(
+  'the worksheet says each criterion by the manual’s number, with the way forward where there is one',
+  built.worksheet[1].number === 2 && built.worksheet[1].routeForward.startsWith('Show') && built.worksheet[0].routeForward === undefined,
+  JSON.stringify(built.worksheet)
+);
+expect(
+  'a pack filled with its worked example is flagged worked-example, with the pack’s own word beside it',
+  examplePack !== undefined && built.packs.length === 1 && built.packs[0].workedExample === true &&
+    ['complete', 'incomplete', 'pending', 'blocked'].includes(built.packs[0].status),
+  JSON.stringify(built.packs)
+);
+const builtText = JSON.stringify(built);
+expect(
+  'the seal carries no figure, no headline and no conversation',
+  !/"figures"|"headline"|"messages"|"value":\s*\d/.test(builtText),
+  'a computed number or the conversation was found in the seal'
+);
+expect(
+  'every pack answer is the visitor’s text as typed',
+  built.packs.every((p) => Object.values(p.answers).every((v) => typeof v === 'string')),
+  JSON.stringify(built.packs)
+);
+const untouched = buildSeal(EMPTY_VISIT, sheet.map(() => ({ state: 'unchecked' })), [1, 2, 3, 4, 5, 6], packs);
+expect(
+  'an empty visit seals as empty fields, a null pin, six unchecked criteria and no packs — never invented',
+  'seal' in readSeal(untouched) && untouched.pin === null && untouched.packs.length === 0 &&
+    untouched.worksheet.every((c) => c.state === 'unchecked') && untouched.record.name.value === '',
+  JSON.stringify(untouched)
+);
+expect(
+  'the address carries only the ticket, on production’s welcome page',
+  handoffAddress('abc_DEF-123456789012') === 'https://www.waterbots.ai/welcome?handoff=abc_DEF-123456789012',
+  handoffAddress('abc_DEF-123456789012')
+);
+
+/* And the whole way through: the desk's seal into the route. */
+const throughRoute = await post(built, '192.0.2.99');
+expect('the desk’s seal goes through the route and comes back with a ticket', throughRoute.status === 200, `got ${throughRoute.status}: ${JSON.stringify(await throughRoute.clone().json())}`);
+
+/* ---------------------------------------------------------------------------
    Done.
 --------------------------------------------------------------------------- */
 
 server.close();
 rmSync(out, { recursive: true, force: true });
+rmSync(libOut, { recursive: true, force: true });
 
 console.log('');
 if (problems.length > 0) {

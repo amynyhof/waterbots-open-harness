@@ -28,3 +28,10 @@ export const PROJECT_MAPPING_NOTE =
  */
 export const SITE_URL = 'https://waterbots.ai';
 export const SITE_LABEL = 'waterbots.ai';
+
+/**
+ * Where the bridge sends a visitor after sealing (item S7). Production's
+ * address, carried by the maintainer's hand on 8 Sep 2026: the visitor goes
+ * through sign-in first, and the ticket in the address survives it.
+ */
+export const HANDOFF_LANDING = 'https://www.waterbots.ai/welcome';

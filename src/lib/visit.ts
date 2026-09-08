@@ -16,16 +16,19 @@
  * one row that is always there, opens the paid site. Nothing is persisted
  * here and nothing crosses without the visitor's click.
  *
- * THE SAVE ACTION IS A DOOR, NOT A BRIDGE. Until the production bridge (item
- * S7, on production's desk as their #149) is real, "Save this project and
- * sign up" opens waterbots.ai in a new window and carries nothing across. The
- * row's own copy says so. Maintainer's ruling, 2 Sep 2026 — the two-window
- * fallback.
+ * ~~THE SAVE ACTION IS A DOOR, NOT A BRIDGE.~~ **THE SAVE ACTION IS THE
+ * BRIDGE, from 8 Sep 2026.** Until then "Save this project and sign up"
+ * opened waterbots.ai in a new window and carried nothing across — the
+ * two-window fallback, maintainer's ruling of 2 Sep 2026. Now the click
+ * seals the visit and moves the page to production's sign-up with a ticket
+ * in the address (item S7; src/lib/handoff.ts). The row is still always
+ * last and still derives nothing; what it carries is the visit and nothing
+ * else, and this site keeps no copy.
  */
 
 import type { CriterionStatus } from './criteriaState';
 import type { MethodPack, PackValues } from './methodPacks';
-import { SITE_LABEL, SITE_URL } from './site';
+import { SITE_LABEL } from './site';
 import type { Surface } from './surfaces';
 
 /* --------------------------------------------------------------------------
@@ -177,7 +180,22 @@ export type RowSender = 'phoebe' | 'bridget' | 'calvin' | 'wellington';
 
 export type RowAction =
   | { kind: 'surface'; label: string; surface: Surface }
-  | { kind: 'link'; label: string; href: string };
+  | { kind: 'link'; label: string; href: string }
+  /** The bridge: seal the visit and go to production's sign-up. */
+  | { kind: 'seal'; label: string };
+
+/**
+ * Whether a pack's answers are exactly its worked example.
+ *
+ * Used by the desk row, which then says so first, and by the seal, which
+ * flags it — a made-up figure must never travel looking like the visitor's
+ * own. One test, two readers.
+ */
+export function isWorkedExample(pack: MethodPack, values: PackValues): boolean {
+  if (pack.example === undefined) return false;
+  const example = pack.example.values;
+  return Object.keys({ ...values, ...example }).every((k) => (values[k] ?? '') === (example[k] ?? ''));
+}
 
 export interface DeskRow {
   key: string;
@@ -261,12 +279,7 @@ export function deskRows(
     /* A row built from a pack's worked example says so first. The example is
        labelled on the worksheet; a row that dropped the label would put a
        made-up figure on the desk looking like the visitor's own. */
-    const example =
-      pack.example !== undefined &&
-      Object.keys({ ...values, ...pack.example.values }).every(
-        (k) => (values[k] ?? '') === (pack.example!.values[k] ?? '')
-      );
-    const lead = example ? 'Example figures, not a real project: ' : '';
+    const lead = isWorkedExample(pack, values) ? 'Example figures, not a real project: ' : '';
     if (result.kind === 'complete') {
       const h = result.headline;
       const figure = h.value.toLocaleString('en-GB', { maximumFractionDigits: h.decimals });
@@ -286,12 +299,14 @@ export function deskRows(
     }
   }
 
-  /* Wellington — the door. Always last, always there. */
+  /* Wellington — the bridge. Always last, always there. The click seals the
+     visit and moves the page to production's sign-up; the consent line under
+     the button says what crosses, and it is worded in src/components/CrewRail.tsx. */
   rows.push({
     key: 'save',
     from: 'wellington',
-    sentence: `Save this project and sign up on ${SITE_LABEL}. Saving happens there, and nothing you entered here is carried across yet.`,
-    action: { kind: 'link', label: 'Save this project and sign up', href: SITE_URL },
+    sentence: `Save this project and sign up on ${SITE_LABEL}. What you have built here goes across with you, and this site keeps no copy.`,
+    action: { kind: 'seal', label: 'Save this project and sign up' },
   });
 
   return rows;

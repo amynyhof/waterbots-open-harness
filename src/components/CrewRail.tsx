@@ -24,8 +24,20 @@ import bridgetPortrait from '../../brand/assets/bots/bridget.svg';
 import calvinPortrait from '../../brand/assets/bots/calvin.svg';
 import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
 import wellingtonPortrait from '../../brand/assets/bots/wellington.svg';
+import type { SealState } from '../lib/handoff';
 import type { Surface } from '../lib/surfaces';
 import type { DeskRow } from '../lib/visit';
+
+/**
+ * THE CONSENT LINE — item S7, the contract's first step: the visitor is told
+ * what crosses before they click, in their own words for the things. It
+ * lists exactly what the seal holds (src/lib/handoff.ts) and names the two
+ * things it never holds. If the seal ever changes, this line changes with it.
+ */
+const CONSENT_LINE =
+  'What goes across: your answers about the project, the pinned basin, where each ' +
+  'eligibility criterion stands, and the figures you typed into the calculator. Never a ' +
+  'calculated result and never your conversation. Nothing is kept on this site.';
 
 interface CrewMember {
   name: string;
@@ -80,6 +92,8 @@ export default function CrewRail({
   openCount,
   rows,
   onNavigate,
+  sealing,
+  onSeal,
 }: {
   active: Surface;
   /** Open next steps on Wellington's desk. Null hides the count. */
@@ -91,6 +105,9 @@ export default function CrewRail({
    */
   rows: DeskRow[];
   onNavigate: (surface: Surface) => void;
+  /** The bridge's state while a seal is in flight, and the click that starts one. */
+  sealing: SealState;
+  onSeal: () => void;
 }) {
   return (
     <aside
@@ -232,7 +249,7 @@ export default function CrewRail({
           >
             <p style={{ margin: 0, fontSize: 12.5, lineHeight: 1.5, color: 'var(--ink)' }}>{row.sentence}</p>
             <div style={{ marginTop: 6 }}>
-              {row.action.kind === 'surface' ? (
+              {row.action.kind === 'surface' && (
                 <button
                   type="button"
                   className="wb-row-action"
@@ -241,11 +258,43 @@ export default function CrewRail({
                 >
                   {row.action.label}
                 </button>
-              ) : (
+              )}
+              {row.action.kind === 'link' && (
                 <a className="wb-row-action" style={{ fontSize: 12 }} href={row.action.href} target="_blank" rel="noopener noreferrer">
                   {row.action.label}
                   <span aria-hidden> ↗</span>
                 </a>
+              )}
+              {row.action.kind === 'seal' && (
+                /* THE BRIDGE (item S7). A primary button — solid Tide, the
+                   book's §7 — because it is the one action on this site that
+                   takes the visitor somewhere else with their work. The
+                   consent line sits under it, before the click. Every state
+                   is shown; the page moves only once a ticket is back. */
+                <div style={{ marginTop: 4 }}>
+                  <button
+                    type="button"
+                    className="wb-save-button"
+                    onClick={onSeal}
+                    disabled={sealing.kind === 'sealing' || sealing.kind === 'sealed'}
+                    aria-busy={sealing.kind === 'sealing' || undefined}
+                  >
+                    {sealing.kind === 'sealing' && 'Sealing your project…'}
+                    {sealing.kind === 'sealed' && 'Sealed. Taking you across…'}
+                    {(sealing.kind === 'idle' || sealing.kind === 'failed') && row.action.label}
+                  </button>
+                  <p className="t-caption" style={{ margin: '8px 0 0', fontSize: 10.5, lineHeight: 1.55 }}>
+                    {CONSENT_LINE}
+                  </p>
+                  {sealing.kind === 'failed' && (
+                    <p
+                      role="alert"
+                      style={{ margin: '8px 0 0', fontSize: 12, lineHeight: 1.5, color: 'var(--state-pending)' }}
+                    >
+                      {sealing.message}
+                    </p>
+                  )}
+                </div>
               )}
             </div>
           </div>
