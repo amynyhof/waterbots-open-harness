@@ -111,23 +111,38 @@ export default function AgentScreen({
         )}
       </div>
 
-      {order.map((tab) => (
-        <div
-          key={tab}
-          role="tabpanel"
-          id={`wb-panel-${slug}-${tab}`}
-          aria-labelledby={`wb-tab-${slug}-${tab}`}
-          aria-hidden={tab !== active}
-          style={{
-            flex: 1,
-            minHeight: 0,
-            display: tab === active ? 'flex' : 'none',
-            flexDirection: 'column',
-          }}
-        >
-          {tabs[tab]}
-        </div>
-      ))}
+      {/* THE PANELS STACK, and the one you are not on is hidden, not
+          unmounted and not display:none — slice 4, 9 Sep 2026, when the map
+          became a Tool tab. A map inside display:none has no size, and
+          Leaflet draws nothing until told to measure again; kept at full size
+          under visibility:hidden it stays drawn and its tiles stay loaded. The
+          same treatment the shell gives its surfaces, for the same reason.
+          visibility:hidden also takes a hidden panel out of the tab order, so
+          nobody can type into a composer they cannot see. */}
+      <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
+        {order.map((tab) => (
+          <div
+            key={tab}
+            role="tabpanel"
+            id={`wb-panel-${slug}-${tab}`}
+            aria-labelledby={`wb-tab-${slug}-${tab}`}
+            aria-hidden={tab !== active}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              /* The active panel INHERITS visibility rather than setting it:
+                 an explicit "visible" would override the shell's "hidden" on
+                 the screen's own wrapper, and a hidden screen's map would show
+                 through another screen. Found in the first capture of slice 4. */
+              visibility: tab === active ? undefined : 'hidden',
+            }}
+          >
+            {tabs[tab]}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
