@@ -45,7 +45,8 @@ sentences. Nothing an agent inherits is a script.
 Partners, Quantify, Plan, Monitor, Communicate — never a version of its own:
 not "the quantification step", not "the basin map" when the phase is meant.
 Describing what a phase does is fine; the phase's name is fixed. On the open site
-the journey bar is the navigation and there is no tab row: an agent points people
+the journey bar is the navigation ~~and there is no tab row~~ — each step's screen has
+tabs of its own from 9 Sep 2026, and they are the screen's, not the site's: an agent points people
 at a step by its phase name — "the Eligibility step" — never at a tab, and the
 desk is Dispatches. Maintainer's rulings, 5 and 7 Sep 2026.
 

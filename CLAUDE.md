@@ -249,6 +249,20 @@ credit line does not meet any of these bars.
   for the maintainer's eyeball is attached inside the pull request's For Amy
   block as an image**; the rule and the way of doing it are in
   PROCESS_RULES_for_ShellB.md.
+- **The agent screen, 9 Sep 2026 — every step is a screen, built once (item S16,
+  #61 to #64).** The agent's chat in the middle in bubbles, and tabs above it:
+  Chat, always; Tool, when the agent has one; Knowledge pack — cards, versions,
+  sources; Credentials — exam and scores only, honest that none exists. **The
+  tabs wear the agent's colour** and the active crew card takes the same
+  underline. "Next phase" on every step but Quantify, where the save button is
+  the way on. Where the chat is not live the screen opens on Tool and the Chat
+  tab carries one plain line. **Memory is never a tab**; it stays in the record
+  on the left rail, its source behind the (i). The three host docks and the old
+  dock frame are gone; the crew with the save button is the right column on
+  every step. **Three consumers, one screen** — the Commons, this site,
+  production — differ only in memory and tool depth; the B→A raise into the
+  brand book and the carry list for production are recorded under S16 in the
+  archive and wait on the maintainer's hand.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material

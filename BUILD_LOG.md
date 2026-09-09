@@ -654,3 +654,96 @@ ran.
 The close-out itself: item S16 logged, the build plan's "just finished" and "next", the README's
 desk paragraph, CLAUDE.md's scope note, PROCESS_RULES.md's capture rule, the handoff rewritten
 fresh, the exports regenerated after the checkpoint. The migration gate ran and found no migrations.
+
+## 9 September 2026 — the agent screen, in four slices
+
+**Five pull requests, #61 to #64 and this close-out.** Item S16 built, closed and archived; its
+B→A raise and its carry list for production wait on the maintainer's hand. Four real model calls
+across the day: two for the pictures, one for the desk's capture, one for Phoebe's.
+
+### What was built
+
+**The proposal (8 Sep, second sitting's close).** Under 300 words, approved as written the next
+morning: the shared parts, what differs per consumer, six slices in order, what each capture would
+show, and no change to Phoebe's route. Amended the same morning to four tabs — Chat · Tool ·
+Knowledge pack · Credentials — with the Knowledge pack its own tab, Credentials exam and scores only,
+and memory never a tab.
+
+**The pictures (#61).** Six captures at 1280 by 720, drawn inside the running app by script over the
+real frame — the rail, the bar, the crew and the save button as they ship — with two real turns in
+the bubbles. The desk with Wellington in bubbles; Phoebe's screen on the Chat tab; her Knowledge
+pack, top and foot; her Credentials with the read-more layers open and honest; Bridget's screen with
+Tool first. Approved on pixels with three rulings: the not-live line belongs on Chat, not on Tool;
+the record's source shows only behind the (i); tabs wear the agent's colour, and the active crew card
+takes the same underline.
+
+**The desk (#62).** The screen built once in `src/screen/AgentScreen.tsx` and the desk its first
+consumer. Wellington in bubbles; Chat · Knowledge pack · Credentials, no Tool; "Next phase:
+Eligibility" read from the journey; the tab row on a Tide tint with the active tab darker, bold and
+underlined; his crew card underlined in Tide. Both quiet tabs say what is true in a sentence.
+
+**Phoebe's screen (#63).** Her chat in the centre on her Anemone tint, beta beside her name; the
+worksheet as Tool; the Knowledge pack assembled from the committed cards, the approval date read
+from the files' own status line, rows that open to the rule, the evidence and the citation; the
+Credentials tab one component for every agent; her dock retired and the crew rail with the save
+button in its place. The Chat tab body moved out of the desk into `src/screen/ScreenChat.tsx`.
+
+**Bridget's and Calvin's screens (#64).** Tool first: the map and the calculator moved inside their
+screens, mounted for the whole visit. One plain line on each Chat tab and no composer. Bridget's
+pack the map's two datasets, cited as the licences module cites them; Calvin's pack the three live
+method packs from the registry, each opening to its citation. Both docks and the old dock frame
+deleted. The crew rail with the save button on every step.
+
+### What was decided
+
+- **Four tabs, and memory is never a tab.** The maintainer's amendment of 8 Sep 2026.
+- **The three rulings on the pictures**, 9 Sep 2026, above; ruling 2 waits on a source being built
+  into the rail, which nothing does yet.
+- **Ten calls of the engineer's, each kept**: the active tab underline in the agent's colour and
+  the "Next phase" button in Tide; a state chip's text in ink; Name · Role over the agent's bubble
+  and no label on the visitor's; no "Where to start" paragraph above an empty conversation; Phoebe's
+  composer note states her cap; Calvin's caveat strip not carried over, the worksheet already saying
+  it three times; the roles Map and Calculator; no "Next phase" on Quantify; panels hidden by
+  visibility so the map stays drawn; the old dock frame deleted with the docks.
+- **The B→A raise** — the agent screen as a §7 component of the brand book — and **the carry list
+  for production**, both recorded once under item S16 in the archive.
+
+### What was learned
+
+**Draw inside the running app.** The pictures were first attempted as saved page markup and the
+extension refused to hand the markup out; drawing by script over the live page gave the real frame
+for free and every pixel outside the centre column was already right.
+
+**A forced `visibility: visible` on a child defeats `hidden` on its ancestor.** The screen's open
+panel set it explicitly, the shell hid the whole screen, and the hidden screens' maps and
+worksheets showed through Bridget's map in the first capture of slice 4. The open panel now inherits.
+
+**The first click after a page load does not land in the composer.** Three slices in a row typed
+into nothing on the first try. Focusing by script and dispatching the input and the Enter key was
+what worked; noted in the handoff.
+
+**A long shell command with a large quoted block fails to parse before running anything.** Twice.
+Writing the block with the file tool and splicing it with short commands is the way; nothing was
+half-done either time because nothing ran.
+
+### Mistakes, self-reported
+
+**The pictures drew a line under the record's values.** "Wellington heard this" was the engineer's
+reading of the amendment on memory tagged by source; the maintainer ruled it behind the (i), on
+hover, and no line under values. Nothing was built that way.
+
+**One capture went out with hidden screens showing through.** Found on the engineer's own eyeball
+before the pull request; the fix and a clean second capture went in the same commit.
+
+**A type error on the pin's id** — the map's id is a number and the screen typed it as a string —
+caught by the build, fixed in one line.
+
+### Housekeeping
+
+The close-out itself: item S16 closed and moved to the archive with its raise and its carry list, the
+index row updated, the build plan's "just finished" and "next", the README's console paragraphs,
+CLAUDE.md's scope note, AGENT_RULES.md's and the primer's "no tab row" lines corrected in place, the
+prompt modules rebuilt, the handoff rewritten fresh, the exports regenerated after the checkpoint.
+The migration gate ran and found no migrations. **Pull request #64 was still open on GitHub when the
+close-out was written**, so the docs branch was cut from the slice-4 branch and the docs pull request
+says so on its first line.
