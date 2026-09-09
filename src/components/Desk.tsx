@@ -1,12 +1,20 @@
 /**
  * The free desk — Wellington's dispatch desk on the open site.
  *
+ * THE DESK IS THE FIRST AGENT SCREEN — item S16, slice 2, 9 Sep 2026. The
+ * screen (src/screen/AgentScreen.tsx) is built once and the desk is its first
+ * consumer: Wellington's chat in bubbles on the Chat tab, his Knowledge pack
+ * and Credentials tabs beside it, and "Next phase: Eligibility" at the right
+ * end of the row. He has no tool, so there is no Tool tab. The look follows
+ * the pictures of 8 Sep 2026 (#61), approved on pixels with three rulings.
+ *
  * THE CENTRE IS THE CONVERSATION AND NOTHING ELSE — maintainer's ruling 3 of
  * 4 Sep 2026, from the reference she brought in by hand: chat dominates the
- * page, no other noise. The host's header, the desk divider, his turns, the
- * one composer. The project context left the centre for the rail, where it is
- * the record his interview populates; the dispatch rows left for the crew
- * column, where each seat holds its own. Item S11's second pass.
+ * page, no other noise. The host's header, his turns, the one composer. The
+ * project context left the centre for the rail, where it is the record his
+ * interview populates; the dispatch rows left for the crew column, where each
+ * seat holds its own. Item S11's second pass. ~~The desk divider~~ went with
+ * the tab row, which now says whose screen this is.
  *
  * WELLINGTON IS LIVE HERE — a real agent on real machinery, on Phoebe's
  * proven pattern. The composer is the one composer per screen (BRAND.md §6),
@@ -21,8 +29,8 @@
  * overwritten, and the rail says where each field came from.
  *
  * THE LOOK is the production desk's, from the saved page the maintainer
- * brought in on 2 Sep 2026 — its header, its divider, its composer — and the
- * brand book governs every pixel.
+ * brought in on 2 Sep 2026 — its header and its composer — and the brand book
+ * governs every pixel.
  *
  * THE COMPOSER IS PRODUCTION'S TO THE PIXEL — maintainer's eyeball ruling 2a,
  * 7 Sep 2026: one line tall, 13px on 1.5, 8px by 12px inside, on the card
@@ -30,19 +38,65 @@
  * on Tide, faded to 45% while it cannot send; the pair 816px wide, which is
  * production's desk column, so the transcript box above takes the same width.
  * Read from the saved markup, not guessed.
+ *
+ * THE TWO QUIET TABS SAY WHAT IS TRUE. Wellington carries no Knowledge Pack —
+ * he works from the crew's roster and this visit's record — and he has sat no
+ * exam. Each tab says so in a sentence rather than showing an empty frame or
+ * inventing a card. No mock data, ever.
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import wellingtonPortrait from '../../brand/assets/bots/wellington.svg';
 import Transcript from '../chat/Transcript';
 import type { AgentHost } from '../chat/evidence';
 import type { Conversation } from '../chat/useConversation';
+import { nextPhaseAfter } from '../lib/journey';
+import type { Surface } from '../lib/surfaces';
 import { WELLINGTON } from '../lib/wellington';
+import AgentScreen from '../screen/AgentScreen';
 
 /** Production's desk column, read from the saved page: 816px. */
 const DESK_COLUMN = 816;
 
-export default function Desk({ chat }: { chat: Conversation }) {
+export default function Desk({
+  chat,
+  onNavigate,
+}: {
+  chat: Conversation;
+  onNavigate: (surface: Surface) => void;
+}) {
+  const next = nextPhaseAfter('desk');
+  const nextSurface = next?.surface ?? null;
+
+  return (
+    <AgentScreen
+      host={WELLINGTON}
+      next={next && nextSurface ? { label: next.label, go: () => onNavigate(nextSurface) } : null}
+      tabs={{
+        chat: <DeskChat chat={chat} />,
+        pack: (
+          <QuietTab heading={`${WELLINGTON.name}'s Knowledge Pack`}>
+            {WELLINGTON.name} carries no Knowledge Pack. He works from what the crew can do and
+            from what you tell him in this visit, and he points you to the right step. Phoebe's
+            pack, the eligibility and feasibility cards, is on the Eligibility step.
+          </QuietTab>
+        ),
+        credentials: (
+          <QuietTab heading={`${WELLINGTON.name}'s credentials`} chip="no exam sat yet">
+            {WELLINGTON.name} has not sat an exam. A score shows here only after one has been
+            graded, and until then this page says so rather than guess.
+          </QuietTab>
+        ),
+      }}
+    />
+  );
+}
+
+/* --------------------------------------------------------------------------
+   The Chat tab — the host's header, his turns in bubbles, the one composer.
+   -------------------------------------------------------------------------- */
+
+function DeskChat({ chat }: { chat: Conversation }) {
   const scroller = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (chat.turns.length > 0 || chat.pending || chat.error) {
@@ -51,14 +105,20 @@ export default function Desk({ chat }: { chat: Conversation }) {
   }, [chat.turns, chat.pending, chat.error]);
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+    <>
       <div ref={scroller} style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
         {/* PRODUCTION'S DESK COLUMN — 816px, the composer's width, so the
             transcript and the composer share one edge. The worksheets keep
             their 880. */}
-        <div style={{ maxWidth: DESK_COLUMN, margin: '0 auto', padding: '26px var(--gutter) 24px' }}>
-          <HostHeader />
-          <DeskChat host={WELLINGTON} turns={chat.turns} pending={chat.pending} error={chat.error} />
+        <div style={{ maxWidth: DESK_COLUMN, margin: '0 auto', padding: '22px var(--gutter) 24px' }}>
+          <HostHeader host={WELLINGTON} />
+          <Transcript
+            host={WELLINGTON}
+            turns={chat.turns}
+            pending={chat.pending}
+            error={chat.error}
+            look="bubbles"
+          />
         </div>
       </div>
 
@@ -110,15 +170,11 @@ export default function Desk({ chat }: { chat: Conversation }) {
           </p>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
-/* --------------------------------------------------------------------------
-   The host's header — the production desk's.
-   -------------------------------------------------------------------------- */
-
-function HostHeader() {
+function HostHeader({ host }: { host: AgentHost }) {
   return (
     <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 18 }}>
       <span
@@ -130,8 +186,8 @@ function HostHeader() {
           flex: 'none',
           display: 'grid',
           placeItems: 'center',
-          background: 'color-mix(in oklab, var(--bot-wellington) 12%, var(--card))',
-          border: '1px solid color-mix(in oklab, var(--bot-wellington) 30%, transparent)',
+          background: `color-mix(in oklab, var(${host.colourToken}) 12%, var(--card))`,
+          border: `1px solid color-mix(in oklab, var(${host.colourToken}) 30%, transparent)`,
           overflow: 'hidden',
         }}
       >
@@ -139,7 +195,7 @@ function HostHeader() {
       </span>
       <div style={{ minWidth: 0 }}>
         <h1 style={{ fontSize: 22, margin: 0, letterSpacing: '-0.015em', lineHeight: 1.15 }}>
-          {WELLINGTON.name}
+          {host.name}
         </h1>
         <div
           className="t-mono"
@@ -151,7 +207,7 @@ function HostHeader() {
             marginTop: 3,
           }}
         >
-          {WELLINGTON.role}
+          {host.role}
         </div>
       </div>
     </div>
@@ -159,45 +215,44 @@ function HostHeader() {
 }
 
 /* --------------------------------------------------------------------------
-   The desk chat — production's divider, then the transcript.
-
-   Before the first turn it says, in one sentence, what the conversation is
-   for. An honest empty state, not a scripted opener.
+   A quiet tab — a heading, an optional state chip, and a sentence or two that
+   say what is true. The honest empty state, in the desk column's measure.
    -------------------------------------------------------------------------- */
 
-function DeskChat({
-  host,
-  turns,
-  pending,
-  error,
+function QuietTab({
+  heading,
+  chip,
+  children,
 }: {
-  host: AgentHost;
-  turns: Conversation['turns'];
-  pending: boolean;
-  error: string | null;
+  heading: string;
+  chip?: string;
+  children: ReactNode;
 }) {
-  /* The grey intro paragraph that sat here for an empty conversation is gone —
-     maintainer's ruling, 8 Sep 2026: Wellington's first words replace it. The
-     composer's placeholder is the only prompt to speak. */
   return (
-    <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <span
-          className="t-mono"
-          style={{
-            fontSize: 9.5,
-            letterSpacing: '0.13em',
-            textTransform: 'uppercase',
-            color: 'var(--ink-4)',
-            flex: 'none',
-          }}
-        >
-          Desk chat · {host.name} only
-        </span>
-        <span aria-hidden style={{ flex: 1, height: 1, background: 'var(--line)' }} />
+    <div style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
+      <div style={{ maxWidth: DESK_COLUMN, margin: '0 auto', padding: '22px var(--gutter) 24px' }}>
+        <h2 style={{ fontSize: 20, margin: '0 0 8px', letterSpacing: '-0.015em', lineHeight: 1.25 }}>
+          {heading}
+        </h2>
+        {chip && (
+          <div style={{ marginBottom: 10 }}>
+            {/* A state, so a chip: outlined at 40% of the pending colour, no
+                fill, the text in ink — amber may not carry type (§2.5). */}
+            <span
+              className="chip"
+              style={{
+                borderColor: 'color-mix(in oklab, var(--state-pending) 40%, transparent)',
+                color: 'var(--ink-2)',
+              }}
+            >
+              {chip}
+            </span>
+          </div>
+        )}
+        <p className="t-body" style={{ margin: 0, fontSize: 14.5, lineHeight: 1.55, color: 'var(--ink-2)' }}>
+          {children}
+        </p>
       </div>
-      <div style={{ height: 14 }} />
-      <Transcript host={host} turns={turns} pending={pending} error={error} />
     </div>
   );
 }

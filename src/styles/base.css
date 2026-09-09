@@ -936,3 +936,144 @@ button.wb-phase:hover span:last-child {
     border-color var(--dur) var(--ease),
     background var(--dur) var(--ease);
 }
+
+/* ---------------------------------------------------------------------------
+   The agent screen — item S16, slice 2, 9 Sep 2026. Built once
+   (src/screen/AgentScreen.tsx); the desk is its first consumer.
+
+   THE TABS WEAR THE AGENT'S COLOUR — maintainer's ruling 3 of 9 Sep 2026. The
+   row sits on a light tint of the agent's accent, the active tab a step
+   darker, bold, and underlined in the accent. The accent arrives as
+   --screen-accent, set by the screen from the host's token; nothing here
+   names a colour. It is an identity, so a tint and a keyline, never a dot.
+   The tints are §7's accent-tinted panel — about 5% fill, about 25% border.
+--------------------------------------------------------------------------- */
+.wb-tabs {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--gutter);
+  flex: none;
+  background: color-mix(in oklab, var(--screen-accent) 5%, var(--paper));
+  border-bottom: 1px solid color-mix(in oklab, var(--screen-accent) 25%, transparent);
+}
+.wb-tab {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: var(--r-xs) var(--r-xs) 0 0;
+  padding: 0 10px;
+  height: 44px;
+  margin-right: 8px;
+  cursor: pointer;
+  transition:
+    background var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+.wb-tab:hover {
+  color: var(--ink);
+}
+.wb-tab.is-active {
+  color: var(--ink);
+  font-weight: 600;
+  background: color-mix(in oklab, var(--screen-accent) 12%, var(--paper));
+  border-bottom-color: var(--screen-accent);
+}
+.wb-tab:focus-visible {
+  outline: 2px solid var(--tide);
+  outline-offset: -2px;
+}
+
+/* "Next phase" at the right end of the row — §7's secondary button: a
+   Tide-tinted border with Tide text. Navigation, so Tide, not the agent. */
+.wb-next-phase {
+  margin-left: auto;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--tide-text);
+  background: transparent;
+  border: 1px solid color-mix(in oklab, var(--tide) 40%, transparent);
+  border-radius: var(--r-md);
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease);
+}
+.wb-next-phase:hover {
+  background: color-mix(in oklab, var(--tide) 6%, transparent);
+}
+
+/* Bubbles — the screen's transcript look (src/chat/Transcript.tsx). The
+   visitor's on the right, white with the hairline; the agent's on the left in
+   the agent's tint with its portrait beside it. --turn-accent is set per turn
+   from the host's token. The docks keep their rows until their own slices. */
+.wb-turn {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  margin: 0 0 14px;
+}
+.wb-turn-me {
+  justify-content: flex-end;
+}
+.wb-turn-me > .wb-turn-body {
+  max-width: 78%;
+}
+.wb-turn-host > .wb-turn-body {
+  flex: 1;
+  min-width: 0;
+}
+.wb-bubble {
+  padding: 10px 14px;
+  border-radius: var(--r-lg);
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.wb-turn-me .wb-bubble {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-bottom-right-radius: var(--r-xs);
+  white-space: pre-wrap;
+}
+.wb-turn-host .wb-bubble {
+  max-width: 84%;
+  background: color-mix(in oklab, var(--turn-accent) 5%, var(--card));
+  border: 1px solid color-mix(in oklab, var(--turn-accent) 25%, transparent);
+  border-bottom-left-radius: var(--r-xs);
+}
+.wb-bubble p {
+  margin: 0 0 8px;
+}
+.wb-bubble p:last-child {
+  margin-bottom: 0;
+}
+.wb-bubble > *:first-child {
+  margin-top: 0;
+}
+.wb-turn-portrait {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: color-mix(in oklab, var(--turn-accent) 12%, var(--card));
+  border: 1px solid color-mix(in oklab, var(--turn-accent) 25%, transparent);
+}
+.wb-turn-who {
+  display: flex;
+  gap: 7px;
+  align-items: baseline;
+  margin: 0 0 5px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--turn-accent);
+}
