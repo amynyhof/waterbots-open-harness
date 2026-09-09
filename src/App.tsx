@@ -59,8 +59,7 @@ import Desk from './components/Desk';
 import CrewRail from './components/CrewRail';
 import { HandoffError, buildSeal, handoffAddress, sealVisit, type SealState } from './lib/handoff';
 import ChatPanel from './components/ChatPanel';
-import PhoebePanel from './components/PhoebePanel';
-import EligibilityWorksheet from './components/EligibilityWorksheet';
+import PhoebeScreen from './components/PhoebeScreen';
 import QuantificationWorksheet from './components/QuantificationWorksheet';
 import CalvinPanel from './components/CalvinPanel';
 import Wordmark from './components/Wordmark';
@@ -264,11 +263,25 @@ export default function App() {
                 <BasinMap onStatus={onStatus} pinnedHybas={visit.pin?.hybasId ?? null} onPin={setPin} />
               </div>
 
-              {onEligibility && (
-                <div style={{ position: 'absolute', inset: 0 }}>
-                  <EligibilityWorksheet statuses={statuses} onOpenMap={openMap} />
-                </div>
-              )}
+              {/* PHOEBE'S SCREEN STAYS MOUNTED, hidden when off-surface, for
+                  the same reason as the desk: her seat holds her conversation
+                  (item S16, slice 3, 9 Sep 2026). Her worksheet is its Tool
+                  tab; the shell still holds the worksheet's rows. THE LOOP —
+                  7 Sep 2026: the record goes to Phoebe with every ask; her
+                  verdicts come back through applyUpdates to the criteria, and
+                  her row on the desk follows. */}
+              <div
+                style={{ position: 'absolute', inset: 0, visibility: onEligibility ? 'visible' : 'hidden' }}
+                aria-hidden={!onEligibility}
+              >
+                <PhoebeScreen
+                  onCriteriaUpdate={applyUpdates}
+                  record={visit.context}
+                  statuses={statuses}
+                  onOpenMap={openMap}
+                  onNavigate={setSurface}
+                />
+              </div>
 
               {onQuantification && (
                 <div style={{ position: 'absolute', inset: 0 }}>
@@ -282,12 +295,15 @@ export default function App() {
               )}
             </main>
 
-            {/* The right column. On the desk it is the crew; elsewhere it is
-                the host's dock. All three docks stay mounted and the ones you
-                are not on are hidden — same treatment as the map above, for the
-                same reason. `visibility: hidden` takes a hidden dock out of the
-                tab order as well as out of sight, so nobody can type into a
-                composer they cannot see. */}
+            {/* The right column. On an agent screen it is the crew, with the
+                save button at its foot, so saving is reachable from every step
+                (item S16): the desk and Phoebe's screen from 9 Sep 2026, the
+                map and quantification when their screens come. Until then
+                those two keep the host's dock. The docks stay mounted and the
+                ones you are not on are hidden — same treatment as the map
+                above, for the same reason. `visibility: hidden` takes a hidden
+                dock out of the tab order as well as out of sight, so nobody
+                can type into a composer they cannot see. */}
             <div
               style={{
                 width: 'var(--chat-rail)',
@@ -296,7 +312,7 @@ export default function App() {
                 minHeight: 0,
               }}
             >
-              <Dock visible={onDesk}>
+              <Dock visible={onDesk || onEligibility}>
                 <CrewRail
                   active={surface}
                   openCount={rows.length}
@@ -308,12 +324,6 @@ export default function App() {
               </Dock>
               <Dock visible={onMap}>
                 <ChatPanel />
-              </Dock>
-              <Dock visible={onEligibility}>
-                {/* THE LOOP — slice 3, 7 Sep 2026: the record goes to Phoebe
-                    with every ask; her verdicts come back through applyUpdates
-                    to the criteria, and her row on the desk follows. */}
-                <PhoebePanel onCriteriaUpdate={applyUpdates} record={visit.context} />
               </Dock>
               <Dock visible={onQuantification}>
                 <CalvinPanel />
