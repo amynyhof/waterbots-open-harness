@@ -253,7 +253,7 @@ export default function App() {
                 style={{ position: 'absolute', inset: 0, visibility: onDesk ? 'visible' : 'hidden' }}
                 aria-hidden={!onDesk}
               >
-                  <Desk chat={chat} />
+                  <Desk chat={chat} onNavigate={setSurface} />
               </div>
 
               {/* Kept mounted, hidden when off-surface — see the note above. */}

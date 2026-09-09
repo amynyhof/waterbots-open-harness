@@ -156,6 +156,11 @@ export default function CrewRail({
                    pairs with a white card. Never an accent fill. */
                 background: current ? 'var(--card)' : 'transparent',
                 border: current ? '1px solid var(--line)' : '1px solid transparent',
+                /* The current card is underlined in the agent's colour, the
+                   same underline its screen's active tab wears — maintainer's
+                   ruling 3 of 9 Sep 2026, item S16. An identity keyline, never
+                   a status dot (§2.6); Surf may carry a keyline. */
+                borderBottom: current ? `2px solid var(${member.token})` : '1px solid transparent',
               }}
             >
               <span

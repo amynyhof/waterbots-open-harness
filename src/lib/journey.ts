@@ -36,3 +36,16 @@ export const JOURNEY: JourneyPhase[] = [
 
 /** What a gated phase says when asked. One sentence, stated, never simulated. */
 export const GATED_NOTE = 'Opens with a saved project.';
+
+/**
+ * The phase after a surface — what the agent screen's "Next phase" button
+ * names and moves to. Item S16, slice 2. The desk precedes the journey, so
+ * its next is the first phase. A phase with no surface here is gated, and a
+ * caller that lands on one should show the save button instead of a move.
+ */
+export function nextPhaseAfter(surface: Surface | 'desk'): JourneyPhase | null {
+  if (surface === 'desk') return JOURNEY[0];
+  const index = JOURNEY.findIndex((phase) => phase.surface === surface);
+  if (index === -1) return null;
+  return JOURNEY[index + 1] ?? null;
+}
