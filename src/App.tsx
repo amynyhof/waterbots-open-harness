@@ -46,22 +46,28 @@
  *
  * Each surface brings its own host: Wellington at the desk, Bridget with the
  * map, Phoebe with the eligibility worksheet, Calvin with the quantification
- * step. Phoebe answers from her cards through the relay; Wellington answers
- * on the paid site, and Bridget's and Calvin's chats are not built. Every
- * panel says so.
+ * step. Phoebe answers from her cards through the relay; ~~Wellington answers
+ * on the paid site~~ Wellington answers here from 3 Sep 2026; Bridget's and
+ * Calvin's chats are not built, and their screens say so.
+ *
+ * EVERY SURFACE IS AN AGENT SCREEN FROM 9 Sep 2026 (item S16, four slices).
+ * The chat docks that stood in the right column are retired; each agent's
+ * screen holds its own chat in the centre, its tool beside it as a tab, and
+ * the right column is the crew with the save button on every step. The four
+ * screens stay mounted, hidden when off-surface, for the reasons above — a
+ * conversation, a drawn map and a chosen tab all survive a step away.
  */
 
 import { useCallback, useMemo, useState } from 'react';
-import BasinMap, { type MapStatus } from './components/BasinMap';
+import { type MapStatus } from './components/BasinMap';
 import NavRail from './components/NavRail';
 import JourneyBar from './components/JourneyBar';
 import Desk from './components/Desk';
 import CrewRail from './components/CrewRail';
 import { HandoffError, buildSeal, handoffAddress, sealVisit, type SealState } from './lib/handoff';
-import ChatPanel from './components/ChatPanel';
+import BridgetScreen from './components/BridgetScreen';
 import PhoebeScreen from './components/PhoebeScreen';
-import QuantificationWorksheet from './components/QuantificationWorksheet';
-import CalvinPanel from './components/CalvinPanel';
+import CalvinScreen from './components/CalvinScreen';
 import Wordmark from './components/Wordmark';
 import { DEFAULT_SURFACE, type Surface } from './lib/surfaces';
 import { useConversation } from './chat/useConversation';
@@ -255,12 +261,20 @@ export default function App() {
                   <Desk chat={chat} onNavigate={setSurface} />
               </div>
 
-              {/* Kept mounted, hidden when off-surface — see the note above. */}
+              {/* BRIDGET'S SCREEN, kept mounted, hidden when off-surface — see
+                  the note above. The map is its Tool tab (item S16, slice 4,
+                  9 Sep 2026) and is mounted for the whole visit, as it was
+                  when the shell drew it here. */}
               <div
                 style={{ position: 'absolute', inset: 0, visibility: onMap ? 'visible' : 'hidden' }}
                 aria-hidden={!onMap}
               >
-                <BasinMap onStatus={onStatus} pinnedHybas={visit.pin?.hybasId ?? null} onPin={setPin} />
+                <BridgetScreen
+                  onStatus={onStatus}
+                  pinnedHybas={visit.pin?.hybasId ?? null}
+                  onPin={setPin}
+                  onNavigate={setSurface}
+                />
               </div>
 
               {/* PHOEBE'S SCREEN STAYS MOUNTED, hidden when off-surface, for
@@ -283,52 +297,36 @@ export default function App() {
                 />
               </div>
 
-              {onQuantification && (
-                <div style={{ position: 'absolute', inset: 0 }}>
-                  <QuantificationWorksheet
-                    activeKey={activePack}
-                    onSelect={setActivePack}
-                    allValues={visit.packValues}
-                    onChange={setPackValues}
-                  />
-                </div>
-              )}
+              {/* CALVIN'S SCREEN, kept mounted like the others so its tab
+                  stays where the visitor left it. The worksheet is its Tool
+                  tab; the pack answers are the shell's, in the visit. */}
+              <div
+                style={{ position: 'absolute', inset: 0, visibility: onQuantification ? 'visible' : 'hidden' }}
+                aria-hidden={!onQuantification}
+              >
+                <CalvinScreen
+                  activeKey={activePack}
+                  onSelect={setActivePack}
+                  allValues={visit.packValues}
+                  onChange={setPackValues}
+                  onNavigate={setSurface}
+                />
+              </div>
             </main>
 
-            {/* The right column. On an agent screen it is the crew, with the
-                save button at its foot, so saving is reachable from every step
-                (item S16): the desk and Phoebe's screen from 9 Sep 2026, the
-                map and quantification when their screens come. Until then
-                those two keep the host's dock. The docks stay mounted and the
-                ones you are not on are hidden — same treatment as the map
-                above, for the same reason. `visibility: hidden` takes a hidden
-                dock out of the tab order as well as out of sight, so nobody
-                can type into a composer they cannot see. */}
-            <div
-              style={{
-                width: 'var(--chat-rail)',
-                flex: 'none',
-                position: 'relative',
-                minHeight: 0,
-              }}
-            >
-              <Dock visible={onDesk || onEligibility}>
-                <CrewRail
-                  active={surface}
-                  openCount={rows.length}
-                  rows={rows}
-                  onNavigate={setSurface}
-                  sealing={sealing}
-                  onSeal={onSeal}
-                />
-              </Dock>
-              <Dock visible={onMap}>
-                <ChatPanel />
-              </Dock>
-              <Dock visible={onQuantification}>
-                <CalvinPanel />
-              </Dock>
-            </div>
+            {/* The right column is the crew on every step, with the save
+                button at its foot, so saving is reachable from every step —
+                item S16, complete on 9 Sep 2026 with slice 4. The host docks
+                that stood here on the map and on quantification are retired;
+                each agent's screen holds its own chat in the centre. */}
+            <CrewRail
+              active={surface}
+              openCount={rows.length}
+              rows={rows}
+              onNavigate={setSurface}
+              sealing={sealing}
+              onSeal={onSeal}
+            />
           </div>
         </div>
       </div>
@@ -336,26 +334,3 @@ export default function App() {
   );
 }
 
-/**
- * One right-column occupant, shown or hidden without being unmounted.
- *
- * Hidden means hidden from everyone: `visibility: hidden` removes it from the
- * tab order and from the accessibility tree, and `aria-hidden` says so
- * explicitly. A composer nobody can see must not be one a keyboard can reach.
- */
-function Dock({ visible, children }: { visible: boolean; children: React.ReactNode }) {
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        inset: 0,
-        display: 'flex',
-        minHeight: 0,
-        visibility: visible ? 'visible' : 'hidden',
-      }}
-      aria-hidden={!visible}
-    >
-      {children}
-    </div>
-  );
-}

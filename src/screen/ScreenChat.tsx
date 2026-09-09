@@ -118,7 +118,7 @@ export default function ScreenChat({
  * host's tint, the name at 22px, the role as an eyebrow, beta as a tag where
  * it is true.
  */
-function HostHeader({ host }: { host: AgentHost }) {
+export function HostHeader({ host }: { host: AgentHost }) {
   return (
     <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 18 }}>
       <span
