@@ -250,3 +250,27 @@ export const CONSIDERATION_GROUPS = [
     note: 'Considerations 6 to 10 — beyond working, what else the project brings.',
   },
 ];
+
+/* -------------------------------------------------------------------------
+   The sets' approval, read from the files rather than typed here.
+
+   Each card file states at its head "Status: approved by the maintainer,
+   <date>." The Knowledge pack tab shows that date as a chip (item S16, slice
+   3, 9 Sep 2026). Both sets were approved on one day; if they ever differ,
+   the later date is the pack's, and this says so rather than picking one.
+------------------------------------------------------------------------- */
+
+function readApproval(raw: string, file: string): string {
+  const match = raw.match(/\*\*Status: approved by the maintainer, ([^.*]+)\.\*\*/);
+  if (!match) fail('an approval date in the status line', file);
+  return match[1].trim();
+}
+
+const ELIGIBILITY_APPROVED_ON = readApproval(eligibilityRaw, ELIGIBILITY_FILE);
+const FEASIBILITY_APPROVED_ON = readApproval(feasibilityRaw, FEASIBILITY_FILE);
+
+/** "21 Aug 2026" — when the maintainer approved the cards Phoebe reads from. */
+export const CARDS_APPROVED_ON =
+  ELIGIBILITY_APPROVED_ON === FEASIBILITY_APPROVED_ON
+    ? ELIGIBILITY_APPROVED_ON
+    : `${ELIGIBILITY_APPROVED_ON} and ${FEASIBILITY_APPROVED_ON}`;

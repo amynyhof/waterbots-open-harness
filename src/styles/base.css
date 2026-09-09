@@ -1077,3 +1077,79 @@ button.wb-phase:hover span:last-child {
   text-transform: uppercase;
   color: var(--turn-accent);
 }
+
+/* The Knowledge pack and Credentials tabs — rows that open to layers. Item
+   S16, slice 3, 9 Sep 2026 (src/screen/KnowledgePackTab.tsx and
+   CredentialsTab.tsx). A row is a hairline-separated line with the card's
+   number, its title and "Read more"; open, it shows the card's own plain
+   words on the card plane with the citation beneath. Tables get a rule
+   between every row (§7); the open layer is a card with a hairline. */
+.wb-pack-sec {
+  margin: 22px 0 8px;
+}
+.wb-pack-group {
+  border-bottom: 1px solid var(--line);
+}
+.wb-pack-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.wb-pack-row:focus-visible {
+  outline: 2px solid var(--tide);
+  outline-offset: -2px;
+}
+.wb-pack-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  width: 32px;
+  flex: none;
+}
+.wb-pack-more {
+  margin-left: auto;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--tide-text);
+  white-space: nowrap;
+}
+.wb-pack-open {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+  margin: 6px 0 10px;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.wb-pack-k {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 12px 0 4px;
+}
+.wb-pack-open > div:first-child > .wb-pack-k {
+  margin-top: 0;
+}
+.wb-pack-open ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+  list-style: disc;
+}
+.wb-pack-open .wb-cite-line {
+  padding-left: 0;
+}
