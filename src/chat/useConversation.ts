@@ -19,7 +19,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { AgentTurn, Ask, Turn } from './evidence';
+import type { AgentTurn, Ask, AskMeta, Turn } from './evidence';
 
 export interface Conversation {
   turns: Turn[];
@@ -31,9 +31,10 @@ export interface Conversation {
   send: () => Promise<void>;
   /**
    * Send a given text — a frame that already holds the visitor's words hands
-   * them over this way, so nothing is retyped. Same rules as `send`.
+   * them over this way, so nothing is retyped. Same rules as `send`. The
+   * receiver of a carried question (item S13) says so in `meta`.
    */
-  sendText: (text: string) => Promise<void>;
+  sendText: (text: string, meta?: AskMeta) => Promise<void>;
 }
 
 export function useConversation(ask: Ask, hostName: string): Conversation {
@@ -46,7 +47,7 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
   useEffect(() => () => inFlight.current?.abort(), []);
 
   const sendText = useCallback(
-    async (text: string) => {
+    async (text: string, meta?: AskMeta) => {
       const question = text.trim();
       if (!question || pending) return;
 
@@ -62,7 +63,8 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
       try {
         const answer: AgentTurn = await ask(
           history.map((turn) => ({ role: turn.role, text: turn.text })),
-          controller.signal
+          controller.signal,
+          meta
         );
         setTurns([...history, answer]);
       } catch (failure) {

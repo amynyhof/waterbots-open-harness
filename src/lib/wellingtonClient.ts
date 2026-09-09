@@ -38,14 +38,21 @@ const KINDS: LearnedKind[] = ['water', 'carbon', 'unsure'];
 
 export async function askWellington(
   history: { role: 'user' | 'assistant'; content: string }[],
-  signal?: AbortSignal
+  signal?: AbortSignal,
+  /**
+   * True when the last turn was carried in from the production landing's
+   * question box (item S13). The relay counts it under the carried cap of
+   * ten a day as well as his thirty. The flag is only ever sent as true; a
+   * typed turn sends no flag at all.
+   */
+  carried = false
 ): Promise<WellingtonAnswer> {
   let response: Response;
   try {
     response = await fetch('/api/wellington', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ messages: history }),
+      body: JSON.stringify(carried ? { messages: history, carried: true } : { messages: history }),
       signal,
     });
   } catch (error) {

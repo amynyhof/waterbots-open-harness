@@ -30,7 +30,7 @@
 
 import { spawnSync } from 'node:child_process';
 import { createServer } from 'node:http';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -149,7 +149,7 @@ process.env.PHOEBE_LOG_KEY = LOG_KEY;
 delete process.env.PHOEBE_TEST_CAP;
 delete process.env.VERCEL;
 
-const { countOneMessage, DAILY_CAP, WELLINGTON_DAILY_CAP, PHOEBE, WELLINGTON, timeUntilReset } =
+const { countOneMessage, DAILY_CAP, WELLINGTON_DAILY_CAP, CARRIED_DAILY_CAP, PHOEBE, WELLINGTON, CARRIED, HANDOFF, timeUntilReset } =
   await load('_cap.js');
 const { recordAbstention, readAbstentions, KEPT } = await load('_abstentions.js');
 const { storeConfig } = await load('_store.js');
@@ -315,6 +315,63 @@ expect(
   'the default agent is still Phoebe, so nothing that called this before has moved',
   PHOEBE.name === 'phoebe' && PHOEBE.cap === DAILY_CAP,
   'the default changed under existing callers'
+);
+
+/* ---------------------------------------------------------------------------
+   A question carried in from the landing counts to ten, under its own name.
+
+   The receiver's cap — the maintainer's word of 9 Sep 2026, item S13. Ten a
+   day, the bridge's number, on top of Wellington's thirty and never instead
+   of it: a landing page must not be a way round his cap, and a flood of
+   arrivals stops at ten.
+--------------------------------------------------------------------------- */
+
+console.log('\n  A carried question counts to ten, under its own name\n');
+
+const carriedDecisions = [];
+for (let i = 0; i < CARRIED_DAILY_CAP + 1; i += 1) {
+  carriedDecisions.push(await countOneMessage(ask('203.0.113.7'), NOW, CARRIED));
+}
+expect(
+  `the visitor who spent Wellington's ${WELLINGTON_DAILY_CAP} still has all ${CARRIED_DAILY_CAP} carried arrivals`,
+  carriedDecisions.slice(0, CARRIED_DAILY_CAP).every((d) => d.kind === 'allowed'),
+  `got ${[...new Set(carriedDecisions.slice(0, CARRIED_DAILY_CAP).map((d) => d.kind))].join(', ')}`
+);
+expect(
+  `carried arrival ${CARRIED_DAILY_CAP + 1} is refused, naming the cap of ten`,
+  carriedDecisions[CARRIED_DAILY_CAP].kind === 'refused' && carriedDecisions[CARRIED_DAILY_CAP].cap === 10,
+  `got ${carriedDecisions[CARRIED_DAILY_CAP].kind} with cap ${carriedDecisions[CARRIED_DAILY_CAP].cap}`
+);
+const carriedKey = [...numbers.keys()].find((k) => k.startsWith('carried:count:'));
+expect(
+  'the carried counter lives under its own name, with a day and a scramble and no address',
+  /^carried:count:2026-08-25:[0-9a-f]{32}$/.test(carriedKey ?? '') && !String(carriedKey).includes('203.0.113.7'),
+  `the key is "${carriedKey}"`
+);
+expect(
+  "Wellington's counter for the same visitor is untouched by the carried ten",
+  numbers.get(wellingtonKey) === WELLINGTON_DAILY_CAP,
+  `his count reads ${numbers.get(wellingtonKey)}`
+);
+expect(
+  'the carried cap is the bridge\'s number — ten — and neither is the other',
+  CARRIED.cap === HANDOFF.cap && CARRIED.name === 'carried' && HANDOFF.name === 'handoff',
+  `carried ${CARRIED.cap} as "${CARRIED.name}", handoff ${HANDOFF.cap} as "${HANDOFF.name}"`
+);
+
+/* The relay reads the flag as exactly true and nothing looser: a string
+   "true", a 1, or a missing field is a typed turn. Checked against the source,
+   since a model call is what the relay does after this point. */
+const wellingtonRelaySource = readFileSync('api/wellington.ts', 'utf8');
+expect(
+  'the relay counts a carried question under CARRIED only when the flag is exactly true',
+  /body\.carried === true/.test(wellingtonRelaySource) && /countOneMessage\(req, new Date\(\), CARRIED\)/.test(wellingtonRelaySource),
+  'the relay does not read the flag strictly, or does not count under CARRIED'
+);
+expect(
+  'an undelivered answer gives the carried count back as well as his',
+  /refundCarried\(\)/.test(wellingtonRelaySource.slice(wellingtonRelaySource.indexOf('const undelivered'))),
+  'the undelivered path does not refund the carried count'
 );
 
 /* ---------------------------------------------------------------------------

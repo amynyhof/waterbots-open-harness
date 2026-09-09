@@ -185,6 +185,7 @@ const compileLib = spawnSync(
   [
     join('node_modules', 'typescript', 'bin', 'tsc'),
     join('src', 'lib', 'visit.ts'),
+    join('src', 'lib', 'carried.ts'),
     '--outDir', libOut,
     '--module', 'commonjs',
     '--moduleResolution', 'node',
@@ -238,6 +239,33 @@ const appSource = readFileSync('src/App.tsx', 'utf8');
 const deskSource = readFileSync('src/components/Desk.tsx', 'utf8');
 expect('the shell holds the one conversation', /useConversation\(/.test(appSource), 'the conversation is not in the shell');
 expect('the desk does not start a conversation of its own', !/useConversation\(/.test(deskSource) && !/askWellington/.test(deskSource), 'the desk has its own machine');
+
+/* ---------------------------------------------------------------------------
+   A question carried in from the production landing — the receiver, item
+   S13, 9 Sep 2026. The contract is one parameter, `question`, percent-encoded
+   UTF-8, at most 500 characters decoded. Bad or empty input is ignored with
+   no error: the page opens honestly empty and never invents a question.
+--------------------------------------------------------------------------- */
+
+console.log('\n  A carried question\n');
+
+const { CARRIED_PARAM, CARRIED_MAX_CHARS, readCarriedQuestion, withoutCarried } = createRequire(import.meta.url)(join(libOut, 'carried.js'));
+expect('the parameter is "question" and the cap is 500 decoded characters', CARRIED_PARAM === 'question' && CARRIED_MAX_CHARS === 500, `got ${CARRIED_PARAM}, ${CARRIED_MAX_CHARS}`);
+expect('a real question comes through, decoded and trimmed', readCarriedQuestion('?question=%20We%20want%20a%20borehole%20in%20Turkana.%20Where%20do%20we%20start%3F%20') === 'We want a borehole in Turkana. Where do we start?', `got "${readCarriedQuestion('?question=%20We%20want%20a%20borehole%20in%20Turkana.%20Where%20do%20we%20start%3F%20')}"`);
+expect('a whole address works as well as a query string', readCarriedQuestion('https://map.waterbots.ai/?question=hello%20there#x') === 'hello there', 'a whole address was not read');
+expect('non-ASCII comes through as typed — UTF-8, the way encodeURIComponent writes it', readCarriedQuestion('?question=' + encodeURIComponent('¿Un pozo en Oaxaca — por dónde empezamos?')) === '¿Un pozo en Oaxaca — por dónde empezamos?', 'UTF-8 was mangled');
+expect('a missing parameter is nothing', readCarriedQuestion('') === null && readCarriedQuestion('?handoff=abc') === null, 'something was read from nothing');
+expect('a blank question is nothing, never an empty bubble', readCarriedQuestion('?question=') === null && readCarriedQuestion('?question=%20%20%09') === null, 'a blank was kept');
+expect(`a question over ${CARRIED_MAX_CHARS} characters is ignored whole, never cut`, readCarriedQuestion('?question=' + 'x'.repeat(CARRIED_MAX_CHARS + 1)) === null && readCarriedQuestion('?question=' + 'x'.repeat(CARRIED_MAX_CHARS)) !== null, 'the cap did not hold');
+expect('a sequence that does not decode is a broken link, ignored whole', readCarriedQuestion('?question=hello%E0%A4%A') === null && readCarriedQuestion('?question=%FF%FE') === null, 'a broken encoding was shown with holes');
+expect('runs of whitespace and newlines fold to one space', readCarriedQuestion('?question=a%0A%0Ab%20%20c') === 'a b c', `got "${readCarriedQuestion('?question=a%0A%0Ab%20%20c')}"`);
+expect('only the first question= is read', readCarriedQuestion('?question=first&question=second') === 'first', 'the second one won');
+expect('the address is cleaned of the question and keeps everything else', withoutCarried('https://map.waterbots.ai/?a=1&question=hi%20there&b=2#frag') === 'https://map.waterbots.ai/?a=1&b=2#frag', `got ${withoutCarried('https://map.waterbots.ai/?a=1&question=hi%20there&b=2#frag')}`);
+expect('an address with no question is returned untouched', withoutCarried('https://map.waterbots.ai/?handoff=t1') === 'https://map.waterbots.ai/?handoff=t1', 'a clean address was rewritten');
+
+expect('the shell reads the address once, cleans it, and hands the question to the one conversation', /readCarriedQuestion\(window\.location\.search\)/.test(appSource) && /history\.replaceState/.test(appSource) && /sendCarried\(question, \{ carried: true \}\)/.test(appSource) && /setSurface\('desk'\)/.test(appSource), 'the receiver is not in the shell, or does not clean the address');
+const clientSource = readFileSync('src/lib/wellingtonClient.ts', 'utf8');
+expect('the flag reaches the relay only as true, and a typed turn sends no flag', /carried \? \{ messages: history, carried: true \} : \{ messages: history \}/.test(clientSource), 'the client sends the flag loosely');
 
 /* ------------------------------------------------------------------------- */
 

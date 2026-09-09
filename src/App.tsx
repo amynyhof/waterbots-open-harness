@@ -58,7 +58,8 @@
  * conversation, a drawn map and a chosen tab all survive a step away.
  */
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { readCarriedQuestion, withoutCarried } from './lib/carried';
 import { type MapStatus } from './components/BasinMap';
 import NavRail from './components/NavRail';
 import JourneyBar from './components/JourneyBar';
@@ -154,6 +155,43 @@ export default function App() {
      He names the step in words, and the next steps live in the right rail. */
   const ask = useMemo(() => wellingtonAsk(onLearned), [onLearned]);
   const chat = useConversation(ask, WELLINGTON.name);
+
+  /* THE RECEIVER (item S13, built 9 Sep 2026). A visitor who typed a question
+     into the production landing's box arrives here with it in the address.
+     Once, on the first paint: read it, take it out of the address so a reload
+     or a shared link cannot send it twice, open Dispatches, and hand it to
+     Wellington as the visitor's first turn — in a bubble, so his answer is
+     the first thing they see. Nothing is kept. A missing, blank, over-long or
+     unreadable question is ignored without a word; the page opens as it
+     always does. The contract for production's sender is in
+     src/lib/carried.ts.
+
+     THE SEND IS DEFERRED ONE TICK, and the reason was found on the first real
+     call: in development React mounts twice (StrictMode), and the second
+     mount's cleanup aborts whatever the first one had in flight — the
+     question sat in its bubble with no answer and no error. The address is
+     read once and held in a ref; the timer is cleared by a repeated mount and
+     set again by the next, so the question is sent exactly once, after the
+     mounting has settled. */
+  const carried = useRef<string | null | undefined>(undefined);
+  const sendCarried = chat.sendText;
+  useEffect(() => {
+    if (carried.current === undefined) {
+      carried.current = readCarriedQuestion(window.location.search);
+      const cleaned = withoutCarried(window.location.href);
+      if (cleaned !== window.location.href) window.history.replaceState(null, '', cleaned);
+    }
+    const question = carried.current;
+    if (question === null) return;
+    const timer = window.setTimeout(() => {
+      carried.current = null;
+      setSurface('desk');
+      void sendCarried(question, { carried: true });
+    }, 0);
+    return () => window.clearTimeout(timer);
+    /* On purpose, with no dependencies: the address is read on arrival and
+       never again. */
+  }, []);
 
   /* Derived, never typed. */
   const rows = useMemo(() => deskRows(visit, statuses, LIVE_PACKS), [visit, statuses]);

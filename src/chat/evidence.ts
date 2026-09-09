@@ -128,8 +128,22 @@ export interface AgentHost {
  */
 export type Ask = (
   history: { role: 'user' | 'agent'; text: string }[],
-  signal: AbortSignal
+  signal: AbortSignal,
+  meta?: AskMeta
 ) => Promise<AgentTurn>;
+
+/**
+ * What a frame knows about a turn that the words alone do not say. Optional
+ * on every ask; an agent that has no use for it ignores it.
+ */
+export interface AskMeta {
+  /**
+   * The turn was carried in from the production landing's question box
+   * rather than typed here (item S13). Wellington's relay counts these under
+   * their own ten-a-day cap, on top of his thirty.
+   */
+  carried?: boolean;
+}
 
 /** One piece of a laid-out answer: prose, or a marker standing in the prose. */
 export type Segment =
