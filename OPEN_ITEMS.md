@@ -113,7 +113,8 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S13 | The handoff receiver — a question carried in from the production landing | Surfaces | **logged 3 Sep 2026, not built** — the save door in reverse; each shell builds its side |
 | S14 | Typing dots — the book's third motion exception | Surfaces | **ruled 3 Sep 2026** — waits on the maintainer's hand into §5 |
 | S15 | One row — the journey bar is the navigation; a candidate for production | Surfaces | **built 7 Sep 2026** — the tab row removed; offered to production by the maintainer's hand, later |
-| S16 | Phase screens — every phase page is a screen, the agent's chat in the middle and its tool as a tab; a candidate for production | Surfaces | **logged 8 Sep 2026** — proposal owed, images first, on the maintainer's word; not built |
+| S16 | The agent screen — every step is a screen, the agent's chat in the middle and its tool as a tab; a candidate for production | Surfaces | **built 9 Sep 2026, #61 to #64** — [archived](./OPEN_ITEMS_ARCHIVE.md); the B→A raise into the book and the carry list wait on the maintainer's hand |
+| S17 | The agent watches its Tool tab and comments; a pulsing teal dot on Chat | Surfaces | **logged 9 Sep 2026, parked for a design session, both sides** — no proposal yet |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
@@ -2071,36 +2072,42 @@ Quantify step"; the desk is "the desk" or Dispatches. The rule sits in
 [AGENT_RULES.md](./AGENT_RULES.md) under Speech; item A11 records the naming rulings it belongs to.
 
 ---
+## S17. The agent watches its Tool tab and comments — parked for a design session, both sides
 
-## S16. Phase screens — every phase page is a screen; a candidate for production
+**Logged 9 Sep 2026 from the maintainer's brief, at the close of the agent screen's four slices.**
+In her words: *the agent sees everything the visitor does on its Tool tab and can comment on it.
+When the agent comments, a pulsing teal dot appears on the Chat tab.* Both sides, B→A: this site
+and production design it together.
 
-**Logged 8 Sep 2026 from the maintainer's brief, item 12 of the day.** In her words: *every phase
-page is a screen: the agent's chat in the middle, its tool (criteria, map, calculator) as a tab.
-Where the agent's chat is not live, the tool shows first with one plain line saying so. "Next
-phase" button on every step. Save reachable from every step. Chat bubbles for visitor and agent.
-Log as a B→A candidate.*
+**What it would change.** Today the Tool tab and the Chat tab of an agent screen (item S16) know
+nothing of each other beyond the loop that already runs — Phoebe's verdicts move the worksheet's
+rows, and the record goes to her with every ask. Under this item the agent also sees what the
+visitor does on the tool — a basin pinned, a criterion opened, a figure typed — and may say
+something about it on the Chat tab, unasked. The visitor is told there is something to read by a
+pulsing teal dot on the Chat tab and nothing louder.
 
-**What it changes.** Today the desk is the one screen with a conversation in the middle; the
-Eligibility, Partners and Quantify steps open a tool in the centre with the agent's dock on the
-right. Under this item every step takes the desk's shape — conversation first, tool as a tab — and
-the three whose agents are not live (Bridget's map, Calvin's calculator; Phoebe's chat is live) show
-the tool first with one plain line saying the agent is not answering yet. A "Next phase" button on
-every step moves the journey forward, and the save button is reachable from every step, not only
-from Dispatches. Chat turns become bubbles, the visitor's and the agent's.
+**Open questions for the session, in the maintainer's words.** None is answered here:
 
-**How it proceeds.** A design pass: **proposal first, images first**, after the look pass of 8 Sep
-2026 (#59, merged). Nothing is built until the maintainer has approved the pictures, and the
-proposal comes on her word. The bubbles are a change to the transcript the desk and the docks
-share; the "not answering yet" line and the "Next phase" button are new copy, written to the
-plain-words rule.
+- What the agent may change.
+- What the visitor may change.
+- What saves from each.
+- How the two are told apart.
 
-**A candidate for production.** Like the one-row bar (item S15), the shape is this site's to try
-first and production's to take later, by the maintainer's hand; nothing here is designed from a
-guess at the production side.
+**Two things the rulebooks already say, for the session to weigh rather than for this item to
+decide.** First, the brand book's §7 says only the Live dot pulses, and §2.6 says a status may only
+be a dot or a keyline while an identity may never be a dot — so a pulsing teal dot on the Chat tab
+is a status signal ("live", something new) and not the agent's colour, and Bridget's Surf and the
+live teal being one value (§2.6, the form carries the meaning) is exactly the case the book
+anticipates. Second, agents speak under AGENT_RULES.md — short, one thing at a time, in a visitor's
+words — and a comment made unasked is still a turn under those rules; nothing is scripted and
+nothing is invented from what the visitor did not do.
 
-Logged 8 Sep 2026. **Proposal owed; not built.**
+**Parked.** No proposal is owed until the design session has met; nothing is built toward it.
+
+Logged 9 Sep 2026. **Parked for a design session; no proposal yet.**
 
 ---
+
 
 # Family: Data
 

@@ -193,8 +193,10 @@ Three steps are built or being built, and an agent may describe them.
 Quantify, Plan, Monitor, Communicate — never a version of its own. Describing what a phase does
 is fine; its name is not the agent's to rephrase. Maintainer's ruling, 5 Sep 2026.
 
-**There is no tab row.** The journey bar is the navigation: Dispatches first, the desk, then
-the six phases. An agent points people at a step by its phase name — "the Eligibility step", "the
+~~**There is no tab row.**~~ **The journey bar is the navigation**: Dispatches first, the desk, then
+the six phases. From 9 Sep 2026 each step is an agent's screen with tabs of its own — Chat, Tool,
+Knowledge pack, Credentials — and those are the screen's, never a place to send anyone. An agent
+points people at a step by its phase name — "the Eligibility step", "the
 Partners step", "the Quantify step" — never at a tab. Maintainer's ruling, 7 Sep 2026, replacing
 the tab words of 5 Sep.
 

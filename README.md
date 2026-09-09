@@ -54,14 +54,29 @@ Quantify step for figures, the Partners step for basins, waterbots.ai for saving
 quotes no figure from any worksheet, invents no teammate or capability, uses screening language
 only, and never presses anyone to sign up. Thirty messages a day, counted separately from Phoebe's
 twenty, and nothing kept between visits. **Bridget is the map's agent and Calvin is the
-quantification step's.** Neither console is built yet — each panel is there, each agent is named in
-it, and each says plainly that it is not answering.
+quantification step's.** ~~Neither console is built yet — each panel is there, each agent is named in
+it, and each says plainly that it is not answering.~~ **Neither chat is built; from 9 Sep 2026 each
+has a screen of its own, which opens on its tool and says so in one plain line on its Chat tab.**
 
 **From 7 Sep 2026 the desk closes its loop.** What Wellington learns goes to Phoebe with every ask,
 as the visitor's own words and never a verdict; her verdicts move the worksheet and her row on the
 desk. Bridget's row asks for the basin pin once a place is known, and a pin fills it. Agents say the
 six phase names as written, point people at a step and never at a tab, and use plain words a
 first-time visitor knows.
+
+**From 9 Sep 2026 every step is an agent screen.** The agent's chat sits in the middle, in bubbles
+— the visitor's on the right, the agent's on the left in its own colour with its portrait — and tabs
+above it: Chat, always; Tool, when the agent has one; Knowledge pack, the cards, versions and sources
+it works from; Credentials, its exam and scores, which say plainly that no exam has been sat. The
+tab row wears the agent's colour, and the crew card on the right is underlined in the same colour, so
+a visitor can see whose screen it is. "Next phase" sits at the row's right end on every step but
+Quantify, where the save button is the way on. **Wellington's** desk is his screen. **Phoebe's** has
+her chat on her tint, the eligibility worksheet as its Tool, and a Knowledge pack assembled from the
+committed cards. **Bridget's and Calvin's** open on Tool — the map and the calculator — and their
+Chat tabs say in one plain line that they are not answering here yet. The right column is the crew
+with the save button on every step; the old host panels are gone. Memory is never a tab: what the
+visit knows stays in the record on the left. The screen is built once and offered to production and
+the Agent Commons, which differ from this site only in memory and in how deep the tool goes.
 
 ## What is built
 
@@ -330,7 +345,7 @@ book's own — each says so below:
 
 - **The frame and the content have different grounds** — maintainer's ruling, 29 Aug 2026.
   `--paper` `#F6F5FA` is the **content** canvas, carried by the map and the worksheet. `--frame`
-  `#FBFBFE` is the **frame**: top bar, rail, and both docks' ground. Measured, the frame is
+  `#FBFBFE` is the **frame**: top bar, rail, and ~~both docks' ground~~ **the crew rail's ground, from 9 Sep 2026, the docks being gone**. Measured, the frame is
   **1.96 CIE L\* lighter** than the content canvas and carries **41% less chroma** — it recedes by
   being lighter and less tinted rather than by being a darker plane beneath.
 

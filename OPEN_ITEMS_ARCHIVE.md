@@ -23,6 +23,7 @@ identifiers — S4 stays S4. Identifiers are never reused.
 **First sweep: 30 Aug 2026**, six items — S4, S8, O2, O3, O6, O7.
 **Second sweep: 2 Sep 2026**, one item — O10.
 **Third sweep: 8 Sep 2026**, one item — S7.
+**Fourth sweep: 9 Sep 2026**, one item — S16.
 
 ---
 
@@ -319,6 +320,157 @@ the live desk and it reached production.** The crossing works end to end, and th
 Logged 26 Aug 2026. Contract ruled 7 Sep 2026. ~~**Not built; builds after slice 3.**~~ **Built 8 Sep 2026, pull request #56. Closed and moved to the archive the same day.**
 
 ---
+## S16. Phase screens — every phase page is a screen; a candidate for production
+
+**Logged 8 Sep 2026 from the maintainer's brief, item 12 of the day.** In her words: *every phase
+page is a screen: the agent's chat in the middle, its tool (criteria, map, calculator) as a tab.
+Where the agent's chat is not live, the tool shows first with one plain line saying so. "Next
+phase" button on every step. Save reachable from every step. Chat bubbles for visitor and agent.
+Log as a B→A candidate.*
+
+**What it changes.** Today the desk is the one screen with a conversation in the middle; the
+Eligibility, Partners and Quantify steps open a tool in the centre with the agent's dock on the
+right. Under this item every step takes the desk's shape — conversation first, tool as a tab — and
+the three whose agents are not live (Bridget's map, Calvin's calculator; Phoebe's chat is live) show
+the tool first with one plain line saying the agent is not answering yet. A "Next phase" button on
+every step moves the journey forward, and the save button is reachable from every step, not only
+from Dispatches. Chat turns become bubbles, the visitor's and the agent's.
+
+**How it proceeds.** A design pass: **proposal first, images first**, after the look pass of 8 Sep
+2026 (#59, merged). Nothing is built until the maintainer has approved the pictures, and the
+proposal comes on her word. The bubbles are a change to the transcript the desk and the docks
+share; the "not answering yet" line and the "Next phase" button are new copy, written to the
+plain-words rule.
+
+**A candidate for production.** Like the one-row bar (item S15), the shape is this site's to try
+first and production's to take later, by the maintainer's hand; nothing here is designed from a
+guess at the production side.
+
+Logged 8 Sep 2026. **Proposal owed; not built.**
+
+
+### Closed 9 Sep 2026 — built in four slices, pull requests #61 to #64
+
+**The proposal was approved as written on 8 Sep 2026** — the shared parts, what differs per
+consumer, six slices, the captures, and no change to Phoebe's route — and amended the same day to
+**four tabs: Chat · Tool · Knowledge pack · Credentials.** The Knowledge pack is its own tab (cards,
+versions, sources); Credentials is exam and scores only; **memory is never a tab** — it stays in the
+project record on the left rail, tagged by source.
+
+**Slice 1, the pictures (#61).** Six captures at 1280 by 720, drawn inside the running app by
+script over the real frame and two real turns, one to Wellington and one to Phoebe. Approved on
+pixels on 9 Sep 2026 with three rulings, applied from slice 2 on:
+
+1. **The "not answering here yet" line belongs on the agent's Chat tab, not on Tool.** Tool is just
+   the tool. When the chat is not live, Tool still opens first.
+2. **The record's source ("Wellington heard this") shows only on hover, behind the (i).** No line
+   under values. ~~Drawn as a line in the pictures.~~ **Owed to whichever slice first builds a
+   source into the rail; nothing does yet, so nothing shows.**
+3. **Tabs wear the agent's colour.** The row sits on a light tint of the agent's accent; the active
+   tab is a step darker, bold, underlined in the accent; the active crew card is underlined in the
+   same colour. That is how a visitor sees the tabs belong to that agent.
+
+**Slice 2, the desk (#62).** The screen built once in `src/screen/AgentScreen.tsx`, the desk its
+first consumer: Wellington in bubbles, Chat · Knowledge pack · Credentials (he has no tool),
+"Next phase: Eligibility" at the row's right end, the active crew card underlined in Tide.
+
+**Slice 3, Phoebe's screen (#63).** Her chat in the centre on her Anemone tint; the worksheet as
+Tool; the Knowledge pack assembled from the committed card registry with the approval date read
+from the files' own status lines; Credentials one component for every agent; her dock retired and
+the crew rail with the save button in its place. The Chat tab body moved into
+`src/screen/ScreenChat.tsx` so both screens draw the conversation with one component.
+
+**Slice 4, Bridget's and Calvin's screens (#64).** Tool first — the map and the calculator, moved
+inside their screens and mounted for the whole visit; the one plain line on each Chat tab, no
+composer; Bridget's pack the map's two datasets, cited as the licences module cites them; Calvin's
+pack the live method packs from the registry; both docks and the dock frame deleted; the crew rail
+with the save button on every step. The screen's panels stack under `visibility` rather than
+`display`, so the map stays drawn across a tab switch, and the open panel inherits visibility
+rather than forcing it — forcing it let a hidden screen's map show through another, found in the
+first capture and fixed before the second.
+
+**Slice 5 needed no build of its own**: the Credentials honest state landed with slice 3 across
+every agent. **Slice 6 is this close-out.**
+
+**Calls made and kept**, each recorded in its pull request's For Amy block: the active tab's
+underline is the agent's colour and the "Next phase" button is Tide, because it is navigation; a
+state chip's text is ink with the state's colour on the outline, because amber may not carry type;
+the bubble label reads Name · Role above the agent's bubble and the visitor's bubble has no label;
+Phoebe's dock's "Where to start" paragraph is gone, following the desk's no-intro rule, and what it
+said lives on the rail, the Knowledge pack tab and beside her name; her composer note states her cap;
+Calvin's caveat strip is not carried over because the worksheet says "screening, not verified" on
+its method strip, its result and its consultant-review tag; the roles read Map and Calculator,
+matching the crew rail; there is no "Next phase" on Quantify, because Plan opens with a saved project
+and the save button is the way on.
+
+**Real model calls across the four slices: four.** Two for the pictures, one for the desk's capture,
+one for Phoebe's. None for slice 4, whose agents do not answer.
+
+### The B→A raise — what the brand book should carry, by the maintainer's hand
+
+**The book does not carry the agent screen, and §0 says what it does not carry is raised, never
+invented.** Proposed for §7, Components, in the book's own terms:
+
+> **The agent screen.** One screen per agent: the agent's chat in the middle, and tabs above it —
+> Chat, always; Tool, when the agent has one; Knowledge pack; Credentials. **The tab row wears the
+> agent's accent** as an accent-tinted panel: about 5% fill and a hairline at about 25%. The active
+> tab is a step darker (about 12%), bold, and underlined 2px in the accent; the active crew card
+> takes the same underline. **Chat bubbles** follow §6's rule that the accent is used wherever the
+> agent speaks: the visitor's bubble on the right on `--card` with the hairline, the agent's on the
+> left at 5% fill and 25% border in its accent, its portrait beside it, signed `Name · Role` above.
+> **"Next phase"** is a secondary button (Tide) at the right end of the row; on the last free step
+> the save button is the way on. **Where the chat is not live the screen opens on Tool**, and the
+> Chat tab carries one plain line saying so — no composer. The accent is an identity throughout
+> (§2.6): a tint, a keyline, a bubble, never a status dot; Surf carries keylines and tints and never
+> text. **Three consumers, one screen** — the Commons (no memory), the open site (no memory, one
+> visit), production (memory saved to the project) — differ only in memory and in how deep the tool
+> goes; memory is never a tab.
+
+**Until the book carries it, this site states it as above and points here.**
+
+### The carry list for production — every file that makes the screen
+
+**Full source paths, and what each needs on the other side.** Production is Next.js; this site is
+Vite. Nothing here is designed from a guess at production's side — the list says what each file
+depends on, and production decides how to meet it.
+
+| File | What it is | What it needs on the other side |
+|---|---|---|
+| `src/screen/AgentScreen.tsx` | The screen: tab row, "Next phase", stacked panels hidden by visibility | The `AgentHost` type; the classes `.wb-tabs`, `.wb-tab`, `.wb-next-phase`; the custom property `--screen-accent`, which it sets from the host's token |
+| `src/screen/ScreenChat.tsx` | The Chat tab: host header, bubbles, the one composer | `Transcript` with `look="bubbles"`; the `Conversation` type; `.wb-composer`, `.wb-composer-desk`, `.wb-send-desk`, `.chrome`, `.tag`, `.t-mono`, `.t-caption`; tokens `--card`, `--line`, `--gutter`, `--r-md`, `--ink-3`; the portrait as an image address |
+| `src/screen/NotLiveChat.tsx` | The Chat tab of an agent whose chat is not live | The host header from `ScreenChat.tsx` and nothing else |
+| `src/screen/KnowledgePackTab.tsx` | Cards, versions, sources; rows that open to layers | The `Citation` type; `CiteLine` and `.wb-cite-*`; `.wb-pack-*`; `.chip` and `.tag` with `--chip-role`; `--state-approved`, `--state-pending` |
+| `src/screen/CredentialsTab.tsx` | Exam and scores, honest that none exists | `.wb-pack-*`; `.chip` with `--chip-role`; `--state-pending` |
+| `src/chat/Transcript.tsx` | Turns as rows or as bubbles | `AnswerBody`, `CiteLine`, the evidence types; `.wb-turn`, `.wb-turn-me`, `.wb-turn-host`, `.wb-turn-body`, `.wb-turn-portrait`, `.wb-turn-who`, `.wb-bubble`; `--turn-accent`, set per turn from the host's token |
+| `src/chat/AnswerBody.tsx`, `src/chat/CiteLine.tsx`, `src/chat/evidence.ts`, `src/chat/useConversation.ts` | The chat layer: markers, citations in the four-part shape, the host and turn types, the conversation hook with abort and the honest error | A relay per agent behind `/api/<agent>`, which the clients call with `fetch`; production's own routes, its own caps and its own memory |
+| `src/styles/tokens.css` | The tokens, transcribed from the book | The `--bot-*` tokens per agent — Wellington Tide, Phoebe Anemone `#A04E7E`, Bridget Surf, Calvin Plum — plus `--tide`, `--tide-text`, `--tide-hover`, the grounds, the inks, the radii, the fonts, `--gutter`. Production has the book's own; Phoebe's and Calvin's must be added wherever they are hosted |
+| `src/styles/base.css` | The stylesheet | The sections headed "The agent screen" and "The Knowledge pack and Credentials tabs", plus what they lean on: `.wb-composer*`, `.wb-send-desk`, `.wb-cite-*`, `.chip`, `.tag`, `.label`, `.eyebrow`, `.t-*`, `.wb-crew-row` |
+| `src/components/CrewRail.tsx` | The crew with the active card's underline and the save button at its foot | The portraits and the `--bot-*` tokens; the save button is this site's bridge and production has its own way on |
+| `src/lib/journey.ts` | The phases and `nextPhaseAfter`, which names the "Next phase" button | Production's own phases; only the shape carries |
+| `src/components/Desk.tsx`, `src/components/PhoebeScreen.tsx`, `src/components/BridgetScreen.tsx`, `src/components/CalvinScreen.tsx` | The four seats — each assembles its agent's tabs and holds or receives its conversation | Production writes its own seats, with memory passed in; Phoebe's pack view reads `src/lib/phoebeCards.ts`, Calvin's reads `src/lib/methodPacks.ts` |
+| `brand/assets/bots/wellington.svg`, `phoebe.svg`, `bridget.svg`, `calvin.svg` | The portraits | §8: a shared agent's portrait lives with the shared assets; Phoebe's lives with the open site |
+
+**Vite-only, which production must swap:**
+
+- **`?raw` imports.** `src/lib/phoebeCards.ts` reads the two card files with `import … from
+  '../../eligibility-cards-vwba.md?raw'`. Next.js has no `?raw`; read the files with `fs` in a
+  server module at build time, or add a raw loader.
+- **SVG imports as addresses.** Every portrait is `import x from '….svg'` and Vite returns a URL
+  string. Next.js returns an image object, so use `.src`, or serve the portraits from `public/`.
+- **`src/vite-env.d.ts`** declares those two import kinds for the type checker; production declares
+  its own.
+- **`import.meta.env.VITE_*`** is used only by the map (`VITE_CARTO_KEY` in `BasinMap.tsx`), not by
+  the screen; noted so the map's Tool tab is not carried without it.
+- **Relative `fetch('/api/…')`** in `phoebeClient.ts` and `wellingtonClient.ts` reaches Vercel
+  functions here; production's API routes answer the same shape or the clients change.
+- **`color-mix(in oklab, …)`** and custom properties set from React style objects are browser
+  features, not Vite's; they carry unchanged.
+
+Logged 8 Sep 2026. **Built 9 Sep 2026, pull requests #61 to #64. Closed and moved to the archive
+the same day; the raise and the carry wait on the maintainer's hand.**
+
+---
+
 
 # Family: Operations
 

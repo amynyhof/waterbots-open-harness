@@ -60,7 +60,34 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — the canon and the look pass
+## Just finished — the agent screen
+
+**9 Sep 2026. Pull requests #61 to #64, and this close-out.** Item S16 built, closed and archived;
+item S17 logged and parked.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
+is now true.
+
+- **Every step is an agent screen**, built once in `src/screen/AgentScreen.tsx`: the agent's chat in
+  the middle in bubbles, and tabs above it — Chat, always; Tool, when the agent has one; Knowledge
+  pack; Credentials. The tab row wears the agent's colour, the active tab a step darker, bold and
+  underlined in it, and the active crew card takes the same underline. "Next phase" sits at the
+  row's right end on every step but Quantify, where the save button is the way on.
+- **The desk** is Wellington's screen, Chat · Knowledge pack · Credentials. **Phoebe's** has her
+  chat on her tint, the worksheet as Tool, her Knowledge pack assembled from the committed cards with
+  the approval date read from the files, and Credentials honest that no exam has been sat.
+  **Bridget's and Calvin's** open on Tool — the map and the calculator — with one plain line on the
+  Chat tab and no composer; Bridget's pack is the map's two datasets and Calvin's the live method
+  packs.
+- **The right column is the crew with the save button on every step.** The three host docks and the
+  old dock frame are gone.
+- **Memory is never a tab.** It stays in the record on the left rail. The record's source shows only
+  behind the (i), on hover, when a source is built into the rail; nothing does yet.
+- **The B→A raise** — the agent screen as a §7 component of the brand book — and **the carry list
+  for production**, every file with its path and what it needs on the other side, are recorded once
+  under item S16 in the archive and wait on the maintainer's hand.
+
+## Previously — the canon and the look pass
 
 **Second sitting of 8 Sep 2026. Pull requests #58 and #59, merged.** Item S16 logged.
 
@@ -257,10 +284,10 @@ is nothing left for images to teach.** No folder waits for them.
 she carries three facts from production.~~ **The three facts landed and the sender shipped on
 8 Sep 2026** (#56). Item S7 is closed.
 
-**The phase-screens proposal (item S16) is next**, by the maintainer's word of 8 Sep 2026: every
-phase page as a screen with the agent's chat in the middle and its tool as a tab, "Next phase" on
-every step, save reachable from every step, chat bubbles. **Proposal first, images first**; nothing
-is built until she has approved the pictures.
+~~**The phase-screens proposal (item S16) is next**, by the maintainer's word of 8 Sep 2026.~~
+**Proposed, drawn, approved and built in four slices on 8–9 Sep 2026** (#61 to #64). Item S16 is
+closed; its raise into the brand book and its carry list for production wait on the maintainer's
+hand. **Item S17 is parked for a design session** and nothing is built toward it.
 
 **The hero chat follows**, as below, and it still waits on the maintainer's reference file. Nothing
 is built toward it until she says the file is in. **What comes next is decided at the next session's
