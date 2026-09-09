@@ -263,6 +263,19 @@ credit line does not meet any of these bars.
   production — differ only in memory and tool depth; the B→A raise into the
   brand book and the carry list for production are recorded under S16 in the
   archive and wait on the maintainer's hand.
+- **The handoff receiver, 9 Sep 2026 (item S13) — the save door walked the other
+  way.** A visitor who types a question into the production landing's box arrives
+  here with it in the address; the desk reads it, cleans the address, opens
+  Dispatches and hands it to Wellington as the visitor's first turn, in a bubble,
+  so his answer is the first thing they see. Nothing is kept. **Bad or empty input
+  is ignored with no error** — the page opens as it always opens and never
+  invents a question. **Ten a day per visitor**, a counter of its own on
+  Wellington's relay on top of his thirty, never instead of it; the cap's shape
+  is the maintainer's ruling of 9 Sep 2026. The sender's one-line contract —
+  `?question=`, percent-encoded UTF-8, at most 500 characters decoded — lives in
+  `src/lib/carried.ts` and under item S13, and production carries it by the
+  maintainer's hand. **The hero chat (item S12) is parked**, a later item, not
+  built; the same receiver will feed it.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material

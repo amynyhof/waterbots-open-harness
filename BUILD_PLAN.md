@@ -60,10 +60,33 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — the agent screen
+## Just finished — the handoff receiver
 
-**9 Sep 2026. Pull requests #61 to #64, and this close-out.** Item S16 built, closed and archived;
-item S17 logged and parked.
+**9 Sep 2026, second sitting. Pull request #66, and this close-out.** Item S13 built; item S12
+parked by the maintainer's word.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
+is now true.
+
+- **A question carried in from the production landing lands on the desk.** The shell reads
+  `?question=` from the address on arrival, cleans the address, opens Dispatches and hands the
+  question to Wellington as the visitor's first turn, in a bubble. Nothing is kept. Bad or empty
+  input is ignored with no error. The parser and the contract are `src/lib/carried.ts`.
+- **The sender's contract, for production to carry:** `https://map.waterbots.ai/?question=<text>`,
+  percent-encoded UTF-8 the way `encodeURIComponent` writes it, at most 500 characters decoded, the
+  first occurrence only.
+- **Ten a day per visitor**, under a counter of its own on Wellington's relay, on top of his thirty
+  and never instead of it. The shape is the maintainer's ruling of 9 Sep 2026. A refused eleventh is
+  told in plain words and the desk composer still works.
+- **The gates hold it**: `check-wellington` (60) for the parser and the shell reading the address
+  once, `check-cap` (36) for the counter.
+- **The hero chat (item S12) is parked**, a later item, not built. The same receiver feeds it when
+  it comes, because the shell holds the one conversation.
+
+## Previously — the agent screen
+
+**9 Sep 2026. Pull requests #61 to #64, and that day's first close-out.** Item S16 built, closed and
+archived; item S17 logged and parked.
 
 **The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
 is now true.
@@ -289,9 +312,11 @@ she carries three facts from production.~~ **The three facts landed and the send
 closed; its raise into the brand book and its carry list for production wait on the maintainer's
 hand. **Item S17 is parked for a design session** and nothing is built toward it.
 
-**The hero chat follows**, as below, and it still waits on the maintainer's reference file. Nothing
-is built toward it until she says the file is in. **What comes next is decided at the next session's
-open.**
+~~**The hero chat follows**, as below, and it still waits on the maintainer's reference file. Nothing
+is built toward it until she says the file is in.~~ **The hero chat (item S12) is parked by the
+maintainer's word of 9 Sep 2026 — a later item, not built.** Its receiver (item S13) did not wait
+for it: it shipped the same day onto the desk (#66). **What comes next is decided at the next
+session's open.**
 
 ## Previously planned next — the hero chat, when its reference arrives
 
@@ -321,6 +346,6 @@ builds only its side.
 | Family | Why it waits |
 |---|---|
 | **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. **The first method pack (item K5) landed 1 Sep 2026 and the two carbon packs (item K6) on 2 Sep, both outside that order, because the maintainer scoped them herself.** The carbon card pass (item K7) waits for Thursday. |
-| **Surfaces** | **The hero chat (item S12) is next and waits on the maintainer's reference file**; its receiver (item S13) waits on it; the typing-dots exception (item S14) waits on her hand into the book. The bridge (item S7) ~~has its contract ruled, 7 Sep 2026; its sender builds next~~ **shipped 8 Sep 2026 and is closed**. The brightness pull-up (item S8) and the return to the book (item S9) are both **closed**. The rest of the family is polish (item S5), the dev-relay gap (item S6), or waits on data that does not exist yet (item S1). |
+| **Surfaces** | ~~**The hero chat (item S12) is next and waits on the maintainer's reference file**; its receiver (item S13) waits on it;~~ **The hero chat (item S12) is parked, 9 Sep 2026, and its receiver (item S13) shipped without it the same day**; the typing-dots exception (item S14) waits on her hand into the book. The bridge (item S7) ~~has its contract ruled, 7 Sep 2026; its sender builds next~~ **shipped 8 Sep 2026 and is closed**. The brightness pull-up (item S8) and the return to the book (item S9) are both **closed**. The rest of the family is polish (item S5), the dev-relay gap (item S6), or waits on data that does not exist yet (item S1). |
 | **Data** | Blocked on material the maintainer supplies — registry coordinates for the project points (item D2), public disclosures for corporate goals and target geographies (item D1). Not work that can start from inside the repository. |
 | **Operations** | **Nothing is due.** What remains waits on real usage that does not exist yet: the number twenty (item O1), the basemap's five-million-request ceiling (item O9), and the primer review against the abstention log (item A5). Two questions are open and unhurried — whether the export copies should be produced by a script (item O8), and whether an abstention that cited a card is a fault at all (item A7 — it recurred on 3 Sep and reads as the benign branch; the maintainer's reading closes it). |

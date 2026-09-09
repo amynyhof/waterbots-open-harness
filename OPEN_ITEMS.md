@@ -2048,7 +2048,9 @@ holds it.
 
 **Ten a day per visitor**, the bridge's number, by the maintainer's word: a carried question is
 counted under its own counter on Wellington's relay, on top of his thirty and never instead of it,
-so a landing page is not a way round his cap. The eleventh is refused in plain words and the desk
+so a landing page is not a way round his cap. **The shape was the engineer's reading of "ten-a-day
+cap applies", stated as an assumption in the pull request, and the maintainer approved it on
+9 Sep 2026 with the merge of #66.** The eleventh is refused in plain words and the desk
 composer still works. The gate in `scripts/check-cap.mjs` holds the number.
 
 **Proved with one real call on 9 Sep 2026**, the capture in the pull request. A first attempt was

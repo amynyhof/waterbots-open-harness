@@ -747,3 +747,64 @@ prompt modules rebuilt, the handoff rewritten fresh, the exports regenerated aft
 The migration gate ran and found no migrations. **Pull request #64 was still open on GitHub when the
 close-out was written**, so the docs branch was cut from the slice-4 branch and the docs pull request
 says so on its first line.
+
+## 9 September 2026, second sitting — the handoff receiver
+
+**One pull request, #66, and this close-out.** Item S13 built; item S12 parked by the maintainer's
+word. Two real model calls attempted, one delivered.
+
+### What was built
+
+**The receiver.** The desk reads `?question=` from the address on arrival, cleans the address so a
+reload or a shared link cannot send it twice, opens Dispatches and hands the question to Wellington
+as the visitor's first turn, in a bubble, so his answer is the first thing a visitor sees. Nothing
+is kept. Bad or empty input — missing, blank, over the cap, or a sequence that did not decode — is
+ignored with no error; the page opens as it always opens. The parser is `src/lib/carried.ts`, with
+no imports so the gate compiles it alone, and it carries the sender's contract in one line:
+`?question=`, percent-encoded UTF-8 the way `encodeURIComponent` writes it, at most 500 characters
+decoded, first occurrence only.
+
+**The flag and the cap.** `Ask` gained an optional third parameter, `AskMeta { carried?: boolean }`;
+Wellington's adapter passes it to the client, which adds `carried: true` to the body only when
+true, and the relay reads it as exactly true. A carried question counts under its own counter,
+`carried`, ten a day per visitor — the bridge's number — before his thirty and on top of it; a
+refusal on either counter refunds the other, and every undelivered path refunds both. The
+maintainer's sentence was "Ten-a-day cap applies"; the shape was stated as an assumption in the
+pull request and approved with the merge.
+
+**The gates.** `check-cap` grew to 36 checks — the carried counter to ten under its own name, his
+thirty untouched, the relay reading the flag strictly and refunding on the undelivered path.
+`check-wellington` grew to 60 — the parameter and the cap, a real question through, non-ASCII
+through, blank, missing, over-long and broken encoding all ignored, whitespace folded, the first
+occurrence only, the address cleaned and everything else in it kept, the shell reading it once.
+
+**The docs.** Item S13 marked built with the contract recorded where the item said it would be;
+item S12 parked as a later item, not built, with the note that the same receiver will feed it.
+
+### What was learned
+
+**React's development double-mount aborts a request started in the first mount's effect.** The
+first real call put the question in its bubble and nothing else happened — no thinking line, no
+answer, no error, and the local relay logged "aborted" before the handler ran. StrictMode's
+simulated unmount ran the conversation hook's cleanup, which aborts whatever is in flight. The send
+now sits in a zero-delay timer that the effect's cleanup clears and the repeated mount sets again,
+so it fires once after mounting settles. A silent state, found on the engineer's own eyeball before
+the pull request, and the code says why the timer is there.
+
+**Two real calls attempted, one delivered**, both reported in the pull request. The aborted one
+was stopped at the relay while reading the request body; the log shows no model reply.
+
+### Decisions
+
+- **The cap's shape**: a separate counter of ten for carried questions, on top of Wellington's
+  thirty. Assumed, stated, approved with the merge of #66.
+- **The receiver lands on the desk, not a hero page.** The hero chat is parked; the shell holds
+  the one conversation, so the hero page will show the same thread when it comes.
+
+### Housekeeping
+
+The close-out itself: the build plan's "just finished" and "next", the README's console paragraph
+on the door opening the other way, CLAUDE.md's scope bullet, item S13's cap note, the handoff
+rewritten fresh, the exports regenerated after the checkpoint. The migration gate ran and found no
+migrations. Local `main` had fallen behind `origin` at the opening — #64 and #65 had merged after
+the last close — and was fast-forwarded before anything was built.
