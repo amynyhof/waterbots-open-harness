@@ -44,13 +44,16 @@ export function actionFor(route: WellingtonRoute): TurnAction | undefined {
 
 /** His adapter: the relay's answer becomes a turn, and what he learned goes to the visit. */
 export function wellingtonAsk(onLearned: (learned: Learned) => void): Ask {
-  return async (history, signal): Promise<AgentTurn> => {
+  return async (history, signal, meta): Promise<AgentTurn> => {
     const answer = await askWellington(
       history.map(({ role, text }) => ({
         role: role === 'agent' ? ('assistant' as const) : ('user' as const),
         content: text,
       })),
-      signal
+      signal,
+      /* A question carried in from the production landing says so, so the
+         relay can count it under the carried cap (item S13). */
+      meta?.carried === true
     );
     if (Object.keys(answer.learned).length > 0) onLearned(answer.learned);
     return {

@@ -109,8 +109,8 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S9 | The return to the brand book | Surfaces | **closed 30 Aug 2026** — both raises shipped, book at v4.1 |
 | S10 | The Quantification step | Surfaces | **built 1 Sep 2026** — the third surface, pack-keyed; three packs from 2 Sep |
 | S11 | The free desk, and the console in the production shape | Surfaces | **built 2 Sep 2026** — Wellington's desk, the journey bar, ~~four tabs~~ one row from 7 Sep; **his chat live on it from 3 Sep; the desk plan's three slices landed 5–7 Sep** |
-| S12 | The hero chat — a full page that is the conversation | Surfaces | **logged 3 Sep 2026, not built** — waits on the maintainer's reference file |
-| S13 | The handoff receiver — a question carried in from the production landing | Surfaces | **logged 3 Sep 2026, not built** — the save door in reverse; each shell builds its side |
+| S12 | The hero chat — a full page that is the conversation | Surfaces | **logged 3 Sep 2026, not built; parked as a later item by the maintainer's word, 9 Sep 2026** — the receiver (S13) lands on the desk without it |
+| S13 | The handoff receiver — a question carried in from the production landing | Surfaces | ~~logged 3 Sep 2026, not built~~ **built 9 Sep 2026** — the desk receives it; the sender's contract is recorded here for production to carry |
 | S14 | Typing dots — the book's third motion exception | Surfaces | **ruled 3 Sep 2026** — waits on the maintainer's hand into §5 |
 | S15 | One row — the journey bar is the navigation; a candidate for production | Surfaces | **built 7 Sep 2026** — the tab row removed; offered to production by the maintainer's hand, later |
 | S16 | The agent screen — every step is a screen, the agent's chat in the middle and its tool as a tab; a candidate for production | Surfaces | **built 9 Sep 2026, #61 to #64** — [archived](./OPEN_ITEMS_ARCHIVE.md); the B→A raise into the book and the carry list wait on the maintainer's hand |
@@ -2008,6 +2008,11 @@ from the porch into the desk confirmed in the browser.
 
 Logged 3 Sep 2026. **Not built. Waiting on the reference file.**
 
+**Parked, 9 Sep 2026, by the maintainer's word:** a later item, not built. The receiver (item S13)
+was built the same day without it — a carried question lands on the desk, which is Wellington's
+screen, rather than on a hero page. When the hero chat is built, the same receiver feeds it: the
+shell holds the one conversation and any frame around it shows the thread.
+
 ## S13. The handoff receiver — a question carried in from the production landing
 
 **Logged 3 Sep 2026, by the maintainer's confirmed shape. Not built.**
@@ -2025,8 +2030,34 @@ the way the bridge (item S7) does. Nothing here is designed from a guess at the 
 sends it; a check that a malformed or absent carry opens the page honestly empty rather than
 inventing a question; and the sender's shape recorded here when it arrives.
 
-Logged 3 Sep 2026. **Not built. Waits on item S12 and on the sender's shape by the maintainer's
-hand.**
+~~Logged 3 Sep 2026. **Not built. Waits on item S12 and on the sender's shape by the maintainer's
+hand.**~~
+
+**Built 9 Sep 2026, by the maintainer's word of that day, with the hero chat (item S12) parked.**
+The receiver lands on the desk instead: the desk reads the question from the address, opens
+Dispatches, and hands it to Wellington as the visitor's first turn, in a bubble, so his answer is
+the first thing they see. The address is cleaned the moment the question is read, so a reload or a
+shared link cannot send it twice; nothing is kept. **Bad or empty input is ignored with no error** —
+a missing, blank, over-long or unreadable question opens the page as it always opens.
+
+**The sender's contract, for production to carry — one line:** open
+`https://map.waterbots.ai/?question=<the question, percent-encoded as UTF-8 the way
+encodeURIComponent writes it, at most 500 characters once decoded>`. Only the first `question=` is
+read. The contract lives in `src/lib/carried.ts` and the gate in `scripts/check-wellington.mjs`
+holds it.
+
+**Ten a day per visitor**, the bridge's number, by the maintainer's word: a carried question is
+counted under its own counter on Wellington's relay, on top of his thirty and never instead of it,
+so a landing page is not a way round his cap. The eleventh is refused in plain words and the desk
+composer still works. The gate in `scripts/check-cap.mjs` holds the number.
+
+**Proved with one real call on 9 Sep 2026**, the capture in the pull request. A first attempt was
+aborted at the local relay before the model was reached: React's development double-mount ran the
+conversation's cleanup and cancelled the request in flight, so the send is now deferred one tick
+and the code says why.
+
+**Open as the home for the receiver's story.** The hero page, when it comes, is fed by the same
+receiver.
 
 ## S14. Typing dots — the book's third motion exception
 

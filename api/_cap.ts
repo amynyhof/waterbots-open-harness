@@ -65,10 +65,22 @@ export interface CapAgent {
  */
 export const HANDOFF_DAILY_CAP = 10;
 
+/**
+ * The receiver's cap — a question carried in from the production landing
+ * (item S13). The maintainer's word of 9 Sep 2026: ten a day per visitor, the
+ * bridge's number, because it is the same door walked the other way. A carried
+ * question is still a message to Wellington and spends one of his thirty as
+ * well; this counter is on top, not instead, so a landing page cannot be used
+ * to walk round his cap and a flood of arrivals stops at ten.
+ */
+export const CARRIED_DAILY_CAP = 10;
+
 export const PHOEBE: CapAgent = { name: 'phoebe', cap: DAILY_CAP };
 export const WELLINGTON: CapAgent = { name: 'wellington', cap: WELLINGTON_DAILY_CAP };
 /** Not an agent, but it counts the same way. The key prefix is "handoff". */
 export const HANDOFF: CapAgent = { name: 'handoff', cap: HANDOFF_DAILY_CAP };
+/** Not an agent either. The key prefix is "carried". */
+export const CARRIED: CapAgent = { name: 'carried', cap: CARRIED_DAILY_CAP };
 
 export type CapDecision =
   /** Counted. Call `refund` if no answer is delivered. */

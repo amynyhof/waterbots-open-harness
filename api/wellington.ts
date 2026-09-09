@@ -26,7 +26,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { recordAbstention } from './_abstentions.js';
 import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
-import { WELLINGTON, countOneMessage, timeUntilReset } from './_cap.js';
+import { CARRIED, WELLINGTON, countOneMessage, timeUntilReset } from './_cap.js';
 import { WELLINGTON_RESPONSE_SCHEMA, WELLINGTON_SYSTEM_PROMPT } from './_wellingtonPrompt.js';
 import { validate } from './_wellingtonAnswer.js';
 
@@ -100,12 +100,17 @@ export async function GET(): Promise<Response> {
 }
 
 export async function POST(req: Request): Promise<Response> {
-  let body: { messages?: IncomingMessage[] };
+  let body: { messages?: IncomingMessage[]; carried?: unknown };
   try {
-    body = (await req.json()) as { messages?: IncomingMessage[] };
+    body = (await req.json()) as { messages?: IncomingMessage[]; carried?: unknown };
   } catch {
     return problem(400, 'That request could not be read.');
   }
+
+  /* A question carried in from the production landing's question box says so
+     (item S13, 9 Sep 2026). It is counted under its own cap of ten a day
+     before his thirty. Exactly `true` counts; anything else is a typed turn. */
+  const carried = body.carried === true;
 
   const messages = Array.isArray(body.messages) ? body.messages : null;
   if (!messages || messages.length === 0) {
@@ -149,8 +154,44 @@ export async function POST(req: Request): Promise<Response> {
     );
   }
 
+  /* THE CARRIED CAP FIRST, when the question came over from the landing. Ten
+     a day under its own name, on top of his thirty. Refused, the visitor is
+     told in plain words and nothing is spent; the desk composer still works,
+     because that is his cap, not this one. */
+  const carriedDecision = carried ? await countOneMessage(req, new Date(), CARRIED) : null;
+
+  if (carriedDecision?.kind === 'misconfigured') {
+    console.error(
+      `wellington: ${carriedDecision.missing} is not configured, so the carried-question cap cannot be enforced. Refusing to answer without it.`
+    );
+    return problem(
+      503,
+      'Wellington is not answering right now. The daily limit that keeps him free and open to everyone is not running in this environment, and he does not answer without it. This is a configuration problem on our side, not something you did.'
+    );
+  }
+
+  if (carriedDecision?.kind === 'refused') {
+    return problem(
+      429,
+      `You have brought ${carriedDecision.cap} questions over from waterbots.ai today, which is the daily limit for that door. You can still type to Wellington here. The count resets at midnight UTC, ${timeUntilReset(carriedDecision.secondsToReset)}. Nothing you have told him is kept between visits in any case.`,
+      { 'retry-after': String(carriedDecision.secondsToReset) }
+    );
+  }
+
+  if (carriedDecision?.kind === 'uncounted') {
+    console.error(`wellington: this carried question was not counted against the carried cap — ${carriedDecision.why}`);
+  }
+
+  const refundCarried = async (): Promise<void> => {
+    if (carriedDecision?.kind === 'allowed') await carriedDecision.refund();
+  };
+
   /* The cap, counted at the last moment before the model, under his own name. */
   const decision = await countOneMessage(req, new Date(), WELLINGTON);
+
+  /* Refused or unable under his own cap, the carried count is put back too —
+     no answer was delivered, so nothing is spent on either counter. */
+  if (decision.kind === 'misconfigured' || decision.kind === 'refused') await refundCarried();
 
   if (decision.kind === 'misconfigured') {
     console.error(
@@ -176,6 +217,7 @@ export async function POST(req: Request): Promise<Response> {
 
   const undelivered = async (response: Response): Promise<Response> => {
     if (decision.kind === 'allowed') await decision.refund();
+    await refundCarried();
     return response;
   };
 
