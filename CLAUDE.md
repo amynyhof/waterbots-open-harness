@@ -276,6 +276,17 @@ credit line does not meet any of these bars.
   `src/lib/carried.ts` and under item S13, and production carries it by the
   maintainer's hand. **The hero chat (item S12) is parked**, a later item, not
   built; the same receiver will feed it.
+- **Agent Commons, 9 Sep 2026 (item S18) — proposed, approved, the pictures
+  drawn; not yet built.** A public gallery of graded knowledge packs, each
+  wearing the face of the agent who holds it, at its own address; open one and
+  the agent screen appears as its third consumer, without memory, its chat
+  capped; free to explore, sign up to manage a project. **Two rulings the same
+  day, canon.** *One grader:* the grading rig kept outside this repository, Deb's,
+  is the only public grade; the Commons shows its card and nothing else, and this
+  site's and production's own checks are internal gates, never a public score.
+  *Real only:* a grade on the Commons comes from real projects and real
+  knowledge packs run through that rig, and no invented case, ever. Credentials
+  on the Commons reads "not yet graded" until a real card from that rig exists.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material

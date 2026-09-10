@@ -115,6 +115,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S15 | One row — the journey bar is the navigation; a candidate for production | Surfaces | **built 7 Sep 2026** — the tab row removed; offered to production by the maintainer's hand, later |
 | S16 | The agent screen — every step is a screen, the agent's chat in the middle and its tool as a tab; a candidate for production | Surfaces | **built 9 Sep 2026, #61 to #64** — [archived](./OPEN_ITEMS_ARCHIVE.md); the B→A raise into the book and the carry list wait on the maintainer's hand |
 | S17 | The agent watches its Tool tab and comments; a pulsing teal dot on Chat | Surfaces | **logged 9 Sep 2026, parked for a design session, both sides** — no proposal yet |
+| S18 | Agent Commons — a public gallery of graded knowledge packs, each wearing an agent face | Surfaces | **logged 9 Sep 2026; proposal approved; slice 1 drawn** — slices 2 and 3 approved to build, slice 4 waits on Deb's rig |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
@@ -2138,6 +2139,85 @@ nothing is invented from what the visitor did not do.
 **Parked.** No proposal is owed until the design session has met; nothing is built toward it.
 
 Logged 9 Sep 2026. **Parked for a design session; no proposal yet.**
+
+## S18. Agent Commons — a public gallery of graded knowledge packs, each wearing an agent face
+
+**Logged 9 Sep 2026 from the maintainer's rulings of that day.** The rulings already made when the
+proposal was asked for, in her words: *name "Agent Commons"; word "knowledge pack"; a public gallery
+of graded knowledge packs wearing an agent face; scroll the agents and see what each is good at;
+open one → its agent screen (Chat · Tool if any · Knowledge pack · Credentials), no memory, capped
+chat; Credentials is the read-more ladder with "not yet graded" when true; a flag button on each
+case later; free to explore; sign up to manage a project.*
+
+**Two rulings the same day, into canon.** Both are recorded in [CLAUDE.md](./CLAUDE.md)'s scope and
+pointed at from here.
+
+- **ONE GRADER.** In her words: *Deb's rig is the only public grade. The Commons shows Deb's rig's
+  card and nothing else; this site's and production's own evals are internal gates, never a public
+  score. Credentials on the Commons reads "not yet graded" until a real card from Deb's rig exists.*
+  "Deb's rig" is the grading harness kept outside this repository, in Deb's own private one; it was
+  read on 9 Sep 2026 through the GitHub API by the maintainer's word, nothing cloned and nothing
+  changed, and rule zero stands — anything it needs is a written note the maintainer carries to Deb
+  herself.
+- **REAL ONLY.** In her words: *Grades on the Commons come from real projects and real knowledge
+  packs run through Deb's rig. No invented cases, ever.*
+
+**The proposal, approved as written on 9 Sep 2026.** *Where it lives:* its own address,
+`map.waterbots.ai/commons`, opened by one word, "Agent Commons", at the right of the top bar and
+never on the journey bar, which stays the journey; one rewrite rule for Vercel, since the site has
+none today; no left rail, no record, no save button; the crew stays in the right column, and where
+the save button sits reads "Sign up to manage a project", a plain link to production. *The shelf:*
+one card per knowledge pack, wearing the face of the agent who holds it, one line on what it is
+good at, a version tag and a state chip, read from the registries that already exist — Phoebe's
+cards, Calvin's three method packs, Bridget's two datasets — and nothing typed twice; Wellington
+carries no knowledge pack and has no card, and the shelf says so in a line. *Open one:* the
+built-once agent screen as its third consumer, memory-less, its chat capped on the same counters,
+no "Next phase" because there is no journey here, a back row naming the pack once.
+
+**Slices, in order, images first.**
+
+1. **Pictures** — three at 1280 by 720: the shelf; Phoebe's pack open on Chat; Calvin's open on
+   Credentials. **Drawn 9 Sep 2026 inside the running app by script over the real frame**, one real
+   turn to Phoebe, in the pull request's For Amy block for her eyeball.
+2. **The address and the shelf.** Approved to build, on her approval of the pixels.
+3. **Open one** — the screen as the third consumer, the sign-up link in place of save. Approved to
+   build.
+4. **Credentials fed by Deb's rig.** **Waits on Deb.** The three changes his rig needs, which the
+   maintainer takes to him herself:
+   - **Save the per-case answers and the judge's calls.** Today the rig keeps three things per case
+     after grading — the case id, the verdict (pass, abstain or fail) and the failure lines — and
+     discards the agent's answer and its tool calls. Its test command prints and saves nothing. Its
+     trust-card command re-runs every case a second time to get the claims back and writes one
+     gitignored markdown file: counts, a knowledge rate, the claims with what they cite, the failure
+     lines; a passing case shows no rule checked, the project facts are not in it, tool calls are
+     not in it. The questions and the judge's rules are already saved, one YAML file per case under
+     the pack's `tests/cases/`: the description, task and project block are the question, the
+     `expected` block is the rules. The smallest change, about 25 lines: keep the output and tool
+     calls on the per-case result, and write a JSON file beside the markdown with one record per
+     case — id, description, task, project, the expected block, output, tool calls, verdict,
+     failures — plus pack id and version, agent name and version, and the date; then stop ignoring
+     it. His repository is private, so the file still reaches this site by her hand.
+   - **Sit this site's live agents.** The rig's reference agent calls no model by design; it reads
+     the pack's YAML and formulas and is deterministic. A public grade of Phoebe or Wellington needs
+     their relays sat, not the reference agent.
+   - **Real cases.** His own design notes say the existing exam cases use invented Kilifi and
+     Turkana projects that do not meet the no-fabricated-data rule; the VWBA case 001, on a real
+     Meta 2023 report figure, is the exception. Under REAL ONLY none of the invented ones can show.
+5. **The flag button** on each case. Later, not v0.
+
+**Calls made in slice 1, each stated in the pull request.** Picture 3 shows Calvin's Credentials
+tab rather than Tool, because Tool is the calculator already approved on 9 Sep 2026 and unchanged,
+and Credentials is where the day's rulings show. The built Credentials tab says the score is the
+maintainer's; the picture's wording moves it to the one public exam, per ONE GRADER, in a visitor's
+words — a text change owed to slice 3. The chip reads "not yet graded" on the shelf and on
+Credentials alike. Phoebe's card is one card for her two card sets, because her Knowledge pack tab
+is one pack; Bridget's is one card for the map's two datasets for the same reason.
+
+**Real model calls in slice 1: two.** One to Phoebe, intended, for the second picture. One to
+Wellington, by mistake: the script sent to the first composer it could see, and every mounted
+screen's panel reports itself visible. The answer was not used and the script was corrected.
+
+Logged 9 Sep 2026. **Slice 1 drawn; slices 2 and 3 approved to build; slice 4 waits on Deb.**
 
 ---
 

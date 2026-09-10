@@ -315,8 +315,15 @@ hand. **Item S17 is parked for a design session** and nothing is built toward it
 ~~**The hero chat follows**, as below, and it still waits on the maintainer's reference file. Nothing
 is built toward it until she says the file is in.~~ **The hero chat (item S12) is parked by the
 maintainer's word of 9 Sep 2026 — a later item, not built.** Its receiver (item S13) did not wait
-for it: it shipped the same day onto the desk (#66). **What comes next is decided at the next
-session's open.**
+for it: it shipped the same day onto the desk (#66). ~~**What comes next is decided at the next
+session's open.**~~
+
+**The Agent Commons (item S18) is next, by the maintainer's word of 9 Sep 2026.** The proposal was
+approved as written the same day, and slices 1 to 3 are approved: the pictures, the address and the
+shelf, and open-one on the agent screen. **Slice 1 is drawn** — three pictures at 1280 by 720, in
+the pull request for her eyeball — and slices 2 and 3 build on her approval of the pixels. Slice 4,
+Credentials fed by Deb's rig, waits on three changes to the rig that she takes to Deb herself; they
+are listed under the item. The flag button is later, not v0.
 
 ## Previously planned next — the hero chat, when its reference arrives
 
