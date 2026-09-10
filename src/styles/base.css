@@ -1153,3 +1153,51 @@ button.wb-phase:hover span:last-child {
 .wb-pack-open .wb-cite-line {
   padding-left: 0;
 }
+
+/* ---------------------------------------------------------------------------
+   The Agent Commons — item S18, slice 2, 11 Sep 2026.
+
+   ONE WORD AT THE RIGHT OF THE TOP BAR opens it, and never the journey bar,
+   which stays the journey. A quiet text link in the top bar's own measure;
+   on the Commons it is the current page and reads in ink, bold, with no hand.
+   The wordmark at the left is the way back to the console, as a wordmark
+   conventionally is; it carries no styling of its own beyond the cursor.
+
+   A CREW ROW MAY BE A LISTING. The Commons' right column shows the crew with
+   the row's look and none of its promise — no hover, no hand — because on
+   the Commons an agent is opened from its pack's card, not from the crew.
+--------------------------------------------------------------------------- */
+.wb-topbar-link {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  background: transparent;
+  border: 0;
+  padding: 4px 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--dur) var(--ease);
+}
+.wb-topbar-link:hover {
+  color: var(--ink);
+}
+.wb-topbar-link[aria-current='page'] {
+  color: var(--ink);
+  font-weight: 600;
+  cursor: default;
+}
+.wb-wordmark-link {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.wb-crew-row.is-static {
+  cursor: default;
+}
+.wb-crew-row.is-static:hover {
+  background: transparent;
+}

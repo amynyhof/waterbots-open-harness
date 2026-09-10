@@ -18,15 +18,16 @@
  *
  * FOUR AGENTS, AND THE ROSTER IS THE BOOK'S. Wellington and Bridget are the
  * shared crew, Phoebe and Calvin extend it under §6. Nobody is minted here.
+ * ~~The roster lives in this file.~~ It moved to src/lib/crew.ts on
+ * 11 Sep 2026 (item S18, slice 2), and the row to CrewRow.tsx, when the Agent
+ * Commons' right column came to list the same four; this rail reads both.
  */
 
-import bridgetPortrait from '../../brand/assets/bots/bridget.svg';
-import calvinPortrait from '../../brand/assets/bots/calvin.svg';
-import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
-import wellingtonPortrait from '../../brand/assets/bots/wellington.svg';
+import { CREW } from '../lib/crew';
 import type { SealState } from '../lib/handoff';
 import type { Surface } from '../lib/surfaces';
 import type { DeskRow } from '../lib/visit';
+import CrewRow from './CrewRow';
 
 /**
  * THE CONSENT LINE — item S7, the contract's first step: the visitor is told
@@ -38,54 +39,6 @@ const CONSENT_LINE =
   'Going with you: what you said about the project, the basin you pinned, where each ' +
   'eligibility criterion stands, and the numbers you typed in. Not the results worked out ' +
   'here, and not your conversation. Nothing stays on this site.';
-
-interface CrewMember {
-  name: string;
-  role: string;
-  portrait: string;
-  /** The identity token, read and never re-typed. */
-  token: string;
-  /** Whether the accent clears 4.5:1 on white and may carry the name as text. */
-  nameInAccent: boolean;
-  surface: Surface;
-}
-
-const CREW: CrewMember[] = [
-  {
-    name: 'Wellington',
-    /* "Team Lead" — maintainer's naming ruling, 2 Sep 2026. */
-    role: 'Team Lead',
-    portrait: wellingtonPortrait,
-    token: '--bot-wellington',
-    nameInAccent: true,
-    surface: 'desk',
-  },
-  {
-    name: 'Phoebe',
-    role: 'Eligibility',
-    portrait: phoebePortrait,
-    token: '--bot-phoebe',
-    nameInAccent: true,
-    surface: 'eligibility',
-  },
-  {
-    name: 'Bridget',
-    role: 'Map',
-    portrait: bridgetPortrait,
-    token: '--bot-bridget',
-    /* Surf is 2.04:1 on white and never carries text. */
-    nameInAccent: false,
-    surface: 'map',
-  },
-  {
-    name: 'Calvin',
-    role: 'Calculator',
-    portrait: calvinPortrait,
-    token: '--bot-calvin',
-    nameInAccent: true,
-    surface: 'quantification',
-  },
-];
 
 export default function CrewRail({
   active,
@@ -141,81 +94,15 @@ export default function CrewRail({
       </div>
 
       <div style={{ padding: '0 12px', display: 'flex', flexDirection: 'column', gap: 4 }}>
-        {CREW.map((member) => {
-          const current = member.surface === active;
-          const count = member.surface === 'desk' ? openCount : null;
-          return (
-            <button
-              key={member.name}
-              type="button"
-              className="wb-crew-row"
-              onClick={() => onNavigate(member.surface)}
-              aria-current={current ? 'page' : undefined}
-              style={{
-                /* The current row rises one plane, with the hairline §2.3
-                   pairs with a white card. Never an accent fill. */
-                background: current ? 'var(--card)' : 'transparent',
-                border: current ? '1px solid var(--line)' : '1px solid transparent',
-                /* The current card is underlined in the agent's colour, the
-                   same underline its screen's active tab wears — maintainer's
-                   ruling 3 of 9 Sep 2026, item S16. An identity keyline, never
-                   a status dot (§2.6); Surf may carry a keyline. */
-                borderBottom: current ? `2px solid var(${member.token})` : '1px solid transparent',
-              }}
-            >
-              <span
-                aria-hidden
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 'var(--r-md)',
-                  flex: 'none',
-                  display: 'grid',
-                  placeItems: 'center',
-                  background: `color-mix(in oklab, var(${member.token}) 12%, var(--card))`,
-                  overflow: 'hidden',
-                }}
-              >
-                <img src={member.portrait} alt="" width={28} height={28} style={{ display: 'block' }} />
-              </span>
-              <span style={{ minWidth: 0, flex: 1, textAlign: 'left' }}>
-                <span
-                  style={{
-                    display: 'block',
-                    fontSize: 15,
-                    fontWeight: 600,
-                    lineHeight: 1.2,
-                    color: member.nameInAccent ? `var(${member.token})` : 'var(--ink)',
-                  }}
-                >
-                  {member.name}
-                </span>
-                <span
-                  className="t-mono"
-                  style={{
-                    display: 'block',
-                    fontSize: 10,
-                    letterSpacing: '0.13em',
-                    textTransform: 'uppercase',
-                    color: 'var(--ink-3)',
-                    marginTop: 3,
-                  }}
-                >
-                  {member.role}
-                </span>
-              </span>
-              {count !== null && count > 0 && (
-                <span
-                  className="t-mono"
-                  aria-label={`${count} open next steps`}
-                  style={{ fontSize: 13, color: 'var(--ink-2)', flex: 'none' }}
-                >
-                  {count}
-                </span>
-              )}
-            </button>
-          );
-        })}
+        {CREW.map((member) => (
+          <CrewRow
+            key={member.name}
+            member={member}
+            current={member.surface === active}
+            count={member.surface === 'desk' ? openCount : null}
+            onOpen={() => onNavigate(member.surface)}
+          />
+        ))}
       </div>
 
       {/* The next steps, under the crew. Only rows the visit actually
