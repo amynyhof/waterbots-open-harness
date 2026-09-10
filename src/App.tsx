@@ -56,15 +56,27 @@
  * the right column is the crew with the save button on every step. The four
  * screens stay mounted, hidden when off-surface, for the reasons above — a
  * conversation, a drawn map and a chosen tab all survive a step away.
+ *
+ * TWO PAGES FROM 11 Sep 2026 (item S18, slice 2): the console at "/", and the
+ * Agent Commons at "/commons" — a shelf of knowledge packs with the crew in
+ * the right column and the sign-up door where the save button sits. One word
+ * at the right of the top bar opens it, the wordmark is the way back, and the
+ * browser's back button works. The console is HIDDEN under the Commons, not
+ * unmounted, for the reason every surface above is: stepping out to the
+ * Commons and back must not empty a conversation or redraw the map. The
+ * address is the one home in src/lib/pages.ts.
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { readCarriedQuestion, withoutCarried } from './lib/carried';
+import { COMMONS_LABEL, pageFromPath, pathForPage, type Page } from './lib/pages';
 import { type MapStatus } from './components/BasinMap';
 import NavRail from './components/NavRail';
 import JourneyBar from './components/JourneyBar';
 import Desk from './components/Desk';
 import CrewRail from './components/CrewRail';
+import CommonsShelf from './components/CommonsShelf';
+import CommonsRail from './components/CommonsRail';
 import { HandoffError, buildSeal, handoffAddress, sealVisit, type SealState } from './lib/handoff';
 import BridgetScreen from './components/BridgetScreen';
 import PhoebeScreen from './components/PhoebeScreen';
@@ -97,6 +109,31 @@ export default function App() {
 
   const [surface, setSurface] = useState<Surface>(DEFAULT_SURFACE);
   const openMap = useCallback(() => setSurface('map'), []);
+
+  /* WHICH PAGE — the console or the Agent Commons — read from the address on
+     arrival and written back to it on every move, so a reload, a shared link
+     and the browser's back button all land where the visitor was. Item S18,
+     slice 2. */
+  const [page, setPage] = useState<Page>(() => pageFromPath(window.location.pathname));
+  /* The push happens OUTSIDE the state updater. Inside it, React's
+     development mode ran the updater twice and pushed two entries per move,
+     so the back button landed on the same page — found in slice 2's first
+     browser walk. */
+  const goTo = useCallback(
+    (next: Page) => {
+      if (next === page) return;
+      window.history.pushState(null, '', pathForPage(next));
+      setPage(next);
+    },
+    [page]
+  );
+  useEffect(() => {
+    const onPop = () => setPage(pageFromPath(window.location.pathname));
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+  const onConsole = page === 'console';
+  const onCommons = page === 'commons';
 
   /* The worksheet lives here so Phoebe's answers and the rows she is filling
      in cannot disagree. It is plain component state and nothing writes it to
@@ -185,6 +222,13 @@ export default function App() {
     if (question === null) return;
     const timer = window.setTimeout(() => {
       carried.current = null;
+      /* The contract's address is the console's. A question carried to the
+         Commons' address is out of contract but not ignored: Dispatches is
+         where it lands, so the page moves there and the address follows. */
+      if (pageFromPath(window.location.pathname) !== 'console') {
+        window.history.replaceState(null, '', pathForPage('console'));
+      }
+      setPage('console');
       setSurface('desk');
       void sendCarried(question, { carried: true });
     }, 0);
@@ -249,37 +293,65 @@ export default function App() {
           flex: 'none',
         }}
       >
-        <Wordmark height={22} />
+        {/* The wordmark is the way back to the console from the Commons; on
+            the console it goes nowhere, as a wordmark conventionally does. */}
+        <button
+          type="button"
+          className="wb-wordmark-link"
+          onClick={() => goTo('console')}
+          aria-label="WaterBots — the console"
+        >
+          <Wordmark height={22} />
+        </button>
 
-        {/* The layer readout describes the map, so it only shows on the map. */}
-        {onMap && status && (
-          <span className="t-mono" style={{ fontSize: 11, color: 'var(--ink-3)' }}>
-            {status.stressError ? (
-              <span style={{ color: 'var(--state-warn-text)' }}>
-                Water stress data unavailable — basins are shown unfilled
-              </span>
-            ) : status.detailError ? (
-              <span style={{ color: 'var(--state-warn-text)' }}>
-                Detailed basins unavailable — showing the world view
-              </span>
-            ) : status.loadingDetail ? (
-              'Loading detailed basins…'
-            ) : (
-              /* One plain line — look pass, 8 Sep 2026. The level, the count and
-                 the zoom were the engineer's readout, not a visitor's. */
-              <>{visit.pin ? 'Click the pinned basin to unpin it, or another basin to pin that one.' : 'Click a basin to pin it.'}</>
-            )}
-          </span>
-        )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20, minWidth: 0 }}>
+          {/* The layer readout describes the map, so it only shows on the map. */}
+          {onConsole && onMap && status && (
+            <span className="t-mono" style={{ fontSize: 11, color: 'var(--ink-3)' }}>
+              {status.stressError ? (
+                <span style={{ color: 'var(--state-warn-text)' }}>
+                  Water stress data unavailable — basins are shown unfilled
+                </span>
+              ) : status.detailError ? (
+                <span style={{ color: 'var(--state-warn-text)' }}>
+                  Detailed basins unavailable — showing the world view
+                </span>
+              ) : status.loadingDetail ? (
+                'Loading detailed basins…'
+              ) : (
+                /* One plain line — look pass, 8 Sep 2026. The level, the count and
+                   the zoom were the engineer's readout, not a visitor's. */
+                <>{visit.pin ? 'Click the pinned basin to unpin it, or another basin to pin that one.' : 'Click a basin to pin it.'}</>
+              )}
+            </span>
+          )}
+
+          {/* ONE WORD OPENS THE COMMONS, at the right of the top bar and never
+              on the journey bar — item S18, approved 9 Sep 2026. */}
+          <button
+            type="button"
+            className="wb-topbar-link"
+            onClick={() => goTo('commons')}
+            aria-current={onCommons ? 'page' : undefined}
+          >
+            {COMMONS_LABEL}
+          </button>
+        </div>
       </header>
 
+      {/* THE TWO PAGES STACK, and the one you are not on is hidden, not
+          unmounted — see the note at the head of this file. */}
+      <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
       {/* The rail is fixed; the column beside it carries the journey bar, the
           tabs, and then the centre and the right column. The centre takes no
           minimum width — a full-viewport working shell must never scroll
           sideways, and a horizontal scrollbar is a worse failure than a narrow
           map. The rail collapses instead, and the map holds a zoom floor so it
           stays readable rather than shrinking to a postage stamp. */}
-      <div style={{ flex: 1, minHeight: 0, display: 'flex', overflow: 'hidden' }}>
+      <div
+        style={{ position: 'absolute', inset: 0, display: 'flex', overflow: 'hidden', visibility: onConsole ? 'visible' : 'hidden' }}
+        aria-hidden={!onConsole}
+      >
         <NavRail context={visit.context} onTyped={onTyped} />
 
         <div style={{ flex: 1, minWidth: 0, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
@@ -291,9 +363,16 @@ export default function App() {
                   holds Wellington's conversation. Unmounting threw the
                   transcript away when a visitor stepped to a tab he had sent
                   them to and came back — the item S4 fault, found again on
-                  3 Sep 2026 in the first browser walk and fixed the same way. */}
+                  3 Sep 2026 in the first browser walk and fixed the same way.
+
+                  THE OPEN SURFACE INHERITS VISIBILITY rather than setting it —
+                  all four wrappers below, from 11 Sep 2026. An explicit
+                  "visible" overrides the page's "hidden" above, and the desk
+                  showed through the Agent Commons in slice 2's first capture.
+                  The same fault, and the same fix, as the agent screen's
+                  panels in slice 4. */}
               <div
-                style={{ position: 'absolute', inset: 0, visibility: onDesk ? 'visible' : 'hidden' }}
+                style={{ position: 'absolute', inset: 0, visibility: onDesk ? undefined : 'hidden' }}
                 aria-hidden={!onDesk}
               >
                   <Desk chat={chat} onNavigate={setSurface} />
@@ -304,7 +383,7 @@ export default function App() {
                   9 Sep 2026) and is mounted for the whole visit, as it was
                   when the shell drew it here. */}
               <div
-                style={{ position: 'absolute', inset: 0, visibility: onMap ? 'visible' : 'hidden' }}
+                style={{ position: 'absolute', inset: 0, visibility: onMap ? undefined : 'hidden' }}
                 aria-hidden={!onMap}
               >
                 <BridgetScreen
@@ -323,7 +402,7 @@ export default function App() {
                   verdicts come back through applyUpdates to the criteria, and
                   her row on the desk follows. */}
               <div
-                style={{ position: 'absolute', inset: 0, visibility: onEligibility ? 'visible' : 'hidden' }}
+                style={{ position: 'absolute', inset: 0, visibility: onEligibility ? undefined : 'hidden' }}
                 aria-hidden={!onEligibility}
               >
                 <PhoebeScreen
@@ -339,7 +418,7 @@ export default function App() {
                   stays where the visitor left it. The worksheet is its Tool
                   tab; the pack answers are the shell's, in the visit. */}
               <div
-                style={{ position: 'absolute', inset: 0, visibility: onQuantification ? 'visible' : 'hidden' }}
+                style={{ position: 'absolute', inset: 0, visibility: onQuantification ? undefined : 'hidden' }}
                 aria-hidden={!onQuantification}
               >
                 <CalvinScreen
@@ -367,6 +446,21 @@ export default function App() {
             />
           </div>
         </div>
+      </div>
+
+      {/* THE AGENT COMMONS (item S18, slice 2): the shelf in the centre and
+          the crew with the sign-up door on the right. No left rail, no
+          journey bar, no record and no save button, because the Commons holds
+          no visit. */}
+      <div
+        style={{ position: 'absolute', inset: 0, display: 'flex', overflow: 'hidden', visibility: onCommons ? 'visible' : 'hidden' }}
+        aria-hidden={!onCommons}
+      >
+        <main style={{ flex: 1, minWidth: 0, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+          <CommonsShelf />
+        </main>
+        <CommonsRail />
+      </div>
       </div>
     </div>
   );

@@ -277,16 +277,23 @@ credit line does not meet any of these bars.
   maintainer's hand. **The hero chat (item S12) is parked**, a later item, not
   built; the same receiver will feed it.
 - **Agent Commons, 9 Sep 2026 (item S18) — proposed, approved, the pictures
-  drawn; not yet built.** A public gallery of graded knowledge packs, each
-  wearing the face of the agent who holds it, at its own address; open one and
-  the agent screen appears as its third consumer, without memory, its chat
-  capped; free to explore, sign up to manage a project. **Two rulings the same
-  day, canon.** *One grader:* the grading rig kept outside this repository, Deb's,
-  is the only public grade; the Commons shows its card and nothing else, and this
-  site's and production's own checks are internal gates, never a public score.
-  *Real only:* a grade on the Commons comes from real projects and real
-  knowledge packs run through that rig, and no invented case, ever. Credentials
-  on the Commons reads "not yet graded" until a real card from that rig exists.
+  drawn; ~~not yet built~~ the address and the shelf built 11 Sep 2026.** A public
+  gallery of graded knowledge packs, each wearing the face of the agent who holds
+  it, at its own address, `/commons`, opened by one word at the right of the top
+  bar and never from the journey bar; open one and the agent screen appears as
+  its third consumer, without memory, its chat capped; free to explore, sign up
+  to manage a project. **Two rulings the same day, canon.** *One grader:* the
+  grading rig kept outside this repository, Deb's, is the only public grade; the
+  Commons shows its card and nothing else, and this site's and production's own
+  checks are internal gates, never a public score. *Real only:* a grade on the
+  Commons comes from real projects and real knowledge packs run through that
+  rig, and no invented case, ever. Credentials on the Commons reads "not yet
+  graded" until a real card from that rig exists. **A third ruling, 11 Sep 2026,
+  canon: on the Commons an agent opens alone.** No crew beside it, no next
+  steps; the only other things on the screen are the way back to the shelf and
+  the sign-up door. Open, chat, leave. **The Workshop (item S19) is logged the
+  same day** — a visitor makes an agent on the Commons; not built, its proposal
+  follows slice 3.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material

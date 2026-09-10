@@ -115,7 +115,8 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S15 | One row — the journey bar is the navigation; a candidate for production | Surfaces | **built 7 Sep 2026** — the tab row removed; offered to production by the maintainer's hand, later |
 | S16 | The agent screen — every step is a screen, the agent's chat in the middle and its tool as a tab; a candidate for production | Surfaces | **built 9 Sep 2026, #61 to #64** — [archived](./OPEN_ITEMS_ARCHIVE.md); the B→A raise into the book and the carry list wait on the maintainer's hand |
 | S17 | The agent watches its Tool tab and comments; a pulsing teal dot on Chat | Surfaces | **logged 9 Sep 2026, parked for a design session, both sides** — no proposal yet |
-| S18 | Agent Commons — a public gallery of graded knowledge packs, each wearing an agent face | Surfaces | **logged 9 Sep 2026; proposal approved; slice 1 drawn** — slices 2 and 3 approved to build, slice 4 waits on Deb's rig |
+| S18 | Agent Commons — a public gallery of graded knowledge packs, each wearing an agent face | Surfaces | **logged 9 Sep 2026; proposal approved; slice 1 approved with one correction; slice 2 built 11 Sep 2026** — slice 3 next, an agent opens alone; slice 4 waits on Deb's rig |
+| S19 | The Workshop — make your own agent on the Commons | Surfaces | **logged 11 Sep 2026, not built** — proposal after the Commons' slice 3 |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
@@ -2217,7 +2218,110 @@ is one pack; Bridget's is one card for the map's two datasets for the same reaso
 Wellington, by mistake: the script sent to the first composer it could see, and every mounted
 screen's panel reports itself visible. The answer was not used and the script was corrected.
 
-Logged 9 Sep 2026. **Slice 1 drawn; slices 2 and 3 approved to build; slice 4 waits on Deb.**
+**#68 merged on 10 Sep 2026, and the pictures were approved with one correction — the maintainer's
+ruling, which she dated 11 Sep 2026.** In her words: *in the Commons an agent opens ALONE. No crew
+rail, no other agents beside it, no next steps. It is a contained unit — open, chat, leave. The only
+other thing on the screen is the way out: back to the shelf, and "Sign up to manage a project". Fix
+the layout in slice 3; no new picture needed.* Slice 3's shape in the proposal above is corrected by
+this: ~~the crew stays in the right column~~ — on an open pack there is no right column, and the two
+ways out are the only other things on the screen. The shelf's picture stands as approved, crew and
+all. The ruling is recorded in [CLAUDE.md](./CLAUDE.md)'s scope and pointed at from here.
+
+**Slice 2 built, 11 Sep 2026.** *The address:* `/commons`, one home in `src/lib/pages.ts` — a page,
+not a surface; one rewrite rule in `vercel.json`, the site's first; the browser's back button works;
+the console is hidden under the Commons and never unmounted, so a conversation and the drawn map
+survive the step out and back. *The word:* "Agent Commons" at the right of the top bar on both pages,
+in ink and bold when it is the page; the wordmark is the way back. *The shelf:*
+`src/lib/commonsShelf.ts` assembles the five cards from the registries — Phoebe's from her card sets,
+Calvin's three from the method packs, one card per live pack, Bridget's naming the map's two
+datasets — and `CommonsShelf.tsx` draws them; `CommonsRail.tsx` lists the crew and carries the
+sign-up door where the save button sits. The roster moved out of the crew rail into `src/lib/crew.ts`
+and the row into `CrewRow.tsx`, so the console's rail and the Commons' column draw the same four
+from one place.
+
+**Calls made in slice 2, each stated in the pull request.**
+
+- **No "Open" on a card yet.** The picture shows one; it arrives with slice 3, when there is a
+  screen to open. A link to nowhere is a false affordance.
+- **The crew rows on the shelf are a listing, not doors.** Same look, no hover, no hand: on the
+  Commons an agent is opened from its pack's card, and a row that quietly left for the console would
+  be a side door. One prop flips it.
+- **The cards read the registries' own sentences, and they run longer than the picture's.** The
+  picture's one-liners and short tags were hand-written for the drawing; the rule that nothing is
+  typed twice puts each pack's own `measures` sentence and its citation's document name on the card
+  instead. The cards are taller than drawn and the shelf no longer fits one laptop screen. Two ways
+  to close it, hers to pick: keep the registry's words, or add a short shelf line and a short document
+  name to the pack registry, once, and read those.
+- **The sign-up door goes to waterbots.ai's front door**, not the bridge's welcome address, which
+  expects a ticket. It moves on her word if production has a sign-up address.
+- **The date.** The machine's clock read 10 Sep 2026 while this was built, five minutes after #68
+  merged; the maintainer dated her rulings 11 Sep. Her date is the one recorded.
+
+**Two faults found in the first browser walk, both fixed before the commit.** The desk showed
+through the shelf: each console surface's wrapper set its visibility to "visible" outright, which
+overrides a hidden ancestor — the same fault the agent screen's panels had in item S16 slice 4,
+fixed the same way, the open surface inherits. And the back button landed on the same page: the
+history push sat inside a state updater, which React's development mode runs twice; it is outside
+it now.
+
+**Real model calls in slice 2: none.**
+
+Logged 9 Sep 2026. ~~**Slice 1 drawn; slices 2 and 3 approved to build; slice 4 waits on Deb.**~~
+**Slice 1 approved with one correction and slice 2 built, 11 Sep 2026; slice 3 next, on the
+corrected shape; slice 4 waits on Deb.**
+
+---
+
+## S19. The Workshop — make your own agent on the Commons
+
+**Logged 11 Sep 2026 from the maintainer's rulings of that day, for after the Commons' slices 1 to 3
+(item S18). Nothing is built toward it; the proposal follows slice 3.** Her words, kept whole:
+
+- *A visitor can make an agent on the Commons: name it, pick its colour, hand it a knowledge pack (a
+  paper, a dataset), later a tool. Same agent screen. Aquaya wants this; their first try is one
+  research paper.*
+- *Cost model, in order: (1) free to try, tightly capped — one draft agent per visitor, one small
+  pack, ten messages a day, gone when they leave; (2) bring your own key — the builder's agent runs
+  on their bill, no cap from us; (3) builder subscription later, on demand — hosted, private drafts
+  kept, one-click publish.*
+- *Publishing: private until the builder publishes; publishing to the Commons is free but reviewed
+  by Amy first.*
+- *Format: every workshop pack is saved in BOTH shapes from day one — this site's cards and Deb's
+  cartridge YAML — so any agent can sit his exam without rework. Grading stays manual until his rig
+  can run on a trigger; log that dependency.*
+
+The rig's own word for its pack file appears above only inside her quotation; everything written new
+says "Knowledge Pack", per the language rules in [CLAUDE.md](./CLAUDE.md).
+
+**Read against the canon already ruled, so the proposal starts from it.**
+
+- **Same agent screen.** A made agent is the one screen's fourth consumer (item S16): Chat, Knowledge
+  pack and Credentials, Tool later — and it opens alone, as every agent on the Commons does from the
+  ruling above.
+- **ONE GRADER and REAL ONLY hold.** A made agent's Credentials reads "not yet graded" until a real
+  card from Deb's rig exists for it. This site grades nothing in public, and a builder's own checks
+  are not a score.
+- **BRAND.md §6 says nobody is minted here, and no accent points at a second agent.** A visitor's
+  made agent is not crew, and its colour is the visitor's pick. That is a raise for the book, not a
+  quiet exception; it goes up with the proposal.
+- **No mock data.** A draft agent with no pack yet is an empty, honest state. No sample pack is ever
+  invented for it, and a paper handed over is read as it is or refused with a reason.
+- **The free tier is a counter of its own** — beside Phoebe's twenty, Wellington's thirty and the
+  two tens, and revisited with them under item O1. "Gone when they leave" is the no-memory rule as it
+  already stands. Bring-your-own-key puts a visitor's key through this site's relay; how it is held
+  for one call and never kept is the proposal's first question.
+
+**Dependencies, logged.**
+
+- **Slices 1 to 3 of the Commons come first** (item S18).
+- **The two-shape save** needs the rig's pack-file shape carried here by the maintainer's hand, as
+  everything of Deb's is (rule zero). It was read on 9 Sep 2026 and nothing of it is in this tree.
+- **Grading stays manual until Deb's rig can run on a trigger.** Until then a made agent sits its
+  exam when the maintainer runs the rig by hand and carries the card back. The trigger is a fourth
+  change to his rig, beside the three under item S18 slice 4, and she takes it to him.
+- **Review before publishing is hers, by hand**, until there is a queue worth building a tool for.
+
+**Not built. Proposal after slice 3.**
 
 ---
 
