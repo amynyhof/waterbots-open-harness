@@ -320,10 +320,19 @@ session's open.**~~
 
 **The Agent Commons (item S18) is next, by the maintainer's word of 9 Sep 2026.** The proposal was
 approved as written the same day, and slices 1 to 3 are approved: the pictures, the address and the
-shelf, and open-one on the agent screen. **Slice 1 is drawn** — three pictures at 1280 by 720, in
-the pull request for her eyeball — and slices 2 and 3 build on her approval of the pixels. Slice 4,
+shelf, and open-one on the agent screen. ~~**Slice 1 is drawn** — three pictures at 1280 by 720, in
+the pull request for her eyeball — and slices 2 and 3 build on her approval of the pixels.~~ **Slice 1
+was approved on 10 Sep 2026 with one correction, dated 11 Sep by her: on the Commons an agent opens
+alone — no crew beside it, no next steps, only the way back to the shelf and the sign-up door. Slice 2
+is built, 11 Sep 2026: the address and the shelf. Slice 3 is next, on the corrected shape.** Slice 4,
 Credentials fed by Deb's rig, waits on three changes to the rig that she takes to Deb herself; they
 are listed under the item. The flag button is later, not v0.
+
+**The Workshop (item S19) is logged for after slice 3, by the maintainer's word of 11 Sep 2026** — a
+visitor makes an agent on the Commons, names it, picks its colour, hands it a knowledge pack, and the
+same agent screen holds it. Free to try under a tight cap, then bring your own key, then a builder
+subscription later; private until published, and publishing is reviewed by her first; every pack
+saved in both shapes so it can sit the one public exam. **Not built. The proposal follows slice 3.**
 
 ## Previously planned next — the hero chat, when its reference arrives
 
