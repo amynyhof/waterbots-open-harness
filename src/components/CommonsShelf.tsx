@@ -1,13 +1,16 @@
 /**
  * The Agent Commons shelf — the centre of the Commons page. Item S18,
  * slice 2, built 11 Sep 2026 to the picture the maintainer approved on
- * 10 Sep (captures/2026-09-09-agent-commons-shelf.png).
+ * 10 Sep (captures/2026-09-09-agent-commons-shelf.png); the crew column
+ * beside it left in slice 3 on her ruling of 11 Sep — the shelf is the crew.
  *
  * ONE CARD PER KNOWLEDGE PACK, wearing the face of the agent who holds it:
  * the portrait and name as the crew row draws them, the pack's name, one
- * line on what it is good at, the document it is drawn from as a tag, and
- * its public grade as a chip. The cards come from src/lib/commonsShelf.ts,
- * which reads the registries; nothing here names a pack.
+ * short line on what it is good at, the document it is drawn from as a tag,
+ * its public grade as a chip, and "Open". The cards come from
+ * src/lib/commonsShelf.ts, which reads the registries; nothing here names a
+ * pack. Open hands the card up to the Commons page, which opens the holder's
+ * screen alone (slice 3).
  *
  * EVERY CHIP READS "NOT YET GRADED", and will until a real card from the one
  * public exam exists — the maintainer's ONE GRADER and REAL ONLY rulings of
@@ -15,19 +18,17 @@
  * has been run, in a visitor's words, so the chips are explained before they
  * are read.
  *
- * NO "OPEN" YET. The approved picture shows an Open link at each card's foot;
- * it arrives with slice 3, when there is a screen for it to open. A link that
- * went nowhere would be a false affordance, so the foot carries the chip
- * alone until then.
- *
- * WELLINGTON HAS NO CARD, and the foot line says so rather than leaving a
- * visitor to wonder where the Team Lead went.
+ * WELLINGTON HAS NO CARD, and the foot says so rather than leaving a visitor
+ * to wonder where the Team Lead went. The line under it says what signing up
+ * does and that nothing is kept — the caption that sat under the sign-up
+ * button while the column stood.
  */
 
 import { SHELF, shelfCountLine, type ShelfCard } from '../lib/commonsShelf';
+import { SITE_LABEL } from '../lib/site';
 import { DESK_LABEL } from '../lib/surfaces';
 
-export default function CommonsShelf() {
+export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => void }) {
   return (
     <div style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
       <div style={{ padding: '22px var(--gutter) 24px' }}>
@@ -61,10 +62,11 @@ export default function CommonsShelf() {
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(232px, 1fr))',
             gap: 14,
+            maxWidth: 1180,
           }}
         >
           {SHELF.map((card) => (
-            <ShelfCardView key={card.key} card={card} />
+            <ShelfCardView key={card.key} card={card} onOpen={() => onOpen(card)} />
           ))}
         </div>
 
@@ -72,12 +74,16 @@ export default function CommonsShelf() {
           Wellington, the Team Lead, carries no knowledge pack. He works from what the crew can do,
           and on this site he answers at {DESK_LABEL}.
         </p>
+        <p className="t-caption" style={{ margin: '6px 0 0', fontSize: 12, lineHeight: 1.55 }}>
+          Free to explore, and nothing is kept between visits. Signing up opens a project on{' '}
+          {SITE_LABEL}, where the crew keeps what you tell them.
+        </p>
       </div>
     </div>
   );
 }
 
-function ShelfCardView({ card }: { card: ShelfCard }) {
+function ShelfCardView({ card, onOpen }: { card: ShelfCard; onOpen: () => void }) {
   const { holder } = card;
   return (
     <article className="card" aria-label={card.title} style={{ display: 'flex', flexDirection: 'column' }}>
@@ -145,6 +151,9 @@ function ShelfCardView({ card }: { card: ShelfCard }) {
         <span className="chip" style={{ ['--chip-role' as string]: 'var(--state-pending)' }}>
           {card.grade === null ? 'not yet graded' : 'graded'}
         </span>
+        <button type="button" className="wb-row-action" style={{ marginLeft: 'auto' }} onClick={onOpen}>
+          Open
+        </button>
       </div>
     </article>
   );

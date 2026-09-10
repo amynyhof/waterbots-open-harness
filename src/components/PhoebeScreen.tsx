@@ -131,7 +131,7 @@ export default function PhoebeScreen({
 
 const FIRST = CRITERIA[0].citation;
 
-const PHOEBE_PACK: PackView = {
+export const PHOEBE_PACK: PackView = {
   heading: "Phoebe's Knowledge Pack",
   tags: [FIRST.document, 'Appendix A and B'],
   approved: `approved ${CARDS_APPROVED_ON}`,

@@ -75,8 +75,7 @@ import NavRail from './components/NavRail';
 import JourneyBar from './components/JourneyBar';
 import Desk from './components/Desk';
 import CrewRail from './components/CrewRail';
-import CommonsShelf from './components/CommonsShelf';
-import CommonsRail from './components/CommonsRail';
+import Commons from './components/Commons';
 import { HandoffError, buildSeal, handoffAddress, sealVisit, type SealState } from './lib/handoff';
 import BridgetScreen from './components/BridgetScreen';
 import PhoebeScreen from './components/PhoebeScreen';
@@ -87,7 +86,7 @@ import { useConversation } from './chat/useConversation';
 import { WELLINGTON, wellingtonAsk } from './lib/wellington';
 import { CRITERIA } from './lib/phoebeCards';
 import { initialStatuses, type CriterionStatus } from './lib/criteriaState';
-import type { CriterionUpdate } from './lib/phoebeClient';
+import { applyCriterionUpdates, type CriterionUpdate } from './lib/phoebeClient';
 import { fittedPack, livePacks, type PackValues } from './lib/methodPacks';
 import {
   EMPTY_VISIT,
@@ -143,18 +142,7 @@ export default function App() {
   );
 
   const applyUpdates = useCallback((updates: CriterionUpdate[]) => {
-    setStatuses((current) => {
-      const next = [...current];
-      for (const update of updates) {
-        const index = CRITERIA.findIndex((c) => c.number === update.number);
-        if (index < 0) continue;
-        next[index] =
-          update.state === 'not-yet'
-            ? { state: 'not-yet', routeForward: update.routeForward }
-            : { state: 'met' };
-      }
-      return next;
-    });
+    setStatuses((current) => applyCriterionUpdates(current, updates));
   }, []);
 
   /* The rest of the visit: the project context, the pin, the pack answers. */
@@ -448,19 +436,17 @@ export default function App() {
         </div>
       </div>
 
-      {/* THE AGENT COMMONS (item S18, slice 2): the shelf in the centre and
-          the crew with the sign-up door on the right. No left rail, no
-          journey bar, no record and no save button, because the Commons holds
-          no visit. */}
-      <div
-        style={{ position: 'absolute', inset: 0, display: 'flex', overflow: 'hidden', visibility: onCommons ? 'visible' : 'hidden' }}
+      {/* THE AGENT COMMONS (item S18, slices 2 and 3): the shelf, and a pack
+          opened on its holder's screen, alone. No left rail, no journey bar,
+          no crew column, no record and no save button, because the Commons
+          holds no visit and an agent there stands on its own — maintainer's
+          ruling, 11 Sep 2026. */}
+      <main
+        style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden', visibility: onCommons ? 'visible' : 'hidden' }}
         aria-hidden={!onCommons}
       >
-        <main style={{ flex: 1, minWidth: 0, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-          <CommonsShelf />
-        </main>
-        <CommonsRail />
-      </div>
+        <Commons />
+      </main>
       </div>
     </div>
   );

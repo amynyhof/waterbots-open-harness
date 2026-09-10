@@ -40,7 +40,12 @@ export default function EligibilityWorksheet({
   /* Held by the shell so Phoebe's answers and this worksheet stay in step.
      No memory across visits — a reload resets them. Stated on screen. */
   statuses: CriterionStatus[];
-  onOpenMap: () => void;
+  /**
+   * Opens the map when every criterion is met. Absent on the Agent Commons
+   * (item S18, slice 3), which has no map: the banner then names the next
+   * stop without a button to it, rather than a door to somewhere else.
+   */
+  onOpenMap?: () => void;
 }) {
   const allMet = statuses.every((s) => s.state === 'met');
 
@@ -394,7 +399,7 @@ function StateBadge({ state }: { state: CriterionStatus['state'] }) {
  * console reads a worksheet, it does not certify anything, and no standards
  * body endorses it.
  */
-function EligibleBanner({ onOpenMap }: { onOpenMap: () => void }) {
+function EligibleBanner({ onOpenMap }: { onOpenMap?: () => void }) {
   return (
     <div
       className="card"
@@ -416,9 +421,11 @@ function EligibleBanner({ onOpenMap }: { onOpenMap: () => void }) {
           All six criteria are met. The basin map is where you find who else is working nearby.
         </p>
       </div>
-      <button className="btn" onClick={onOpenMap}>
-        Open the map
-      </button>
+      {onOpenMap && (
+        <button className="btn" onClick={onOpenMap}>
+          Open the map
+        </button>
+      )}
     </div>
   );
 }
