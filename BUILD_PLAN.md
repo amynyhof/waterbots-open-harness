@@ -324,7 +324,9 @@ shelf, and open-one on the agent screen. ~~**Slice 1 is drawn** — three pictur
 the pull request for her eyeball — and slices 2 and 3 build on her approval of the pixels.~~ **Slice 1
 was approved on 10 Sep 2026 with one correction, dated 11 Sep by her: on the Commons an agent opens
 alone — no crew beside it, no next steps, only the way back to the shelf and the sign-up door. Slice 2
-is built, 11 Sep 2026: the address and the shelf. Slice 3 is next, on the corrected shape.** Slice 4,
+is built, 11 Sep 2026: the address and the shelf. ~~Slice 3 is next, on the corrected shape.~~ Slice 3
+is built the same day, on her eyeball, and two rulings on the shelf landed with it: short lines and
+short document names on the cards, and no crew column — the shelf is the crew.** Slice 4,
 Credentials fed by Deb's rig, waits on three changes to the rig that she takes to Deb herself; they
 are listed under the item. The flag button is later, not v0.
 
