@@ -224,6 +224,20 @@ export interface MethodPack extends PackListing {
   /** The words over the big number, e.g. "Anticipated benefit". */
   headlineLabel: string;
   /**
+   * How the pack reads on the Agent Commons shelf — maintainer's ruling,
+   * 11 Sep 2026 (item S18): one short line on what it is good at, and a
+   * short name for its document, because the `measures` sentence and the
+   * citation's full title ran a card to twice the drawn height. Written
+   * once here and read by the shelf; never re-typed. The citation itself is
+   * unchanged and still carries the full four-part shape.
+   */
+  shelf: {
+    /** One short line, a visitor's words, e.g. "A first estimate of …". */
+    line: string;
+    /** The document's short name, e.g. "VWBA 2.0". */
+    document: string;
+  };
+  /**
    * One clause naming what this pack does, for the agent primer's roster.
    *
    * THE PRIMER'S PACK LIST IS RENDERED FROM THIS REGISTRY AND IS NEVER
