@@ -326,15 +326,23 @@ was approved on 10 Sep 2026 with one correction, dated 11 Sep by her: on the Com
 alone — no crew beside it, no next steps, only the way back to the shelf and the sign-up door. Slice 2
 is built, 11 Sep 2026: the address and the shelf. ~~Slice 3 is next, on the corrected shape.~~ Slice 3
 is built the same day, on her eyeball, and two rulings on the shelf landed with it: short lines and
-short document names on the cards, and no crew column — the shelf is the crew.** Slice 4,
-Credentials fed by Deb's rig, waits on three changes to the rig that she takes to Deb herself; they
-are listed under the item. The flag button is later, not v0.
+short document names on the cards, and no crew column — the shelf is the crew.** **Slice 3 merged
+the same day (#70), and Commons v0 — slices 1 to 3 — is done.** Slice 4, Credentials fed by Deb's
+rig, waits on his per-case file, the first of the three changes she takes to Deb herself; they are
+listed under the item. The flag button, slice 5, is later.
 
 **The Workshop (item S19) is logged for after slice 3, by the maintainer's word of 11 Sep 2026** — a
 visitor makes an agent on the Commons, names it, picks its colour, hands it a knowledge pack, and the
 same agent screen holds it. Free to try under a tight cap, then bring your own key, then a builder
 subscription later; private until published, and publishing is reviewed by her first; every pack
-saved in both shapes so it can sit the one public exam. **Not built. The proposal follows slice 3.**
+saved in both shapes so it can sit the one public exam. **Not built. ~~The proposal follows slice 3.~~
+Slice 3 has landed; the proposal is next, on her word.**
+
+**"Connect with a human expert" (item S20) is logged the same day, at the close** — a button beside
+sign-up on every Commons agent that sends a short contact form to WaterBots consulting, or to a
+workshop agent's builder if the builder opted in. The conversation is never attached. **Not built;
+two design questions wait on a session: the form's fields, and whether a builder's contact is public
+or relayed through us.**
 
 ## Previously planned next — the hero chat, when its reference arrives
 

@@ -277,8 +277,9 @@ credit line does not meet any of these bars.
   maintainer's hand. **The hero chat (item S12) is parked**, a later item, not
   built; the same receiver will feed it.
 - **Agent Commons, 9 Sep 2026 (item S18) — proposed, approved, the pictures
-  drawn; ~~not yet built~~ ~~the address and the shelf built 11 Sep 2026~~ slices
-  1 to 3 built by 11 Sep 2026.** A public
+  drawn; ~~not yet built~~ ~~the address and the shelf built 11 Sep 2026~~ v0 —
+  slices 1 to 3 — built and merged by 11 Sep 2026, #68 to #70; slice 4 waits on
+  Deb's per-case file, the flag button is later.** A public
   gallery of graded knowledge packs, each wearing the face of the agent who holds
   it, at its own address, `/commons`, opened by one word at the right of the top
   bar and never from the journey bar; open one and the agent screen appears as
@@ -296,7 +297,10 @@ credit line does not meet any of these bars.
   column on the Commons at all, the shelf and the sign-up door only; same day.
   **The Workshop (item S19) is logged the
   same day** — a visitor makes an agent on the Commons; not built, its proposal
-  follows slice 3.
+  is next on the maintainer's word. **"Connect with a human expert" (item S20)
+  is logged the same day too** — a button beside sign-up on every Commons agent
+  sending a short contact form, never the conversation; not built, two design
+  questions open.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material
