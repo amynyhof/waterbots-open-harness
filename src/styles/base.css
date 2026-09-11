@@ -1163,9 +1163,11 @@ button.wb-phase:hover span:last-child {
    The wordmark at the left is the way back to the console, as a wordmark
    conventionally is; it carries no styling of its own beyond the cursor.
 
-   A CREW ROW MAY BE A LISTING. The Commons' right column shows the crew with
-   the row's look and none of its promise — no hover, no hand — because on
-   the Commons an agent is opened from its pack's card, not from the crew.
+   ~~A CREW ROW MAY BE A LISTING.~~ The Commons' right column, and the static
+   row it listed the crew with, are gone — maintainer's ruling, 11 Sep 2026:
+   on the Commons the shelf is the crew, and an open agent stands alone. The
+   Commons' own row under the top bar (src/components/Commons.tsx) carries the
+   way back and the sign-up door, in classes that already exist.
 --------------------------------------------------------------------------- */
 .wb-topbar-link {
   font-family: var(--font-sans);
@@ -1194,10 +1196,4 @@ button.wb-phase:hover span:last-child {
   border: 0;
   padding: 0;
   cursor: pointer;
-}
-.wb-crew-row.is-static {
-  cursor: default;
-}
-.wb-crew-row.is-static:hover {
-  background: transparent;
 }

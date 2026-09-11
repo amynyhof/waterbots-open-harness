@@ -8,9 +8,13 @@
  * registry has a card here the same day; Bridget's names the map's two
  * datasets, which the licences module cites. The only words that live here
  * alone are the one line on what a pack is good at where no registry carries
- * one — Phoebe's and Bridget's — and Bridget's short tag. Calvin's lines are
- * each pack's own `measures` sentence, and every tag is the document as the
- * pack's citation names it.
+ * one — Phoebe's and Bridget's — and Bridget's short tag.
+ *
+ * SHORT LINES AND SHORT NAMES, from slice 3 — maintainer's ruling, 11 Sep
+ * 2026: ~~Calvin's lines were each pack's `measures` sentence and every tag
+ * the citation's full document title~~, which ran a card to twice the drawn
+ * height. Each pack now carries a `shelf` line and short name in the registry,
+ * written once, and the card reads those.
  *
  * WELLINGTON HAS NO CARD. He carries no knowledge pack; the shelf says so in
  * one line at its foot rather than drawing an empty card for him.
@@ -32,14 +36,16 @@ import { CRITERIA } from './phoebeCards';
 export interface ShelfCard {
   /** Stable key. The registry's own where it has one. */
   key: string;
-  /** The agent whose face the card wears. */
+  /** The agent whose face the card wears, and whose screen opens. */
   holder: CrewMember;
   /** The pack's name as the card's title. */
   title: string;
-  /** One line on what the pack is good at. */
+  /** One short line on what the pack is good at. */
   line: string;
-  /** The document the pack is drawn from, as its citation names it. */
+  /** The document the pack is drawn from, by its short name. */
   tag: string;
+  /** For a method pack, its registry key, so the calculator opens on it. */
+  packKey?: string;
   /**
    * The public grade. Null until a real card from the one public exam
    * exists — see the note at the head of this file. Slice 4 widens this.
@@ -63,8 +69,9 @@ const CALVIN_CARDS: ShelfCard[] = livePacks().map((pack) => ({
   key: `pack-${pack.key}`,
   holder: crewMember('Calvin'),
   title: pack.name,
-  line: pack.measures,
-  tag: pack.citation.document,
+  line: pack.shelf.line,
+  tag: pack.shelf.document,
+  packKey: pack.key,
   grade: null,
 }));
 

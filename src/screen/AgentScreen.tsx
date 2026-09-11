@@ -68,6 +68,7 @@ export default function AgentScreen({
   host,
   tabs,
   opensOn = 'chat',
+  idSlug,
   next,
 }: {
   host: AgentHost;
@@ -75,11 +76,19 @@ export default function AgentScreen({
   /** The tab shown first. Chat, unless the chat is not live. */
   opensOn?: ScreenTab;
   next: NextPhase | null;
+  /**
+   * What the tab and panel ids are built from. Defaults to the host's name;
+   * a second consumer of the same agent on one page — the Agent Commons
+   * beside the console, from 11 Sep 2026 — passes its own, because two
+   * mounted screens sharing ids broke the tabs' labelling. Found in slice
+   * 3's browser walk.
+   */
+  idSlug?: string;
 }) {
   const [active, setActive] = useState<ScreenTab>(opensOn);
   const order: ScreenTab[] =
     tabs.tool !== undefined ? ['chat', 'tool', 'pack', 'credentials'] : ['chat', 'pack', 'credentials'];
-  const slug = host.name.toLowerCase();
+  const slug = idSlug ?? host.name.toLowerCase();
 
   /* The accent reaches the stylesheet as one custom property, set here from
      the host's token. The tab row, the active tab and the underline all read

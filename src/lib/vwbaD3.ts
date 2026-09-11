@@ -279,6 +279,12 @@ export const VWBA_D3: MethodPack = {
     optionName: 'Table D3.3, Option 3',
   },
   headlineLabel: 'Anticipated benefit',
+  /* The Commons shelf's line and short name — drafted 11 Sep 2026 for the
+     maintainer's approval on pixels. */
+  shelf: {
+    line: 'A first estimate of the drinking water a supply project will provide in a year, before it is built.',
+    document: 'VWBA 2.0',
+  },
   category: 'Water',
 
   citation: {

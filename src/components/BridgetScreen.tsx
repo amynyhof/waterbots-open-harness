@@ -111,7 +111,7 @@ const SOURCES = [
   },
 ];
 
-function MapSources() {
+export function MapSources() {
   return (
     <div style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
       <div style={{ maxWidth: SCREEN_COLUMN, margin: '0 auto', padding: '22px var(--gutter) 24px' }}>

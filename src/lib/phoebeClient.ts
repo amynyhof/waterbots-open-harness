@@ -12,7 +12,7 @@
  */
 
 import { CONSIDERATIONS, CRITERIA } from './phoebeCards';
-import type { CriterionState } from './criteriaState';
+import type { CriterionState, CriterionStatus } from './criteriaState';
 import type { Evidence } from '../chat/evidence';
 
 export interface CriterionUpdate {
@@ -178,4 +178,27 @@ function resolveUpdates(value: unknown): CriterionUpdate[] {
     out.push(state === 'not-yet' ? { number, state, routeForward } : { number, state });
   }
   return out;
+}
+
+/**
+ * Phoebe's verdicts applied to a worksheet's rows — one home for the move,
+ * from 11 Sep 2026, when the Agent Commons gave her a second worksheet (item
+ * S18, slice 3). The shell's rows and the Commons seat's rows both move
+ * through this; a verdict for a criterion that does not exist is dropped.
+ * Pure: a new array, the old one untouched.
+ */
+export function applyCriterionUpdates(
+  current: CriterionStatus[],
+  updates: CriterionUpdate[]
+): CriterionStatus[] {
+  const next = [...current];
+  for (const update of updates) {
+    const index = CRITERIA.findIndex((c) => c.number === update.number);
+    if (index < 0) continue;
+    next[index] =
+      update.state === 'not-yet'
+        ? { state: 'not-yet', routeForward: update.routeForward }
+        : { state: 'met' };
+  }
+  return next;
 }

@@ -115,7 +115,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S15 | One row — the journey bar is the navigation; a candidate for production | Surfaces | **built 7 Sep 2026** — the tab row removed; offered to production by the maintainer's hand, later |
 | S16 | The agent screen — every step is a screen, the agent's chat in the middle and its tool as a tab; a candidate for production | Surfaces | **built 9 Sep 2026, #61 to #64** — [archived](./OPEN_ITEMS_ARCHIVE.md); the B→A raise into the book and the carry list wait on the maintainer's hand |
 | S17 | The agent watches its Tool tab and comments; a pulsing teal dot on Chat | Surfaces | **logged 9 Sep 2026, parked for a design session, both sides** — no proposal yet |
-| S18 | Agent Commons — a public gallery of graded knowledge packs, each wearing an agent face | Surfaces | **logged 9 Sep 2026; proposal approved; slice 1 approved with one correction; slice 2 built 11 Sep 2026** — slice 3 next, an agent opens alone; slice 4 waits on Deb's rig |
+| S18 | Agent Commons — a public gallery of graded knowledge packs, each wearing an agent face | Surfaces | **logged 9 Sep 2026; slices 1 to 3 built by 11 Sep 2026** — slice 3 on her eyeball; slice 4 waits on Deb's rig |
 | S19 | The Workshop — make your own agent on the Commons | Surfaces | **logged 11 Sep 2026, not built** — proposal after the Commons' slice 3 |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
@@ -2266,9 +2266,51 @@ it now.
 
 **Real model calls in slice 2: none.**
 
+**#69 merged and slice 2 approved, 11 Sep 2026, with two rulings.** In her words: *(1) each card
+gets one short "good at" line and a short document name — draft the lines, I approve on pixels;
+(2) no crew rail on the shelf — the shelf is the crew. Shelf plus "Sign up to manage a project"
+only.* Both landed with slice 3. The lines and short names are drafted into the pack registry once —
+`shelf: { line, document }` on each method pack, in the slice 1 picture's own words — and the shelf
+reads them; Phoebe's and Bridget's lines were already short and stand. The crew column is gone from
+the Commons entirely, and with it the static crew row.
+
+**Slice 3 built, 11 Sep 2026 — open one, alone.** `Commons.tsx` is the page: one row under the top
+bar carrying the sign-up door and, when a pack is open, the way back and the pack's name once —
+"‹ Agent Commons / Phoebe's knowledge pack · Eligibility and feasibility cards", the slice 1
+picture's row. Nothing beside the centre. `CommonsSeats.tsx` holds the three seats on the one agent
+screen as its third consumer: Phoebe's with her own conversation, asked with no record, and a
+worksheet of the seat's own that her verdicts move; Calvin's with a calculator of its own, opened on
+the pack whose card was clicked; Bridget's with her datasets and Credentials, no map. No "Next
+phase" anywhere. A seat stays mounted once opened. The hosts, the pack views and the Credentials tab
+are the console's, exported and never re-typed. The Credentials tab now says the grade is the one
+public exam's, on every consumer — the text change owed from slice 1.
+
+**Calls made in slice 3, each stated in the pull request.**
+
+- **Tool depth.** Phoebe's worksheet and Calvin's calculator come to the Commons with state of their
+  own; Bridget's map does not, because it is drawn once on the Partners step and a second copy would
+  fetch the basins again. Her Chat line says where the map is.
+- **A separate conversation per consumer.** The Commons' Phoebe is not the console's thread with the
+  record taken off; it is the third consumer's own, as production's will be. One conversation per
+  agent per consumer.
+- **The same caps.** Her twenty a day are the same twenty here; the composer's note says so.
+- **No address per pack.** Opening is state, not a path; a reload returns to the shelf. A path per
+  pack is one line in `pages.ts` and one rewrite rule, on her word.
+- **The eligible banner keeps its words and loses its button** on the Commons, where there is no map
+  to open.
+- **The capture shows the answer, not the header.** The transcript follows the newest turn, as on
+  the console, and her answer is long enough to scroll the header above the frame.
+
+**A fault found in the browser walk and fixed before the commit.** The agent screen built its tab
+and panel ids from the host's name alone, so the console's Phoebe and the Commons' Phoebe shared
+ids while both were mounted. The screen now takes an id slug from its consumer.
+
+**Real model calls in slice 3: one**, to Phoebe, intended, for the capture.
+
 Logged 9 Sep 2026. ~~**Slice 1 drawn; slices 2 and 3 approved to build; slice 4 waits on Deb.**~~
-**Slice 1 approved with one correction and slice 2 built, 11 Sep 2026; slice 3 next, on the
-corrected shape; slice 4 waits on Deb.**
+~~**Slice 1 approved with one correction and slice 2 built, 11 Sep 2026; slice 3 next, on the
+corrected shape; slice 4 waits on Deb.**~~ **Slices 1 to 3 built by 11 Sep 2026; slice 3 waits on
+her eyeball; slice 4 waits on Deb.**
 
 ---
 

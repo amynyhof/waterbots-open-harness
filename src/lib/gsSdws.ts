@@ -926,6 +926,17 @@ function pack(variant: Variant): MethodPack {
       : 'The tonnes of CO₂-equivalent a year a safe-water project screens at under the Paris-aligned ' +
         'version of the Gold Standard methodology, before its further adjustments.',
     headlineLabel: legacy ? 'Emission reductions' : 'Net emission reductions',
+    /* The Commons shelf's line and short name — drafted 11 Sep 2026 for the
+       maintainer's approval on pixels. */
+    shelf: legacy
+      ? {
+          line: "Emission reductions from safe drinking water, under Gold Standard's first method.",
+          document: 'Gold Standard EE-SWS V1.0',
+        }
+      : {
+          line: 'The same method aligned to the Paris Agreement, with one cited input changed.',
+          document: 'Gold Standard PAA-M400-12 V2.0',
+        },
     /* The maintainer's own clauses, signed as drafted on 2 Sep 2026. The
        primer renders them; nothing retypes them. */
     primerLine: legacy

@@ -50,7 +50,7 @@ export const CALVIN: AgentHost = {
 };
 
 /** The one plain line — ruling 1, 9 Sep 2026. A visitor's words. */
-const NOT_LIVE_LINE =
+export const CALVIN_NOT_LIVE_LINE =
   'Calvin is not answering here yet. The calculator works: pick a method and type in what you know.';
 
 export default function CalvinScreen({
@@ -75,7 +75,7 @@ export default function CalvinScreen({
       opensOn="tool"
       next={next && nextSurface ? { label: next.label, go: () => onNavigate(nextSurface) } : null}
       tabs={{
-        chat: <NotLiveChat host={CALVIN} line={NOT_LIVE_LINE} />,
+        chat: <NotLiveChat host={CALVIN} line={CALVIN_NOT_LIVE_LINE} />,
         tool: (
           <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
             <QuantificationWorksheet
@@ -99,7 +99,7 @@ export default function CalvinScreen({
 
 const PACKS = livePacks();
 
-const CALVIN_PACK: PackView = {
+export const CALVIN_PACK: PackView = {
   heading: "Calvin's Knowledge Pack",
   tags: PACKS.map((p) => p.citation.document).filter((d, i, all) => all.indexOf(d) === i),
   approved: null,

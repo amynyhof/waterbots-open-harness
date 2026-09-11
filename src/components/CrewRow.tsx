@@ -1,18 +1,14 @@
 /**
  * One crew row — a portrait in a tinted square, the name in the agent's own
- * accent where the accent may carry text, and a role caption beneath.
+ * accent where the accent may carry text, and a role caption beneath. The
+ * row is a button that opens the agent's step, and the current one rises to
+ * a card underlined in the agent's colour.
  *
  * THE SHAPE IS THE PRODUCTION CONSOLE'S, from the saved page the maintainer
- * brought in by hand on 2 Sep 2026. Drawn once here from 11 Sep 2026 (item
- * S18, slice 2) so the crew rail on the console and the Agent Commons' right
- * column show the same row; before that the rail drew it inline.
- *
- * TWO WAYS TO SIT. With `onOpen` the row is a button that opens the agent's
- * step, and the current one rises to a card underlined in the agent's colour
- * — the console's gesture. Without it the row is a plain listing: the same
- * look, no hover and no hand cursor, so it does not promise a click it cannot
- * keep. The Commons shelf lists the crew that way, because on the Commons an
- * agent is opened from its pack's card, not from the crew.
+ * brought in by hand on 2 Sep 2026. Drawn here from 11 Sep 2026 (item S18,
+ * slice 2), moved out of the crew rail. ~~A static, listing form sat beside
+ * the button for the Commons' right column~~ — gone with that column on the
+ * maintainer's ruling of 11 Sep 2026: on the Commons the shelf is the crew.
  */
 
 import type { CrewMember } from '../lib/crew';
@@ -28,11 +24,26 @@ export default function CrewRow({
   current?: boolean;
   /** A count to show at the row's end, or null for none. */
   count?: number | null;
-  /** The click, when the row opens something. Absent, the row is a listing. */
-  onOpen?: () => void;
+  onOpen: () => void;
 }) {
-  const body = (
-    <>
+  return (
+    <button
+      type="button"
+      className="wb-crew-row"
+      onClick={onOpen}
+      aria-current={current ? 'page' : undefined}
+      style={{
+        /* The current row rises one plane, with the hairline §2.3 pairs with
+           a white card. Never an accent fill. */
+        background: current ? 'var(--card)' : 'transparent',
+        border: current ? '1px solid var(--line)' : '1px solid transparent',
+        /* The current card is underlined in the agent's colour, the same
+           underline its screen's active tab wears — maintainer's ruling 3 of
+           9 Sep 2026, item S16. An identity keyline, never a status dot
+           (§2.6); Surf may carry a keyline. */
+        borderBottom: current ? `2px solid var(${member.token})` : '1px solid transparent',
+      }}
+    >
       <span
         aria-hidden
         style={{
@@ -83,36 +94,6 @@ export default function CrewRow({
           {count}
         </span>
       )}
-    </>
-  );
-
-  if (!onOpen) {
-    return (
-      <div className="wb-crew-row is-static" style={{ border: '1px solid transparent' }}>
-        {body}
-      </div>
-    );
-  }
-
-  return (
-    <button
-      type="button"
-      className="wb-crew-row"
-      onClick={onOpen}
-      aria-current={current ? 'page' : undefined}
-      style={{
-        /* The current row rises one plane, with the hairline §2.3 pairs with
-           a white card. Never an accent fill. */
-        background: current ? 'var(--card)' : 'transparent',
-        border: current ? '1px solid var(--line)' : '1px solid transparent',
-        /* The current card is underlined in the agent's colour, the same
-           underline its screen's active tab wears — maintainer's ruling 3 of
-           9 Sep 2026, item S16. An identity keyline, never a status dot
-           (§2.6); Surf may carry a keyline. */
-        borderBottom: current ? `2px solid var(${member.token})` : '1px solid transparent',
-      }}
-    >
-      {body}
     </button>
   );
 }
