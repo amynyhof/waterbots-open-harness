@@ -74,7 +74,8 @@ first-time visitor knows.
 **From 9 Sep 2026 every step is an agent screen.** The agent's chat sits in the middle, in bubbles
 — the visitor's on the right, the agent's on the left in its own colour with its portrait — and tabs
 above it: Chat, always; Tool, when the agent has one; Knowledge pack, the cards, versions and sources
-it works from; Credentials, its exam and scores, which say plainly that no exam has been sat. The
+it works from; Credentials, its exam and scores, which say plainly that ~~no exam has been sat~~ the
+grade comes from one public exam run outside this site and that none has been run yet. The
 tab row wears the agent's colour, and the crew card on the right is underlined in the same colour, so
 a visitor can see whose screen it is. "Next phase" sits at the row's right end on every step but
 Quantify, where the save button is the way on. **Wellington's** desk is his screen. **Phoebe's** has
@@ -84,6 +85,17 @@ Chat tabs say in one plain line that they are not answering here yet. The right 
 with the save button on every step; the old host panels are gone. Memory is never a tab: what the
 visit knows stays in the record on the left. The screen is built once and offered to production and
 the Agent Commons, which differ from this site only in memory and in how deep the tool goes.
+
+**From 11 Sep 2026 the Agent Commons is live at `/commons`**, opened by one word at the right of
+the top bar. It is a shelf of knowledge packs, one card per pack wearing the face of the agent who
+holds it: Phoebe's eligibility and feasibility cards, Calvin's three method packs, Bridget's two
+datasets. Every card's chip reads "not yet graded", because a grade on the Commons comes only from
+one public exam, run outside this site on real projects and real packs, and none has been run yet.
+Open a card and the agent's screen appears alone — its chat, its tool where it has one, its
+knowledge pack and its credentials — with no crew beside it and no next phase; the only other
+things on the screen are the way back to the shelf and "Sign up to manage a project". The Commons
+carries no project record and keeps nothing; Phoebe answers there from what a visitor types, under
+the same twenty messages a day.
 
 ## What is built
 

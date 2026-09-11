@@ -808,3 +808,85 @@ on the door opening the other way, CLAUDE.md's scope bullet, item S13's cap note
 rewritten fresh, the exports regenerated after the checkpoint. The migration gate ran and found no
 migrations. Local `main` had fallen behind `origin` at the opening — #64 and #65 had merged after
 the last close — and was fast-forwarded before anything was built.
+
+## 11 September 2026 — the Agent Commons, v0
+
+**Three pull requests merged, #68 to #70, and this close-out.** Item S18's slices 1 to 3 — the
+pictures approved, the address and the shelf built, open-one built — and two items logged, S19 and
+S20. One real model call, to Phoebe, for a capture. The sitting opened after the machine died
+overnight; nothing pushed was lost, and nothing unpushed existed.
+
+### What was built
+
+**The address and the shelf (slice 2, #69).** The console at `/` and the Commons at `/commons`, one
+home in `src/lib/pages.ts` and the site's first rewrite rule in `vercel.json`. One word, "Agent
+Commons", at the right of the top bar on both pages; the wordmark is the way back; the browser's
+back button works. The console is hidden under the Commons and never unmounted, so a conversation
+and the drawn map survive the step out and back. The shelf assembles one card per knowledge pack
+from the registries — Phoebe's card sets, Calvin's three method packs, Bridget's two datasets —
+each wearing its holder's face, every chip "not yet graded". The roster moved out of the crew rail
+into `src/lib/crew.ts` and the row into `CrewRow.tsx`.
+
+**Open one (slice 3, #70).** `Commons.tsx` is the page: one row under the top bar carrying the
+sign-up door and, when a pack is open, the way back and the pack's name once. `CommonsSeats.tsx`
+holds three seats on the one agent screen as its third consumer: Phoebe's with her own conversation,
+asked with no record, and a worksheet of the seat's own that her verdicts move; Calvin's with a
+calculator of its own, opened on the pack whose card was clicked; Bridget's with her datasets and
+Credentials and no map. No "Next phase" anywhere; nothing beside the centre. The hosts, the pack
+views and the Credentials tab are the console's, exported and never re-typed. The Credentials tab
+now says the grade is the one public exam's, on every consumer. Each method pack carries a short
+shelf line and a short document name, written once in the registry.
+
+**The gates.** Unchanged in count and all passing at each pull request; nothing under `api/`
+changed.
+
+### What was learned
+
+**An explicit `visibility: visible` beats a hidden ancestor.** The desk showed through the shelf
+on slice 2's first capture, because each console surface's wrapper set "visible" outright — the
+same fault the agent screen's panels had in item S16 slice 4. The open surface now inherits. Three
+layers hide one another in this shell, page → surface → tab panel, and each new layer re-finds this
+unless the rule is known. It is written at the wrappers.
+
+**A history push inside a state updater doubles in development.** React runs the updater twice in
+StrictMode, so every move to the Commons pushed two entries and the back button landed on the same
+page. The push is outside the updater now. Found in the browser walk, before the commit.
+
+**Two mounted screens of one agent shared ids.** The agent screen built its tab and panel ids from
+the host's name, so the console's Phoebe and the Commons' Phoebe collided while both were mounted.
+The screen now takes an id slug from its consumer. Found in slice 3's walk.
+
+**The picture's hand-written lines were not the registry's.** Slice 1 drew short "good at" lines
+and short document names by hand; the rule that nothing is typed twice put each pack's `measures`
+sentence and the citation's full title on the card instead, and the cards ran to twice the drawn
+height. The maintainer ruled the short lines into the registry, once, and the shelf reads them.
+A picture drawn over the real frame still needs its words to come from where the build's will.
+
+**The machine's clock and the maintainer's date disagreed by a day.** The clock read 10 Sep while
+#68 merged and slice 2 was built; she dated her rulings 11 Sep. Her date is recorded everywhere,
+and the disagreement is noted under item S18 rather than silently resolved either way.
+
+### Decisions
+
+- **An agent opens alone on the Commons** — no crew, no next steps; back to the shelf and the
+  sign-up door the only other things on the screen. Her correction on the slice 1 pictures, canon.
+- **The shelf is the crew.** No crew column on the Commons; shelf plus sign-up only.
+- **Short lines and short document names on the cards**, drafted by the engineer, approved on
+  pixels with #70.
+- **Calls stated and kept**: no address per pack; the Commons' Phoebe is her own conversation, the
+  third consumer's; the same daily caps; Bridget's map stays the console's; the sign-up door goes to
+  waterbots.ai's front door.
+- **Item S19 logged, the Workshop** — make your own agent on the Commons; the cost model in order;
+  publishing reviewed by her first; every pack saved in both shapes; grading manual until Deb's rig
+  runs on a trigger. Not built; proposal next, on her word.
+- **Item S20 logged, "Connect with a human expert"** — a button beside sign-up on every Commons
+  agent, a short contact form only, never the conversation. Not built; two design questions open.
+- **Slice 4 waits on Deb's per-case file; slice 5, the flag button, is later.**
+
+### Housekeeping
+
+The close-out itself: the build plan, the README's Commons paragraph and its Credentials line,
+CLAUDE.md's scope bullet, items S18 to S20, the handoff rewritten fresh, the exports regenerated
+after the checkpoint. The migration gate ran and found no migrations. Thirteen local branches whose
+remotes were deleted on merge are still on this machine, from before this sitting; harmless, and
+pruned on the maintainer's word.

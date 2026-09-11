@@ -115,8 +115,9 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S15 | One row — the journey bar is the navigation; a candidate for production | Surfaces | **built 7 Sep 2026** — the tab row removed; offered to production by the maintainer's hand, later |
 | S16 | The agent screen — every step is a screen, the agent's chat in the middle and its tool as a tab; a candidate for production | Surfaces | **built 9 Sep 2026, #61 to #64** — [archived](./OPEN_ITEMS_ARCHIVE.md); the B→A raise into the book and the carry list wait on the maintainer's hand |
 | S17 | The agent watches its Tool tab and comments; a pulsing teal dot on Chat | Surfaces | **logged 9 Sep 2026, parked for a design session, both sides** — no proposal yet |
-| S18 | Agent Commons — a public gallery of graded knowledge packs, each wearing an agent face | Surfaces | **logged 9 Sep 2026; slices 1 to 3 built by 11 Sep 2026** — slice 3 on her eyeball; slice 4 waits on Deb's rig |
-| S19 | The Workshop — make your own agent on the Commons | Surfaces | **logged 11 Sep 2026, not built** — proposal after the Commons' slice 3 |
+| S18 | Agent Commons — a public gallery of graded knowledge packs, each wearing an agent face | Surfaces | **v0 done — slices 1 to 3 built and merged by 11 Sep 2026 (#68 to #70)**; slice 4 waits on Deb's per-case file; slice 5, the flag button, later |
+| S19 | The Workshop — make your own agent on the Commons | Surfaces | **logged 11 Sep 2026, not built** — slice 3 has landed; the proposal is next, on the maintainer's word |
+| S20 | "Connect with a human expert" on every Commons agent | Surfaces | **logged 11 Sep 2026, not built** — two design questions open for the session |
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
@@ -2309,8 +2310,11 @@ ids while both were mounted. The screen now takes an id slug from its consumer.
 
 Logged 9 Sep 2026. ~~**Slice 1 drawn; slices 2 and 3 approved to build; slice 4 waits on Deb.**~~
 ~~**Slice 1 approved with one correction and slice 2 built, 11 Sep 2026; slice 3 next, on the
-corrected shape; slice 4 waits on Deb.**~~ **Slices 1 to 3 built by 11 Sep 2026; slice 3 waits on
-her eyeball; slice 4 waits on Deb.**
+corrected shape; slice 4 waits on Deb.**~~ ~~**Slices 1 to 3 built by 11 Sep 2026; slice 3 waits on
+her eyeball; slice 4 waits on Deb.**~~ **#70 merged and slice 3 approved, 11 Sep 2026. Commons v0 —
+slices 1 to 3 — is done. Slice 4 waits on Deb's per-case file, the first of the three changes above;
+slice 5, the flag button, is later.** The three card lines and short names were approved with the
+merge.
 
 ---
 
@@ -2363,7 +2367,57 @@ says "Knowledge Pack", per the language rules in [CLAUDE.md](./CLAUDE.md).
   change to his rig, beside the three under item S18 slice 4, and she takes it to him.
 - **Review before publishing is hers, by hand**, until there is a queue worth building a tool for.
 
-**Not built. Proposal after slice 3.**
+**Not built. ~~Proposal after slice 3.~~ Slice 3 landed on 11 Sep 2026; the proposal is next, on the
+maintainer's word.**
+
+---
+
+## S20. "Connect with a human expert" on every Commons agent
+
+**Logged 11 Sep 2026 from the maintainer's rulings of that day, at the close of the sitting that
+finished Commons v0. Nothing is built toward it.** Her words, kept whole:
+
+> *"Connect with a human expert" on every Commons agent. A button on the agent screen, beside
+> sign-up. House agents route to WaterBots consulting; workshop agents route to their builder if the
+> builder opted in, else to WaterBots. Sends a short contact form only; the conversation is not
+> kept, so nothing is attached unless the visitor pastes it. Free to click; what happens after is
+> the human's business. Design questions for the session: the form's fields, whether the builder's
+> contact is public or relayed through us. No build yet.*
+
+**Read against the canon already ruled, so the proposal starts from it.**
+
+- **Where it sits.** On the Commons an agent opens alone, and the only other things on the screen
+  are the way back and the sign-up door (item S18's ruling of 11 Sep 2026). This button joins the
+  sign-up door in that one row: a third thing on the screen, ruled by her, and the row is where it
+  goes. Whether it is a second primary or a secondary beside the primary is a design question for
+  the same session — the book's §7 has one primary per page.
+- **Nothing is kept, so nothing is attached.** The conversation is not stored anywhere on this site
+  and never will be by this item; the form carries only what the visitor types into it. That is
+  the same line the composer already draws under every chat.
+- **Two routes.** House agents — Phoebe, Calvin, Bridget, and any crew pack — go to WaterBots
+  consulting. A workshop agent (item S19) goes to its builder only if the builder opted in when
+  publishing, else to WaterBots. The opt-in is a field on the workshop's publish step, so S19's
+  proposal should leave room for it.
+- **Every line a visitor reads says what happens, in plain words** — what the form sends, to whom,
+  and that the conversation does not go with it.
+- **A form is a send** — the visitor's own words to a human, not to a model. It is not a relay call
+  and counts under no agent's cap; it needs its own small guard against being fired blindly, which
+  the proposal states.
+
+**Design questions, hers, for the session.**
+
+1. **The form's fields.** The smallest honest set is a name, a way to reach them, and a few lines
+   of what they want; anything more is the proposal's to argue.
+2. **Whether a builder's contact is public or relayed through us.** Public means the button is a
+   plain link the builder gave; relayed means this site or production forwards it and the builder's
+   address never shows. The second keeps a builder's address off a public page and gives a place to
+   stop abuse; the first keeps this site out of the middle. The proposal states both.
+
+**Dependencies, logged.** Workshop agents do not exist until item S19 builds; the house-agent route
+can build first, on its own, once the two questions are answered. Where the form goes — an address,
+a mailbox, production — is a fact the maintainer carries, never guessed here (rule zero).
+
+**Not built. The design session comes first.**
 
 ---
 
