@@ -11,13 +11,11 @@
  * the desk's rows use. Phoebe's turns carry none. The layer does not know what
  * the action does — it calls what it is given.
  *
- * TWO LOOKS, ONE TRANSCRIPT — item S16, slice 2, 9 Sep 2026. The agent
- * screen draws turns as BUBBLES: the visitor's on the right in white with the
- * hairline, the agent's on the left in the agent's own tint with its portrait
- * beside it, signed Name · Role above. The docks still draw ROWS, the look
- * they have had since 3 Sep, until each dock's own slice retires it into the
- * screen. The pictures of 8 Sep 2026 (#61) are what the bubbles follow, and
- * the maintainer approved them on pixels.
+ * ONE LOOK — the shared chat language, carried by the maintainer on 13 Sep 2026
+ * from paid docs/chat/SHARED_CHAT.md (rules travel as rules; this repository
+ * does not read the paid tree). Visitor right, hairline; host left, tint, 35px
+ * face with no box, Name · Role above. The unused rows look is gone so there
+ * is not a second bubble language.
  *
  * The agent's tint is read from the host's colour token, never re-typed
  * (BRAND.md §6), and it is an identity — a bubble, a portrait, a keyline —
@@ -25,52 +23,49 @@
  * accent only where the accent may carry text; Surf may not, and Bridget's
  * host says so when her screen comes.
  *
- * ~~A bubble look with typing dots was drawn here for a landing surface on
- * 3 Sep 2026 and discarded with it the same day.~~ Bubbles are back by the
- * maintainer's brief of 8 Sep 2026; the typing dots are not part of this and
- * stay on item S14.
+ * THINKING is face + three opacity-pulse dots + the host's existing line,
+ * never flush-left text. Only the thinking face floats, and gently. Idle
+ * faces stay still. Item S14's motion (opacity only, no bounce) lands here
+ * on the live chats; the hero chat (S12) stays parked.
  */
 
 import { type CSSProperties } from 'react';
 import AnswerBody from './AnswerBody';
 import type { AgentHost, AgentTurn, Turn } from './evidence';
 
-export type TranscriptLook = 'rows' | 'bubbles';
-
 export default function Transcript({
   host,
   turns,
   pending,
   error,
-  look = 'rows',
 }: {
   host: AgentHost;
   turns: Turn[];
   pending: boolean;
   error: string | null;
-  /** Rows in a dock; bubbles on the agent screen. */
-  look?: TranscriptLook;
 }) {
+  const accent = { '--turn-accent': `var(${host.colourToken})` } as CSSProperties;
+
   return (
     <>
       {turns.map((turn, i) =>
-        look === 'bubbles' ? (
-          turn.role === 'user' ? (
-            <ReaderBubble key={i} text={turn.text} />
-          ) : (
-            <HostBubble key={i} host={host} turn={turn} />
-          )
-        ) : turn.role === 'user' ? (
-          <ReaderTurn key={i} text={turn.text} />
+        turn.role === 'user' ? (
+          <ReaderBubble key={i} text={turn.text} />
         ) : (
-          <HostTurn key={i} host={host} turn={turn} />
+          <HostBubble key={i} host={host} turn={turn} />
         )
       )}
 
       {pending && (
-        <p className="t-caption" style={{ margin: '4px 0 0', color: 'var(--ink-3)' }}>
-          {host.thinkingLine}
-        </p>
+        <div className="wb-thinking" style={accent} role="status" aria-live="polite">
+          <HostFace host={host} thinking />
+          <span className="wb-thinking-dots" aria-hidden>
+            <span />
+            <span />
+            <span />
+          </span>
+          <span className="wb-thinking-line">{host.thinkingLine}</span>
+        </div>
       )}
 
       {error && (
@@ -93,51 +88,13 @@ export default function Transcript({
   );
 }
 
-/* --------------------------------------------------------------------------
-   Rows — the docks' look.
-   -------------------------------------------------------------------------- */
-
-function ReaderTurn({ text }: { text: string }) {
+function HostFace({ host, thinking = false }: { host: AgentHost; thinking?: boolean }) {
   return (
-    <div style={{ marginBottom: 16 }}>
-      <div className="label" style={{ marginBottom: 4, color: 'var(--ink-3)' }}>
-        You
-      </div>
-      <p
-        className="t-body"
-        style={{ margin: 0, fontSize: 14, color: 'var(--ink)', whiteSpace: 'pre-wrap' }}
-      >
-        {text}
-      </p>
-    </div>
+    <span className={thinking ? 'wb-turn-face wb-turn-face-thinking' : 'wb-turn-face'} aria-hidden>
+      <img src={host.portrait} alt="" width={35} height={35} />
+    </span>
   );
 }
-
-function HostTurn({ host, turn }: { host: AgentHost; turn: AgentTurn }) {
-  return (
-    <div style={{ marginBottom: 18 }}>
-      <div
-        className="label"
-        style={{ marginBottom: 4, color: `var(${host.colourToken})`, display: 'flex', gap: 7 }}
-      >
-        {host.name}
-        {turn.abstained && (
-          <span className="t-caption" style={{ fontSize: 10.5, color: 'var(--ink-3)' }}>
-            {host.abstainedLabel ?? 'no card for this'}
-          </span>
-        )}
-      </div>
-
-      <AnswerBody text={turn.text} evidence={turn.evidence} />
-
-      <TurnAction turn={turn} />
-    </div>
-  );
-}
-
-/* --------------------------------------------------------------------------
-   Bubbles — the agent screen's look.
-   -------------------------------------------------------------------------- */
 
 function ReaderBubble({ text }: { text: string }) {
   return (
@@ -153,9 +110,7 @@ function HostBubble({ host, turn }: { host: AgentHost; turn: AgentTurn }) {
   const accent = { '--turn-accent': `var(${host.colourToken})` } as CSSProperties;
   return (
     <div className="wb-turn wb-turn-host" style={accent}>
-      <span className="wb-turn-portrait" aria-hidden>
-        <img src={host.portrait} alt="" width={24} height={24} style={{ display: 'block' }} />
-      </span>
+      <HostFace host={host} />
       <div className="wb-turn-body">
         <div className="wb-turn-who">
           <span>
@@ -176,7 +131,7 @@ function HostBubble({ host, turn }: { host: AgentHost; turn: AgentTurn }) {
   );
 }
 
-/** The one action a turn may carry, drawn the same way in either look. */
+/** The one action a turn may carry. */
 function TurnAction({ turn }: { turn: AgentTurn }) {
   if (!turn.action) return null;
   return (

@@ -13,11 +13,11 @@
  * scripted messages, no fake typing, no memory: a reload empties it and the
  * composer's note says so.
  *
- * THE COMPOSER IS PRODUCTION'S TO THE PIXEL — maintainer's eyeball ruling 2a,
- * 7 Sep 2026: one line tall, 13px on 1.5, 8px by 12px inside, on the card
- * plane with the hairline and the medium radius; the Send button 13px medium
- * on Tide, faded to 45% while it cannot send; the pair 816px wide, which is
- * production's desk column, so the transcript above takes the same width.
+ * SHARED CHAT LANGUAGE — carried by the maintainer on 13 Sep 2026 from paid
+ * docs/chat/SHARED_CHAT.md (this repository does not read the paid tree).
+ * Column 816px; padding 16 sides / 24 top-bottom; composer strip 16/12;
+ * outlined composer + Send; header 48 tile / 35 face / 10 corner, still.
+ * Chat surface radii 10 / 14. No leftover 22 / 24 / 34.
  *
  * BETA IS STATED IN WORDS beside the name, where the host says it is true.
  */
@@ -27,7 +27,7 @@ import Transcript from '../chat/Transcript';
 import type { AgentHost } from '../chat/evidence';
 import type { Conversation } from '../chat/useConversation';
 
-/** Production's desk column, read from the saved page: 816px. */
+/** Shared chat column: 816px. */
 export const SCREEN_COLUMN = 816;
 
 export default function ScreenChat({
@@ -50,22 +50,21 @@ export default function ScreenChat({
   return (
     <>
       <div ref={scroller} style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
-        <div style={{ maxWidth: SCREEN_COLUMN, margin: '0 auto', padding: '22px var(--gutter) 24px' }}>
+        <div style={{ maxWidth: SCREEN_COLUMN, margin: '0 auto', padding: '24px 16px' }}>
           <HostHeader host={host} />
           <Transcript
             host={host}
             turns={chat.turns}
             pending={chat.pending}
             error={chat.error}
-            look="bubbles"
           />
         </div>
       </div>
 
-      {/* The one composer, at the bottom of the centre. A hairline above,
-          12px by 16px around, the textarea and the button on one baseline. The
-          label is for screen readers; production carries none on the page.
-          The note beneath states the settings at caption size. */}
+      {/* The one composer, at the bottom of the centre. Strip 16/12 around
+          the 816 column; the textarea and the button on one baseline. The
+          label is for screen readers. The note beneath states the settings
+          at caption size. */}
       <div
         className="chrome"
         style={{
@@ -75,7 +74,7 @@ export default function ScreenChat({
           padding: '12px 0',
         }}
       >
-        <div style={{ maxWidth: SCREEN_COLUMN, margin: '0 auto', padding: '0 var(--gutter)' }}>
+        <div style={{ maxWidth: SCREEN_COLUMN, margin: '0 auto', padding: '0 16px' }}>
           <div style={{ display: 'flex', gap: 8, alignItems: 'flex-end' }}>
             <textarea
               id={composerId}
@@ -114,8 +113,8 @@ export default function ScreenChat({
 }
 
 /**
- * The host's header — production's desk header: a 48px portrait tile in the
- * host's tint, the name at 22px, the role as an eyebrow, beta as a tag where
+ * The host's header — 48px framed tile, 35px face, 10px corner, still.
+ * Name uses the book's H3 token. Role as an eyebrow. Beta as a tag where
  * it is true.
  */
 export function HostHeader({ host }: { host: AgentHost }) {
@@ -126,7 +125,7 @@ export function HostHeader({ host }: { host: AgentHost }) {
         style={{
           width: 48,
           height: 48,
-          borderRadius: 'var(--r-md)',
+          borderRadius: 10,
           flex: 'none',
           display: 'grid',
           placeItems: 'center',
@@ -139,7 +138,15 @@ export function HostHeader({ host }: { host: AgentHost }) {
       </span>
       <div style={{ minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <h1 style={{ fontSize: 22, margin: 0, letterSpacing: '-0.015em', lineHeight: 1.15 }}>
+          <h1
+            style={{
+              fontSize: 'var(--fs-h3)',
+              fontWeight: 600,
+              margin: 0,
+              letterSpacing: '-0.015em',
+              lineHeight: 1.15,
+            }}
+          >
             {host.name}
           </h1>
           {host.beta && <span className="tag">beta</span>}
