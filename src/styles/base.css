@@ -545,18 +545,16 @@ body {
   color: var(--ink-4);
 }
 
-/* THE DESK'S COMPOSER IS PRODUCTION'S TO THE PIXEL — maintainer's ruling 2a,
-   7 Sep 2026, read from the saved desk: one line, 13px on 1.5, 8px by 12px
-   inside, the card plane, the hairline, the medium radius, Tide ring on
-   focus. The Send button beside it: 13px medium on Tide, 8px by 16px, the
-   same radius, faded to 45% while it cannot send. Phoebe's dock keeps the
-   dock composer above; this is the desk's only. */
+/* THE DESK'S COMPOSER — shared chat language, carried 13 Sep 2026:
+   outlined field + Send, 10px corner (chat inner radius). One line, 13px
+   on 1.5, 8px by 12px inside, the card plane, the hairline, Tide ring on
+   focus. Send: 13px medium on Tide, faded to 45% while it cannot send. */
 .wb-composer-desk {
   font-size: 13px;
   line-height: 1.5;
   color: var(--ink);
   background: var(--card);
-  border-radius: var(--r-md);
+  border-radius: 10px;
   padding: 8px 12px;
 }
 .wb-composer-desk:focus-visible {
@@ -570,7 +568,7 @@ body {
   font-weight: 500;
   padding: 8px 16px;
   border: 0;
-  border-radius: var(--r-md);
+  border-radius: 10px;
   background: var(--tide-ui);
   color: #ffffff;
   cursor: pointer;
@@ -1006,14 +1004,14 @@ button.wb-phase:hover span:last-child {
   background: color-mix(in oklab, var(--tide) 6%, transparent);
 }
 
-/* Bubbles — the screen's transcript look (src/chat/Transcript.tsx). The
-   visitor's on the right, white with the hairline; the agent's on the left in
-   the agent's tint with its portrait beside it. --turn-accent is set per turn
-   from the host's token. The docks keep their rows until their own slices. */
+/* Bubbles — shared chat language (src/chat/Transcript.tsx), carried 13 Sep 2026
+   from paid docs/chat/SHARED_CHAT.md. Visitor right, hairline; host left, tint,
+   35px face with no box, Name · Role above. Chat radii 10 / 14. --turn-accent
+   is set per turn from the host's token. */
 .wb-turn {
   display: flex;
   gap: 10px;
-  align-items: flex-end;
+  align-items: flex-start;
   margin: 0 0 14px;
 }
 .wb-turn-me {
@@ -1028,7 +1026,7 @@ button.wb-phase:hover span:last-child {
 }
 .wb-bubble {
   padding: 10px 14px;
-  border-radius: var(--r-lg);
+  border-radius: 14px;
   font-family: var(--font-sans);
   font-size: 14.5px;
   line-height: 1.55;
@@ -1037,14 +1035,12 @@ button.wb-phase:hover span:last-child {
 .wb-turn-me .wb-bubble {
   background: var(--card);
   border: 1px solid var(--line);
-  border-bottom-right-radius: var(--r-xs);
   white-space: pre-wrap;
 }
 .wb-turn-host .wb-bubble {
   max-width: 84%;
   background: color-mix(in oklab, var(--turn-accent) 5%, var(--card));
   border: 1px solid color-mix(in oklab, var(--turn-accent) 25%, transparent);
-  border-bottom-left-radius: var(--r-xs);
 }
 .wb-bubble p {
   margin: 0 0 8px;
@@ -1055,16 +1051,17 @@ button.wb-phase:hover span:last-child {
 .wb-bubble > *:first-child {
   margin-top: 0;
 }
-.wb-turn-portrait {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
+.wb-turn-face {
+  width: 35px;
+  height: 35px;
   flex: none;
-  display: grid;
-  place-items: center;
+  display: block;
   overflow: hidden;
-  background: color-mix(in oklab, var(--turn-accent) 12%, var(--card));
-  border: 1px solid color-mix(in oklab, var(--turn-accent) 25%, transparent);
+}
+.wb-turn-face img {
+  display: block;
+  width: 35px;
+  height: 35px;
 }
 .wb-turn-who {
   display: flex;
@@ -1076,6 +1073,74 @@ button.wb-phase:hover span:last-child {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--turn-accent);
+}
+
+/* Thinking — face + three opacity-pulse dots + the host's line. Never flush-left
+   text. Only the thinking face floats, gently (4px, 2.4s, the live-dot duration
+   so a duration is not invented). Dots fade in turn by opacity; nothing bounces.
+   Item S14, landed on live chats by the shared-chat contract of 13 Sep 2026. */
+.wb-thinking {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+}
+.wb-turn-face-thinking {
+  animation: wb-face-float 2.4s ease-in-out infinite;
+}
+@keyframes wb-face-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+.wb-thinking-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+}
+.wb-thinking-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: var(--ink-3);
+  opacity: 0.28;
+  animation: wb-dot-pulse 1.2s ease-in-out infinite;
+}
+.wb-thinking-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.wb-thinking-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+@keyframes wb-dot-pulse {
+  0%,
+  80%,
+  100% {
+    opacity: 0.28;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+.wb-thinking-line {
+  font-family: var(--font-sans);
+  font-size: var(--fs-caption);
+  color: var(--ink-3);
+  line-height: 1.4;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wb-turn-face-thinking,
+  .wb-thinking-dots span {
+    animation: none;
+  }
+  .wb-thinking-dots span {
+    opacity: 0.45;
+  }
 }
 
 /* The Knowledge pack and Credentials tabs — rows that open to layers. Item
