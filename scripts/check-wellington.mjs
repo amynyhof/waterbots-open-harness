@@ -242,14 +242,25 @@ expect('the desk does not start a conversation of its own', !/useConversation\(/
 
 /* ---------------------------------------------------------------------------
    A question carried in from the production landing — the receiver, item
-   S13, 9 Sep 2026. The contract is one parameter, `question`, percent-encoded
-   UTF-8, at most 500 characters decoded. Bad or empty input is ignored with
-   no error: the page opens honestly empty and never invents a question.
+   S13, 9 Sep 2026. Optional does, name and place joined it on 15 Sep 2026.
+   The contract is `?question=<≤500>[&does=<≤300>][&name=<≤80>][&place=<≤80>]`,
+   percent-encoded UTF-8. Omit empty keys. No kind. No provenance in the URL.
+   Bad or empty input is ignored with no error: the page opens honestly empty
+   and never invents a question or a fact.
 --------------------------------------------------------------------------- */
 
 console.log('\n  A carried question\n');
 
-const { CARRIED_PARAM, CARRIED_MAX_CHARS, readCarriedQuestion, withoutCarried } = createRequire(import.meta.url)(join(libOut, 'carried.js'));
+const {
+  CARRIED_PARAM,
+  CARRIED_MAX_CHARS,
+  CARRIED_DOES_MAX_CHARS,
+  CARRIED_NAME_MAX_CHARS,
+  CARRIED_PLACE_MAX_CHARS,
+  readCarriedQuestion,
+  readCarriedFacts,
+  withoutCarried,
+} = createRequire(import.meta.url)(join(libOut, 'carried.js'));
 expect('the parameter is "question" and the cap is 500 decoded characters', CARRIED_PARAM === 'question' && CARRIED_MAX_CHARS === 500, `got ${CARRIED_PARAM}, ${CARRIED_MAX_CHARS}`);
 expect('a real question comes through, decoded and trimmed', readCarriedQuestion('?question=%20We%20want%20a%20borehole%20in%20Turkana.%20Where%20do%20we%20start%3F%20') === 'We want a borehole in Turkana. Where do we start?', `got "${readCarriedQuestion('?question=%20We%20want%20a%20borehole%20in%20Turkana.%20Where%20do%20we%20start%3F%20')}"`);
 expect('a whole address works as well as a query string', readCarriedQuestion('https://map.waterbots.ai/?question=hello%20there#x') === 'hello there', 'a whole address was not read');
@@ -261,11 +272,101 @@ expect('a sequence that does not decode is a broken link, ignored whole', readCa
 expect('runs of whitespace and newlines fold to one space', readCarriedQuestion('?question=a%0A%0Ab%20%20c') === 'a b c', `got "${readCarriedQuestion('?question=a%0A%0Ab%20%20c')}"`);
 expect('only the first question= is read', readCarriedQuestion('?question=first&question=second') === 'first', 'the second one won');
 expect('the address is cleaned of the question and keeps everything else', withoutCarried('https://map.waterbots.ai/?a=1&question=hi%20there&b=2#frag') === 'https://map.waterbots.ai/?a=1&b=2#frag', `got ${withoutCarried('https://map.waterbots.ai/?a=1&question=hi%20there&b=2#frag')}`);
-expect('an address with no question is returned untouched', withoutCarried('https://map.waterbots.ai/?handoff=t1') === 'https://map.waterbots.ai/?handoff=t1', 'a clean address was rewritten');
+expect('an address with no carried keys is returned untouched', withoutCarried('https://map.waterbots.ai/?handoff=t1') === 'https://map.waterbots.ai/?handoff=t1', 'a clean address was rewritten');
 
 expect('the shell reads the address once, cleans it, and hands the question to the one conversation', /readCarriedQuestion\(window\.location\.search\)/.test(appSource) && /history\.replaceState/.test(appSource) && /sendCarried\(question, \{ carried: true \}\)/.test(appSource) && /setSurface\('desk'\)/.test(appSource), 'the receiver is not in the shell, or does not clean the address');
 const clientSource = readFileSync('src/lib/wellingtonClient.ts', 'utf8');
 expect('the flag reaches the relay only as true, and a typed turn sends no flag', /carried \? \{ messages: history, carried: true \} : \{ messages: history \}/.test(clientSource), 'the client sends the flag loosely');
+
+console.log('\n  Carried facts — does, name, place\n');
+
+expect(
+  'the fact caps are 300, 80 and 80',
+  CARRIED_DOES_MAX_CHARS === 300 && CARRIED_NAME_MAX_CHARS === 80 && CARRIED_PLACE_MAX_CHARS === 80,
+  `got ${CARRIED_DOES_MAX_CHARS}, ${CARRIED_NAME_MAX_CHARS}, ${CARRIED_PLACE_MAX_CHARS}`
+);
+const fullFacts = readCarriedFacts(
+  '?question=hello&does=' +
+    encodeURIComponent('  Boreholes for households  ') +
+    '&name=' +
+    encodeURIComponent(' Walk Borehole ') +
+    '&place=' +
+    encodeURIComponent('Turkana, Kenya')
+);
+expect(
+  'good facts come through trimmed, and question is not among them',
+  fullFacts.does === 'Boreholes for households' &&
+    fullFacts.name === 'Walk Borehole' &&
+    fullFacts.place === 'Turkana, Kenya' &&
+    !('question' in fullFacts) &&
+    !('kind' in fullFacts),
+  JSON.stringify(fullFacts)
+);
+expect('a whole address works for facts as well as a query string', readCarriedFacts('https://map.waterbots.ai/?name=Walk#x').name === 'Walk', JSON.stringify(readCarriedFacts('https://map.waterbots.ai/?name=Walk#x')));
+expect(
+  'non-ASCII facts come through as typed',
+  readCarriedFacts('?place=' + encodeURIComponent('Oaxaca — el valle')).place === 'Oaxaca — el valle',
+  JSON.stringify(readCarriedFacts('?place=' + encodeURIComponent('Oaxaca — el valle')))
+);
+expect('missing facts are an empty object, never invented', Object.keys(readCarriedFacts('')).length === 0 && Object.keys(readCarriedFacts('?question=hello')).length === 0, JSON.stringify(readCarriedFacts('?question=hello')));
+expect(
+  'blank and whitespace-only facts are omitted',
+  Object.keys(readCarriedFacts('?does=&name=%20%20&place=%09')).length === 0,
+  JSON.stringify(readCarriedFacts('?does=&name=%20%20&place=%09'))
+);
+expect(
+  'an over-long fact is ignored whole, never cut, and does not drop a good sibling',
+  readCarriedFacts('?does=' + 'x'.repeat(CARRIED_DOES_MAX_CHARS + 1) + '&name=Walk').name === 'Walk' &&
+    readCarriedFacts('?does=' + 'x'.repeat(CARRIED_DOES_MAX_CHARS + 1) + '&name=Walk').does === undefined &&
+    readCarriedFacts('?does=' + 'x'.repeat(CARRIED_DOES_MAX_CHARS)).does?.length === CARRIED_DOES_MAX_CHARS &&
+    readCarriedFacts('?name=' + 'x'.repeat(CARRIED_NAME_MAX_CHARS + 1)).name === undefined &&
+    readCarriedFacts('?place=' + 'x'.repeat(CARRIED_PLACE_MAX_CHARS + 1)).place === undefined,
+  JSON.stringify(readCarriedFacts('?does=' + 'x'.repeat(CARRIED_DOES_MAX_CHARS + 1) + '&name=Walk'))
+);
+expect(
+  'a broken encoding on one fact is ignored, and a good sibling is kept',
+  readCarriedFacts('?does=hello%E0%A4%A&name=Walk').name === 'Walk' &&
+    readCarriedFacts('?does=hello%E0%A4%A&name=Walk').does === undefined &&
+    readCarriedFacts('?place=%FF%FE').place === undefined,
+  JSON.stringify(readCarriedFacts('?does=hello%E0%A4%A&name=Walk'))
+);
+expect('runs of whitespace in a fact fold to one space', readCarriedFacts('?does=a%0A%0Ab%20%20c').does === 'a b c', JSON.stringify(readCarriedFacts('?does=a%0A%0Ab%20%20c')));
+expect('only the first of each fact key is read', readCarriedFacts('?name=first&name=second').name === 'first', JSON.stringify(readCarriedFacts('?name=first&name=second')));
+expect('kind in the address is never read', readCarriedFacts('?kind=water&does=wells').kind === undefined && readCarriedFacts('?kind=water&does=wells').does === 'wells', JSON.stringify(readCarriedFacts('?kind=water&does=wells')));
+expect(
+  'the address is cleaned of question and facts, and keeps unknown keys and the fragment',
+  withoutCarried('https://map.waterbots.ai/?a=1&does=wells&question=hi&name=Walk&place=Turkana&kind=water#frag') ===
+    'https://map.waterbots.ai/?a=1&kind=water#frag',
+  withoutCarried('https://map.waterbots.ai/?a=1&does=wells&question=hi&name=Walk&place=Turkana&kind=water#frag')
+);
+expect(
+  'facts without a question are still stripped',
+  withoutCarried('https://map.waterbots.ai/?does=wells&name=Walk') === 'https://map.waterbots.ai/',
+  withoutCarried('https://map.waterbots.ai/?does=wells&name=Walk')
+);
+
+const stamped = learnedContext(EMPTY_CONTEXT, readCarriedFacts('?does=wells&name=Walk&place=Turkana'));
+expect(
+  'carried facts stamp chat provenance on the visit',
+  stamped.does === 'wells' &&
+    stamped.provenance.does === 'chat' &&
+    stamped.name === 'Walk' &&
+    stamped.provenance.name === 'chat' &&
+    stamped.place === 'Turkana' &&
+    stamped.provenance.place === 'chat' &&
+    stamped.kind === '' &&
+    stamped.provenance.kind === '',
+  JSON.stringify(stamped)
+);
+expect(
+  'the shell writes carried facts into the visit through learnedContext',
+  /readCarriedFacts\(window\.location\.search\)/.test(appSource) &&
+    /carriedFacts\.current/.test(appSource) &&
+    /learnedContext\(v\.context, learned\)/.test(appSource),
+  'facts are not written through learnedContext'
+);
+expect('the shell does not toast a bad carry', !/toast/i.test(appSource), 'a toast was added for a bad carry');
+expect('the contract comment names the four keys and forbids kind', /question=<≤500>\[&does=<≤300>\]\[&name=<≤80>\]\[&place=<≤80>\]/.test(readFileSync('src/lib/carried.ts', 'utf8')) && /No kind/.test(readFileSync('src/lib/carried.ts', 'utf8')), 'the contract comment does not match Shell A');
 
 /* ------------------------------------------------------------------------- */
 

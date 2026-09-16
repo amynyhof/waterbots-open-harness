@@ -68,7 +68,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { readCarriedQuestion, withoutCarried } from './lib/carried';
+import { readCarriedFacts, readCarriedQuestion, withoutCarried } from './lib/carried';
 import { COMMONS_LABEL, pageFromPath, pathForPage, type Page } from './lib/pages';
 import { type MapStatus } from './components/BasinMap';
 import NavRail from './components/NavRail';
@@ -181,15 +181,21 @@ export default function App() {
   const ask = useMemo(() => wellingtonAsk(onLearned), [onLearned]);
   const chat = useConversation(ask, WELLINGTON.name);
 
-  /* THE RECEIVER (item S13, built 9 Sep 2026). A visitor who typed a question
-     into the production landing's box arrives here with it in the address.
-     Once, on the first paint: read it, take it out of the address so a reload
-     or a shared link cannot send it twice, open Dispatches, and hand it to
-     Wellington as the visitor's first turn — in a bubble, so his answer is
-     the first thing they see. Nothing is kept. A missing, blank, over-long or
-     unreadable question is ignored without a word; the page opens as it
-     always does. The contract for production's sender is in
-     src/lib/carried.ts.
+  /* THE RECEIVER (item S13, built 9 Sep 2026; facts 15 Sep 2026). A visitor
+     who typed a question into the production landing's box arrives here with
+     it in the address — and, from 15 Sep 2026, optional does, name and place
+     beside it. Once, on the first paint: read them, write any good facts into
+     the visit as chat provenance so the card holds them, take the parameters
+     out of the address so a reload or a shared link cannot send them twice,
+     and if there is a question, open Dispatches and hand it to Wellington as
+     the visitor's first turn — in a bubble, so his answer is the first thing
+     they see. Nothing is kept. A missing, blank, over-long or unreadable
+     field is ignored without a word; one bad field does not drop the others.
+     The page opens as it always does. The contract for production's sender
+     is in src/lib/carried.ts.
+
+     Wellington's chat is not rewritten in this slice: the visit card and
+     Phoebe receive the facts; he still only sees the conversation.
 
      THE SEND IS DEFERRED ONE TICK, and the reason was found on the first real
      call: in development React mounts twice (StrictMode), and the second
@@ -199,12 +205,19 @@ export default function App() {
      set again by the next, so the question is sent exactly once, after the
      mounting has settled. */
   const carried = useRef<string | null | undefined>(undefined);
+  const carriedFacts = useRef<Learned | null>(null);
   const sendCarried = chat.sendText;
   useEffect(() => {
     if (carried.current === undefined) {
       carried.current = readCarriedQuestion(window.location.search);
+      const facts = readCarriedFacts(window.location.search);
+      carriedFacts.current = facts.does || facts.name || facts.place ? facts : null;
       const cleaned = withoutCarried(window.location.href);
       if (cleaned !== window.location.href) window.history.replaceState(null, '', cleaned);
+    }
+    if (carriedFacts.current) {
+      const learned = carriedFacts.current;
+      setVisit((v) => ({ ...v, context: learnedContext(v.context, learned) }));
     }
     const question = carried.current;
     if (question === null) return;
