@@ -60,25 +60,41 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — landing facts into the visit card
+## Just finished — Wellington treats filled visit fields as known
 
-**15 Sep 2026. Pull request #74, and this close-out.** Item S13's receiver grew optional facts.
-The maintainer said stop this sitting; no follow-up until she pastes a brief.
+**16 Sep 2026. Pull request #76, and this close-out.** Item S13: Wellington now sees the visit
+record on every ask. The maintainer said stop this sitting; no follow-up until she pastes a brief.
 
 **The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
 is now true.
+
+- **Filled does, name, place and kind count as known.** Wellington receives the same record Phoebe
+  already got (`readRecord`), in his own block headed “What this visit already holds”. He may still
+  ask for anything missing. Kind is still never in the URL.
+- **The first carried turn is not blank.** A ref is written before that send, so URL facts reach
+  him on the same ask that seeds the first bubble. Today's receiver is unchanged: URL facts still
+  stamp the card; a question still seeds the first turn when present. Phoebe's block is unchanged.
+- **The gate holds it:** `check-wellington` ~~(77)~~ **(87 from 16 Sep 2026)**.
+
+## Previously — landing facts into the visit card
+
+**15 Sep 2026. Pull request #74, and that close-out.** Item S13's receiver grew optional facts.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
+was true then.
 
 - **Optional `does`, `name` and `place` ride beside `?question=`.** On arrival the desk writes any
   good facts into the visit as chat provenance, strips those keys from the address with the
   question, and keeps today's first-turn path. Facts without a question fill the card only; no
   question is invented. Bad, empty or over-long fields are ignored whole, never cut, never toasted.
-  Kind is not in the URL. Wellington's chat was not rewritten: the card and Phoebe get the facts;
-  he may still ask in chat for facts that were only in the params.
+  Kind is not in the URL. ~~Wellington's chat was not rewritten: the card and Phoebe get the facts;
+  he may still ask in chat for facts that were only in the params.~~ **Visit-aware from 16 Sep 2026,
+  #76 — see Just finished.**
 - **The sender's contract, for production to carry:**
   `https://map.waterbots.ai/?question=<≤500>[&does=<≤300>][&name=<≤80>][&place=<≤80>]`.
   Percent-encoded UTF-8. Omit empty keys. No kind. No provenance in the URL — this site stamps
   chat. Caps are the sender's job. The contract lives in `src/lib/carried.ts`.
-- **The gate holds it:** `check-wellington` (77).
+- **The gate holds it:** `check-wellington` ~~(77)~~ **(87 from 16 Sep 2026)**.
 
 ## Previously — the handoff receiver
 
@@ -98,7 +114,7 @@ was true then; the contract line below was amended on 15 Sep 2026, #74.
 - **Ten a day per visitor**, under a counter of its own on Wellington's relay, on top of his thirty
   and never instead of it. The shape is the maintainer's ruling of 9 Sep 2026. A refused eleventh is
   told in plain words and the desk composer still works.
-- **The gates hold it**: `check-wellington` ~~(60)~~ **(77 from 15 Sep 2026)** for the parser and
+- **The gates hold it**: `check-wellington` ~~(60)~~ ~~**(77 from 15 Sep 2026)**~~ **(87 from 16 Sep 2026)** for the parser and
   the shell reading the address once, `check-cap` (36) for the counter.
 - **The hero chat (item S12) is parked**, a later item, not built. The same receiver feeds it when
   it comes, because the shell holds the one conversation.

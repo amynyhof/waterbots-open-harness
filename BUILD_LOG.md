@@ -944,3 +944,43 @@ CLAUDE.md's scope bullet, item S13's contract line struck and amended, the hando
 fresh, the exports regenerated after the checkpoint. The migration gate ran and found no
 migrations. The wellington-free-site-brain worktree was removed at the sitting's open, on her
 word. Two VWBA card drafts stay uncommitted.
+
+## 16 September 2026 — Wellington treats filled visit fields as known
+
+**One pull request merged, #76, and this close-out.** Item S13: the visit record reaches Wellington
+on every ask. The maintainer said stop this sitting and wait for a new brief.
+
+### What was built
+
+**The visit on every ask.** `readRecord` is shared with Phoebe. Field lines are shared. Wellington
+gets his own block headed “What this visit already holds”, after the cache breakpoint. Filled does,
+name, place and kind are treated as known; he may still ask for anything missing. Kind is still
+never in the URL. Phoebe's block is unchanged. The 300 vs 280 does-cap mismatch was left alone.
+
+**The first carried turn.** The shell writes a visit ref before the deferred send, so URL facts are
+on the first ask, not the blank visit from the last paint. Today's receiver is unchanged: facts
+still stamp the card; a question still seeds the first turn.
+
+**The gate.** `check-wellington` grew from 77 to 87.
+
+**Browser.** Continue-style URL with does, name and place: card filled; he named those three and
+only asked kind. Question-only: card empty; first turn still fires; he asked what the project does.
+
+### What was learned
+
+**The first-turn race is real.** `setVisit` in the same effect as `sendCarried` is not enough. The
+ref must be written before the send. Proved: the browser POST on the facts URL already carried the
+record.
+
+### Decisions
+
+- Reuse `readRecord`; Wellington-specific block; pass kind when the visit has it; keep the #74
+  receiver and Phoebe's block; leave the 300 vs 280 does cap.
+- **No follow-up from this sitting** until she pastes a new brief.
+
+### Housekeeping
+
+The close-out itself: the build plan's "just finished" and "next", the README's carry paragraph and
+check-wellington line, CLAUDE.md's scope bullet, item S13's visit-aware line and gate count, the
+handoff rewritten fresh, the exports regenerated after the checkpoint. The migration gate ran and
+found no migrations. Two VWBA card drafts stay uncommitted.

@@ -1,12 +1,12 @@
 # Session handoff — Shell B (open)
 
-**Slim current state only** (15 Sep 2026 close-out). History → `BUILD_LOG.md`. Detail → `OPEN_ITEMS.md` / `BUILD_PLAN.md`.
+**Slim current state only** (16 Sep 2026 close-out). History → `BUILD_LOG.md`. Detail → `OPEN_ITEMS.md` / `BUILD_PLAN.md`.
 
 ## What’s live
 
-- **map.waterbots.ai** on `main` after **PR #74** (landing facts into the visit card) and **#73** (shared chat language). Commons **v0** slices 1–3 done: shelf + open one alone (no crew).
+- **map.waterbots.ai** on `main` after **PR #76** (Wellington visit-aware) and **#74** (landing facts). Commons **v0** slices 1–3 done: shelf + open one alone (no crew).
 - Console: Dispatches / Eligibility / Partners (Map) / Quantify; Plan·Monitor·Communicate gated. Wellington + Phoebe chats live; Bridget + Calvin Tool-first, chat not live.
-- **Bridge out** live. **Receiver in** live: `?question=` plus optional `does` / `name` / `place` → visit card (chat provenance) and Wellington’s first turn. Caps are the sender’s job; bad or empty facts ignored, no toast. Wellington chat re-ask left as-is this slice. Contract in `src/lib/carried.ts`.
+- **Bridge out** live. **Receiver in** live: `?question=` plus optional `does` / `name` / `place` → visit card (chat provenance) and Wellington’s first turn. Filled visit fields are known to him; he may still ask for anything missing. Caps are the sender’s job; bad or empty facts ignored, no toast. Contract in `src/lib/carried.ts`.
 - Credentials: “not yet graded” / one public exam wording. Brand book **v4.2** (gitignored).
 
 ## What’s next

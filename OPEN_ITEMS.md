@@ -110,7 +110,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S10 | The Quantification step | Surfaces | **built 1 Sep 2026** — the third surface, pack-keyed; three packs from 2 Sep |
 | S11 | The free desk, and the console in the production shape | Surfaces | **built 2 Sep 2026** — Wellington's desk, the journey bar, ~~four tabs~~ one row from 7 Sep; **his chat live on it from 3 Sep; the desk plan's three slices landed 5–7 Sep** |
 | S12 | The hero chat — a full page that is the conversation | Surfaces | **logged 3 Sep 2026, not built; parked as a later item by the maintainer's word, 9 Sep 2026** — the receiver (S13) lands on the desk without it |
-| S13 | The handoff receiver — a question carried in from the production landing | Surfaces | ~~logged 3 Sep 2026, not built~~ **built 9 Sep 2026** — the desk receives it; **optional does/name/place from 15 Sep 2026, #74**; **Wellington visit-aware from 16 Sep 2026**; the sender's contract is recorded here for production to carry |
+| S13 | The handoff receiver — a question carried in from the production landing | Surfaces | ~~logged 3 Sep 2026, not built~~ **built 9 Sep 2026** — the desk receives it; **optional does/name/place from 15 Sep 2026, #74**; **Wellington visit-aware from 16 Sep 2026, #76**; the sender's contract is recorded here for production to carry |
 | S14 | Typing dots — the book's third motion exception | Surfaces | **ruled 3 Sep 2026** — waits on the maintainer's hand into §5 |
 | S15 | One row — the journey bar is the navigation; a candidate for production | Surfaces | **built 7 Sep 2026** — the tab row removed; offered to production by the maintainer's hand, later |
 | S16 | The agent screen — every step is a screen, the agent's chat in the middle and its tool as a tab; a candidate for production | Surfaces | **built 9 Sep 2026, #61 to #64** — [archived](./OPEN_ITEMS_ARCHIVE.md); the B→A raise into the book and the carry list wait on the maintainer's hand |
@@ -2054,14 +2054,15 @@ Percent-encoded UTF-8 the way `encodeURIComponent` writes it. Caps counted after
 empty keys. No kind. No provenance in the URL — this site stamps chat. Caps are the sender's job;
 this site ignores broken, over-long, or empty fields, never cuts them, and never shows an error.
 One bad field does not drop the others. Only the first of each key is read. The contract lives in
-`src/lib/carried.ts` and the gate in `scripts/check-wellington.mjs` holds it.
+`src/lib/carried.ts` and the gate in `scripts/check-wellington.mjs` holds it
+~~(77 from 15 Sep 2026)~~ **(87 from 16 Sep 2026)**.
 
 **Optional facts, 15 Sep 2026, #74.** `does`, `name` and `place` ride beside the question and fill
 the visit card through the existing `learnedContext` writer, provenance chat. Facts without a
 question fill the card only; no question is invented. A reload after the address is cleaned does
 not re-apply them. ~~**Wellington's chat was not rewritten this slice:** the card and Phoebe get the
 facts; he may still ask in chat for facts that were only in the params.~~ **Visit-aware from
-16 Sep 2026:** Wellington receives the same record on every ask (`readRecord`, his own block
+16 Sep 2026, #76:** Wellington receives the same record on every ask (`readRecord`, his own block
 headed “What this visit already holds”). Filled does / name / place / kind are treated as known;
 he may still ask for anything missing. Kind is still never in the URL. The first carried send
 reads a ref written before that send, so it is not blank. Phoebe’s block is unchanged.
