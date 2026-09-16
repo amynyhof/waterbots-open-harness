@@ -20,15 +20,18 @@
  *
  * THE PROMPT IS CACHED. It is small — the base rules, the roster, his region —
  * and identical on every request, so it carries a cache breakpoint. Nothing
- * volatile may be added above that breakpoint.
+ * volatile may be added above that breakpoint. The visit record rides as a
+ * second system block AFTER that breakpoint, the way Phoebe's does, so only
+ * this small block changes between visitors.
  */
 
 import Anthropic from '@anthropic-ai/sdk';
 import { recordAbstention } from './_abstentions.js';
-import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
 import { CARRIED, WELLINGTON, countOneMessage, timeUntilReset } from './_cap.js';
-import { WELLINGTON_RESPONSE_SCHEMA, WELLINGTON_SYSTEM_PROMPT } from './_wellingtonPrompt.js';
+import { readRecord, visitBlock } from './_record.js';
+import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
 import { validate } from './_wellingtonAnswer.js';
+import { WELLINGTON_RESPONSE_SCHEMA, WELLINGTON_SYSTEM_PROMPT } from './_wellingtonPrompt.js';
 
 /**
  * The same tier as Phoebe — Claude Opus 5 — by the maintainer's ruling B of
@@ -100,9 +103,9 @@ export async function GET(): Promise<Response> {
 }
 
 export async function POST(req: Request): Promise<Response> {
-  let body: { messages?: IncomingMessage[]; carried?: unknown };
+  let body: { messages?: IncomingMessage[]; carried?: unknown; record?: unknown };
   try {
-    body = (await req.json()) as { messages?: IncomingMessage[]; carried?: unknown };
+    body = (await req.json()) as { messages?: IncomingMessage[]; carried?: unknown; record?: unknown };
   } catch {
     return problem(400, 'That request could not be read.');
   }
@@ -142,6 +145,13 @@ export async function POST(req: Request): Promise<Response> {
   if (clean.length === 0 || clean[clean.length - 1].role !== 'user') {
     return problem(400, 'No message was sent.');
   }
+
+  /* THE VISIT THE DESK ALREADY HOLDS — 16 Sep 2026. The visitor's own words
+     about the project, checked in _record.ts, or null. It rides as a second
+     system block AFTER the cache breakpoint, so his rules stay cached and
+     only this small block changes between visitors. Empty visit: no block,
+     and he may still ask. */
+  const record = readRecord(body.record);
 
   /* Shape first, then whether we can actually answer — same order as Phoebe's,
      for the same reason. */
@@ -233,6 +243,7 @@ export async function POST(req: Request): Promise<Response> {
         max_tokens: MAX_TOKENS,
         system: [
           { type: 'text', text: WELLINGTON_SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
+          ...(record ? [{ type: 'text' as const, text: visitBlock(record) }] : []),
         ],
         messages: clean,
         thinking: { type: 'adaptive' },

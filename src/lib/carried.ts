@@ -8,8 +8,9 @@
  * sent to this site with the question in the address, the save door in
  * reverse. This site reads it, opens Dispatches, and hands it to Wellington as
  * the visitor's first turn, so his answer is the first thing they see. Optional
- * does, name and place ride beside it; they fill the visit card so nobody is
- * asked for a field that already has a value. Nothing is retyped and nothing
+ * does, name and place ride beside it; they fill the visit card, and from
+ * 16 Sep 2026 they reach Wellington on the first ask, so nobody is asked for
+ * a field that already has a value. Nothing is retyped and nothing
  * is kept: the address is cleaned the moment the parameters are read, so a
  * reload or a shared link does not send them again.
  *

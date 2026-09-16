@@ -10,6 +10,10 @@
  * lists a second time. The desk turns the route into one action under his
  * turn and writes what he learned into the visit under its own rules
  * (src/lib/visit.ts). Nothing is read out of his prose.
+ *
+ * THE VISIT GOES WITH EVERY ASK from 16 Sep 2026, when anything is filled,
+ * so he treats does / name / place / kind as known rather than asking again.
+ * An empty visit sends no record.
  */
 
 export type WellingtonRoute = 'none' | 'eligibility' | 'quantification' | 'map' | 'paid';
@@ -20,6 +24,14 @@ export interface Learned {
   name?: string;
   place?: string;
   kind?: LearnedKind;
+}
+
+/** The visit as the relay's `readRecord` expects it. Empty strings are fine; omit the object when nothing is filled. */
+export interface VisitRecord {
+  does: string;
+  kind: string;
+  place: string;
+  name: string;
 }
 
 export interface WellingtonAnswer {
@@ -45,14 +57,21 @@ export async function askWellington(
    * ten a day as well as his thirty. The flag is only ever sent as true; a
    * typed turn sends no flag at all.
    */
-  carried = false
+  carried = false,
+  /** The visit as it stands. Null when nothing is filled — he may still ask. */
+  record: VisitRecord | null = null
 ): Promise<WellingtonAnswer> {
   let response: Response;
   try {
+    const body: { messages: typeof history; carried?: true; record?: VisitRecord } = {
+      messages: history,
+    };
+    if (carried) body.carried = true;
+    if (record) body.record = record;
     response = await fetch('/api/wellington', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(carried ? { messages: history, carried: true } : { messages: history }),
+      body: JSON.stringify(body),
       signal,
     });
   } catch (error) {

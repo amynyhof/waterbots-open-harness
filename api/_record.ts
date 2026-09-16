@@ -1,11 +1,17 @@
 /**
- * The project record, carried from the desk to Phoebe.
+ * The project record, carried from the desk to the agents.
  *
  * SLICE 3 OF THE DESK PLAN, 7 Sep 2026 — Phoebe's row closes the loop. What
  * Wellington learned at the desk, or the visitor typed on the rail — what the
  * project does, what kind, where it is, what it is called — travels with each
  * of Phoebe's requests, so nobody says it twice. Her verdicts already come
  * back the other way, through the criteria to her row on the desk.
+ *
+ * WELLINGTON READS THE SAME RECORD from 16 Sep 2026. One reader (`readRecord`),
+ * one set of field lines; each agent gets its own block so her "only the cards
+ * decide" line never reaches him, and his "already on this visit" line never
+ * reaches her. Carried URL facts stamp the visit as chat; he sees them on the
+ * first ask because the shell writes a ref before that send.
  *
  * WHAT CROSSES IS THE VISITOR'S OWN WORDS AND NOTHING ELSE. Never a verdict,
  * never a figure, never the desk conversation's turns — the same line the
@@ -31,6 +37,9 @@ export const MAX_RECORD_FIELD_CHARS = 280;
 
 /** The heading Phoebe's prompt names, so she knows the block when she sees it. */
 export const RECORD_HEADING = 'What the visitor has already told Wellington';
+
+/** The heading Wellington's prompt names, so he knows the visit is already filled. */
+export const VISIT_HEADING = 'What this visit already holds';
 
 const KINDS: readonly RecordKind[] = ['water', 'carbon', 'unsure'];
 
@@ -65,21 +74,40 @@ const KIND_WORDS: Record<RecordKind, string> = {
   unsure: 'not sure yet, in the visitor’s own words',
 };
 
-/**
- * The block as Phoebe reads it: only the fields that were said, and a plain
- * line saying what the block is and is not.
- */
-export function recordBlock(record: ProjectRecord): string {
+/** The four field lines, only those that were said. Shared by both blocks. */
+function recordLines(record: ProjectRecord): string[] {
   const lines: string[] = [];
   if (record.does) lines.push(`- What it does: ${record.does}`);
   if (record.kind) lines.push(`- What kind: ${KIND_WORDS[record.kind]}`);
   if (record.place) lines.push(`- Where it is: ${record.place}`);
   if (record.name) lines.push(`- What it is called: ${record.name}`);
+  return lines;
+}
+
+/**
+ * The block as Phoebe reads it: only the fields that were said, and a plain
+ * line saying what the block is and is not.
+ */
+export function recordBlock(record: ProjectRecord): string {
   return [
     `# ${RECORD_HEADING}`,
     '',
     'These are the visitor’s own words about their project, carried from the desk so they need not say them twice. They are facts about the project and never a verdict on any criterion; only the cards decide that. Start from them, do not ask again for what is here, and ask for what is missing.',
     '',
-    ...lines,
+    ...recordLines(record),
+  ].join('\n');
+}
+
+/**
+ * The block as Wellington reads it: the same fields, his own heading. Those
+ * values are already on this visit — do not ask for them again as if blank.
+ */
+export function visitBlock(record: ProjectRecord): string {
+  return [
+    `# ${VISIT_HEADING}`,
+    '',
+    'These fields are already on this visit — from the visitor, from a carried link, or from the map pin. Do not ask for them again as if they were blank. Ask only for what is still missing.',
+    '',
+    ...recordLines(record),
   ].join('\n');
 }

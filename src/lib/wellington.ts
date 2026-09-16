@@ -15,8 +15,8 @@
 
 import wellingtonPortrait from '../../brand/assets/bots/wellington.svg';
 import type { AgentHost, AgentTurn, Ask, TurnAction } from '../chat/evidence';
-import type { Learned } from './visit';
-import { askWellington, type WellingtonRoute } from './wellingtonClient';
+import type { Learned, VisitContext } from './visit';
+import { askWellington, type VisitRecord, type WellingtonRoute } from './wellingtonClient';
 
 export const WELLINGTON: AgentHost = {
   name: 'Wellington',
@@ -42,8 +42,24 @@ export function actionFor(route: WellingtonRoute): TurnAction | undefined {
   return undefined;
 }
 
-/** His adapter: the relay's answer becomes a turn, and what he learned goes to the visit. */
-export function wellingtonAsk(onLearned: (learned: Learned) => void): Ask {
+/** The visit as the relay expects it, or nothing when every field is blank. */
+function recordFrom(context: VisitContext): VisitRecord | null {
+  const record: VisitRecord = {
+    does: context.does.trim(),
+    kind: context.kind,
+    place: context.place.trim(),
+    name: context.name.trim(),
+  };
+  return record.does || record.kind || record.place || record.name ? record : null;
+}
+
+/**
+ * His adapter: the relay's answer becomes a turn, and what he learned goes to
+ * the visit. `getContext` is read at send time from a ref the shell keeps
+ * current, so a carried first turn already has the URL facts — not the blank
+ * visit from the last paint.
+ */
+export function wellingtonAsk(onLearned: (learned: Learned) => void, getContext: () => VisitContext): Ask {
   return async (history, signal, meta): Promise<AgentTurn> => {
     const answer = await askWellington(
       history.map(({ role, text }) => ({
@@ -53,7 +69,8 @@ export function wellingtonAsk(onLearned: (learned: Learned) => void): Ask {
       signal,
       /* A question carried in from the production landing says so, so the
          relay can count it under the carried cap (item S13). */
-      meta?.carried === true
+      meta?.carried === true,
+      recordFrom(getContext())
     );
     if (Object.keys(answer.learned).length > 0) onLearned(answer.learned);
     return {
