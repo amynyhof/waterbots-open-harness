@@ -271,10 +271,15 @@ credit line does not meet any of these bars.
   is ignored with no error** — the page opens as it always opens and never
   invents a question. **Ten a day per visitor**, a counter of its own on
   Wellington's relay on top of his thirty, never instead of it; the cap's shape
-  is the maintainer's ruling of 9 Sep 2026. The sender's one-line contract —
-  `?question=`, percent-encoded UTF-8, at most 500 characters decoded — lives in
-  `src/lib/carried.ts` and under item S13, and production carries it by the
-  maintainer's hand. **The hero chat (item S12) is parked**, a later item, not
+  is the maintainer's ruling of 9 Sep 2026. ~~The sender's one-line contract —
+  `?question=`, percent-encoded UTF-8, at most 500 characters decoded —~~
+  **Amended 15 Sep 2026, #74:** the contract is
+  `?question=<≤500>[&does=<≤300>][&name=<≤80>][&place=<≤80>]`, omit empty keys,
+  no kind, no provenance in the URL (this site stamps chat). Optional does, name
+  and place fill the visit card as chat provenance; a bad or empty fact is
+  ignored with no toast. Wellington's chat was not rewritten this slice. It
+  lives in `src/lib/carried.ts` and under item S13, and production carries it
+  by the maintainer's hand. **The hero chat (item S12) is parked**, a later item, not
   built; the same receiver will feed it.
 - **Agent Commons, 9 Sep 2026 (item S18) — proposed, approved, the pictures
   drawn; ~~not yet built~~ ~~the address and the shelf built 11 Sep 2026~~ v0 —

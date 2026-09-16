@@ -47,6 +47,9 @@ takes it out of the address so a reload cannot send it twice, and hands it to We
 visitor's first turn, so his answer is the first thing they see. Nothing is kept. A blank, missing
 or unreadable question opens the page as it always opens, with no error and no invented question.
 Ten carried questions a day per visitor, counted on top of Wellington's thirty.
+**From 15 Sep 2026 the same arrival can carry optional facts** — `does`, `name` and `place` —
+which fill the visit card and leave the address with the question. Empty keys are omitted. Kind is
+not in the URL. A broken, over-long or empty fact is ignored, never cut, and never toasted.
 
 **The quantification step carries three screening packs** — the water volume a household or
 community supply project provides, and the carbon reduction a safe-drinking-water project screens
