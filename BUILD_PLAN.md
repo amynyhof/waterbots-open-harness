@@ -60,26 +60,46 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — the handoff receiver
+## Just finished — landing facts into the visit card
 
-**9 Sep 2026, second sitting. Pull request #66, and this close-out.** Item S13 built; item S12
-parked by the maintainer's word.
+**15 Sep 2026. Pull request #74, and this close-out.** Item S13's receiver grew optional facts.
+The maintainer said stop this sitting; no follow-up until she pastes a brief.
 
 **The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
 is now true.
+
+- **Optional `does`, `name` and `place` ride beside `?question=`.** On arrival the desk writes any
+  good facts into the visit as chat provenance, strips those keys from the address with the
+  question, and keeps today's first-turn path. Facts without a question fill the card only; no
+  question is invented. Bad, empty or over-long fields are ignored whole, never cut, never toasted.
+  Kind is not in the URL. Wellington's chat was not rewritten: the card and Phoebe get the facts;
+  he may still ask in chat for facts that were only in the params.
+- **The sender's contract, for production to carry:**
+  `https://map.waterbots.ai/?question=<≤500>[&does=<≤300>][&name=<≤80>][&place=<≤80>]`.
+  Percent-encoded UTF-8. Omit empty keys. No kind. No provenance in the URL — this site stamps
+  chat. Caps are the sender's job. The contract lives in `src/lib/carried.ts`.
+- **The gate holds it:** `check-wellington` (77).
+
+## Previously — the handoff receiver
+
+**9 Sep 2026, second sitting. Pull request #66.** Item S13 built; item S12 parked by the
+maintainer's word.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
+was true then; the contract line below was amended on 15 Sep 2026, #74.
 
 - **A question carried in from the production landing lands on the desk.** The shell reads
   `?question=` from the address on arrival, cleans the address, opens Dispatches and hands the
   question to Wellington as the visitor's first turn, in a bubble. Nothing is kept. Bad or empty
   input is ignored with no error. The parser and the contract are `src/lib/carried.ts`.
-- **The sender's contract, for production to carry:** `https://map.waterbots.ai/?question=<text>`,
+- ~~**The sender's contract, for production to carry:** `https://map.waterbots.ai/?question=<text>`,
   percent-encoded UTF-8 the way `encodeURIComponent` writes it, at most 500 characters decoded, the
-  first occurrence only.
+  first occurrence only.~~ **Amended 15 Sep 2026, #74** — see Just finished.
 - **Ten a day per visitor**, under a counter of its own on Wellington's relay, on top of his thirty
   and never instead of it. The shape is the maintainer's ruling of 9 Sep 2026. A refused eleventh is
   told in plain words and the desk composer still works.
-- **The gates hold it**: `check-wellington` (60) for the parser and the shell reading the address
-  once, `check-cap` (36) for the counter.
+- **The gates hold it**: `check-wellington` ~~(60)~~ **(77 from 15 Sep 2026)** for the parser and
+  the shell reading the address once, `check-cap` (36) for the counter.
 - **The hero chat (item S12) is parked**, a later item, not built. The same receiver feeds it when
   it comes, because the shell holds the one conversation.
 
@@ -317,6 +337,11 @@ is built toward it until she says the file is in.~~ **The hero chat (item S12) i
 maintainer's word of 9 Sep 2026 — a later item, not built.** Its receiver (item S13) did not wait
 for it: it shipped the same day onto the desk (#66). ~~**What comes next is decided at the next
 session's open.**~~
+
+**Landing facts into the visit card shipped 15 Sep 2026 (#74).** Item S13's receiver now reads
+optional `does`, `name` and `place` beside `?question=`. **No follow-up from this sitting** —
+the maintainer's word of 15 Sep 2026: stop; do not open follow-up work unless she pastes a new
+brief.
 
 **The Agent Commons (item S18) is next, by the maintainer's word of 9 Sep 2026.** The proposal was
 approved as written the same day, and slices 1 to 3 are approved: the pictures, the address and the

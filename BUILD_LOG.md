@@ -890,3 +890,57 @@ CLAUDE.md's scope bullet, items S18 to S20, the handoff rewritten fresh, the exp
 after the checkpoint. The migration gate ran and found no migrations. Thirteen local branches whose
 remotes were deleted on merge are still on this machine, from before this sitting; harmless, and
 pruned on the maintainer's word.
+
+## 15 September 2026 — landing facts into the visit card
+
+**One pull request merged, #74, and this close-out.** Item S13's receiver grew optional facts.
+The maintainer said stop this sitting and not to open follow-up work unless she pastes a new brief.
+
+### What was built
+
+**The facts.** The same arrival that reads `?question=` now reads optional `does` (max 300), `name`
+(max 80) and `place` (max 80). Good fields are written into the visit through the existing
+`learnedContext` writer, provenance chat, so the visit card shows them and Phoebe receives them
+with her record. The address is stripped of `question`, `does`, `name` and `place` together, so a
+reload does not re-apply them. Today's first-turn path is unchanged: a good question opens
+Dispatches and is handed to Wellington in a bubble. Facts without a question fill the card only;
+no question is invented. Kind is never read. Unknown keys stay in the address.
+
+**Bad input.** A missing, blank, over-long or unreadable field is ignored whole, never cut, and
+never toasted. One bad field does not drop the others. Question-only URLs still work.
+
+**The contract**, matching Shell A, in `src/lib/carried.ts`:
+
+`https://map.waterbots.ai/?question=<≤500>[&does=<≤300>][&name=<≤80>][&place=<≤80>]`
+
+Omit empty keys. No kind. No provenance in the URL — this site stamps chat. Caps are the sender's
+job.
+
+**The gate.** `check-wellington` grew from 60 to 77: the three fact caps, good facts through,
+blank / over-long / broken encoding ignored without dropping a sibling, kind never read, facts
+without a question still stripped, chat provenance stamped, the shell writing through
+`learnedContext`, no toast.
+
+### What was learned
+
+**Wellington's first turn can overwrite chat-provenance fields he extracts from the question.**
+The URL facts land first; if the question also names the place or the activity, his `context`
+return then replaces those chat fields with what he heard. Typed fields stay protected. This
+slice left that as-is: the card and Phoebe hold the URL facts until he answers; his chat was not
+rewritten.
+
+**React StrictMode still needs the facts held in a ref**, the same pattern as the question, because
+the address is cleaned on first paint.
+
+### Decisions
+
+- **Wellington chat re-ask left as-is**, by the maintainer's yes of 15 Sep 2026. No prompt rewrite.
+- **No follow-up from this sitting** unless she pastes a new brief.
+
+### Housekeeping
+
+The close-out itself: the build plan's "just finished" and "next", the README's carry paragraph,
+CLAUDE.md's scope bullet, item S13's contract line struck and amended, the handoff rewritten
+fresh, the exports regenerated after the checkpoint. The migration gate ran and found no
+migrations. The wellington-free-site-brain worktree was removed at the sitting's open, on her
+word. Two VWBA card drafts stay uncommitted.
