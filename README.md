@@ -50,6 +50,8 @@ Ten carried questions a day per visitor, counted on top of Wellington's thirty.
 **From 15 Sep 2026 the same arrival can carry optional facts** — `does`, `name` and `place` —
 which fill the visit card and leave the address with the question. Empty keys are omitted. Kind is
 not in the URL. A broken, over-long or empty fact is ignored, never cut, and never toasted.
+**From 16 Sep 2026 those facts reach Wellington too**, so he does not ask again for a field the
+visit already holds.
 
 **The quantification step carries three screening packs** — the water volume a household or
 community supply project provides, and the carbon reduction a safe-drinking-water project screens
@@ -221,7 +223,8 @@ derived emission factor lands on every recorded point, and that a blank share, a
 figure or an unchosen method leaves the result honest rather than zero; and `check-wellington`
 proves his relay checks the model's output rather than trusting it, that his region of the primer
 reaches him and only him, that no prompt tells any agent to say anything word for word, that a typed
-context entry is never overwritten by what he heard, and that the shell holds his one conversation.
+context entry is never overwritten by what he heard, that the shell holds his one conversation, and
+that a filled visit record is passed to him so he does not re-ask those fields.
 
 ```bash
 node scripts/check-basins.mjs

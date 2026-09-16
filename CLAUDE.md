@@ -277,8 +277,10 @@ credit line does not meet any of these bars.
   `?question=<≤500>[&does=<≤300>][&name=<≤80>][&place=<≤80>]`, omit empty keys,
   no kind, no provenance in the URL (this site stamps chat). Optional does, name
   and place fill the visit card as chat provenance; a bad or empty fact is
-  ignored with no toast. Wellington's chat was not rewritten this slice. It
-  lives in `src/lib/carried.ts` and under item S13, and production carries it
+  ignored with no toast. ~~Wellington's chat was not rewritten this slice.~~ **Visit-aware from
+  16 Sep 2026, #76:** he receives the same record on every ask, including the first carried turn,
+  so filled does / name / place / kind are treated as known. He may still ask for anything missing.
+  It lives in `src/lib/carried.ts` and under item S13, and production carries it
   by the maintainer's hand. **The hero chat (item S12) is parked**, a later item, not
   built; the same receiver will feed it.
 - **Agent Commons, 9 Sep 2026 (item S18) — proposed, approved, the pictures
