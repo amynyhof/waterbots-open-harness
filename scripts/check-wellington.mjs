@@ -157,13 +157,72 @@ expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length <
 --------------------------------------------------------------------------- */
 
 console.log('\n  The record carried to Phoebe\n');
-const { readRecord, recordBlock, RECORD_HEADING } = await loadApi('_record.js');
+const { readRecord, recordBlock, visitBlock, RECORD_HEADING, VISIT_HEADING } = await loadApi('_record.js');
 expect('a junk record is nothing, never a block', readRecord('x') === null && readRecord({}) === null && readRecord({ does: '   ' }) === null && readRecord(null) === null, 'junk passed');
 expect('kind comes only from the closed set', readRecord({ kind: 'gold' }) === null && readRecord({ kind: 'water' })?.kind === 'water', 'an unknown kind leaked');
 expect('an over-long field is dropped whole, never cut', readRecord({ does: 'x'.repeat(281) }) === null && readRecord({ does: 'x'.repeat(280) })?.does.length === 280, 'length handling');
 const block = recordBlock(readRecord({ does: 'Boreholes for households', place: 'Kampala, Uganda' }));
 expect('the block carries only what was said, and says it is never a verdict', block.includes('Boreholes for households') && block.includes('Kampala, Uganda') && !block.includes('What kind') && !block.includes('What it is called') && /never a verdict/.test(block), block);
 expect("Phoebe's prompt names the block and keeps the cards as the only judge", PHOEBE_PROMPT.includes(RECORD_HEADING) && /only the cards decide that/.test(PHOEBE_PROMPT), 'her prompt does not know the block');
+
+/* ---------------------------------------------------------------------------
+   The same record reaches Wellington — 16 Sep 2026. With facts on the visit,
+   his next turn is told not to ask for those same facts; with an empty visit
+   there is no block, so he may still ask. No model call.
+--------------------------------------------------------------------------- */
+
+console.log('\n  The visit record Wellington reads\n');
+const shared = readRecord({ does: 'Boreholes for households', place: 'Kampala, Uganda' });
+expect(
+  'both blocks share the field lines',
+  recordBlock(shared).includes('- What it does: Boreholes for households') &&
+    visitBlock(shared).includes('- What it does: Boreholes for households') &&
+    recordBlock(shared).includes('- Where it is: Kampala, Uganda') &&
+    visitBlock(shared).includes('- Where it is: Kampala, Uganda'),
+  'field lines drifted'
+);
+const hisBlock = visitBlock(
+  readRecord({ does: 'Boreholes for households', name: 'Walk Borehole', place: 'Turkana, Kenya', kind: 'water' })
+);
+expect(
+  'with facts on the visit, the block lists them — including kind — and tells him not to re-ask',
+  hisBlock.includes(VISIT_HEADING) &&
+    hisBlock.includes('Boreholes for households') &&
+    hisBlock.includes('Walk Borehole') &&
+    hisBlock.includes('Turkana, Kenya') &&
+    /What kind:/.test(hisBlock) &&
+    /Do not ask for them again as if they were blank/.test(hisBlock) &&
+    !/never a verdict/.test(hisBlock) &&
+    !/only the cards decide/.test(hisBlock),
+  hisBlock
+);
+expect(
+  'a missing field is omitted, so he may still ask for it',
+  visitBlock(readRecord({ does: 'wells', name: 'Walk' })).includes('wells') &&
+    visitBlock(readRecord({ does: 'wells', name: 'Walk' })).includes('Walk') &&
+    !visitBlock(readRecord({ does: 'wells', name: 'Walk' })).includes('Where it is') &&
+    !visitBlock(readRecord({ does: 'wells', name: 'Walk' })).includes('What kind'),
+  visitBlock(readRecord({ does: 'wells', name: 'Walk' }))
+);
+expect('with an empty visit there is no block, so he may still ask', readRecord({}) === null && readRecord(null) === null, 'empty produced a record');
+expect(
+  'his prompt names the visit block and tells him not to re-ask what it holds',
+  WELLINGTON_SYSTEM_PROMPT.includes(VISIT_HEADING) &&
+    /do not ask for them again as if they were blank/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Kind is never in a carried link/.test(WELLINGTON_SYSTEM_PROMPT),
+  'the visit block is missing from his prompt'
+);
+expect("Phoebe's prompt still does not carry his visit heading", !PHOEBE_PROMPT.includes(VISIT_HEADING), 'his heading leaked into her prompt');
+const relaySource = readFileSync('api/wellington.ts', 'utf8');
+expect(
+  'the relay attaches the visit block after the cache breakpoint, only when a record is present',
+  /readRecord\(body\.record\)/.test(relaySource) &&
+    /\.\.\.\(record \?/.test(relaySource) &&
+    relaySource.indexOf("cache_control: { type: 'ephemeral' }") >= 0 &&
+    relaySource.indexOf('text: visitBlock(record)') >
+      relaySource.indexOf("cache_control: { type: 'ephemeral' }"),
+  'the visit block is missing, or sits above the cache breakpoint'
+);
 
 /* ---------------------------------------------------------------------------
    His cap.
@@ -276,7 +335,31 @@ expect('an address with no carried keys is returned untouched', withoutCarried('
 
 expect('the shell reads the address once, cleans it, and hands the question to the one conversation', /readCarriedQuestion\(window\.location\.search\)/.test(appSource) && /history\.replaceState/.test(appSource) && /sendCarried\(question, \{ carried: true \}\)/.test(appSource) && /setSurface\('desk'\)/.test(appSource), 'the receiver is not in the shell, or does not clean the address');
 const clientSource = readFileSync('src/lib/wellingtonClient.ts', 'utf8');
-expect('the flag reaches the relay only as true, and a typed turn sends no flag', /carried \? \{ messages: history, carried: true \} : \{ messages: history \}/.test(clientSource), 'the client sends the flag loosely');
+expect(
+  'the flag reaches the relay only as true, and a typed turn sends no flag',
+  /if \(carried\) body\.carried = true/.test(clientSource) && !/carried: false/.test(clientSource) && !/carried: carried/.test(clientSource),
+  'the client sends the flag loosely'
+);
+expect(
+  'the client sends the visit record only when it is filled',
+  /if \(record\) body\.record = record/.test(clientSource),
+  'the record is not on the request, or is sent when empty'
+);
+const adapterSource = readFileSync('src/lib/wellington.ts', 'utf8');
+expect(
+  'the adapter reads the visit at send time and omits a blank record',
+  /recordFrom\(getContext\(\)\)/.test(adapterSource) &&
+    /return record\.does \|\| record\.kind \|\| record\.place \|\| record\.name \? record : null/.test(adapterSource),
+  'a blank visit would still be posted'
+);
+expect(
+  'the first carried send reads the visit from a ref written before the send, not the last paint',
+  /visitRef\.current\.context/.test(appSource) &&
+    /learnedContext\(visitRef\.current\.context, learned\)/.test(appSource) &&
+    /wellingtonAsk\(onLearned, \(\) => visitRef\.current\.context\)/.test(appSource) &&
+    /void sendCarried\(question, \{ carried: true \}\)/.test(appSource),
+  'the first ask can still see a blank visit'
+);
 
 console.log('\n  Carried facts — does, name, place\n');
 

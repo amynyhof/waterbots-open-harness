@@ -147,6 +147,11 @@ export default function App() {
 
   /* The rest of the visit: the project context, the pin, the pack answers. */
   const [visit, setVisit] = useState<Visit>(EMPTY_VISIT);
+  /* Read at send time, not from the last paint. A carried first turn writes
+     this ref before the deferred send, so Wellington sees the URL facts on
+     the same ask that seeds his first bubble. */
+  const visitRef = useRef(visit);
+  visitRef.current = visit;
 
   /* Three writers into one context, each under its own rule in
      src/lib/visit.ts: the visitor's typing, Wellington's hearing, the pin. */
@@ -178,7 +183,7 @@ export default function App() {
      at that tab. */
   /* Look pass, 8 Sep 2026: his route no longer draws a button under his turn.
      He names the step in words, and the next steps live in the right rail. */
-  const ask = useMemo(() => wellingtonAsk(onLearned), [onLearned]);
+  const ask = useMemo(() => wellingtonAsk(onLearned, () => visitRef.current.context), [onLearned]);
   const chat = useConversation(ask, WELLINGTON.name);
 
   /* THE RECEIVER (item S13, built 9 Sep 2026; facts 15 Sep 2026). A visitor
@@ -194,8 +199,11 @@ export default function App() {
      The page opens as it always does. The contract for production's sender
      is in src/lib/carried.ts.
 
-     Wellington's chat is not rewritten in this slice: the visit card and
-     Phoebe receive the facts; he still only sees the conversation.
+     ~~Wellington's chat is not rewritten in this slice: the visit card and
+     Phoebe receive the facts; he still only sees the conversation.~~ **From
+     16 Sep 2026 he receives the same record on every ask.** The card still
+     stamps first; the ref is written before the deferred send so the first
+     turn is not blank.
 
      THE SEND IS DEFERRED ONE TICK, and the reason was found on the first real
      call: in development React mounts twice (StrictMode), and the second
@@ -217,6 +225,12 @@ export default function App() {
     }
     if (carriedFacts.current) {
       const learned = carriedFacts.current;
+      /* Write the ref NOW, before the deferred send. setVisit has not
+         re-rendered yet; without this the first ask would still be blank. */
+      visitRef.current = {
+        ...visitRef.current,
+        context: learnedContext(visitRef.current.context, learned),
+      };
       setVisit((v) => ({ ...v, context: learnedContext(v.context, learned) }));
     }
     const question = carried.current;
