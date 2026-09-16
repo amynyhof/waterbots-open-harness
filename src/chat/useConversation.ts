@@ -21,6 +21,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { AgentTurn, Ask, AskMeta, Turn } from './evidence';
 
+/** Display-only copies (Wellington on Phoebe's thread) are not sent as that agent's turns. */
+function forAsk(turns: Turn[]): { role: 'user' | 'agent'; text: string }[] {
+  return turns
+    .filter((turn) => turn.role === 'user' || (turn.role === 'agent' && !turn.speaker))
+    .map((turn) => ({ role: turn.role, text: turn.text }));
+}
+
 export interface Conversation {
   turns: Turn[];
   draft: string;
@@ -35,6 +42,13 @@ export interface Conversation {
    * receiver of a carried question (item S13) says so in `meta`.
    */
   sendText: (text: string, meta?: AskMeta) => Promise<void>;
+  /** Put turns on the thread without asking — Wellington's copied invite. */
+  seed: (turns: Turn[]) => void;
+  /**
+   * Ask without adding a visitor bubble. Phoebe's first open this visit:
+   * greet after the copied invite. Does nothing while a turn is in flight.
+   */
+  askOpened: () => Promise<void>;
 }
 
 export function useConversation(ask: Ask, hostName: string): Conversation {
@@ -44,6 +58,8 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
   const [error, setError] = useState<string | null>(null);
 
   const inFlight = useRef<AbortController | null>(null);
+  const turnsRef = useRef<Turn[]>([]);
+  turnsRef.current = turns;
   useEffect(() => () => inFlight.current?.abort(), []);
 
   const sendText = useCallback(
@@ -61,11 +77,7 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
       inFlight.current = controller;
 
       try {
-        const answer: AgentTurn = await ask(
-          history.map((turn) => ({ role: turn.role, text: turn.text })),
-          controller.signal,
-          meta
-        );
+        const answer: AgentTurn = await ask(forAsk(history), controller.signal, meta);
         setTurns([...history, answer]);
       } catch (failure) {
         if (failure instanceof DOMException && failure.name === 'AbortError') return;
@@ -86,5 +98,35 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
 
   const send = useCallback(() => sendText(draft), [sendText, draft]);
 
-  return { turns, draft, setDraft, pending, error, send, sendText };
+  const seed = useCallback((next: Turn[]) => {
+    turnsRef.current = next;
+    setTurns(next);
+  }, []);
+
+  const askOpened = useCallback(async () => {
+    if (pending) return;
+    setError(null);
+    setPending(true);
+    const controller = new AbortController();
+    inFlight.current = controller;
+    const history = turnsRef.current;
+    try {
+      const answer: AgentTurn = await ask(forAsk(history), controller.signal, { opened: true });
+      const next = [...turnsRef.current, answer];
+      turnsRef.current = next;
+      setTurns(next);
+    } catch (failure) {
+      if (failure instanceof DOMException && failure.name === 'AbortError') return;
+      setError(
+        failure instanceof Error && failure.message
+          ? failure.message
+          : `Something went wrong reaching ${hostName}. Nothing has been recorded.`
+      );
+    } finally {
+      setPending(false);
+      inFlight.current = null;
+    }
+  }, [ask, pending, hostName]);
+
+  return { turns, draft, setDraft, pending, error, send, sendText, seed, askOpened };
 }

@@ -76,6 +76,11 @@ export interface AgentTurn {
   text: string;
   /** What it rests on. Empty when abstaining or exchanging pleasantries. */
   evidence: Evidence[];
+  /**
+   * Who is speaking, when it is not the screen's host. Wellington's Eligibility
+   * invite is copied onto Phoebe's thread this way — his real words, his face.
+   */
+  speaker?: AgentHost;
   /** True when the agent declined because no source covered the question. */
   abstained?: boolean;
   /**
@@ -143,6 +148,11 @@ export interface AskMeta {
    * their own ten-a-day cap, on top of his thirty.
    */
   carried?: boolean;
+  /**
+   * Phoebe's first open this visit: greet after Wellington's copied invite.
+   * No visitor bubble is added; the relay still needs a turn to answer.
+   */
+  opened?: boolean;
 }
 
 /** One piece of a laid-out answer: prose, or a marker standing in the prose. */

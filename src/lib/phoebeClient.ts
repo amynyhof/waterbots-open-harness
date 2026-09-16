@@ -60,14 +60,24 @@ export function carriedRecord(context: CarriedRecord): CarriedRecord | null {
 export async function askPhoebe(
   history: { role: 'user' | 'assistant'; content: string }[],
   record: CarriedRecord | null,
-  signal?: AbortSignal
+  signal?: AbortSignal,
+  opts?: { opened?: boolean; eligibilityDone?: boolean }
 ): Promise<PhoebeAnswer> {
   let response: Response;
   try {
+    const body: {
+      messages: typeof history;
+      record?: CarriedRecord;
+      opened?: true;
+      eligibilityDone?: true;
+    } = { messages: history };
+    if (record) body.record = record;
+    if (opts?.opened) body.opened = true;
+    if (opts?.eligibilityDone) body.eligibilityDone = true;
     response = await fetch('/api/phoebe', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(record ? { messages: history, record } : { messages: history }),
+      body: JSON.stringify(body),
       signal,
     });
   } catch (error) {

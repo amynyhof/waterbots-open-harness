@@ -59,15 +59,23 @@ export async function askWellington(
    */
   carried = false,
   /** The visit as it stands. Null when nothing is filled — he may still ask. */
-  record: VisitRecord | null = null
+  record: VisitRecord | null = null,
+  /** The screening loop stage the console owns. Never inferred from his prose. */
+  stage: 'learn' | 'eligibility' | 'partners' | 'quantify' = 'learn'
 ): Promise<WellingtonAnswer> {
   let response: Response;
   try {
-    const body: { messages: typeof history; carried?: true; record?: VisitRecord } = {
+    const body: {
+      messages: typeof history;
+      carried?: true;
+      record?: VisitRecord;
+      stage?: typeof stage;
+    } = {
       messages: history,
     };
     if (carried) body.carried = true;
     if (record) body.record = record;
+    if (stage !== 'learn') body.stage = stage;
     response = await fetch('/api/wellington', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },

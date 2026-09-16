@@ -107,18 +107,19 @@ function ReaderBubble({ text }: { text: string }) {
 }
 
 function HostBubble({ host, turn }: { host: AgentHost; turn: AgentTurn }) {
-  const accent = { '--turn-accent': `var(${host.colourToken})` } as CSSProperties;
+  const who = turn.speaker ?? host;
+  const accent = { '--turn-accent': `var(${who.colourToken})` } as CSSProperties;
   return (
     <div className="wb-turn wb-turn-host" style={accent}>
-      <HostFace host={host} />
+      <HostFace host={who} />
       <div className="wb-turn-body">
         <div className="wb-turn-who">
           <span>
-            {host.name} · {host.role}
+            {who.name} · {who.role}
           </span>
           {turn.abstained && (
             <span className="t-caption" style={{ fontSize: 10.5, color: 'var(--ink-3)', textTransform: 'none', letterSpacing: 0 }}>
-              {host.abstainedLabel ?? 'no card for this'}
+              {who.abstainedLabel ?? 'no card for this'}
             </span>
           )}
         </div>

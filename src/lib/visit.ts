@@ -9,12 +9,10 @@
  * the two new ones, the project context and the map pin, so that the desk can
  * read them and Wellington's rows derive from them.
  *
- * ROWS DERIVE. THEY ARE NEVER INVENTED. `deskRows` below is the one function
- * that turns the visit into dispatch rows, and every row it returns points at
- * the thing on this site it came from. An empty visit produces no derived
- * rows — the desk explains what will appear — and the save row, which is the
- * one row that is always there, opens the paid site. Nothing is persisted
- * here and nothing crosses without the visitor's click.
+ * ROWS DERIVE. THEY ARE NEVER INVENTED. `deskRows` turns the visit into record
+ * rows. `nextStepRows` is what the right rail shows: the current stage's one
+ * invite first, then derived rows that never outrank it. Place-filled does not
+ * put the map ahead of an Eligibility invite. Ruled 16 Sep 2026.
  *
  * ~~THE SAVE ACTION IS A DOOR, NOT A BRIDGE.~~ **THE SAVE ACTION IS THE
  * BRIDGE, from 8 Sep 2026.** Until then "Save this project and sign up"
@@ -161,14 +159,81 @@ export function describePin(pin: MapPin): string {
    The whole visit.
    -------------------------------------------------------------------------- */
 
+/**
+ * Where this visit is in the free screening loop. Console-owned, this visit
+ * only. Place-filled never moves the stage to Partners — that wait is Phoebe
+ * finishing, then Wellington inviting the map. Ruled 16 Sep 2026.
+ */
+export type ScreeningStage = 'learn' | 'eligibility' | 'partners' | 'quantify';
+
 export interface Visit {
   context: VisitContext;
   pin: MapPin | null;
   /** Each pack's answers, keyed by pack. Empty means nothing typed. */
   packValues: Record<string, PackValues>;
+  stage: ScreeningStage;
+  /** Wellington's real Eligibility invite, copied onto Phoebe's thread once. */
+  eligibilityInvite: string;
+  /** True once he has invited Partners while the stage is partners. */
+  invitedPartners: boolean;
+  /** True once he has invited Quantify. */
+  invitedQuantify: boolean;
 }
 
-export const EMPTY_VISIT: Visit = { context: EMPTY_CONTEXT, pin: null, packValues: {} };
+export const EMPTY_VISIT: Visit = {
+  context: EMPTY_CONTEXT,
+  pin: null,
+  packValues: {},
+  stage: 'learn',
+  eligibilityInvite: '',
+  invitedPartners: false,
+  invitedQuantify: false,
+};
+
+/** Every criterion has a verdict — met or not-yet. Unchecked means she is not done. */
+export function eligibilityDone(statuses: CriterionStatus[]): boolean {
+  return statuses.length > 0 && statuses.every((s) => s.state !== 'unchecked');
+}
+
+/** Opening Eligibility during learn starts that stage. Later stages stay put. */
+export function openedEligibility(visit: Visit): Visit {
+  if (visit.stage === 'learn') return { ...visit, stage: 'eligibility' };
+  return visit;
+}
+
+/**
+ * Wellington's route field advances the loop, and never skips Eligibility.
+ * His Eligibility reply is stored as-is so Phoebe's thread can copy it.
+ */
+export function applyWellingtonRoute(
+  visit: Visit,
+  route: 'none' | 'eligibility' | 'quantification' | 'map' | 'paid',
+  reply: string
+): Visit {
+  const text = reply.trim();
+  if (route === 'eligibility' && (visit.stage === 'learn' || visit.stage === 'eligibility')) {
+    return {
+      ...visit,
+      stage: 'eligibility',
+      eligibilityInvite: text || visit.eligibilityInvite,
+    };
+  }
+  if (route === 'map' && visit.stage === 'partners') {
+    return { ...visit, invitedPartners: true };
+  }
+  if (route === 'quantification' && (visit.stage === 'partners' || visit.stage === 'quantify')) {
+    return { ...visit, stage: 'quantify', invitedQuantify: true };
+  }
+  return visit;
+}
+
+/** When every criterion has a verdict, Eligibility is done and the loop returns to Wellington. */
+export function applyEligibilityProgress(visit: Visit, statuses: CriterionStatus[]): Visit {
+  if ((visit.stage === 'learn' || visit.stage === 'eligibility') && eligibilityDone(statuses)) {
+    return { ...visit, stage: 'partners' };
+  }
+  return visit;
+}
 
 /* --------------------------------------------------------------------------
    The dispatch rows.
@@ -300,6 +365,64 @@ export function deskRows(
      button sits at the foot of the crew rail, always in view, and the rows
      here are only what the visit produced. */
   return rows;
+}
+
+/**
+ * The current invite — one row, the stage's next step, in Wellington's loop.
+ * Learn has none yet. After Eligibility is done, the invite is back to
+ * Dispatches until he invites Partners.
+ */
+export function currentInvite(visit: Visit): DeskRow | null {
+  if (visit.stage === 'eligibility') {
+    return {
+      key: 'invite-eligibility',
+      from: 'wellington',
+      sentence: 'Phoebe can take this on the Eligibility step.',
+      action: { kind: 'surface', label: 'Open Eligibility', surface: 'eligibility' },
+    };
+  }
+  if (visit.stage === 'partners' && !visit.invitedPartners) {
+    return {
+      key: 'invite-desk',
+      from: 'phoebe',
+      sentence: 'Phoebe has finished this visit. Wellington is on Dispatches.',
+      action: { kind: 'surface', label: 'Open Dispatches', surface: 'desk' },
+    };
+  }
+  if (visit.stage === 'partners') {
+    return {
+      key: 'invite-partners',
+      from: 'wellington',
+      sentence: 'Pin the basin on the Partners step. Bridget is not answering yet; the map works.',
+      action: { kind: 'surface', label: 'Open the map', surface: 'map' },
+    };
+  }
+  if (visit.stage === 'quantify') {
+    return {
+      key: 'invite-quantify',
+      from: 'wellington',
+      sentence:
+        'The Quantify step can work out a screening figure. Calvin is not answering yet; the calculator works.',
+      action: { kind: 'surface', label: 'Open Quantify', surface: 'quantification' },
+    };
+  }
+  return null;
+}
+
+/**
+ * What the right rail shows. The current invite is first. Derived rows may
+ * follow and never outrank it. Bridget's place-row waits until Partners;
+ * Calvin's figures wait until Quantify.
+ */
+export function nextStepRows(visit: Visit, statuses: CriterionStatus[], packs: MethodPack[]): DeskRow[] {
+  const invite = currentInvite(visit);
+  const derived = deskRows(visit, statuses, packs).filter((row) => {
+    if (row.from === 'bridget') return visit.stage === 'partners' || visit.stage === 'quantify';
+    if (row.from === 'calvin') return visit.stage === 'quantify';
+    if (row.from === 'phoebe') return visit.stage !== 'learn';
+    return true;
+  });
+  return invite ? [invite, ...derived] : derived;
 }
 
 /* --------------------------------------------------------------------------
