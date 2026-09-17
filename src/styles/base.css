@@ -822,6 +822,31 @@ button.wb-phase:hover span:last-child {
   text-underline-offset: 2px;
 }
 
+/* The stage invite — the one filled-blue primary for the recommended next
+   action. Derived rows stay quiet text links. Save at the foot is a different
+   action (leave this site). Ruled 16 Sep 2026. */
+.wb-invite-action {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 7px 12px;
+  border: 0;
+  border-radius: var(--r-md);
+  background: var(--tide-ui);
+  color: #ffffff;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.wb-invite-action:hover {
+  background: var(--tide-hover);
+  text-decoration: none;
+}
+.wb-invite-action:active {
+  transform: scale(0.98);
+}
+
 /* The project's name, typed in the card itself — look pass, 8 Sep 2026. The
    rail input's quiet look at the card's title size. */
 .wb-rail-name {

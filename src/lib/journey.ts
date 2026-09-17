@@ -49,3 +49,12 @@ export function nextPhaseAfter(surface: Surface | 'desk'): JourneyPhase | null {
   if (index === -1) return null;
   return JOURNEY[index + 1] ?? null;
 }
+
+/**
+ * True when "Next phase" would open the same surface as the rail invite.
+ * Hide the top chip then, so there is one filled-blue primary. Ruled 16 Sep 2026.
+ */
+export function nextPhaseCompetes(from: Surface | 'desk', invite: Surface | null): boolean {
+  if (!invite) return false;
+  return nextPhaseAfter(from)?.surface === invite;
+}

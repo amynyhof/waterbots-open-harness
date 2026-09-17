@@ -260,6 +260,7 @@ const compileLib = spawnSync(
     join('node_modules', 'typescript', 'bin', 'tsc'),
     join('src', 'lib', 'visit.ts'),
     join('src', 'lib', 'carried.ts'),
+    join('src', 'lib', 'journey.ts'),
     '--outDir', libOut,
     '--module', 'commonjs',
     '--moduleResolution', 'node',
@@ -290,7 +291,9 @@ const {
   nextStepRows,
   deskRows,
   eligibilityDone,
+  inviteSurface,
 } = createRequire(import.meta.url)(join(libOut, 'visit.js'));
+const { nextPhaseCompetes } = createRequire(import.meta.url)(join(libOut, 'journey.js'));
 
 const typed = typedContext(EMPTY_CONTEXT, 'name', 'Walk Borehole');
 expect('a typed name carries typed provenance', typed.name === 'Walk Borehole' && typed.provenance.name === 'typed', JSON.stringify(typed));
@@ -340,9 +343,20 @@ expect(
   invited.stage === 'eligibility' &&
     invited.eligibilityInvite === 'Phoebe can take this on the Eligibility step.' &&
     currentInvite(invited)?.action.surface === 'eligibility' &&
+    currentInvite(invited)?.primary === true &&
     nextStepRows(invited, [], [])[0]?.key === 'invite-eligibility' &&
     nextStepRows(invited, [], []).every((r) => r.from !== 'bridget'),
   JSON.stringify(nextStepRows(invited, [], []))
+);
+expect(
+  'the desk Next phase competes with an Eligibility invite, so the top chip must quiet',
+  nextPhaseCompetes('desk', inviteSurface(invited)) === true && nextPhaseCompetes('desk', null) === false,
+  'Next phase would still stand beside the rail primary'
+);
+expect(
+  'Phoebe\'s Next phase is Partners, so an Eligibility invite does not hide it as the same move',
+  nextPhaseCompetes('eligibility', inviteSurface(invited)) === false,
+  'Phoebe\'s chip was treated as the Eligibility primary'
 );
 expect('a map route during Eligibility does not skip to Partners', applyWellingtonRoute(invited, 'map', 'Open the map.').stage === 'eligibility', 'the map route skipped Eligibility');
 const opened = openedEligibility(EMPTY_VISIT);
@@ -384,6 +398,20 @@ expect(
   "Phoebe's first open copies his real invite, then asks without a visitor bubble",
   /speaker: WELLINGTON/.test(phoebeSource) && /askOpened/.test(phoebeSource) && /eligibilityInvite/.test(phoebeSource),
   'the copy or the first-open ask is missing'
+);
+const screenSource = readFileSync('src/screen/AgentScreen.tsx', 'utf8');
+const railSource = readFileSync('src/components/CrewRail.tsx', 'utf8');
+const deskSourceForInvite = readFileSync('src/components/Desk.tsx', 'utf8');
+expect(
+  'the top Next phase chip hides when it is the same move as the rail invite',
+  /next && !nextQuiet/.test(screenSource) && /nextPhaseCompetes\('desk', inviteSurface\)/.test(deskSourceForInvite),
+  'the top chip still stands beside the rail primary'
+);
+expect(
+  'the rail invite is the filled primary, and derived rows stay quiet links',
+  /row\.primary \? 'wb-invite-action' : 'wb-row-action'/.test(railSource) &&
+    /wb-invite-action/.test(readFileSync('src/styles/base.css', 'utf8')),
+  'the rail invite is not the one filled primary'
 );
 expect(
   'his prompt names the screening loop and forbids a fake live chat',

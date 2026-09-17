@@ -29,7 +29,7 @@
 
 import bridgetPortrait from '../../brand/assets/bots/bridget.svg';
 import type { AgentHost } from '../chat/evidence';
-import { nextPhaseAfter } from '../lib/journey';
+import { nextPhaseAfter, nextPhaseCompetes } from '../lib/journey';
 import {
   AQUEDUCT_CITATION,
   AQUEDUCT_LICENCE,
@@ -65,11 +65,13 @@ export default function BridgetScreen({
   pinnedHybas,
   onPin,
   onNavigate,
+  inviteSurface,
 }: {
   onStatus: (status: MapStatus) => void;
   pinnedHybas: number | null;
   onPin: (pin: MapPin | null) => void;
   onNavigate: (surface: Surface) => void;
+  inviteSurface: Surface | null;
 }) {
   const next = nextPhaseAfter('map');
   const nextSurface = next?.surface ?? null;
@@ -79,6 +81,7 @@ export default function BridgetScreen({
       host={BRIDGET}
       opensOn="tool"
       next={next && nextSurface ? { label: next.label, go: () => onNavigate(nextSurface) } : null}
+      nextQuiet={nextPhaseCompetes('map', inviteSurface)}
       tabs={{
         chat: <NotLiveChat host={BRIDGET} line={NOT_LIVE_LINE} note={PROJECT_MAPPING_NOTE} />,
         tool: (

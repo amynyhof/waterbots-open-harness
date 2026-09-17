@@ -265,6 +265,12 @@ export interface DeskRow {
   /** One complete sentence. */
   sentence: string;
   action: RowAction;
+  /**
+   * The stage invite — the one filled-blue primary. Derived rows never
+   * take this. Ruled 16 Sep 2026: one primary, on the rail, not also on
+   * "Next phase".
+   */
+  primary?: boolean;
 }
 
 const group = (n: number) => n.toLocaleString('en-GB');
@@ -379,6 +385,7 @@ export function currentInvite(visit: Visit): DeskRow | null {
       from: 'wellington',
       sentence: 'Phoebe can take this on the Eligibility step.',
       action: { kind: 'surface', label: 'Open Eligibility', surface: 'eligibility' },
+      primary: true,
     };
   }
   if (visit.stage === 'partners' && !visit.invitedPartners) {
@@ -387,6 +394,7 @@ export function currentInvite(visit: Visit): DeskRow | null {
       from: 'phoebe',
       sentence: 'Phoebe has finished this visit. Wellington is on Dispatches.',
       action: { kind: 'surface', label: 'Open Dispatches', surface: 'desk' },
+      primary: true,
     };
   }
   if (visit.stage === 'partners') {
@@ -395,6 +403,7 @@ export function currentInvite(visit: Visit): DeskRow | null {
       from: 'wellington',
       sentence: 'Pin the basin on the Partners step. Bridget is not answering yet; the map works.',
       action: { kind: 'surface', label: 'Open the map', surface: 'map' },
+      primary: true,
     };
   }
   if (visit.stage === 'quantify') {
@@ -404,6 +413,7 @@ export function currentInvite(visit: Visit): DeskRow | null {
       sentence:
         'The Quantify step can work out a screening figure. Calvin is not answering yet; the calculator works.',
       action: { kind: 'surface', label: 'Open Quantify', surface: 'quantification' },
+      primary: true,
     };
   }
   return null;
@@ -423,6 +433,12 @@ export function nextStepRows(visit: Visit, statuses: CriterionStatus[], packs: M
     return true;
   });
   return invite ? [invite, ...derived] : derived;
+}
+
+/** The surface the current invite opens, or null while still learning. */
+export function inviteSurface(visit: Visit): Surface | null {
+  const invite = currentInvite(visit);
+  return invite?.action.kind === 'surface' ? invite.action.surface : null;
 }
 
 /* --------------------------------------------------------------------------

@@ -36,7 +36,7 @@ import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
 import type { AgentHost, AgentTurn } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
 import type { CriterionStatus } from '../lib/criteriaState';
-import { nextPhaseAfter } from '../lib/journey';
+import { nextPhaseAfter, nextPhaseCompetes } from '../lib/journey';
 import { WELLINGTON } from '../lib/wellington';
 import {
   CARDS_APPROVED_ON,
@@ -74,6 +74,7 @@ export default function PhoebeScreen({
   visible,
   eligibilityInvite,
   eligibilityDone,
+  inviteSurface,
 }: {
   onCriteriaUpdate: (updates: CriterionUpdate[]) => void;
   /** The visit's project record, carried to Phoebe with every ask. */
@@ -88,6 +89,7 @@ export default function PhoebeScreen({
   eligibilityInvite: string;
   /** Every criterion has a verdict — she should send them back to Wellington. */
   eligibilityDone: boolean;
+  inviteSurface: Surface | null;
 }) {
   const carried = carriedRecord(record);
 
@@ -149,6 +151,7 @@ export default function PhoebeScreen({
     <AgentScreen
       host={PHOEBE}
       next={next && nextSurface ? { label: next.label, go: () => onNavigate(nextSurface) } : null}
+      nextQuiet={nextPhaseCompetes('eligibility', inviteSurface)}
       tabs={{
         chat: <ScreenChat host={PHOEBE} chat={chat} composerId="wb-phoebe-composer" />,
         tool: <EligibilityWorksheet statuses={statuses} onOpenMap={onOpenMap} />,

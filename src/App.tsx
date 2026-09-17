@@ -92,6 +92,7 @@ import {
   EMPTY_VISIT,
   applyEligibilityProgress,
   applyWellingtonRoute,
+  inviteSurface,
   journeyProgress,
   learnedContext,
   nextStepRows,
@@ -273,6 +274,7 @@ export default function App() {
 
   /* The current invite first, then derived rows that never outrank it. */
   const rows = useMemo(() => nextStepRows(visit, statuses, LIVE_PACKS), [visit, statuses]);
+  const invite = inviteSurface(visit);
   const progress = useMemo(() => journeyProgress(visit, statuses, LIVE_PACKS), [visit, statuses]);
 
   /* THE BRIDGE (item S7, built 8 Sep 2026). The click seals the visit as it
@@ -409,7 +411,7 @@ export default function App() {
                 style={{ position: 'absolute', inset: 0, visibility: onDesk ? undefined : 'hidden' }}
                 aria-hidden={!onDesk}
               >
-                  <Desk chat={chat} onNavigate={setSurface} />
+                  <Desk chat={chat} onNavigate={setSurface} inviteSurface={invite} />
               </div>
 
               {/* BRIDGET'S SCREEN, kept mounted, hidden when off-surface — see
@@ -425,6 +427,7 @@ export default function App() {
                   pinnedHybas={visit.pin?.hybasId ?? null}
                   onPin={setPin}
                   onNavigate={setSurface}
+                  inviteSurface={invite}
                 />
               </div>
 
@@ -448,6 +451,7 @@ export default function App() {
                   visible={onEligibility}
                   eligibilityInvite={visit.eligibilityInvite}
                   eligibilityDone={statuses.length > 0 && statuses.every((s) => s.state !== 'unchecked')}
+                  inviteSurface={invite}
                 />
               </div>
 
@@ -464,6 +468,7 @@ export default function App() {
                   allValues={visit.packValues}
                   onChange={setPackValues}
                   onNavigate={setSurface}
+                  inviteSurface={invite}
                 />
               </div>
             </main>
