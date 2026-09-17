@@ -1,12 +1,16 @@
 # Open items
 
 Every open thread in this repository, in one place. Moved out of
-[SESSION_HANDOFF.md](./SESSION_HANDOFF.md) on 21 Aug 2026 — that file now carries session state and
-hand-off notes only, and points here.
+[SESSION_HANDOFF.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md) on 21 Aug 2026 —
+~~that file now carries session state and hand-off notes only, and points here.~~
+**Corrected 17 Sep 2026:** the live root handoff is retired. Live state is this file,
+[BUILD_PLAN.md](./BUILD_PLAN.md), [BUILD_LOG.md](./BUILD_LOG.md), and git. The retired
+handoff is in [docs/archive/](./docs/archive/README.md). Do not recreate a live root
+`SESSION_HANDOFF.md`.
 
 **Closed items live in [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md)**, in full, from
 30 Aug 2026. This file is read at the start of every session and stays a briefing; the archive is
-not one of the six opening documents and is read only when someone goes looking. **Every archived
+not one of the ~~six~~ four opening documents and is read only when someone goes looking. **Every archived
 item keeps its row in the index table below**, so nothing is lost by being finished. The reasoning
 is item O11.
 
@@ -137,7 +141,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
 > reference to them elsewhere in the repository was updated in the same edit rather than left to
-> rot: AGENT_RULES.md, SESSION_HANDOFF.md, `src/chat/evidence.ts` and
+> rot: AGENT_RULES.md, [SESSION_HANDOFF.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md), `src/chat/evidence.ts` and
 > `src/chat/EvidenceBlock.tsx`.
 
 ---
@@ -1362,7 +1366,7 @@ not publish.
 ruling. The book is the ruling; this is the list of places the code has not caught up to it yet,
 and what is being done about each.
 
-**[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) is superseded by the book and says so
+**[DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md) is superseded by the book and says so
 from 29 Aug 2026**, by the maintainer's header, applied verbatim with the original text preserved
 underneath. Until that landed the canon read as binding and was not. **The canon's rulings were not
 wrong** — the left rail, the "<" navigation and the chat dock rules it confirmed were carried into
@@ -2494,7 +2498,7 @@ Little of this is product, and several are not repository files at all — they 
 
 **This row used to say the cap shipped in v1. It did not.** From 24 Aug, when Phoebe went live, until
 25 Aug, the public chat had no cap at all — the relay counted nothing and its own header said so.
-BUILD_PLAN.md and SESSION_HANDOFF.md both recorded that correctly and this file did not, which is
+BUILD_PLAN.md and [SESSION_HANDOFF.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md) both recorded that correctly and this file did not, which is
 how a wrong row survived a session close. Recorded rather than quietly corrected, because a document
 that was wrong once is worth knowing about.
 
@@ -2762,7 +2766,7 @@ lost by being finished.
 
 **What it bought:** this file fell from **2,173 lines to about 1,850** in the same session that
 added the version 4 raises, so it ends the day shorter than it started despite growing. The archive
-is **not** one of the six opening documents and is never read at the opening.
+is **not** one of the ~~six~~ four opening documents and is never read at the opening.
 
 **The settled halves of A2, A3 and A4 stayed put**, and that is deliberate rather than an omission.
 This item named them as candidates, but each sits inside an item that is still live — A4 in

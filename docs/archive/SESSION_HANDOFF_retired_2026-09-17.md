@@ -1,3 +1,8 @@
+> SUPERSEDED — 17 Sep 2026. Moved, not deleted.
+> Live state is [OPEN_ITEMS.md](../../OPEN_ITEMS.md), [BUILD_PLAN.md](../../BUILD_PLAN.md), [BUILD_LOG.md](../../BUILD_LOG.md), and git.
+> Do not recreate a live root `SESSION_HANDOFF.md`.
+> Never read this file for current state.
+
 # Session handoff — Shell B (open)
 
 **Slim current state only** (16 Sep 2026 close-out). History → `BUILD_LOG.md`. Detail → `OPEN_ITEMS.md` / `BUILD_PLAN.md`.

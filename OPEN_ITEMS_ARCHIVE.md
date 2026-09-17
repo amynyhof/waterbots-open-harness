@@ -5,7 +5,7 @@ of every session stays a briefing rather than an archive.** Maintainer's ruling,
 opening reads stay thin, forever*: a closed item is finished, and it earns a pointer and a home
 elsewhere rather than a place in an opening read. The sweep itself was item O11.
 
-**This file is not one of the six opening documents and is never read at the opening.** It is read
+**This file is not one of the ~~six~~ four opening documents and is never read at the opening.** It is read
 when someone goes looking for how a thing came to be — the same posture as
 [BUILD_LOG.md](./BUILD_LOG.md), and for the same reason.
 
@@ -70,7 +70,7 @@ found while chasing that, and it is the real one.
 ## S8. Brightness pull-up to BRAND.md's published Frost values
 
 **From the design canon, received 27 Aug 2026** and held at
-[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md), which is the home for the ruling
+[DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md), which is the home for the ruling
 itself. This item is the work it asks for.
 
 **The canon's note, in its own words:** the site "currently reads more muted than BRAND.md's

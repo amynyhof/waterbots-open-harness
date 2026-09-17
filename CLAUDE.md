@@ -11,29 +11,36 @@ work moves in — propose, approve, build, eyeball, commit word — how the
 engineer is expected to speak, how open items are grouped, and what has to
 be true before a session closes.
 
-**Read these six before doing anything else, every new session:**
+**Read these ~~six~~ four before doing anything else, every new session:**
 
 1. This file, CLAUDE.md
 2. [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) — how
    work is run
-3. [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) —
-   **superseded by the brand book on 28 Aug 2026 and still read**, because
-   it is history that explains why three things here are the way they are
-4. [BUILD_PLAN.md](./BUILD_PLAN.md) — what is being built now, what
+3. [BUILD_PLAN.md](./BUILD_PLAN.md) — what is being built now, what
    comes next, and the compatibility goal
-5. [OPEN_ITEMS.md](./OPEN_ITEMS.md) — every open item, grouped into
+4. [OPEN_ITEMS.md](./OPEN_ITEMS.md) — every open item, grouped into
    families, and the north star
-6. [SESSION_HANDOFF.md](./SESSION_HANDOFF.md) — where the last session
-   left things
 
-**The session has not started until all six are read.** The opening
+~~3. [DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md) —
+   **superseded by the brand book on 28 Aug 2026 and still read**, because
+   it is history that explains why three things here are the way they are~~
+   **Removed 17 Sep 2026:** archived; not an opening read. The brand book wins.
+
+~~6. [SESSION_HANDOFF.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md) — where the last session
+   left things~~
+   **Removed 17 Sep 2026:** retired. Live state is OPEN_ITEMS, BUILD_PLAN, BUILD_LOG, and git.
+   Do not recreate a live root `SESSION_HANDOFF.md`.
+
+**The session has not started until all ~~six~~ four are read.** The opening
 ritual itself is owned by
 [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md); this list is
-the front door pointing at the same six, not a second rule. **The count
+the front door pointing at the same ~~six~~ four, not a second rule. **The count
 has moved twice in one day, both on the maintainer's ruling of
 27 Aug 2026.** It was five against the process rules' four, which had left
 themselves off their own list; then the design canon arrived and joined
-the reads. Six is right.
+the reads. ~~Six is right.~~ **Corrected 17 Sep 2026: four is right.** The
+canon and the handoff left the opening list. [BUILD_LOG.md](./BUILD_LOG.md)
+stays not an opening read.
 
 Where this file and the process rules both speak to a point — proposal
 before code, one step at a time, honest states, no fabricated data — they
@@ -54,7 +61,7 @@ platform, but shares no repository with it. The maintainer carries
 any shared material across by hand; the engineer never fetches it.
 
 **v1 is deployed and live at https://map.waterbots.ai.** Vercel builds
-from `main` on push. See SESSION_HANDOFF.md for the deploy details.
+from `main` on push.
 
 ## Rule zero — this repo only
 
@@ -375,14 +382,16 @@ left alone. Maintainer's ruling, 30 Aug 2026; **the engineer wrote it
 into the book by her instruction, which is the exception, not the rule.**
 Everything else still arrives by her hand.
 
-~~**[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) is
+~~**[DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md) is
 binding**, and it is the only design input from outside this
 repository.~~ **Corrected 29 Aug 2026: the canon is SUPERSEDED by the
 book** and says so at its own head, by the maintainer's hand. Its
 rulings were not wrong — the left rail, the "<" navigation and the chat
 dock rules it confirmed were carried into the book and live there now.
 It stays published as history. **Where the canon and the book disagree,
-the book wins.**
+the book wins.** **Archived 17 Sep 2026** to
+[docs/archive/DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md).
+Not an opening read.
 
 **What the book does not carry is raised, never invented** — §0 is
 explicit. ~~Four such rulings were made on 29–30 Aug 2026 and are owed to
