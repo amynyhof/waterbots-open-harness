@@ -2,13 +2,17 @@
 
 **Append-only. Never read at the opening.**
 
-This file exists so that [SESSION_HANDOFF.md](./SESSION_HANDOFF.md) can stay thin. The handoff says
-where things stand *now*; this says how they came to stand there. Maintainer's ruling,
+~~This file exists so that [SESSION_HANDOFF.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md) can stay thin. The handoff says
+where things stand *now*; this says how they came to stand there.~~
+**Corrected 17 Sep 2026:** there is no live root handoff. Live state is
+[OPEN_ITEMS.md](./OPEN_ITEMS.md), [BUILD_PLAN.md](./BUILD_PLAN.md), and git. This file
+is how it came to stand there. The retired handoff is in
+[docs/archive/](./docs/archive/README.md). Maintainer's ruling,
 29 Aug 2026 — the rule itself lives in
 [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) under *the opening reads stay thin,
 forever*, and this file does not restate it.
 
-**It is not one of the six opening documents and must never become one.** A session starts by
+**It is not one of the ~~six~~ four opening documents and must never become one.** A session starts by
 reading the current state, not the history. This is looked at when someone goes looking for how a
 thing came to be, and at no other time.
 
@@ -1016,3 +1020,38 @@ were pasted.
 
 `BUILD_LOG.md` note only. Handoff left as the previous sitting left it. DRAFT card files left
 untracked.
+
+## 17 September 2026 — archive stale session docs (prepare for packs)
+
+**Pull request opened, not merged.** Docs only. Archive, never delete. No pack content. No
+runtime wire. No live-site UI. Two VWBA card drafts stay uncommitted.
+
+### What was built
+
+`docs/archive/` stood up, with a README written for the open rail. Root
+`SESSION_HANDOFF.md` moved to
+`docs/archive/SESSION_HANDOFF_retired_2026-09-17.md`. `DESIGN_CANON_for_ShellB.md`
+moved to `docs/archive/DESIGN_CANON_for_ShellB.md`. Each file opens with a
+superseded-by header. There is no live root handoff; do not recreate one.
+
+Opening reads are four: CLAUDE.md, PROCESS_RULES_for_ShellB.md, BUILD_PLAN.md,
+OPEN_ITEMS.md. PROCESS_RULES remains the one home; CLAUDE.md points here.
+Close-out no longer rewrites a handoff. BUILD_LOG stays not an opening read.
+`knowledge-packs/` is live product knowledge, not archive.
+
+The header of this file (a live pointer, not a session entry) was struck in
+place so it did not keep naming a root handoff that no longer exists. Session
+entries below that header were not edited.
+
+### Decisions
+
+- Paid shape: no live root SESSION_HANDOFF. Live state is OPEN_ITEMS, BUILD_PLAN,
+  BUILD_LOG, and git. Never read the archive for current state.
+- Full OPEN_ITEMS wall rewrite / closed-item sweep parked. Packs content, runtime
+  wire, Deb export, and kind in the URL parked.
+
+### Housekeeping
+
+Root docs refreshed for this sitting. DRAFT card files left untracked. The
+migration gate ran and found no migrations. `check-wellington` passed at 108 —
+docs-only, the count is unchanged from before this sitting.

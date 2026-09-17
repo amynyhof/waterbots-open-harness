@@ -57,12 +57,17 @@ steps that were already agreed, not any of the gates inside them.
 
 ### The opening documents
 
-Read six documents before doing anything else, every new session:
+Read ~~six~~ **four** documents before doing anything else, every new session:
 [CLAUDE.md](./CLAUDE.md), **this file**,
-[DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md),
-[BUILD_PLAN.md](./BUILD_PLAN.md), [OPEN_ITEMS.md](./OPEN_ITEMS.md),
-[SESSION_HANDOFF.md](./SESSION_HANDOFF.md).
-The session has not started until all six are read.
+[BUILD_PLAN.md](./BUILD_PLAN.md), [OPEN_ITEMS.md](./OPEN_ITEMS.md).
+The session has not started until all ~~six~~ four are read.
+
+~~[DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md)~~ and
+~~[SESSION_HANDOFF.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md)~~ **left
+the required open list on 17 Sep 2026.** The design canon is archived; the brand book
+wins. The session handoff is retired. **Do not recreate a live root `SESSION_HANDOFF.md`.**
+Live state is OPEN_ITEMS, BUILD_PLAN, BUILD_LOG, and git. Never read
+[docs/archive/](./docs/archive/README.md) for current state.
 
 **This list is the one home for the opening ritual**, and [CLAUDE.md](./CLAUDE.md) points here
 rather than carrying a second copy of the count.
@@ -74,7 +79,8 @@ rule it exists to serve — see *the opening reads stay thin, forever*.
 **The count moved twice on 27 Aug 2026, both times on the maintainer's ruling.** This list said
 four for as long as it existed, leaving itself off its own list, while CLAUDE.md said five and
 named this file among them; five was ruled right. Then the design canon arrived and joined the
-opening reads, making six.
+opening reads, making six. **Corrected 17 Sep 2026: the count is four.** The canon and the
+handoff left the required open list. Four is the number this list first held, now on purpose.
 
 ## How work moves
 
@@ -276,8 +282,9 @@ session that a number was left behind when a fault was fixed. Replacing 8,192
 with 16,000 tells them nothing.
 
 **What it applies to.** Every tracked document: the rulebooks, the open items,
-the build plan, the handoff, the card sets, and code comments that state a fact
-about the system. **It is about corrections, not about editing.** Rewriting a
+the build plan, ~~the handoff,~~ the card sets, and code comments that state a fact
+about the system. **Corrected 17 Sep 2026:** there is no live root handoff.
+**It is about corrections, not about editing.** Rewriting a
 paragraph that was merely unclear, tightening prose, or reorganising a file are
 ordinary edits and need none of this. The rule bites when something the document
 *asserted* turns out to be untrue.
@@ -330,19 +337,25 @@ measurements, the wrong turns, the dates. It is only told once.
 
 > **A growing opening document is a defect, and it is flagged as one.**
 
-Six documents are read before every session starts. If they grow without bound, the ritual that
+~~Six~~ **Four** documents are read before every session starts. If they grow without bound, the ritual that
 exists to make a session start well becomes the reason it starts slowly, and the parts that matter
-get skimmed. **The reads are a briefing, not an archive.**
+get skimmed. **The reads are a briefing, not an archive.** Retired documents live in
+[docs/archive/](./docs/archive/README.md) and are never opening reads.
 
 **Three rules hold the line.**
 
-1. **[SESSION_HANDOFF.md](./SESSION_HANDOFF.md) is current state only, and is rewritten from
+1. ~~**[SESSION_HANDOFF.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md) is current state only, and is rewritten from
    scratch at every close.** Not amended, not appended to. Where we are, what is committed and what
    is not, what waits on the maintainer, what comes next. **A sentence about how something came to
-   be is history and does not belong in it.**
+   be is history and does not belong in it.**~~
+   **Corrected 17 Sep 2026:** there is no live root session handoff. Live state is
+   [OPEN_ITEMS.md](./OPEN_ITEMS.md) and [BUILD_PLAN.md](./BUILD_PLAN.md). History is
+   [BUILD_LOG.md](./BUILD_LOG.md). The retired handoff is in
+   [docs/archive/](./docs/archive/README.md). **Do not recreate a live root
+   `SESSION_HANDOFF.md`.** Never read the archive for current state.
 
 2. **History lives in [BUILD_LOG.md](./BUILD_LOG.md), which is append-only and is never read at the
-   opening.** It is not one of the six. It is written to once per session, at the close, and read
+   opening.** It is not one of the ~~six~~ four. It is written to once per session, at the close, and read
    only when someone goes looking for how a thing came to be. Nothing in it is ever edited — a
    correction is a new entry that says what it corrects, which is the visible-corrections rule
    applied to a log rather than to a claim.
@@ -367,9 +380,12 @@ includes every step, every time. **A ritual with a skipped step is an unfinished
    OPEN_ITEMS.md, CLAUDE.md, and any rulebook touched this session.
 2. **Append this session to [BUILD_LOG.md](./BUILD_LOG.md)** — what was built, what was learned,
    what was decided. Append only; nothing already in it is edited.
-3. SESSION_HANDOFF.md is **rewritten from scratch**, current state only, so a cold reader can
+3. ~~SESSION_HANDOFF.md is **rewritten from scratch**, current state only, so a cold reader can
    resume: where we are, what is committed vs. uncommitted, what is waiting on Amy, what comes
-   next. **It carries no history** — that is what BUILD_LOG is for.
+   next. **It carries no history** — that is what BUILD_LOG is for.~~
+   **Corrected 17 Sep 2026: no handoff rewrite.** There is no live root
+   `SESSION_HANDOFF.md`. Close-out refreshes BUILD_PLAN, OPEN_ITEMS, and CLAUDE (if
+   touched), and appends BUILD_LOG only. Do not recreate a live root handoff.
 4. **Check for code reading an unpushed migration**, the same check Part 1 runs.
 5. Commit the checkpoint.
 6. **Then** regenerate the export copies, where the repository keeps them.

@@ -447,9 +447,9 @@ should be checkable on how it works as well as on what it says.
 | [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) | Closed items, kept in full rather than deleted |
 | [BUILD_PLAN.md](./BUILD_PLAN.md) | What is being built next, and why |
 | [OPEN_ITEMS.md](./OPEN_ITEMS.md) | Every open thread, in five families |
-| [SESSION_HANDOFF.md](./SESSION_HANDOFF.md) | Where things stand **now**, for whoever picks the work up |
 | [BUILD_LOG.md](./BUILD_LOG.md) | How it came to stand there — append-only, one entry per session |
-| [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) | Superseded by the brand book; kept as history |
+| [docs/archive/](./docs/archive/README.md) | Retired documents, moved not deleted. Not current state. |
+| [docs/archive/DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md) | Superseded by the brand book; kept as history |
 
 ## Not in this repository
 

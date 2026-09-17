@@ -1,3 +1,7 @@
+> ARCHIVED — 17 Sep 2026. Moved from the repository root, not deleted.
+> The brand book still wins. This file is history and is not an opening read.
+> Never read the archive for current design direction.
+
 > SUPERSEDED — by Amy's hand, 28 Aug 2026. The brand book (BRAND.md v3) now
 > governs all design on this site; where this document and the book disagree,
 > the book wins. This canon's rulings stand as history: the left rail, the '<'

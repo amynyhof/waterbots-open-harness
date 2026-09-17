@@ -44,9 +44,10 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 1. **Build to this repository's own rules.** [CLAUDE.md](./CLAUDE.md),
    [AGENT_RULES.md](./AGENT_RULES.md), [CITATIONS.md](./CITATIONS.md),
-   [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) and the brand book
+   ~~[DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md) and~~ the brand book
    are what binds. The compatibility goal is a direction, not a specification, and it
-   does not override any of them. **Still holds.**
+   does not override any of them. **Still holds.** **Corrected 17 Sep 2026:** the
+   canon is archived under [docs/archive/](./docs/archive/README.md); the book wins.
 2. **Flag drift as an open item, in its family.** This one was for the design
    session, and the design session has happened. **It is retired as a standing
    rule**, and what it was collecting is now settled by the canon. Anything that
@@ -60,9 +61,33 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — Wellington treats filled visit fields as known
+## Just finished — stale session docs archived
 
-**16 Sep 2026. Pull request #76, and this close-out.** Item S13: Wellington now sees the visit
+**17 Sep 2026. This sitting, one pull request, not merged.** Docs only. No pack content. No
+runtime wire. No live-site UI.
+
+- **Root `SESSION_HANDOFF.md` is retired.** It moved to
+  [docs/archive/SESSION_HANDOFF_retired_2026-09-17.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md).
+  There is no live root handoff. **Do not recreate one.** Live state is this file,
+  [OPEN_ITEMS.md](./OPEN_ITEMS.md), [BUILD_LOG.md](./BUILD_LOG.md), and git.
+- **The design canon is archived** at
+  [docs/archive/DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md).
+  The brand book still wins. It is not an opening read.
+- **Opening reads are four:** CLAUDE.md, PROCESS_RULES_for_ShellB.md, this file, OPEN_ITEMS.md.
+  Close-out no longer rewrites a handoff. BUILD_LOG stays not an opening read.
+- **`knowledge-packs/` is live product knowledge**, not archive.
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+## Previously — knowledge-packs tree scaffold
+
+**16 Sep 2026. Pull request #79, merged on main.** Scaffold only. The site is not wired to the
+pack tree. Copy is rewritten for the open rail. The word used for the road of phases is
+**pathway**.
+
+## Previously — Wellington treats filled visit fields as known
+
+**16 Sep 2026. Pull request #76, and that close-out.** Item S13: Wellington now sees the visit
 record on every ask. The maintainer said stop this sitting; no follow-up until she pastes a brief.
 
 **The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
