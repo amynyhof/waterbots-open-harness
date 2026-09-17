@@ -90,9 +90,13 @@ import { applyCriterionUpdates, type CriterionUpdate } from './lib/phoebeClient'
 import { fittedPack, livePacks, type PackValues } from './lib/methodPacks';
 import {
   EMPTY_VISIT,
-  deskRows,
+  applyEligibilityProgress,
+  applyWellingtonRoute,
+  inviteSurface,
   journeyProgress,
   learnedContext,
+  nextStepRows,
+  openedEligibility,
   pinnedContext,
   typedContext,
   type Learned,
@@ -163,6 +167,10 @@ export default function App() {
     setVisit((v) => ({ ...v, context: learnedContext(v.context, learned) }));
   }, []);
 
+  const onRouted = useCallback((route: 'none' | 'eligibility' | 'quantification' | 'map' | 'paid', reply: string) => {
+    setVisit((v) => applyWellingtonRoute(v, route, reply));
+  }, []);
+
   /* A pin fills the place if the visitor left it blank — ruling A, 2 Sep
      2026 — and never overwrites a place they typed or told Wellington.
      Unpinning clears only a place the pin wrote. */
@@ -183,7 +191,10 @@ export default function App() {
      at that tab. */
   /* Look pass, 8 Sep 2026: his route no longer draws a button under his turn.
      He names the step in words, and the next steps live in the right rail. */
-  const ask = useMemo(() => wellingtonAsk(onLearned, () => visitRef.current.context), [onLearned]);
+  const ask = useMemo(
+    () => wellingtonAsk(onLearned, () => visitRef.current, onRouted),
+    [onLearned, onRouted]
+  );
   const chat = useConversation(ask, WELLINGTON.name);
 
   /* THE RECEIVER (item S13, built 9 Sep 2026; facts 15 Sep 2026). A visitor
@@ -252,8 +263,18 @@ export default function App() {
        never again. */
   }, []);
 
-  /* Derived, never typed. */
-  const rows = useMemo(() => deskRows(visit, statuses, LIVE_PACKS), [visit, statuses]);
+  /* Opening Eligibility during learn starts that stage. Completing the
+     worksheet — every criterion a verdict — hands the visit back to Wellington. */
+  useEffect(() => {
+    if (surface === 'eligibility') setVisit((v) => openedEligibility(v));
+  }, [surface]);
+  useEffect(() => {
+    setVisit((v) => applyEligibilityProgress(v, statuses));
+  }, [statuses]);
+
+  /* The current invite first, then derived rows that never outrank it. */
+  const rows = useMemo(() => nextStepRows(visit, statuses, LIVE_PACKS), [visit, statuses]);
+  const invite = inviteSurface(visit);
   const progress = useMemo(() => journeyProgress(visit, statuses, LIVE_PACKS), [visit, statuses]);
 
   /* THE BRIDGE (item S7, built 8 Sep 2026). The click seals the visit as it
@@ -390,7 +411,7 @@ export default function App() {
                 style={{ position: 'absolute', inset: 0, visibility: onDesk ? undefined : 'hidden' }}
                 aria-hidden={!onDesk}
               >
-                  <Desk chat={chat} onNavigate={setSurface} />
+                  <Desk chat={chat} onNavigate={setSurface} inviteSurface={invite} />
               </div>
 
               {/* BRIDGET'S SCREEN, kept mounted, hidden when off-surface — see
@@ -406,6 +427,7 @@ export default function App() {
                   pinnedHybas={visit.pin?.hybasId ?? null}
                   onPin={setPin}
                   onNavigate={setSurface}
+                  inviteSurface={invite}
                 />
               </div>
 
@@ -426,6 +448,10 @@ export default function App() {
                   statuses={statuses}
                   onOpenMap={openMap}
                   onNavigate={setSurface}
+                  visible={onEligibility}
+                  eligibilityInvite={visit.eligibilityInvite}
+                  eligibilityDone={statuses.length > 0 && statuses.every((s) => s.state !== 'unchecked')}
+                  inviteSurface={invite}
                 />
               </div>
 
@@ -442,6 +468,7 @@ export default function App() {
                   allValues={visit.packValues}
                   onChange={setPackValues}
                   onNavigate={setSurface}
+                  inviteSurface={invite}
                 />
               </div>
             </main>

@@ -282,9 +282,9 @@ function RecordRow({
           {value || '—'}
         </div>
       )}
-      {(provenance ? PROVENANCE_LABEL[provenance] : 'Wellington asks this') !== '' && (
+      {PROVENANCE_LABEL[provenance] !== '' && (
         <div className="t-caption" style={{ fontSize: 9.5, marginTop: 2, color: 'var(--ink-4)' }}>
-          {provenance ? PROVENANCE_LABEL[provenance] : 'Wellington asks this'}
+          {PROVENANCE_LABEL[provenance]}
         </div>
       )}
     </div>

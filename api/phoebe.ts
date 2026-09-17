@@ -26,7 +26,7 @@ import { recordAbstention } from './_abstentions.js';
 import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
 import { PHOEBE, countOneMessage, timeUntilReset } from './_cap.js';
 import { RESPONSE_SCHEMA, SYSTEM_PROMPT } from './_systemPrompt.js';
-import { readRecord, recordBlock } from './_record.js';
+import { phoebeNotesBlock, readRecord, recordBlock } from './_record.js';
 
 /**
  * Claude Sonnet 5 — the maintainer's ruling of 21 Aug 2026.
@@ -222,15 +222,23 @@ export async function GET(): Promise<Response> {
 }
 
 export async function POST(req: Request): Promise<Response> {
-  let body: { messages?: IncomingMessage[]; record?: unknown };
+  let body: { messages?: IncomingMessage[]; record?: unknown; opened?: unknown; eligibilityDone?: unknown };
   try {
-    body = (await req.json()) as { messages?: IncomingMessage[]; record?: unknown };
+    body = (await req.json()) as {
+      messages?: IncomingMessage[];
+      record?: unknown;
+      opened?: unknown;
+      eligibilityDone?: unknown;
+    };
   } catch {
     return problem(400, 'That request could not be read.');
   }
 
-  const messages = Array.isArray(body.messages) ? body.messages : null;
-  if (!messages || messages.length === 0) {
+  const opened = body.opened === true;
+  const eligibilityDone = body.eligibilityDone === true;
+
+  const messages = Array.isArray(body.messages) ? body.messages : [];
+  if (messages.length === 0 && !opened) {
     return problem(400, 'No message was sent.');
   }
   if (messages.length > MAX_TURNS) {
@@ -258,6 +266,12 @@ export async function POST(req: Request): Promise<Response> {
     clean.push({ role: m.role, content: m.content });
     if (m.role === 'user') lastQuestion = m.content;
   }
+  if (opened && (clean.length === 0 || clean[clean.length - 1].role !== 'user')) {
+    /* Display-only on the thread: Wellington's copied invite. The model still
+       needs a user turn. This sentence is never shown as a visitor bubble. */
+    clean.push({ role: 'user', content: '(The visitor opened Eligibility.)' });
+    if (!lastQuestion) lastQuestion = '(opened Eligibility)';
+  }
   if (clean.length === 0 || clean[clean.length - 1].role !== 'user') {
     return problem(400, 'No question was sent.');
   }
@@ -267,6 +281,7 @@ export async function POST(req: Request): Promise<Response> {
      second system block AFTER the cache breakpoint, so her cards stay cached
      and only this small block changes between visitors. */
   const record = readRecord(body.record);
+  const notes = phoebeNotesBlock({ opened, eligibilityDone });
 
 
   /* The configuration check sits AFTER the request is validated, on purpose.
@@ -339,6 +354,7 @@ export async function POST(req: Request): Promise<Response> {
         system: [
           { type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
           ...(record ? [{ type: 'text' as const, text: recordBlock(record) }] : []),
+          ...(notes ? [{ type: 'text' as const, text: notes }] : []),
         ],
         messages: clean,
         /* Stated rather than inherited. This model thinks adaptively whether

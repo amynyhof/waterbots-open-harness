@@ -41,6 +41,24 @@ export const RECORD_HEADING = 'What the visitor has already told Wellington';
 /** The heading Wellington's prompt names, so he knows the visit is already filled. */
 export const VISIT_HEADING = 'What this visit already holds';
 
+/** The free screening loop. Console-owned; never read out of prose. */
+export type ScreeningStage = 'learn' | 'eligibility' | 'partners' | 'quantify';
+
+const STAGES: readonly ScreeningStage[] = ['learn', 'eligibility', 'partners', 'quantify'];
+
+export function readStage(value: unknown): ScreeningStage | null {
+  return STAGES.find((s) => s === value) ?? null;
+}
+
+const STAGE_LINES: Record<ScreeningStage, string> = {
+  learn: 'Screening step: still learning the project. Ask only for what is missing. When you have enough, invite Eligibility with Phoebe.',
+  eligibility: 'Screening step: Eligibility with Phoebe is next. Do not skip to the map.',
+  partners:
+    'Screening step: Eligibility is done for this visit. Invite the Partners step — the map. Bridget is not answering yet; point at the map. Do not pretend her chat is live.',
+  quantify:
+    'Screening step: Quantify is next. Calvin is not answering yet; point at the calculator. Do not pretend his chat is live.',
+};
+
 const KINDS: readonly RecordKind[] = ['water', 'carbon', 'unsure'];
 
 function field(value: unknown): string {
@@ -98,16 +116,40 @@ export function recordBlock(record: ProjectRecord): string {
   ].join('\n');
 }
 
+/** Extra visit notes for Phoebe, after the record. Empty when neither applies. */
+export function phoebeNotesBlock(notes: { opened?: boolean; eligibilityDone?: boolean }): string | null {
+  const extra: string[] = [];
+  if (notes.opened) {
+    extra.push(
+      'The visitor has just opened Eligibility after Wellington invited them. His invite is already on this thread. Greet them, say what your worksheet and knowledge pack are for at screening, and ask if they are ready to work through eligibility. Do not invent a method.'
+    );
+  }
+  if (notes.eligibilityDone) {
+    extra.push(
+      'Every eligibility criterion on the worksheet has a verdict for this visit. Send them back to Wellington on Dispatches with a clear next step. Do not leave them with no way on.'
+    );
+  }
+  return extra.length ? extra.join('\n\n') : null;
+}
+
 /**
  * The block as Wellington reads it: the same fields, his own heading. Those
  * values are already on this visit — do not ask for them again as if blank.
  */
-export function visitBlock(record: ProjectRecord): string {
+export function visitBlock(record: ProjectRecord | null, stage?: ScreeningStage | null): string {
+  const lines = record ? recordLines(record) : [];
+  const stageLine = stage ? STAGE_LINES[stage] : '';
   return [
     `# ${VISIT_HEADING}`,
     '',
-    'These fields are already on this visit — from the visitor, from a carried link, or from the map pin. Do not ask for them again as if they were blank. Ask only for what is still missing.',
+    'These fields are already on this visit — from the visitor, from a carried link, or from the map pin. Do not ask for them again as if they were blank. Ask only for what is still missing. If this visit already holds the project, do not introduce yourself as if this were a cold start. One next step.',
     '',
-    ...recordLines(record),
+    ...lines,
+    ...(stageLine ? ['', stageLine] : []),
   ].join('\n');
+}
+
+/** Stage-only block when the visit has no does/name/place/kind yet. */
+export function stageBlock(stage: ScreeningStage): string {
+  return [`# ${VISIT_HEADING}`, '', STAGE_LINES[stage]].join('\n');
 }

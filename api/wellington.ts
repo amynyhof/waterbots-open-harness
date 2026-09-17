@@ -28,7 +28,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { recordAbstention } from './_abstentions.js';
 import { CARRIED, WELLINGTON, countOneMessage, timeUntilReset } from './_cap.js';
-import { readRecord, visitBlock } from './_record.js';
+import { readRecord, readStage, stageBlock, visitBlock } from './_record.js';
 import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
 import { validate } from './_wellingtonAnswer.js';
 import { WELLINGTON_RESPONSE_SCHEMA, WELLINGTON_SYSTEM_PROMPT } from './_wellingtonPrompt.js';
@@ -103,9 +103,14 @@ export async function GET(): Promise<Response> {
 }
 
 export async function POST(req: Request): Promise<Response> {
-  let body: { messages?: IncomingMessage[]; carried?: unknown; record?: unknown };
+  let body: { messages?: IncomingMessage[]; carried?: unknown; record?: unknown; stage?: unknown };
   try {
-    body = (await req.json()) as { messages?: IncomingMessage[]; carried?: unknown; record?: unknown };
+    body = (await req.json()) as {
+      messages?: IncomingMessage[];
+      carried?: unknown;
+      record?: unknown;
+      stage?: unknown;
+    };
   } catch {
     return problem(400, 'That request could not be read.');
   }
@@ -152,6 +157,8 @@ export async function POST(req: Request): Promise<Response> {
      only this small block changes between visitors. Empty visit: no block,
      and he may still ask. */
   const record = readRecord(body.record);
+  const stage = readStage(body.stage);
+  const visitText = record ? visitBlock(record, stage) : stage ? stageBlock(stage) : null;
 
   /* Shape first, then whether we can actually answer — same order as Phoebe's,
      for the same reason. */
@@ -243,7 +250,7 @@ export async function POST(req: Request): Promise<Response> {
         max_tokens: MAX_TOKENS,
         system: [
           { type: 'text', text: WELLINGTON_SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
-          ...(record ? [{ type: 'text' as const, text: visitBlock(record) }] : []),
+          ...(visitText ? [{ type: 'text' as const, text: visitText }] : []),
         ],
         messages: clean,
         thinking: { type: 'adaptive' },

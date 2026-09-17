@@ -70,12 +70,18 @@ export default function AgentScreen({
   opensOn = 'chat',
   idSlug,
   next,
+  nextQuiet = false,
 }: {
   host: AgentHost;
   tabs: ScreenTabs;
   /** The tab shown first. Chat, unless the chat is not live. */
   opensOn?: ScreenTab;
   next: NextPhase | null;
+  /**
+   * Hide "Next phase" when the rail already holds the same move as a filled
+   * primary. One filled-blue CTA, on Next Steps. Ruled 16 Sep 2026.
+   */
+  nextQuiet?: boolean;
   /**
    * What the tab and panel ids are built from. Defaults to the host's name;
    * a second consumer of the same agent on one page — the Agent Commons
@@ -113,7 +119,7 @@ export default function AgentScreen({
           </button>
         ))}
 
-        {next && (
+        {next && !nextQuiet && (
           <button type="button" className="wb-next-phase" onClick={next.go}>
             Next phase: {next.label}
           </button>

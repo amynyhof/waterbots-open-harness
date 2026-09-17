@@ -157,7 +157,7 @@ expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length <
 --------------------------------------------------------------------------- */
 
 console.log('\n  The record carried to Phoebe\n');
-const { readRecord, recordBlock, visitBlock, RECORD_HEADING, VISIT_HEADING } = await loadApi('_record.js');
+const { readRecord, recordBlock, visitBlock, phoebeNotesBlock, RECORD_HEADING, VISIT_HEADING } = await loadApi('_record.js');
 expect('a junk record is nothing, never a block', readRecord('x') === null && readRecord({}) === null && readRecord({ does: '   ' }) === null && readRecord(null) === null, 'junk passed');
 expect('kind comes only from the closed set', readRecord({ kind: 'gold' }) === null && readRecord({ kind: 'water' })?.kind === 'water', 'an unknown kind leaked');
 expect('an over-long field is dropped whole, never cut', readRecord({ does: 'x'.repeat(281) }) === null && readRecord({ does: 'x'.repeat(280) })?.does.length === 280, 'length handling');
@@ -213,14 +213,29 @@ expect(
   'the visit block is missing from his prompt'
 );
 expect("Phoebe's prompt still does not carry his visit heading", !PHOEBE_PROMPT.includes(VISIT_HEADING), 'his heading leaked into her prompt');
+expect(
+  "Phoebe's record block is unchanged when there are no extra notes",
+  /never a verdict/.test(recordBlock(readRecord({ does: 'wells' }))) && phoebeNotesBlock({}) === null,
+  'her block grew extra notes by default'
+);
+expect(
+  'a first-open note tells her to greet at screening and not invent a method',
+  /just opened Eligibility/.test(phoebeNotesBlock({ opened: true })) && /Do not invent a method/.test(phoebeNotesBlock({ opened: true })),
+  phoebeNotesBlock({ opened: true })
+);
+expect(
+  'a done note sends them back to Wellington on Dispatches',
+  /Send them back to Wellington on Dispatches/.test(phoebeNotesBlock({ eligibilityDone: true })),
+  phoebeNotesBlock({ eligibilityDone: true })
+);
 const relaySource = readFileSync('api/wellington.ts', 'utf8');
 expect(
-  'the relay attaches the visit block after the cache breakpoint, only when a record is present',
+  'the relay attaches the visit block after the cache breakpoint, only when a record or stage is present',
   /readRecord\(body\.record\)/.test(relaySource) &&
-    /\.\.\.\(record \?/.test(relaySource) &&
+    /readStage\(body\.stage\)/.test(relaySource) &&
+    /visitText/.test(relaySource) &&
     relaySource.indexOf("cache_control: { type: 'ephemeral' }") >= 0 &&
-    relaySource.indexOf('text: visitBlock(record)') >
-      relaySource.indexOf("cache_control: { type: 'ephemeral' }"),
+    relaySource.indexOf('text: visitText') > relaySource.indexOf("cache_control: { type: 'ephemeral' }"),
   'the visit block is missing, or sits above the cache breakpoint'
 );
 
@@ -245,6 +260,7 @@ const compileLib = spawnSync(
     join('node_modules', 'typescript', 'bin', 'tsc'),
     join('src', 'lib', 'visit.ts'),
     join('src', 'lib', 'carried.ts'),
+    join('src', 'lib', 'journey.ts'),
     '--outDir', libOut,
     '--module', 'commonjs',
     '--moduleResolution', 'node',
@@ -262,7 +278,22 @@ if (compileLib.status !== 0) {
   process.exit(1);
 }
 writeFileSync(join(libOut, 'package.json'), '{"type":"commonjs"}');
-const { EMPTY_CONTEXT, typedContext, learnedContext, pinnedContext } = createRequire(import.meta.url)(join(libOut, 'visit.js'));
+const {
+  EMPTY_CONTEXT,
+  EMPTY_VISIT,
+  typedContext,
+  learnedContext,
+  pinnedContext,
+  applyWellingtonRoute,
+  applyEligibilityProgress,
+  openedEligibility,
+  currentInvite,
+  nextStepRows,
+  deskRows,
+  eligibilityDone,
+  inviteSurface,
+} = createRequire(import.meta.url)(join(libOut, 'visit.js'));
+const { nextPhaseCompetes } = createRequire(import.meta.url)(join(libOut, 'journey.js'));
 
 const typed = typedContext(EMPTY_CONTEXT, 'name', 'Walk Borehole');
 expect('a typed name carries typed provenance', typed.name === 'Walk Borehole' && typed.provenance.name === 'typed', JSON.stringify(typed));
@@ -286,6 +317,107 @@ expect("the visitor's words to Wellington replace a pin-filled place", learnedCo
 expect('unpinning clears only a place the pin wrote', pinnedContext(pinned, null).place === '' && pinnedContext(learnedContext(EMPTY_CONTEXT, { place: 'Turkana' }), null).place === 'Turkana', 'unpinning touched the wrong place');
 expect('"unsure" is a kind the visit keeps', learnedContext(EMPTY_CONTEXT, { kind: 'unsure' }).kind === 'unsure', 'unsure was dropped');
 expect('the empty context has no standard-of-interest field', !('standard' in EMPTY_CONTEXT), 'the chips concept survived');
+
+console.log('\n  The screening loop — invite first, place does not skip\n');
+expect('a new visit starts at learn', EMPTY_VISIT.stage === 'learn' && EMPTY_VISIT.eligibilityInvite === '', JSON.stringify(EMPTY_VISIT.stage));
+const placed = { ...EMPTY_VISIT, context: learnedContext(EMPTY_CONTEXT, { place: 'Turkana, Kenya', does: 'wells' }) };
+expect(
+  'a filled place does not move the stage to Partners',
+  placed.stage === 'learn' && currentInvite(placed) === null,
+  JSON.stringify(placed.stage)
+);
+const derivedWhileLearning = deskRows(placed, [], []);
+expect(
+  'deskRows would still make a map row from place, which is why Next Steps must not use them raw',
+  derivedWhileLearning.some((r) => r.from === 'bridget'),
+  JSON.stringify(derivedWhileLearning)
+);
+expect(
+  'nextStepRows hides the map row during learn, so place cannot force Map first',
+  nextStepRows(placed, [], []).every((r) => r.from !== 'bridget') && nextStepRows(placed, [], []).length === 0,
+  JSON.stringify(nextStepRows(placed, [], []))
+);
+const invited = applyWellingtonRoute(placed, 'eligibility', 'Phoebe can take this on the Eligibility step.');
+expect(
+  'his Eligibility route starts that stage and stores the real invite',
+  invited.stage === 'eligibility' &&
+    invited.eligibilityInvite === 'Phoebe can take this on the Eligibility step.' &&
+    currentInvite(invited)?.action.surface === 'eligibility' &&
+    currentInvite(invited)?.primary === true &&
+    nextStepRows(invited, [], [])[0]?.key === 'invite-eligibility' &&
+    nextStepRows(invited, [], []).every((r) => r.from !== 'bridget'),
+  JSON.stringify(nextStepRows(invited, [], []))
+);
+expect(
+  'the desk Next phase competes with an Eligibility invite, so the top chip must quiet',
+  nextPhaseCompetes('desk', inviteSurface(invited)) === true && nextPhaseCompetes('desk', null) === false,
+  'Next phase would still stand beside the rail primary'
+);
+expect(
+  'Phoebe\'s Next phase is Partners, so an Eligibility invite does not hide it as the same move',
+  nextPhaseCompetes('eligibility', inviteSurface(invited)) === false,
+  'Phoebe\'s chip was treated as the Eligibility primary'
+);
+expect('a map route during Eligibility does not skip to Partners', applyWellingtonRoute(invited, 'map', 'Open the map.').stage === 'eligibility', 'the map route skipped Eligibility');
+const opened = openedEligibility(EMPTY_VISIT);
+expect('opening Eligibility during learn starts that stage', opened.stage === 'eligibility', opened.stage);
+const doneSheet = [
+  { state: 'met' },
+  { state: 'not-yet', routeForward: 'consult the community' },
+];
+expect('eligibility is done when every criterion has a verdict', eligibilityDone(doneSheet) === true && eligibilityDone([{ state: 'unchecked' }]) === false, 'the done test failed');
+const handed = applyEligibilityProgress(invited, doneSheet);
+expect(
+  'finishing Eligibility hands back to Wellington, not to the map yet',
+  handed.stage === 'partners' &&
+    handed.invitedPartners === false &&
+    currentInvite(handed)?.action.surface === 'desk' &&
+    nextStepRows(handed, doneSheet, [])[0]?.key === 'invite-desk',
+  JSON.stringify(currentInvite(handed))
+);
+const mapped = applyWellingtonRoute(handed, 'map', 'Pin the basin on the Partners step.');
+expect(
+  'after he invites Partners, Next Steps names the map and says Bridget is not live',
+  mapped.invitedPartners === true &&
+    currentInvite(mapped)?.action.surface === 'map' &&
+    /not answering yet/.test(currentInvite(mapped).sentence),
+  JSON.stringify(currentInvite(mapped))
+);
+const quantified = applyWellingtonRoute(mapped, 'quantification', 'Open Quantify.');
+expect(
+  'Quantify invite names the calculator and says Calvin is not live',
+  quantified.stage === 'quantify' &&
+    currentInvite(quantified)?.action.surface === 'quantification' &&
+    /not answering yet/.test(currentInvite(quantified).sentence),
+  JSON.stringify(currentInvite(quantified))
+);
+const navSource = readFileSync('src/components/NavRail.tsx', 'utf8');
+expect('empty record fields do not say Wellington asks this', !/Wellington asks this/.test(navSource), 'the caption is still there');
+const phoebeSource = readFileSync('src/components/PhoebeScreen.tsx', 'utf8');
+expect(
+  "Phoebe's first open copies his real invite, then asks without a visitor bubble",
+  /speaker: WELLINGTON/.test(phoebeSource) && /askOpened/.test(phoebeSource) && /eligibilityInvite/.test(phoebeSource),
+  'the copy or the first-open ask is missing'
+);
+const screenSource = readFileSync('src/screen/AgentScreen.tsx', 'utf8');
+const railSource = readFileSync('src/components/CrewRail.tsx', 'utf8');
+const deskSourceForInvite = readFileSync('src/components/Desk.tsx', 'utf8');
+expect(
+  'the top Next phase chip hides when it is the same move as the rail invite',
+  /next && !nextQuiet/.test(screenSource) && /nextPhaseCompetes\('desk', inviteSurface\)/.test(deskSourceForInvite),
+  'the top chip still stands beside the rail primary'
+);
+expect(
+  'the rail invite is the filled primary, and derived rows stay quiet links',
+  /row\.primary \? 'wb-invite-action' : 'wb-row-action'/.test(railSource) &&
+    /wb-invite-action/.test(readFileSync('src/styles/base.css', 'utf8')),
+  'the rail invite is not the one filled primary'
+);
+expect(
+  'his prompt names the screening loop and forbids a fake live chat',
+  /Eligibility with Phoebe/.test(WELLINGTON_SYSTEM_PROMPT) && /Do not invent a live chat/.test(WELLINGTON_SYSTEM_PROMPT),
+  'the loop rule is missing from his prompt'
+);
 
 /* ---------------------------------------------------------------------------
    One conversation, held by the shell. The desk is a frame around it and
@@ -348,15 +480,15 @@ expect(
 const adapterSource = readFileSync('src/lib/wellington.ts', 'utf8');
 expect(
   'the adapter reads the visit at send time and omits a blank record',
-  /recordFrom\(getContext\(\)\)/.test(adapterSource) &&
+  /recordFrom\(visit\)/.test(adapterSource) &&
     /return record\.does \|\| record\.kind \|\| record\.place \|\| record\.name \? record : null/.test(adapterSource),
   'a blank visit would still be posted'
 );
 expect(
   'the first carried send reads the visit from a ref written before the send, not the last paint',
-  /visitRef\.current\.context/.test(appSource) &&
+  /visitRef\.current/.test(appSource) &&
     /learnedContext\(visitRef\.current\.context, learned\)/.test(appSource) &&
-    /wellingtonAsk\(onLearned, \(\) => visitRef\.current\.context\)/.test(appSource) &&
+    /wellingtonAsk\(onLearned, \(\) => visitRef\.current, onRouted\)/.test(appSource) &&
     /void sendCarried\(question, \{ carried: true \}\)/.test(appSource),
   'the first ask can still see a blank visit'
 );

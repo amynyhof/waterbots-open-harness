@@ -144,8 +144,8 @@ export default function CrewRail({
               {row.action.kind === 'surface' && (
                 <button
                   type="button"
-                  className="wb-row-action"
-                  style={{ fontSize: 12 }}
+                  className={row.primary ? 'wb-invite-action' : 'wb-row-action'}
+                  style={row.primary ? undefined : { fontSize: 12 }}
                   onClick={() => row.action.kind === 'surface' && onNavigate(row.action.surface)}
                 >
                   {row.action.label}

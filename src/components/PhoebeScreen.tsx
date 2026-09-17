@@ -31,11 +31,13 @@
  * access, shaped with founding users.
  */
 
+import { useEffect, useRef } from 'react';
 import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
 import type { AgentHost, AgentTurn } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
 import type { CriterionStatus } from '../lib/criteriaState';
-import { nextPhaseAfter } from '../lib/journey';
+import { nextPhaseAfter, nextPhaseCompetes } from '../lib/journey';
+import { WELLINGTON } from '../lib/wellington';
 import {
   CARDS_APPROVED_ON,
   CONSIDERATIONS,
@@ -69,6 +71,10 @@ export default function PhoebeScreen({
   statuses,
   onOpenMap,
   onNavigate,
+  visible,
+  eligibilityInvite,
+  eligibilityDone,
+  inviteSurface,
 }: {
   onCriteriaUpdate: (updates: CriterionUpdate[]) => void;
   /** The visit's project record, carried to Phoebe with every ask. */
@@ -77,12 +83,20 @@ export default function PhoebeScreen({
   statuses: CriterionStatus[];
   onOpenMap: () => void;
   onNavigate: (surface: Surface) => void;
+  /** True while Eligibility is the visible step — first-open runs then, not on mount. */
+  visible: boolean;
+  /** Wellington's real Dispatches invite, copied onto this thread once. */
+  eligibilityInvite: string;
+  /** Every criterion has a verdict — she should send them back to Wellington. */
+  eligibilityDone: boolean;
+  inviteSurface: Surface | null;
 }) {
   const carried = carriedRecord(record);
 
   async function ask(
     history: { role: 'user' | 'agent'; text: string }[],
-    signal: AbortSignal
+    signal: AbortSignal,
+    meta?: { opened?: boolean }
   ): Promise<AgentTurn> {
     const answer = await askPhoebe(
       history.map(({ role, text }) => ({
@@ -90,7 +104,8 @@ export default function PhoebeScreen({
         content: text,
       })),
       carried,
-      signal
+      signal,
+      { opened: meta?.opened === true, eligibilityDone }
     );
 
     /* Her side effect, fired before the turn is returned so a failed request
@@ -107,6 +122,28 @@ export default function PhoebeScreen({
 
   const chat = useConversation(ask, PHOEBE.name);
 
+  const opened = useRef(false);
+  const inviteRef = useRef(eligibilityInvite);
+  inviteRef.current = eligibilityInvite;
+  const chatRef = useRef(chat);
+  chatRef.current = chat;
+  useEffect(() => {
+    if (!visible || opened.current) return;
+    opened.current = true;
+    const invite = inviteRef.current.trim();
+    if (invite) {
+      chatRef.current.seed([
+        {
+          role: 'agent',
+          text: invite,
+          evidence: [],
+          speaker: WELLINGTON,
+        },
+      ]);
+    }
+    void chatRef.current.askOpened();
+  }, [visible]);
+
   const next = nextPhaseAfter('eligibility');
   const nextSurface = next?.surface ?? null;
 
@@ -114,6 +151,7 @@ export default function PhoebeScreen({
     <AgentScreen
       host={PHOEBE}
       next={next && nextSurface ? { label: next.label, go: () => onNavigate(nextSurface) } : null}
+      nextQuiet={nextPhaseCompetes('eligibility', inviteSurface)}
       tabs={{
         chat: <ScreenChat host={PHOEBE} chat={chat} composerId="wb-phoebe-composer" />,
         tool: <EligibilityWorksheet statuses={statuses} onOpenMap={onOpenMap} />,

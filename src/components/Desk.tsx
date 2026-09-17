@@ -42,7 +42,7 @@
 
 import type { ReactNode } from 'react';
 import type { Conversation } from '../chat/useConversation';
-import { nextPhaseAfter } from '../lib/journey';
+import { nextPhaseAfter, nextPhaseCompetes } from '../lib/journey';
 import type { Surface } from '../lib/surfaces';
 import { WELLINGTON } from '../lib/wellington';
 import AgentScreen from '../screen/AgentScreen';
@@ -52,9 +52,12 @@ import ScreenChat, { SCREEN_COLUMN } from '../screen/ScreenChat';
 export default function Desk({
   chat,
   onNavigate,
+  inviteSurface,
 }: {
   chat: Conversation;
   onNavigate: (surface: Surface) => void;
+  /** The rail invite's surface, or null. Hides "Next phase" when it is the same move. */
+  inviteSurface: Surface | null;
 }) {
   const next = nextPhaseAfter('desk');
   const nextSurface = next?.surface ?? null;
@@ -63,6 +66,7 @@ export default function Desk({
     <AgentScreen
       host={WELLINGTON}
       next={next && nextSurface ? { label: next.label, go: () => onNavigate(nextSurface) } : null}
+      nextQuiet={nextPhaseCompetes('desk', inviteSurface)}
       tabs={{
         chat: <ScreenChat host={WELLINGTON} chat={chat} composerId="wb-desk-composer" />,
         pack: (
