@@ -305,7 +305,8 @@ project's size.
    granularity for the agent to reason over.
 
 4. **Scope of these cards.** Appendix A only — the Eligibility set. Appendix B becomes the separate
-   Feasibility set, not drafted yet. See the naming table at the top of this file.
+   Feasibility set, ~~not drafted yet.~~ **Corrected 17 Sep 2026:** Feasibility cards are live —
+   [feasibility-cards-vwba.md](./feasibility-cards-vwba.md). See the naming table at the top of this file.
 
 5. **Page citations were re-checked against the page footers on 20 Aug 2026, and two were wrong.**
    The maintainer caught the first. Both are corrected above.

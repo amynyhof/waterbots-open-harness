@@ -342,7 +342,7 @@ without it produces a working map with every tile watermarked, which is why
 
 ## Theme
 
-**There is one brand and it is light.** The brand book, **version 4.1 from 30 Aug 2026**,
+**There is one brand and it is light.** The brand book, ~~**version 4.1 from 30 Aug 2026**~~ **version 4.2 from 31 Aug 2026**,
 supersedes the two-theme era, and `src/styles/tokens.css` carries one set of surface tokens with no
 theme class to switch between. ~~BRAND.md v3, brought by the maintainer on 28 Aug 2026~~ — version 3 brought the
 one light brand on 28 Aug and held for two days; version 4 kept it and added what this site had
@@ -450,6 +450,7 @@ should be checkable on how it works as well as on what it says.
 | [BUILD_LOG.md](./BUILD_LOG.md) | How it came to stand there — append-only, one entry per session |
 | [docs/archive/](./docs/archive/README.md) | Retired documents, moved not deleted. Not current state. |
 | [docs/archive/DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md) | Superseded by the brand book; kept as history |
+| [docs/archive/CHAT_FORMAT_RULES_for_ShellB.md](./docs/archive/CHAT_FORMAT_RULES_for_ShellB.md) | Superseded 22 Aug 2026; kept as the extraction record. Language, citations, and agent speech live in CLAUDE.md, CITATIONS.md, and AGENT_RULES.md |
 
 ## Not in this repository
 

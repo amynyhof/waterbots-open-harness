@@ -34,12 +34,12 @@ one holds the order they are worked in. Neither repeats the other.
 ## North star — the console's journey
 
 Recorded 21 Aug 2026 as the shape the console is being built toward. **None of this is a
-commitment to dates, and only step 1 and part of step 2 exist today.** It is here so that
+commitment to dates, and ~~only step 1 and part of step 2 exist today.~~** **Corrected 17 Sep 2026:** Eligibility, Partners (the map), and Quantify are live; the partner layer is still item D1; step 4 is paid and not started. It is here so that
 individual pieces of work can be read against where they are meant to lead.
 
 | Step | Surface | Tier | State |
 |---|---|---|---|
-| 1 | **Eligibility** — can this project generate a countable benefit? | Free | Worksheet built; the agent behind it is in progress |
+| 1 | **Eligibility** — can this project generate a countable benefit? | Free | ~~Worksheet built; the agent behind it is in progress~~ **Corrected 17 Sep 2026:** worksheet built; Phoebe live from 24 Aug 2026 |
 | 2 | **Basin map / Partners** — where is the water stress, and who else is working there? | Free | Map built; the partner layer is item D1 |
 | 3 | **Ex-ante quantification** — what benefit would this project produce? | Free | ~~Not started~~ **Built 1 Sep 2026.** The step, and ~~one screening pack~~ **three screening packs (2 Sep 2026)** in it. Calvin's post; his chat is not built |
 | 4 | **Project management** — running the project after it starts | Paid | Not started |

@@ -19,3 +19,4 @@ This folder holds retired root documents. **Nothing here is deleted — it is mo
 |---|---|---|
 | [SESSION_HANDOFF_retired_2026-09-17.md](./SESSION_HANDOFF_retired_2026-09-17.md) | 17 Sep 2026 | Live root handoff retired. Current state is OPEN_ITEMS, BUILD_PLAN, BUILD_LOG, and git. Do not recreate a live root `SESSION_HANDOFF.md`. |
 | [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) | 17 Sep 2026 (superseded 28 Aug 2026) | Brand book wins. Kept as history of three rulings the book later carried. Not an opening read. |
+| [CHAT_FORMAT_RULES_for_ShellB.md](./CHAT_FORMAT_RULES_for_ShellB.md) | 17 Sep 2026 (superseded 22 Aug 2026) | Extraction record. Language, citations, and agent speech live in CLAUDE.md, CITATIONS.md, and AGENT_RULES.md. Not a live rulebook. |

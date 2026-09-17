@@ -1055,3 +1055,45 @@ entries below that header were not edited.
 Root docs refreshed for this sitting. DRAFT card files left untracked. The
 migration gate ran and found no migrations. `check-wellington` passed at 108 —
 docs-only, the count is unchanged from before this sitting.
+
+## 17 September 2026 — leftover root debt: chat-format archive and live claims
+
+**Pull request opened, not merged.** Docs only. Archive, never delete. No pack
+content. No runtime wire. No live-site UI. No primer rewrite. Two VWBA card
+drafts stay uncommitted.
+
+The sitting above said pull request #80 was opened, not merged. **It merged on
+main the same day** (`ba045a3`). That line is left in place; this entry is the
+correction.
+
+### What was built
+
+`CHAT_FORMAT_RULES_for_ShellB.md` moved to
+`docs/archive/CHAT_FORMAT_RULES_for_ShellB.md`. A superseded-by header names
+CLAUDE.md, CITATIONS.md, and AGENT_RULES.md as the live homes. Archive README
+and the published README index point at the archive copy. CLAUDE.md and
+PROCESS_RULES had no root link to fix.
+
+OPEN_ITEMS north star: struck “only step 1 and part of step 2 exist today” and
+Eligibility “the agent behind it is in progress.” Phoebe is live from 24 Aug
+2026; Eligibility, Partners (the map), and Quantify are live. Families and
+open rows were not swept.
+
+Eligibility grader note 4: struck “not drafted yet.” Feasibility cards are
+live. `api/_cards.generated.ts` regenerated so the relay matches the source.
+
+BUILD_PLAN: #80 marked merged on main. README brand book version 4.1 struck;
+4.2 from 31 Aug 2026, matching CLAUDE.md.
+
+### Decisions
+
+- Sitting 2 (OPEN_ITEMS slim / pathway vocabulary) and sitting 3 (primer
+  “no tab row” vs screen tabs) not started.
+- Regenerating the cards module is the mechanical follow-on of the grader-note
+  correction, not a primer rewrite.
+
+### Housekeeping
+
+Root docs refreshed for this sitting. DRAFT card files left untracked. The
+migration gate ran and found no migrations. `check-wellington` passed at 108 —
+docs-only, the count is unchanged from before this sitting.

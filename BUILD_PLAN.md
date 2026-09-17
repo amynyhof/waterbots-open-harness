@@ -61,9 +61,27 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — stale session docs archived
+## Just finished — leftover root debt: chat-format archive and live claims
 
 **17 Sep 2026. This sitting, one pull request, not merged.** Docs only. No pack content. No
+runtime wire. No live-site UI. No primer rewrite.
+
+- **`CHAT_FORMAT_RULES_for_ShellB.md` left the root.** It moved to
+  [docs/archive/CHAT_FORMAT_RULES_for_ShellB.md](./docs/archive/CHAT_FORMAT_RULES_for_ShellB.md).
+  Language, citations, and agent speech still live in CLAUDE.md, CITATIONS.md, and
+  AGENT_RULES.md. The file is the extraction record, not a live rulebook.
+- **OPEN_ITEMS north star** no longer says only step 1 and part of step 2 exist, or that
+  the Eligibility agent is in progress. Phoebe is live; Eligibility, Partners (the map),
+  and Quantify are live. Families and open rows were not swept.
+- **Eligibility grader note 4** no longer says Feasibility is not drafted. Those cards
+  are live.
+- **Brand book in the README** is version 4.2, matching CLAUDE.md.
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+## Previously — stale session docs archived
+
+**17 Sep 2026. Pull request #80, ~~not merged.~~ merged on main.** Docs only. No pack content. No
 runtime wire. No live-site UI.
 
 - **Root `SESSION_HANDOFF.md` is retired.** It moved to
