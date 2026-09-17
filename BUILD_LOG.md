@@ -984,3 +984,35 @@ The close-out itself: the build plan's "just finished" and "next", the README's 
 check-wellington line, CLAUDE.md's scope bullet, item S13's visit-aware line and gate count, the
 handoff rewritten fresh, the exports regenerated after the checkpoint. The migration gate ran and
 found no migrations. Two VWBA card drafts stay uncommitted.
+
+## 16 September 2026 (second sitting) — knowledge-packs tree scaffold (open, v0.1.0)
+
+**Pull request opened, not merged.** Scaffold only. No runtime wire. No SESSION_HANDOFF rewrite.
+Kind still never in the URL. Two VWBA card drafts stay uncommitted.
+
+### What was built
+
+A public-safe `knowledge-packs/` tree at v0.1.0, matching folder names and stub shapes. Copy is
+rewritten for the open rail. The word used for the road of phases is **pathway**.
+
+Seat packs: `product-shared` (journey / roster / pathway; no `tools/`), `wellington-host` (host
+stub; `tools/` notes none named yet), `phoebe-eligibility` (pointers at the live card files, not
+copies; two tools so the shape is not one blob), `bridget-map` (the two live datasets),
+`calvin-quantify` (one folder per live `methodPacks` key, plus empty D-4 and D-6 stubs already
+named on the live D-3 pack), `reggie-library` (this site has no library seat; empty stubs, one
+package per standard already on open).
+
+Nothing in the tree is read by the live site. No method arithmetic was invented. No private files
+were pasted.
+
+### Decisions
+
+- Empty `tools/` with a README note only for Wellington, who has no named tools.
+- Future Calvin D-methods: only D-4 and D-6 as empty stubs, because the live D-3 pack already
+  names them. No invented extra carbon folder; the two Gold Standard tools are the live carbon.
+- Reggie included as a stub so the per-standard contract is visible.
+
+### Housekeeping
+
+`BUILD_LOG.md` note only. Handoff left as the previous sitting left it. DRAFT card files left
+untracked.
