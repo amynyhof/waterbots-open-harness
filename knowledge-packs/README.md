@@ -1,8 +1,10 @@
 # Knowledge packs — open tree
 
-**Version 0.1.0 (open).** Scaffold only. Nothing in this folder is wired into the live
-site. The console still reads its cards, method packs, and map data from the paths
-named below.
+**Version 0.2.0 (open).** ~~Scaffold only. Nothing in this folder is wired into the live
+site.~~ **Corrected 17 Sep 2026:** Phoebe's pack is wired. The live site reads her two
+card sets from [`phoebe-eligibility/vwba-2.0/cards/`](./phoebe-eligibility/vwba-2.0/cards/).
+The other packs are still scaffold; the console reads their method packs and map data
+from the paths named below.
 
 This tree is the public-safe folder shape for what each agent works from. Folder
 **names** and stub **shapes** match the standing pack contract. The copy here is
@@ -19,7 +21,26 @@ A **pathway** is that road of phases. That is the word this tree uses.
 
 ## Standing pack shape
 
-Every seat pack — not Calvin only — follows this shape:
+**The rule going forward, maintainer's ruling of 17 Sep 2026.** A pack is one folder
+per standard, and inside it:
+
+```
+<seat-pack>/
+  README.md                 — the seat, pointing at its packs
+  CHANGELOG.md              — the seat's own semver, citing <pack>@version
+  <standard>/               — one pack, e.g. vwba-2.0/
+    cards/                  — the card files the live site reads
+    tool/                   — README naming the checklist and its live reader; no code
+    evals/                  — README; says plainly when no exam has been sat
+    README.md               — what the agent knows, helps with, does not cover
+    CHANGELOG.md            — the pack's own semver
+```
+
+**Phoebe's pack is the first in it.** The other packs move one at a time, each on its
+own brief, and stay as they are until then.
+
+~~Every seat pack — not Calvin only — follows this shape:~~ **Struck 17 Sep 2026.** The
+shape below is the old one. It still describes every pack but Phoebe's:
 
 ```
 <seat-pack>/
@@ -45,7 +66,7 @@ yet. That is Wellington today.
 |---|---|---|
 | [product-shared/](./product-shared/) | Shared journey, roster, and open free pathway | none — by design |
 | [wellington-host/](./wellington-host/) | Host and orchestrator stub | note: no named tools yet |
-| [phoebe-eligibility/](./phoebe-eligibility/) | Eligibility and feasibility | `eligibility`, `feasibility` — more tools get their own folders later |
+| [phoebe-eligibility/](./phoebe-eligibility/) | Eligibility and feasibility — **the cards' home, new shape** | none — [`vwba-2.0/`](./phoebe-eligibility/vwba-2.0/) holds `cards`, `tool`, `evals`; a later standard gets its own folder beside it |
 | [bridget-map/](./bridget-map/) | Map datasets already on open | `hydrosheds-hydrobasins`, `wri-aqueduct-4.0` |
 | [calvin-quantify/](./calvin-quantify/) | Screening method packs | one folder per live `methodPacks` key, plus empty stubs for D-methods already named as not built |
 | [reggie-library/](./reggie-library/) | Library seat stub — this site has no library seat yet | empty stubs, one package per standard already on open, to show the contract |
@@ -54,9 +75,13 @@ yet. That is Wellington today.
 
 - Runtime wiring. The live site is unchanged.
 - Source PDFs, long excerpts, or method arithmetic invented for a stub.
-- Phoebe’s card bodies. Those stay in [`eligibility-cards-vwba.md`](../eligibility-cards-vwba.md)
-  and [`feasibility-cards-vwba.md`](../feasibility-cards-vwba.md), read by
-  [`src/lib/phoebeCards.ts`](../src/lib/phoebeCards.ts). Tools here **point** at them.
+- ~~Phoebe’s card bodies. Those stay in `eligibility-cards-vwba.md` and
+  `feasibility-cards-vwba.md` at the repository root, read by
+  `src/lib/phoebeCards.ts`. Tools here **point** at them.~~ **Corrected 17 Sep 2026:**
+  Phoebe's card bodies live here, in
+  [`phoebe-eligibility/vwba-2.0/cards/`](./phoebe-eligibility/vwba-2.0/cards/), and
+  [`src/lib/phoebeCards.ts`](../src/lib/phoebeCards.ts) reads them from here. The pack
+  is the home, by the maintainer's ruling.
 - Organisation, programme, or consortium folders.
 - Kind in any URL. That rule is unchanged and lives on the receiver, not here.
 
@@ -71,4 +96,4 @@ stay separate. Derived values are labelled derived. Those rules live in
 
 ## Version
 
-Tree **v0.1.0**. See [CHANGELOG.md](./CHANGELOG.md).
+Tree **v0.2.0**. See [CHANGELOG.md](./CHANGELOG.md).

@@ -112,8 +112,10 @@ const BUNDLES = [
     label: 'cards',
     target: 'api/_cards.generated.ts',
     sources: [
-      { name: 'ELIGIBILITY_MD', file: 'eligibility-cards-vwba.md' },
-      { name: 'FEASIBILITY_MD', file: 'feasibility-cards-vwba.md' },
+      /* The cards moved into Phoebe's pack on 17 Sep 2026; they were at the
+         repository root before that day. */
+      { name: 'ELIGIBILITY_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/eligibility-cards-vwba.md' },
+      { name: 'FEASIBILITY_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/feasibility-cards-vwba.md' },
     ],
     stale: 'The relay would deploy with out-of-date cards.',
   },
