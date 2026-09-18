@@ -320,6 +320,14 @@ credit line does not meet any of these bars.
   is logged the same day too** — a button beside sign-up on every Commons agent
   sending a short contact form, never the conversation; not built, two design
   questions open.
+- **One roster, from 18 Sep 2026 (item A13).** The crew list for both sites is
+  `knowledge-packs/product-shared/roster.yaml`, carried whole from production by
+  the maintainer's hand and **never edited here**. `scripts/check-roster.mjs`
+  runs in front of every build and fails it, naming the line, when
+  `src/lib/crew.ts`, the Commons shelf, the primer's crew facts or Wellington's
+  people sentence disagree with the roster. Checked, never generated. A seat
+  or a face on the roster may be absent from this site; "unconfirmed" always
+  passes. In that file "this repository" on the paid line means production.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material

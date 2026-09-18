@@ -117,7 +117,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | A10 | Wellington's answers run long | Agents | BONES | **logged 3 Sep 2026 as debt** — tightening comes later |
 | A11 | The phase names are canon, and agents point at the step, never a tab | Agents | closed | **ruled and resolved 5 Sep 2026**, amended 7 Sep, same pull request — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | A12 | The two chats not built — Bridget's and Calvin's | Agents | PARK | **adopted 18 Sep 2026** from items A2 and S10; not scheduled |
-| A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | **logged 18 Sep 2026 from the maintainer's brief** — waits on her carry |
+| A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | ~~**logged 18 Sep 2026 from the maintainer's brief** — waits on her carry~~ **built 18 Sep 2026, #91 open** — the free and Commons columns stay "unconfirmed" until she carries a confirmed file |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
 | S2 | The shared chat layer | Surfaces | closed | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | S3 | Level 3 citation pop-out | Surfaces | closed | out of scope — paid platform — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -757,7 +757,42 @@ checked against, is a question for the proposal.
 **"Levels are Meet, Screen, Work."** Her words, recorded as given. What a level is on this site is
 not known here and is not guessed; it is defined when the file arrives.
 
-Logged 18 Sep 2026. **Waits on the maintainer's carry of `roster.yaml`. Bucket BONES.**
+~~Logged 18 Sep 2026. **Waits on the maintainer's carry of `roster.yaml`. Bucket BONES.**~~
+
+**Built 18 Sep 2026, pull request #91, open as this is written.** She carried `roster.yaml` by hand
+the same day, version 0.3.0, ruled 17 Sep; it sits in the shared pack and this site never edits it.
+The levels are the file's own — meet, screen, work, later, none — and the doors are free, commons
+and paid; both are read from the file, never typed into the check.
+
+- **Checked, not generated**, by her go on the proposal: `src/lib/crew.ts` holds only what the
+  roster does not (portrait, colour, whether the accent may carry text, which screen opens) and
+  the primer is her approved prose with its struck history. `scripts/check-roster.mjs` holds the
+  crew file, the Commons shelf, both primer regions and Wellington's people sentence to the roster,
+  and runs in front of `npm run build`, so a disagreement fails the deploy and names the line.
+  `npm run roster:check` runs it alone, under production's name for it.
+- **"unconfirmed" passes either way, always.** A new allowed word for `built` is one row in the
+  check (`BUILT_WORDS`); she said she may add "partly" at the source for a seat whose tool is open
+  and whose chat is not.
+- **What tripped:** Bridget's role in `crew.ts` read "Map" where the roster's seat is "Partners".
+  Her ruling: `crew.ts` changes. Her card reads "Partners" on the desk and on the Commons shelf.
+- **Allowed and printed:** Reggie, Goldie, Edgar, Monty, Melody and Audrey are on the roster and
+  not built here; Ally is a second face of the Partners seat and nowhere on this site. Nothing is
+  built for any of them; later briefs.
+- **Her four rulings of 18 Sep 2026:** the primer's "basin map" wording stays this brief;
+  Wellington's prompt sentence naming the four stays her wording, checked and never rendered;
+  Ally as above; the check in front of the build, with `yaml` as a dev dependency.
+- **The other homes point at the file.** The shared pack README's roster table is struck, dated;
+  it had already drifted on Bridget's label. Shared pack 0.3.0, tree 0.3.0.
+- **What she took to the source:** the table of what is truly built at the free door and on the
+  Commons, ten seats; and the two "this repository" lines in the roster that mean the paid site.
+  Both were in the proposal, which is deleted.
+- **Two finds left for her word, not changed:** `BridgetScreen.tsx` and `PhoebeScreen.tsx` carry
+  a `role` on their screen host records ("Map", "Eligibility and Feasibility") that the check does
+  not read. Bridget's is drawn nowhere while her chat is not live; the day it is, her chat header
+  would read "Map".
+
+**Open until:** she confirms the free and Commons columns at the source and carries the file
+again, and the two host `role` lines are ruled. **Bucket BONES.**
 
 
 # Family: Surfaces
@@ -1794,7 +1829,7 @@ zero holds for every one: nothing here is fetched, written to, or guessed at on 
 | The agent screen as a §7 component, and the carry list of files for production | Brand book §7; production | item S16 (archived) |
 | Production's sign-up address for the Commons door | This site, once she carries it | item S18 |
 | The three changes Deb's rig needs, and later the trigger | Deb | item S18, slice 4; item S19 |
-| `roster.yaml` from production | This site | item A13 |
+| ~~`roster.yaml` from production~~ **Landed 18 Sep 2026**, version 0.3.0; the next carry is the confirmed one | This site | item A13 |
 
 A carry is struck from this table when it lands, with the date. Nothing is built toward any of them
 from here.
