@@ -1407,3 +1407,65 @@ Root docs refreshed for this sitting: BUILD_PLAN, OPEN_ITEMS, PROCESS_RULES
 (#89). CLAUDE.md and README untouched. DRAFT card files left untracked.
 The migration gate ran and found no migrations. No dev server was started.
 `main` equal to `origin` at the close; nothing merged yet.
+
+## 18 September 2026, second sitting — one roster (item A13)
+
+One brief, one pull request: #91, `feat/a13-one-roster`, open at the close.
+Proposal first, to `proposal-A13.md` at the root, untracked; her go with
+four rulings; the file deleted on her word before the branch was cut.
+
+### What was built
+
+Step 1: `roster.yaml`, her carry, committed as carried — the repository's
+`text=auto eol=lf` stores it with LF, the one difference from her file, and
+said so in the For Amy block. `scripts/check-roster.mjs`, with `yaml` as a
+dev dependency and the TypeScript compiler API for the crew file and the
+shelf, so a failure names the exact line. `npm run build` runs it first;
+`npm run roster:check` runs it alone, under production's name for it.
+Step 2: the shared pack README's roster table struck and pointed at the
+file; Reggie's line corrected in place; pack 0.3.0, tree 0.3.0; the root
+README's check list. Step 3: Bridget's role in `crew.ts` to "Partners",
+two captures. Step 4: this close-out.
+
+### How it was proven
+
+The check tripped on exactly one line before step 3 — `crew.ts:57` against
+`roster.yaml:92` — and on nothing else, as the proposal said. Three faults
+provoked on a scratch copy of the roster (an unquoted built word, a retired
+name as a face, a missing `phase`) each named their line; the file was
+restored and compared byte for byte. After step 3: 264 checks, 0 problems;
+`npm run build` green with the check in front; `check-wellington` 108;
+`build-prompt-modules --check` current, both generated prompts unchanged.
+Two captures in the browser at 1440 wide: her card on the desk and on the
+Commons shelf, both reading PARTNERS.
+
+### Decisions
+
+- **Checked, not generated.** The crew file holds what the roster does not;
+  the primer is her prose with its struck history. Her go on the proposal.
+- **A model cannot follow a pointer.** Wellington's "four people" sentence
+  stays her wording and is checked for names and count, never rendered.
+- **Allowed words are read from the file** for levels and doors; the
+  `built` words are one table in the check, because each one carries a
+  rule about what the primer may say. She may add "partly" at the source.
+- **This site never edits the roster.** The Bridget trip was fixed in
+  `crew.ts`, by her ruling; the wording fault in the roster's own comments
+  goes to the source, by her hand.
+
+### What was learned
+
+- The gates in the README are run by hand; Vercel runs only the build
+  command. "On every build" therefore means in front of `npm run build`,
+  and a failed check now blocks a deploy. Said plainly in the proposal.
+- Wellington's crew facts put a name on a bullet's second line. A check
+  that reads bullets must join their run-on lines first; the first draft
+  did not and tripped twice on true facts.
+- A per-door "ok" line for ten seats is 200 lines nobody reads. The shape
+  checks stay counted and go quiet; one summary line per seat instead.
+
+### Housekeeping
+
+Root docs refreshed: BUILD_PLAN, OPEN_ITEMS, CLAUDE.md (one Scope bullet).
+README's check list. The migration gate ran and found no migrations. The
+dev server was started for the two captures and stopped. DRAFT card files
+left untracked. `main` equal to `origin` at the close; nothing merged.

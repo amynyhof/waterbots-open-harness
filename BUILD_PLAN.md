@@ -61,7 +61,29 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — the OPEN_ITEMS triage
+## Just finished — one roster
+
+**18 Sep 2026, second sitting. Pull request #91, open as this is written.** One brief, item A13. A
+build-time check, one word changed on screen, and docs. No new chat, seat or Meet-level page. No
+primer change; both generated prompts byte-identical.
+
+- **`roster.yaml` is the one crew list**, carried by the maintainer's hand from production into
+  `knowledge-packs/product-shared/`, committed as carried, never edited here. Ten seats, three
+  doors, the levels each door allows, and whether each seat is built there.
+- **`check-roster` runs in front of every `npm run build`.** It holds `src/lib/crew.ts`, the
+  Commons shelf, the primer's crew facts and Wellington's people sentence to the roster, and fails
+  the deploy naming the file and line. Checked, not generated, by her go. "unconfirmed" passes.
+  Absent seats and Ally are printed, never silent. A new `built` word is one row.
+- **Bridget's card reads "Partners"**, the roster's seat label, on the desk and on the Commons.
+  It read "Map"; the check found it, she ruled the crew file changes.
+- **The other homes point at the file.** The shared pack README's table is struck. Pack 0.3.0.
+- **Waits on her:** the confirmed free and Commons columns, carried in a new file; the roster's two
+  "this repository" lines at the source; two screen-host `role` lines named under A13.
+- **Next brief, on her word.** Nothing is chosen here. The BONES bucket is the shortlist.
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+## Previously — the OPEN_ITEMS triage
 
 **18 Sep 2026. Two pull requests, stacked: #89 (item O5's rule into the process rules) and the one
 that carries this close-out (the sweep, the buckets, the new rows); open as this is written.** Docs

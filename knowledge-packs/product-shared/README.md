@@ -1,7 +1,15 @@
 # product-shared — journey, roster, pathway (open)
 
-**Version 0.2.0.** Shared facts for the open free pathway. No tools folder — this
+**Version 0.3.0.** Shared facts for the open free pathway. No tools folder — this
 pack is not a seat with tools.
+
+**The roster lives here from 18 Sep 2026**, at [`roster.yaml`](./roster.yaml): the
+one crew list for both sites, ten seats and three doors, carried whole from
+production by the maintainer's hand and **never edited on this site**. It is
+replaced byte for byte when she carries a new version. `scripts/check-roster.mjs`
+reads it in front of every build and fails the build, naming the line, when this
+site's crew file, Commons shelf, primer or Wellington's prompt disagree with it.
+Item A13.
 
 ~~Nothing here is wired.~~ **Corrected 17 Sep 2026:** the agent primer lives here and
 is wired. The live lists stay in code:
@@ -11,7 +19,8 @@ is wired. The live lists stay in code:
 | The agent primer — who covers what, inherited by Phoebe's and Wellington's prompts | [`agent-primer.md`](./agent-primer.md), here, from 17 Sep 2026; read by `scripts/build-prompt-modules.mjs` and `scripts/check-wellington.mjs` |
 | Six phase names | [`src/lib/journey.ts`](../../src/lib/journey.ts) |
 | Desk label “Dispatches” | [`src/lib/surfaces.ts`](../../src/lib/surfaces.ts) |
-| Four agents | [`src/lib/crew.ts`](../../src/lib/crew.ts) |
+| The crew — every seat, every door | [`roster.yaml`](./roster.yaml), here, from 18 Sep 2026; checked by `scripts/check-roster.mjs` on every build |
+| ~~Four agents~~ **The seats built on this site's screens** — portrait, colour, which screen opens | [`src/lib/crew.ts`](../../src/lib/crew.ts), checked against the roster, never a second list of it. **Amended 18 Sep 2026.** |
 
 ## Pathway (open, free)
 
@@ -33,21 +42,30 @@ There is no organisation, programme, or consortium layer on this rail.
 
 ## Roster (open)
 
-Four agents, four posts:
+**The roster is [`roster.yaml`](./roster.yaml), and nothing else repeats it.** It
+carries every seat, what each one does, and how much it may do at each door. The
+seats built on this site today are the ones in `src/lib/crew.ts`, and the check
+holds that file to the roster. **Struck 18 Sep 2026** — one home; the table below
+was a second copy and had already drifted from the roster on Bridget's label:
 
-| Agent | Role | Step |
-|---|---|---|
-| Wellington | Team Lead | Dispatches |
-| Phoebe | Eligibility | Eligibility |
-| Bridget | Map | Partners |
-| Calvin | Calculator | Quantify |
+~~Four agents, four posts:~~
 
-Calvin works on this open site as well as on the Commons. He never works in the
+~~| Agent | Role | Step |~~
+~~|---|---|---|~~
+~~| Wellington | Team Lead | Dispatches |~~
+~~| Phoebe | Eligibility | Eligibility |~~
+~~| Bridget | Map | Partners |~~
+~~| Calvin | Calculator | Quantify |~~
+
+~~Calvin works on this open site as well as on the Commons. He never works in the
 paid console. Wellington and Bridget are the shared crew; Phoebe and Calvin extend
-it.
+it.~~
 
-Reggie is not on this roster. A stub pack exists so the library contract is
-visible; this site has no library seat.
+~~Reggie is not on this roster. A stub pack exists so the library contract is
+visible; this site has no library seat.~~ **Corrected 18 Sep 2026:** Reggie is on
+the roster, at the Library seat, level "meet" at the free door and on the Commons,
+"unconfirmed" until the maintainer confirms it at the source. Nothing is built for
+him here; the stub pack shows the library contract and the check prints his absence.
 
 ## What this pack is not
 

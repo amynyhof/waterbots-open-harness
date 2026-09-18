@@ -229,7 +229,12 @@ figure or an unchosen method leaves the result honest rather than zero; and `che
 proves his relay checks the model's output rather than trusting it, that his region of the primer
 reaches him and only him, that no prompt tells any agent to say anything word for word, that a typed
 context entry is never overwritten by what he heard, that the shell holds his one conversation, and
-that a filled visit record is passed to him so he does not re-ask those fields.
+that a filled visit record is passed to him so he does not re-ask those fields; and `check-roster`
+proves this site agrees with the one crew list, `knowledge-packs/product-shared/roster.yaml`,
+carried from production and never edited here — every seat on the crew rail and the Commons shelf
+is a roster seat wearing the roster's label at a door that allows it, the primer's crew facts and
+Wellington's people sentence name the same seats, and no retired name is used. **It runs in front of
+every `npm run build`**, so a disagreement fails the deploy and names the file and line.
 
 ```bash
 node scripts/check-basins.mjs
@@ -243,6 +248,7 @@ node scripts/check-reply-guard.mjs
 node scripts/check-vwba-d3.mjs
 node scripts/check-gs-sdws.mjs
 node scripts/check-wellington.mjs
+node scripts/check-roster.mjs
 node scripts/build-prompt-modules.mjs --check
 npm run build && node scripts/check-attribution.mjs && node scripts/check-basemap-key.mjs
 ```

@@ -3,6 +3,12 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.3.0 — 18 Sep 2026
+
+- **The roster lives in the shared pack.** `product-shared@0.3.0`: `roster.yaml`,
+  carried from production and never edited here, is the one crew list; a build-time
+  check holds this site to it. Item A13.
+
 ## 0.2.0 — 17 Sep 2026
 
 - **Phoebe's pack is the cards' one home.** `phoebe-eligibility@0.2.0`,
