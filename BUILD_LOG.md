@@ -1230,3 +1230,95 @@ Root docs refreshed for this sitting: BUILD_PLAN, OPEN_ITEMS (row K8), CLAUDE.md
 (one sentence in Scope), README (one paragraph). DRAFT card files left
 untracked. The migration gate ran and found no migrations. `check-wellington`
 passed at 108. Exports regenerated after the checkpoint commit.
+
+## 17 September 2026 — the root tidy, and the export step retired
+
+Second sitting of the day. One brief from the maintainer: tidy the root and
+retire the exports step. Proposal first, a table of every file and folder at
+the root with a call for each; approved as a batch of five steps, in order.
+Three pull requests, stacked by her eyeball stops: #86 (the retirement, with
+the gitignore tidy riding), #87 (the two moves), and a third carrying the
+UI_REFERENCE retirement and this close-out. All open as this is written.
+
+### What was built
+
+Step 1. Close-out step 6 of the process rules struck and dated, its two
+ordering paragraphs with it; the number kept so older references land. Item
+O8 closed with a dated correction; the script question moot. BUILD_PLAN's
+"not next" row no longer counts it. The `exports/` ignore block removed;
+the folder deleted from the working tree. It held 21 `Shell_B_` copies, four
+pull-request body drafts and one Python one-off from the §6 edit; nothing
+tracked read it.
+
+Step 5, riding with step 1 by her word. The dead `Calculator design ref/`
+root rule dropped, comment corrected and dated. `.claude/settings.local.json`
+written into this repository's ignore file; until then only a global ignore
+on the maintainer's machine held it back.
+
+Step 2. `agent-primer.md` moved to `knowledge-packs/product-shared/` with
+`git mv`, history kept. Readers followed: `scripts/build-prompt-modules.mjs`
+(two paths), `scripts/check-wellington.mjs` (one), `AGENT_RULES.md` (the
+naming sentence, struck and dated). Generator re-run. Second commit: the
+primer's six links climb two levels; the shared pack README strikes
+"nothing here is wired", names the primer, changelog at 0.2.0; the tree
+README says where it lives. Third commit: the capture.
+
+Step 3. `OPEN_ITEMS_ARCHIVE.md` moved to `docs/OPEN_ITEMS_ARCHIVE.md` with
+`git mv`. Nineteen links in OPEN_ITEMS, the README's table row and the
+file's own four links follow. The README's duplicate OPEN_ITEMS row removed.
+Both READMEs say the file sits beside `docs/archive/`, not in it.
+
+Step 4. `UI_REFERENCE.md` moved by hand into `legacy/`, which is ignored
+whole, so git sees no file change. CLAUDE.md's "follow the brand book and
+UI_REFERENCE.md" struck and dated; the file's own ignore line removed.
+
+### How it was proven
+
+The two generated strings were saved out of the relay modules before the
+primer moved and compared after: `AGENT_PRIMER_MD` 7,954 chars identical,
+`WELLINGTON_PRIMER_MD` 3,913 chars identical, and identical again after the
+link fix, because all six links sit outside both generated regions. The
+generated modules differ by their `Sources:` header line only.
+`check-wellington` 108, `check-vwba-d3` 69, `check-cards`,
+`check-api-exports`, the generator's `--check`, and `npm run build` all
+passed. 180 relative links across the touched documents resolved, none
+missing. One real call to Wellington on the dev server for the capture: he
+named Phoebe and the Eligibility step from the moved primer and filled two
+record fields. One of his thirty for this browser.
+
+### Decisions
+
+- **The export step is retired**, the maintainer's ruling: the library syncs
+  from GitHub. The close-out now ends at the checkpoint commit and the
+  `main` equals `origin` check.
+- **The shared pack is the primer's one home**, on Phoebe's cards pattern.
+- **The items archive is live history, not a retired document**, so it
+  lives under `docs/` beside the archive folder and not in it.
+- **The brand book governs design alone.** UI_REFERENCE.md had never been
+  used by any session's build.
+- **Kept, each with a live reader:** `captures/` (fourteen merged pull
+  requests embed from it by raw address at a commit, and the process rule
+  names it), `Design refs/`, `legacy/` (`build-stress` reads the Aqueduct
+  download from it), `data-src/` (three scripts).
+- **Not in this batch:** the OPEN_ITEMS sweep. Her word: log it as the next
+  brief, and she wants the list triaged, not just swept. Item O11.
+- **Pull requests stacked by eyeball stop**: each of the second and third has
+  the previous branch as its base, so its Files changed shows only its own
+  work; GitHub retargets to `main` as each one merges.
+
+### What was learned
+
+- `git add -A -- <old path>` fails once `git mv` has staged the rename,
+  because the old path no longer matches anything. Stage the new path.
+- A rulebook change wants its own revert handle, so a five-step batch that
+  touches two rulebooks is three pull requests at the fewest, not one.
+- Stacking a branch on the previous one keeps each review's diff to its
+  own work when two steps edit the same file (OPEN_ITEMS.md twice today).
+
+### Housekeeping
+
+Root docs refreshed for this sitting: BUILD_PLAN, OPEN_ITEMS (O8, O11, K8's
+next-brief line), CLAUDE.md (step 4), README (the table), PROCESS_RULES
+(step 1). DRAFT card files left untracked. The migration gate ran and found
+no migrations. Dev server stopped at the close. No export step: there is
+no longer one. `main` equal to `origin` at the close; nothing merged yet.

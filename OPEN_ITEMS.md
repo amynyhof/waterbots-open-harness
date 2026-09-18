@@ -136,7 +136,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | O8 | The export step in the close-out ritual | Operations | ~~ruled 27 Aug 2026, open on the script question~~ **closed 17 Sep 2026** — the step and the folder are retired |
 | O9 | The basemap now needs a key, and has a ceiling | Operations | live 27 Aug 2026, standing dependency |
 | O10 | Line endings are pinned in git but not in the working folder | Operations | closed 30 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| O11 | OPEN_ITEMS.md is heavy and wants an archive | Operations | **two sweeps done** — 30 Aug and 2 Sep 2026 |
+| O11 | OPEN_ITEMS.md is heavy and wants an archive | Operations | **two sweeps done** — 30 Aug and 2 Sep 2026; **the triage is the next brief, 17 Sep 2026** |
 | O12 | The map page is heavy — the renderer stalls on a basin redraw | Operations | **logged 7 Sep 2026**, not this slice |
 | O13 | Phoebe's relay still says `validate()` — a banned word in old code | Operations | **logged 7 Sep 2026** — rename to "check" in a later hygiene pass, not now |
 
@@ -354,7 +354,9 @@ names the old paths and the new.
 
 **What waits.** The two untracked DRAFT card files — Appendix C activities and the glossary — stay
 at the root until the maintainer moves them by hand; their home is the cards folder once
-approved. Roster work is the next brief, not started.
+approved. ~~Roster work is the next brief, not started.~~ **Corrected 17 Sep 2026, second sitting:**
+the root tidy came first; the OPEN_ITEMS triage (item O11) is the next brief; roster work waits
+on her word.
 
 Built 17 Sep 2026. **Canon.**
 
@@ -2829,8 +2831,26 @@ the same day — K6, K7 and S11 — so the file did not get shorter, and it stay
 next candidates are the settled halves the first sweep declined to split, which still need the
 maintainer's word.
 
+### The triage — logged as the next brief, 17 Sep 2026
+
+**Flagged again at the open of the root-tidy sitting of 17 Sep 2026:** this file stood at
+2,855 lines and 176 KB, read at the start of every session. The maintainer's word at the close of
+that sitting: *"Not in this batch: the OPEN_ITEMS sweep. Log it as the next brief. I want that list
+triaged, not just swept."*
+
+**What that asks for, as read here and hers to correct on the proposal.** A sweep moves closed rows
+to the archive and touches nothing open. A triage reads every open row and gives it a state: still
+open and why; closed and swept; folded into another item; or split, where an item carries a
+settled half and a live half — the settled halves of A2, A3 and A4 that the first sweep declined to
+split without her word. Families stay as they are unless the triage shows they are wrong, which is
+her decision under the families rule. The archive now lives at
+[docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md).
+
+**Proposal first; nothing is moved until she says go.**
+
 Logged 30 Aug 2026, **first sweep done 30 Aug 2026, second sweep done 2 Sep 2026.** Open as a
-standing habit — the next sweep runs when this file gets heavy again.
+standing habit — ~~the next sweep runs when this file gets heavy again~~ **the triage is the next
+brief, 17 Sep 2026**.
 
 ## O12. The map page is heavy — the renderer stalls on a basin redraw
 
