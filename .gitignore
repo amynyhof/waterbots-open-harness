@@ -55,9 +55,9 @@ brand/assets/bots/*
 # organisations, roles or saving.
 #
 # ~~The calculator reference sits at the repository root.~~ Moved inside
-# Design refs/ by the maintainer's hand on 2 Sep 2026. The root rule is kept
-# in case it is ever dropped there again; it matches nothing today.
-Calculator design ref/
+# Design refs/ by the maintainer's hand on 2 Sep 2026. The root rule that
+# matched the old place was dropped on 17 Sep 2026, by her ruling; it had
+# matched nothing since the move.
 Design refs/
 
 # Dependencies
@@ -80,3 +80,8 @@ dist/
 # Raw source data — downloaded, converted, never committed.
 # Only the simplified web-ready outputs in public/ are tracked.
 data-src/
+
+# Claude Code's per-machine settings. Machine-made, never shared. Until
+# 17 Sep 2026 only a global ignore on the maintainer's machine held it back;
+# written here so another machine does not publish it.
+.claude/settings.local.json
