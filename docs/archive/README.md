@@ -11,6 +11,8 @@ This folder holds retired root documents. **Nothing here is deleted — it is mo
 
 ## What is not archive
 
+[`docs/OPEN_ITEMS_ARCHIVE.md`](../OPEN_ITEMS_ARCHIVE.md), one level up, is the closed-items file for [OPEN_ITEMS.md](../../OPEN_ITEMS.md). It is live history that keeps growing, not a retired document, so it sits beside this folder and not in it. Moved there from the root on 17 Sep 2026.
+
 [`knowledge-packs/`](../../knowledge-packs/README.md) at the repository root is live product knowledge. It is not this folder and it does not belong here.
 
 ## Contents

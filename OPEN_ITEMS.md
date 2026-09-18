@@ -8,8 +8,8 @@ Every open thread in this repository, in one place. Moved out of
 handoff is in [docs/archive/](./docs/archive/README.md). Do not recreate a live root
 `SESSION_HANDOFF.md`.
 
-**Closed items live in [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md)**, in full, from
-30 Aug 2026. This file is read at the start of every session and stays a briefing; the archive is
+**Closed items live in [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md)**, in full, from
+30 Aug 2026, ~~at the repository root~~ **under `docs/` from 17 Sep 2026, every link followed**. This file is read at the start of every session and stays a briefing; the archive is
 not one of the ~~six~~ four opening documents and is read only when someone goes looking. **Every archived
 item keeps its row in the index table below**, so nothing is lost by being finished. The reasoning
 is item O11.
@@ -105,12 +105,12 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S2 | The shared chat layer | Surfaces | built through Level 2 |
 | S3 | Level 3 citation pop-out | Surfaces | out of scope — paid platform |
 
-| S4 | Chat docks were thrown away on a surface switch | Surfaces | fixed 23 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
+| S4 | Chat docks were thrown away on a surface switch | Surfaces | fixed 23 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 
 | S5 | The citation line wraps awkwardly in the narrow dock | Surfaces | cosmetic, polish later |
 | S6 | The dev relay resolves imports differently from production | Surfaces | open |
-| S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026; the contract ruled 7 Sep 2026; **built 8 Sep 2026, #56** — [archived](./OPEN_ITEMS_ARCHIVE.md) |
-| S8 | Brightness pull-up to the book's published Frost values | Surfaces | closed 29 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
+| S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026; the contract ruled 7 Sep 2026; **built 8 Sep 2026, #56** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S8 | Brightness pull-up to the book's published Frost values | Surfaces | closed 29 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | S9 | The return to the brand book | Surfaces | **closed 30 Aug 2026** — both raises shipped, book at v4.1 |
 | S10 | The Quantification step | Surfaces | **built 1 Sep 2026** — the third surface, pack-keyed; three packs from 2 Sep |
 | S11 | The free desk, and the console in the production shape | Surfaces | **built 2 Sep 2026** — Wellington's desk, the journey bar, ~~four tabs~~ one row from 7 Sep; **his chat live on it from 3 Sep; the desk plan's three slices landed 5–7 Sep** |
@@ -118,7 +118,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | S13 | The handoff receiver — a question carried in from the production landing | Surfaces | ~~logged 3 Sep 2026, not built~~ **built 9 Sep 2026** — the desk receives it; **optional does/name/place from 15 Sep 2026, #74**; **Wellington visit-aware from 16 Sep 2026, #76**; the sender's contract is recorded here for production to carry |
 | S14 | Typing dots — the book's third motion exception | Surfaces | **ruled 3 Sep 2026** — waits on the maintainer's hand into §5 |
 | S15 | One row — the journey bar is the navigation; a candidate for production | Surfaces | **built 7 Sep 2026** — the tab row removed; offered to production by the maintainer's hand, later |
-| S16 | The agent screen — every step is a screen, the agent's chat in the middle and its tool as a tab; a candidate for production | Surfaces | **built 9 Sep 2026, #61 to #64** — [archived](./OPEN_ITEMS_ARCHIVE.md); the B→A raise into the book and the carry list wait on the maintainer's hand |
+| S16 | The agent screen — every step is a screen, the agent's chat in the middle and its tool as a tab; a candidate for production | Surfaces | **built 9 Sep 2026, #61 to #64** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md); the B→A raise into the book and the carry list wait on the maintainer's hand |
 | S17 | The agent watches its Tool tab and comments; a pulsing teal dot on Chat | Surfaces | **logged 9 Sep 2026, parked for a design session, both sides** — no proposal yet |
 | S18 | Agent Commons — a public gallery of graded knowledge packs, each wearing an agent face | Surfaces | **v0 done — slices 1 to 3 built and merged by 11 Sep 2026 (#68 to #70)**; slice 4 waits on Deb's per-case file; slice 5, the flag button, later |
 | S19 | The Workshop — make your own agent on the Commons | Surfaces | **logged 11 Sep 2026, not built** — slice 3 has landed; the proposal is next, on the maintainer's word |
@@ -126,16 +126,16 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | D1 | Corporate water stewardship goals and target geographies | Data | open |
 | D2 | Project points | Data | blocked on data |
 | O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
-| O2 | Restore branch protection on `main` | Operations | closed 24 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
-| O3 | Reverse link from waterbots.ai | Operations | closed 24 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
+| O2 | Restore branch protection on `main` | Operations | closed 24 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| O3 | Reverse link from waterbots.ai | Operations | closed 24 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | O4 | Cosmetic and housekeeping items | Operations | left alone deliberately |
 
 | O5 | The engineer pushed without a commit word, twice | Operations | logged 24 Aug 2026 |
-| O6 | The card gate reports stale cards that are not stale | Operations | closed 27 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
-| O7 | Merged branches pile up, and are now to be cleared | Operations | closed 27 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
+| O6 | The card gate reports stale cards that are not stale | Operations | closed 27 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| O7 | Merged branches pile up, and are now to be cleared | Operations | closed 27 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | O8 | The export step in the close-out ritual | Operations | ~~ruled 27 Aug 2026, open on the script question~~ **closed 17 Sep 2026** — the step and the folder are retired |
 | O9 | The basemap now needs a key, and has a ceiling | Operations | live 27 Aug 2026, standing dependency |
-| O10 | Line endings are pinned in git but not in the working folder | Operations | closed 30 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
+| O10 | Line endings are pinned in git but not in the working folder | Operations | closed 30 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | O11 | OPEN_ITEMS.md is heavy and wants an archive | Operations | **two sweeps done** — 30 Aug and 2 Sep 2026 |
 | O12 | The map page is heavy — the renderer stalls on a basin redraw | Operations | **logged 7 Sep 2026**, not this slice |
 | O13 | Phoebe's relay still says `validate()` — a banned word in old code | Operations | **logged 7 Sep 2026** — rename to "check" in a later hygiene pass, not now |
@@ -1267,7 +1267,7 @@ Nothing to do. Recorded so the decision is not re-litigated from the rules alone
 
 ## S4. Chat docks were thrown away on a surface switch — closed, swept to the archive
 
-**Fixed 23 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
+**Fixed 23 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
 with its dates and its reasoning intact. Nothing was summarised away in the move.
 
 ---
@@ -1377,7 +1377,7 @@ that drift is a worse problem than one copy resolved two ways.
 
 ## S7. The bridge — handing a finished screening to the paid platform — closed, swept to the archive
 
-**Built 8 Sep 2026, pull request #56. Moved to [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) the
+**Built 8 Sep 2026, pull request #56. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) the
 same day**, in full, with the contract, the three facts, the rulings and the live-site check intact.
 Nothing was summarised away in the move.
 
@@ -1385,7 +1385,7 @@ Nothing was summarised away in the move.
 
 ## S8. Brightness pull-up to the book's published Frost values — closed, swept to the archive
 
-**Closed 29 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
+**Closed 29 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
 with its dates and its reasoning intact. Nothing was summarised away in the move.
 
 ---
@@ -2554,14 +2554,14 @@ Opened 21 Aug 2026.
 
 ## O2. Restore branch protection on `main` — closed, swept to the archive
 
-**Closed 24 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
+**Closed 24 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
 with its dates and its reasoning intact. Nothing was summarised away in the move.
 
 ---
 
 ## O3. Reverse link from waterbots.ai — closed, swept to the archive
 
-**Closed 24 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
+**Closed 24 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
 with its dates and its reasoning intact. Nothing was summarised away in the move.
 
 ---
@@ -2615,14 +2615,14 @@ Logged 24 Aug 2026. **Standing** — kept as a reminder rather than closed.
 
 ## O6. The card gate reports stale cards that are not stale — closed, swept to the archive
 
-**Closed 27 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
+**Closed 27 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
 with its dates and its reasoning intact. Nothing was summarised away in the move.
 
 ---
 
 ## O7. Merged branches pile up, and are now to be cleared — closed, swept to the archive
 
-**Closed 27 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
+**Closed 27 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
 with its dates and its reasoning intact. Nothing was summarised away in the move.
 
 ---
@@ -2768,7 +2768,7 @@ Logged 27 Aug 2026. **Open as a standing dependency, with nothing due until ther
 
 ## O10. Line endings are pinned in git but not in the working folder — closed, swept to the archive
 
-**Closed 30 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) on 2 Sep 2026**, in full,
+**Closed 30 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 2 Sep 2026**, in full,
 with its dates and its measurements intact. Nothing was summarised away in the move.
 
 ---
@@ -2797,7 +2797,7 @@ is summarised away in the move.
 
 ### The first sweep — done 30 Aug 2026
 
-**Six items moved in full to [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md):** S4, S8, O2, O3, O6
+**Six items moved in full to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md):** S4, S8, O2, O3, O6
 and O7. Each keeps its dates, its measurements, its wrong turns and its corrections; **nothing was
 summarised away**, which was this item's own test for what "done" looks like.
 

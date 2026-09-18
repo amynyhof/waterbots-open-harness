@@ -1,12 +1,14 @@
 # product-shared — journey, roster, pathway (open)
 
-**Version 0.1.0.** Shared facts for the open free pathway. No tools folder — this
+**Version 0.2.0.** Shared facts for the open free pathway. No tools folder — this
 pack is not a seat with tools.
 
-Nothing here is wired. The live lists stay in code:
+~~Nothing here is wired.~~ **Corrected 17 Sep 2026:** the agent primer lives here and
+is wired. The live lists stay in code:
 
 | What | Live home |
 |---|---|
+| The agent primer — who covers what, inherited by Phoebe's and Wellington's prompts | [`agent-primer.md`](./agent-primer.md), here, from 17 Sep 2026; read by `scripts/build-prompt-modules.mjs` and `scripts/check-wellington.mjs` |
 | Six phase names | [`src/lib/journey.ts`](../../src/lib/journey.ts) |
 | Desk label “Dispatches” | [`src/lib/surfaces.ts`](../../src/lib/surfaces.ts) |
 | Four agents | [`src/lib/crew.ts`](../../src/lib/crew.ts) |

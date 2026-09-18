@@ -122,13 +122,15 @@ const BUNDLES = [
   {
     label: 'primer',
     target: 'api/_primer.generated.ts',
-    sources: [{ name: 'AGENT_PRIMER_MD', file: 'agent-primer.md', region: 'AGENT-FACING' }],
+    /* The primer moved into the shared pack on 17 Sep 2026; it was at the
+       repository root before that day. */
+    sources: [{ name: 'AGENT_PRIMER_MD', file: 'knowledge-packs/product-shared/agent-primer.md', region: 'AGENT-FACING' }],
     stale: 'The relay would deploy with an out-of-date primer, so an agent could describe a colleague in words the maintainer never approved.',
   },
   {
     label: 'wellington',
     target: 'api/_wellingtonPrimer.generated.ts',
-    sources: [{ name: 'WELLINGTON_PRIMER_MD', file: 'agent-primer.md', region: 'WELLINGTON-FACING' }],
+    sources: [{ name: 'WELLINGTON_PRIMER_MD', file: 'knowledge-packs/product-shared/agent-primer.md', region: 'WELLINGTON-FACING' }],
     stale: 'Wellington would deploy with an out-of-date region, so he could welcome and route in words the maintainer never signed.',
   },
 ];
