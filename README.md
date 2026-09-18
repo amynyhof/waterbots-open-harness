@@ -449,9 +449,8 @@ should be checkable on how it works as well as on what it says.
 | [AGENT_RULES.md](./AGENT_RULES.md) | How an agent speaks, and when it must abstain |
 | [CITATIONS.md](./CITATIONS.md) | What a citation is and how it renders |
 | [OPEN_ITEMS.md](./OPEN_ITEMS.md) | Every open thread, grouped into five families |
-| [OPEN_ITEMS_ARCHIVE.md](./OPEN_ITEMS_ARCHIVE.md) | Closed items, kept in full rather than deleted |
+| [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) | Closed items, kept in full rather than deleted. Under `docs/` from 17 Sep 2026 |
 | [BUILD_PLAN.md](./BUILD_PLAN.md) | What is being built next, and why |
-| [OPEN_ITEMS.md](./OPEN_ITEMS.md) | Every open thread, in five families |
 | [BUILD_LOG.md](./BUILD_LOG.md) | How it came to stand there — append-only, one entry per session |
 | [docs/archive/](./docs/archive/README.md) | Retired documents, moved not deleted. Not current state. |
 | [docs/archive/DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md) | Superseded by the brand book; kept as history |

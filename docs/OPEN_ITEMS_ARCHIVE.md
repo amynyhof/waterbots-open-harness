@@ -1,13 +1,13 @@
 # Open items — archive
 
-**Closed items, moved out of [OPEN_ITEMS.md](./OPEN_ITEMS.md) so that the document read at the start
+**Closed items, moved out of [OPEN_ITEMS.md](../OPEN_ITEMS.md) so that the document read at the start
 of every session stays a briefing rather than an archive.** Maintainer's ruling, 29 Aug 2026, *the
 opening reads stay thin, forever*: a closed item is finished, and it earns a pointer and a home
 elsewhere rather than a place in an opening read. The sweep itself was item O11.
 
 **This file is not one of the ~~six~~ four opening documents and is never read at the opening.** It is read
 when someone goes looking for how a thing came to be — the same posture as
-[BUILD_LOG.md](./BUILD_LOG.md), and for the same reason.
+[BUILD_LOG.md](../BUILD_LOG.md), and for the same reason.
 
 **Nothing here was summarised, trimmed or reworded in the move.** Each item is exactly the text that
 stood in OPEN_ITEMS.md, with its dates, its measurements, its wrong turns and its corrections
@@ -15,7 +15,11 @@ intact. A closed item's value is entirely in its detail; an archive that abbrevi
 that loses the thing it was made to keep.
 
 **Every item still has a one-line row in the index table in
-[OPEN_ITEMS.md](./OPEN_ITEMS.md)**, pointing here, so no item can be lost by being finished.
+[OPEN_ITEMS.md](../OPEN_ITEMS.md)**, pointing here, so no item can be lost by being finished.
+
+**This file lives at `docs/OPEN_ITEMS_ARCHIVE.md` from 17 Sep 2026**, moved from the repository
+root by the maintainer's ruling in the root tidy of that day, history kept. It is not part of
+`docs/archive/`, which holds retired documents; this file is live history that keeps growing.
 
 **Items are added to this file only when they are closed**, and they keep their original
 identifiers — S4 stays S4. Identifiers are never reused.
@@ -70,7 +74,7 @@ found while chasing that, and it is the real one.
 ## S8. Brightness pull-up to BRAND.md's published Frost values
 
 **From the design canon, received 27 Aug 2026** and held at
-[DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md), which is the home for the ruling
+[DESIGN_CANON_for_ShellB.md](./archive/DESIGN_CANON_for_ShellB.md), which is the home for the ruling
 itself. This item is the work it asks for.
 
 **The canon's note, in its own words:** the site "currently reads more muted than BRAND.md's
