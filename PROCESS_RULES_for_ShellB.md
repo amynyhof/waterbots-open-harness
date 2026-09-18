@@ -388,19 +388,26 @@ includes every step, every time. **A ritual with a skipped step is an unfinished
    touched), and appends BUILD_LOG only. Do not recreate a live root handoff.
 4. **Check for code reading an unpushed migration**, the same check Part 1 runs.
 5. Commit the checkpoint.
-6. **Then** regenerate the export copies, where the repository keeps them.
+6. ~~**Then** regenerate the export copies, where the repository keeps them.
    In this repository that is the `exports/` folder — the maintainer's
    copies of the root documents, which she carries elsewhere by hand.
    It is gitignored, so nothing here refreshes it and no check notices
-   when it is stale. That is why it is a named step.
+   when it is stale. That is why it is a named step.~~
+   **Retired 17 Sep 2026, maintainer's ruling.** The project library now syncs
+   from GitHub, so hand-carried copies are no longer needed. The `exports/`
+   folder is deleted and its ignore rule is gone. There is no export step. The
+   number is kept so older references to "step 6" still point at something.
 7. Confirm `main` is equal to `origin`.
 
-**The copies are made after the final commit, not before it**, so they carry the close-out
+~~**The copies are made after the final commit, not before it**, so they carry the close-out
 itself rather than the state just before it. Maintainer's ruling, 27 Aug 2026 — see item O8 in
 [OPEN_ITEMS.md](./OPEN_ITEMS.md) for why the order matters. Regenerating first was how the
-copies fell a session behind on 26 Aug.
+copies fell a session behind on 26 Aug.~~
 
-The library is never more than one session stale.
+~~The library is never more than one session stale.~~
+
+**Struck 17 Sep 2026:** there are no copies to order. Item O8 in
+[OPEN_ITEMS.md](./OPEN_ITEMS.md) keeps the story of the step while it lived.
 
 ## Standing rules that govern everything above
 
