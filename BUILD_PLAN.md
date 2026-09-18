@@ -61,9 +61,22 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — Vector leftover scrape / Calvin parity
+## Just finished — brand book §6: Calculator / Quantify is Calvin
 
-**17 Sep 2026. This sitting, one pull request, not merged.** Docs only. No pack content. No
+**17 Sep 2026. This sitting, one pull request, not merged.** Brand book (gitignored) plus
+the tracked note in CLAUDE.md. No pack content. No runtime wire. No live-site UI.
+
+- **§6 live text:** Calculator / Quantify seat is **Calvin**, not Vector. Struck and dated.
+  The book stays at version 4.2.
+- **`--bot-vector` is not deleted.** `vector.svg` is not renamed. `calvin.svg` is already live.
+- The brand book does not publish. This pull request records the ruling in CLAUDE.md;
+  Amy carries the book by hand.
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+## Previously — Vector leftover scrape / Calvin parity
+
+**17 Sep 2026. Pull request #82, ~~not merged.~~ merged on main.** Docs only. No pack content. No
 runtime wire. No live-site UI. No primer rewrite.
 
 - **Live product copy already staffs Quantify as Calvin.** Primer, crew, `--bot-calvin`,

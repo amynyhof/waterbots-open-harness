@@ -1129,3 +1129,31 @@ left for Amy’s hand; the book is gitignored and is not edited without her word
 Root docs refreshed for this sitting. DRAFT card files left untracked. The
 migration gate ran and found no migrations. `check-wellington` passed at 108 —
 docs-only, the count is unchanged from before this sitting.
+
+## 17 September 2026 — brand book §6: Calculator / Quantify is Calvin
+
+**Pull request opened, not merged.** Brand book (gitignored) plus the tracked
+note in CLAUDE.md. No pack content. No runtime wire. No live-site UI. Two VWBA
+card drafts stay uncommitted.
+
+The sitting above said pull request #82 was opened, not merged. **It merged on
+main** (`0511053`). That line is left in place; this entry is the correction.
+
+### What was built
+
+`brand/BRAND.md` §6: Calculator / Quantify seat is **Calvin**, not Vector.
+Struck and dated. Look table keeps Vector's portrait row and says that seat is
+Calvin. `--bot-vector` not deleted. `vector.svg` not renamed. Book stays at
+version 4.2. The book is gitignored and does not publish; CLAUDE.md records the
+ruling so the pull request can be reviewed.
+
+### Decisions
+
+- Sitting 2 (OPEN_ITEMS slim / pathway vocabulary) not started.
+- §2.6 “Mint as an identity means Vector” left alone; this sitting is §6 only.
+
+### Housekeeping
+
+Root docs refreshed for this sitting. DRAFT card files left untracked. The
+migration gate ran and found no migrations. `check-wellington` passed at 108 —
+docs-only, the count is unchanged from before this sitting.
