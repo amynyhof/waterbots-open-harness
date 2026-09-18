@@ -61,7 +61,30 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — the root tidy, and the export step retired
+## Just finished — the OPEN_ITEMS triage
+
+**18 Sep 2026. Two pull requests, stacked: #89 (item O5's rule into the process rules) and the one
+that carries this close-out (the sweep, the buckets, the new rows); open as this is written.** Docs
+only. No pack content. No runtime wire. No live-site UI.
+
+- **Every open row has a bucket** — BONES, WALKTHROUGH, PARTNER, PARK or CLOSE, the maintainer's
+  five, defined once under *Families* in OPEN_ITEMS and shown in a new column of its index table.
+  Counts after the triage: BONES 10, WALKTHROUGH 2, PARTNER 3, PARK 17, closed 27 of 59 rows.
+- **Eighteen items closed and swept** to `docs/OPEN_ITEMS_ARCHIVE.md` in full, each with a dated
+  line saying why; verbatim checked. A7 closed on her accepted benign reading; O5 closed after its
+  rule moved into PROCESS_RULES under "How work moves". OPEN_ITEMS.md from 2,881 to 1,804 lines.
+- **Eight orphans adopted**: two new rows, A12 (the two chats not built) and O14 (carries by her
+  hand, listed once); three folds into O13, S5 and O9; three named where they already sat.
+- **Three new BONES rows in her words:** A13 (one roster, `roster.yaml` from production, checked at
+  build; waits on her carry), K9 (Calvin's and Bridget's packs to the new shape, one brief each),
+  K10 (Phoebe ready for Deb's rig: cards reviewed, engineer notes split out, exam questions signed).
+- **Housekeeping the same day:** 29 merged local branches deleted; the one unpushed branch, all of
+  it in main, deleted on her word; the triage proposal file deleted from the root after the merge.
+- **Next brief, on her word.** Nothing is chosen here. The BONES bucket is the shortlist.
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+## Previously — the root tidy, and the export step retired
 
 **17 Sep 2026, second sitting. Three pull requests, stacked in order: #86, #87, and the one that
 carries this close-out; open as this is written.** Docs and two moves. No pack content changed. No
@@ -84,8 +107,8 @@ live-site UI change. One real call to Wellington for the capture.
   ignored by this repository's own rule.
 - **Not touched:** the two untracked DRAFT card files; `captures/`, `Design refs/`, `legacy/`,
   `data-src/`, all kept, each with a live reader.
-- **Next brief, by the maintainer's word:** the OPEN_ITEMS triage, item O11. Not a sweep alone;
-  she wants the list triaged. Proposal first.
+- ~~**Next brief, by the maintainer's word:** the OPEN_ITEMS triage, item O11. Not a sweep alone;
+  she wants the list triaged. Proposal first.~~ **Done 18 Sep 2026; see Just finished.**
 
 The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
 
@@ -463,8 +486,9 @@ is nothing left for images to teach.** No folder waits for them.
 
 ## Building next — the hero chat, when its reference arrives
 
-**The OPEN_ITEMS triage is next, by the maintainer's word of 17 Sep 2026** at the close of the
-root tidy: *"Not in this batch: the OPEN_ITEMS sweep. Log it as the next brief. I want that list
+~~**The OPEN_ITEMS triage is next, by the maintainer's word of 17 Sep 2026**~~ **Done 18 Sep 2026;
+the next brief is hers to name, and the BONES bucket in OPEN_ITEMS is the shortlist.** Her word of
+17 Sep at the close of the root tidy: *"Not in this batch: the OPEN_ITEMS sweep. Log it as the next brief. I want that list
 triaged, not just swept."* The file was 2,855 lines and 176 KB when that sitting opened, flagged
 in its Part 1 report under the thin-reads rule. What triage means beyond a sweep is hers to rule on
 the proposal; item O11 carries the log. Nothing is built toward it until she says go.

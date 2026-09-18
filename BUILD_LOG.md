@@ -1322,3 +1322,88 @@ next-brief line), CLAUDE.md (step 4), README (the table), PROCESS_RULES
 (step 1). DRAFT card files left untracked. The migration gate ran and found
 no migrations. Dev server stopped at the close. No export step: there is
 no longer one. `main` equal to `origin` at the close; nothing merged yet.
+
+## 18 September 2026 — the OPEN_ITEMS triage
+
+One brief: triage OPEN_ITEMS, proposal only, then her go with rulings.
+Housekeeping first on her word: 29 local branches whose remotes were gone
+and whose commits were all in main, deleted; `wellington-free-site-brain`,
+never pushed, had zero commits outside main and was deleted on her word.
+Two pull requests, stacked: #89 (O5's rule into the process rules, its own
+because it is a rulebook change) and the sweep with this close-out.
+
+### What was built
+
+The proposal: `triage-2026-09-18.md` at the root, untracked, one line per
+open row — id, six-word title, bucket, reason — plus the orphans, the pairs
+and the counts. 45 open rows sorted: BONES 7, WALKTHROUGH 2, PARTNER 3,
+PARK 15, CLOSE 18. Eight orphan threads named with a proposed home. Six
+pairs named. The terminal showed only the counts and the top five BONES.
+
+Her go, with rulings: A7 closed on the benign reading; O5's rule carried
+into PROCESS_RULES first, dated, then swept; orphans and pairs as proposed,
+including the two new rows; three new BONES rows in her words.
+
+Step 1 (#89). PROCESS_RULES gains "Approval is never a commit word for
+main" under "How work moves": O5's words quoted, dated 24 Aug, marked
+carried 18 Sep, with one paragraph reading it together with the batch
+ruling of 28 Aug — commits on a branch and pull requests are part of an
+approved batch; nothing reaches main without her word. Flagged in the For
+Amy block for her check.
+
+Step 2, first commit: the sweep. A script moved the eighteen sections from
+OPEN_ITEMS.md to docs/OPEN_ITEMS_ARCHIVE.md bottom-up, appended one dated
+close line to each saying why and where anything it still named now lives,
+rewrote the sections' relative links for the new folder, left a stub and
+marked each index row swept. The archive gained Knowledge and Agents
+sections and a fifth-sweep line. Second commit: the Bucket column in the
+index table, its four stray blank lines removed (they had split the table
+into five in rendered markdown), the buckets defined once under Families,
+five new rows — A12, A13, K9, K10, O14 — three folds (O13, S5, O9), pair
+notes (K2, O1, S11), and O11's record of the triage. Third commit: this
+close-out.
+
+### How it was proven
+
+A second script took each moved item's original text from `main`, applied
+only the link rewrite, and asserted it appears verbatim in the archive:
+18 of 18. Relative links across both files checked after each commit,
+none missing. The index table parsed row by row; a row that failed to
+parse or lacked a bucket would have stopped the script before writing.
+OPEN_ITEMS.md: 2,881 lines before, 1,627 after the sweep, 1,804 after the
+new rows. The archive: 2,196 lines.
+
+### Decisions
+
+- **Buckets are a second axis, not a replacement for families.** A family
+  says what kind of thing an item is; a bucket says what it is for now.
+  Families did not change.
+- **CLOSE means swept, not deleted.** Every closed item keeps its index
+  row, shown as *closed*, and its full text in the archive.
+- **Items open only "as the home for a story" close.** The archive keeps
+  stories in full; an opening read is a briefing.
+- **A rule found living inside an item goes into the rulebook before the
+  item closes** (O5), by her word.
+- **"Levels are Meet, Screen, Work"** is recorded as her words and not
+  defined here; it is defined when `roster.yaml` arrives.
+- **The proposal file is deleted after the merge**, by her word; the root
+  stays clean.
+
+### What was learned
+
+- Chained string replacements bite: rewriting `](./docs/archive/` to
+  `](./archive/` and then `](./` to `](../` turned the first result into
+  `../archive/`. Order the broad rewrite first, then undo its one
+  exception. The link check caught it before anything was committed.
+- A markdown table with a blank line inside it is several tables. The
+  index had carried four such lines since at least 30 Aug.
+- A triage of 45 rows fits in one sitting when the sort is written before
+  anything moves and the move is a script that refuses to run on a row it
+  cannot parse.
+
+### Housekeeping
+
+Root docs refreshed for this sitting: BUILD_PLAN, OPEN_ITEMS, PROCESS_RULES
+(#89). CLAUDE.md and README untouched. DRAFT card files left untracked.
+The migration gate ran and found no migrations. No dev server was started.
+`main` equal to `origin` at the close; nothing merged yet.
