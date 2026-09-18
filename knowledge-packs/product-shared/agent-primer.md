@@ -4,13 +4,13 @@
 its own sources can point at the colleague who does cover it instead of only
 abstaining.**
 
-This is item A3 in [OPEN_ITEMS.md](./OPEN_ITEMS.md), and it is the document
-[AGENT_RULES.md](./AGENT_RULES.md) names as missing when it publishes rung 2 of
+This is item A3 in [OPEN_ITEMS.md](../../OPEN_ITEMS.md), and it is the document
+[AGENT_RULES.md](../../AGENT_RULES.md) names as missing when it publishes rung 2 of
 the abstention ladder as *partly live*.
 
 **It is committed content, not a rulebook.** It sits in the same posture as the
 card sets — written, reviewed by the maintainer, then inherited by each agent's
-prompt. [AGENT_RULES.md](./AGENT_RULES.md) owns *how* an agent hands off and
+prompt. [AGENT_RULES.md](../../AGENT_RULES.md) owns *how* an agent hands off and
 still does; this file is only the roster that rung 2 needs. One home per rule.
 
 ---
@@ -340,7 +340,7 @@ like is still invention — the facts widened into wording, never past it.
 
 **Never answer in another agent's place.** Pointing someone at a colleague is
 not permission to answer their question yourself. That rule is
-[AGENT_RULES.md](./AGENT_RULES.md)'s and it is unchanged.
+[AGENT_RULES.md](../../AGENT_RULES.md)'s and it is unchanged.
 
 **This file is not a source and is never cited.** Citations come from card sets
 and are rendered by the console from its own committed copy. An agent does not
@@ -363,11 +363,11 @@ entries today**, so reading it would teach nothing about what real people ask.
 Maintainer's ruling, 27 Aug 2026: write the primer from the rules, wire it in
 from the rules, and record that this is what happened.
 
-**So the scope here is derived** from [AGENT_RULES.md](./AGENT_RULES.md), the
+**So the scope here is derived** from [AGENT_RULES.md](../../AGENT_RULES.md), the
 staffing ruling of 24 Aug 2026, and what the surfaces actually hold. **It has not
 been tested against a single real question**, and it is not waiting to be. When
 there is real visitor traffic the primer is read against the log and corrected if
-the log disagrees — that is item A5 in [OPEN_ITEMS.md](./OPEN_ITEMS.md), and it
+the log disagrees — that is item A5 in [OPEN_ITEMS.md](../../OPEN_ITEMS.md), and it
 is a later review rather than a condition on this document.
 
 Written 27 Aug 2026. **Inherited by Phoebe since 28 Aug 2026.**
