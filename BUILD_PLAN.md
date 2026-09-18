@@ -61,7 +61,35 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — Phoebe's VWBA pack is the cards' one home
+## Just finished — the root tidy, and the export step retired
+
+**17 Sep 2026, second sitting. Three pull requests, stacked in order: #86, #87, and the one that
+carries this close-out; open as this is written.** Docs and two moves. No pack content changed. No
+live-site UI change. One real call to Wellington for the capture.
+
+- **The export step is retired.** The project library syncs from GitHub, so hand-carried copies
+  are no longer needed. Close-out step 6 is struck and dated in the process rules; item O8 is
+  closed; the `exports/` folder and its ignore rule are gone. The close-out ritual now ends at
+  the checkpoint commit and the `main` equals `origin` check.
+- **The agent primer lives in the shared pack**, `knowledge-packs/product-shared/agent-primer.md`,
+  on Phoebe's cards pattern: both generated strings byte-identical before and after, the
+  generator's `Sources:` header the only change to the relay, six links climbing two levels, the
+  checks green, one capture. Pack at 0.2.0.
+- **The closed-items archive lives under `docs/`**, at `docs/OPEN_ITEMS_ARCHIVE.md`, beside
+  `docs/archive/` and not in it; every link followed, 180 checked.
+- **UI_REFERENCE.md is retired to `legacy/`.** The brand book governs design alone; CLAUDE.md's
+  sentence is struck and dated.
+- **Two small finds fixed on the way:** the README table's duplicate OPEN_ITEMS row, and the
+  gitignore's dead "Calculator design ref" rule. Claude Code's per-machine settings file is now
+  ignored by this repository's own rule.
+- **Not touched:** the two untracked DRAFT card files; `captures/`, `Design refs/`, `legacy/`,
+  `data-src/`, all kept, each with a live reader.
+- **Next brief, by the maintainer's word:** the OPEN_ITEMS triage, item O11. Not a sweep alone;
+  she wants the list triaged. Proposal first.
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+## Previously — Phoebe's VWBA pack is the cards' one home
 
 **17 Sep 2026. Pull request #84, merged on main.** A move, not an edit. Runtime paths changed;
 no card wording changed but one link; no primer rewrite; no live-site UI change.
@@ -79,7 +107,9 @@ no card wording changed but one link; no primer rewrite; no live-site UI change.
   Pack at 0.2.0, tree at 0.2.0.
 - **Not touched:** Phoebe's prompt, the primer, screen code, and the two untracked DRAFT card
   files. The maintainer moves those by hand; their home is the cards folder once approved.
-- **Next brief, on the maintainer's word:** roster work. Not started.
+- ~~**Next brief, on the maintainer's word:** roster work. Not started.~~ **Corrected 17 Sep 2026,
+  second sitting:** the root tidy came first, and the next brief after it is the OPEN_ITEMS
+  triage. Roster work waits on her word.
 
 Item K8 in [OPEN_ITEMS.md](./OPEN_ITEMS.md). The history of how it was done is in
 [BUILD_LOG.md](./BUILD_LOG.md).
@@ -432,6 +462,12 @@ full in item S9. Maintainer's ruling, 30 Aug 2026: **the screenshots are not com
 is nothing left for images to teach.** No folder waits for them.
 
 ## Building next — the hero chat, when its reference arrives
+
+**The OPEN_ITEMS triage is next, by the maintainer's word of 17 Sep 2026** at the close of the
+root tidy: *"Not in this batch: the OPEN_ITEMS sweep. Log it as the next brief. I want that list
+triaged, not just swept."* The file was 2,855 lines and 176 KB when that sitting opened, flagged
+in its Part 1 report under the thin-reads rule. What triage means beyond a sweep is hers to rule on
+the proposal; item O11 carries the log. Nothing is built toward it until she says go.
 
 ~~**The bridge sender (item S7) is next**, by the maintainer's word of 7 Sep 2026, and it starts when
 she carries three facts from production.~~ **The three facts landed and the sender shipped on
