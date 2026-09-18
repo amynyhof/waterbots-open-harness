@@ -1,12 +1,19 @@
+> ARCHIVED — 17 Sep 2026. Moved from the repository root, not deleted.
+> SUPERSEDED 22 Aug 2026 by [CLAUDE.md](../../CLAUDE.md) (language),
+> [CITATIONS.md](../../CITATIONS.md) (citations), and
+> [AGENT_RULES.md](../../AGENT_RULES.md) (agent speech). This file is a
+> historical extraction record, not a live rulebook. Never read a rule
+> from this file and act on it. Never read the archive for current state.
+
 # Chat citation & formatting rules — for the Open Harness chat
 
 > **SUPERSEDED 22 Aug 2026. This is a historical extraction record, not
 > a live rulebook. Do not read a rule from this file and act on it.**
 >
 > Every rule below was distributed on 22 Aug 2026 into the three root
-> documents, one home each: **[CLAUDE.md](./CLAUDE.md)** (language
-> rules), **[CITATIONS.md](./CITATIONS.md)** (what a citation is and
-> how it renders), **[AGENT_RULES.md](./AGENT_RULES.md)** (how an agent
+> documents, one home each: **[CLAUDE.md](../../CLAUDE.md)** (language
+> rules), **[CITATIONS.md](../../CITATIONS.md)** (what a citation is and
+> how it renders), **[AGENT_RULES.md](../../AGENT_RULES.md)** (how an agent
 > behaves and speaks). Those files are what binds. This one is kept
 > only to record what arrived and when.
 >
