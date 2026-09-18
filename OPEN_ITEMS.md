@@ -88,6 +88,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | K5 | The VWBA 2.0 D-3 screening pack | Knowledge | **built 1 Sep 2026** — the first pack in the slot |
 | K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | **built 2 Sep 2026** — two packs, one module, the transition delta |
 | K7 | A carbon card pass in Phoebe's card format | Knowledge | **logged 2 Sep 2026 as debt** — after Thursday, not built |
+| K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | **built 17 Sep 2026, #84** — canon |
 | A1 | Phoebe abstention loop | Agents | built 25 Aug 2026 |
 | A2 | Final agent staffing | Agents | settled 24 Aug 2026; Bridget's colour settled 29 Aug 2026 |
 | A3 | Agent handoff primer | Agents | shipped 28 Aug 2026 — rung 2 live |
@@ -322,6 +323,40 @@ carbon questions, which is the correct outcome.
 lost. It waits for Thursday and on her word.
 
 Logged 2 Sep 2026. **Not started.**
+
+## K8. Phoebe's VWBA pack is the cards' one home — canon
+
+**Maintainer's ruling, 17 Sep 2026.** Phoebe's two card sets had sat at the repository root since
+21 Aug 2026, with her pack folder pointing at them and saying "this tree stays a pointer." The
+ruling overturned that on purpose: **the pack is the home.** Both files moved into
+`knowledge-packs/phoebe-eligibility/vwba-2.0/cards/` with `git mv`, history kept, and every
+reader followed. Built and merged the same day, pull request #84.
+
+**Two further rulings in the same brief.**
+
+- **The new pack shape is the rule going forward, one pack at a time.** One folder per standard,
+  holding `cards/`, `tool/`, `evals/`, `README.md`, `CHANGELOG.md`. Phoebe's pack is the
+  first in it; the other packs stay as they were scaffolded on 16 Sep 2026 until their own briefs.
+  The tree README says so, with the old shape's lines struck.
+- **The one broken link was fixed, not logged as debt.** Line 44 of the eligibility cards linked
+  to the process rules by a root-relative path. The move was proven byte for byte first, then the
+  link was fixed as a second commit in the same pull request, the generator re-run, and the
+  one-line diff shown. Her single eyeball covered both.
+
+**What it was checked against.** The two exported strings in `api/_cards.generated.ts`, saved
+before the move and compared after: identical. The Eligibility step's Tool tab, its full page
+text hashed before and after in the dev server: identical. `check-cards`, the generator's
+staleness check, and the production build all passed. Both captures are in the pull request.
+
+**Old references.** BUILD_LOG, OPEN_ITEMS_ARCHIVE and the archived handoff mention the old root
+paths in prose. They were true when written and are not edited. The pack changelog's 0.2.0 entry
+names the old paths and the new.
+
+**What waits.** The two untracked DRAFT card files — Appendix C activities and the glossary — stay
+at the root until the maintainer moves them by hand; their home is the cards folder once
+approved. Roster work is the next brief, not started.
+
+Built 17 Sep 2026. **Canon.**
 
 ---
 

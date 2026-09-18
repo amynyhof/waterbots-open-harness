@@ -1157,3 +1157,76 @@ ruling so the pull request can be reviewed.
 Root docs refreshed for this sitting. DRAFT card files left untracked. The
 migration gate ran and found no migrations. `check-wellington` passed at 108 —
 docs-only, the count is unchanged from before this sitting.
+
+## 17 September 2026 — Phoebe's VWBA pack is the cards' one home
+
+**Pull request #84, merged on main** (`1bab56e`). A move, not an edit. Runtime
+paths changed; card wording unchanged but one link; no primer rewrite; no
+live-site UI change. Two VWBA card drafts stay uncommitted.
+
+The sitting above said pull request #83 was opened, not merged. **It merged on
+main** (`af850e9`). That line is left in place; this entry is the correction.
+
+### What was built
+
+Both card files moved from the repository root into
+`knowledge-packs/phoebe-eligibility/vwba-2.0/cards/` with `git mv`; git records
+them as 100% renames. Readers repointed: `src/lib/phoebeCards.ts` (two raw
+imports, two filename constants, its root-location comment corrected with the
+date), `scripts/check-cards.mjs` (one `CARDS_DIR` constant),
+`scripts/build-prompt-modules.mjs` (two source paths). The generated relay copy
+was rebuilt; its diff was the `Sources:` header line only.
+
+The two pointer folders `tools/eligibility/` and `tools/feasibility/` are gone.
+New pages: `vwba-2.0/README.md` (what she knows, helps with, does not cover;
+one citation table with two rows), `vwba-2.0/CHANGELOG.md` at 0.2.0,
+`vwba-2.0/tool/README.md` naming the worksheet and its reader,
+`vwba-2.0/evals/README.md` saying no exam has been sat. Seat README and
+changelog rewritten with the "stays a pointer" line struck. Tree README: the
+new shape written as the rule going forward, one pack at a time, the old shape
+struck and kept for the packs still on it; tree at 0.2.0.
+
+Second commit, same pull request: line 44 of the eligibility cards linked to
+the process rules by `./`, which resolved from the root. It now climbs four
+levels. Generator re-run; `ELIGIBILITY_MD` differs by that one line,
+`FEASIBILITY_MD` unchanged.
+
+### How it was proven
+
+The two exported strings were saved out of `api/_cards.generated.ts` before
+anything moved and compared after the rebuild: `ELIGIBILITY_MD` 20,534 chars
+identical, `FEASIBILITY_MD` 26,400 chars identical. The Eligibility step's Tool
+tab was opened in the dev server before and after; the full page text hashed
+the same (3,351 chars, same SHA-256). `check-cards` passed, the generator's
+`--check` reported current, `npm run build` passed. Both captures were
+committed under `captures/` and embedded in the pull request.
+
+### Decisions
+
+- **The pack is the home.** Overturns the pack README's "this tree stays a
+  pointer" and the tree README's "nothing is wired", on purpose. Item K8.
+- **New pack shape is the rule going forward, one pack at a time.** Phoebe's
+  is the first; the others stay as scaffolded until their own briefs.
+- **The broken link was fixed, not left as debt** — prove the move first, then
+  fix as a second commit, one eyeball for both.
+- DRAFT card files left alone; the maintainer moves them by hand. Their home
+  is the cards folder once approved.
+- Roster work is the next brief. Not started.
+
+### What was learned
+
+- The generated module's header names its sources, so a pure move still
+  changes that file by one line. The gate compares the strings, and the strings
+  were saved and compared by hand rather than trusted to the gate alone.
+- Opening the Eligibility step in the dev server sends a real ask to Phoebe's
+  relay. Two of the day's twenty for this browser went to the eyeball checks.
+- A single shell command carrying seven markdown pages as heredocs failed to
+  parse before writing anything; the pages were written with the file tool and
+  the tree README by a small node script. Nothing was lost.
+
+### Housekeeping
+
+Root docs refreshed for this sitting: BUILD_PLAN, OPEN_ITEMS (row K8), CLAUDE.md
+(one sentence in Scope), README (one paragraph). DRAFT card files left
+untracked. The migration gate ran and found no migrations. `check-wellington`
+passed at 108. Exports regenerated after the checkpoint commit.

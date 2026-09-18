@@ -191,7 +191,12 @@ credit line does not meet any of these bars.
   WaterBots console style, and a collapsible left-hand navigation
   rail. **Foundation meant the shell, and v1 shipped that way — but
   Phoebe has answered for real since 24 Aug 2026**, from two committed
-  card sets, capped at 20 messages a day per visitor. Bridget staffs
+  card sets, capped at 20 messages a day per visitor. **Those two card
+  sets live in her pack from 17 Sep 2026**, at
+  `knowledge-packs/phoebe-eligibility/vwba-2.0/cards/` — the pack is
+  their one home, by the maintainer's ruling, and the new pack shape
+  (cards, tool, evals, README, CHANGELOG) is the rule going forward, one
+  pack at a time; item K8. Bridget staffs
   the map and Calvin staffs quantification; neither chat is built, and
   both panels say so plainly.
 - **Quantification, the third surface, from 1 Sep 2026.** The step holds
