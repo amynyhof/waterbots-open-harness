@@ -133,7 +133,7 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | O5 | The engineer pushed without a commit word, twice | Operations | logged 24 Aug 2026 |
 | O6 | The card gate reports stale cards that are not stale | Operations | closed 27 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
 | O7 | Merged branches pile up, and are now to be cleared | Operations | closed 27 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
-| O8 | The export step in the close-out ritual | Operations | ruled 27 Aug 2026, open on the script question |
+| O8 | The export step in the close-out ritual | Operations | ~~ruled 27 Aug 2026, open on the script question~~ **closed 17 Sep 2026** — the step and the folder are retired |
 | O9 | The basemap now needs a key, and has a ceiling | Operations | live 27 Aug 2026, standing dependency |
 | O10 | Line endings are pinned in git but not in the working folder | Operations | closed 30 Aug 2026 — [archived](./OPEN_ITEMS_ARCHIVE.md) |
 | O11 | OPEN_ITEMS.md is heavy and wants an archive | Operations | **two sweeps done** — 30 Aug and 2 Sep 2026 |
@@ -2689,10 +2689,16 @@ here.** It is recorded so it is not lost, and it does not block the ordering que
 
 ### What is left
 
-**The ordering question is closed and the ritual is written.** What keeps this item open is the
-second question above — script or hand copy — which has no ruling and is not due.
+~~**The ordering question is closed and the ritual is written.** What keeps this item open is the
+second question above — script or hand copy — which has no ruling and is not due.~~
 
-Proposed and ruled 27 Aug 2026. **Open only on the script question.**
+**Closed 17 Sep 2026, maintainer's ruling: the exports folder is retired.** The project library
+now syncs from GitHub, so hand-carried copies are no longer needed. The step left the close-out
+ritual in [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) with a dated strike, the
+folder was deleted, and its ignore rule went with it, since nothing else used it. The script
+question above is moot: there is nothing left to copy.
+
+Proposed and ruled 27 Aug 2026. ~~**Open only on the script question.**~~ **Closed 17 Sep 2026.**
 
 ---
 
