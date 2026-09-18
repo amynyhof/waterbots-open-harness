@@ -71,6 +71,20 @@ agent and a layer, which is why two items could each have belonged in two places
 maintainer decision recorded with its reason. **There are no loose rows.** If an item seems to fit
 nowhere, that is a sign the families are wrong, not that the item is special.
 
+**Buckets — a second axis, from the maintainer's triage of 18 Sep 2026.** A family says what kind of thing an
+item is; a bucket says what it is for now. Five buckets, one per row, ruled by her:
+
+| Bucket | What it holds |
+|---|---|
+| **BONES** | Agent structure, packs, roster, Wellington's orchestration, and debt that trips agents or engineers |
+| **WALKTHROUGH** | Needed for a simple VWBA path from this site into the paid site |
+| **PARTNER** | Needed for the Agent Commons or a partner demo |
+| **PARK** | Real, but not now |
+| **CLOSE** | Done, duplicate, stale, or overtaken by a newer ruling — swept to the archive, index row kept, shown as *closed* |
+
+A row keeps its bucket until she moves it. Item O11 records the triage; the full sort was a proposal
+file at the root, untracked, and deleted once the sweep merged.
+
 | Family | What it covers |
 |---|---|
 | **[Knowledge](#family-knowledge)** | What the agents are allowed to know — card sets, the source corpus, and the methods behind a number. |
@@ -79,66 +93,67 @@ nowhere, that is a sign the families are wrong, not that the item is special.
 | **[Data](#family-data)** | Where real, verifiable data comes from, and whether it exists yet. |
 | **[Operations](#family-operations)** | The deploy, the repository, settings and limits that outlast the session that made them. |
 
-| # | Item | Family | State |
-|---|---|---|---|
-| K1 | VWBA full-docs card pass | Knowledge | open |
-| K2 | Co-benefit quantification module | Knowledge | open |
-| K3 | VWB Report Corpus | Knowledge | open, no action yet |
-| K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | canon, ruled 26 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| K5 | The VWBA 2.0 D-3 screening pack | Knowledge | **built 1 Sep 2026** — the first pack in the slot — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | **built 2 Sep 2026** — two packs, one module, the transition delta — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| K7 | A carbon card pass in Phoebe's card format | Knowledge | **logged 2 Sep 2026 as debt** — after Thursday, not built |
-| K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| A1 | Phoebe abstention loop | Agents | built 25 Aug 2026 |
-| A2 | Final agent staffing | Agents | settled 24 Aug 2026; Bridget's colour settled 29 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| A3 | Agent handoff primer | Agents | shipped 28 Aug 2026 — rung 2 live — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-
-| A4 | Phoebe returned an empty answer | Agents | one cause fixed 25 Aug 2026 — **not the only one**, see A6 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| A5 | Primer review against the abstention log | Agents | logged 27 Aug 2026, not due |
-| A6 | Phoebe fails about one request in six, and every fault fails late | Agents | fixed and guarded 28 Aug 2026 — 12% to 2% |
-| A7 | An abstention cited a card | Agents | logged 28 Aug 2026; **recurred 3 Sep 2026, benign branch** — reading owed — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| A8 | Wellington's chat, live on the desk | Agents | **built 3 Sep 2026** — on Phoebe's pattern, thirty a day — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| A9 | Agents phrase the roster's facts themselves | Agents | **canon, ruled 3 Sep 2026** — no word-for-word lines anywhere — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| A10 | Wellington's answers run long | Agents | **logged 3 Sep 2026 as debt** — tightening comes later |
-| A11 | The phase names are canon, and agents point at the step, never a tab | Agents | **ruled and resolved 5 Sep 2026**, amended 7 Sep, same pull request — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| S1 | Collaboration and collective action as a partner-finding surface | Surfaces | open |
-| S2 | The shared chat layer | Surfaces | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| S3 | Level 3 citation pop-out | Surfaces | out of scope — paid platform — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-
-| S4 | Chat docks were thrown away on a surface switch | Surfaces | fixed 23 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-
-| S5 | The citation line wraps awkwardly in the narrow dock | Surfaces | cosmetic, polish later |
-| S6 | The dev relay resolves imports differently from production | Surfaces | open |
-| S7 | The bridge — handing a finished screening to the paid platform | Surfaces | ruled 26 Aug 2026; the contract ruled 7 Sep 2026; **built 8 Sep 2026, #56** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| S8 | Brightness pull-up to the book's published Frost values | Surfaces | closed 29 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| S9 | The return to the brand book | Surfaces | **closed 30 Aug 2026** — both raises shipped, book at v4.1 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| S10 | The Quantification step | Surfaces | **built 1 Sep 2026** — the third surface, pack-keyed; three packs from 2 Sep — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| S11 | The free desk, and the console in the production shape | Surfaces | **built 2 Sep 2026** — Wellington's desk, the journey bar, ~~four tabs~~ one row from 7 Sep; **his chat live on it from 3 Sep; the desk plan's three slices landed 5–7 Sep** |
-| S12 | The hero chat — a full page that is the conversation | Surfaces | **logged 3 Sep 2026, not built; parked as a later item by the maintainer's word, 9 Sep 2026** — the receiver (S13) lands on the desk without it |
-| S13 | The handoff receiver — a question carried in from the production landing | Surfaces | ~~logged 3 Sep 2026, not built~~ **built 9 Sep 2026** — the desk receives it; **optional does/name/place from 15 Sep 2026, #74**; **Wellington visit-aware from 16 Sep 2026, #76**; the sender's contract is recorded here for production to carry — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| S14 | Typing dots — the book's third motion exception | Surfaces | **ruled 3 Sep 2026** — waits on the maintainer's hand into §5 |
-| S15 | One row — the journey bar is the navigation; a candidate for production | Surfaces | **built 7 Sep 2026** — the tab row removed; offered to production by the maintainer's hand, later |
-| S16 | The agent screen — every step is a screen, the agent's chat in the middle and its tool as a tab; a candidate for production | Surfaces | **built 9 Sep 2026, #61 to #64** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md); the B→A raise into the book and the carry list wait on the maintainer's hand |
-| S17 | The agent watches its Tool tab and comments; a pulsing teal dot on Chat | Surfaces | **logged 9 Sep 2026, parked for a design session, both sides** — no proposal yet |
-| S18 | Agent Commons — a public gallery of graded knowledge packs, each wearing an agent face | Surfaces | **v0 done — slices 1 to 3 built and merged by 11 Sep 2026 (#68 to #70)**; slice 4 waits on Deb's per-case file; slice 5, the flag button, later |
-| S19 | The Workshop — make your own agent on the Commons | Surfaces | **logged 11 Sep 2026, not built** — slice 3 has landed; the proposal is next, on the maintainer's word |
-| S20 | "Connect with a human expert" on every Commons agent | Surfaces | **logged 11 Sep 2026, not built** — two design questions open for the session |
-| D1 | Corporate water stewardship goals and target geographies | Data | open |
-| D2 | Project points | Data | blocked on data |
-| O1 | Rate limit on public chat | Operations | shipped 25 Aug 2026, number to revisit |
-| O2 | Restore branch protection on `main` | Operations | closed 24 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| O3 | Reverse link from waterbots.ai | Operations | closed 24 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| O4 | Cosmetic and housekeeping items | Operations | left alone deliberately |
-
-| O5 | The engineer pushed without a commit word, twice | Operations | logged 24 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| O6 | The card gate reports stale cards that are not stale | Operations | closed 27 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| O7 | Merged branches pile up, and are now to be cleared | Operations | closed 27 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| O8 | The export step in the close-out ritual | Operations | ~~ruled 27 Aug 2026, open on the script question~~ **closed 17 Sep 2026** — the step and the folder are retired — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| O9 | The basemap now needs a key, and has a ceiling | Operations | live 27 Aug 2026, standing dependency |
-| O10 | Line endings are pinned in git but not in the working folder | Operations | closed 30 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| O11 | OPEN_ITEMS.md is heavy and wants an archive | Operations | **two sweeps done** — 30 Aug and 2 Sep 2026; **the triage is the next brief, 17 Sep 2026** |
-| O12 | The map page is heavy — the renderer stalls on a basin redraw | Operations | **logged 7 Sep 2026**, not this slice |
-| O13 | Phoebe's relay still says `validate()` — a banned word in old code | Operations | **logged 7 Sep 2026** — rename to "check" in a later hygiene pass, not now |
+| # | Item | Family | Bucket | State |
+|---|---|---|---|---|
+| K1 | VWBA full-docs card pass | Knowledge | BONES | open |
+| K2 | Co-benefit quantification module | Knowledge | PARK | open |
+| K3 | VWB Report Corpus | Knowledge | PARK | open, no action yet |
+| K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | closed | canon, ruled 26 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| K5 | The VWBA 2.0 D-3 screening pack | Knowledge | closed | **built 1 Sep 2026** — the first pack in the slot — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | closed | **built 2 Sep 2026** — two packs, one module, the transition delta — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| K7 | A carbon card pass in Phoebe's card format | Knowledge | BONES | **logged 2 Sep 2026 as debt** — after Thursday, not built |
+| K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| K9 | Calvin's and Bridget's packs move to the new pack shape | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — one brief each, the way Phoebe's did; not started |
+| K10 | Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — not started |
+| A1 | Phoebe abstention loop | Agents | PARK | built 25 Aug 2026 |
+| A2 | Final agent staffing | Agents | closed | settled 24 Aug 2026; Bridget's colour settled 29 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| A3 | Agent handoff primer | Agents | closed | shipped 28 Aug 2026 — rung 2 live — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| A4 | Phoebe returned an empty answer | Agents | closed | one cause fixed 25 Aug 2026 — **not the only one**, see A6 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| A5 | Primer review against the abstention log | Agents | PARK | logged 27 Aug 2026, not due |
+| A6 | Phoebe fails about one request in six, and every fault fails late | Agents | BONES | fixed and guarded 28 Aug 2026 — 12% to 2% |
+| A7 | An abstention cited a card | Agents | closed | logged 28 Aug 2026; **recurred 3 Sep 2026, benign branch** — reading owed — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| A8 | Wellington's chat, live on the desk | Agents | closed | **built 3 Sep 2026** — on Phoebe's pattern, thirty a day — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| A9 | Agents phrase the roster's facts themselves | Agents | closed | **canon, ruled 3 Sep 2026** — no word-for-word lines anywhere — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| A10 | Wellington's answers run long | Agents | BONES | **logged 3 Sep 2026 as debt** — tightening comes later |
+| A11 | The phase names are canon, and agents point at the step, never a tab | Agents | closed | **ruled and resolved 5 Sep 2026**, amended 7 Sep, same pull request — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| A12 | The two chats not built — Bridget's and Calvin's | Agents | PARK | **adopted 18 Sep 2026** from items A2 and S10; not scheduled |
+| A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | **logged 18 Sep 2026 from the maintainer's brief** — waits on her carry |
+| S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
+| S2 | The shared chat layer | Surfaces | closed | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S3 | Level 3 citation pop-out | Surfaces | closed | out of scope — paid platform — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S4 | Chat docks were thrown away on a surface switch | Surfaces | closed | fixed 23 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S5 | The citation line wraps awkwardly in the narrow dock | Surfaces | PARK | cosmetic, polish later |
+| S6 | The dev relay resolves imports differently from production | Surfaces | BONES | open |
+| S7 | The bridge — handing a finished screening to the paid platform | Surfaces | closed | ruled 26 Aug 2026; the contract ruled 7 Sep 2026; **built 8 Sep 2026, #56** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S8 | Brightness pull-up to the book's published Frost values | Surfaces | closed | closed 29 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S9 | The return to the brand book | Surfaces | closed | **closed 30 Aug 2026** — both raises shipped, book at v4.1 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S10 | The Quantification step | Surfaces | closed | **built 1 Sep 2026** — the third surface, pack-keyed; three packs from 2 Sep — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S11 | The free desk, and the console in the production shape | Surfaces | WALKTHROUGH | **built 2 Sep 2026** — Wellington's desk, the journey bar, ~~four tabs~~ one row from 7 Sep; **his chat live on it from 3 Sep; the desk plan's three slices landed 5–7 Sep** |
+| S12 | The hero chat — a full page that is the conversation | Surfaces | PARK | **logged 3 Sep 2026, not built; parked as a later item by the maintainer's word, 9 Sep 2026** — the receiver (S13) lands on the desk without it |
+| S13 | The handoff receiver — a question carried in from the production landing | Surfaces | closed | ~~logged 3 Sep 2026, not built~~ **built 9 Sep 2026** — the desk receives it; **optional does/name/place from 15 Sep 2026, #74**; **Wellington visit-aware from 16 Sep 2026, #76**; the sender's contract is recorded here for production to carry — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S14 | Typing dots — the book's third motion exception | Surfaces | PARK | **ruled 3 Sep 2026** — waits on the maintainer's hand into §5 |
+| S15 | One row — the journey bar is the navigation; a candidate for production | Surfaces | PARK | **built 7 Sep 2026** — the tab row removed; offered to production by the maintainer's hand, later |
+| S16 | The agent screen — every step is a screen, the agent's chat in the middle and its tool as a tab; a candidate for production | Surfaces | closed | **built 9 Sep 2026, #61 to #64** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md); the B→A raise into the book and the carry list wait on the maintainer's hand |
+| S17 | The agent watches its Tool tab and comments; a pulsing teal dot on Chat | Surfaces | PARK | **logged 9 Sep 2026, parked for a design session, both sides** — no proposal yet |
+| S18 | Agent Commons — a public gallery of graded knowledge packs, each wearing an agent face | Surfaces | PARTNER | **v0 done — slices 1 to 3 built and merged by 11 Sep 2026 (#68 to #70)**; slice 4 waits on Deb's per-case file; slice 5, the flag button, later |
+| S19 | The Workshop — make your own agent on the Commons | Surfaces | PARTNER | **logged 11 Sep 2026, not built** — slice 3 has landed; the proposal is next, on the maintainer's word |
+| S20 | "Connect with a human expert" on every Commons agent | Surfaces | PARTNER | **logged 11 Sep 2026, not built** — two design questions open for the session |
+| D1 | Corporate water stewardship goals and target geographies | Data | PARK | open |
+| D2 | Project points | Data | PARK | blocked on data |
+| O1 | Rate limit on public chat | Operations | PARK | shipped 25 Aug 2026, number to revisit |
+| O2 | Restore branch protection on `main` | Operations | closed | closed 24 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| O3 | Reverse link from waterbots.ai | Operations | closed | closed 24 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| O4 | Cosmetic and housekeeping items | Operations | PARK | left alone deliberately |
+| O5 | The engineer pushed without a commit word, twice | Operations | closed | logged 24 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| O6 | The card gate reports stale cards that are not stale | Operations | closed | closed 27 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| O7 | Merged branches pile up, and are now to be cleared | Operations | closed | closed 27 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| O8 | The export step in the close-out ritual | Operations | closed | ~~ruled 27 Aug 2026, open on the script question~~ **closed 17 Sep 2026** — the step and the folder are retired — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| O9 | The basemap now needs a key, and has a ceiling | Operations | PARK | live 27 Aug 2026, standing dependency |
+| O10 | Line endings are pinned in git but not in the working folder | Operations | closed | closed 30 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| O11 | OPEN_ITEMS.md is heavy and wants an archive | Operations | BONES | **two sweeps done** — 30 Aug and 2 Sep 2026; **the triage is the next brief, 17 Sep 2026** |
+| O12 | The map page is heavy — the renderer stalls on a basin redraw | Operations | WALKTHROUGH | **logged 7 Sep 2026**, not this slice |
+| O13 | Phoebe's relay still says `validate()` — a banned word in old code | Operations | BONES | **logged 7 Sep 2026** — rename to "check" in a later hygiene pass, not now |
+| O14 | Carries owed by the maintainer's hand — listed once | Operations | PARK | **adopted 18 Sep 2026**; each waits on her hand |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
 > reference to them elsewhere in the repository was updated in the same edit rather than left to
@@ -182,6 +197,8 @@ its own citation and canonical link, so a co-benefit that *can* be quantified is
 than narrated. Where no method exists, that stays the answer.
 
 Opened 21 Aug 2026. Not started.
+
+**Pair K2/K7, 18 Sep 2026.** Item K7, the carbon card pass, is the carbon slice of what this item describes. K7 first and this after, or K7 folds in here, on the maintainer's word.
 
 ## K3. VWB Report Corpus
 
@@ -228,6 +245,61 @@ Logged 2 Sep 2026. **Not started.**
 **Built and canon, 17 Sep 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
 
 ---
+
+## K9. Calvin's and Bridget's packs move to the new pack shape
+
+**Logged 18 Sep 2026 from the maintainer's brief. Not started.** Her words, kept whole:
+
+> Calvin's and Bridget's packs move to the new pack shape, one brief each, the way Phoebe's did.
+
+**What the new shape is.** One folder per standard inside the seat pack, holding `cards/`, `tool/`,
+`evals/`, a README and a changelog — the rule going forward from 17 Sep 2026, written in the
+knowledge-packs tree README, with Phoebe's `phoebe-eligibility/vwba-2.0/` as the first pack in it
+(item K8, archived). Calvin's seat, `knowledge-packs/calvin-quantify/`, and Bridget's,
+`knowledge-packs/bridget-map/`, still hold the older `tools/<tool-id>/` shape from the scaffold of
+16 Sep 2026, and the console reads Calvin's three method packs and Bridget's two datasets from code,
+not from the tree.
+
+**"The way Phoebe's did" is the method, not only the destination.** Move with `git mv` so history is
+kept; every reader follows in the same change; prove the move first — whatever the site reads, saved
+before and compared after, byte for byte — then fix what the move broke as a second commit; one
+capture for her eyeball. Where a pack's live reader is a registry in `src/lib/` rather than a
+markdown file, the proof is the built module's output before and after.
+
+**Two briefs, one pack at a time, in the order she chooses.** Nothing moves before its brief.
+
+Logged 18 Sep 2026. **Not started. Bucket BONES.**
+
+## K10. Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed
+
+**Logged 18 Sep 2026 from the maintainer's brief. Not started.** Her words, kept whole:
+
+> Phoebe ready for Deb's rig. I review her cards. Engineer notes to me are split out of the card
+> files so she does not read them as knowledge. Her exam questions are drafted for my signature,
+> then exported.
+
+**Three parts, in her order.**
+
+1. **She reviews the cards.** Both card sets in `knowledge-packs/phoebe-eligibility/vwba-2.0/cards/`,
+   read by her end to end. A maintainer job; the engineer's part is to make the read easy and to
+   record what she rules.
+2. **Engineer notes come out of the card files.** Today the generator embeds each card file whole
+   into her prompt, so every line in it reaches her as knowledge — including the notes written to
+   the maintainer, the "not yet cross-checked" lines, and the approval bookkeeping. The split moves
+   those into a sibling file in the pack that the generator never reads, and leaves the cards as
+   cards. Proof: the generated strings shrink by exactly the notes and nothing else; `check-cards`
+   still passes; the Eligibility step reads the same.
+3. **Her exam questions, drafted for her signature, then exported.** Questions are drafted here in
+   plain words, one per card or per criterion as the review finds fit; she signs them; then they
+   are written out in the rig's case shape. **The rig's shape arrives by her hand** (rule zero — it
+   was read on 9 Sep 2026 and nothing of it is in this tree; see item S18, slice 4), and REAL ONLY
+   holds: a case rests on a real project, never an invented one.
+
+**Dependencies.** Part 3 waits on the rig's case shape and on Deb's per-case file (item S18, slice
+4). Parts 1 and 2 can go first. Proposal before any of it.
+
+Logged 18 Sep 2026. **Not started. Bucket BONES.**
+
 
 # Family: Agents
 
@@ -643,6 +715,51 @@ Logged 3 Sep 2026. **Open, not due.**
 
 ---
 
+## A12. The two chats not built — Bridget's and Calvin's
+
+**Adopted 18 Sep 2026 in the maintainer's triage**, from item A2 (Bridget's chat, "coming") and item S10
+(Calvin's chat, "not scheduled"), both now archived. One row, not two, because they are the same
+kind of thing: an agent with a screen, a Tool tab and a Knowledge pack tab, whose Chat tab carries
+one plain line and no composer.
+
+- **Bridget** opens on the map. Her chat would receive the handoffs the primer already points at her
+  for (item A3, archived, named this: pointing at her has to mean the map itself until she answers).
+- **Calvin** opens on the calculator. His chat would move the step's gates into his conversation and
+  fill the toggles from his answers (item S10, archived).
+
+Both would run on Phoebe's proven pattern — an endpoint of their own, a daily cap of their own, the
+same guards, every setting stated in code — and both panels say plainly today that the chat is not
+built. Honest states hold.
+
+Logged 18 Sep 2026. **Not scheduled. Bucket PARK.**
+
+## A13. One roster — roster.yaml from production, checked against the primer and crew.ts
+
+**Logged 18 Sep 2026 from the maintainer's brief. Waits on her carry. Not started.** Her words, kept whole:
+
+> One roster. I will carry roster.yaml from production. The primer's crew facts and
+> `src/lib/crew.ts` get checked against it, and the build fails if they disagree. Levels are Meet,
+> Screen, Work.
+
+**What holds the roster today, in four places.** The crew list in `src/lib/crew.ts` (four agents,
+their roles and steps); the crew facts in the primer's regions,
+`knowledge-packs/product-shared/agent-primer.md`; the roster table in that pack's README; and the
+brand book's §6, which is gitignored and governs. Four homes for one fact is the drift the one-home
+rule exists to stop.
+
+**The shape, as read from her words.** A `roster.yaml` arrives by her hand, from production, the way
+every shared rule arrives (rule zero — nothing is fetched). A check in `scripts/` reads it and
+compares what this site says against it — names, roles, steps, whatever the file carries — and the
+build fails on any disagreement, the way the card gate fails on a stale card. Whether the file then
+becomes the source that `crew.ts` and the primer are generated from, or only the thing they are
+checked against, is a question for the proposal.
+
+**"Levels are Meet, Screen, Work."** Her words, recorded as given. What a level is on this site is
+not known here and is not guessed; it is defined when the file arrives.
+
+Logged 18 Sep 2026. **Waits on the maintainer's carry of `roster.yaml`. Bucket BONES.**
+
+
 # Family: Surfaces
 
 What a visitor sees and works with — the map, the worksheet, the chat layer.
@@ -699,6 +816,8 @@ spacing until one width looks right.
 Related: the collapsed legend strip on the map wraps at very narrow columns too, recorded in the
 cosmetic and housekeeping list under Operations. If both are addressed, they are one piece of work
 about narrow columns rather than two.
+
+**Folded in, 18 Sep 2026:** the rail-width rider from the design canon, carried by item S8 and then by S9 — widen the left rail modestly when it is next opened for another reason. It is the same narrow-column work as the two wraps. Pair S5/O4.
 
 ## S6. The dev relay resolves imports differently from production
 
@@ -925,6 +1044,8 @@ her row. Pull request #54.
 for "what it does" and "kind", and whatever the hero page (item S12) asks of the desk.
 
 Built 2 Sep 2026. **Open as the home for the surface's story.**
+
+**Bucket WALKTHROUGH, 18 Sep 2026.** The open remainder is the two typeable controls for "what it does" and "kind"; a visitor who never chats cannot fill them today. Everything else here is built and is the story's record.
 
 ## S12. The hero chat — a full page that is the conversation
 
@@ -1398,6 +1519,8 @@ for that decision.
 
 Opened 21 Aug 2026.
 
+**Three rows wait on the same thing, real usage** — this one, item A5 (the primer review) and item O9 (the basemap ceiling). Recorded 18 Sep 2026 so that when there is traffic they are looked at together.
+
 ## O2. Restore branch protection on `main` — closed, swept to the archive
 
 **Closed 24 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
@@ -1512,6 +1635,8 @@ thing itself.**
 
 Logged 27 Aug 2026. **Open as a standing dependency, with nothing due until there is real usage.**
 
+**Folded in, 18 Sep 2026:** Route C, a custom CARTO vector basemap styled to the brand book, logged under item S9 as the only route that gives real control over sea and land. It changes this dependency, so it lives here now. Not proposed, not built.
+
 ---
 
 ## O10. Line endings are pinned in git but not in the working folder — closed, swept to the archive
@@ -1598,6 +1723,33 @@ Logged 30 Aug 2026, **first sweep done 30 Aug 2026, second sweep done 2 Sep 2026
 standing habit — ~~the next sweep runs when this file gets heavy again~~ **the triage is the next
 brief, 17 Sep 2026**.
 
+### The triage — done 18 Sep 2026
+
+**The maintainer's go, 18 Sep 2026, on the sort proposed the same day.** Every open row was put in one of five
+buckets — BONES, WALKTHROUGH, PARTNER, PARK, CLOSE — defined once under *Families* above and shown in
+a new column of the index table. Eighteen rows closed and were swept to
+[docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) in full, each with a dated line saying
+why: K4, K5, K6, K8, A2, A3, A4, A7, A8, A9, A11, S2, S3, S9, S10, S13, O5, O8. Two of them needed
+a ruling first — A7's benign reading was accepted, and O5's rule went into the process rules before
+its record left. Every moved item's text was checked verbatim against the archive.
+
+**Orphans adopted.** Eight threads had lived inside other items with no row of their own. Two became
+rows: item A12 (the two chats not built) and item O14 (carries by the maintainer's hand). Three
+folded into rows that already existed: the dock copy saying "console" into O13, the rail-width
+rider into S5, Route C into O9. Three stay where they were, named: the typeable controls under S11,
+the diagnostic switch under A6, a path per Commons pack under S18. Pairs named: A4/A6, A11/S15,
+S5/O4, K2/K7, S12/S14, and the three rows waiting on real usage.
+
+**Three rows added from her brief, all BONES:** A13 (one roster), K9 (Calvin's and Bridget's packs
+to the new shape), K10 (Phoebe ready for Deb's rig).
+
+**What it bought:** the opening read fell from 2,881 lines to the figure in the build log of
+18 Sep 2026, with nothing summarised away. The proposal file, `triage-2026-09-18.md`, was untracked
+and is deleted after the merge. The families did not change.
+
+Logged 30 Aug 2026; first sweep 30 Aug, second 2 Sep, **triage and third sweep 18 Sep 2026.** Open as a
+standing habit — the next triage runs when this file gets heavy again, on her word.
+
 ## O12. The map page is heavy — the renderer stalls on a basin redraw
 
 **Logged 7 Sep 2026, from slice 2's captures. Not this slice.** With the Partners step open at
@@ -1625,3 +1777,27 @@ eyeball, not a rider on a feature.
 **What the pass does when it comes:** rename the functions to `checkAnswer` or the like, reword
 the comments, and update `scripts/check-wellington.mjs`, which imports one of them by name. No
 behaviour changes. Recorded here rather than done, by the maintainer's word.
+
+**Folded in, 18 Sep 2026:** Bridget's and Calvin's dock copy still says "console", a word the plain-words rule keeps out of what an agent or a visitor reads (item S11, slice 2). Same hygiene pass: banned words wherever old code or copy still carries them.
+
+## O14. Carries owed by the maintainer's hand — listed once
+
+**Adopted 18 Sep 2026 in the maintainer's triage.** Several items end with a thing that only she can
+carry — into the brand book, to production, or to Deb — and each was recorded inside the item that
+owned it, where a later reader may not look. This row lists them once and points at the owner. Rule
+zero holds for every one: nothing here is fetched, written to, or guessed at on the other side.
+
+| Owed | Where it goes | Owner |
+|---|---|---|
+| Typing dots, the third motion exception | Brand book §5 | item S14 |
+| One row — the journey bar as the navigation | Production, as a candidate shape | item S15 |
+| The agent screen as a §7 component, and the carry list of files for production | Brand book §7; production | item S16 (archived) |
+| Production's sign-up address for the Commons door | This site, once she carries it | item S18 |
+| The three changes Deb's rig needs, and later the trigger | Deb | item S18, slice 4; item S19 |
+| `roster.yaml` from production | This site | item A13 |
+
+A carry is struck from this table when it lands, with the date. Nothing is built toward any of them
+from here.
+
+Logged 18 Sep 2026. **Each waits on her hand. Bucket PARK.**
+
