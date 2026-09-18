@@ -1097,3 +1097,35 @@ BUILD_PLAN: #80 marked merged on main. README brand book version 4.1 struck;
 Root docs refreshed for this sitting. DRAFT card files left untracked. The
 migration gate ran and found no migrations. `check-wellington` passed at 108 —
 docs-only, the count is unchanged from before this sitting.
+
+## 17 September 2026 — Vector leftover scrape / Calvin parity
+
+**Pull request opened, not merged.** Docs only. No pack content. No runtime
+wire. No live-site UI. No primer rewrite. Two VWBA card drafts stay uncommitted.
+
+The sitting above said pull request #81 was opened, not merged. **It merged on
+main** (`979e8a5`). That line is left in place; this entry is the correction.
+
+### What was built
+
+Inventory of `vector` (case-insensitive) on this repo, excluding lockfile and
+`node_modules`. Live product copy already staffs Quantify as Calvin. One class A
+hit: `src/styles/tokens.css` said Vector *holds* the paid calculator seat.
+Struck and dated. Calvin is the only Quantify face here. Vector is not a second
+chatbot face. Map/GIS “vector” words were not renamed.
+
+`--bot-vector` was left in place (class C — unused paid-roster token, same
+shelf as unused Audrey / Ally / Monty / Reggie). Brand book Vector-as-Calculator
+left for Amy’s hand; the book is gitignored and is not edited without her word.
+
+### Decisions
+
+- Sitting 2 (OPEN_ITEMS slim / pathway vocabulary) and sitting 3 (primer
+  “no tab row” vs screen tabs) not started.
+- No paid `/api/agents` shim. This repo has no Vector agent route.
+
+### Housekeeping
+
+Root docs refreshed for this sitting. DRAFT card files left untracked. The
+migration gate ran and found no migrations. `check-wellington` passed at 108 —
+docs-only, the count is unchanged from before this sitting.

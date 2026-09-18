@@ -61,9 +61,24 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — leftover root debt: chat-format archive and live claims
+## Just finished — Vector leftover scrape / Calvin parity
 
 **17 Sep 2026. This sitting, one pull request, not merged.** Docs only. No pack content. No
+runtime wire. No live-site UI. No primer rewrite.
+
+- **Live product copy already staffs Quantify as Calvin.** Primer, crew, `--bot-calvin`,
+  `calvin.svg`, and `knowledge-packs/calvin-quantify/` were already Calvin. No second
+  rename of map/GIS “vector” words. No paid `/api/agents` shim.
+- **One class A leftover:** `src/styles/tokens.css` still said Vector *holds* the paid
+  calculator seat. Struck and dated. Calvin is the only Quantify face here.
+- **Class C left for Amy:** unused `--bot-vector` token (sits with unused paid-roster
+  tokens); gitignored brand book still names Vector as the shared-crew Calculator.
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+## Previously — leftover root debt: chat-format archive and live claims
+
+**17 Sep 2026. Pull request #81, ~~not merged.~~ merged on main.** Docs only. No pack content. No
 runtime wire. No live-site UI. No primer rewrite.
 
 - **`CHAT_FORMAT_RULES_for_ShellB.md` left the root.** It moved to
