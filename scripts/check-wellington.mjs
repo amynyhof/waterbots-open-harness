@@ -130,7 +130,8 @@ expect(
 
 console.log('\n  His region reaches him, and only him\n');
 
-const primerSource = readFileSync('agent-primer.md', 'utf8');
+/* The primer lives in the shared pack from 17 Sep 2026. */
+const primerSource = readFileSync('knowledge-packs/product-shared/agent-primer.md', 'utf8');
 const rosterBegin = primerSource.indexOf('<!-- AGENT-FACING: BEGIN -->');
 const rosterEnd = primerSource.indexOf('<!-- AGENT-FACING: END -->');
 const hisBegin = primerSource.indexOf('<!-- WELLINGTON-FACING: BEGIN -->');

@@ -138,7 +138,8 @@ order and stops at the first one that applies.
 **Agents are a team and act like one.** An agent may name another agent and say
 what that agent covers. It never answers in another agent's place.
 
-**The shared primer exists**: `agent-primer.md`, which says who covers what,
+**The shared primer exists**: `agent-primer.md`, ~~at the repository root~~ **in
+`knowledge-packs/product-shared/` from 17 Sep 2026**, which says who covers what,
 whether they answer, and where they are found. It reaches an agent the way card
 sets do — committed, generated into the prompt, and guarded by a staleness gate —
 so the facts an agent holds are the facts the maintainer approved.
