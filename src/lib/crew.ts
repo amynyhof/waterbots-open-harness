@@ -8,9 +8,15 @@
  * exists to prevent. The rail and the shelf both read this; nothing types a
  * name, a role or a token twice.
  *
- * FOUR AGENTS, AND THE ROSTER IS THE BOOK'S. Wellington and Bridget are the
- * shared crew, Phoebe and Calvin extend it under BRAND.md §6. Nobody is
- * minted here. Each row's identity colour is read from its token, never
+ * THE ROSTER IS THE MAINTAINER'S, from 18 Sep 2026 (item A13):
+ * knowledge-packs/product-shared/roster.yaml, carried from production and
+ * never edited here. This file is not a second copy of it. It holds only the
+ * seats built on this site's screens, and only what the roster does not —
+ * the portrait, the colour token, whether the accent may carry text, and
+ * which screen the row opens. scripts/check-roster.mjs holds every name,
+ * role and screen here to the roster in front of every build. ~~FOUR AGENTS,
+ * AND THE ROSTER IS THE BOOK'S.~~ Wellington and Bridget are the shared crew,
+ * Phoebe and Calvin extend it under BRAND.md §6. Nobody is minted here. Each row's identity colour is read from its token, never
  * re-typed (§6), and whether the accent may carry the name as text is
  * recorded beside it, measured — Surf is 2.04:1 on white and never carries
  * text, so Bridget's name is set in ink wherever it appears.
@@ -54,7 +60,9 @@ export const CREW: CrewMember[] = [
   },
   {
     name: 'Bridget',
-    role: 'Map',
+    /* "Partners" — the roster's seat label. It read "Map" until 18 Sep 2026,
+       when the roster check tripped on it; maintainer's ruling the same day. */
+    role: 'Partners',
     portrait: bridgetPortrait,
     token: '--bot-bridget',
     /* Surf is 2.04:1 on white and never carries text. */
