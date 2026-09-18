@@ -331,9 +331,15 @@ be re-founded on cited sources.
 
 ## Brand and design — see the brand book
 
-Follow the brand book and UI_REFERENCE.md in this repo. They are
+~~Follow the brand book and UI_REFERENCE.md in this repo. They are
 gitignored (engineer-eyes-only, not published). Never invent colors,
-type, or styles outside them.
+type, or styles outside them.~~ **Corrected 17 Sep 2026, maintainer's
+ruling: the brand book governs design, alone.** UI_REFERENCE.md, the
+Replit demo's patterns written on 13 Aug 2026, was never used by any
+session's build and is retired to `legacy/`, where it stays gitignored as
+reference only. Follow the brand book in this repo. It is gitignored
+(engineer-eyes-only, not published). Never invent colors, type, or
+styles outside it.
 
 **The brand book lives at `brand/BRAND.md`.** ~~It lives at the
 repository root as `BRAND.md`.~~ **Corrected 30 Aug 2026** — it moved
