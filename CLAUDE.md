@@ -357,6 +357,11 @@ maintainer's ruling: Wellington's role label is **"Team Lead"** everywhere he
 is named — not "Floor manager", not "Host" as a title. The book stays at
 version 4.2; the strike is kept.
 
+**The Calculator / Quantify seat in §6 was struck and corrected in place on
+17 Sep 2026**, by the maintainer's ruling: it is **Calvin**, not Vector. The
+book stays at version 4.2; the strike is kept. `--bot-vector` is not deleted.
+`vector.svg` is not renamed; `calvin.svg` is already live.
+
 **What version 4.2 changed, and it is the second amendment written into the
 book from inside this repository.** §6 only. **Calvin's row is filled in** — he
 is the free calculator, giving screening-level estimates **on the open site as
