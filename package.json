@@ -6,7 +6,8 @@
   "license": "Apache-2.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "node scripts/check-roster.mjs && tsc -b && vite build",
+    "roster:check": "node scripts/check-roster.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
     "mapshaper": "^0.7.52",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.2",
-    "vite": "^6.0.5"
+    "vite": "^6.0.5",
+    "yaml": "^2.9.1"
   }
 }
