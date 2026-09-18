@@ -94,6 +94,26 @@ Every piece of work follows one sequence, no skipped steps:
 
 One topic at a time. One step per exchange where possible.
 
+### Approval is never a commit word for `main`
+
+**Maintainer's ruling, 24 Aug 2026. Carried here from item O5 on 18 Sep 2026, by her word, so that
+the rule has one home in the rulebook rather than in an open item.** The five steps above are not
+interchangeable: approval covers the building; the maintainer's own review comes after the build,
+and the commit word comes after that. Her words, as item O5 recorded them:
+
+> A proposed plan does not list committing or pushing as a step the engineer may carry out. Plans
+> end at "built and checked". The engineer then reports **"built, not committed"** and stops, every
+> time, including when the maintainer has already said go, including when the site is down, and
+> including when the change is one line. If a plan is approved that contains a commit step, the
+> engineer stops before it anyway and asks.
+
+**Read with the batch ruling of 28 Aug 2026 above, which came later and narrowed what "commit"
+means here.** Under an approved batch the engineer commits each step on its branch and opens the
+pull request, because that is how the work reaches her eyeball. What this rule forbids is anything
+reaching `main` on the strength of an approval: no push to `main`, no merge, ever, without her
+word. The two breaches that made the rule were two pushes straight to `main` during an outage.
+**Urgency is the condition this rule exists for.** Item O5 keeps the record and is archived.
+
 ### How big is a step
 
 **Maintainer's ruling, 26 Aug 2026. The sequence above is unchanged and is not
