@@ -1,34 +1,35 @@
 # phoebe-eligibility — eligibility and feasibility (open)
 
-**Version 0.1.0.** Phoebe staffs Eligibility. She works from two committed card
-sets. This pack **points at those files**. It does not copy them.
+**Version 0.2.0.** Phoebe staffs Eligibility. Her Knowledge Pack is
+[`vwba-2.0/`](./vwba-2.0/). The two card files live there, in
+[`vwba-2.0/cards/`](./vwba-2.0/cards/), and the live site reads them from there.
 
-| Tool | Points at | Live reader |
-|---|---|---|
-| [eligibility](./tools/eligibility/) | [`eligibility-cards-vwba.md`](../../eligibility-cards-vwba.md) | [`src/lib/phoebeCards.ts`](../../src/lib/phoebeCards.ts) |
-| [feasibility](./tools/feasibility/) | [`feasibility-cards-vwba.md`](../../feasibility-cards-vwba.md) | same |
+~~This pack **points at those files**. It does not copy them. This tree stays a
+pointer.~~ **Struck 17 Sep 2026, by the maintainer's ruling: the pack is the
+home.** The cards moved in from the repository root with their history kept.
 
-Do not copy `eligibility-cards-vwba.md`, `feasibility-cards-vwba.md`, or
-`phoebeCards.ts` into this pack. A card edit belongs in the card file. This
-tree stays a pointer.
+**First pack in the new shape.** One folder per standard, and inside it
+`cards/`, `tool/`, `evals/`, `README.md`, `CHANGELOG.md`. The other packs
+follow one at a time, each on its own brief. The rule is written in the
+[tree README](../README.md).
 
-## Multi-tool shape
+## What is here
 
-Two tools today. **Not one blob forever.** A later card set — carbon cards, or
-another standard — gets its own `tools/<tool-id>/` folder. It is not folded into
-eligibility or feasibility.
+| | |
+|---|---|
+| [`vwba-2.0/README.md`](./vwba-2.0/README.md) | What she knows, what she helps with, what she does not cover. The cited document. |
+| [`vwba-2.0/cards/`](./vwba-2.0/cards/) | Six eligibility criteria and ten feasibility considerations, approved 21 Aug 2026. |
+| [`vwba-2.0/tool/`](./vwba-2.0/tool/) | The checklist and its live reader, named. No code. |
+| [`vwba-2.0/evals/`](./vwba-2.0/evals/) | No exam sat yet. |
+| [`vwba-2.0/CHANGELOG.md`](./vwba-2.0/CHANGELOG.md) | The pack's own versions. |
 
-## What she does
+A later standard gets its own folder beside `vwba-2.0/`. It is not folded in.
 
-Eligibility is a hard gate: six criteria from VWBA 2.0 Appendix A; miss one and
-the project is not eligible, and every “not yet” arrives with a route forward.
-
-Feasibility is guidance: ten considerations from Appendix B, only for projects
-that already pass the gate. None of them is a bar to entry.
-
-Draft card files at the repo root stay uncommitted and are never read.
+Draft card files stay untracked until the maintainer approves them, and they
+are never read.
 
 ## Citations
 
-Document, version, and link live on each tool README. No PDF body text here.
-The four-part shape for a cited claim is in [CITATIONS.md](../../CITATIONS.md).
+Document, version, sections, and link are on the
+[pack README](./vwba-2.0/README.md), once. The four-part shape for a cited
+claim is in [CITATIONS.md](../../CITATIONS.md).

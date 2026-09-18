@@ -17,8 +17,11 @@
 
 import { existsSync, readFileSync } from 'node:fs';
 
-const ELIGIBILITY = 'eligibility-cards-vwba.md';
-const FEASIBILITY = 'feasibility-cards-vwba.md';
+/* The cards' one home is Phoebe's pack, by the maintainer's ruling of
+   17 Sep 2026. They were at the repository root before that day. */
+const CARDS_DIR = 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards';
+const ELIGIBILITY = `${CARDS_DIR}/eligibility-cards-vwba.md`;
+const FEASIBILITY = `${CARDS_DIR}/feasibility-cards-vwba.md`;
 
 /* The manual's own counts. Appendix A gives six criteria, Appendix B ten
    considerations. These are the numbers the committed cards were graded

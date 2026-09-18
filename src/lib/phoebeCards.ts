@@ -7,8 +7,11 @@
  * therefore lands in the UI automatically, and the UI cannot drift from what
  * the maintainer approved.
  *
- * Both files are imported raw. They live at the repository root rather than
- * under src/ because they are published documents in their own right, read by
+ * Both files are imported raw. They lived at the repository root until
+ * 17 Sep 2026 — corrected that day, by the maintainer's ruling that Phoebe's
+ * pack is the cards' one home: they live in
+ * knowledge-packs/phoebe-eligibility/vwba-2.0/cards/. They sit outside src/
+ * because they are published documents in their own right, read by
  * people as well as by this module. Vite inlines their text into the bundle,
  * which costs roughly 46 KB before compression — small against the map's data,
  * and the files are public anyway.
@@ -26,8 +29,8 @@
  * reader that no criteria exist, which is false.
  */
 
-import eligibilityRawFile from '../../eligibility-cards-vwba.md?raw';
-import feasibilityRawFile from '../../feasibility-cards-vwba.md?raw';
+import eligibilityRawFile from '../../knowledge-packs/phoebe-eligibility/vwba-2.0/cards/eligibility-cards-vwba.md?raw';
+import feasibilityRawFile from '../../knowledge-packs/phoebe-eligibility/vwba-2.0/cards/feasibility-cards-vwba.md?raw';
 
 /**
  * Line endings are normalised before anything is parsed.
@@ -184,8 +187,8 @@ function readCitation(body: string, file: string): Citation {
    The two card sets.
 ------------------------------------------------------------------------- */
 
-const ELIGIBILITY_FILE = 'eligibility-cards-vwba.md';
-const FEASIBILITY_FILE = 'feasibility-cards-vwba.md';
+const ELIGIBILITY_FILE = 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/eligibility-cards-vwba.md';
+const FEASIBILITY_FILE = 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/feasibility-cards-vwba.md';
 
 export const CRITERIA: Criterion[] = splitCards(eligibilityRaw, ELIGIBILITY_FILE).map(
   ({ heading, body }) => {

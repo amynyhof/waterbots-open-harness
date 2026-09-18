@@ -41,7 +41,7 @@ they are a separate set rather than more cards here. ~~Not to be drafted until a
 > from both sets since 24 Aug 2026, so this file described the product wrongly for ten days.
 >
 > **The false lines are struck rather than deleted**, per *visible corrections over rewritten
-> history* in [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md). What they cost is worth
+> history* in [PROCESS_RULES_for_ShellB.md](../../../../PROCESS_RULES_for_ShellB.md). What they cost is worth
 > keeping: a card set that describes its own sibling as unwritten is a card set an agent could
 > quote, and this one is inherited into Phoebe's prompt.
 
