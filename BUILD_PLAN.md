@@ -61,9 +61,32 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — brand book §6: Calculator / Quantify is Calvin
+## Just finished — Phoebe's VWBA pack is the cards' one home
 
-**17 Sep 2026. This sitting, one pull request, not merged.** Brand book (gitignored) plus
+**17 Sep 2026. Pull request #84, merged on main.** A move, not an edit. Runtime paths changed;
+no card wording changed but one link; no primer rewrite; no live-site UI change.
+
+- **The pack is the home.** Both card sets live at
+  `knowledge-packs/phoebe-eligibility/vwba-2.0/cards/`, moved with their history kept. Every
+  reader followed: `src/lib/phoebeCards.ts`, `scripts/check-cards.mjs`,
+  `scripts/build-prompt-modules.mjs`. The relay's generated copy was rebuilt; its two exported
+  strings were byte-identical before the one link fix, and differ by that one line after it.
+- **The new pack shape is the rule going forward, one pack at a time:** `<standard>/` holding
+  `cards/`, `tool/`, `evals/`, `README.md`, `CHANGELOG.md`. Phoebe's pack is the first in
+  it. The other packs stay as they are until their own briefs. Written in the tree README with
+  the old lines struck.
+- **The two pointer tools are gone**; their citation tables live once, on the pack README.
+  Pack at 0.2.0, tree at 0.2.0.
+- **Not touched:** Phoebe's prompt, the primer, screen code, and the two untracked DRAFT card
+  files. The maintainer moves those by hand; their home is the cards folder once approved.
+- **Next brief, on the maintainer's word:** roster work. Not started.
+
+Item K8 in [OPEN_ITEMS.md](./OPEN_ITEMS.md). The history of how it was done is in
+[BUILD_LOG.md](./BUILD_LOG.md).
+
+## Previously — brand book §6: Calculator / Quantify is Calvin
+
+**17 Sep 2026. Pull request #83, ~~not merged.~~ merged on main.** Brand book (gitignored) plus
 the tracked note in CLAUDE.md. No pack content. No runtime wire. No live-site UI.
 
 - **§6 live text:** Calculator / Quantify seat is **Calvin**, not Vector. Struck and dated.

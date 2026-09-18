@@ -139,6 +139,11 @@ considerations, both drawn from Volumetric Water Benefit Accounting 2.0 — and 
 about anything outside them, she says she does not have that card yet rather than guessing. An
 honest gap is more useful than an answer nobody can tell is wrong.
 
+Both card sets live in her Knowledge Pack,
+[`knowledge-packs/phoebe-eligibility/vwba-2.0/cards/`](./knowledge-packs/phoebe-eligibility/vwba-2.0/cards/),
+from 17 Sep 2026. The pack is their one home; the worksheet and Phoebe's relay both read from
+there.
+
 **She never writes a citation.** She names a card and places a marker in her answer; the console
 looks that card up in the committed file and renders the citation itself. A wrong page number or an
 invented link is therefore not something she can produce. A marker naming a card that does not exist
