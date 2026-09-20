@@ -1,6 +1,6 @@
 # calvin-quantify — screening method packs (open)
 
-**Version 0.1.0.** Calvin staffs Quantify. One tool per way of working a number
+**Version 0.1.1.** Calvin staffs Quantify. One tool per way of working a number
 out. The live registry is [`src/lib/methodPacks.ts`](../../src/lib/methodPacks.ts).
 This pack is not wired. Folder names for live tools match that registry’s keys.
 
@@ -35,3 +35,22 @@ no extra carbon method is given a folder until this site has one.
 
 The two Gold Standard folders above **are** the carbon that is live. They are
 not stubs.
+
+## The contract
+
+Every specialist keeps the nine lines of **the specialist contract** in
+[AGENT_RULES.md](../../AGENT_RULES.md), the maintainer's ruling of 20 Sep 2026.
+This table is where Calvin stands against it. His chat is not built (item A12), so
+the table is honest about that. Read as of 20 Sep 2026.
+
+| # | Line | Today | Where it is met |
+|---|---|---|---|
+| 1 | Introduces itself | **No** | The "not answering here yet" line is the console's (`src/components/CalvinScreen.tsx`) |
+| 2 | Knows its own tools | **No** | No prompt. This README names the three live packs and two stubs |
+| 3 | Sees its tool's state | **No** | Each pack's answers are in the visit; no agent reads them |
+| 4 | Walks the user through the tool by talking | **No** | No chat |
+| 5 | Fills the tool from answers, and shows what it filled | **No** | The visitor types the fields |
+| 6 | Answers only from its own cards, with a citation | **No** | No rule cards; each pack carries one citation. Item K7 is the carbon card pass, logged debt |
+| 7 | Knows its limits and its level here | **No** | No prompt. Every figure already reads "screening, not verified" on the worksheet |
+| 8 | Knows Wellington leads. Hands back | **No** | No chat |
+| 9 | Posts official results to the project record | **Partly, by the tool** | A pack's answers and its status word reach the desk row and the seal, never a figure |

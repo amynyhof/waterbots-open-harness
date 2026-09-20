@@ -1,5 +1,10 @@
 # Changelog — phoebe-eligibility
 
+## 0.2.1 — 20 Sep 2026
+
+- `vwba-2.0@0.2.1` — the pack README gains "The contract": where Phoebe stands
+  against the nine lines in AGENT_RULES.md, read 20 Sep 2026. Docs only. Item A15.
+
 ## 0.2.0 — 17 Sep 2026
 
 - `vwba-2.0@0.2.0` — the pack is the cards' one home. Both card files moved in

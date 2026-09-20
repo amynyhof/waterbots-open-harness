@@ -1,6 +1,6 @@
 # Knowledge packs — open tree
 
-**Version ~~0.2.0~~ 0.3.0 (open).** ~~Scaffold only. Nothing in this folder is wired into the live
+**Version ~~0.2.0~~ ~~0.3.0~~ 0.3.1 (open).** ~~Scaffold only. Nothing in this folder is wired into the live
 site.~~ **Corrected 17 Sep 2026:** Phoebe's pack is wired. The live site reads her two
 card sets from [`phoebe-eligibility/vwba-2.0/cards/`](./phoebe-eligibility/vwba-2.0/cards/).
 The other packs are still scaffold; the console reads their method packs and map data
@@ -40,6 +40,11 @@ per standard, and inside it:
 
 **Phoebe's pack is the first in it.** The other packs move one at a time, each on its
 own brief, and stay as they are until then.
+
+**Every seat pack README carries a section "The contract"**, from 20 Sep 2026: one line
+pointing at the specialist contract in [AGENT_RULES.md](../AGENT_RULES.md), and a nine-row
+table saying where that agent stands against it today. The contract has one home, the
+rulebook; the table is the per-agent state and lives on the pack.
 
 ~~Every seat pack — not Calvin only — follows this shape:~~ **Struck 17 Sep 2026.** The
 shape below is the old one. It still describes every pack but Phoebe's:
@@ -98,4 +103,4 @@ stay separate. Derived values are labelled derived. Those rules live in
 
 ## Version
 
-Tree **v0.3.0**. See [CHANGELOG.md](./CHANGELOG.md).
+Tree **v0.3.1**. See [CHANGELOG.md](./CHANGELOG.md).

@@ -3,6 +3,13 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.3.1 — 20 Sep 2026
+
+- **Every seat pack README carries "The contract".** `phoebe-eligibility@0.2.1`
+  (`vwba-2.0@0.2.1`), `calvin-quantify@0.1.1`, `bridget-map@0.1.1`: a nine-row table
+  of where each agent stands against the specialist contract in AGENT_RULES.md,
+  the maintainer's ruling of 20 Sep 2026. Docs only. Item A15.
+
 ## 0.3.0 — 18 Sep 2026
 
 - **The roster lives in the shared pack.** `product-shared@0.3.0`: `roster.yaml`,

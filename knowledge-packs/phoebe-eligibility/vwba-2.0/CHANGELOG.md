@@ -1,5 +1,11 @@
 # Changelog — vwba-2.0
 
+## 0.2.1 — 20 Sep 2026
+
+- **"The contract" on the README.** A nine-row table of where Phoebe stands
+  against the specialist contract in AGENT_RULES.md, the maintainer's ruling of
+  20 Sep 2026: one yes, seven partly, one no. No card changed. Item A15.
+
 ## 0.2.0 — 17 Sep 2026
 
 - **The pack is the cards' one home.** Maintainer's ruling. Both card files
