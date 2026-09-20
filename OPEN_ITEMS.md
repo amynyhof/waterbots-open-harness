@@ -118,7 +118,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | A11 | The phase names are canon, and agents point at the step, never a tab | Agents | closed | **ruled and resolved 5 Sep 2026**, amended 7 Sep, same pull request — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | A12 | The two chats not built — Bridget's and Calvin's | Agents | PARK | **adopted 18 Sep 2026** from items A2 and S10; not scheduled |
 | A14 | Screen host role words — one home | Agents | BONES | **logged 18 Sep 2026 from the maintainer's word** — not fixed now |
-| A15 | The specialist contract — nine lines every specialist keeps; Phoebe first | Agents | BONES | **ruled 20 Sep 2026; the batch approved the same day** — in progress |
+| A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Agents | BONES | **ruled 20 Sep 2026; the batch approved the same day** — in progress |
 | A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | ~~**logged 18 Sep 2026 from the maintainer's brief** — waits on her carry~~ **built 18 Sep 2026, #91 merged** — the free and Commons columns stay "unconfirmed" until she carries a confirmed file |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
 | S2 | The shared chat layer | Surfaces | closed | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -817,17 +817,24 @@ is smaller and is the one-home rule applied; the second keeps a second copy and 
 
 **Not scheduled.** Bucket BONES.
 
-## A15. The specialist contract — nine lines every specialist keeps; Phoebe first
+## A15. The specialist contract — ten lines every specialist keeps; Phoebe first
 
 **Ruled 20 Sep 2026 from the maintainer's brief; proposal approved as a batch the same day.**
-Her nine lines live once, in [AGENT_RULES.md](./AGENT_RULES.md) under "The specialist
+Her ten lines live once, in [AGENT_RULES.md](./AGENT_RULES.md) under "The specialist
 contract", in her words. This row is the work's home. Her reason, in her words:
 
 > Every specialist on this site must behave the same way, so I can review one agent at a
 > time against one standard, and Deb's rig can grade each line.
 
+**Line 10 was added the same day, by her word, before the rulebook section merged**: what
+knowledge and values the tool needs, the kind of value each input takes, where it usually comes
+from; check the project context first, ask only for what is missing, say where each value came
+from. With it she named where the project context is at each door; both are in AGENT_RULES.md.
+Each pack table is ten rows. Phoebe reads partly on line 10; what reaching yes adds to steps 2
+and 3 is reported to her and waits on her go.
+
 **Where each agent stood on 20 Sep 2026**, read from the code: Phoebe one yes, seven partly,
-one no — she never saw her own worksheet, was never told her level, and read the grader
+one no on the first nine, partly on the tenth — she never saw her own worksheet, was never told her level, and read the grader
 notes at the foot of her card files as knowledge. Bridget and Calvin, with no chat, no on
 nearly every line; the tool posts to the record and the agent does not exist to. The full
 tables live on each pack README under "The contract".

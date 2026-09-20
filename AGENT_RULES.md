@@ -225,10 +225,11 @@ says in conversation.
 
 ## The specialist contract
 
-**Maintainer's ruling, 20 Sep 2026. Nine lines every specialist agent keeps**,
-so that she can review one agent at a time against one standard, and so that
-the grading rig kept outside this repository can grade each line. Her words,
-unchanged:
+**Maintainer's ruling, 20 Sep 2026. ~~Nine~~ Ten lines every specialist agent
+keeps**, so that she can review one agent at a time against one standard, and
+so that the grading rig kept outside this repository can grade each line. Her
+words, unchanged. **Line 10 was added the same day, by her word, before the
+section merged**; it is hers as the first nine are.
 
 > Every specialist agent:
 >
@@ -243,6 +244,26 @@ unchanged:
 > 8. Knows Wellington leads. Hands the user back to him when the task is
 >    done or out of its lane.
 > 9. Posts official results to the project record for the next agent.
+> 10. Knows what knowledge and values its tool needs, and the format each
+>     usually arrives in. For every input: what it is, why it matters,
+>     what kind of value it takes (for example a past date or a future
+>     date, a whole number or a decimal, one choice from a list), and
+>     where it usually comes from. It checks the project context first,
+>     asks only for what is missing, and says where each value came from.
+
+**Where the project context is, at each door.** Line 10 says an agent checks
+the project context first. What that is depends on where the agent is
+standing, in the maintainer's words of 20 Sep 2026:
+
+- **Paid site:** the Project Context page, the settled project facts.
+- **Open site:** the record Wellington collects, on the left panel. Screening
+  level.
+- **Agent Commons:** the conversation only. The agent asks for everything.
+- **MCP:** the user's own documents, read by the user's own AI, guided by the
+  tool's parameter list.
+
+The roster names three doors today, free, commons and paid; MCP is named here
+by her word and is not a door on this site.
 
 **Who it binds.** Every specialist: Phoebe, Bridget and Calvin today, and every
 seat on the roster the day it is built here. Wellington is the Team Lead, not a
@@ -268,6 +289,6 @@ grading rig's (the one-grader ruling, item S18 in
 never a score.
 
 **Where each agent stands.** Each pack README carries a section, "The
-contract", with a nine-row table: the line, yes or partly or no today, and
+contract", with a ten-row table: the line, yes or partly or no today, and
 where it is met. That table is the per-agent state and lives on the pack, not
 here. The contract itself lives here and nowhere else.

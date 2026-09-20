@@ -44,7 +44,7 @@ and the publisher's canonical link, so each one stands alone.
 
 ## The contract
 
-Every specialist keeps the nine lines of **the specialist contract** in
+Every specialist keeps the ten lines of **the specialist contract** in
 [AGENT_RULES.md](../../../AGENT_RULES.md), the maintainer's ruling of 20 Sep 2026.
 This table is where Phoebe stands against it, and it is refreshed whenever a line
 moves. Read as of 20 Sep 2026.
@@ -60,6 +60,7 @@ moves. Read as of 20 Sep 2026.
 | 7 | Knows its limits and its level here. Says so | **Partly** | Limits, yes (prompt rule 9); her level is nowhere she reads |
 | 8 | Knows Wellington leads. Hands back when done or out of its lane | **Partly** | The done note sends the visitor back to Dispatches; no hand-back field, and out of lane she names the colleague only |
 | 9 | Posts official results to the project record for the next agent | **Partly** | Her verdicts reach the rows, her desk row and the seal; no next agent on this site reads them |
+| 10 | Knows what its tool needs, the kind of value each input takes and where it comes from; checks the project context first; says where each value came from | **Partly** | The record block tells her to start from the four carried facts and ask only for what is missing, and each card carries what its row is and why it matters. Nothing tells her the kind of value a row takes (a verdict, Met or Not yet, with a route forward in words) or where each verdict came from; the rail tags the sources of the four record fields, not of her rows |
 
 ## Folder
 

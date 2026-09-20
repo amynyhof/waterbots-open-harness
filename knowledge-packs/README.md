@@ -42,7 +42,7 @@ per standard, and inside it:
 own brief, and stay as they are until then.
 
 **Every seat pack README carries a section "The contract"**, from 20 Sep 2026: one line
-pointing at the specialist contract in [AGENT_RULES.md](../AGENT_RULES.md), and a nine-row
+pointing at the specialist contract in [AGENT_RULES.md](../AGENT_RULES.md), and a ten-row
 table saying where that agent stands against it today. The contract has one home, the
 rulebook; the table is the per-agent state and lives on the pack.
 

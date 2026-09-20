@@ -38,7 +38,7 @@ not stubs.
 
 ## The contract
 
-Every specialist keeps the nine lines of **the specialist contract** in
+Every specialist keeps the ten lines of **the specialist contract** in
 [AGENT_RULES.md](../../AGENT_RULES.md), the maintainer's ruling of 20 Sep 2026.
 This table is where Calvin stands against it. His chat is not built (item A12), so
 the table is honest about that. Read as of 20 Sep 2026.
@@ -54,3 +54,4 @@ the table is honest about that. Read as of 20 Sep 2026.
 | 7 | Knows its limits and its level here | **No** | No prompt. Every figure already reads "screening, not verified" on the worksheet |
 | 8 | Knows Wellington leads. Hands back | **No** | No chat |
 | 9 | Posts official results to the project record | **Partly, by the tool** | A pack's answers and its status word reach the desk row and the seal, never a figure |
+| 10 | Knows what its tool needs, the kind of value each input takes and where it comes from; checks the project context first; says where each value came from | **No — the tool holds most of it** | Every pack field carries its label, one-line help, a longer why, its kind (yes or no, a choice, a number) and its unit in the registry (`src/lib/methodPacks.ts`); no agent reads them, and the packs do not read the record |

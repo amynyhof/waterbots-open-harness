@@ -19,7 +19,7 @@ renders.
 
 ## The contract
 
-Every specialist keeps the nine lines of **the specialist contract** in
+Every specialist keeps the ten lines of **the specialist contract** in
 [AGENT_RULES.md](../../AGENT_RULES.md), the maintainer's ruling of 20 Sep 2026.
 This table is where Bridget stands against it. Her chat is not built (item A12), so
 the table is honest about that. Read as of 20 Sep 2026.
@@ -35,3 +35,4 @@ the table is honest about that. Read as of 20 Sep 2026.
 | 7 | Knows its limits and its level here | **No** | No prompt. The console says honestly that she is not answering |
 | 8 | Knows Wellington leads. Hands back | **No** | No chat. Wellington's stage line already points at the map |
 | 9 | Posts official results to the project record | **Partly, by the tool** | The pin writes the place, source "pin", and the basin reading into her desk row and the seal |
+| 10 | Knows what its tool needs, the kind of value each input takes and where it comes from; checks the project context first; says where each value came from | **No** | The map takes one input, a click on a basin; the place it reads comes from the record with its source tag. No agent reads either |
