@@ -1,5 +1,17 @@
 # Changelog — vwba-2.0
 
+## 0.3.0 — 20 Sep 2026
+
+- **The grader notes left the card files.** Item K10, part 2, by the maintainer's
+  ruling of 20 Sep 2026 (R2). The "Notes for the grader" section at the foot of
+  each card file, and the 31 Aug correction block under the eligibility file's
+  naming table, moved to `cards/grader-notes.md`: 155 lines out, none added,
+  every line carried whole. The status line, the design decision and the source
+  table stay. The relay's copy was regenerated: the two exported strings shrank
+  by exactly the moved text, 6,358 and 4,453 characters, and by nothing else.
+  `check-cards` passes; the Tool and Knowledge pack tabs capture identical
+  before and after. Nothing reads the new file.
+
 ## 0.2.1 — 20 Sep 2026
 
 - **"The contract" on the README.** A nine-row table of where Phoebe stands

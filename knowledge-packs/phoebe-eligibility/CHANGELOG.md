@@ -1,5 +1,11 @@
 # Changelog — phoebe-eligibility
 
+## 0.3.0 — 20 Sep 2026
+
+- `vwba-2.0@0.3.0` — the grader notes moved out of both card files into
+  `cards/grader-notes.md`, lines carried whole, nothing reworded. Phoebe no longer
+  reads them. Contract line 6 reads yes. Item K10, part 2.
+
 ## 0.2.1 — 20 Sep 2026
 
 - `vwba-2.0@0.2.1` — the pack README gains "The contract": where Phoebe stands

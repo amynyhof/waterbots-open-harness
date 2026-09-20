@@ -19,3 +19,8 @@
 
 The Knowledge pack tab shows the cards' approval date, read from the status line
 at the head of each card file.
+
+**What is never read.** [`../cards/grader-notes.md`](../cards/grader-notes.md) holds
+the notes to the maintainer that sat at the foot of each card file until
+20 Sep 2026. The reader, the gate and the generator name the two card files and
+nothing else, so those notes no longer reach Phoebe's prompt. Item K10, part 2.
