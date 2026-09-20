@@ -1469,3 +1469,11 @@ Root docs refreshed: BUILD_PLAN, OPEN_ITEMS, CLAUDE.md (one Scope bullet).
 README's check list. The migration gate ran and found no migrations. The
 dev server was started for the two captures and stopped. DRAFT card files
 left untracked. `main` equal to `origin` at the close; nothing merged.
+
+### After the merge, same sitting
+
+#91 merged on her eyeball; the branch deleted by the merge setting. On her word one row was
+logged and not fixed: item A14, the screen host records' own role words for Bridget and Phoebe,
+which are not drawn (Bridget's) or not checked (both). Either they go or the check reads them; one
+home. The row went up in its own small pull request, because nothing reaches `main` on the
+strength of an approval. `main` equal to `origin` at the close.

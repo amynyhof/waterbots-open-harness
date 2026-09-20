@@ -63,7 +63,7 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ## Just finished — one roster
 
-**18 Sep 2026, second sitting. Pull request #91, open as this is written.** One brief, item A13. A
+**18 Sep 2026, second sitting. Pull request #91, merged the same day on her eyeball.** One brief, item A13. A
 build-time check, one word changed on screen, and docs. No new chat, seat or Meet-level page. No
 primer change; both generated prompts byte-identical.
 
@@ -78,7 +78,8 @@ primer change; both generated prompts byte-identical.
   It read "Map"; the check found it, she ruled the crew file changes.
 - **The other homes point at the file.** The shared pack README's table is struck. Pack 0.3.0.
 - **Waits on her:** the confirmed free and Commons columns, carried in a new file; the roster's two
-  "this repository" lines at the source; two screen-host `role` lines named under A13.
+  "this repository" lines at the source. The two screen-host `role` lines are item A14, logged on
+  her word at the merge, not fixed now.
 - **Next brief, on her word.** Nothing is chosen here. The BONES bucket is the shortlist.
 
 The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
