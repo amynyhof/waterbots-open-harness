@@ -64,7 +64,7 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 ## In progress — the specialist contract, Phoebe first (item A15)
 
 **20–21 Sep 2026. Three pull requests merged on her eyeball, #93, #94 and #95; one remains, and its
-first step is committed on its branch.** One
+first two steps are committed on its branch.** One
 brief, one batch approved 20 Sep 2026: steps 0 to 6, four pull requests, four eyeball stops. Her
 ten lines, her words, live once in AGENT_RULES.md under "The specialist contract"; each pack README
 carries a ten-row table of where its agent stands. Item A15 in [OPEN_ITEMS.md](./OPEN_ITEMS.md) is
@@ -84,7 +84,7 @@ the work's home and holds her rulings.
 - **Two measured runs, both zero empty in sixty**, within her bar of 1 in 60 (ruling R4). One walk
   captured for stop 3. `scripts/measure-phoebe.mjs` is the instrument, run by hand, never a gate.
 
-**Remaining — ~~steps 4, 5 and 6~~ steps 5 and 6, as pull request D, one full walk at eyeball stop 4.**
+**Remaining — ~~steps 4, 5 and 6~~ ~~steps 5 and 6~~ step 6, as pull request D, one full walk at eyeball stop 4.**
 
 - **Step 4 — the hand-back field. Committed 21 Sep 2026 on `feat/contract-phoebe-hand-back`
   (`34618dc`), not on `main`, no pull request yet.** Her output gains `handBack`, `none` or `wellington`, checked
@@ -100,14 +100,26 @@ the work's home and holds her rulings.
   cache reads included, 24,342 output. **Two captures of the hand-back sit in the engineer's
   scratchpad and wait until eyeball stop 4**, by her word of 21 Sep 2026; nothing under `captures/`
   yet.
-- **Step 5 — the walk in order, and the shown line.** Her prompt gains the rule to work the six rows
+- **Step 5 — the walk in order, and the shown line. Committed 21 Sep 2026 on the same branch
+  (`1c052b9`), not on `main`, no pull request yet.** Her prompt gains the rule to work the six rows
   in the manual's order from the first unchecked one, one row, one question. Under any turn of hers
   that moved a row the console draws one caption line from `criteriaUpdates`, never from prose:
   "Worksheet: 3 Met · 4 Not yet", same place and size as the citation line, no new colour (ruling R3:
   on prose, before-and-after capture in the pull request, she may strike it at the eyeball). Proof is
   a measured walk with real calls on `measure-wellington`'s pattern: a scripted visitor answers the
   six in turn across N runs; questions per reply, order rows moved, turns to six verdicts, empty or
-  refused turns, cards cited. Lines 4 and 5 to yes.
+  refused turns, cards cited. Lines 4 and 5 to yes. **As built:** the rule sits under hard rule 3 of
+  her prompt; a verdict may still land on any row the visitor's words settle, but the question is
+  always about the first unchecked row. The caption is `worksheetCaption` in `src/lib/criteriaState.ts`,
+  counting the whole worksheet after the move, carried on the turn as `caption` and drawn by the chat
+  layer in the citation line's own class. `scripts/measure-phoebe-walk.mjs` is the instrument. Five
+  checks in `check-wellington` (132). **Measured walk, twenty requests by her word of 21 Sep 2026:**
+  order kept in 16 of 16 moving turns; one question or none in 19 of 19 replies; two full walks to
+  six verdicts in 8 and 7 turns, the third cut by the budget at row 5; **1 empty in 20** — the item
+  A6 signature, a well-formed answer with an empty reply at 101 output tokens, `end_turn` — which is
+  worse than the bar of 1 in 60 as a rate; reported to her under ruling R4 before going on, and she
+  said go on, 21 Sep 2026. The sixty-request run at eyeball stop 4 decides. 20 calls, 429,299 input
+  tokens with cache reads included, 6,707 output. No captures this step, by her word.
 - **Step 6 — the instrument comes out.** `PHOEBE_DIAGNOSE` and its `diag()` calls removed from
   `api/phoebe.ts`, as item A6 named; the measured-run method written into the pack's
   `evals/README.md` as an internal gate, one paragraph, no score.
@@ -571,8 +583,8 @@ is nothing left for images to teach.** No folder waits for them.
 ## Building next — the hero chat, when its reference arrives
 
 **Building next, from 21 Sep 2026: pull request D of the specialist contract batch — ~~steps 4, 5 and 6~~
-steps 5 and 6, one full walk at eyeball stop 4.** Step 4 is committed on its branch, 21 Sep 2026, and
-waits there; the pull request opens with steps 5 and 6. See *In progress* at the head of this file. The batch is approved;
+~~steps 5 and 6~~ step 6, one full walk at eyeball stop 4.** Steps 4 and 5 are committed on the branch,
+21 Sep 2026, and wait there; the pull request opens with step 6. See *In progress* at the head of this file. The batch is approved;
 nothing else starts before it lands.
 
 ~~**The OPEN_ITEMS triage is next, by the maintainer's word of 17 Sep 2026**~~ **Done 18 Sep 2026;
