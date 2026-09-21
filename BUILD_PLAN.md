@@ -129,11 +129,18 @@ the work's home and holds her rulings.
   her relay only — raised for her word, not touched. The paragraph in `evals/README.md` says what
   each of the two measure scripts asks and counts, her bar of 1 in 60, why sixty, and that neither is
   a build gate nor a score. Pack 0.4.2, one CHANGELOG entry for steps 4 to 6. All checks and the
-  build green.
+  build green. **The runs on the final prompt, 21 Sep 2026:** the sixty-request run, 0 empty in 60,
+  no other failures; 60 calls, 1,298,020 input tokens with cache reads included, 24,643 output.
+  One full walk: six verdicts in 7 turns, order kept in 6 of 6 moving turns, one question or none
+  in 7 of 7 replies, hand-back set to Wellington on the last turn, 0 empty; 7 calls, 158,486 input,
+  2,578 output. Step 5's 1 in 20 did not recur.
 - **Eyeball stop 4:** one full desk walk from Wellington's invite through six rows one at a time,
-  with the shown line under each turn, to the hand-back and the Dispatches invite; capture and the
-  walk's counts in the pull request. A third measured run on the final prompt, counts and cost in
-  one plain sentence in the For Amy block, stopping if worse than 1 in 60.
+  with the shown line under each turn, to the hand-back and the Dispatches invite; ~~capture and the
+  walk's counts in the pull request~~ **by her word of 21 Sep 2026, no robot captures: she walks it
+  herself from the preview link and three plain steps in the pull request; the walk's counts are
+  in the block.** A third measured run on the final prompt, counts and cost in
+  one plain sentence in the For Amy block, stopping if worse than 1 in 60. **Pull request D is open
+  and waits on her eyeball.**
 
 **Named, not built:** Wellington reading the record's eligibility section — her verdicts — in his
 visit block, and greeting the visitor back knowing what she found. Its own brief, after Phoebe.
