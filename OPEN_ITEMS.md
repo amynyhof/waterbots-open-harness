@@ -118,7 +118,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | A11 | The phase names are canon, and agents point at the step, never a tab | Agents | closed | **ruled and resolved 5 Sep 2026**, amended 7 Sep, same pull request — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | A12 | The two chats not built — Bridget's and Calvin's | Agents | PARK | **adopted 18 Sep 2026** from items A2 and S10; not scheduled |
 | A14 | Screen host role words — one home | Agents | BONES | **logged 18 Sep 2026 from the maintainer's word** — not fixed now |
-| A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Agents | BONES | **ruled 20 Sep 2026; the batch approved the same day** — in progress |
+| A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Agents | BONES | **ruled 20 Sep 2026; the batch approved the same day** — steps 0 to 3 merged (#93, #94, #95) by 21 Sep; steps 4 to 6 remain as pull request D |
 | A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | ~~**logged 18 Sep 2026 from the maintainer's brief** — waits on her carry~~ **built 18 Sep 2026, #91 merged** — the free and Commons columns stay "unconfirmed" until she carries a confirmed file |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
 | S2 | The shared chat layer | Surfaces | closed | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -866,6 +866,11 @@ line; they set the proof method.
 the visitor back knowing what she found. Its own brief, after Phoebe. Calvin's and Bridget's
 briefs come after, each on the same nine lines; the lists are on their pack READMEs' tables
 and in item A12.
+
+**Where it stands, 21 Sep 2026.** Steps 0 to 3 merged on her eyeball: #93, #94, #95. Two measured runs,
+both zero empty in sixty. Lines 1, 2, 3, 6, 7 and 10 read yes for Phoebe; 8 and 9 moved; 4 and 5 wait on
+step 5. Steps 4, 5 and 6 remain as pull request D with one full walk at eyeball stop 4; the exact plan for
+them is in [BUILD_PLAN.md](./BUILD_PLAN.md) under *In progress*.
 
 **Bucket BONES.** In progress from 20 Sep 2026.
 

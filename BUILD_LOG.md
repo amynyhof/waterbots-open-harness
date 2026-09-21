@@ -1477,3 +1477,72 @@ logged and not fixed: item A14, the screen host records' own role words for Brid
 which are not drawn (Bridget's) or not checked (both). Either they go or the check reads them; one
 home. The row went up in its own small pull request, because nothing reaches `main` on the
 strength of an approval. `main` equal to `origin` at the close.
+
+## 20–21 September 2026 — the specialist contract, Phoebe first (item A15), steps 0 to 3
+
+One brief, one batch. Proposal first to `proposal-agent-contract.md` at the root, untracked;
+her go with four rulings (R1 rung 2 stays and line 8 adds the hand-back; R2 the notes split
+first; R3 the shown line on prose with a capture; R4 the bar, no worse than 1 in 60, stop and
+tell her if worse) and one addition, the measured counts and the run's cost in one plain
+sentence in every For Amy block; the file deleted on her word. Line 10 arrived by her word
+before the rulebook merged, with where the project context is at each door; the addition to
+steps 2 and 3 for it was reported and went on her go. Three pull requests merged on her
+eyeball: #93 (step 0, own, rulebook), #94 (step 1, own, cards), #95 (steps 2 and 3). The
+session stopped on her word after #95 with steps 4, 5 and 6 recorded in BUILD_PLAN as
+pull request D.
+
+### What was built
+
+Step 0: "The specialist contract" in AGENT_RULES.md, her ten lines, her words; ten-row tables
+on three pack READMEs; the tree README's one line; item A15; item O14's carry. Step 1: the
+grader notes out of both card files into `cards/grader-notes.md`, 155 lines carried whole,
+none reworded, none added; the relay's copy shrank by exactly the moved text, 6,358 and 4,453
+characters; `scripts/measure-phoebe.mjs`, the sixty-request instrument from item A6, run by
+hand. Step 2: an AGENT-FACING region in her pack's `tool/README.md`, a fourth bundle row in
+`build-prompt-modules`, `api/_tool.generated.ts`, and "Your tool" in her prompt; her level
+sentence, screen, held to the roster by a new block in `check-roster` (267); Wellington named
+as her lead. Step 3: `readWorksheet` and `worksheetBlock` in `api/_record.ts`; the rows sent
+from `PhoebeScreen` and the Commons seat through `carriedWorksheet`; the block after the cache
+breakpoint in `api/phoebe.ts`; rule 10 in her prompt; the rail's (i); ten new checks in
+`check-wellington` (118).
+
+### How it was proven
+
+Two measured runs, sixty requests each, zero empty, all sixty stop reasons `end_turn`, both
+within her bar: after step 1, 60 calls, 1,192,840 input tokens with cache reads included,
+26,579 output; after steps 2 and 3, 60 calls, 1,256,680 input, 24,312 output. The Tool and
+Knowledge pack tabs captured byte-identical before and after the notes split. The level check
+provoked with a wrong word named `api/_systemPrompt.ts:77` against `roster.yaml:85`. One desk
+walk for stop 3, two captures: she names her tool, its six rows and three states, her level,
+and Wellington; after one piece of evidence she reads row three back as Met from the block,
+says what settled it, and tells Not yet checked from Not yet.
+
+### Decisions
+
+- **The contract lives in the rulebook; the per-agent table lives on the pack.** One home
+  each. She carries the rulebook section to production (item O14).
+- **Line 10's tool list is generated from the pack, the primer's pattern**, so what she is
+  told about her inputs cannot drift from the pack; the gate holds it to the record block's
+  own field names.
+- **The level sentence is typed and checked, never generated** — the A13 ruling applied; one
+  sentence covers both doors only because the roster gives both "screen", and the check says so.
+- **The worksheet block is the record's eligibility section.** Her official results, read
+  back to her, carried on the seal. Wellington reading it is his side, named and not built.
+
+### What was learned
+
+- The Chrome extension's screenshot timed out on every capture of the console, the stall item
+  O12 recorded; a headless Chrome over the DevTools protocol from a scratchpad script
+  captured cleanly at 1440 by 900 and drove the walk. Not in the repo.
+- A measured run that fails forty-four times in a fifth of a second each is the key, not the
+  prompt: "credit balance is too low", a 400 the late-400 retry rightly does not retry. Stopped
+  and told her per R4; she topped up; the clean rerun stood.
+- The worksheet block costs about 1,000 cached tokens a call (cache read 19,847 to 20,911),
+  against the 10,811 characters the notes split took out.
+
+### Housekeeping
+
+Stacked pull requests B on A: B retargeted to `main` before A merged with delete-branch, per
+the stacked-merge lesson. Dev server started with `PHOEBE_DIAGNOSE=1` for the runs; headless
+Chrome on port 9222; both stopped at the close. DRAFT card files left untracked. The proposal
+file deleted on her word. `main` equal to `origin` after each merge and at the close.

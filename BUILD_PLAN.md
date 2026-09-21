@@ -61,7 +61,58 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ---
 
-## Just finished — one roster
+## In progress — the specialist contract, Phoebe first (item A15)
+
+**20–21 Sep 2026. Three pull requests merged on her eyeball, #93, #94 and #95; one remains.** One
+brief, one batch approved 20 Sep 2026: steps 0 to 6, four pull requests, four eyeball stops. Her
+ten lines, her words, live once in AGENT_RULES.md under "The specialist contract"; each pack README
+carries a ten-row table of where its agent stands. Item A15 in [OPEN_ITEMS.md](./OPEN_ITEMS.md) is
+the work's home and holds her rulings.
+
+**Done, on `main`:**
+
+- **Step 0 (#93):** the contract into the rulebook, line 10 added the same day, where the project
+  context is at each door, ten-row tables on Phoebe's, Calvin's and Bridget's pack READMEs.
+- **Step 1 (#94):** the grader notes left Phoebe's card files for `cards/grader-notes.md`, which
+  nothing reads; 155 lines moved whole, none reworded; her prompt 10,811 characters shorter; the
+  Tool and Knowledge pack tabs byte-identical before and after. Line 6 to yes.
+- **Steps 2 and 3 (#95):** her tool from her pack's `tool/README.md`, generated into her prompt;
+  her level, screen, held to the roster by `check-roster`; Wellington named as her lead; the six
+  worksheet rows travel with every ask from the console and the Commons and come back as "What the
+  worksheet shows" after the cache breakpoint. Lines 2, 3, 7 and 10 to yes; 8 and 9 moved.
+- **Two measured runs, both zero empty in sixty**, within her bar of 1 in 60 (ruling R4). One walk
+  captured for stop 3. `scripts/measure-phoebe.mjs` is the instrument, run by hand, never a gate.
+
+**Remaining — steps 4, 5 and 6, as pull request D, one full walk at eyeball stop 4.**
+
+- **Step 4 — the hand-back field.** Her output gains `handBack`, `none` or `wellington`, checked
+  against that closed list by the relay and the client, dropped when unknown; when set, the console
+  offers the way back to Dispatches. Rung 2 stays as written (ruling R1): out of her lane she still
+  names the colleague's facts in her own words and sets the field. On the Commons the hand-back is to
+  the shelf; one sentence in her prompt covers it. Line 8 to yes.
+- **Step 5 — the walk in order, and the shown line.** Her prompt gains the rule to work the six rows
+  in the manual's order from the first unchecked one, one row, one question. Under any turn of hers
+  that moved a row the console draws one caption line from `criteriaUpdates`, never from prose:
+  "Worksheet: 3 Met · 4 Not yet", same place and size as the citation line, no new colour (ruling R3:
+  on prose, before-and-after capture in the pull request, she may strike it at the eyeball). Proof is
+  a measured walk with real calls on `measure-wellington`'s pattern: a scripted visitor answers the
+  six in turn across N runs; questions per reply, order rows moved, turns to six verdicts, empty or
+  refused turns, cards cited. Lines 4 and 5 to yes.
+- **Step 6 — the instrument comes out.** `PHOEBE_DIAGNOSE` and its `diag()` calls removed from
+  `api/phoebe.ts`, as item A6 named; the measured-run method written into the pack's
+  `evals/README.md` as an internal gate, one paragraph, no score.
+- **Eyeball stop 4:** one full desk walk from Wellington's invite through six rows one at a time,
+  with the shown line under each turn, to the hand-back and the Dispatches invite; capture and the
+  walk's counts in the pull request. A third measured run on the final prompt, counts and cost in
+  one plain sentence in the For Amy block, stopping if worse than 1 in 60.
+
+**Named, not built:** Wellington reading the record's eligibility section — her verdicts — in his
+visit block, and greeting the visitor back knowing what she found. Its own brief, after Phoebe.
+Calvin's and Bridget's briefs come after, on the same ten lines.
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+## Previously — one roster
 
 **18 Sep 2026, second sitting. Pull request #91, merged the same day on her eyeball.** One brief, item A13. A
 build-time check, one word changed on screen, and docs. No new chat, seat or Meet-level page. No
@@ -508,6 +559,10 @@ full in item S9. Maintainer's ruling, 30 Aug 2026: **the screenshots are not com
 is nothing left for images to teach.** No folder waits for them.
 
 ## Building next — the hero chat, when its reference arrives
+
+**Building next, from 21 Sep 2026: pull request D of the specialist contract batch — steps 4, 5 and 6,
+one full walk at eyeball stop 4.** See *In progress* at the head of this file. The batch is approved;
+nothing else starts before it lands.
 
 ~~**The OPEN_ITEMS triage is next, by the maintainer's word of 17 Sep 2026**~~ **Done 18 Sep 2026;
 the next brief is hers to name, and the BONES bucket in OPEN_ITEMS is the shortlist.** Her word of
