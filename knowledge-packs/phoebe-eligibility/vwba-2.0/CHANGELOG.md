@@ -1,5 +1,17 @@
 # Changelog — vwba-2.0
 
+## 0.4.2 — 21 Sep 2026
+
+- **Contract table refreshed for steps 4 and 5; the measured run written down.** Line 8,
+  hands back, reads yes: her answer carries `handBack`, `none` or `wellington`, checked
+  against that closed list by the relay and the client, and the console draws the way
+  back from the field alone. Lines 4 and 5 read yes: her prompt walks the six rows in
+  the manual's order from the first unchecked, one row, one question, and under any turn
+  that moved a row the console draws one line from her verdicts. `evals/README.md` now
+  says how the measured run and the measured walk are done and what the bar is — an
+  internal gate, one paragraph, no score. The A6 diagnostic switch left her relay. No
+  card changed. Item A15, steps 4 to 6.
+
 ## 0.4.1 — 21 Sep 2026
 
 - **Contract table refreshed for step 3.** Line 3, sees its tool's state, reads yes:

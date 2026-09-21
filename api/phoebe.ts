@@ -94,28 +94,6 @@ const MAX_TOKENS = 16000;
 const EFFORT = 'medium' as const;
 
 /**
- * DIAGNOSIS INSTRUMENTATION — item A6, added 28 Aug 2026. Temporary.
- *
- * Phoebe fails about a third of the time on an ordinary question, measured
- * over twenty requests. Four faults were seen and none of them is explained:
- * empty answers far below the budget, an API error 400 on our own request, a
- * seven-character reply delivered to the caller, and answers ranging from 569
- * to 1,503 characters on identical input.
- *
- * The existing failure logs say what happened and not why. An empty answer
- * logs its token spend and nothing about the stop reason, the content blocks
- * returned, or how long the call took. This adds that, and only that — no
- * behaviour changes, nothing a visitor sees.
- *
- * OFF UNLESS ASKED. Set PHOEBE_DIAGNOSE=1 in the environment. A diagnosis that
- * ships as permanent noise is how logs stop being read.
- *
- * IT NEVER LOGS THE VISITOR'S QUESTION, only its length. The abstention log is
- * where question text belongs, under the rules written for it.
- *
- * REMOVE THIS once item A6 reports. It is debt, and it is named as debt.
- */
-/**
  * How long the relay waits for the model before giving up.
  *
  * IT HAD NONE. The call was made with no timeout at all: on a laptop that is
@@ -148,13 +126,6 @@ const CALL_TIMEOUT_MS = 120_000;
  * Retrying a real 400 would be a bug, and this cannot become one.
  */
 const LATE_400_MS = 5_000;
-
-const DIAGNOSE = process.env.PHOEBE_DIAGNOSE === '1';
-
-function diag(label: string, fields: Record<string, unknown>): void {
-  if (!DIAGNOSE) return;
-  console.error(`phoebe/diag ${label} ${JSON.stringify(fields)}`);
-}
 
 /** Reads a property off an unknown thrown value without assuming its shape. */
 function pick(value: unknown, key: string): unknown {
@@ -394,62 +365,18 @@ export async function POST(req: Request): Promise<Response> {
       const elapsed = Date.now() - calledAt;
       const lateFourHundred = status === 400 && elapsed > LATE_400_MS;
       if (!lateFourHundred) throw first;
-      diag('late-400-retry', {
-        firstAttemptMs: elapsed,
-        requestId: pick(first, 'request_id') ?? pick(first, 'requestID'),
-      });
       console.error(
         `phoebe: a 400 arrived after ${(elapsed / 1000).toFixed(1)}s, which is too late to be a malformed request — retrying once`
       );
       response = await callModel();
     }
   } catch (error) {
-    /* Fault 2 of item A6 is an API error 400 on our own request. This records
-       what we sent, so that fault is explicable rather than mysterious. */
-    diag('api-error', {
-      ms: Date.now() - calledAt,
-      status: pick(error, 'status'),
-      name: pick(error, 'name'),
-      message: String(pick(error, 'message') ?? '').slice(0, 400),
-      requestId: pick(error, 'request_id') ?? pick(error, 'requestID'),
-      sent: {
-        model: MODEL,
-        maxTokens: MAX_TOKENS,
-        effort: EFFORT,
-        systemChars: SYSTEM_PROMPT.length,
-        messageCount: clean.length,
-        messageChars: clean.map((m) => m.content.length),
-        roles: clean.map((m) => m.role),
-      },
-    });
     return undelivered(fromApiError(error));
   }
-
-  /* Every response, good or bad, so a failure can be read against a success
-     rather than on its own. */
-  diag('response', {
-    ms: Date.now() - calledAt,
-    /* Which settings produced this number. Added after a measurement run was
-       nearly attributed to the wrong model: a second dev server could not take
-       the port, exited, and the requests went to the one still running. A
-       measurement that does not say what produced it is not a measurement. */
-    model: MODEL,
-    effort: EFFORT,
-    stopReason: response.stop_reason,
-    blocks: response.content.map((b) => b.type),
-    usage: {
-      input: response.usage.input_tokens,
-      output: response.usage.output_tokens,
-      cacheRead: response.usage.cache_read_input_tokens ?? 0,
-      cacheWrite: response.usage.cache_creation_input_tokens ?? 0,
-    },
-    budget: MAX_TOKENS,
-  });
 
   /* Claude Sonnet 5 can decline a request outright. That is a real state and
      it gets said, not smoothed over into an empty answer. */
   if (response.stop_reason === 'refusal') {
-    diag('refusal', { output: response.usage.output_tokens, blocks: response.content.map((b) => b.type) });
     return undelivered(
       problem(
         502,
@@ -484,12 +411,6 @@ export async function POST(req: Request): Promise<Response> {
   try {
     parsed = JSON.parse(text);
   } catch {
-    diag('unparseable', {
-      stopReason: response.stop_reason,
-      textChars: text.length,
-      output: response.usage.output_tokens,
-      textPreview: text.slice(0, 300),
-    });
     console.error(
       `phoebe: reply was not the JSON shape requested — ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens`
     );
@@ -510,21 +431,6 @@ export async function POST(req: Request): Promise<Response> {
      showing a blank turn would be the dishonest fix. */
   const answer = validate(parsed);
   if (!answer) {
-    /* Fault 1 of item A6. The stop reason is the field nobody has looked at,
-       and the parsed shape says whether she wrote a well-formed answer with an
-       empty reply or something else entirely. */
-    diag('empty-answer', {
-      stopReason: response.stop_reason,
-      textChars: text.length,
-      parsedKeys:
-        typeof parsed === 'object' && parsed !== null ? Object.keys(parsed) : typeof parsed,
-      replyType: typeof pick(parsed, 'reply'),
-      replyChars: String(pick(parsed, 'reply') ?? '').length,
-      abstained: pick(parsed, 'abstained'),
-      output: response.usage.output_tokens,
-      budget: MAX_TOKENS,
-      textPreview: text.slice(0, 300),
-    });
     console.error(
       `phoebe: returned an empty answer — ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens, most of it hidden thinking`
     );
@@ -543,15 +449,6 @@ export async function POST(req: Request): Promise<Response> {
      message — see api/_reply.ts for where the number comes from and why this
      is not the schema minimum item A4 refused. */
   if (isDegenerateReply(answer.reply)) {
-    diag('degenerate-reply', {
-      stopReason: response.stop_reason,
-      replyChars: answer.reply.length,
-      reply: JSON.stringify(answer.reply),
-      citedCards: answer.citedCards?.length ?? 0,
-      abstained: answer.abstained,
-      output: response.usage.output_tokens,
-      floor: MIN_REPLY_CHARS,
-    });
     console.error(
       `phoebe: returned an answer too short to be one — ${answer.reply.trim().length} characters against a floor of ${MIN_REPLY_CHARS}, ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens`
     );
@@ -562,22 +459,6 @@ export async function POST(req: Request): Promise<Response> {
       )
     );
   }
-
-  /* Fault 4 of item A6 is that answers vary enormously on identical input, so
-     the successes have to be measured as well as the failures. */
-  diag('delivered', {
-    stopReason: response.stop_reason,
-    replyChars: answer.reply.length,
-    citedCards: answer.citedCards?.length ?? 0,
-    abstained: answer.abstained,
-    handBack: answer.handBack,
-    output: response.usage.output_tokens,
-    /* A reply of one to three characters has reached a caller. The length said
-       so and nothing said what those characters were, which is the difference
-       between a stray full stop and a word. Quoted, so whitespace is visible.
-       Only for tiny replies: a full answer's text is not diagnostic. */
-    ...(answer.reply.length <= 40 ? { replyPreview: JSON.stringify(answer.reply) } : {}),
-  });
 
   /* Recorded before the answer goes out, and awaited rather than left running:
      once a Response is returned the platform may stop this function where it

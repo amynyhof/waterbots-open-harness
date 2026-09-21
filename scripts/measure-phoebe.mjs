@@ -3,8 +3,7 @@
  * NOT A GATE — it spends money on every run, so it is run by hand after a
  * change to her prompt and its counts are reported, never assumed.
  *
- *   npx vite                                 (with ANTHROPIC_API_KEY in the environment;
- *                                             PHOEBE_DIAGNOSE=1 puts stop reasons in the server log)
+ *   npx vite                                 (with ANTHROPIC_API_KEY in the environment)
  *   node scripts/measure-phoebe.mjs [runs=20]
  *
  * THE INSTRUMENT ITEM A6 SETTLED ON, 28 Aug 2026. Three standing questions —

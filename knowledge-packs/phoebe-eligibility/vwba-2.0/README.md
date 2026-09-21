@@ -1,6 +1,6 @@
 # vwba-2.0 — Phoebe's Knowledge Pack
 
-**Version 0.4.1.** This folder is the one home of what Phoebe knows. The card
+**Version 0.4.2.** This folder is the one home of what Phoebe knows. The card
 files live in [`cards/`](./cards/), and everything on the live site that reads
 them reads them from here. Maintainer's ruling, 17 Sep 2026.
 
