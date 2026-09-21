@@ -120,6 +120,15 @@ const BUNDLES = [
     stale: 'The relay would deploy with out-of-date cards.',
   },
   {
+    label: 'tool',
+    target: 'api/_tool.generated.ts',
+    /* What Phoebe is told about her one tool, from her pack. Contract lines 2
+       and 10, item A15, 21 Sep 2026. Only the marked region embeds; the rest
+       of the README is for people. */
+    sources: [{ name: 'PHOEBE_TOOL_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/tool/README.md', region: 'AGENT-FACING' }],
+    stale: 'The relay would deploy with an out-of-date account of her tool, so she could describe a row or a field the pack no longer holds.',
+  },
+  {
     label: 'primer',
     target: 'api/_primer.generated.ts',
     /* The primer moved into the shared pack on 17 Sep 2026; it was at the

@@ -1,5 +1,27 @@
 # Changelog — vwba-2.0
 
+## 0.4.1 — 21 Sep 2026
+
+- **Contract table refreshed for step 3.** Line 3, sees its tool's state, reads yes:
+  the six rows go with every ask from the console and the Commons seat and come
+  back as "What the worksheet shows" after the cache breakpoint, each verdict
+  marked as her own from earlier in the conversation. Line 10 reads yes. Line 9
+  moves: her verdicts are the record's eligibility section, read back to her and
+  carried on the seal; Wellington's reading of it is named, not built. No pack
+  content changed. Item A15, step 3.
+
+## 0.4.0 — 21 Sep 2026
+
+- **What Phoebe is told about her tool, from this pack.** `tool/README.md` gains a
+  region between AGENT-FACING markers, generated into `api/_tool.generated.ts` by
+  `build-prompt-modules` and embedded in her prompt as "Your tool": one tool, the
+  eligibility worksheet; six rows in the manual's order; the three states a row
+  takes and the route forward; where a row's value comes from; the four record
+  fields she reads first, what each takes and where it comes from; ask for
+  everything when no record comes; say what settled a row. Contract lines 2 and 10.
+  Her prompt also says her level, screen, held to the roster by `check-roster`,
+  and that Wellington leads. Lines 2 and 7 read yes; 8 and 10 move. Item A15, step 2.
+
 ## 0.3.0 — 20 Sep 2026
 
 - **The grader notes left the card files.** Item K10, part 2, by the maintainer's

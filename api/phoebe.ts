@@ -26,7 +26,7 @@ import { recordAbstention } from './_abstentions.js';
 import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
 import { PHOEBE, countOneMessage, timeUntilReset } from './_cap.js';
 import { RESPONSE_SCHEMA, SYSTEM_PROMPT } from './_systemPrompt.js';
-import { phoebeNotesBlock, readRecord, recordBlock } from './_record.js';
+import { phoebeNotesBlock, readRecord, readWorksheet, recordBlock, worksheetBlock } from './_record.js';
 
 /**
  * Claude Sonnet 5 — the maintainer's ruling of 21 Aug 2026.
@@ -222,11 +222,18 @@ export async function GET(): Promise<Response> {
 }
 
 export async function POST(req: Request): Promise<Response> {
-  let body: { messages?: IncomingMessage[]; record?: unknown; opened?: unknown; eligibilityDone?: unknown };
+  let body: {
+    messages?: IncomingMessage[];
+    record?: unknown;
+    worksheet?: unknown;
+    opened?: unknown;
+    eligibilityDone?: unknown;
+  };
   try {
     body = (await req.json()) as {
       messages?: IncomingMessage[];
       record?: unknown;
+      worksheet?: unknown;
       opened?: unknown;
       eligibilityDone?: unknown;
     };
@@ -282,6 +289,14 @@ export async function POST(req: Request): Promise<Response> {
      and only this small block changes between visitors. */
   const record = readRecord(body.record);
   const notes = phoebeNotesBlock({ opened, eligibilityDone });
+
+  /* THE WORKSHEET AS IT STANDS — contract line 3, item A15, step 3,
+     21 Sep 2026. The six rows the shell holds, checked in _record.ts, or
+     null for an old client. It rides as a system block AFTER the cache
+     breakpoint, beside the record, so her cards stay cached and only these
+     small blocks change between asks. Every verdict in it is her own. */
+  const worksheet = readWorksheet(body.worksheet);
+  const worksheetText = worksheet ? worksheetBlock(worksheet) : null;
 
 
   /* The configuration check sits AFTER the request is validated, on purpose.
@@ -354,6 +369,7 @@ export async function POST(req: Request): Promise<Response> {
         system: [
           { type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
           ...(record ? [{ type: 'text' as const, text: recordBlock(record) }] : []),
+          ...(worksheetText ? [{ type: 'text' as const, text: worksheetText }] : []),
           ...(notes ? [{ type: 'text' as const, text: notes }] : []),
         ],
         messages: clean,

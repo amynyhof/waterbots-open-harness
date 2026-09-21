@@ -153,3 +153,82 @@ export function visitBlock(record: ProjectRecord | null, stage?: ScreeningStage 
 export function stageBlock(stage: ScreeningStage): string {
   return [`# ${VISIT_HEADING}`, '', STAGE_LINES[stage]].join('\n');
 }
+
+/* --------------------------------------------------------------------------
+   The worksheet, as it stands — contract line 3, item A15, step 3,
+   21 Sep 2026. The six rows travel with every ask, from the console and from
+   the Commons seat, and come back to Phoebe as a block after the cache
+   breakpoint. Every verdict in it is one she set earlier this visit; the
+   shell holds the rows and nobody else writes them. Checked here: a row is
+   a number in the manual's range, a state from the closed set, and a route
+   forward only on a Not yet row, capped; anything else is dropped whole.
+   -------------------------------------------------------------------------- */
+
+export type WorksheetState = 'unchecked' | 'met' | 'not-yet';
+
+export interface WorksheetRow {
+  number: number;
+  state: WorksheetState;
+  routeForward?: string;
+}
+
+/** The heading Phoebe's prompt names, so she knows the block when she sees it. */
+export const WORKSHEET_HEADING = 'What the worksheet shows';
+
+/** Six criteria, the manual's own count; a row outside it is dropped. */
+export const WORKSHEET_ROWS = 6;
+
+/** A route forward is a sentence or two, never an essay. */
+export const MAX_ROUTE_CHARS = 500;
+
+const STATES: readonly WorksheetState[] = ['unchecked', 'met', 'not-yet'];
+
+/**
+ * Read the rows off a request body. Null when nothing usable came, which is
+ * the case for an old client or a caller that is not the console.
+ */
+export function readWorksheet(value: unknown): WorksheetRow[] | null {
+  if (!Array.isArray(value)) return null;
+  const rows: WorksheetRow[] = [];
+  const seen = new Set<number>();
+  for (const raw of value) {
+    if (typeof raw !== 'object' || raw === null) continue;
+    const r = raw as Record<string, unknown>;
+    const number = typeof r.number === 'number' && Number.isInteger(r.number) ? r.number : null;
+    if (number === null || number < 1 || number > WORKSHEET_ROWS || seen.has(number)) continue;
+    const state = STATES.find((s) => s === r.state);
+    if (!state) continue;
+    const route = typeof r.routeForward === 'string' ? r.routeForward.trim() : '';
+    if (state === 'not-yet' && route.length > MAX_ROUTE_CHARS) continue;
+    seen.add(number);
+    rows.push(state === 'not-yet' && route ? { number, state, routeForward: route } : { number, state });
+  }
+  if (rows.length === 0) return null;
+  rows.sort((a, b) => a.number - b.number);
+  return rows;
+}
+
+const STATE_WORDS: Record<WorksheetState, string> = {
+  unchecked: 'Not yet checked',
+  met: 'Met',
+  'not-yet': 'Not yet',
+};
+
+/**
+ * The block as Phoebe reads it: each row's state, where a verdict came from,
+ * and the one rule for what to do with it.
+ */
+export function worksheetBlock(rows: WorksheetRow[]): string {
+  const lines = rows.map((row) => {
+    if (row.state === 'unchecked') return `- Row ${row.number}: ${STATE_WORDS.unchecked}.`;
+    const route = row.routeForward ? ` — what would change it: ${row.routeForward}` : '';
+    return `- Row ${row.number}: ${STATE_WORDS[row.state]}${route} — from your own earlier turn in this conversation.`;
+  });
+  return [
+    `# ${WORKSHEET_HEADING}`,
+    '',
+    'The rows of your eligibility worksheet as they stand for this visit. Every verdict below is one you set earlier in this conversation, from what the visitor told you; a row marked Not yet checked has not been looked at. Start from the first row not yet checked, and do not ask again for what a Met row already settled. When the visitor asks where a row stands, read it from here.',
+    '',
+    ...lines,
+  ].join('\n');
+}

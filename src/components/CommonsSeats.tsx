@@ -56,14 +56,17 @@ export function PhoebeCommonsSeat() {
     history: { role: 'user' | 'agent'; text: string }[],
     signal: AbortSignal
   ): Promise<AgentTurn> {
-    /* No record: the Commons carries no visit. */
+    /* No record: the Commons carries no visit. The seat's own rows do go,
+       though — contract line 3, 21 Sep 2026 — so she sees her tool's state
+       here as on the console. */
     const answer = await askPhoebe(
       history.map(({ role, text }) => ({
         role: role === 'agent' ? ('assistant' as const) : ('user' as const),
         content: text,
       })),
       null,
-      signal
+      signal,
+      { worksheet: statuses }
     );
     if (answer.updates.length) setStatuses((s) => applyCriterionUpdates(s, answer.updates));
     return {

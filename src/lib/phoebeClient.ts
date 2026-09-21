@@ -57,21 +57,47 @@ export function carriedRecord(context: CarriedRecord): CarriedRecord | null {
   return record.does || record.kind || record.place || record.name ? record : null;
 }
 
+/**
+ * A worksheet row as the relay expects it — contract line 3, item A15,
+ * step 3, 21 Sep 2026. The number is the criterion's own; the state and the
+ * route forward are the row's as the shell holds them. The relay checks each
+ * row again (api/_record.ts) and drops what it cannot read.
+ */
+export interface CarriedRow {
+  number: number;
+  state: CriterionState;
+  routeForward?: string;
+}
+
+/** The six rows in the manual's order, from wherever they are held. */
+export function carriedWorksheet(statuses: CriterionStatus[]): CarriedRow[] {
+  return statuses.map((status, i) => ({
+    number: CRITERIA[i]?.number ?? i + 1,
+    state: status.state,
+    ...(status.state === 'not-yet' && status.routeForward ? { routeForward: status.routeForward } : {}),
+  }));
+}
+
 export async function askPhoebe(
   history: { role: 'user' | 'assistant'; content: string }[],
   record: CarriedRecord | null,
   signal?: AbortSignal,
-  opts?: { opened?: boolean; eligibilityDone?: boolean }
+  opts?: { opened?: boolean; eligibilityDone?: boolean; worksheet?: CriterionStatus[] }
 ): Promise<PhoebeAnswer> {
   let response: Response;
   try {
     const body: {
       messages: typeof history;
       record?: CarriedRecord;
+      worksheet?: CarriedRow[];
       opened?: true;
       eligibilityDone?: true;
     } = { messages: history };
     if (record) body.record = record;
+    /* The rows go with every ask, from the console and from the Commons
+       seat, so she sees her tool's state — what is filled in and what is
+       still missing — rather than remembering it from her own turns. */
+    if (opts?.worksheet && opts.worksheet.length > 0) body.worksheet = carriedWorksheet(opts.worksheet);
     if (opts?.opened) body.opened = true;
     if (opts?.eligibilityDone) body.eligibilityDone = true;
     response = await fetch('/api/phoebe', {

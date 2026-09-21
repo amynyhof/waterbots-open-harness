@@ -166,6 +166,31 @@ const block = recordBlock(readRecord({ does: 'Boreholes for households', place: 
 expect('the block carries only what was said, and says it is never a verdict', block.includes('Boreholes for households') && block.includes('Kampala, Uganda') && !block.includes('What kind') && !block.includes('What it is called') && /never a verdict/.test(block), block);
 expect("Phoebe's prompt names the block and keeps the cards as the only judge", PHOEBE_PROMPT.includes(RECORD_HEADING) && /only the cards decide that/.test(PHOEBE_PROMPT), 'her prompt does not know the block');
 
+/* Contract lines 2, 7, 8 and 10 — item A15, 21 Sep 2026. Her tool comes from
+   her pack's tool README, generated; it must name the four record fields as
+   the block prints them, the six rows, and the record block's own heading,
+   so what she is told about her inputs cannot drift from what she is sent. */
+const RECORD_FIELDS = ['What it does', 'What kind', 'Where it is', 'What it is called'];
+expect(
+  "Phoebe's prompt carries her tool from her pack — the six rows, the four record fields as the block names them, and the block's heading",
+  /# Your tool/.test(PHOEBE_PROMPT) &&
+    /one tool: the eligibility worksheet/.test(PHOEBE_PROMPT) &&
+    /Six rows/.test(PHOEBE_PROMPT) &&
+    RECORD_FIELDS.every((f) => PHOEBE_PROMPT.includes(`**${f}**`)) &&
+    PHOEBE_PROMPT.includes(`"${RECORD_HEADING}"`),
+  'her tool section is missing, or names a field the block does not print'
+);
+expect(
+  "Phoebe's tool section says where a row's value comes from and what a row takes, and never a number",
+  /Where a row's value comes from/.test(PHOEBE_PROMPT) && /never takes\s+a number/.test(PHOEBE_PROMPT) && /ask for everything you need/.test(PHOEBE_PROMPT),
+  'line 10 is not in her tool section'
+);
+expect(
+  "Phoebe's prompt says her level and who leads",
+  /you work at the \w+ level/.test(PHOEBE_PROMPT) && /Wellington is the Team Lead, and he leads the visit/.test(PHOEBE_PROMPT),
+  'her level sentence or her lead sentence is missing'
+);
+
 /* ---------------------------------------------------------------------------
    The same record reaches Wellington — 16 Sep 2026. With facts on the visit,
    his next turn is told not to ask for those same facts; with an empty visit
@@ -229,6 +254,37 @@ expect(
   /Send them back to Wellington on Dispatches/.test(phoebeNotesBlock({ eligibilityDone: true })),
   phoebeNotesBlock({ eligibilityDone: true })
 );
+/* The worksheet as it stands — contract line 3, item A15, step 3, 21 Sep 2026.
+   The rows are checked, not trusted: a number outside the manual's six, an
+   unknown state, a route on a Met row, an over-long route, a duplicate row —
+   each is dropped whole. An empty or junk list sends no block. */
+const { readWorksheet, worksheetBlock, WORKSHEET_HEADING } = await loadApi('_record.js');
+expect('a junk worksheet is nothing, never a block', readWorksheet('x') === null && readWorksheet([]) === null && readWorksheet([{ number: 9, state: 'met' }]) === null && readWorksheet([{ number: 1, state: 'partly' }]) === null, 'junk rows passed');
+expect(
+  'a route forward is kept only on a Not yet row, and never over-long',
+  readWorksheet([{ number: 2, state: 'met', routeForward: 'x' }])?.[0].routeForward === undefined &&
+    readWorksheet([{ number: 2, state: 'not-yet', routeForward: 'A written record of the consultation.' }])?.[0].routeForward === 'A written record of the consultation.' &&
+    readWorksheet([{ number: 2, state: 'not-yet', routeForward: 'x'.repeat(501) }]) === null,
+  'route handling'
+);
+expect('rows come back in the manual\'s order, one per number', JSON.stringify(readWorksheet([{ number: 3, state: 'unchecked' }, { number: 1, state: 'met' }, { number: 1, state: 'not-yet', routeForward: 'again' }]).map((r) => r.number)) === '[1,3]', 'order or dedupe');
+const sheet = worksheetBlock(readWorksheet([{ number: 1, state: 'met' }, { number: 2, state: 'not-yet', routeForward: 'A written record.' }, { number: 3, state: 'unchecked' }]));
+expect(
+  'the block names each row\'s state, where a verdict came from, and the one rule',
+  sheet.startsWith(`# ${WORKSHEET_HEADING}`) && /Row 1: Met — from your own earlier turn/.test(sheet) && /Row 2: Not yet — what would change it: A written record\./.test(sheet) && /Row 3: Not yet checked\./.test(sheet) && /Start from the first row not yet checked/.test(sheet),
+  sheet
+);
+expect("Phoebe's prompt names the worksheet block and reads her state from it", PHOEBE_PROMPT.includes(`"${WORKSHEET_HEADING}"`) && /rather than from memory/.test(PHOEBE_PROMPT), 'her prompt does not know the worksheet block');
+expect("Wellington's prompt does not carry the worksheet block", !WELLINGTON_SYSTEM_PROMPT.includes(WORKSHEET_HEADING), 'the worksheet heading leaked into his prompt');
+const phoebeRelaySource = readFileSync('api/phoebe.ts', 'utf8');
+expect(
+  "Phoebe's relay attaches the worksheet block after the cache breakpoint, only when rows came",
+  /readWorksheet\(body\.worksheet\)/.test(phoebeRelaySource) &&
+    /worksheetText/.test(phoebeRelaySource) &&
+    phoebeRelaySource.indexOf('text: worksheetText') > phoebeRelaySource.indexOf("cache_control: { type: 'ephemeral' }"),
+  'the worksheet block is missing, or sits above the cache breakpoint'
+);
+
 const relaySource = readFileSync('api/wellington.ts', 'utf8');
 expect(
   'the relay attaches the visit block after the cache breakpoint, only when a record or stage is present',
