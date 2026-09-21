@@ -380,6 +380,32 @@ console.log(`\n  ${PROMPT}\n`);
 }
 
 /* ---------------------------------------------------------------------------
+   A specialist's level sentence — contract line 7, checked and never rendered.
+   Item A15, 21 Sep 2026: the sentence is typed in the prompt under the
+   maintainer's rules; the level word is the roster's, and one sentence can
+   only be true if the free door and the Commons give the same level. A new
+   specialist with a chat is one row here.
+--------------------------------------------------------------------------- */
+
+const LEVEL_PROMPTS = { Phoebe: 'api/_systemPrompt.ts' };
+
+console.log('\n  Level sentences\n');
+
+for (const [name, file] of Object.entries(LEVEL_PROMPTS)) {
+  const seat = seatOfFace(name);
+  const promptLines = readFileSync(file, 'utf8').replace(/\r\n/g, '\n').split('\n');
+  const index = promptLines.findIndex((l) => /you work at the \w+ level/.test(l));
+  expect(`${name}'s prompt has its level sentence`, index >= 0, `${file} — no "you work at the … level" sentence`);
+  if (index < 0 || !seat) continue;
+  const word = promptLines[index].match(/you work at the (\w+) level/)[1];
+  const free = seatDoor(seat, 'free').level;
+  const commons = seatDoor(seat, 'commons').level;
+  const where = `${file}:${index + 1}`;
+  expect(`${name}'s one sentence covers the free door and the Commons, and the roster gives both "${free}"`, free === commons, `${where} against ${at(seat.node.get('doors', true))} — free "${free}", commons "${commons}"`);
+  expect(`${name}'s level word "${word}" is the roster's "${free}"`, word === free, `${where} against ${at(seat.node.get('doors', true))}`);
+}
+
+/* ---------------------------------------------------------------------------
    What is allowed to be absent — printed, never silent.
 --------------------------------------------------------------------------- */
 

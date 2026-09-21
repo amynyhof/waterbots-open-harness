@@ -3,6 +3,13 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.5.0 — 21 Sep 2026
+
+- **Phoebe is told about her tool from her pack.** `phoebe-eligibility@0.4.0`
+  (`vwba-2.0@0.4.0`): the tool README gains an agent-facing region, generated into
+  her prompt under the staleness gate. Contract lines 2 and 7 read yes; 8 and 10
+  move. Item A15, step 2.
+
 ## 0.4.0 — 20 Sep 2026
 
 - **The grader notes left Phoebe's card files.** `phoebe-eligibility@0.3.0`

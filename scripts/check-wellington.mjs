@@ -166,6 +166,31 @@ const block = recordBlock(readRecord({ does: 'Boreholes for households', place: 
 expect('the block carries only what was said, and says it is never a verdict', block.includes('Boreholes for households') && block.includes('Kampala, Uganda') && !block.includes('What kind') && !block.includes('What it is called') && /never a verdict/.test(block), block);
 expect("Phoebe's prompt names the block and keeps the cards as the only judge", PHOEBE_PROMPT.includes(RECORD_HEADING) && /only the cards decide that/.test(PHOEBE_PROMPT), 'her prompt does not know the block');
 
+/* Contract lines 2, 7, 8 and 10 — item A15, 21 Sep 2026. Her tool comes from
+   her pack's tool README, generated; it must name the four record fields as
+   the block prints them, the six rows, and the record block's own heading,
+   so what she is told about her inputs cannot drift from what she is sent. */
+const RECORD_FIELDS = ['What it does', 'What kind', 'Where it is', 'What it is called'];
+expect(
+  "Phoebe's prompt carries her tool from her pack — the six rows, the four record fields as the block names them, and the block's heading",
+  /# Your tool/.test(PHOEBE_PROMPT) &&
+    /one tool: the eligibility worksheet/.test(PHOEBE_PROMPT) &&
+    /Six rows/.test(PHOEBE_PROMPT) &&
+    RECORD_FIELDS.every((f) => PHOEBE_PROMPT.includes(`**${f}**`)) &&
+    PHOEBE_PROMPT.includes(`"${RECORD_HEADING}"`),
+  'her tool section is missing, or names a field the block does not print'
+);
+expect(
+  "Phoebe's tool section says where a row's value comes from and what a row takes, and never a number",
+  /Where a row's value comes from/.test(PHOEBE_PROMPT) && /never takes\s+a number/.test(PHOEBE_PROMPT) && /ask for everything you need/.test(PHOEBE_PROMPT),
+  'line 10 is not in her tool section'
+);
+expect(
+  "Phoebe's prompt says her level and who leads",
+  /you work at the \w+ level/.test(PHOEBE_PROMPT) && /Wellington is the Team Lead, and he leads the visit/.test(PHOEBE_PROMPT),
+  'her level sentence or her lead sentence is missing'
+);
+
 /* ---------------------------------------------------------------------------
    The same record reaches Wellington — 16 Sep 2026. With facts on the visit,
    his next turn is told not to ask for those same facts; with an empty visit

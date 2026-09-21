@@ -1,5 +1,11 @@
 # Changelog — phoebe-eligibility
 
+## 0.4.0 — 21 Sep 2026
+
+- `vwba-2.0@0.4.0` — the tool README gains the agent-facing region her prompt
+  embeds: one tool, six rows, what a row takes, where a value comes from, the four
+  record fields, the Commons rule. Item A15, step 2.
+
 ## 0.3.0 — 20 Sep 2026
 
 - `vwba-2.0@0.3.0` — the grader notes moved out of both card files into
