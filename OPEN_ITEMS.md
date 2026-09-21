@@ -118,6 +118,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | A11 | The phase names are canon, and agents point at the step, never a tab | Agents | closed | **ruled and resolved 5 Sep 2026**, amended 7 Sep, same pull request — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | A12 | The two chats not built — Bridget's and Calvin's | Agents | PARK | **adopted 18 Sep 2026** from items A2 and S10; not scheduled |
 | A14 | Screen host role words — one home | Agents | BONES | **logged 18 Sep 2026 from the maintainer's word** — not fixed now |
+| A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Agents | BONES | **ruled 20 Sep 2026; the batch approved the same day** — in progress |
 | A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | ~~**logged 18 Sep 2026 from the maintainer's brief** — waits on her carry~~ **built 18 Sep 2026, #91 merged** — the free and Commons columns stay "unconfirmed" until she carries a confirmed file |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
 | S2 | The shared chat layer | Surfaces | closed | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -815,6 +816,58 @@ record and holds its `role` to the roster's seat label, which would trip Phoebe'
 is smaller and is the one-home rule applied; the second keeps a second copy and guards it.
 
 **Not scheduled.** Bucket BONES.
+
+## A15. The specialist contract — ten lines every specialist keeps; Phoebe first
+
+**Ruled 20 Sep 2026 from the maintainer's brief; proposal approved as a batch the same day.**
+Her ten lines live once, in [AGENT_RULES.md](./AGENT_RULES.md) under "The specialist
+contract", in her words. This row is the work's home. Her reason, in her words:
+
+> Every specialist on this site must behave the same way, so I can review one agent at a
+> time against one standard, and Deb's rig can grade each line.
+
+**Line 10 was added the same day, by her word, before the rulebook section merged**: what
+knowledge and values the tool needs, the kind of value each input takes, where it usually comes
+from; check the project context first, ask only for what is missing, say where each value came
+from. With it she named where the project context is at each door; both are in AGENT_RULES.md.
+Each pack table is ten rows. Phoebe reads partly on line 10; what reaching yes adds to steps 2
+and 3 is reported to her and waits on her go.
+
+**Where each agent stood on 20 Sep 2026**, read from the code: Phoebe one yes, seven partly,
+one no on the first nine, partly on the tenth — she never saw her own worksheet, was never told her level, and read the grader
+notes at the foot of her card files as knowledge. Bridget and Calvin, with no chat, no on
+nearly every line; the tool posts to the record and the agent does not exist to. The full
+tables live on each pack README under "The contract".
+
+**Her four rulings of 20 Sep 2026, on the proposal:**
+
+1. **Rung 2 stays as written, and line 8 adds to it.** Out of her lane a specialist still
+   says the colleague's facts in her own words, and sets a hand-back field so the console
+   offers the way back to Wellington, because he routes. Recorded in AGENT_RULES.md.
+2. **The grader-notes split (item K10, part 2) goes first.** Her card review runs alongside
+   as her own job; any wording she changes lands as its own commit under her eyeball, never
+   inside the move.
+3. **The shown line proceeds on prose**, with a before-and-after capture in the pull request;
+   same place and size as the citation line, no new colour; she may strike it at the eyeball.
+4. **The measured bar: no worse than 1 in 60 empty answers over sixty requests.** If any
+   measured run is worse, the engineer stops and tells her before going on. And every For
+   Amy block carries the measured counts in one plain sentence, and roughly what the run cost
+   in API calls.
+
+**The plan, six steps, four pull requests, four eyeball stops.** Step 0, the contract into the
+rulebook and the pack tables (own pull request). Step 1, the notes split (own pull request).
+Steps 2 and 3, her tool, her level and her lead in her prompt, and the worksheet's rows sent
+to her with every ask and read back as the record's eligibility section (one pull request, one
+walk). Steps 4, 5 and 6, the hand-back field, the walk in order with the shown line, and the
+A6 instrument removed (one pull request, one full walk). Item A6's residual faults block no
+line; they set the proof method.
+
+**Named, not built:** Wellington's side — reading her verdicts from the record and greeting
+the visitor back knowing what she found. Its own brief, after Phoebe. Calvin's and Bridget's
+briefs come after, each on the same nine lines; the lists are on their pack READMEs' tables
+and in item A12.
+
+**Bucket BONES.** In progress from 20 Sep 2026.
 
 
 # Family: Surfaces
@@ -1852,6 +1905,7 @@ zero holds for every one: nothing here is fetched, written to, or guessed at on 
 | Production's sign-up address for the Commons door | This site, once she carries it | item S18 |
 | The three changes Deb's rig needs, and later the trigger | Deb | item S18, slice 4; item S19 |
 | ~~`roster.yaml` from production~~ **Landed 18 Sep 2026**, version 0.3.0; the next carry is the confirmed one | This site | item A13 |
+| The specialist contract — the nine-line section of AGENT_RULES.md, her words | Production | item A15 |
 
 A carry is struck from this table when it lands, with the date. Nothing is built toward any of them
 from here.

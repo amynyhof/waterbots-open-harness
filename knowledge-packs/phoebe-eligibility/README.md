@@ -1,6 +1,6 @@
 # phoebe-eligibility — eligibility and feasibility (open)
 
-**Version 0.2.0.** Phoebe staffs Eligibility. Her Knowledge Pack is
+**Version 0.2.1.** Phoebe staffs Eligibility. Her Knowledge Pack is
 [`vwba-2.0/`](./vwba-2.0/). The two card files live there, in
 [`vwba-2.0/cards/`](./vwba-2.0/cards/), and the live site reads them from there.
 
