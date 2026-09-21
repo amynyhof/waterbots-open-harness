@@ -6,6 +6,9 @@
  * AgentHost it is handed. Markers and citations render in AnswerBody and
  * nowhere else.
  *
+ * A TURN MAY CARRY ONE CAPTION — the shown line, from a field, never from
+ * prose (contract line 5, 21 Sep 2026) — drawn in the citation line's class.
+ *
  * A TURN MAY CARRY ONE ACTION. Wellington routes; his adapter turns a route
  * field into a labelled action, and this draws it as the same quiet text link
  * the desk's rows use. ~~Phoebe's turns carry none.~~ Corrected 21 Sep 2026:
@@ -128,6 +131,9 @@ function HostBubble({ host, turn }: { host: AgentHost; turn: AgentTurn }) {
         </div>
         <div className="wb-bubble">
           <AnswerBody text={turn.text} evidence={turn.evidence} />
+          {/* The shown line — the citation line's own class, so it is the
+              same place, size and colour, and nothing new is invented. */}
+          {turn.caption && <div className="wb-cite-line" style={{ marginTop: 6 }}>{turn.caption}</div>}
           <TurnAction turn={turn} />
         </div>
       </div>

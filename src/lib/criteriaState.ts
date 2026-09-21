@@ -57,3 +57,19 @@ export const STATE_TOKEN: Record<CriterionState, string> = {
 export function initialStatuses(count: number): CriterionStatus[] {
   return Array.from({ length: count }, () => ({ state: 'unchecked' as const }));
 }
+
+/**
+ * The shown line — contract line 5, item A15, step 5, 21 Sep 2026. Under any
+ * turn of Phoebe's that moved a row, the console says what the worksheet now
+ * holds, in one caption drawn from her structured verdicts and never from her
+ * prose: "Worksheet: 3 Met · 2 Not yet". The counts are the whole worksheet
+ * after the move, so the line and the Tool tab cannot disagree. Rows not yet
+ * checked are not counted; an absence is not a verdict. Maintainer's ruling
+ * R3 of 20 Sep 2026: on prose, same place and size as the citation line, no
+ * new colour, and she may strike it at the eyeball.
+ */
+export function worksheetCaption(statuses: CriterionStatus[]): string {
+  const met = statuses.filter((s) => s.state === 'met').length;
+  const notYet = statuses.filter((s) => s.state === 'not-yet').length;
+  return `Worksheet: ${met} ${STATE_LABEL.met} · ${notYet} ${STATE_LABEL['not-yet']}`;
+}

@@ -351,6 +351,7 @@ const compileLib = spawnSync(
     join('src', 'lib', 'visit.ts'),
     join('src', 'lib', 'carried.ts'),
     join('src', 'lib', 'journey.ts'),
+    join('src', 'lib', 'criteriaState.ts'),
     '--outDir', libOut,
     '--module', 'commonjs',
     '--moduleResolution', 'node',
@@ -672,6 +673,31 @@ expect(
 );
 expect('the shell does not toast a bad carry', !/toast/i.test(appSource), 'a toast was added for a bad carry');
 expect('the contract comment names the four keys and forbids kind', /question=<≤500>\[&does=<≤300>\]\[&name=<≤80>\]\[&place=<≤80>\]/.test(readFileSync('src/lib/carried.ts', 'utf8')) && /No kind/.test(readFileSync('src/lib/carried.ts', 'utf8')), 'the contract comment does not match Shell A');
+
+/* ---------------------------------------------------------------------------
+   The walk in order and the shown line — contract lines 4 and 5, item A15,
+   step 5, 21 Sep 2026. The prompt carries the order rule; the caption is
+   drawn from her verdicts and the class the citation line wears, never from
+   prose; both seats attach it only under a turn that moved a row. How she
+   actually walks is measured with real calls — scripts/measure-phoebe-walk.mjs.
+--------------------------------------------------------------------------- */
+
+console.log('\n  The walk in order, and the shown line — contract lines 4 and 5\n');
+expect(
+  'her prompt walks the rows in order, one row, one question, from the first unchecked',
+  /Walk the rows in the manual's order — one row, one question/.test(PHOEBE_PROMPT) && /Never ask about two rows in one turn/.test(PHOEBE_PROMPT) && /the question you ask is always about the first row still unchecked/.test(PHOEBE_PROMPT),
+  'the order rule is missing or reworded past its parts'
+);
+const { worksheetCaption, initialStatuses } = createRequire(import.meta.url)(join(libOut, 'criteriaState.js'));
+expect('the shown line counts Met and Not yet on the whole worksheet, and not the unchecked', worksheetCaption([{ state: 'met' }, { state: 'not-yet', routeForward: 'x' }, { state: 'met' }, { state: 'unchecked' }, { state: 'unchecked' }, { state: 'unchecked' }]) === 'Worksheet: 2 Met · 1 Not yet', worksheetCaption([{ state: 'met' }]));
+expect('an untouched worksheet reads as zeros, never as six failures', worksheetCaption(initialStatuses(6)) === 'Worksheet: 0 Met · 0 Not yet', worksheetCaption(initialStatuses(6)));
+const transcriptSource = readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8');
+expect("the layer draws the caption in the citation line's own class, no new colour", /turn\.caption && <div className="wb-cite-line"/.test(transcriptSource), 'the caption is drawn in a class of its own, or not at all');
+expect(
+  'both seats draw it from her verdicts only under a turn that moved a row, never from prose',
+  /answer\.updates\.length\s*\?\s*\{ caption: worksheetCaption\(applyCriterionUpdates\(statuses, answer\.updates\)\) \}/.test(phoebeScreenSource) && /answer\.updates\.length\s*\?\s*\{ caption: worksheetCaption\(applyCriterionUpdates\(statuses, answer\.updates\)\) \}/.test(commonsSeatSource) && !/caption: [^w]/.test(phoebeScreenSource + commonsSeatSource),
+  'a seat draws the caption from something other than the moved rows'
+);
 
 /* ------------------------------------------------------------------------- */
 

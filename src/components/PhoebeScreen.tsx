@@ -44,7 +44,7 @@ import { useEffect, useRef } from 'react';
 import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
 import type { AgentHost, AgentTurn } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
-import type { CriterionStatus } from '../lib/criteriaState';
+import { worksheetCaption, type CriterionStatus } from '../lib/criteriaState';
 import { nextPhaseAfter, nextPhaseCompetes } from '../lib/journey';
 import { DESK_LABEL } from '../lib/surfaces';
 import { WELLINGTON } from '../lib/wellington';
@@ -54,7 +54,7 @@ import {
   CONSIDERATION_GROUPS,
   CRITERIA,
 } from '../lib/phoebeCards';
-import { askPhoebe, carriedRecord, type CriterionUpdate } from '../lib/phoebeClient';
+import { applyCriterionUpdates, askPhoebe, carriedRecord, type CriterionUpdate } from '../lib/phoebeClient';
 import type { Surface } from '../lib/surfaces';
 import type { VisitContext } from '../lib/visit';
 import AgentScreen from '../screen/AgentScreen';
@@ -129,6 +129,11 @@ export default function PhoebeScreen({
       text: answer.reply,
       evidence: answer.evidence,
       abstained: answer.abstained,
+      /* The shown line — contract line 5: what the worksheet holds after this
+         turn, from her verdicts alone, only under a turn that moved a row. */
+      ...(answer.updates.length
+        ? { caption: worksheetCaption(applyCriterionUpdates(statuses, answer.updates)) }
+        : {}),
       /* The way back to him, from the field alone. */
       ...(answer.handBack === 'wellington'
         ? { action: { label: `Back to Wellington on ${DESK_LABEL}`, go: () => onNavigate('desk') } }

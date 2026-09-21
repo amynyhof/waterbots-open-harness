@@ -39,7 +39,7 @@
 import { useEffect, useState } from 'react';
 import type { AgentTurn } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
-import { initialStatuses, type CriterionStatus } from '../lib/criteriaState';
+import { initialStatuses, worksheetCaption, type CriterionStatus } from '../lib/criteriaState';
 import { fittedPack, type PackValues } from '../lib/methodPacks';
 import { CRITERIA } from '../lib/phoebeCards';
 import { applyCriterionUpdates, askPhoebe } from '../lib/phoebeClient';
@@ -79,6 +79,10 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
       text: answer.reply,
       evidence: answer.evidence,
       abstained: answer.abstained,
+      /* The shown line — contract line 5 — from her verdicts alone. */
+      ...(answer.updates.length
+        ? { caption: worksheetCaption(applyCriterionUpdates(statuses, answer.updates)) }
+        : {}),
       /* The way back to the shelf, from the field alone. */
       ...(answer.handBack === 'wellington' ? { action: { label: 'Back to the shelf', go: onBack } } : {}),
     };
