@@ -63,7 +63,8 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ## In progress — the specialist contract, Phoebe first (item A15)
 
-**20–21 Sep 2026. Three pull requests merged on her eyeball, #93, #94 and #95; one remains.** One
+**20–21 Sep 2026. Three pull requests merged on her eyeball, #93, #94 and #95; one remains, and its
+first step is committed on its branch.** One
 brief, one batch approved 20 Sep 2026: steps 0 to 6, four pull requests, four eyeball stops. Her
 ten lines, her words, live once in AGENT_RULES.md under "The specialist contract"; each pack README
 carries a ten-row table of where its agent stands. Item A15 in [OPEN_ITEMS.md](./OPEN_ITEMS.md) is
@@ -83,13 +84,22 @@ the work's home and holds her rulings.
 - **Two measured runs, both zero empty in sixty**, within her bar of 1 in 60 (ruling R4). One walk
   captured for stop 3. `scripts/measure-phoebe.mjs` is the instrument, run by hand, never a gate.
 
-**Remaining — steps 4, 5 and 6, as pull request D, one full walk at eyeball stop 4.**
+**Remaining — ~~steps 4, 5 and 6~~ steps 5 and 6, as pull request D, one full walk at eyeball stop 4.**
 
-- **Step 4 — the hand-back field.** Her output gains `handBack`, `none` or `wellington`, checked
+- **Step 4 — the hand-back field. Committed 21 Sep 2026 on `feat/contract-phoebe-hand-back`
+  (`34618dc`), not on `main`, no pull request yet.** Her output gains `handBack`, `none` or `wellington`, checked
   against that closed list by the relay and the client, dropped when unknown; when set, the console
   offers the way back to Dispatches. Rung 2 stays as written (ruling R1): out of her lane she still
   names the colleague's facts in her own words and sets the field. On the Commons the hand-back is to
-  the shelf; one sentence in her prompt covers it. Line 8 to yes.
+  the shelf; one sentence in her prompt covers it. Line 8 to yes. **As built:** `api/_handBack.ts`
+  holds the closed list; her schema requires the field; the way back is one quiet link under her
+  bubble, "Back to Wellington on Dispatches", and "Back to the shelf" on the Commons, drawn from the
+  field alone — the chat layer's turn action, which Wellington's route stopped drawing at the look
+  pass of 8 Sep 2026; she may strike it at the eyeball. Nine checks in `check-wellington` hold it.
+  **Measured run, the maintainer's bar:** 0 empty in 60; 60 calls, 1,285,540 input tokens with
+  cache reads included, 24,342 output. **Two captures of the hand-back sit in the engineer's
+  scratchpad and wait until eyeball stop 4**, by her word of 21 Sep 2026; nothing under `captures/`
+  yet.
 - **Step 5 — the walk in order, and the shown line.** Her prompt gains the rule to work the six rows
   in the manual's order from the first unchecked one, one row, one question. Under any turn of hers
   that moved a row the console draws one caption line from `criteriaUpdates`, never from prose:
@@ -560,8 +570,9 @@ is nothing left for images to teach.** No folder waits for them.
 
 ## Building next — the hero chat, when its reference arrives
 
-**Building next, from 21 Sep 2026: pull request D of the specialist contract batch — steps 4, 5 and 6,
-one full walk at eyeball stop 4.** See *In progress* at the head of this file. The batch is approved;
+**Building next, from 21 Sep 2026: pull request D of the specialist contract batch — ~~steps 4, 5 and 6~~
+steps 5 and 6, one full walk at eyeball stop 4.** Step 4 is committed on its branch, 21 Sep 2026, and
+waits there; the pull request opens with steps 5 and 6. See *In progress* at the head of this file. The batch is approved;
 nothing else starts before it lands.
 
 ~~**The OPEN_ITEMS triage is next, by the maintainer's word of 17 Sep 2026**~~ **Done 18 Sep 2026;
