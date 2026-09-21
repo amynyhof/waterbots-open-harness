@@ -3,6 +3,13 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.4.0 — 20 Sep 2026
+
+- **The grader notes left Phoebe's card files.** `phoebe-eligibility@0.3.0`
+  (`vwba-2.0@0.3.0`): the notes to the maintainer moved whole to
+  `cards/grader-notes.md`, which nothing reads. Her prompt shrank by 10,811
+  characters and not one card changed. Item K10, part 2; item A15, step 1.
+
 ## 0.3.1 — 20 Sep 2026
 
 - **Every seat pack README carries "The contract".** `phoebe-eligibility@0.2.1`

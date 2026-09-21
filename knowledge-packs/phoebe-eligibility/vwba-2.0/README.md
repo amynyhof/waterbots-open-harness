@@ -1,6 +1,6 @@
 # vwba-2.0 — Phoebe's Knowledge Pack
 
-**Version 0.2.1.** This folder is the one home of what Phoebe knows. The card
+**Version 0.3.0.** This folder is the one home of what Phoebe knows. The card
 files live in [`cards/`](./cards/), and everything on the live site that reads
 them reads them from here. Maintainer's ruling, 17 Sep 2026.
 
@@ -56,7 +56,7 @@ moves. Read as of 20 Sep 2026.
 | 3 | Sees its tool's state | **No** | Her request carries the record and one done flag, never the six rows (`api/phoebe.ts`) |
 | 4 | Walks the user through the tool, one question at a time | **Partly** | The one-question rule is in her prompt; no rule works the rows in order |
 | 5 | Fills the tool from answers, and shows what it filled | **Partly** | `criteriaUpdates` move the rows; nothing under her bubble says what moved |
-| 6 | Answers only from its own cards, with a citation | **Partly** | The cards are her whole knowledge and the relay drops unknown cards; the card files embed whole, notes to the maintainer included (item K10, part 2) |
+| 6 | Answers only from its own cards, with a citation | ~~**Partly**~~ **Yes, from 20 Sep 2026** | The cards are her whole knowledge and the relay drops unknown cards. ~~The card files embed whole, notes to the maintainer included (item K10, part 2).~~ The grader notes left the card files for [`cards/grader-notes.md`](./cards/grader-notes.md), which she never reads |
 | 7 | Knows its limits and its level here. Says so | **Partly** | Limits, yes (prompt rule 9); her level is nowhere she reads |
 | 8 | Knows Wellington leads. Hands back when done or out of its lane | **Partly** | The done note sends the visitor back to Dispatches; no hand-back field, and out of lane she names the colleague only |
 | 9 | Posts official results to the project record for the next agent | **Partly** | Her verdicts reach the rows, her desk row and the seal; no next agent on this site reads them |
@@ -66,7 +66,7 @@ moves. Read as of 20 Sep 2026.
 
 | | |
 |---|---|
-| [`cards/`](./cards/) | The two card sets. The live site reads these files. |
+| [`cards/`](./cards/) | The two card sets. The live site reads these files. From 20 Sep 2026 [`cards/grader-notes.md`](./cards/grader-notes.md) sits beside them: the notes to the maintainer that used to sit at the foot of each card file, moved out whole so Phoebe does not read them as knowledge. Nothing reads it. |
 | [`tool/`](./tool/) | Names the checklist and its live reader. No code lives here. |
 | [`evals/`](./evals/) | No exam has been sat. Says so. |
 | `README.md` | This page. |
