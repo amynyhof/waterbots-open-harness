@@ -47,7 +47,7 @@ and the publisher's canonical link, so each one stands alone.
 Every specialist keeps the ten lines of **the specialist contract** in
 [AGENT_RULES.md](../../../AGENT_RULES.md), the maintainer's ruling of 20 Sep 2026.
 This table is where Phoebe stands against it, and it is refreshed whenever a line
-moves. Read as of 20 Sep 2026.
+moves. Read as of 21 Sep 2026.
 
 | # | Line | Today | Where it is met |
 |---|---|---|---|
@@ -58,7 +58,7 @@ moves. Read as of 20 Sep 2026.
 | 5 | Fills the tool from answers, and shows what it filled | **Partly** | `criteriaUpdates` move the rows; nothing under her bubble says what moved |
 | 6 | Answers only from its own cards, with a citation | ~~**Partly**~~ **Yes, from 20 Sep 2026** | The cards are her whole knowledge and the relay drops unknown cards. ~~The card files embed whole, notes to the maintainer included (item K10, part 2).~~ The grader notes left the card files for [`cards/grader-notes.md`](./cards/grader-notes.md), which she never reads |
 | 7 | Knows its limits and its level here. Says so | ~~**Partly**~~ **Yes, from 21 Sep 2026** | Limits, yes (prompt rule 9). ~~Her level is nowhere she reads.~~ Her prompt says she works at the screen level on this site and on the Commons, and `check-roster` holds that sentence's level word to `roster.yaml` |
-| 8 | Knows Wellington leads. Hands back when done or out of its lane | **Partly** | Knows, from 21 Sep 2026: her prompt says Wellington is the Team Lead and leads the visit, and that a finished part or an uncovered question goes back to him on Dispatches. Hands back: the done note sends the visitor to Dispatches; no hand-back field yet (step 4) |
+| 8 | Knows Wellington leads. Hands back when done or out of its lane | ~~**Partly**~~ **Yes, from 21 Sep 2026** | Knows, from 21 Sep 2026: her prompt says Wellington is the Team Lead and leads the visit, and that a finished part or an uncovered question goes back to him on Dispatches. Hands back: ~~the done note sends the visitor to Dispatches; no hand-back field yet (step 4)~~ her answer carries `handBack`, `none` or `wellington`, checked against that closed list by the relay (`api/_handBack.ts`) and again by the client, and the console draws the way back from the field alone — to Dispatches here, to the shelf on the Commons; out of her lane she still says the colleague's facts and sets the field (rung 2, ruling R1). `check-wellington` holds it |
 | 9 | Posts official results to the project record for the next agent | **Partly** | Her verdicts reach the rows, her desk row and the seal, and from 21 Sep 2026 they are the record's eligibility section: read back to her on every ask and carried whole on the seal. ~~No next agent on this site reads them.~~ Wellington reading that section is his side, named under item A15 and not built |
 | 10 | Knows what its tool needs, the kind of value each input takes and where it comes from; checks the project context first; says where each value came from | ~~**Partly**~~ **Yes, from 21 Sep 2026** | Her tool section tells her what each row and each record field is, why it matters, the kind of value it takes and where it usually comes from; to check the record first and ask only for what is missing; to ask for everything when no record comes; and to say what settled a row. ~~What is still owed: the rows themselves reaching her with every ask.~~ The rows reach her with every ask, each verdict marked as her own from earlier in the conversation, so she reads back where each value stands and where it came from |
 

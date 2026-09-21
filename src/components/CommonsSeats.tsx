@@ -23,6 +23,11 @@
  * its Phoebe holds her own conversation, without the record the console's
  * carries, and the two never show one another's turns.
  *
+ * THE HAND-BACK GOES TO THE SHELF HERE — contract line 8, item A15, step 4,
+ * 21 Sep 2026. There is no desk and no Wellington on the Commons; when her
+ * answer sets handBack to "wellington", the one action under her turn is the
+ * way back to the shelf, built from the field and never from her prose.
+ *
  * BRIDGET'S TOOL IS THE MAP, AND THE MAP IS THE CONSOLE'S. It is drawn once,
  * on the Partners step, and a second copy would fetch the basins again and
  * hold a second Leaflet; her seat here has no Tool tab and her Chat line says
@@ -49,7 +54,7 @@ import EligibilityWorksheet from './EligibilityWorksheet';
 import { PHOEBE, PHOEBE_PACK } from './PhoebeScreen';
 import QuantificationWorksheet from './QuantificationWorksheet';
 
-export function PhoebeCommonsSeat() {
+export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
   const [statuses, setStatuses] = useState<CriterionStatus[]>(() => initialStatuses(CRITERIA.length));
 
   async function ask(
@@ -74,6 +79,8 @@ export function PhoebeCommonsSeat() {
       text: answer.reply,
       evidence: answer.evidence,
       abstained: answer.abstained,
+      /* The way back to the shelf, from the field alone. */
+      ...(answer.handBack === 'wellington' ? { action: { label: 'Back to the shelf', go: onBack } } : {}),
     };
   }
 

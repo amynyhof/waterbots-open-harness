@@ -8,8 +8,11 @@
  *
  * A TURN MAY CARRY ONE ACTION. Wellington routes; his adapter turns a route
  * field into a labelled action, and this draws it as the same quiet text link
- * the desk's rows use. Phoebe's turns carry none. The layer does not know what
- * the action does — it calls what it is given.
+ * the desk's rows use. ~~Phoebe's turns carry none.~~ Corrected 21 Sep 2026:
+ * Phoebe's carry the hand-back (contract line 8) — the way back to Wellington,
+ * or to the shelf on the Commons — from a field, never from her prose; and
+ * Wellington's route draws nothing since the look pass of 8 Sep 2026. The
+ * layer does not know what the action does — it calls what it is given.
  *
  * ONE LOOK — the shared chat language, carried by the maintainer on 13 Sep 2026
  * from paid docs/chat/SHARED_CHAT.md (rules travel as rules; this repository

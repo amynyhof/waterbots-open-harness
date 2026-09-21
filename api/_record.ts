@@ -126,7 +126,7 @@ export function phoebeNotesBlock(notes: { opened?: boolean; eligibilityDone?: bo
   }
   if (notes.eligibilityDone) {
     extra.push(
-      'Every eligibility criterion on the worksheet has a verdict for this visit. Send them back to Wellington on Dispatches with a clear next step. Do not leave them with no way on.'
+      'Every eligibility criterion on the worksheet has a verdict for this visit. Send them back to Wellington on Dispatches with a clear next step, and set handBack to "wellington". Do not leave them with no way on.'
     );
   }
   return extra.length ? extra.join('\n\n') : null;

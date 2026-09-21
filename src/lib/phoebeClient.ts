@@ -21,11 +21,25 @@ export interface CriterionUpdate {
   routeForward?: string;
 }
 
+/**
+ * The hand-back — contract line 8, item A15, step 4, 21 Sep 2026. A field
+ * the console acts on, never a sentence read out of her prose: "wellington"
+ * when the visitor's way on is back to him, "none" on the ordinary turn. The
+ * relay checks it against this same closed list (api/_handBack.ts); it is
+ * checked again here, and an unknown value is "none", never a destination.
+ * What is drawn for it is the consumer's — the way back to Dispatches on the
+ * console, the way back to the shelf on the Commons.
+ */
+export type HandBack = 'none' | 'wellington';
+
+const HAND_BACKS: readonly HandBack[] = ['none', 'wellington'];
+
 export interface PhoebeAnswer {
   reply: string;
   /** What the answer rests on, in the shared chat layer's shape. */
   evidence: Evidence[];
   updates: CriterionUpdate[];
+  handBack: HandBack;
   abstained: boolean;
   abstentionTopic?: string;
   usage?: { cacheRead: number; cacheWrite: number; input: number; output: number };
@@ -143,6 +157,7 @@ export async function askPhoebe(
     reply: data.reply,
     evidence: resolveEvidence(data.citedCards),
     updates: resolveUpdates(data.criteriaUpdates),
+    handBack: HAND_BACKS.find((h) => h === data.handBack) ?? 'none',
     abstained: data.abstained === true,
     abstentionTopic:
       typeof data.abstentionTopic === 'string' ? data.abstentionTopic : undefined,

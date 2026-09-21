@@ -108,7 +108,7 @@ export default function Commons() {
 
         {seats.Phoebe && (
           <Pane shown={openHolder === 'Phoebe'}>
-            <PhoebeCommonsSeat />
+            <PhoebeCommonsSeat onBack={back} />
           </Pane>
         )}
         {seats.Calvin && (

@@ -84,6 +84,8 @@ for (const q of QUESTIONS) {
       cards: Array.isArray(r.citedCards) ? r.citedCards.length : 0,
       abstained: r.abstained === true,
       updates: Array.isArray(r.criteriaUpdates) ? r.criteriaUpdates.length : 0,
+      /* Contract line 8, step 4: the hand-back as the relay returned it. */
+      handBack: typeof r.handBack === 'string' ? r.handBack : '',
       usage: r.usage ?? null,
       error: r.status === 200 ? '' : (r.error ?? '').slice(0, 120),
     });
@@ -91,7 +93,7 @@ for (const q of QUESTIONS) {
     console.log(
       `  ${q.key.padEnd(11)} #${String(i + 1).padStart(2)}  ${last.status}  ${(last.ms / 1000).toFixed(1).padStart(5)}s  ` +
         (last.status === 200
-          ? `${String(last.chars).padStart(5)} chars  ${last.cards} cards  abstained=${last.abstained}  updates=${last.updates}`
+          ? `${String(last.chars).padStart(5)} chars  ${last.cards} cards  abstained=${last.abstained}  updates=${last.updates}  handBack=${last.handBack}`
           : `${last.empty ? 'EMPTY' : 'FAIL '}  ${last.error}`)
     );
   }
@@ -103,13 +105,13 @@ const median = (xs) => {
   return s.length ? s[Math.floor(s.length / 2)] : 0;
 };
 
-console.log('\n| question | asked | 200 | empty | other failures | median s | median chars | median cards | abstained |');
-console.log('|---|---|---|---|---|---|---|---|---|');
+console.log('\n| question | asked | 200 | empty | other failures | median s | median chars | median cards | abstained | hand-backs |');
+console.log('|---|---|---|---|---|---|---|---|---|---|');
 for (const q of QUESTIONS) {
   const r = by(q.key);
   const ok = r.filter((x) => x.status === 200);
   console.log(
-    `| ${q.key} | ${r.length} | ${ok.length} | ${r.filter((x) => x.empty).length} | ${r.filter((x) => x.status !== 200 && !x.empty).length} | ${(median(r.map((x) => x.ms)) / 1000).toFixed(1)} | ${median(ok.map((x) => x.chars))} | ${median(ok.map((x) => x.cards))} | ${ok.filter((x) => x.abstained).length} |`
+    `| ${q.key} | ${r.length} | ${ok.length} | ${r.filter((x) => x.empty).length} | ${r.filter((x) => x.status !== 200 && !x.empty).length} | ${(median(r.map((x) => x.ms)) / 1000).toFixed(1)} | ${median(ok.map((x) => x.chars))} | ${median(ok.map((x) => x.cards))} | ${ok.filter((x) => x.abstained).length} | ${ok.filter((x) => x.handBack === 'wellington').length} |`
   );
 }
 

@@ -25,6 +25,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { recordAbstention } from './_abstentions.js';
 import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
 import { PHOEBE, countOneMessage, timeUntilReset } from './_cap.js';
+import { readHandBack, type HandBack } from './_handBack.js';
 import { RESPONSE_SCHEMA, SYSTEM_PROMPT } from './_systemPrompt.js';
 import { phoebeNotesBlock, readRecord, readWorksheet, recordBlock, worksheetBlock } from './_record.js';
 
@@ -569,6 +570,7 @@ export async function POST(req: Request): Promise<Response> {
     replyChars: answer.reply.length,
     citedCards: answer.citedCards?.length ?? 0,
     abstained: answer.abstained,
+    handBack: answer.handBack,
     output: response.usage.output_tokens,
     /* A reply of one to three characters has reached a caller. The length said
        so and nothing said what those characters were, which is the difference
@@ -605,6 +607,8 @@ interface Answer {
   reply: string;
   citedCards: { set: 'eligibility' | 'feasibility'; number: number }[];
   criteriaUpdates: { number: number; state: 'met' | 'not-yet'; routeForward?: string }[];
+  /** Contract line 8: the way back to Wellington, a field the console acts on. See _handBack.ts. */
+  handBack: HandBack;
   abstained: boolean;
   abstentionTopic?: string;
 }
@@ -652,6 +656,10 @@ function validate(value: unknown): Answer | null {
     }
   }
 
+  /* Checked against the closed list, never trusted: an unknown hand-back is
+     "none", the ordinary turn, and the console draws nothing for it. */
+  const handBack = readHandBack(v.handBack);
+
   const abstained = v.abstained === true;
   const topic = typeof v.abstentionTopic === 'string' ? v.abstentionTopic.trim() : '';
 
@@ -659,6 +667,7 @@ function validate(value: unknown): Answer | null {
     reply: v.reply.trim(),
     citedCards,
     criteriaUpdates,
+    handBack,
     abstained,
     ...(abstained && topic ? { abstentionTopic: topic } : {}),
   };
