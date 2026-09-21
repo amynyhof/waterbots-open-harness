@@ -254,6 +254,37 @@ expect(
   /Send them back to Wellington on Dispatches/.test(phoebeNotesBlock({ eligibilityDone: true })),
   phoebeNotesBlock({ eligibilityDone: true })
 );
+/* The worksheet as it stands — contract line 3, item A15, step 3, 21 Sep 2026.
+   The rows are checked, not trusted: a number outside the manual's six, an
+   unknown state, a route on a Met row, an over-long route, a duplicate row —
+   each is dropped whole. An empty or junk list sends no block. */
+const { readWorksheet, worksheetBlock, WORKSHEET_HEADING } = await loadApi('_record.js');
+expect('a junk worksheet is nothing, never a block', readWorksheet('x') === null && readWorksheet([]) === null && readWorksheet([{ number: 9, state: 'met' }]) === null && readWorksheet([{ number: 1, state: 'partly' }]) === null, 'junk rows passed');
+expect(
+  'a route forward is kept only on a Not yet row, and never over-long',
+  readWorksheet([{ number: 2, state: 'met', routeForward: 'x' }])?.[0].routeForward === undefined &&
+    readWorksheet([{ number: 2, state: 'not-yet', routeForward: 'A written record of the consultation.' }])?.[0].routeForward === 'A written record of the consultation.' &&
+    readWorksheet([{ number: 2, state: 'not-yet', routeForward: 'x'.repeat(501) }]) === null,
+  'route handling'
+);
+expect('rows come back in the manual\'s order, one per number', JSON.stringify(readWorksheet([{ number: 3, state: 'unchecked' }, { number: 1, state: 'met' }, { number: 1, state: 'not-yet', routeForward: 'again' }]).map((r) => r.number)) === '[1,3]', 'order or dedupe');
+const sheet = worksheetBlock(readWorksheet([{ number: 1, state: 'met' }, { number: 2, state: 'not-yet', routeForward: 'A written record.' }, { number: 3, state: 'unchecked' }]));
+expect(
+  'the block names each row\'s state, where a verdict came from, and the one rule',
+  sheet.startsWith(`# ${WORKSHEET_HEADING}`) && /Row 1: Met — from your own earlier turn/.test(sheet) && /Row 2: Not yet — what would change it: A written record\./.test(sheet) && /Row 3: Not yet checked\./.test(sheet) && /Start from the first row not yet checked/.test(sheet),
+  sheet
+);
+expect("Phoebe's prompt names the worksheet block and reads her state from it", PHOEBE_PROMPT.includes(`"${WORKSHEET_HEADING}"`) && /rather than from memory/.test(PHOEBE_PROMPT), 'her prompt does not know the worksheet block');
+expect("Wellington's prompt does not carry the worksheet block", !WELLINGTON_SYSTEM_PROMPT.includes(WORKSHEET_HEADING), 'the worksheet heading leaked into his prompt');
+const phoebeRelaySource = readFileSync('api/phoebe.ts', 'utf8');
+expect(
+  "Phoebe's relay attaches the worksheet block after the cache breakpoint, only when rows came",
+  /readWorksheet\(body\.worksheet\)/.test(phoebeRelaySource) &&
+    /worksheetText/.test(phoebeRelaySource) &&
+    phoebeRelaySource.indexOf('text: worksheetText') > phoebeRelaySource.indexOf("cache_control: { type: 'ephemeral' }"),
+  'the worksheet block is missing, or sits above the cache breakpoint'
+);
+
 const relaySource = readFileSync('api/wellington.ts', 'utf8');
 expect(
   'the relay attaches the visit block after the cache breakpoint, only when a record or stage is present',

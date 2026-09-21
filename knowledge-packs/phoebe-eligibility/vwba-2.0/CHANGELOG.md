@@ -1,5 +1,15 @@
 # Changelog — vwba-2.0
 
+## 0.4.1 — 21 Sep 2026
+
+- **Contract table refreshed for step 3.** Line 3, sees its tool's state, reads yes:
+  the six rows go with every ask from the console and the Commons seat and come
+  back as "What the worksheet shows" after the cache breakpoint, each verdict
+  marked as her own from earlier in the conversation. Line 10 reads yes. Line 9
+  moves: her verdicts are the record's eligibility section, read back to her and
+  carried on the seal; Wellington's reading of it is named, not built. No pack
+  content changed. Item A15, step 3.
+
 ## 0.4.0 — 21 Sep 2026
 
 - **What Phoebe is told about her tool, from this pack.** `tool/README.md` gains a

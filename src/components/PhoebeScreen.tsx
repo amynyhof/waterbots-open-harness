@@ -105,7 +105,9 @@ export default function PhoebeScreen({
       })),
       carried,
       signal,
-      { opened: meta?.opened === true, eligibilityDone }
+      /* The rows go with every ask — contract line 3, 21 Sep 2026 — so she
+         sees what is filled in and what is still missing. */
+      { opened: meta?.opened === true, eligibilityDone, worksheet: statuses }
     );
 
     /* Her side effect, fired before the turn is returned so a failed request

@@ -49,7 +49,7 @@ const PROVENANCE_LABEL: Record<Provenance, string> = {
 
 /** The record's explainer, behind the (i) — look pass, 8 Sep 2026. */
 const RECORD_EXPLAINER =
-  'Wellington asks for these in the chat, and what you tell him lands here. Nothing is kept between visits.';
+  'Wellington asks for these in the chat, and what you tell him lands here. Phoebe reads them, and the eligibility verdicts she reaches with you show on her step and in the next steps. Nothing is kept between visits.';
 
 export default function NavRail({
   context,

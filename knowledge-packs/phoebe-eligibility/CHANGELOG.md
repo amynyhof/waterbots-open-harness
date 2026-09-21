@@ -1,5 +1,10 @@
 # Changelog — phoebe-eligibility
 
+## 0.4.1 — 21 Sep 2026
+
+- `vwba-2.0@0.4.1` — contract table: lines 3 and 10 read yes, line 9 moves. The
+  worksheet rows reach Phoebe with every ask (relay and shell). Item A15, step 3.
+
 ## 0.4.0 — 21 Sep 2026
 
 - `vwba-2.0@0.4.0` — the tool README gains the agent-facing region her prompt
