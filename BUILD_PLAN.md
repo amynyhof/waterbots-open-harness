@@ -63,8 +63,8 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ## In progress — the specialist contract, Phoebe first (item A15)
 
-**20–21 Sep 2026. Three pull requests merged on her eyeball, #93, #94 and #95; one remains, and its
-first two steps are committed on its branch.** One
+**20–21 Sep 2026. Three pull requests merged on her eyeball, #93, #94 and #95; one remains, and ~~its
+first two steps are~~ all three of its steps are committed on its branch.** One
 brief, one batch approved 20 Sep 2026: steps 0 to 6, four pull requests, four eyeball stops. Her
 ten lines, her words, live once in AGENT_RULES.md under "The specialist contract"; each pack README
 carries a ten-row table of where its agent stands. Item A15 in [OPEN_ITEMS.md](./OPEN_ITEMS.md) is
@@ -84,7 +84,7 @@ the work's home and holds her rulings.
 - **Two measured runs, both zero empty in sixty**, within her bar of 1 in 60 (ruling R4). One walk
   captured for stop 3. `scripts/measure-phoebe.mjs` is the instrument, run by hand, never a gate.
 
-**Remaining — ~~steps 4, 5 and 6~~ ~~steps 5 and 6~~ step 6, as pull request D, one full walk at eyeball stop 4.**
+**Remaining — ~~steps 4, 5 and 6~~ ~~steps 5 and 6~~ ~~step 6~~ nothing to build; pull request D and one full walk at eyeball stop 4.**
 
 - **Step 4 — the hand-back field. Committed 21 Sep 2026 on `feat/contract-phoebe-hand-back`
   (`34618dc`), not on `main`, no pull request yet.** Her output gains `handBack`, `none` or `wellington`, checked
@@ -120,9 +120,16 @@ the work's home and holds her rulings.
   worse than the bar of 1 in 60 as a rate; reported to her under ruling R4 before going on, and she
   said go on, 21 Sep 2026. The sixty-request run at eyeball stop 4 decides. 20 calls, 429,299 input
   tokens with cache reads included, 6,707 output. No captures this step, by her word.
-- **Step 6 — the instrument comes out.** `PHOEBE_DIAGNOSE` and its `diag()` calls removed from
+- **Step 6 — the instrument comes out. Committed 21 Sep 2026 on the same branch (`23e289a`), not on
+  `main`, no pull request yet.** `PHOEBE_DIAGNOSE` and its `diag()` calls removed from
   `api/phoebe.ts`, as item A6 named; the measured-run method written into the pack's
-  `evals/README.md` as an internal gate, one paragraph, no score.
+  `evals/README.md` as an internal gate, one paragraph, no score. **As built:** 119 lines out of
+  her relay, all removals, nothing a visitor sees changed; the measure script's usage note no longer
+  names the switch. `api/wellington.ts` keeps its own copy of the same switch, because the step named
+  her relay only — raised for her word, not touched. The paragraph in `evals/README.md` says what
+  each of the two measure scripts asks and counts, her bar of 1 in 60, why sixty, and that neither is
+  a build gate nor a score. Pack 0.4.2, one CHANGELOG entry for steps 4 to 6. All checks and the
+  build green.
 - **Eyeball stop 4:** one full desk walk from Wellington's invite through six rows one at a time,
   with the shown line under each turn, to the hand-back and the Dispatches invite; capture and the
   walk's counts in the pull request. A third measured run on the final prompt, counts and cost in
