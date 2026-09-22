@@ -1,5 +1,16 @@
 # Changelog — vwba-2.0
 
+## 0.4.3 — 21 Sep 2026
+
+- **Her scope is a fact she phrases.** The maintainer's ruling at eyeball stop 4:
+  her prompt gains "What you check today, and what is coming" — today she checks
+  eligibility under VWBA 2.0 only; carbon eligibility is a second pathway, coming
+  and not live, with no carbon cards; a project may qualify on one pathway and not
+  the other, so "eligible" from her never means eligible everywhere. Facts only, in
+  her own words, on the ruling of 3 Sep 2026. Line 7 of the contract table carries
+  it in one line. Four checks in `check-wellington` (136), two of them holding that
+  the A6 instrument stays out of both relays. No card changed.
+
 ## 0.4.2 — 21 Sep 2026
 
 - **Contract table refreshed for steps 4 and 5; the measured run written down.** Line 8,

@@ -699,6 +699,42 @@ expect(
   'a seat draws the caption from something other than the moved rows'
 );
 
+/* ---------------------------------------------------------------------------
+   HER SCOPE, AND THE INSTRUMENT THAT LEFT — the maintainer's rulings of
+   21 Sep 2026 at eyeball stop 4.
+
+   Her scope reaches her as facts she phrases herself (ruling of 3 Sep 2026,
+   item A9), so what is checked is that the facts are there and that no
+   sentence is handed to her to repeat. What she actually says is a measured
+   run, not a check.
+
+   The A6 instrument is gone from both relays. A switch that comes back by
+   habit is exactly what a check is for.
+--------------------------------------------------------------------------- */
+
+console.log('\n  Her scope today, and the instrument that left\n');
+expect(
+  'her prompt carries the scope as facts: VWBA 2.0 eligibility today, carbon coming and not live',
+  PHOEBE_PROMPT.includes('# What you check today, and what is coming') &&
+    PHOEBE_PROMPT.includes('Today you check one pathway: eligibility under VWBA 2.0') &&
+    PHOEBE_PROMPT.includes('Carbon eligibility is a second pathway, and it is coming') &&
+    PHOEBE_PROMPT.includes('you have no carbon cards'),
+  'the scope facts are missing or reworded past their parts'
+);
+expect(
+  'the scope is given to her as facts to phrase, never as a sentence to repeat',
+  PHOEBE_PROMPT.includes('Say them in your own plain words'),
+  'the phrasing rule left the scope section'
+);
+for (const relay of ['phoebe', 'wellington']) {
+  const source = readFileSync(join('api', relay + '.ts'), 'utf8');
+  expect(
+    'the A6 instrument is out of ' + relay + "'s relay — no PHOEBE_DIAGNOSE, no diag()",
+    !source.includes('PHOEBE_DIAGNOSE') && !source.includes('diag('),
+    'the diagnosis switch or one of its calls came back'
+  );
+}
+
 /* ------------------------------------------------------------------------- */
 
 rmSync(apiOut, { recursive: true, force: true });
