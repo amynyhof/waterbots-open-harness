@@ -101,7 +101,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | closed | canon, ruled 26 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K5 | The VWBA 2.0 D-3 screening pack | Knowledge | closed | **built 1 Sep 2026** — the first pack in the slot — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | closed | **built 2 Sep 2026** — two packs, one module, the transition delta — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; not built, proposal first |
+| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; **the next brief, 22 Sep 2026** — not built, proposal first |
 | K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K9 | Calvin's and Bridget's packs move to the new pack shape | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — one brief each, the way Phoebe's did; not started |
 | K10 | Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — not started |
@@ -118,7 +118,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | A11 | The phase names are canon, and agents point at the step, never a tab | Agents | closed | **ruled and resolved 5 Sep 2026**, amended 7 Sep, same pull request — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | A12 | The two chats not built — Bridget's and Calvin's | Agents | PARK | **adopted 18 Sep 2026** from items A2 and S10; not scheduled |
 | A14 | Screen host role words — one home | Agents | BONES | **logged 18 Sep 2026 from the maintainer's word** — not fixed now |
-| A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Agents | BONES | **ruled 20 Sep 2026; the batch approved the same day** — steps 0 to 3 merged (#93, #94, #95) by 21 Sep; steps 4 to 6 open as pull request D, #97, at her eyeball |
+| A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Agents | BONES | ~~**ruled 20 Sep 2026; the batch approved the same day** — steps 0 to 3 merged (#93, #94, #95) by 21 Sep; steps 4 to 6 open as pull request D, #97, at her eyeball~~ **built 22 Sep 2026, all four pull requests merged (#93, #94, #95, #97), eyeball stop 4 passed** — line 9 is the one gap left, carried by item A17 |
 | A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | ~~**logged 18 Sep 2026 from the maintainer's brief** — waits on her carry~~ **built 18 Sep 2026, #91 merged** — the free and Commons columns stay "unconfirmed" until she carries a confirmed file |
 | A16 | Wellington guides and leads — he never asks "water or carbon" | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; not started |
 | A17 | The handoff goes both ways — forward and back | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — her hand-back is built; his side of the return is not; not started |
@@ -902,24 +902,25 @@ the visitor back knowing what she found. Its own brief, after Phoebe. Calvin's a
 briefs come after, each on the same nine lines; the lists are on their pack READMEs' tables
 and in item A12.
 
-**Where it stands, 21 Sep 2026.** Steps 0 to 3 merged on her eyeball: #93, #94, #95. ~~Two measured
-runs, both zero empty in sixty.~~ **Three measured runs, all zero empty in sixty**, and one full walk:
-six verdicts in seven turns, the order kept in six of six moving turns, one question a turn, the
-hand-back set at the end. Lines 1, 2, 3, 6, 7 and 10 read yes for Phoebe; ~~8 and 9 moved; 4 and 5
-wait on step 5~~ **8 reads yes from step 4, and 4 and 5 from step 5; 9 is still partly, because no
-agent here reads her verdicts yet**. ~~Steps 4, 5 and 6 remain as pull request D with one full walk
-at eyeball stop 4~~ **Steps 4, 5 and 6 are open as pull request D, #97, at her eyeball**; the exact
-plan for them is in [BUILD_PLAN.md](./BUILD_PLAN.md) under *In progress*.
+**Where it stands, 22 Sep 2026.** ~~Steps 0 to 3 merged on her eyeball: #93, #94, #95.~~ **All four
+pull requests merged on her eyeball: #93, #94, #95 and #97, eyeball stop 4 passed 22 Sep 2026.**
+Three measured runs, all zero empty in sixty, and one full walk: six verdicts in seven turns, the
+order kept in six of six moving turns, one question a turn, the hand-back set at the end. Lines 1,
+2, 3, 4, 5, 6, 7, 8 and 10 read yes for Phoebe; 9 is still partly, because no agent here reads her
+verdicts yet — that gap is item A17. ~~Steps 4, 5 and 6 are open as pull request D, #97, at her
+eyeball~~ **The batch is complete.** The full record of the six steps is in
+[BUILD_PLAN.md](./BUILD_PLAN.md) under *Previously*.
 
-**Her rulings at eyeball stop 4, 21 Sep 2026, made on her own walk.** Two are built into #97:
-Wellington's copy of the A6 instrument comes out with the rest, so the switch is gone from both
+**Her rulings at eyeball stop 4, 21 Sep 2026, made on her own walk.** Two were built into #97:
+Wellington's copy of the A6 instrument came out with the rest, so the switch is gone from both
 relays; and her scope reaches her as facts she phrases — she checks eligibility under VWBA 2.0
 today, carbon eligibility is coming and not live — recorded in one line of her pack's contract
 table. Three are logged and not started, each wanting its own proposal: items **A16** and **A17**
 in this family, and item **K7** expanded with her second pack and a cited "does this apply" test
-per pack. This item stays the contract's home; those three are their own work, after #97 merges.
+per pack. **This item's own work is complete**; those three carry on, and the next brief is K7 —
+Phoebe's carbon pack — on the maintainer's word.
 
-**Bucket BONES.** In progress from 20 Sep 2026.
+**Bucket BONES.** Batch complete 22 Sep 2026. A16, A17 and K7 (expanded) carry the open work on.
 
 ## A16. Wellington guides and leads — he never asks "water or carbon"
 

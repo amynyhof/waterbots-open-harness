@@ -1546,3 +1546,86 @@ Stacked pull requests B on A: B retargeted to `main` before A merged with delete
 the stacked-merge lesson. Dev server started with `PHOEBE_DIAGNOSE=1` for the runs; headless
 Chrome on port 9222; both stopped at the close. DRAFT card files left untracked. The proposal
 file deleted on her word. `main` equal to `origin` after each merge and at the close.
+
+## 21–22 September 2026 — the specialist contract, Phoebe first (item A15), steps 4 to 6, and her rulings at eyeball stop 4
+
+Steps 4, 5 and 6 committed on `feat/contract-phoebe-hand-back`, then two of her rulings from
+eyeball stop 4 added to the same branch before the pull request opened, then merged as #97
+on her eyeball after she walked it herself. Batch complete: four pull requests, four eyeball
+stops, all four passed.
+
+### What was built
+
+Step 4: `handBack` on her answer, `none` or `wellington`, checked against a closed list by
+the relay (`api/_handBack.ts`) and the client; the way back drawn from the field alone —
+"Back to Wellington on Dispatches" here, "Back to the shelf" on the Commons. Step 5: her
+prompt walks the six rows in the manual's order, one row, one question, from the first
+unchecked; `worksheetCaption` in `src/lib/criteriaState.ts` draws "Worksheet: 3 Met · 0 Not
+yet" under any turn that moved a row, in the citation line's own class, no new colour. Step
+6: `PHOEBE_DIAGNOSE` and every `diag()` call removed from `api/phoebe.ts`, 119 lines, all
+removals; the measured-run method written into the pack's `evals/README.md` as an internal
+gate, one paragraph, no score.
+
+Her two rulings at eyeball stop 4, built into the same pull request: Wellington's own copy of
+the same diagnostic switch removed from `api/wellington.ts`, 34 lines, so the A6 instrument
+is gone from both relays, with two new checks in `check-wellington` holding it out of each,
+each provoked and seen to fail before it passed; and her scope written into Phoebe's prompt
+as facts she phrases herself — "What you check today, and what is coming" — eligibility under
+VWBA 2.0 today, carbon eligibility a second pathway, coming and not live, no carbon cards, a
+project may qualify on one pathway and not the other. One line in row 7 of her pack's contract
+table. One capture, of her saying that scope unprompted in her own words, driven by a headless
+Chrome script against the local relay and committed to `captures/`.
+
+Three of her rulings logged as new open items, none started: **A16**, Wellington guides and
+leads and never asks "water or carbon" at the door, because which pathways apply is a finding
+and finding it is Phoebe's; **A17**, the handoff goes both ways — her hand-back is built, his
+side of the return, reading what she found, is not; **K7 expanded**, her second pack
+`gs-paa-v2.0` in the pack shape beside `vwba-2.0`, with a cited "does this apply" test on every
+pack so she knows which worksheets to fill and reports each pathway on its own.
+
+### How it was proven
+
+Three measured runs on the final prompt, all zero empty in sixty, within her bar of 1 in 60
+(ruling R4); the middle run (after step 5, before step 6) carried 1 empty in 20 on the
+twenty-request walk, the A6 signature, reported to her before going on, and she said go on.
+One full measured walk on the final prompt: six verdicts in seven turns, order kept in six of
+six moving turns, one question or none in seven of seven replies, hand-back set to Wellington
+on the last turn, zero empty. Pack `vwba-2.0` at 0.4.3 with changelog entries for all three
+steps and the stop-4 rulings.
+
+### Decisions
+
+- **The instrument comes out of both relays, not just the one it was named for.** Step 6's
+  brief named Phoebe's relay only; her ruling at the walk widened it, on the reasoning that a
+  switch left in one place is a switch that can come back in the other by habit — which is
+  also why two checks now hold it out rather than one.
+- **Scope is a fact, phrased, not a sentence recited.** Consistent with the ruling of 3 Sep
+  2026 (item A9): the prompt states what is true and tells her to say it in her own words: no
+  prompt anywhere hands an agent a sentence to repeat word for word.
+- **No robot screenshots for eyeball stop 4.** Her word: she walked the desk herself from a
+  Vercel preview link and three plain steps in the pull request, rather than the engineer
+  capturing it for her. The one capture that did ship was for a single fact — her scope in her
+  own words — not a stand-in for her own walk.
+
+### What was learned
+
+- The composer-and-send-button probe that finds a visible textarea by placeholder has to
+  filter on computed visibility, not just `offsetParent`: every mounted screen keeps its panel
+  in the DOM, so the first matching element in document order can belong to a hidden pane. The
+  first driver script for the capture clicked a disabled Send button on Wellington's hidden
+  composer and nothing happened; the second, filtering on `getComputedStyle(...).visibility`,
+  worked first try.
+- A stray backgrounded shell from an earlier `python - <<EOF` attempt was left waiting on
+  stdin from the previous session onward; found and killed at the start of this session
+  before any work began, per the opening ritual's "kill stray dev servers" step, widened to
+  stray shells generally.
+
+### Housekeeping
+
+Dev server and headless Chrome (port 9222) both started and stopped within the session.
+`main` equal to `origin` before the merge and after it. Pull request #97 merged with
+delete-branch; the migration gate checked and clear, as it always is here. The generated
+pack modules (`api/_cards.generated.ts`, `api/_tool.generated.ts`, the two primers) checked
+current against their committed sources — this batch's changes live in `api/_systemPrompt.ts`
+and the hand-back/caption machinery, not in generated card or tool content, so nothing was
+owed there. Two untracked DRAFT card files left alone, as before.
