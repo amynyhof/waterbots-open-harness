@@ -141,6 +141,20 @@ the work's home and holds her rulings.
   in the block.** A third measured run on the final prompt, counts and cost in
   one plain sentence in the For Amy block, stopping if worse than 1 in 60. **Pull request D is open
   and waits on her eyeball.**
+- **Her rulings at eyeball stop 4, 21 Sep 2026, built into the same pull request.** Two in the code:
+  `PHOEBE_DIAGNOSE` and its three `diag()` calls leave `api/wellington.ts` too, so the A6 instrument
+  is out of both relays with two checks holding it out; and Phoebe's scope reaches her as facts she
+  phrases — today she checks eligibility under VWBA 2.0 only, carbon eligibility is coming and not
+  live, and a project may qualify on one pathway and not the other — with one line in her pack's
+  contract table, pack 0.4.3, `check-wellington` at 136 and both new prompt checks provoked. Three
+  in the documents, all BONES, none started and each wanting its own proposal: **item A16**,
+  Wellington guides and leads and never asks "water or carbon", because which pathways apply is
+  Phoebe's to find; **item A17**, the handoff both ways, forward and back, his side of the return
+  not built; **item K7 expanded**, her second pack `gs-paa-v2.0` in the new shape with a cited
+  "does this apply" test on every pack, so she knows which worksheets to fill and reports each
+  pathway on its own.
+- **Next brief, on her word, after #97 merges.** Nothing is chosen here, and the proposal comes
+  first. A16, A17 and the expanded K7 are one piece of work seen from three sides.
 
 **Named, not built:** Wellington reading the record's eligibility section — her verdicts — in his
 visit block, and greeting the visitor back knowing what she found. Its own brief, after Phoebe.
