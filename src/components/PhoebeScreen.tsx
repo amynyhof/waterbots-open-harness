@@ -21,6 +21,15 @@
  * 2026: the record goes to Phoebe with every ask; her verdicts come back
  * through onCriteriaUpdate to the criteria, and her row on the desk follows.
  *
+ * THE HAND-BACK IS A FIELD, AND THIS SEAT ACTS ON IT — contract line 8, item
+ * A15, step 4, 21 Sep 2026. When her answer sets handBack to "wellington" —
+ * her part done, or the question out of her lane — the turn carries one
+ * quiet action, the way back to Dispatches, built from the field and never
+ * from her prose. It is the chat layer's own turn action, the one Wellington's
+ * route stopped drawing at the look pass of 8 Sep 2026 because the rail
+ * already held his next step; hers is the way back to him, which the rail
+ * does not hold, and the maintainer may strike it at the eyeball.
+ *
  * NO OPENING PARAGRAPH. The dock carried a "Where to start" paragraph above
  * an empty conversation; the desk lost its intro paragraph on 8 Sep 2026 and
  * the screen follows the desk. What that paragraph said now lives where it
@@ -35,8 +44,9 @@ import { useEffect, useRef } from 'react';
 import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
 import type { AgentHost, AgentTurn } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
-import type { CriterionStatus } from '../lib/criteriaState';
+import { worksheetCaption, type CriterionStatus } from '../lib/criteriaState';
 import { nextPhaseAfter, nextPhaseCompetes } from '../lib/journey';
+import { DESK_LABEL } from '../lib/surfaces';
 import { WELLINGTON } from '../lib/wellington';
 import {
   CARDS_APPROVED_ON,
@@ -44,7 +54,7 @@ import {
   CONSIDERATION_GROUPS,
   CRITERIA,
 } from '../lib/phoebeCards';
-import { askPhoebe, carriedRecord, type CriterionUpdate } from '../lib/phoebeClient';
+import { applyCriterionUpdates, askPhoebe, carriedRecord, type CriterionUpdate } from '../lib/phoebeClient';
 import type { Surface } from '../lib/surfaces';
 import type { VisitContext } from '../lib/visit';
 import AgentScreen from '../screen/AgentScreen';
@@ -119,6 +129,15 @@ export default function PhoebeScreen({
       text: answer.reply,
       evidence: answer.evidence,
       abstained: answer.abstained,
+      /* The shown line — contract line 5: what the worksheet holds after this
+         turn, from her verdicts alone, only under a turn that moved a row. */
+      ...(answer.updates.length
+        ? { caption: worksheetCaption(applyCriterionUpdates(statuses, answer.updates)) }
+        : {}),
+      /* The way back to him, from the field alone. */
+      ...(answer.handBack === 'wellington'
+        ? { action: { label: `Back to Wellington on ${DESK_LABEL}`, go: () => onNavigate('desk') } }
+        : {}),
     };
   }
 

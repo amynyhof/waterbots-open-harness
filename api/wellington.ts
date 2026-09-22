@@ -71,13 +71,6 @@ const MAX_TURNS = 40;
 /** Long enough for a real message, short enough to refuse an essay. */
 const MAX_MESSAGE_CHARS = 4000;
 
-const DIAGNOSE = process.env.PHOEBE_DIAGNOSE === '1';
-
-function diag(label: string, fields: Record<string, unknown>): void {
-  if (!DIAGNOSE) return;
-  console.error(`wellington/diag ${label} ${JSON.stringify(fields)}`);
-}
-
 function pick(value: unknown, key: string): unknown {
   return typeof value === 'object' && value !== null
     ? (value as Record<string, unknown>)[key]
@@ -276,27 +269,8 @@ export async function POST(req: Request): Promise<Response> {
       response = await callModel();
     }
   } catch (error) {
-    diag('api-error', {
-      ms: Date.now() - calledAt,
-      status: pick(error, 'status'),
-      message: String(pick(error, 'message') ?? '').slice(0, 400),
-      requestId: pick(error, 'request_id') ?? pick(error, 'requestID'),
-    });
     return undelivered(fromApiError(error));
   }
-
-  diag('response', {
-    ms: Date.now() - calledAt,
-    model: MODEL,
-    effort: EFFORT,
-    stopReason: response.stop_reason,
-    usage: {
-      input: response.usage.input_tokens,
-      output: response.usage.output_tokens,
-      cacheRead: response.usage.cache_read_input_tokens ?? 0,
-      cacheWrite: response.usage.cache_creation_input_tokens ?? 0,
-    },
-  });
 
   if (response.stop_reason === 'refusal') {
     return undelivered(
@@ -353,14 +327,6 @@ export async function POST(req: Request): Promise<Response> {
       )
     );
   }
-
-  diag('delivered', {
-    replyChars: answer.reply.length,
-    route: answer.route,
-    context: Object.keys(answer.context ?? {}),
-    abstained: answer.abstained,
-    output: response.usage.output_tokens,
-  });
 
   /* Only a question outside every lane is logged, and it is marked as his.
      His routings are not abstentions and are not written down. */

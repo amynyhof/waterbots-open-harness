@@ -6,10 +6,16 @@
  * AgentHost it is handed. Markers and citations render in AnswerBody and
  * nowhere else.
  *
+ * A TURN MAY CARRY ONE CAPTION — the shown line, from a field, never from
+ * prose (contract line 5, 21 Sep 2026) — drawn in the citation line's class.
+ *
  * A TURN MAY CARRY ONE ACTION. Wellington routes; his adapter turns a route
  * field into a labelled action, and this draws it as the same quiet text link
- * the desk's rows use. Phoebe's turns carry none. The layer does not know what
- * the action does — it calls what it is given.
+ * the desk's rows use. ~~Phoebe's turns carry none.~~ Corrected 21 Sep 2026:
+ * Phoebe's carry the hand-back (contract line 8) — the way back to Wellington,
+ * or to the shelf on the Commons — from a field, never from her prose; and
+ * Wellington's route draws nothing since the look pass of 8 Sep 2026. The
+ * layer does not know what the action does — it calls what it is given.
  *
  * ONE LOOK — the shared chat language, carried by the maintainer on 13 Sep 2026
  * from paid docs/chat/SHARED_CHAT.md (rules travel as rules; this repository
@@ -125,6 +131,9 @@ function HostBubble({ host, turn }: { host: AgentHost; turn: AgentTurn }) {
         </div>
         <div className="wb-bubble">
           <AnswerBody text={turn.text} evidence={turn.evidence} />
+          {/* The shown line — the citation line's own class, so it is the
+              same place, size and colour, and nothing new is invented. */}
+          {turn.caption && <div className="wb-cite-line" style={{ marginTop: 6 }}>{turn.caption}</div>}
           <TurnAction turn={turn} />
         </div>
       </div>

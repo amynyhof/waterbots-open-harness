@@ -63,7 +63,8 @@ live there now. Both of the things it asked for are done: the brightness pull-up
 
 ## In progress — the specialist contract, Phoebe first (item A15)
 
-**20–21 Sep 2026. Three pull requests merged on her eyeball, #93, #94 and #95; one remains.** One
+**20–21 Sep 2026. Three pull requests merged on her eyeball, #93, #94 and #95; one remains, and ~~its
+first two steps are~~ all three of its steps are committed on its branch.** One
 brief, one batch approved 20 Sep 2026: steps 0 to 6, four pull requests, four eyeball stops. Her
 ten lines, her words, live once in AGENT_RULES.md under "The specialist contract"; each pack README
 carries a ten-row table of where its agent stands. Item A15 in [OPEN_ITEMS.md](./OPEN_ITEMS.md) is
@@ -83,28 +84,77 @@ the work's home and holds her rulings.
 - **Two measured runs, both zero empty in sixty**, within her bar of 1 in 60 (ruling R4). One walk
   captured for stop 3. `scripts/measure-phoebe.mjs` is the instrument, run by hand, never a gate.
 
-**Remaining — steps 4, 5 and 6, as pull request D, one full walk at eyeball stop 4.**
+**Remaining — ~~steps 4, 5 and 6~~ ~~steps 5 and 6~~ ~~step 6~~ nothing to build; pull request D and one full walk at eyeball stop 4.**
 
-- **Step 4 — the hand-back field.** Her output gains `handBack`, `none` or `wellington`, checked
+- **Step 4 — the hand-back field. Committed 21 Sep 2026 on `feat/contract-phoebe-hand-back`
+  (`34618dc`), not on `main`, no pull request yet.** Her output gains `handBack`, `none` or `wellington`, checked
   against that closed list by the relay and the client, dropped when unknown; when set, the console
   offers the way back to Dispatches. Rung 2 stays as written (ruling R1): out of her lane she still
   names the colleague's facts in her own words and sets the field. On the Commons the hand-back is to
-  the shelf; one sentence in her prompt covers it. Line 8 to yes.
-- **Step 5 — the walk in order, and the shown line.** Her prompt gains the rule to work the six rows
+  the shelf; one sentence in her prompt covers it. Line 8 to yes. **As built:** `api/_handBack.ts`
+  holds the closed list; her schema requires the field; the way back is one quiet link under her
+  bubble, "Back to Wellington on Dispatches", and "Back to the shelf" on the Commons, drawn from the
+  field alone — the chat layer's turn action, which Wellington's route stopped drawing at the look
+  pass of 8 Sep 2026; she may strike it at the eyeball. Nine checks in `check-wellington` hold it.
+  **Measured run, the maintainer's bar:** 0 empty in 60; 60 calls, 1,285,540 input tokens with
+  cache reads included, 24,342 output. **Two captures of the hand-back sit in the engineer's
+  scratchpad and wait until eyeball stop 4**, by her word of 21 Sep 2026; nothing under `captures/`
+  yet.
+- **Step 5 — the walk in order, and the shown line. Committed 21 Sep 2026 on the same branch
+  (`1c052b9`), not on `main`, no pull request yet.** Her prompt gains the rule to work the six rows
   in the manual's order from the first unchecked one, one row, one question. Under any turn of hers
   that moved a row the console draws one caption line from `criteriaUpdates`, never from prose:
   "Worksheet: 3 Met · 4 Not yet", same place and size as the citation line, no new colour (ruling R3:
   on prose, before-and-after capture in the pull request, she may strike it at the eyeball). Proof is
   a measured walk with real calls on `measure-wellington`'s pattern: a scripted visitor answers the
   six in turn across N runs; questions per reply, order rows moved, turns to six verdicts, empty or
-  refused turns, cards cited. Lines 4 and 5 to yes.
-- **Step 6 — the instrument comes out.** `PHOEBE_DIAGNOSE` and its `diag()` calls removed from
+  refused turns, cards cited. Lines 4 and 5 to yes. **As built:** the rule sits under hard rule 3 of
+  her prompt; a verdict may still land on any row the visitor's words settle, but the question is
+  always about the first unchecked row. The caption is `worksheetCaption` in `src/lib/criteriaState.ts`,
+  counting the whole worksheet after the move, carried on the turn as `caption` and drawn by the chat
+  layer in the citation line's own class. `scripts/measure-phoebe-walk.mjs` is the instrument. Five
+  checks in `check-wellington` (132). **Measured walk, twenty requests by her word of 21 Sep 2026:**
+  order kept in 16 of 16 moving turns; one question or none in 19 of 19 replies; two full walks to
+  six verdicts in 8 and 7 turns, the third cut by the budget at row 5; **1 empty in 20** — the item
+  A6 signature, a well-formed answer with an empty reply at 101 output tokens, `end_turn` — which is
+  worse than the bar of 1 in 60 as a rate; reported to her under ruling R4 before going on, and she
+  said go on, 21 Sep 2026. The sixty-request run at eyeball stop 4 decides. 20 calls, 429,299 input
+  tokens with cache reads included, 6,707 output. No captures this step, by her word.
+- **Step 6 — the instrument comes out. Committed 21 Sep 2026 on the same branch (`23e289a`), not on
+  `main`, no pull request yet.** `PHOEBE_DIAGNOSE` and its `diag()` calls removed from
   `api/phoebe.ts`, as item A6 named; the measured-run method written into the pack's
-  `evals/README.md` as an internal gate, one paragraph, no score.
+  `evals/README.md` as an internal gate, one paragraph, no score. **As built:** 119 lines out of
+  her relay, all removals, nothing a visitor sees changed; the measure script's usage note no longer
+  names the switch. `api/wellington.ts` keeps its own copy of the same switch, because the step named
+  her relay only — raised for her word, not touched. The paragraph in `evals/README.md` says what
+  each of the two measure scripts asks and counts, her bar of 1 in 60, why sixty, and that neither is
+  a build gate nor a score. Pack 0.4.2, one CHANGELOG entry for steps 4 to 6. All checks and the
+  build green. **The runs on the final prompt, 21 Sep 2026:** the sixty-request run, 0 empty in 60,
+  no other failures; 60 calls, 1,298,020 input tokens with cache reads included, 24,643 output.
+  One full walk: six verdicts in 7 turns, order kept in 6 of 6 moving turns, one question or none
+  in 7 of 7 replies, hand-back set to Wellington on the last turn, 0 empty; 7 calls, 158,486 input,
+  2,578 output. Step 5's 1 in 20 did not recur.
 - **Eyeball stop 4:** one full desk walk from Wellington's invite through six rows one at a time,
-  with the shown line under each turn, to the hand-back and the Dispatches invite; capture and the
-  walk's counts in the pull request. A third measured run on the final prompt, counts and cost in
-  one plain sentence in the For Amy block, stopping if worse than 1 in 60.
+  with the shown line under each turn, to the hand-back and the Dispatches invite; ~~capture and the
+  walk's counts in the pull request~~ **by her word of 21 Sep 2026, no robot captures: she walks it
+  herself from the preview link and three plain steps in the pull request; the walk's counts are
+  in the block.** A third measured run on the final prompt, counts and cost in
+  one plain sentence in the For Amy block, stopping if worse than 1 in 60. **Pull request D is open
+  and waits on her eyeball.**
+- **Her rulings at eyeball stop 4, 21 Sep 2026, built into the same pull request.** Two in the code:
+  `PHOEBE_DIAGNOSE` and its three `diag()` calls leave `api/wellington.ts` too, so the A6 instrument
+  is out of both relays with two checks holding it out; and Phoebe's scope reaches her as facts she
+  phrases — today she checks eligibility under VWBA 2.0 only, carbon eligibility is coming and not
+  live, and a project may qualify on one pathway and not the other — with one line in her pack's
+  contract table, pack 0.4.3, `check-wellington` at 136 and both new prompt checks provoked. Three
+  in the documents, all BONES, none started and each wanting its own proposal: **item A16**,
+  Wellington guides and leads and never asks "water or carbon", because which pathways apply is
+  Phoebe's to find; **item A17**, the handoff both ways, forward and back, his side of the return
+  not built; **item K7 expanded**, her second pack `gs-paa-v2.0` in the new shape with a cited
+  "does this apply" test on every pack, so she knows which worksheets to fill and reports each
+  pathway on its own.
+- **Next brief, on her word, after #97 merges.** Nothing is chosen here, and the proposal comes
+  first. A16, A17 and the expanded K7 are one piece of work seen from three sides.
 
 **Named, not built:** Wellington reading the record's eligibility section — her verdicts — in his
 visit block, and greeting the visitor back knowing what she found. Its own brief, after Phoebe.
@@ -560,8 +610,9 @@ is nothing left for images to teach.** No folder waits for them.
 
 ## Building next — the hero chat, when its reference arrives
 
-**Building next, from 21 Sep 2026: pull request D of the specialist contract batch — steps 4, 5 and 6,
-one full walk at eyeball stop 4.** See *In progress* at the head of this file. The batch is approved;
+**Building next, from 21 Sep 2026: pull request D of the specialist contract batch — ~~steps 4, 5 and 6~~
+~~steps 5 and 6~~ step 6, one full walk at eyeball stop 4.** Steps 4 and 5 are committed on the branch,
+21 Sep 2026, and wait there; the pull request opens with step 6. See *In progress* at the head of this file. The batch is approved;
 nothing else starts before it lands.
 
 ~~**The OPEN_ITEMS triage is next, by the maintainer's word of 17 Sep 2026**~~ **Done 18 Sep 2026;

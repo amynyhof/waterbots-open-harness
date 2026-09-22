@@ -89,6 +89,13 @@ export interface AgentTurn {
    * never from prose. Either a link out or something to do here.
    */
   action?: TurnAction;
+  /**
+   * One caption line under the answer, in the citation line's place and size.
+   * An agent's adapter builds it from a structured field, never from prose —
+   * Phoebe's says what her worksheet holds after a turn that moved a row
+   * (contract line 5, 21 Sep 2026). The layer draws it and knows no more.
+   */
+  caption?: string;
 }
 
 export interface TurnAction {

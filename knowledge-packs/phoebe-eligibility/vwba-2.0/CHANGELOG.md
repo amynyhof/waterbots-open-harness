@@ -1,5 +1,28 @@
 # Changelog — vwba-2.0
 
+## 0.4.3 — 21 Sep 2026
+
+- **Her scope is a fact she phrases.** The maintainer's ruling at eyeball stop 4:
+  her prompt gains "What you check today, and what is coming" — today she checks
+  eligibility under VWBA 2.0 only; carbon eligibility is a second pathway, coming
+  and not live, with no carbon cards; a project may qualify on one pathway and not
+  the other, so "eligible" from her never means eligible everywhere. Facts only, in
+  her own words, on the ruling of 3 Sep 2026. Line 7 of the contract table carries
+  it in one line. Four checks in `check-wellington` (136), two of them holding that
+  the A6 instrument stays out of both relays. No card changed.
+
+## 0.4.2 — 21 Sep 2026
+
+- **Contract table refreshed for steps 4 and 5; the measured run written down.** Line 8,
+  hands back, reads yes: her answer carries `handBack`, `none` or `wellington`, checked
+  against that closed list by the relay and the client, and the console draws the way
+  back from the field alone. Lines 4 and 5 read yes: her prompt walks the six rows in
+  the manual's order from the first unchecked, one row, one question, and under any turn
+  that moved a row the console draws one line from her verdicts. `evals/README.md` now
+  says how the measured run and the measured walk are done and what the bar is — an
+  internal gate, one paragraph, no score. The A6 diagnostic switch left her relay. No
+  card changed. Item A15, steps 4 to 6.
+
 ## 0.4.1 — 21 Sep 2026
 
 - **Contract table refreshed for step 3.** Line 3, sees its tool's state, reads yes:

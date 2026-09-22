@@ -285,6 +285,39 @@ expect(
   'the worksheet block is missing, or sits above the cache breakpoint'
 );
 
+/* The hand-back — contract line 8, item A15, step 4, 21 Sep 2026. A field
+   the console acts on, never a sentence it reads: checked against a closed
+   list of two by the relay and again by the client, an unknown value "none",
+   never a destination. Her prompt says when to set it, and the done note
+   says so too; her schema requires it so a turn cannot leave it out. */
+console.log('\n  The hand-back — contract line 8\n');
+const { readHandBack, HAND_BACKS } = await loadApi('_handBack.js');
+expect('the closed list is none and wellington, and nothing else', JSON.stringify(HAND_BACKS) === '["none","wellington"]', JSON.stringify(HAND_BACKS));
+expect('an unknown, missing or invented hand-back is "none", never a destination', readHandBack(undefined) === 'none' && readHandBack('shelf') === 'none' && readHandBack('Wellington') === 'none' && readHandBack(1) === 'none' && readHandBack({}) === 'none', 'an unknown value leaked');
+expect('"wellington" passes as itself', readHandBack('wellington') === 'wellington' && readHandBack('none') === 'none', 'the known values did not pass');
+const { RESPONSE_SCHEMA: PHOEBE_SCHEMA } = await loadApi('_systemPrompt.js');
+expect(
+  'her schema requires the field and closes its list',
+  PHOEBE_SCHEMA.required.includes('handBack') && JSON.stringify(PHOEBE_SCHEMA.properties.handBack?.enum) === JSON.stringify(HAND_BACKS),
+  JSON.stringify({ required: PHOEBE_SCHEMA.required, enum: PHOEBE_SCHEMA.properties.handBack?.enum })
+);
+expect(
+  'her prompt says when to set it: her part done, or out of her lane, and rung 2 still speaks',
+  /Set handBack to "wellington"/.test(PHOEBE_PROMPT) && /every row on the worksheet has a verdict/.test(PHOEBE_PROMPT) && /out of your lane/.test(PHOEBE_PROMPT) && /still say the colleague's facts in your own plain words/.test(PHOEBE_PROMPT) && /back to the shelf/.test(PHOEBE_PROMPT),
+  'the hand-back rule is missing or reworded past its parts'
+);
+expect('the done note sets the field as well as saying so', /set handBack to "wellington"/.test(phoebeNotesBlock({ eligibilityDone: true }) ?? ''), phoebeNotesBlock({ eligibilityDone: true }));
+expect('the relay reads the field through the closed list and returns it', /readHandBack\(v\.handBack\)/.test(phoebeRelaySource) && /handBack: HandBack;/.test(phoebeRelaySource), 'the relay does not read the hand-back through _handBack');
+const phoebeClientSource = readFileSync(join('src', 'lib', 'phoebeClient.ts'), 'utf8');
+expect('the client checks it again against the same two words', /HAND_BACKS: readonly HandBack\[\] = \['none', 'wellington'\]/.test(phoebeClientSource) && /HAND_BACKS\.find\(\(h\) => h === data\.handBack\) \?\? 'none'/.test(phoebeClientSource), 'the client trusts the field or lists a third word');
+const phoebeScreenSource = readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8');
+const commonsSeatSource = readFileSync(join('src', 'components', 'CommonsSeats.tsx'), 'utf8');
+expect(
+  'the console draws the way back from the field alone — Dispatches on the console, the shelf on the Commons — and never reads her prose',
+  /answer\.handBack === 'wellington'/.test(phoebeScreenSource) && /onNavigate\('desk'\)/.test(phoebeScreenSource) && /answer\.handBack === 'wellington'/.test(commonsSeatSource) && /Back to the shelf/.test(commonsSeatSource) && !/answer\.reply\.(includes|match|search)/.test(phoebeScreenSource + commonsSeatSource),
+  'a consumer does not act on the field, or reads the prose'
+);
+
 const relaySource = readFileSync('api/wellington.ts', 'utf8');
 expect(
   'the relay attaches the visit block after the cache breakpoint, only when a record or stage is present',
@@ -318,6 +351,7 @@ const compileLib = spawnSync(
     join('src', 'lib', 'visit.ts'),
     join('src', 'lib', 'carried.ts'),
     join('src', 'lib', 'journey.ts'),
+    join('src', 'lib', 'criteriaState.ts'),
     '--outDir', libOut,
     '--module', 'commonjs',
     '--moduleResolution', 'node',
@@ -639,6 +673,67 @@ expect(
 );
 expect('the shell does not toast a bad carry', !/toast/i.test(appSource), 'a toast was added for a bad carry');
 expect('the contract comment names the four keys and forbids kind', /question=<≤500>\[&does=<≤300>\]\[&name=<≤80>\]\[&place=<≤80>\]/.test(readFileSync('src/lib/carried.ts', 'utf8')) && /No kind/.test(readFileSync('src/lib/carried.ts', 'utf8')), 'the contract comment does not match Shell A');
+
+/* ---------------------------------------------------------------------------
+   The walk in order and the shown line — contract lines 4 and 5, item A15,
+   step 5, 21 Sep 2026. The prompt carries the order rule; the caption is
+   drawn from her verdicts and the class the citation line wears, never from
+   prose; both seats attach it only under a turn that moved a row. How she
+   actually walks is measured with real calls — scripts/measure-phoebe-walk.mjs.
+--------------------------------------------------------------------------- */
+
+console.log('\n  The walk in order, and the shown line — contract lines 4 and 5\n');
+expect(
+  'her prompt walks the rows in order, one row, one question, from the first unchecked',
+  /Walk the rows in the manual's order — one row, one question/.test(PHOEBE_PROMPT) && /Never ask about two rows in one turn/.test(PHOEBE_PROMPT) && /the question you ask is always about the first row still unchecked/.test(PHOEBE_PROMPT),
+  'the order rule is missing or reworded past its parts'
+);
+const { worksheetCaption, initialStatuses } = createRequire(import.meta.url)(join(libOut, 'criteriaState.js'));
+expect('the shown line counts Met and Not yet on the whole worksheet, and not the unchecked', worksheetCaption([{ state: 'met' }, { state: 'not-yet', routeForward: 'x' }, { state: 'met' }, { state: 'unchecked' }, { state: 'unchecked' }, { state: 'unchecked' }]) === 'Worksheet: 2 Met · 1 Not yet', worksheetCaption([{ state: 'met' }]));
+expect('an untouched worksheet reads as zeros, never as six failures', worksheetCaption(initialStatuses(6)) === 'Worksheet: 0 Met · 0 Not yet', worksheetCaption(initialStatuses(6)));
+const transcriptSource = readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8');
+expect("the layer draws the caption in the citation line's own class, no new colour", /turn\.caption && <div className="wb-cite-line"/.test(transcriptSource), 'the caption is drawn in a class of its own, or not at all');
+expect(
+  'both seats draw it from her verdicts only under a turn that moved a row, never from prose',
+  /answer\.updates\.length\s*\?\s*\{ caption: worksheetCaption\(applyCriterionUpdates\(statuses, answer\.updates\)\) \}/.test(phoebeScreenSource) && /answer\.updates\.length\s*\?\s*\{ caption: worksheetCaption\(applyCriterionUpdates\(statuses, answer\.updates\)\) \}/.test(commonsSeatSource) && !/caption: [^w]/.test(phoebeScreenSource + commonsSeatSource),
+  'a seat draws the caption from something other than the moved rows'
+);
+
+/* ---------------------------------------------------------------------------
+   HER SCOPE, AND THE INSTRUMENT THAT LEFT — the maintainer's rulings of
+   21 Sep 2026 at eyeball stop 4.
+
+   Her scope reaches her as facts she phrases herself (ruling of 3 Sep 2026,
+   item A9), so what is checked is that the facts are there and that no
+   sentence is handed to her to repeat. What she actually says is a measured
+   run, not a check.
+
+   The A6 instrument is gone from both relays. A switch that comes back by
+   habit is exactly what a check is for.
+--------------------------------------------------------------------------- */
+
+console.log('\n  Her scope today, and the instrument that left\n');
+expect(
+  'her prompt carries the scope as facts: VWBA 2.0 eligibility today, carbon coming and not live',
+  PHOEBE_PROMPT.includes('# What you check today, and what is coming') &&
+    PHOEBE_PROMPT.includes('Today you check one pathway: eligibility under VWBA 2.0') &&
+    PHOEBE_PROMPT.includes('Carbon eligibility is a second pathway, and it is coming') &&
+    PHOEBE_PROMPT.includes('you have no carbon cards'),
+  'the scope facts are missing or reworded past their parts'
+);
+expect(
+  'the scope is given to her as facts to phrase, never as a sentence to repeat',
+  PHOEBE_PROMPT.includes('Say them in your own plain words'),
+  'the phrasing rule left the scope section'
+);
+for (const relay of ['phoebe', 'wellington']) {
+  const source = readFileSync(join('api', relay + '.ts'), 'utf8');
+  expect(
+    'the A6 instrument is out of ' + relay + "'s relay — no PHOEBE_DIAGNOSE, no diag()",
+    !source.includes('PHOEBE_DIAGNOSE') && !source.includes('diag('),
+    'the diagnosis switch or one of its calls came back'
+  );
+}
 
 /* ------------------------------------------------------------------------- */
 

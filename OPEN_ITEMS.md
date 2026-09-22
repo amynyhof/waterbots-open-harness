@@ -101,7 +101,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | closed | canon, ruled 26 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K5 | The VWBA 2.0 D-3 screening pack | Knowledge | closed | **built 1 Sep 2026** — the first pack in the slot — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | closed | **built 2 Sep 2026** — two packs, one module, the transition delta — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| K7 | A carbon card pass in Phoebe's card format | Knowledge | BONES | **logged 2 Sep 2026 as debt** — after Thursday, not built |
+| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; not built, proposal first |
 | K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K9 | Calvin's and Bridget's packs move to the new pack shape | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — one brief each, the way Phoebe's did; not started |
 | K10 | Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — not started |
@@ -118,8 +118,10 @@ file at the root, untracked, and deleted once the sweep merged.
 | A11 | The phase names are canon, and agents point at the step, never a tab | Agents | closed | **ruled and resolved 5 Sep 2026**, amended 7 Sep, same pull request — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | A12 | The two chats not built — Bridget's and Calvin's | Agents | PARK | **adopted 18 Sep 2026** from items A2 and S10; not scheduled |
 | A14 | Screen host role words — one home | Agents | BONES | **logged 18 Sep 2026 from the maintainer's word** — not fixed now |
-| A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Agents | BONES | **ruled 20 Sep 2026; the batch approved the same day** — steps 0 to 3 merged (#93, #94, #95) by 21 Sep; steps 4 to 6 remain as pull request D |
+| A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Agents | BONES | **ruled 20 Sep 2026; the batch approved the same day** — steps 0 to 3 merged (#93, #94, #95) by 21 Sep; steps 4 to 6 open as pull request D, #97, at her eyeball |
 | A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | ~~**logged 18 Sep 2026 from the maintainer's brief** — waits on her carry~~ **built 18 Sep 2026, #91 merged** — the free and Commons columns stay "unconfirmed" until she carries a confirmed file |
+| A16 | Wellington guides and leads — he never asks "water or carbon" | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; not started |
+| A17 | The handoff goes both ways — forward and back | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — her hand-back is built; his side of the return is not; not started |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
 | S2 | The shared chat layer | Surfaces | closed | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | S3 | Level 3 citation pop-out | Surfaces | closed | out of scope — paid platform — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -229,7 +231,7 @@ copied text.
 
 ---
 
-## K7. A carbon card pass in Phoebe's card format
+## K7. A carbon card pass in Phoebe's card format — and her second pack, with a "does this apply" test
 
 **Debt, logged 2 Sep 2026 and not built.** After Thursday's C4SW walk: a card pass in Phoebe's
 card format, drafted from the two Gold Standard PDFs in `sources-local/methodology/`, graded by
@@ -240,7 +242,40 @@ carbon questions, which is the correct outcome.
 **Why it is a row and not a task.** The maintainer asked for one open-items row so it is not
 lost. It waits for Thursday and on her word.
 
-Logged 2 Sep 2026. **Not started.**
+### Expanded 21 Sep 2026, from the maintainer's walk of pull request #97
+
+Her ruling at eyeball stop 4, in her words:
+
+> Phoebe's second pack, gs-paa-v2.0, in the new shape, with a cited "does this apply" test per
+> pack so she knows which worksheets to fill and reports each pathway on its own.
+
+**Four things it now holds, beyond the card pass.**
+
+1. **A second pack of her own**, `knowledge-packs/phoebe-eligibility/gs-paa-v2.0/`, in the pack
+   shape ruled on 17 Sep 2026 — `cards/`, `tool/`, `evals/`, `README.md`, `CHANGELOG.md` — beside
+   `vwba-2.0/`, which is the first thing in this repository to make a seat hold two packs. **One
+   pack at a time** still holds; this is the brief that proves the shape carries a second.
+2. **A cited "does this apply" test on every pack, hers included.** A short test, drawn from the
+   standard's own words and cited like any other claim under [CITATIONS.md](./CITATIONS.md),
+   that says whether this pack's pathway is in play for the project in front of her. `vwba-2.0`
+   gains one too; a pack without one cannot be sorted.
+3. **She runs the tests to know which worksheets to fill.** Which pathways apply is hers to find
+   (item A16), and the tests are how she finds it. A pathway that does not apply is said and
+   dropped; a pathway that applies opens its worksheet.
+4. **Each pathway is reported on its own.** One verdict per pathway, never merged into a single
+   "eligible". A project may qualify on one and not the other, and a reader must be able to tell
+   which. Her prompt already carries that as a fact from 21 Sep 2026 (item A15); this row is the
+   machinery behind it — the worksheets, the record's eligibility section, and the rail.
+
+**What this does not settle.** Whether the second worksheet is a second tool or one tool with two
+sets of rows; how the record's eligibility section holds two pathways; and whether Calvin's carbon
+method packs (item K6, built) and this eligibility pack cite the same documents twice. All three
+are the proposal's to answer, with her ruling on the shape.
+
+**Ordering.** The card pass above comes first — there is no pack without cards. Items A16 and A17
+are the same work seen from Wellington's side.
+
+Logged 2 Sep 2026. **Expanded 21 Sep 2026. Not started. Proposal first. Bucket BONES.**
 
 ## K8. Phoebe's VWBA pack is the cards' one home — closed, swept to the archive
 
@@ -867,12 +902,69 @@ the visitor back knowing what she found. Its own brief, after Phoebe. Calvin's a
 briefs come after, each on the same nine lines; the lists are on their pack READMEs' tables
 and in item A12.
 
-**Where it stands, 21 Sep 2026.** Steps 0 to 3 merged on her eyeball: #93, #94, #95. Two measured runs,
-both zero empty in sixty. Lines 1, 2, 3, 6, 7 and 10 read yes for Phoebe; 8 and 9 moved; 4 and 5 wait on
-step 5. Steps 4, 5 and 6 remain as pull request D with one full walk at eyeball stop 4; the exact plan for
-them is in [BUILD_PLAN.md](./BUILD_PLAN.md) under *In progress*.
+**Where it stands, 21 Sep 2026.** Steps 0 to 3 merged on her eyeball: #93, #94, #95. ~~Two measured
+runs, both zero empty in sixty.~~ **Three measured runs, all zero empty in sixty**, and one full walk:
+six verdicts in seven turns, the order kept in six of six moving turns, one question a turn, the
+hand-back set at the end. Lines 1, 2, 3, 6, 7 and 10 read yes for Phoebe; ~~8 and 9 moved; 4 and 5
+wait on step 5~~ **8 reads yes from step 4, and 4 and 5 from step 5; 9 is still partly, because no
+agent here reads her verdicts yet**. ~~Steps 4, 5 and 6 remain as pull request D with one full walk
+at eyeball stop 4~~ **Steps 4, 5 and 6 are open as pull request D, #97, at her eyeball**; the exact
+plan for them is in [BUILD_PLAN.md](./BUILD_PLAN.md) under *In progress*.
+
+**Her rulings at eyeball stop 4, 21 Sep 2026, made on her own walk.** Two are built into #97:
+Wellington's copy of the A6 instrument comes out with the rest, so the switch is gone from both
+relays; and her scope reaches her as facts she phrases — she checks eligibility under VWBA 2.0
+today, carbon eligibility is coming and not live — recorded in one line of her pack's contract
+table. Three are logged and not started, each wanting its own proposal: items **A16** and **A17**
+in this family, and item **K7** expanded with her second pack and a cited "does this apply" test
+per pack. This item stays the contract's home; those three are their own work, after #97 merges.
 
 **Bucket BONES.** In progress from 20 Sep 2026.
+
+## A16. Wellington guides and leads — he never asks "water or carbon"
+
+**Logged 21 Sep 2026 from the maintainer's walk of pull request #97, at eyeball stop 4. Not
+started.** Her ruling, in her words:
+
+> Wellington guides and leads. He does not ask "water or carbon". Which pathways apply is
+> Phoebe's to find.
+
+**What she saw.** Walking the desk herself she was asked to choose a pathway before anyone had
+looked at the project. That is a question the visitor cannot answer and the site can: whether a
+project can earn a countable water benefit, a carbon credit, both or neither is a finding, not a
+preference, and finding it is the eligibility specialist's job.
+
+**What it means for him.** His part is to learn what the project is and route to the step that
+comes next; it is not to sort visitors into pathways at the door. What has to change in his
+prompt, his route list, and the desk's own words is the work of the brief, not of this row.
+
+**What it means for her.** Finding which pathways apply is Phoebe's, and she can only do it for
+the pathways she holds cards for — one today. This row and item A17 and item K7 are one piece of
+work seen from three sides, and the K7 row carries the pack side.
+
+**Not scheduled. Proposal first. Bucket BONES.**
+
+## A17. The handoff goes both ways — forward and back
+
+**Logged 21 Sep 2026 from the maintainer's walk of pull request #97, at eyeball stop 4. Not
+started.** Her ruling, in her words:
+
+> The handoff both ways, forward and back.
+
+**Where it stands today.** Forward is built: Wellington hands the visitor to a step, and from
+21 Sep 2026 Phoebe hands back by a field — `handBack`, drawn as the way back to him on Dispatches,
+or to the shelf on the Commons (item A15, step 4). What is not built is his side of the return:
+he does not read what she found, so a visitor who walks back arrives to a colleague who does not
+know where they have been. That gap is named under item A15 as "Wellington reading the record's
+eligibility section", and this row is the maintainer's word that the round trip — not the one
+field — is the thing to build.
+
+**What the round trip has to carry.** Her verdicts, as the record's eligibility section, which
+already travels; what is still open; and enough for him to greet the visitor knowing what she
+found, in his own words, never as a recital. Rule zero and the agent-phrasing ruling of 3 Sep
+2026 both apply.
+
+**Not scheduled. Proposal first. Bucket BONES.**
 
 
 # Family: Surfaces
