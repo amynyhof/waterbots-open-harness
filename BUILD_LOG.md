@@ -1888,3 +1888,50 @@ not name it.
 Dev server started for the measured run and stopped after it. Two proposals and four draft files
 untracked at the root: the K7 and guide proposals, the two older VWBA drafts, and the two applies
 drafts now redrafted.
+
+## 23 September 2026, fourth sitting — the applies sets into their packs, the T4 fact, and K7 step 3 drafted
+
+Her grade: both applies files pass as redrafted, with one addition on card T4 for a transitioning
+project, as a fact Phoebe phrases: a transition-assistance module, overseen by trusted
+consultants, is coming to the paid site; the visitor can save the project and sign up for access.
+Then merge #102, confirm main equals origin, move both applies files into their packs, draft K7
+step 3, the seventeen methodology rows as cards with their fixability lines, and stop at K7 stop 2.
+
+### What was built
+
+#102 merged with its branch deleted; `main` equal to `origin` at 0ff9dce. On
+`feat/applies-into-packs`: the T4 fact added to the carbon applies set in her words; both applies
+files moved whole into `gs-paa-v2.0/cards/applies-cards-gs.md` and
+`vwba-2.0/cards/applies-cards-vwba.md` with their status approved and each saying nothing reads
+it until step 5; the carbon pack's `grader-notes.md` created and the water pack's appended; the
+carbon pack's `cards/README.md` rewritten to say what is approved and what is drafted. The fact
+logged beside the paid-site tools line in AGENT_RULES.md, under items A18 and K7, and as a carry
+on item O14. Carbon pack 0.2.0, water pack 0.6.0, seat 0.7.0, tree 0.9.0.
+
+`eligibility-cards-gs-DRAFT.md` at the root, untracked: the seventeen methodology cards M1 to
+M17 from the K7 proposal's §5.1, each in the card shape with "Can it be fixed?", "Applies to" and
+"External standard", citing the methodology's section and page and a framework document's page
+as a second link where one is cited. Ten *yes*, seven *depends* with the Blocked case named in
+the line, no flat *no*.
+
+### How it was proven
+
+`check-cards` green; the generated modules current, because the applies sets are named by no
+reader and the water card file did not change, so Phoebe's prompt is unchanged and no measured
+run was owed. `check-roster` green.
+
+### Decisions
+
+- **No flat *no* among the seventeen.** The proposal's first cut named M2, M12, M13 and M14 as
+  the carbon pathway's disqualifiers; written against the cards, each turns on a design fact
+  with a route until the visitor confirms it, so each is *depends*, the way criterion 4 is on the
+  water pathway. The carbon pathway's one flat *no* stays on applies card T2. The carbon "no"
+  list goes to the reviewer as Q11 either way, her word.
+- **Routes named on the cards are the proposal's planned ids**, with the methodology section
+  each would rest on, so a reader can check the source now; the gate will refuse a named route
+  with no card when the routes reader lands.
+
+### Housekeeping
+
+No dev server started. Two proposals and three draft files untracked at the root: the K7 and
+guide proposals, the two older VWBA drafts, and the new methodology cards draft.

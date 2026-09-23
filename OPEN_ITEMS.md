@@ -102,7 +102,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | closed | canon, ruled 26 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K5 | The VWBA 2.0 D-3 screening pack | Knowledge | closed | **built 1 Sep 2026** — the first pack in the slot — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | closed | **built 2 Sep 2026** — two packs, one module, the transition delta — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; **proposed and ruled 22 Sep 2026; steps 1 and 2 built, pull request A merged 23 Sep 2026 (#99); eyeball stop 1, her grade of six applies cards, still waits — their "no" sections redrafted under the guide-not-gate rule the same day** |
+| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; **proposed and ruled 22 Sep 2026; steps 1 and 2 built (#99); stop 1 passed 23 Sep 2026, both applies sets approved and in their packs; step 3, the seventeen methodology cards, drafted at the root for her grade — stop 2** |
 | K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K9 | Calvin's and Bridget's packs move to the new pack shape | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — one brief each, the way Phoebe's did; not started |
 | K10 | Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — not started |
@@ -322,11 +322,26 @@ published; the methodology carries two publication dates two days apart.
 with every Gold Standard canonical page confirmed (twelve pages, fourteen documents; the guessed
 slugs for 104, 107, 118, 119 and 120 were found through the publisher's own search); the seat, the
 tree and the water pack's README corrected and bumped. The six applies cards drafted at the root as
-`applies-cards-gs-DRAFT.md` and `applies-cards-vwba-DRAFT.md`, untracked, never read. **Eyeball
-stop 1: her grade.** Nothing beyond step 2 is started.
+`applies-cards-gs-DRAFT.md` and `applies-cards-vwba-DRAFT.md`, untracked, never read.
 
-Logged 2 Sep 2026. **Expanded 21 Sep 2026. Proposed and ruled 22 Sep 2026; steps 1 and 2 built, at
-eyeball stop 1. Bucket BONES.**
+**Stop 1 passed, 23 Sep 2026.** Both applies files graded "pass as redrafted" after their "If the
+answer is no" sections were redrafted under the guide-not-gate rule (item A18), with one addition
+on card T4 in her words: for a transitioning project, a fact Phoebe phrases, that a
+transition-assistance module, overseen by trusted consultants, is coming to the paid site and the
+visitor can save the project and sign up for access; logged beside the paid-site tools line in
+AGENT_RULES.md and on item O14. Both sets moved into their packs, `gs-paa-v2.0/cards/applies-cards-gs.md`
+and `vwba-2.0/cards/applies-cards-vwba.md`, approved, read by nothing until step 5's reader.
+
+**Step 3 drafted the same day, at stop 2.** `eligibility-cards-gs-DRAFT.md` at the root,
+untracked: the seventeen methodology cards M1 to M17, each with "Can it be fixed?" (ten *yes*,
+seven *depends*, no flat *no*; the flat *no* on the carbon pathway sits on applies card T2),
+"Applies to" and "External standard", citing the methodology's section and page and, where a
+framework document is also cited, its page as a second link. The carbon routes they name are the
+proposal's planned ids, not cards yet. **Her grade of seventeen cards is stop 2.** The fifteen
+framework and general cards are stop 3.
+
+Logged 2 Sep 2026. **Expanded 21 Sep 2026. Proposed and ruled 22 Sep 2026; stop 1 passed 23 Sep
+2026; step 3 drafted, at stop 2. Bucket BONES.**
 
 ## K8. Phoebe's VWBA pack is the cards' one home — closed, swept to the archive
 
@@ -1109,7 +1124,10 @@ also says, as a fact she phrases, that WaterBots is building tools and resources
 to help implementers do exactly these fixes, and that they can save their project and sign up for
 updates and access; the same line goes on the save door's copy. A fact, never a sales line; said
 there and nowhere else. It reaches her prompt and the save door with this item's build, and
-production's side of the door is a carry on item O14.
+production's side of the door is a carry on item O14. **A companion fact for one case, the same
+day:** on carbon applies card T4, for a transitioning project, that a transition-assistance module,
+overseen by trusted consultants, is coming to the paid site and the visitor can save the project
+and sign up for access; on the card, in the rulebook beside the tools line, and on item O14.
 
 **Where it stands, 23 Sep 2026, later.** Stop 3 passed: both drafts graded "ships as written",
 criterion 4 stays *depends*, R-8 ships with the Meta line, its title confirmed by her. The six
@@ -2186,6 +2204,7 @@ zero holds for every one: nothing here is fetched, written to, or guessed at on 
 | The carbon "no" list — the rows that can be Blocked — to the reviewer as Q11; her word of 23 Sep 2026 | The paid side | item A18 |
 | One contract change to the seal: `type` and `gsClass` for `kind`; rows and a readiness read per pathway; `wantsHuman` and a note | Production, before this site's sender changes | items K7, A16, A18 |
 | The "tools and resources on the paid site" line, her canon of 23 Sep 2026: production's side of the save door and its sign-up should say the same thing this site's save door will say | Production | item A18 |
+| The transition-assistance module, overseen by trusted consultants, that card T4 tells a transitioning project is coming to the paid site; her word of 23 Sep 2026 | Production | items K7, A18 |
 
 A carry is struck from this table when it lands, with the date. Nothing is built toward any of them
 from here.
