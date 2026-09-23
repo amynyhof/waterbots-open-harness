@@ -1,5 +1,17 @@
 # Changelog — gs-paa-v2.0
 
+## 0.4.0 — 23 Sep 2026
+
+- **The framework and general set is approved and in the pack**: P1–P2 and G1–G13 graded
+  "all pass as drafted" and appended to `cards/eligibility-cards-gs.md` as part two, so
+  all 32 rows of the carbon pathway sit in one file; their sources table and grader notes
+  travel with them (notes to `cards/grader-notes.md`). Nothing reads the file yet. K7 stop
+  3 passed.
+- **The nineteen carbon routes drafted** at the repository root as `routes-cards-gs-DRAFT.md`,
+  cited only from the methodology, the documents it names as binding, or a held published
+  project, for her grade. K7 step 4, carbon half.
+
+
 ## 0.3.0 — 23 Sep 2026
 
 - **The methodology set is approved and in the pack**: `cards/eligibility-cards-gs.md`, M1

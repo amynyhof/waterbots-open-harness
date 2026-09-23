@@ -102,10 +102,11 @@ file at the root, untracked, and deleted once the sweep merged.
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | closed | canon, ruled 26 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K5 | The VWBA 2.0 D-3 screening pack | Knowledge | closed | **built 1 Sep 2026** — the first pack in the slot — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | closed | **built 2 Sep 2026** — two packs, one module, the transition delta — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; **proposed and ruled 22 Sep 2026; steps 1 and 2 built (#99); stops 1 and 2 passed 23 Sep 2026, the applies sets and M1–M17 approved and in their packs; step 4, the fifteen framework cards, drafted at the root for her grade — stop 3** |
+| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; **proposed and ruled 22 Sep 2026; steps 1 and 2 built (#99); stops 1, 2 and 3 passed 23 Sep 2026, the applies sets and all 32 carbon eligibility cards approved and in their packs; the nineteen carbon routes drafted at the root for her grade** |
 | K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K9 | Calvin's and Bridget's packs move to the new pack shape | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — one brief each, the way Phoebe's did; not started |
 | K10 | Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — not started |
+| K11 | A third phase tag, "Partners phase" — rows where Bridget helps on the paid site | Knowledge | PARK | **logged 23 Sep 2026 from the maintainer's word** — the next version of the tags; not built now |
 | A1 | Phoebe abstention loop | Agents | PARK | built 25 Aug 2026 |
 | A2 | Final agent staffing | Agents | closed | settled 24 Aug 2026; Bridget's colour settled 29 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | A3 | Agent handoff primer | Agents | closed | shipped 28 Aug 2026 — rung 2 live — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -346,11 +347,20 @@ M14 carried to the reviewer as Q11, on item O14. M1–M17 are in
 `gs-paa-v2.0/cards/eligibility-cards-gs.md`, each with the Phase line her addendum ruled the same
 day (item A18). **Step 4 drafted at once:** `eligibility-cards-gs-framework-DRAFT.md` at the root,
 untracked, the fifteen framework and general cards P1–P2 and G1–G13 with fixability lines and
-tags — three *depends* (P1, G6, G12), no flat *no*, all *To start*. **Her grade of fifteen cards is
-stop 3.**
+tags — three *depends* (P1, G6, G12), no flat *no*, all *To start*.
 
-Logged 2 Sep 2026. **Expanded 21 Sep 2026. Proposed and ruled 22 Sep 2026; stops 1 and 2 passed
-23 Sep 2026; step 4 drafted, at stop 3. Bucket BONES.**
+**Stop 3 passed, 23 Sep 2026, later.** Her grade: "all pass as drafted". The fifteen appended to
+`gs-paa-v2.0/cards/eligibility-cards-gs.md` as part two, so all 32 rows of the carbon pathway sit
+in one file; notes to `grader-notes.md`. **Step 4, carbon half, drafted at once:**
+`routes-cards-gs-DRAFT.md` at the root, untracked, the nineteen routes R-1 to R-19 the eligibility
+cards already name, cited only from the methodology, the documents it names as binding, or a held
+published project (none is a carbon project, so none is cited); four rest on documents one link
+removed through the Principles & Requirements and say so, for her to strike. **Her grade of the
+nineteen is the next stop.** The tag rule of the addendum stands as written, her word the same day.
+A third tag, "Partners phase", is item K11, the next version, not built.
+
+Logged 2 Sep 2026. **Expanded 21 Sep 2026. Proposed and ruled 22 Sep 2026; stops 1 to 3 passed
+23 Sep 2026; the carbon routes drafted, at her grade. Bucket BONES.**
 
 ## K8. Phoebe's VWBA pack is the cards' one home — closed, swept to the archive
 
@@ -411,6 +421,24 @@ Logged 18 Sep 2026. **Not started. Bucket BONES.**
 4). Parts 1 and 2 can go first. Proposal before any of it.
 
 Logged 18 Sep 2026. **Not started. Bucket BONES.**
+
+## K11. A third phase tag, "Partners phase" — rows where Bridget helps on the paid site
+
+**Logged 23 Sep 2026 from the maintainer's word, at her grade of the framework cards. Not built.**
+Her words:
+
+> Log one item for the next version: some "to start" rows will move to a third tag, "Partners
+> phase", where Bridget helps on the paid site; not built now.
+
+**What it means.** Today every eligibility card carries one of two tags, *To start* or *To remain
+eligible* (item A18's addendum, the engineer's rule standing as written). Some *To start* rows are
+not the project owner's alone to settle: they turn on partners, permissions and the people around
+the water — the consultation rounds (G9), the grievance mechanism (G10), rights that must be
+uncontested (G5), buy-in and support (water criterion 3), the host country's list (M12). On the
+paid site those are the Partners phase, Bridget's, and a third tag would send them there. Which
+rows move is the next version's proposal, from the cards as they stand; nothing moves now.
+
+**Not scheduled. Proposal first, after the carbon routes land. Bucket PARK.**
 
 
 # Family: Agents
@@ -1162,8 +1190,9 @@ cited (101 v2.1 §4.1.42, §4.1.49, §5.1.37), look at VWBA, which is open to a 
 (Step 3, p. 21; criterion 6, p. 33; Step 6, p. 27; Glossary, p. 66) subject to criterion 4.
 (4) **The human door fires once on any Blocked project**: save and send to the WaterBots team,
 yes or not now. **Built now:** the tags on all 23 approved cards and the fifteen drafted ones;
-an *engineer's rule* on what "to remain" means, marked in the addendum for her to strike. The rest
-builds at the steps the addendum names.
+an *engineer's rule* on what "to remain" means, which **stands as written, her word of 23 Sep 2026,
+later**. The rest builds at the steps the addendum names. A third tag, "Partners phase", is item
+K11 for the next version.
 
 **Where it stands, 23 Sep 2026, later.** Stop 3 passed: both drafts graded "ships as written",
 criterion 4 stays *depends*, R-8 ships with the Meta line, its title confirmed by her. The six

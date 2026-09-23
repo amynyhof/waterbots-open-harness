@@ -1,5 +1,12 @@
 # Changelog — phoebe-eligibility
 
+## 0.9.0 — 23 Sep 2026
+
+- `gs-paa-v2.0@0.4.0` — the fifteen framework and general cards approved and appended;
+  all 32 carbon eligibility cards in one file. The nineteen carbon routes drafted at the
+  root. Item K7.
+
+
 ## 0.8.0 — 23 Sep 2026
 
 - `gs-paa-v2.0@0.3.0` — the seventeen methodology cards approved and in the pack with

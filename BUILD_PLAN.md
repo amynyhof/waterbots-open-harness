@@ -140,17 +140,20 @@ rule, drafted here, carried by her hand, the paid repository its source.
   the human door once on a Blocked project — recorded in the proposal's addendum and under items
   A18 and A16. **Built now:** the Phase line on all six water cards and all seventeen carbon cards
   (measured run on the pull request); K7 step 4, the fifteen framework cards, drafted at the root
-  with tags. On `feat/phase-tags-framework-cards`, pull request open. **K7 stop 3.**
-- **Next, on her grade:** the fifteen cards into the pack; the nineteen carbon routes; Wellington's
-  runtime (type and stage) on its own; Phoebe's runtime (five states, the read, the preview block,
-  the framing, the door) inside K7's pull requests C and D.
+  with tags (#105, merged). **K7 stop 3 passed the same day:** the fifteen appended to the carbon
+  pack, all 32 rows in one file; the tag rule stands as written, her word; item K11 logged for a
+  third tag, "Partners phase", not built. **K7 step 4, carbon half, drafted:** the nineteen carbon
+  routes at the root, untracked, for her grade. On `feat/carbon-routes`, pull request open.
+- **Next, on her grade:** the routes into the pack; then pull request B, the pack-keyed reader and
+  gate; Wellington's runtime (type and stage) on its own; Phoebe's runtime (five states, the read,
+  the preview block, the framing, the door) inside K7's pull requests C and D.
 
 ## In progress — Phoebe's carbon pack (item K7): pull request A merged; at eyeball stop 1
 
 **22 Sep 2026. Proposed, ruled, and steps 1 and 2 built on `feat/k7-gs-paa-pack`; merged as #99 on
 23 Sep 2026 on her word. Stop 1 passed the same day: both applies sets approved and in their
-packs. Stop 2 passed the same day: M1–M17 approved and in the carbon pack. Step 4, the fifteen
-framework cards, drafted at the root; stop 3 is her grade of them.**
+packs. Stops 2 and 3 passed the same day: all 32 carbon eligibility cards approved and in one file.
+The nineteen carbon routes drafted at the root; her grade of them is the next stop.**
 **23 Sep 2026: the row model of its §4.1 and §9.2 is superseded by the guide proposal above; the
 cards, the tests and the steps stand.** The proposal, `PROPOSAL_K7_gs-paa-v2.0.md`,
 untracked at the root, read the sources at three layers and found 32 basic eligibility

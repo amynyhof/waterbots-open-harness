@@ -2052,3 +2052,50 @@ The carbon set is named by no reader, so its tags reach nothing yet.
 Dev server started for the measured run and stopped after it. Two proposals and three draft files
 untracked at the root: the K7 and guide proposals (the latter with its addendum), the two older
 VWBA drafts, and the framework cards draft.
+
+## 23 September 2026, seventh sitting — the framework cards approved, item K11 logged, and the carbon routes drafted
+
+Her word: merge #104, retarget and merge #105, confirm main equals origin; the engineer's tag rule
+in the addendum stands as written; the fifteen framework cards all pass as drafted, move them into
+the carbon pack; log one item for the next version, a third tag "Partners phase" where Bridget
+helps on the paid site, not built now; then step 4's carbon half, the nineteen carbon routes as a
+draft at the root, cited only from the methodology, the documents it names as binding, or a held
+published project; stop for her grade.
+
+### What was built
+
+#104 merged with its branch kept, #105 retargeted to main and merged, both branches gone, main
+equal to origin at fb89aea. On `feat/carbon-routes`: P1–P2 and G1–G13 appended whole to
+`gs-paa-v2.0/cards/eligibility-cards-gs.md` as part two with their sources table, so all 32 rows
+of the carbon pathway sit in one file; the status line and preface say so; notes to
+`grader-notes.md`; the draft removed. Item K11 logged in her words, with the rows that look like
+Partners work named as candidates and nothing moved. The addendum's engineer's rule marked as
+standing, her word. Carbon pack 0.4.0, seat 0.9.0, tree 0.11.0.
+
+`routes-cards-gs-DRAFT.md` at the root, untracked: R-1 to R-19, the ids the eligibility cards
+already name, each two or three short sentences on a section read this session. Fifteen rest on
+the methodology itself or a document it names as binding at §3.4.1 or §4.1.2; four (R-14, R-15,
+R-17, R-19) rest on a document one link removed through the Principles & Requirements, and each
+shows its chain so she can strike it. No held published project is a carbon project, so none is
+cited; the gaps with no route are named.
+
+### How it was proven
+
+`check-cards` green; the generated modules current, because the carbon pack is named by no reader
+and the water card file did not change, so Phoebe's prompt is unchanged and no measured run was
+owed. Thirty-two `## Card` headings counted in the pack file.
+
+### Decisions
+
+- **Part two carries its own sources table** rather than folding ten documents into the file's
+  head, so a reader of M1–M17 still meets one document first and the framework's ten only where
+  they are cited.
+- **The four one-link-removed routes are drafted, not withheld.** Her rule names "the documents it
+  names as binding"; 101 is named, and 101 binds 102, which binds 104. Withholding them would leave
+  G9, G10, G11 and P1 with no route at all, which is a bigger departure from her intent than
+  drafting them with the chain shown and letting her strike.
+
+### Housekeeping
+
+No dev server started. Two proposals and three draft files untracked at the root: the K7 and guide
+proposals, the two older VWBA drafts, and the carbon routes draft.
