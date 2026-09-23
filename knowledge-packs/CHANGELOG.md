@@ -3,6 +3,12 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.7.0 — 23 Sep 2026
+
+- **The project-type list lives in the shared pack.** `product-shared@0.4.0`:
+  `project-types.md`, twenty-five cited lines, graded and approved by the maintainer
+  on 23 Sep 2026, on the roster rule. Nothing reads it yet. Items A16 and A18.
+
 ## 0.6.1 — 23 Sep 2026
 
 - **A guide, not a gate.** `phoebe-eligibility@0.5.1` (`vwba-2.0@0.4.5`): the hard-gate
