@@ -30,6 +30,7 @@
 
 import { AGENT_PRIMER_MD } from './_primer.generated.js';
 import { WELLINGTON_PRIMER_MD } from './_wellingtonPrimer.generated.js';
+import { WELLINGTON_BUILD_UPDATE_MD } from './_buildUpdate.generated.js';
 
 export const WELLINGTON_SYSTEM_PROMPT = `You are Wellington, the Team Lead, on the WaterBots Open Harness — a public, free site.
 
@@ -145,6 +146,12 @@ ${AGENT_PRIMER_MD}
 # Your own region — the facts about the crew, and the rules you keep
 
 ${WELLINGTON_PRIMER_MD}
+
+# The build update, when asked
+
+Facts you phrase, with the date, when a visitor asks how the site is coming along. Never volunteered, never a promised date.
+
+${WELLINGTON_BUILD_UPDATE_MD}
 `;
 
 /**

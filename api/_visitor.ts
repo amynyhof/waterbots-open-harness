@@ -75,7 +75,7 @@ export function visitorId(address: string, salt: string): string {
 /**
  * Which day it is, in UTC.
  *
- * The cap is twenty messages per calendar day, and the day is measured in UTC
+ * The cap is thirty messages per calendar day (twenty until 23 Sep 2026), and the day is measured in UTC
  * rather than anywhere local. A fixed line is simpler than a rolling
  * twenty-four hours, and it lets the refusal message name the exact moment the
  * count comes back rather than saying "later".
@@ -87,7 +87,7 @@ export function utcDayStamp(now: Date): string {
 /**
  * Where one visitor's count for one day lives, for one agent.
  *
- * EACH AGENT COUNTS SEPARATELY, under its own name — Phoebe's twenty and
+ * EACH AGENT COUNTS SEPARATELY, under its own name — Phoebe's thirty and
  * Wellington's thirty are two counters, not a pool. The agent's name is the
  * first segment so the store can be read by agent. Generalised 3 Sep 2026;
  * until then the key was Phoebe's by name, because she was the only agent
