@@ -131,17 +131,21 @@ rule, drafted here, carried by her hand, the paid repository its source.
   the visitor is told, as a fact phrased, that WaterBots is building tools and resources on the paid
   site for exactly these fixes, and can save the project and sign up; the same line on the save
   door. In AGENT_RULES.md under ruling 5; production's side on item O14.
-- **The six applies cards' "If the answer is no" sections redrafted** under the guide-not-gate rule,
-  at the root, untracked, for her grade with K7's stop 1: each no sorted into Fixable with a cited
-  route, Unknown not a fail, or Blocked where no route exists.
-- **Next, on her grade:** K7's stop 1 (the six applies cards); the carbon fixability lines and
-  nineteen carbon routes with K7's card steps; Wellington's runtime on its own; Phoebe's runtime
+- **The six applies cards passed as redrafted, 23 Sep 2026 (#102 merged), and are in their packs**
+  with one addition on T4 in her words, the transition-assistance fact; carbon pack 0.2.0, water
+  pack 0.6.0, seat 0.7.0, tree 0.9.0. Read by nothing until K7's step 5.
+- **K7 step 3 drafted the same day, at K7 stop 2:** `eligibility-cards-gs-DRAFT.md` at the root,
+  the seventeen methodology cards M1–M17, each with "Can it be fixed?", "Applies to" and "External
+  standard". On `feat/applies-into-packs`, pull request open.
+- **Next, on her grade:** K7 step 4, the fifteen framework and general cards with their fixability
+  lines (K7 stop 3); the nineteen carbon routes; Wellington's runtime on its own; Phoebe's runtime
   inside K7's pull requests C and D.
 
 ## In progress — Phoebe's carbon pack (item K7): pull request A merged; at eyeball stop 1
 
 **22 Sep 2026. Proposed, ruled, and steps 1 and 2 built on `feat/k7-gs-paa-pack`; merged as #99 on
-23 Sep 2026 on her word. The six applies cards still wait at the root for her grade (stop 1).**
+23 Sep 2026 on her word. Stop 1 passed the same day: both applies sets approved and in their
+packs. Step 3, the seventeen methodology cards, drafted at the root; stop 2 is her grade of them.**
 **23 Sep 2026: the row model of its §4.1 and §9.2 is superseded by the guide proposal above; the
 cards, the tests and the steps stand.** The proposal, `PROPOSAL_K7_gs-paa-v2.0.md`,
 untracked at the root, read the sources at three layers and found 32 basic eligibility

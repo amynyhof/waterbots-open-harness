@@ -1,6 +1,6 @@
 # vwba-2.0 — Phoebe's Knowledge Pack
 
-**Version 0.5.0.** This folder is the one home of what Phoebe knows about the
+**Version 0.6.0.** This folder is the one home of what Phoebe knows about the
 water pathway (corrected 22 Sep 2026; see the CHANGELOG). Her carbon pathway has
 its own folder beside this one, [`../gs-paa-v2.0/`](../gs-paa-v2.0/), a scaffold,
 not live. The card files live in [`cards/`](./cards/), and everything on the live
@@ -8,7 +8,7 @@ site that reads them reads them from here. Maintainer's ruling, 17 Sep 2026.
 
 ## What she knows
 
-Three card sets, drawn from one document, *Volumetric Water Benefit
+Four card sets, drawn from one document, *Volumetric Water Benefit
 Accounting 2.0*, and one real published project:
 
 | Set | Source | Cards | File |
@@ -16,6 +16,7 @@ Accounting 2.0*, and one real published project:
 | Eligibility | Appendix A | Six criteria. All must be met. Approved 21 Aug 2026. From 23 Sep 2026 each card carries a **Can it be fixed?** line — five *yes*, one *depends* (criterion 4) — the only place the word Blocked can come from. | [`cards/eligibility-cards-vwba.md`](./cards/eligibility-cards-vwba.md) |
 | Feasibility | Appendix B | Ten considerations. Guidance, never a gate. Approved 21 Aug 2026. | [`cards/feasibility-cards-vwba.md`](./cards/feasibility-cards-vwba.md) |
 | Routes | Figure 3, Steps 1, 3 and 4, Appendices A, C, D and E; and the Meta 2023 volumetric water benefits report | Nine cited fixes, one per common gap. A route hangs on a Fixable row; never a promise. Approved 23 Sep 2026. **Not read by anything until the routes reader is built** (item A18). | [`cards/routes-cards-vwba.md`](./cards/routes-cards-vwba.md) |
+| Applies | Glossary; Appendix A criterion 1; Appendix C, Table C-1; Step 3 | Two questions that say whether the water pathway is in play; never a verdict; each "no" sorted into Fixable, Unknown or Blocked. Approved 23 Sep 2026. **Not read by anything until the pack-keyed reader is built** (item K7). | [`cards/applies-cards-vwba.md`](./cards/applies-cards-vwba.md) |
 
 Every card is a rewrite in plain words. No sentence is copied from the source.
 Every card carries the four-part citation from [CITATIONS.md](../../../CITATIONS.md)

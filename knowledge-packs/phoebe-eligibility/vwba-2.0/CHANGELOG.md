@@ -1,5 +1,13 @@
 # Changelog — vwba-2.0
 
+## 0.6.0 — 23 Sep 2026
+
+- **A fourth card set, `cards/applies-cards-vwba.md`.** The two applies cards, W1 and
+  W2, graded "passes as redrafted" after their "If the answer is no" sections were
+  redrafted under the guide-not-gate rule, moved in whole; their grader notes
+  appended to `cards/grader-notes.md`. Nothing reads the set yet. K7 stop 1 passed.
+
+
 ## 0.5.0 — 23 Sep 2026
 
 - **"Can it be fixed?" on every eligibility card.** One labelled paragraph after

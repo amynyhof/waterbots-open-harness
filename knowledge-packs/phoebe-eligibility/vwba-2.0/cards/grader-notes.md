@@ -217,3 +217,22 @@ anything.
 4. **Page numbers** were checked against the local copy's footers: Step 1 begins on p. 16, Step 3
    and Step 4.3 and 4.4 are on pp. 21 and 25, D-3 is on pp. 44–45, Appendix E on pp. 62–64. Every
    criterion page matches the criteria cards already approved.
+
+---
+
+## Applies set — moved into `applies-cards-vwba.md` on 23 Sep 2026
+
+Graded "passes as redrafted". The notes that sat at the foot of the draft:
+
+These notes are for the maintainer and are moved to `grader-notes.md` before the file is
+read by anything.
+
+1. **Pages.** The glossary entries are on p. 66 and the WASH row is on the last page of
+   Table C-1; the table is cited as pp. 37–39 to match the untracked Appendix C draft at
+   the root. Both were checked against the page footers of the local copy.
+2. **W2 does not re-draft the activity table.** The untracked Appendix C draft (twenty
+   cards, one per activity row) is not touched by this brief. W2 names the one row a
+   safe-water project lands in and points at criterion 1 for the rest.
+3. **Two cards, not one.** W1 and W2 could be one card, since both rest on criterion 1.
+   They are two because a project can fail them differently — no volume at all, or a
+   volume with no mapped route — and the reason Phoebe gives has to say which.
