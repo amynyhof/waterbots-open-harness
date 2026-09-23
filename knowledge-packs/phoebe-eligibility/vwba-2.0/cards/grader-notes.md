@@ -103,9 +103,9 @@ file it was cut from. The status line, the design decision and the source table 
    and only one was checked. Verifying one thing and citing it as cover for another is the failure
    mode to watch for in the rest of this card work.
 
-6. **Not yet cross-checked** against `sources-local/VWBA summary.pdf` or the Meta 2023 report, both
-   of which are sitting in the same folder. Say the word if the cards should be reconciled with
-   either.
+6. **Not yet cross-checked** against `sources-local/Methodology/vwba-2.0/VWBA_2021_Volumetric-Water-Benefit-Accounting-A-Practical-Guide-to-Implementing-Water-Replenishment-Targets.pdf` or the Meta 2023
+   report, both held in the same pack's source folder. Say the word if the cards should be
+   reconciled with either.
 
 ---
 

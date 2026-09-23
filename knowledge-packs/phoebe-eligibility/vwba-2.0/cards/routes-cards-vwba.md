@@ -40,11 +40,12 @@ R8).
 | **Authors / publisher** | World Resources Institute, LimnoTech, Bluerisk, Bonneville Environmental Foundation. Washington, DC: World Resources Institute |
 | **Version and date** | Version 1, September 2025 |
 | **DOI** | https://doi.org/10.46830/wrigb.23.00112 |
-| **Local copy** | `sources-local/VWBA Full Manual.pdf` — 72 pages; printed page numbers match PDF page numbers 1:1, confirmed against the page footers |
+| **Local copy** | `sources-local/Methodology/vwba-2.0/VWBA_V2.0_Volumetric-Water-Benefit-Accounting-2.0-Guidebook.pdf` — 72 pages; printed page numbers match PDF page numbers 1:1, confirmed against the page footers |
 
 **The one published project cited** (R-8): LimnoTech for Meta, *Volumetric Water Benefits: 2023
 Report*, 25 June 2024, 44 pages; the Navajo Community Water Supply project, pp. 25–26, and
-Appendix 1, p. 39. Local copy `sources-local/Meta_2023_Volumetric_Water_Benefit_Report.pdf`. Its
+Appendix 1, p. 39. Local copy `sources-local/Methodology/vwba-2.0/published-reports/Meta_2023_Volumetric_Water_Benefit_Report.pdf`.
+Its
 canonical address, <https://sustainability.atmeta.com/asset/2023-volumetric-water-benefits/>,
 resolved on 23 Sep 2026; the maintainer confirmed the title at the grade the same day.
 
