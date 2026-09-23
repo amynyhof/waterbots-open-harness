@@ -1771,3 +1771,71 @@ build lands, so her behaviour today is unchanged by design.
 Dev server started on 5173 for the measured run and stopped after it. `main` still equal to
 `origin` at a86bf9e; pull request #99 open and unchanged. The migration gate checked and clear.
 Four untracked DRAFT files and two untracked proposals at the root, all named on their items.
+
+## 23 September 2026, second sitting — the no-strikes canon, two merges, the types file home, and stop 3
+
+Her grade of the types draft ("ships, one edit") arrived with a new canon and a build order: no
+crossed-out text in any live document, applied to #100 at once; one open item in a new cleanup
+family for the older strikes; a second item for exportable tools; then merge #99, retarget and
+merge #100, confirm main equals origin; move the types file into the shared pack; draft step 3 and
+the water half of step 4 at the root; stop at stop 3.
+
+### What was built
+
+**Into #100 before it merged.** PROCESS_RULES' *Visible corrections over rewritten history* replaced
+by *Corrections replace text; the archive keeps the old wording*, in her words; the old section's
+whole text is the first entry of `docs/archive/CORRECTIONS.md`, a new file indexed in the archive
+README. Every strike this batch had made (#99 and #100) replaced by current text: the head of the
+eligibility card file, whose 20 Aug 2026 paragraph now sits whole in `vwba-2.0/CHANGELOG.md`; the
+seat, water-pack and tree READMEs, their old wording in their CHANGELOGs; the K7 row here and the
+K7 heading in BUILD_PLAN, in the archive file. A sixth family, Cleanup, with its reason and item C1
+in her words; item S21 in her words. The card module regenerated; a second measured run on the final
+prompt, 0 empty in 60, 1,336,000 input tokens.
+
+**Merges, on her word.** #99 merged without deleting its branch; #100 retargeted from that branch to
+`main`, then merged with its branch deleted; the K7 branch deleted after. `main` equal to `origin`
+at 8eb4f71.
+
+**The types file.** `project-types-DRAFT.md` moved into `knowledge-packs/product-shared/` as
+`project-types.md` with the one citation edit from her grade and its status line approved; the
+grader notes moved whole into the shared pack's CHANGELOG 0.4.0; tree 0.7.0; the pack README and
+the tree folder map name it. Nothing reads it yet. On `feat/project-types-shared`, pull request
+open.
+
+**Two drafts at the root, untracked, for stop 3.** `can-it-be-fixed-vwba-DRAFT.md`: six lines, one
+per water criterion, five *yes* and one *depends* (criterion 4, on whether the sponsor is legally
+obliged, with the card's two carve-outs); `routes-cards-vwba-DRAFT.md`: R-1 to R-9, each two or
+three short sentences resting on a guidebook page read this session — Figure 3's loop, Step 1,
+Step 3, Steps 4.3 and 4.4, Appendix E and Table E-1, method D-3 — and one on the Meta 2023
+report's Navajo Community Water Supply project.
+
+### How it was proven
+
+`check-cards` green after the head rewrite; `git diff` against the merge base adds no `~~` line
+except two pre-existing strikes that share a line or a generated string with an edit. The second
+measured run within the bar. The Meta report's address on Meta's sustainability site resolved but
+was too large for the fetching tool to read; the card says so and waits for her eyeball.
+
+### Decisions
+
+- **Criterion 4 is *depends*, not *no*.** The proposal's first cut had it as the water pathway's one
+  true disqualifier; read against the card's two carve-outs, a flat *no* would make them
+  unreachable. The line names the one legal fact and allows Blocked only once it is confirmed. Her
+  grade decides.
+- **Grader notes for a shared-pack file go in its CHANGELOG.** The pack has no `grader-notes.md`
+  and the notes were four short paragraphs; the CHANGELOG is where the file's history already lives.
+- **Merge #99 with its branch kept, then retarget.** The memory from the last stacked pair held:
+  deleting the base branch first would have closed #100.
+
+### What was learned
+
+- Applying a no-strikes rule to a batch is mostly a matter of finding where the old wording goes,
+  and the pack CHANGELOGs were the natural home for most of it; the archive file only had to take
+  what no pack owns.
+- A pull request description's For Amy block came in at 153 and 151 words on two drafts before
+  149; the count is worth a script line before every `gh pr edit`.
+
+### Housekeeping
+
+Dev server started for the second measured run and stopped after it. Two proposals and five draft
+files untracked at the root, each named on its item. The migration gate checked and clear.
