@@ -24,11 +24,14 @@ AGENT_RULES.md; the worksheet carries the three kinds of miss and the read once 
 **Until then the worksheet has its three states, and a criterion not met is "Not yet" with a route
 forward**, which was always the posture.
 
-**Every card carries a Phase line from 23 Sep 2026**, the maintainer's addendum ruling: *To start*
-or *To remain eligible*. A planned project's readiness read counts *To start* rows only; the *To
-remain* rows and every *Kept up by* clause show together in one preview block, never as a mark
-against a planned project. A running project gets every row. All six criteria here are *To start*;
-criterion 5 names the part that is kept up.
+**Every card carries a Phase line**, the maintainer's ruling of 23 Sep 2026: the phase on the
+navigation where the row is acted on — Eligibility, Partners, Quantify, Plan, Monitor,
+Communicate — or *To remain eligible*. **Eligibility-phase rows are the free screen**: facts a
+planner can answer from the idea itself, whose answer can end a pathway or is needed to know it
+applies. On this site Phoebe asks those rows only, and the readiness read is on them. Every other
+row is shown once, grouped by phase with the seat that helps there, never asked, never a mark
+against a planned project; the paid site walks every row. Here: criteria 1, 2 and 4 are
+Eligibility; 3 and 6 Partners; 5 Plan, with the part kept up in Monitor.
 
 **Every "not yet" has to arrive with a route forward.** A verdict that only reports failure is not
 an acceptable output. Whenever Phoebe finds a criterion unmet, she states what would change that:
@@ -103,7 +106,7 @@ activity outside the table can be counted by a method resting on the same princi
 with no route yet has work to do, not a wall. Routes: R-3, R-8; for a project whose scope needs
 changing first, R-1. (Appendix A, criterion 1, p. 32; Step 3, p. 21.)
 
-**Phase.** To start.
+**Phase.** Eligibility.
 
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 1 — "Established pathway for
 a quantifiable VWB", p. 32. Short restatement at p. 20.
@@ -134,7 +137,7 @@ desktop research or by talking to the people who depend on the water. A project 
 named its challenge has not yet done Step 1. Route: R-2. (Appendix A, criterion 2, p. 32; Step 1,
 pp. 16–17.)
 
-**Phase.** To start.
+**Phase.** Eligibility.
 
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 2 — "Water challenges
 addressed relevant to the catchment or area of interest", p. 32. Short restatement at p. 20.
@@ -165,7 +168,7 @@ consultation, and the criterion's own evidence list is a list of things a projec
 How much is needed scales with the risk of the place. Routes: R-4, R-9. (Appendix A, criterion 3,
 p. 33.)
 
-**Phase.** To start.
+**Phase.** Partners.
 
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 3 — "Internal buy-in and
 general support from external water resources entities", p. 33. Short restatement at p. 20.
@@ -215,7 +218,7 @@ the benefit. Phoebe asks the one fact first; Blocked only when the visitor says 
 sponsor's own legal duty and neither situation applies. Route for the two situations: R-5.
 (Appendix A, criterion 4, p. 33.)
 
-**Phase.** To start.
+**Phase.** Eligibility.
 
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 4 — "Change delivered beyond
 the without-project conditions (change that would not have happened without the activity)", p. 33.
@@ -244,7 +247,7 @@ in Appendix E, and says to make it at selection or contracting time, with the im
 write the money and the people for it into the agreement. Routes: R-6, R-9. (Appendix A, criterion
 5, p. 33; Appendix E, pp. 62–64; Step 4.3, p. 25.)
 
-**Phase.** To start: the plan is drawn up at selection or contracting time. Kept up by: running it for as long as the benefit is claimed (Appendix E, pp. 62–64), which for a planned project shows in the preview block and is settled by consideration B-2.
+**Phase.** Plan. Kept up by: running it for as long as the benefit is claimed (Appendix E, pp. 62–64), which for a planned project shows in the preview block and is settled by consideration B-2.
 
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 5 — "Established pathway to
 track project volumetric outputs", p. 33. Short restatement at p. 20. Appendix E carries the
@@ -277,7 +280,7 @@ technical evidence, closer attention where the risk is high, and the reasoning c
 large project gets latitude on how exhaustively it maps them, never on whether it looked. Route:
 R-7. (Appendix A, criterion 6, p. 33.)
 
-**Phase.** To start.
+**Phase.** Partners.
 
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 6 — "Trade-offs assessed,
 understood, and minimized", p. 33. Short restatement at p. 20.

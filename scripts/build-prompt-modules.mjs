@@ -142,6 +142,15 @@ const BUNDLES = [
     sources: [{ name: 'WELLINGTON_PRIMER_MD', file: 'knowledge-packs/product-shared/agent-primer.md', region: 'WELLINGTON-FACING' }],
     stale: 'Wellington would deploy with an out-of-date region, so he could welcome and route in words the maintainer never signed.',
   },
+  {
+    label: 'build-update',
+    target: 'api/_buildUpdate.generated.ts',
+    /* The dated build-update fact Wellington phrases when a visitor asks how the
+       site is coming along. Refreshed at every close-out, her ruling of
+       23 Sep 2026. Only the marked region embeds. */
+    sources: [{ name: 'WELLINGTON_BUILD_UPDATE_MD', file: 'knowledge-packs/wellington-host/build-update.md', region: 'AGENT-FACING' }],
+    stale: 'Wellington would deploy telling visitors a build state that the close-out has moved past.',
+  },
 ];
 
 const checkOnly = process.argv.includes('--check');

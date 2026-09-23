@@ -102,6 +102,29 @@ packs to the new shape, is item K9.
 
 The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
 
+## The next order — ruled 23 Sep 2026 at the close-out
+
+**Four pull requests, in this order, each on her go at its own proposal or step.** Her word at the
+close of 23 Sep 2026.
+
+1. **Wellington's pull request 3: type and stage, confirm-and-log.** The types file and the stage
+   question into his prompt and his fields, checked against the closed lists; "What type" and the
+   stage on the rail; "what kind" retired; the seal's fields. Items A16 and A18; the guide
+   proposal's step 5 with the addendum's §2.
+2. **Phoebe's runtime, K7's pull requests C and D**, with the guide-not-gate rules and the phase
+   tags: the pack-keyed reader and gate first (K7 step 5), then five row states, the readiness read
+   on the Eligibility rows of both pathways, the shown groups by phase with the seat that helps, the
+   routes on Fixable rows, the human door once, the cap at thirty, her prompt and the measured walk.
+   Items K7 and A18; the phase-tags proposal's step 2.
+3. **The Knowledge tab with both packs and the sources index, and the screening report as the
+   first export** (item S21), in the phase-tags proposal's §7 shape.
+4. **The Commons check**: Phoebe's Commons seat against all of it, applies tests, both pathways,
+   the read; no memory, its own cap; the shelf card's short document names.
+
+**Between them, the standing rules hold:** a proposal before each, one eyeball stop per pull
+request at least, the measured run after any prompt change, and the build-update fact refreshed at
+every close-out (the close-out ritual's step 8).
+
 ## In progress — a guide, not a gate (items A18 and A16): the types file landed; at stop 3
 
 **23 Sep 2026. Pull request #100 merged on her word, the types file moved into the shared pack on
@@ -144,9 +167,14 @@ rule, drafted here, carried by her hand, the paid repository its source.
   pack, all 32 rows in one file; the tag rule stands as written, her word; item K11 logged for a
   third tag, "Partners phase", not built. **K7 step 4, carbon half, drafted:** the nineteen carbon
   routes at the root, untracked, for her grade. On `feat/carbon-routes`, pull request open.
-- **Next, on her grade:** the routes into the pack; then pull request B, the pack-keyed reader and
-  gate; Wellington's runtime (type and stage) on its own; Phoebe's runtime (five states, the read,
-  the preview block, the framing, the door) inside K7's pull requests C and D.
+- **The phase-tags proposal graded the same day, all five rulings her way:** the tags as proposed
+  (R1), the free-screen count of 3 water and 8 carbon rows (R2), **the cap to thirty** (R3), the
+  Monitor group takes the preview block (R4), Communicate shows as an honest empty group (R5). The
+  tags applied to all 38 cards, the cap moved in code and in every document that stated it, the
+  desk's build note and Wellington's dated build-update fact built, the close-out ritual's step 8
+  added. On `feat/phase-tags-cap-build-note`, stacked on the carbon routes branch (#106), pull
+  request open.
+- **Next:** the order under *The next order* above, once #106 and this pull request land.
 
 ## In progress — Phoebe's carbon pack (item K7): pull request A merged; at eyeball stop 1
 

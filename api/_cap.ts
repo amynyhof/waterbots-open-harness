@@ -44,8 +44,13 @@ import {
   visitorId,
 } from './_visitor.js';
 
-/** Phoebe's cap. The maintainer's ruling of 21 Aug 2026. Item O1 revisits the number later. */
-export const DAILY_CAP = 20;
+/**
+ * Phoebe's cap. Twenty from the maintainer's ruling of 21 Aug 2026; thirty from her
+ * ruling of 23 Sep 2026, matching Wellington's, because the free screen walks the
+ * Eligibility rows of both pathways and a cap that ends the visit before the
+ * readiness read makes the honest read impossible. Item O1 revisits the number.
+ */
+export const DAILY_CAP = 30;
 
 /** Wellington's cap. The maintainer's ruling of 2 Sep 2026, on the reasoning above. */
 export const WELLINGTON_DAILY_CAP = 30;

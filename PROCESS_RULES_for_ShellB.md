@@ -414,6 +414,11 @@ includes every step, every time. **A ritual with a skipped step is an unfinished
    folder is deleted and its ignore rule is gone. There is no export step. The
    number is kept so older references to "step 6" still point at something.
 7. Confirm `main` is equal to `origin`.
+8. **Refresh Wellington's build-update fact**, the maintainer's ruling of 23 Sep 2026:
+   `knowledge-packs/wellington-host/build-update.md`, dated, what is built and what is next, in
+   facts he phrases; regenerate the prompt modules so the staleness gate passes. The desk's one
+   line says a visitor can ask him for a build update, and this step is what makes that line
+   true at every close.
 
 ~~**The copies are made after the final commit, not before it**, so they carry the close-out
 itself rather than the state just before it. Maintainer's ruling, 27 Aug 2026 — see item O8 in

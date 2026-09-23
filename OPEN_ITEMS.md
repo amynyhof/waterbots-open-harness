@@ -106,7 +106,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K9 | Calvin's and Bridget's packs move to the new pack shape | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — one brief each, the way Phoebe's did; not started |
 | K10 | Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — not started |
-| K11 | A third phase tag, "Partners phase" — rows where Bridget helps on the paid site | Knowledge | PARK | **logged 23 Sep 2026 from the maintainer's word** — the next version of the tags; not built now |
+| K11 | A third phase tag, "Partners phase" — rows where Bridget helps on the paid site | Knowledge | closed | **logged 23 Sep 2026** — **overtaken the same day** by the phase-tags-by-nav ruling: every row carries its navigation phase, and thirteen carbon rows and two water rows are Partners; closed into item A18 |
 | A1 | Phoebe abstention loop | Agents | PARK | built 25 Aug 2026 |
 | A2 | Final agent staffing | Agents | closed | settled 24 Aug 2026; Bridget's colour settled 29 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | A3 | Agent handoff primer | Agents | closed | shipped 28 Aug 2026 — rung 2 live — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -148,7 +148,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | S21 | Every tool exportable as an easy-to-read, properly cited document | Surfaces | PARK | **logged 23 Sep 2026 from the maintainer's word** — with or without answers; not started |
 | D1 | Corporate water stewardship goals and target geographies | Data | PARK | open |
 | D2 | Project points | Data | PARK | blocked on data |
-| O1 | Rate limit on public chat | Operations | PARK | shipped 25 Aug 2026, number to revisit |
+| O1 | Rate limit on public chat | Operations | PARK | shipped 25 Aug 2026 at twenty; **thirty from 23 Sep 2026**, her ruling on the phase-tags proposal; still to revisit against real usage |
 | O2 | Restore branch protection on `main` | Operations | closed | closed 24 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | O3 | Reverse link from waterbots.ai | Operations | closed | closed 24 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | O4 | Cosmetic and housekeeping items | Operations | PARK | left alone deliberately |
@@ -438,7 +438,10 @@ uncontested (G5), buy-in and support (water criterion 3), the host country's lis
 paid site those are the Partners phase, Bridget's, and a third tag would send them there. Which
 rows move is the next version's proposal, from the cards as they stand; nothing moves now.
 
-**Not scheduled. Proposal first, after the carbon routes land. Bucket PARK.**
+**Overtaken the same day, 23 Sep 2026.** The phase-tags-by-nav ruling (`PROPOSAL_phase-tags-by-nav.md`,
+graded the same day) gave every row its navigation phase, so Partners is one of six tags, not a
+third beside two; thirteen carbon rows and two water rows carry it. Nothing further to build under
+this item. **Closed; its row stays in the index; item A18 carries the tags.**
 
 
 # Family: Agents
@@ -1191,8 +1194,16 @@ cited (101 v2.1 §4.1.42, §4.1.49, §5.1.37), look at VWBA, which is open to a 
 (4) **The human door fires once on any Blocked project**: save and send to the WaterBots team,
 yes or not now. **Built now:** the tags on all 23 approved cards and the fifteen drafted ones;
 an *engineer's rule* on what "to remain" means, which **stands as written, her word of 23 Sep 2026,
-later**. The rest builds at the steps the addendum names. A third tag, "Partners phase", is item
-K11 for the next version.
+later**. The rest builds at the steps the addendum names.
+
+**The tags moved to the navigation's phases, 23 Sep 2026, later still** — `PROPOSAL_phase-tags-by-nav.md`,
+graded her way on every ruling: *To start* retired; each row carries the phase where it is acted
+on; the Eligibility-phase rows are the free screen, asked on this site, both pathways, with the
+readiness read on them (3 water, 8 carbon, P2 settled by the test); every other row shown once,
+grouped by phase with the seat that helps there, never asked; the Monitor group takes the addendum's
+preview block and its fact; Communicate shows as an honest empty group; the cap to thirty; the
+prompt rule of that proposal's §6 for her runtime. Applied to all 38 cards the same day. Item K11's
+"Partners phase" is answered by the Partners group and is closed into it below.
 
 **Where it stands, 23 Sep 2026, later.** Stop 3 passed: both drafts graded "ships as written",
 criterion 4 stays *depends*, R-8 ships with the Meta line, its title confirmed by her. The six
@@ -1492,6 +1503,18 @@ for "what it does" and "kind", and whatever the hero page (item S12) asks of the
 Built 2 Sep 2026. **Open as the home for the surface's story.**
 
 **Bucket WALKTHROUGH, 18 Sep 2026.** The open remainder is the two typeable controls for "what it does" and "kind"; a visitor who never chats cannot fill them today. Everything else here is built and is the story's record.
+
+### The build note, 23 Sep 2026
+
+**Her ruling, in her words:** "one honest line on the free site's desk: the site is under build;
+look around; the agents and the free screening are being built so a visitor can find out whether
+their project is a good fit for impact funding; ask Wellington for a build update. Wellington gets
+a dated build-update fact he phrases (what is built, what is next), refreshed at every close-out;
+add that line to the close-out ritual." **Built the same day:** the line above his chat on the
+desk, in her words; `knowledge-packs/wellington-host/build-update.md` with an agent-facing region
+generated into his prompt as "The build update", dated, facts he phrases only when asked;
+`check-wellington` holds that it is present, dated and unscripted; step 8 of the close-out ritual
+in PROCESS_RULES refreshes it. Measured run on the pull request; capture in the For Amy block.
 
 ## S12. The hero chat — a full page that is the conversation
 
@@ -1913,6 +1936,14 @@ computed number crosses to production is a rule about the seal, not about a docu
 takes for themselves. Format, look and where the door sits are the proposal's, from a captured
 reference (design work starts from an image).
 
+**The screening report is the first export, in the phase-tags shape — her ruling of 23 Sep 2026.**
+From `PROPOSAL_phase-tags-by-nav.md` §7: the project's name, type and stage from the record; each
+pathway with its applies result; the Eligibility rows with their states, routes, citations and the
+readiness read; then the shown groups in the navigation's order, each row with its card's plain
+words, its tag, its seat and its four-part citation, Not yet checked as they honestly are; the
+paid-site tools line; the two licence lines where a pin is on the record; the consultant-review
+tag. Blank rows stay blank. Third in the next order, with the Knowledge tab.
+
 **Not scheduled. Proposal first. Bucket PARK.**
 
 # Family: Data
@@ -1987,6 +2018,11 @@ daily count. **The abstention log and the daily counts are the first real eviden
 for that decision.
 
 Opened 21 Aug 2026.
+
+**Moved to thirty, 23 Sep 2026.** The maintainer's ruling on the phase-tags proposal: the free
+screen walks the Eligibility rows of both pathways, and the proposal's count showed twenty holding
+for one pathway and tight for both; thirty matches Wellington's, for the reason his was set. The
+number is still a starting point, not a figure from usage.
 
 **Three rows wait on the same thing, real usage** — this one, item A5 (the primer review) and item O9 (the basemap ceiling). Recorded 18 Sep 2026 so that when there is traffic they are looked at together.
 

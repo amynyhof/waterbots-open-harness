@@ -14,7 +14,7 @@ it.
 
 **The eligibility console is live, and Phoebe answers there.** Confirmed against production on
 24 Aug 2026, and the daily cap confirmed there on 25 Aug 2026, when it shipped. She is free to use
-and capped at **20 messages a day per visitor** — enough for a real
+and capped at **30 messages a day per visitor** (twenty until 23 Sep 2026) — enough for a real
 working session, and what keeps her open to anyone. When someone reaches the cap she says so plainly
 and says when it comes back. If her relay is ever unconfigured she states that she is not connected
 rather than pretending to answer.
@@ -100,7 +100,7 @@ Open a card and the agent's screen appears alone — its chat, its tool where it
 knowledge pack and its credentials — with no crew beside it and no next phase; the only other
 things on the screen are the way back to the shelf and "Sign up to manage a project". The Commons
 carries no project record and keeps nothing; Phoebe answers there from what a visitor types, under
-the same twenty messages a day.
+the same thirty messages a day.
 
 ## What is built
 

@@ -11,10 +11,16 @@ were approved the same day, "all pass as drafted", and are appended below as par
 rows of the carbon pathway sit in this one file. Items K7, steps 3 and 4. **Nothing reads this file
 yet**: the pack-keyed reader and gate come at the K7 proposal's step 5.
 
-**Every card carries a Phase line** from 23 Sep 2026, her addendum ruling: *To start*, or *To
-remain eligible*; a planned project's readiness read counts *To start* rows only, and the *To
-remain* rows and every *Kept up by* clause show together in one preview block, never as a mark
-against a planned project. A running or transitioning project gets every row.
+**Every card carries a Phase line**, the maintainer's ruling of 23 Sep 2026: the phase on the
+navigation where the row is acted on — Eligibility, Partners, Quantify, Plan, Monitor,
+Communicate — or *To remain eligible*. **Eligibility-phase rows are the free screen**: facts a
+planner can answer from the idea itself, whose answer can end a pathway or is needed to know it
+applies. On this site Phoebe asks those rows only, and the readiness read is on them. Every other
+row is shown once, grouped by phase with the seat that helps there, never asked, never a mark
+against a planned project; the paid site walks every row with its routes, one gate per phase.
+Here: M1, M2, M5, M6, M9, M13, P1, P2 and G12 are Eligibility; M8, M12, M16, G1–G6, G9 and G10
+Partners; M14 Quantify; M3, M4, M7, M10, M11, M15, G7, G8, G11 and G13 Plan; M17 to remain
+eligible, and every *Kept up by* clause, in Monitor.
 
 Thirty-two cards, one per basic eligibility requirement, one worksheet row each: seventeen from
 the methodology itself (part one), fifteen from the framework and the rules for every project
@@ -75,7 +81,7 @@ evidence makes an unlisted technology listed; only a change of technology does. 
 whether the design could use a listed one; Blocked only when the visitor says it will not change.
 Route: the list itself (§3.2.1.1, p. 9); planned carbon route R-2 covers the household case.
 
-**Phase.** To start.
+**Phase.** Eligibility.
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §3.2.1.1 "Eligible technologies",
 p. 9; Table 3, p. 9.
@@ -107,7 +113,7 @@ a change of drive to a handpump, solar or grid pump (§3.2.1.1 b, p. 9). A back-
 is fixed by running it less and keeping the log. Blocked only when the visitor says the engine
 stays as the main drive. Planned carbon route: a change of pump, with M1's list as its source.
 
-**Phase.** To start. Kept up by: the back-up engine's hours logged through the crediting period.
+**Phase.** Eligibility. Kept up by: the back-up engine's hours logged through the crediting period.
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §3.2.1.2 "Fossil fuel restrictions",
 p. 9; parameter SDWS 38, pp. 72–73. Also *Principles & Requirements* (v2.1, 31 January 2025),
@@ -142,7 +148,7 @@ the country has a standard, its notice. A technology with no such paper has work
 wall; a technology that fails the bar is fixed by choosing one that passes. Route source:
 §3.2.2.1 and SDWS 2; planned carbon route R-2.
 
-**Phase.** To start.
+**Phase.** Plan.
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §3.2.2.1 "Technology performance",
 pp. 9–10; parameter SDWS 2, p. 47.
@@ -178,7 +184,7 @@ such as a flood. The lab is accredited or approved by the health authority.
 treatment technology, then test again. Route source: §3.2.2.2 and SDWS 3; planned carbon route
 R-3.
 
-**Phase.** To start. Kept up by: retesting after any event that could foul the source, and at each renewal.
+**Phase.** Plan. Kept up by: retesting after any event that could foul the source, and at each renewal.
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §3.2.2.2, p. 10; parameter SDWS 3,
 pp. 47–48.
@@ -216,7 +222,7 @@ survey, with Gold Standard's questionnaires published for it. An improved source
 Fixable, by testing it. Route source: §7.3.4 and SDWS 5; planned carbon route R-1 (the baseline
 survey) and R-4 (showing a source is unsafe).
 
-**Phase.** To start.
+**Phase.** Eligibility.
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §3.1.2, p. 8; §3.2.4.1, p. 10;
 §7.3.1 "Baseline scenario", p. 26; §7.3.4, p. 27; parameters SDWS 5, pp. 49–50, and SDWS 12,
@@ -251,7 +257,7 @@ boilers, or be designed at small scale; a project that stays large and has no bo
 to count on this row. Blocked only when the visitor says the project stays large and nobody boils.
 Route source: §3.2.4.2 and the scale lines of Table 1.
 
-**Phase.** To start.
+**Phase.** Eligibility.
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §3.2.4.2, p. 10; Table 1, p. 5. Also
 *Principles & Requirements* (v2.1, 31 January 2025), §4.1.10, p. 9; *Community Services Activity
@@ -289,7 +295,7 @@ safe-water definition.
 network, test the network's water over six months or find literature no older than three years.
 Route source: §3.2.4.3–3.2.4.4 and SDWS 12; planned carbon route R-4.
 
-**Phase.** To start.
+**Phase.** Plan.
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §3.2.4.3–3.2.4.4, pp. 10–11; Table 2,
 "Minimum Service Quality Standard", p. 7; parameter SDWS 12, pp. 52–53.
@@ -322,7 +328,7 @@ a dispersed or nomadic population, and that those people really draw their drink
 **Can it be fixed? Yes.** Count only the people within the line, or gather the policy evidence and
 the surveys or GPS data for the wider reach. Route source: §3.2.5.1 b; planned carbon route R-5.
 
-**Phase.** To start.
+**Phase.** Partners.
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §3.2.5 "Accessibility", p. 11;
 parameter SDWS 1, pp. 46–47.
@@ -354,7 +360,7 @@ had a repair plan, is not a restoration the method counts, and Blocked only when
 confirms that. Route source: §3.2.6 and SDWS 2; planned carbon route R-6 for the plan going
 forward.
 
-**Phase.** To start.
+**Phase.** Eligibility.
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §3.2.6 "Rehabilitation", p. 11;
 Table 2, "Rehabilitation", p. 7; parameter SDWS 2, p. 47.
@@ -385,7 +391,7 @@ ends, and units past their life drop out of the count.
 claims that stop at the end of the life. Route source: §3.2.7 and SDWS 7; planned carbon route
 R-7.
 
-**Phase.** To start. Kept up by: the replacement or retrofit carried out when the technology's life ends.
+**Phase.** Plan. Kept up by: the replacement or retrofit carried out when the technology's life ends.
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §3.2.7 "Technical life and
 replacement", p. 11; parameter SDWS 7, p. 50; Table 1, p. 5.
@@ -420,7 +426,7 @@ issued twice. Across Gold Standard, a project in another programme needs Gold St
 declaration; where a forest programme conflicts, get the accounting exclusion or a letter of no
 objection. Route source: §3.2.8 and SDWS 18–19; planned carbon route R-8.
 
-**Phase.** To start. Kept up by: the unit database kept current as units are added or replaced.
+**Phase.** Plan. Kept up by: the unit database kept current as units are added or replaced.
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §3.2.8.1 a, b and e, pp. 11–12;
 §3.2.8.2–3.2.8.4, pp. 12–13; parameters SDWS 18 and 19, pp. 55–56. Also *Principles &
@@ -460,7 +466,7 @@ no letter yet: Fixable, by the declaration. The country's list excludes this act
 Blocked, because only the country can change it and no cited route exists. Route source: §6.3.4
 and §6.3.6; planned carbon route R-9.
 
-**Phase.** To start. Kept up by: re-run at each renewal of the crediting period, and at once for a transitioning project.
+**Phase.** Partners. Kept up by: re-run at each renewal of the crediting period, and at once for a transitioning project.
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §6.3.1–6.3.6 "Regulatory surplus" and
 "Host country eligibility", pp. 19–21. Also *Requirements for Additionality Demonstration* (v1.0,
@@ -506,7 +512,7 @@ Financially viable without carbon finance, and the visitor says the pricing will
 Blocked, because the standard's own definition of additional is not met. Route source: Annex 5
 §A5.2 and §6.5–6.6; planned carbon routes R-10 and R-11.
 
-**Phase.** To start. Kept up by: the ongoing-financial-need check at each renewal (§6.8, pp. 24–25).
+**Phase.** Eligibility. Kept up by: the ongoing-financial-need check at each renewal (§6.8, pp. 24–25).
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §6.1.1–6.2.1, p. 19; §6.5–6.6,
 pp. 22–23; Annex 5, §A5.2–A5.4, pp. 99–101. Also *Requirements for Additionality Demonstration*
@@ -550,7 +556,7 @@ justification. At or above the line with no such area: Blocked, because the stan
 no cited route changes the figure. Unknown, when nobody has the data: not a fail; the data is
 what to find out. Route source: §6.7.2 c.
 
-**Phase.** To start. Kept up by: re-run at each renewal of the crediting period.
+**Phase.** Quantify. Kept up by: re-run at each renewal of the crediting period.
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §6.7.1–6.7.3 "Common practice
 analysis", pp. 23–24. Also *Requirements for Additionality Demonstration* (v1.0, 24 April 2025),
@@ -588,7 +594,7 @@ the full lock-in assessment; a fossil back-up within its tenth does not trigger 
 fits the country's strategy, or run the full assessment. Route source: §6.4.2–6.4.3; planned
 carbon route R-12.
 
-**Phase.** To start.
+**Phase.** Plan.
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §6.4.1–6.4.4 "Lock-in risk analysis",
 pp. 21–22. Also *Requirements for Additionality Demonstration* (v1.0, 24 April 2025),
@@ -621,7 +627,7 @@ abstraction not above recharge.
 **Can it be fixed? Yes.** Get the assessment or the permit, or design the draw at or below the
 line. Route source: §3.4.7; planned carbon route R-13.
 
-**Phase.** To start.
+**Phase.** Partners.
 
 **Source.** GS4GG PAA M400-12 (Version 2.0, 9 July 2026), §3.4.7 "Water resource competition",
 p. 14. Also *Safeguarding Principles & Requirements* (v2.1, 29 June 2023), Principle 8.2,
@@ -725,7 +731,7 @@ change itself is the route. One that says it will not: Blocked for any credit da
 by the standard's cut-off, with no route around it. Route source: 119 §4.3.2; planned carbon route
 R-19.
 
-**Phase.** To start. Kept up by: for a transitioning project, the re-runs Annex 5 sets at renewal.
+**Phase.** Eligibility. Kept up by: for a transitioning project, the re-runs Annex 5 sets at renewal.
 
 **Source.** *Requirements for Paris Agreement Alignment*, PR100-01 (v1.1, 2 February 2026),
 §3.1.1, p. 5; §4.1.1–4.1.3, p. 6; §4.3.2, p. 7; §4.4.1, p. 9. *PAA Validation and Verification
@@ -760,7 +766,7 @@ community-services activity by definition; the card exists so the family is name
 known. A project that turns out to be industrial wastewater treatment has already failed applies
 card T1, which is where that is said.
 
-**Phase.** To start.
+**Phase.** Eligibility.
 
 **Source.** *Community Services Activity Requirements* (v1.2, October 2019), §2.1.2, p. 3 and its
 footnote 1; §3.1.1 d, p. 4. Named as binding by GS4GG PAA M400-12 (V2.0, 9 July 2026), §3.4.1,
@@ -789,7 +795,7 @@ it has a defined project area and boundary, drawn on a map.
 **Can it be fixed? Yes.** Draw the boundary; describe the sites. A safe-water project is physical
 by nature.
 
-**Phase.** To start.
+**Phase.** Partners.
 
 **Source.** *Principles & Requirements* (v2.1, 31 January 2025), §3.1.1 a and c, p. 6.
 
@@ -816,7 +822,7 @@ one applies.
 looked: what to find out is which rules touch safe-water supply there, which M17's regulatory
 summary also asks.
 
-**Phase.** To start. Kept up by: staying within the rules while the project runs.
+**Phase.** Partners. Kept up by: staying within the rules while the project runs.
 
 **Source.** *Principles & Requirements* (v2.1, 31 January 2025), §3.1.1 d, p. 6. *Safeguarding
 Principles & Requirements* (v2.1, 29 June 2023), §4.1.2, p. 8.
@@ -847,7 +853,7 @@ grounds.
 when a partner's standing is not yet known: what to find out is the partner's registration and
 any notices.
 
-**Phase.** To start.
+**Phase.** Partners.
 
 **Source.** *Principles & Requirements* (v2.1, 31 January 2025), §3.1.1 e, p. 6.
 
@@ -875,7 +881,7 @@ the local consultation. Any dispute over tenure or rights is reported to Gold St
 **Can it be fixed? Yes.** Write the ownership statement and the consent forms; put the assertions
 in the contracts. Route source: V2.0 §3.2.8.1 c–d; planned carbon route R-8.
 
-**Phase.** To start.
+**Phase.** Partners.
 
 **Source.** *Principles & Requirements* (v2.1, 31 January 2025), §3.1.1 f, p. 7. *Community
 Services Activity Requirements* (v1.2, October 2019), §3.1.4, p. 5. GS4GG PAA M400-12 (V2.0,
@@ -906,7 +912,7 @@ before work continues in the place it affects.
 **Can it be fixed? Yes.** Settle the dispute, or get the right; work pauses there until it is
 settled. Unknown, when the owner has not yet checked who holds the water right: what to find out.
 
-**Phase.** To start.
+**Phase.** Partners.
 
 **Source.** *Principles & Requirements* (v2.1, 31 January 2025), §3.1.1 g, p. 7.
 
@@ -935,7 +941,7 @@ declaration. Aid given on condition that the credits go to the donor: Blocked un
 is removed, which is the donor's to change; the card says so and leaves it Unknown until the
 owner has asked.
 
-**Phase.** To start.
+**Phase.** Partners.
 
 **Source.** *Principles & Requirements* (v2.1, 31 January 2025), §3.1.1 h, p. 7. *GHG Emissions
 Reduction & Sequestration Product Requirements* (v3.2, 12 December 2025), §6.1.1–6.1.2, p. 6.
@@ -965,7 +971,7 @@ indicators chosen from Gold Standard's own tool.
 
 **Can it be fixed? Yes.** Name the third goal and its indicator. Route source: 101 §4.1.12–4.1.17.
 
-**Phase.** To start. Kept up by: the chosen indicators monitored and reported through the crediting
+**Phase.** Plan. Kept up by: the chosen indicators monitored and reported through the crediting
 period.
 
 **Source.** *Principles & Requirements* (v2.1, 31 January 2025), §4.1.12–4.1.13, pp. 9–10;
@@ -1001,7 +1007,7 @@ review.
 **Can it be fixed? Yes.** Complete the assessment; write the mitigation; appoint the expert where
 a principle calls for one. Route source: 103 Annex 1; planned carbon route R-16.
 
-**Phase.** To start. Kept up by: the assessment's open answers reported in each monitoring report.
+**Phase.** Plan. Kept up by: the assessment's open answers reported in each monitoring report.
 
 **Source.** *Safeguarding Principles & Requirements* (v2.1, 29 June 2023), §4.1.1, p. 8; §5.1.1
 and Table 3, pp. 10–11; Annex 1, pp. 40–41; Principle 3, pp. 14–15; Principles 4.3–4.4,
@@ -1039,7 +1045,7 @@ holds its meeting before it is submitted for preliminary review.
 submission and explain how comments will be taken into account. Route source: 102 §3.4–3.6;
 planned carbon route R-14.
 
-**Phase.** To start.
+**Phase.** Partners.
 
 **Source.** *Principles & Requirements* (v2.1, 31 January 2025), §4.1.26–4.1.28, p. 12; §4.1.42,
 p. 15. *Stakeholder Consultation and Engagement Requirements* (v2.1, 14 June 2022), §3.1.3,
@@ -1070,7 +1076,7 @@ what came in and what was done is reported in each annual or monitoring report.
 **Can it be fixed? Yes.** Set it up and agree it at the meeting. Route source: 102 §3.8; planned
 carbon route R-15.
 
-**Phase.** To start. Kept up by: the book kept, comments acknowledged and reported through the
+**Phase.** Partners. Kept up by: the book kept, comments acknowledged and reported through the
 crediting period.
 
 **Source.** *Stakeholder Consultation and Engagement Requirements* (v2.1, 14 June 2022),
@@ -1103,7 +1109,7 @@ to claim gender goals, is optional.
 **Can it be fixed? Yes.** Take the three steps; a gender expert is recommended and may be
 required. Route source: 104 §2.1; planned carbon route R-17.
 
-**Phase.** To start.
+**Phase.** Plan.
 
 **Source.** *Gender Equality Requirements & Guidelines* (v2.0, 16 May 2023), §1.1.1, p. 5;
 §2.1.1–2.1.7, pp. 5–6. *Stakeholder Consultation and Engagement Requirements* (v2.1, 14 June
@@ -1140,7 +1146,7 @@ year, for a retroactive project: Blocked, by the standard's own words, with no r
 the year; Phoebe says to look at the water pathway. A planned project has not started the clock.
 Route source: 101 §4.1.49; planned carbon route R-18.
 
-**Phase.** To start.
+**Phase.** Eligibility.
 
 **Source.** *Principles & Requirements* (v2.1, 31 January 2025), §4.1.39–4.1.42, pp. 14–15;
 §4.1.49, p. 17; §5.1.37, p. 27. GS4GG PAA M400-12 (V2.0, 9 July 2026), Table 1, "start date",
@@ -1173,7 +1179,7 @@ each monitoring report follows.
 holds. Route source: 101 §4.1.43–4.1.45; V2.0 §14.1; the water pack's route R-6 is the same idea
 on the other pathway.
 
-**Phase.** To start: the plan is in the design. Kept up by: running it, which for a planned project
+**Phase.** Plan. Kept up by: running it, which for a planned project
 shows in the preview block and is settled by consideration B-2.
 
 **Source.** *Principles & Requirements* (v2.1, 31 January 2025), §4.1.43–4.1.45, pp. 15–16. GS4GG
