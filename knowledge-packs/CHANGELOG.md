@@ -3,6 +3,13 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.9.0 — 23 Sep 2026
+
+- **The applies sets are approved, both packs.** `phoebe-eligibility@0.7.0`
+  (`gs-paa-v2.0@0.2.0`, `vwba-2.0@0.6.0`): four carbon and two water applies cards in
+  their packs, graded 23 Sep 2026; the seventeen methodology cards drafted at the root.
+  Nothing reads the applies sets yet. Item K7.
+
 ## 0.8.0 — 23 Sep 2026
 
 - **Fixability and routes on the water pack.** `phoebe-eligibility@0.6.0`

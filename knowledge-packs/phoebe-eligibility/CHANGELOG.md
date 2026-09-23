@@ -1,5 +1,13 @@
 # Changelog — phoebe-eligibility
 
+## 0.7.0 — 23 Sep 2026
+
+- `gs-paa-v2.0@0.2.0` — the four applies cards approved and in the pack, with the
+  transition-assistance fact on T4; the seventeen methodology cards drafted at the
+  root for her grade. `vwba-2.0@0.6.0` — the two applies cards approved and in the
+  pack. Nothing reads either set yet. Item K7, stop 1 passed, stop 2 drafted.
+
+
 ## 0.6.0 — 23 Sep 2026
 
 - `vwba-2.0@0.5.0` — "Can it be fixed?" on all six eligibility cards, and a third

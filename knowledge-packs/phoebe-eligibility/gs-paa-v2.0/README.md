@@ -1,6 +1,6 @@
 # gs-paa-v2.0 — Phoebe's second Knowledge Pack
 
-**Version 0.1.0. Scaffold. Not live.** This folder is the home of what Phoebe will know
+**Version 0.2.0. Not live.** This folder is the home of what Phoebe will know
 about eligibility under Gold Standard's safe-drinking-water carbon methodology, the
 Paris-aligned version. **Nothing on the live site reads it yet**, no card is approved,
 and Phoebe still says that carbon eligibility is coming and not live. Item K7 in
@@ -19,8 +19,8 @@ only once approved:
 
 | Set | What it is | Cards | State |
 |---|---|---|---|
-| Applies | Whether this pathway is in play for a project at all. Four questions: safe water from a low-emission technology; boiling or going without today; one of four technology classes; which version. Never a verdict. | 4 | Drafted 22 Sep 2026 as an untracked file at the repository root, awaiting her grade |
-| Eligibility | One card per basic eligibility requirement, one worksheet row each: seventeen from the methodology's own gate, two from the Paris-alignment framework, thirteen from the rules for every Gold Standard project. Three states a row: Not yet checked, Met, Not yet with a route forward. | 32 | Not drafted |
+| Applies | Whether this pathway is in play for a project at all. Four questions: safe water from a low-emission technology; boiling or going without today; one of four technology classes; which version. Never a verdict; each "no" is sorted into Fixable, Unknown or Blocked. | 4 | **Approved 23 Sep 2026**, in [`cards/applies-cards-gs.md`](./cards/applies-cards-gs.md); read by nothing until the pack-keyed reader (proposal step 5) |
+| Eligibility | One card per basic eligibility requirement, one worksheet row each: seventeen from the methodology's own gate, two from the Paris-alignment framework, thirteen from the rules for every Gold Standard project. Each with a **Can it be fixed?** line; a miss is Fixable, Unknown or Blocked. | 32 | The seventeen methodology cards M1–M17 drafted 23 Sep 2026 as an untracked file at the repository root, awaiting her grade (K7 stop 2); the fifteen framework and general cards not drafted |
 
 Every card is a rewrite in plain words. No sentence is copied from a source. Every card
 carries the four-part citation from [CITATIONS.md](../../../CITATIONS.md) and the
@@ -88,7 +88,7 @@ Carried here as facts, not rows, because they set the calendar rather than decid
 
 | | |
 |---|---|
-| [`cards/`](./cards/) | Empty but for a note. Draft card files sit untracked at the repository root until the maintainer approves them, and are never read. |
+| [`cards/`](./cards/) | The approved applies set and the grader notes; the methodology cards drafted at the root, untracked, never read until approved. |
 | [`tool/`](./tool/) | Names the worksheet section this pack will fill and its reader-to-be. No code. No agent-facing region yet. |
 | [`evals/`](./evals/) | No exam has been sat. Says so. |
 | `README.md` | This page. |
