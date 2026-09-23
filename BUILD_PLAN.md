@@ -134,18 +134,23 @@ rule, drafted here, carried by her hand, the paid repository its source.
 - **The six applies cards passed as redrafted, 23 Sep 2026 (#102 merged), and are in their packs**
   with one addition on T4 in her words, the transition-assistance fact; carbon pack 0.2.0, water
   pack 0.6.0, seat 0.7.0, tree 0.9.0. Read by nothing until K7's step 5.
-- **K7 step 3 drafted the same day, at K7 stop 2:** `eligibility-cards-gs-DRAFT.md` at the root,
-  the seventeen methodology cards M1–M17, each with "Can it be fixed?", "Applies to" and "External
-  standard". On `feat/applies-into-packs`, pull request open.
-- **Next, on her grade:** K7 step 4, the fifteen framework and general cards with their fixability
-  lines (K7 stop 3); the nineteen carbon routes; Wellington's runtime on its own; Phoebe's runtime
-  inside K7's pull requests C and D.
+- **K7 stop 2 passed, 23 Sep 2026 (#103 merged, then this batch):** M1–M17 approved with her two
+  conditions met and moved into the carbon pack. **Her addendum the same day, "then build":** phase
+  tags on every eligibility row, the stage question for Wellington, Phoebe framing from the stage,
+  the human door once on a Blocked project — recorded in the proposal's addendum and under items
+  A18 and A16. **Built now:** the Phase line on all six water cards and all seventeen carbon cards
+  (measured run on the pull request); K7 step 4, the fifteen framework cards, drafted at the root
+  with tags. On `feat/phase-tags-framework-cards`, pull request open. **K7 stop 3.**
+- **Next, on her grade:** the fifteen cards into the pack; the nineteen carbon routes; Wellington's
+  runtime (type and stage) on its own; Phoebe's runtime (five states, the read, the preview block,
+  the framing, the door) inside K7's pull requests C and D.
 
 ## In progress — Phoebe's carbon pack (item K7): pull request A merged; at eyeball stop 1
 
 **22 Sep 2026. Proposed, ruled, and steps 1 and 2 built on `feat/k7-gs-paa-pack`; merged as #99 on
 23 Sep 2026 on her word. Stop 1 passed the same day: both applies sets approved and in their
-packs. Step 3, the seventeen methodology cards, drafted at the root; stop 2 is her grade of them.**
+packs. Stop 2 passed the same day: M1–M17 approved and in the carbon pack. Step 4, the fifteen
+framework cards, drafted at the root; stop 3 is her grade of them.**
 **23 Sep 2026: the row model of its §4.1 and §9.2 is superseded by the guide proposal above; the
 cards, the tests and the steps stand.** The proposal, `PROPOSAL_K7_gs-paa-v2.0.md`,
 untracked at the root, read the sources at three layers and found 32 basic eligibility

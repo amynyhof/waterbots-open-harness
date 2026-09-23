@@ -102,7 +102,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | closed | canon, ruled 26 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K5 | The VWBA 2.0 D-3 screening pack | Knowledge | closed | **built 1 Sep 2026** — the first pack in the slot — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | closed | **built 2 Sep 2026** — two packs, one module, the transition delta — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; **proposed and ruled 22 Sep 2026; steps 1 and 2 built (#99); stop 1 passed 23 Sep 2026, both applies sets approved and in their packs; step 3, the seventeen methodology cards, drafted at the root for her grade — stop 2** |
+| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; **proposed and ruled 22 Sep 2026; steps 1 and 2 built (#99); stops 1 and 2 passed 23 Sep 2026, the applies sets and M1–M17 approved and in their packs; step 4, the fifteen framework cards, drafted at the root for her grade — stop 3** |
 | K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K9 | Calvin's and Bridget's packs move to the new pack shape | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — one brief each, the way Phoebe's did; not started |
 | K10 | Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — not started |
@@ -123,7 +123,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | ~~**logged 18 Sep 2026 from the maintainer's brief** — waits on her carry~~ **built 18 Sep 2026, #91 merged** — the free and Commons columns stay "unconfirmed" until she carries a confirmed file |
 | A16 | Wellington guides and leads — he never asks "water or carbon" — **and names the project type from a cited list** | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; **expanded and ruled 23 Sep 2026**: a cited list of twenty-four types, confirm then log; **the types file graded and moved into `product-shared/` the same day**, on the roster rule; his runtime not started |
 | A17 | The handoff goes both ways — forward and back | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — her hand-back is built; his side of the return is not; not started |
-| A18 | A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person | Agents | BONES | **ruled 23 Sep 2026 from her review of Phoebe's cards** — the rule is in AGENT_RULES.md (#100, merged); **stop 3 passed the same day**: fixability lines on the six water cards and nine water routes in the pack; the "tools on the paid site" line ruled canon; the applies cards' "no" sections redrafted at the root for her grade; nothing runtime built |
+| A18 | A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person | Agents | BONES | **ruled 23 Sep 2026 from her review of Phoebe's cards** — the rule is in AGENT_RULES.md (#100, merged); **stop 3 passed the same day**: fixability lines on the six water cards and nine water routes in the pack; the "tools on the paid site" line ruled canon; **her addendum of 23 Sep 2026 ruled and its tags built**: a Phase line on every eligibility card, the stage question, framing from the stage, the door once; nothing runtime built |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
 | S2 | The shared chat layer | Surfaces | closed | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | S3 | Level 3 citation pop-out | Surfaces | closed | out of scope — paid platform — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -337,11 +337,20 @@ untracked: the seventeen methodology cards M1 to M17, each with "Can it be fixed
 seven *depends*, no flat *no*; the flat *no* on the carbon pathway sits on applies card T2),
 "Applies to" and "External standard", citing the methodology's section and page and, where a
 framework document is also cited, its page as a second link. The carbon routes they name are the
-proposal's planned ids, not cards yet. **Her grade of seventeen cards is stop 2.** The fifteen
-framework and general cards are stop 3.
+proposal's planned ids, not cards yet.
 
-Logged 2 Sep 2026. **Expanded 21 Sep 2026. Proposed and ruled 22 Sep 2026; stop 1 passed 23 Sep
-2026; step 3 drafted, at stop 2. Bucket BONES.**
+**Stop 2 passed, 23 Sep 2026, later.** Her grade: "all 17 pass", two conditions. Both met before
+the move: the WHO and JMP pages cited on M3, M4, M5 and M7 confirmed on the publishers' sites (the
+scheme report's page dates it 18 March 2026; M3 corrected); the Blocked cases on M5, M12, M13 and
+M14 carried to the reviewer as Q11, on item O14. M1–M17 are in
+`gs-paa-v2.0/cards/eligibility-cards-gs.md`, each with the Phase line her addendum ruled the same
+day (item A18). **Step 4 drafted at once:** `eligibility-cards-gs-framework-DRAFT.md` at the root,
+untracked, the fifteen framework and general cards P1–P2 and G1–G13 with fixability lines and
+tags — three *depends* (P1, G6, G12), no flat *no*, all *To start*. **Her grade of fifteen cards is
+stop 3.**
+
+Logged 2 Sep 2026. **Expanded 21 Sep 2026. Proposed and ruled 22 Sep 2026; stops 1 and 2 passed
+23 Sep 2026; step 4 drafted, at stop 3. Bucket BONES.**
 
 ## K8. Phoebe's VWBA pack is the cards' one home — closed, swept to the archive
 
@@ -1039,7 +1048,14 @@ paid repository is on item O14, and nothing reads the file yet. His prompt, his 
 the seal change at the proposal's step 5, not started. Item A18 carries Phoebe's side of the same
 brief.
 
-**Ruled 23 Sep 2026. Types file approved and in the shared pack. Bucket BONES.**
+**The stage joins the type, 23 Sep 2026**, her addendum: Wellington asks whether the project is on
+paper, being built, or already running, and logs it beside the type, only on the visitor's
+confirmation, from a closed list; each standard's start-date definition is cited in the addendum
+(101 v2.1 §4.1.39–4.1.41, §5.1.29; V2.0 Table 1; VWBA Glossary p. 66 and Step 3 p. 21). Builds at
+the proposal's step 5 with the type.
+
+**Ruled 23 Sep 2026. Types file approved and in the shared pack; the stage question ruled. Bucket
+BONES.**
 
 ## A17. The handoff goes both ways — forward and back
 
@@ -1128,6 +1144,26 @@ production's side of the door is a carry on item O14. **A companion fact for one
 day:** on carbon applies card T4, for a transitioning project, that a transition-assistance module,
 overseen by trusted consultants, is coming to the paid site and the visitor can save the project
 and sign up for access; on the card, in the rulebook beside the tools line, and on item O14.
+
+**Her addendum, 23 Sep 2026, ruled "then build"**, recorded once in the guide-not-gate proposal's
+addendum and summarised here. (1) **Every eligibility row gets a phase tag**, *To start* or *To
+remain eligible*; a planned project's readiness read counts *To start* rows only; the *To remain*
+rows show together as one preview block, opened by a fact Phoebe phrases, in her words: "routine
+reporting is the critical part of impact funding, which means ongoing access to the project and
+its data, data systems, staff, and good relationships with stakeholders and legal owners;
+WaterBots supports this with tools and resources as each phase requires them." She may ask one
+feasibility question about that readiness, and one answer settles every *To remain* row it can;
+never a mark against a planned project; a running or transitioning project gets every row; where
+the water pack's ten considerations already cover it, they are cited — B-1, B-2, B-3, B-5 — one
+home. (2) **Wellington asks the stage** — on paper, being built, already running — and logs it
+with the type, each standard's start-date definition cited (item A16). (3) **Phoebe frames from
+the stage**: already running means carbon is hard to certify after the fact, the retroactive rule
+cited (101 v2.1 §4.1.42, §4.1.49, §5.1.37), look at VWBA, which is open to a running project
+(Step 3, p. 21; criterion 6, p. 33; Step 6, p. 27; Glossary, p. 66) subject to criterion 4.
+(4) **The human door fires once on any Blocked project**: save and send to the WaterBots team,
+yes or not now. **Built now:** the tags on all 23 approved cards and the fifteen drafted ones;
+an *engineer's rule* on what "to remain" means, marked in the addendum for her to strike. The rest
+builds at the steps the addendum names.
 
 **Where it stands, 23 Sep 2026, later.** Stop 3 passed: both drafts graded "ships as written",
 criterion 4 stays *depends*, R-8 ships with the Meta line, its title confirmed by her. The six
@@ -2201,7 +2237,7 @@ zero holds for every one: nothing here is fetched, written to, or guessed at on 
 | ~~`roster.yaml` from production~~ **Landed 18 Sep 2026**, version 0.3.0; the next carry is the confirmed one | This site | item A13 |
 | The specialist contract — the nine-line section of AGENT_RULES.md, her words | Production | item A15 |
 | `project-types.md` — drafted here, the paid repository becomes its source and this site is then held to it, the roster's rule; her word of 23 Sep 2026 | Production, then back to this site | item A16 |
-| The carbon "no" list — the rows that can be Blocked — to the reviewer as Q11; her word of 23 Sep 2026 | The paid side | item A18 |
+| The carbon "no" list to the reviewer as Q11; her word of 23 Sep 2026, named at the M1–M17 grade: the Blocked cases on M5 (nobody boils or goes without), M12 (the host country's list excludes the activity), M13 (viable without carbon finance, pricing will not change), M14 (common practice with no justified narrower area) | The paid side | items A18, K7 |
 | One contract change to the seal: `type` and `gsClass` for `kind`; rows and a readiness read per pathway; `wantsHuman` and a note | Production, before this site's sender changes | items K7, A16, A18 |
 | The "tools and resources on the paid site" line, her canon of 23 Sep 2026: production's side of the save door and its sign-up should say the same thing this site's save door will say | Production | item A18 |
 | The transition-assistance module, overseen by trusted consultants, that card T4 tells a transitioning project is coming to the paid site; her word of 23 Sep 2026 | Production | items K7, A18 |

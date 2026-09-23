@@ -1992,3 +1992,63 @@ itself; grepped code files (`.ts`, `.tsx`, `.mjs`) for the same strings: none fo
 Dev server started for the measured run and stopped after it. `main` equal to `origin` at 92df1ef
 before this branch opened. No OPEN_ITEMS row: the work is complete, not an open thread, so it is
 recorded here and in the pull request rather than given a row that would need closing on arrival.
+
+## 23 September 2026, sixth sitting — M1–M17 approved, the addendum, phase tags on every card, and the framework cards drafted
+
+Her grade: all seventeen methodology cards pass, two conditions — confirm the WHO and JMP pages
+on M3, M4, M5 and M7 before the cards move in, and the Blocked cases on M5, M12, M13 and M14 go
+to the reviewer as Q11. Then an addendum to the guide-not-gate proposal, one page, then build:
+phase tags on every eligibility row with a preview block for a planned project; Wellington asks
+the stage; Phoebe frames from it, the retroactive rule and what VWBA says about running projects
+cited; the human door fires once on any Blocked project. Tag M1–M17 and the six water cards;
+draft P1–P2 and G1–G13 with tags; stop at K7 stop 3.
+
+### What was built
+
+The three publisher pages fetched and confirmed: the WHO 2022 guidelines, the WHO scheme's
+Rounds III and IV results report, and the JMP 2018 core questions. One correction found on the
+way: the scheme report's publisher page dates it 18 March 2026, not 2025 as M3 and the pack README
+said; both fixed. The four Blocked cases named on item O14's Q11 carry. M1–M17 moved into
+`gs-paa-v2.0/cards/eligibility-cards-gs.md`, status approved with both conditions recorded, notes
+to `grader-notes.md`.
+
+The addendum written into `PROPOSAL_guide-not-gate.md`: the tag and its *engineer's rule* (a row
+is *To start* when its evidence is design, documents or facts available before the first unit
+runs; *To remain eligible* when its evidence is records kept while the project runs; a row with
+both is *To start* with a *Kept up by* clause); the preview block with her fact and its four
+feasibility-card citations, B-1, B-2, B-3 and B-5; the stage with each standard's start-date
+definition; the framing from stage with the retroactive rule and the guidebook's lines on
+projects under way; the door once; and a table of what builds now and what waits for its step.
+
+The **Phase** line on every card: seventeen carbon (sixteen *To start*, M17 *To remain
+eligible*, eight *Kept up by*) and six water (all *To start*, criterion 5 with *Kept up by*), plus
+one paragraph on each pack's design decision saying what the tag means. The card module
+regenerated. `eligibility-cards-gs-framework-DRAFT.md` at the root, untracked: P1–P2 and G1–G13
+in the full card shape with fixability, phase, applies-to and external-standard lines, three
+*depends* (P1, G6, G12), all *To start*, five *Kept up by*. Pack versions: carbon 0.3.0, water
+0.7.0, seat 0.8.0, tree 0.10.0.
+
+### How it was proven
+
+`check-cards` green after the water cards changed; the tag line sits after "Can it be fixed?" and
+after a blank line, so the runtime parser's rule paragraph is unchanged. The lines reach Phoebe's
+prompt through the two live card files; the measured run on that prompt is on the pull request.
+The carbon set is named by no reader, so its tags reach nothing yet.
+
+### Decisions
+
+- **One *To remain eligible* row in 38, and it is M17.** The definition chosen makes a row *To
+  start* when a planned project can answer it from its design, and pushes the running part into a
+  clause the preview block collects. That keeps "never a mark against a planned project" true
+  without inventing rows, and it is the one rule in the addendum she did not state, so it is
+  marked for her to strike.
+- **The preview block cites the water pack's feasibility cards rather than restating them**, her
+  "one home"; the carbon pack's M17 points at B-2.
+- **Framing from stage cites both standards at the row that carries the year (G12)** and at the
+  guidebook's own lines, so Phoebe's future rule has a card behind every sentence.
+
+### Housekeeping
+
+Dev server started for the measured run and stopped after it. Two proposals and three draft files
+untracked at the root: the K7 and guide proposals (the latter with its addendum), the two older
+VWBA drafts, and the framework cards draft.
