@@ -1935,3 +1935,60 @@ run was owed. `check-roster` green.
 
 No dev server started. Two proposals and three draft files untracked at the root: the K7 and
 guide proposals, the two older VWBA drafts, and the new methodology cards draft.
+
+## 23 September 2026, fifth sitting — sources-local mirrors the paid library's naming, every citation path fixed
+
+Her brief, after confirming main equal to origin: mirror the paid repository's `Methodology/`
+names in `sources-local/`, untracked, by command — move the three loose VWBA PDFs into
+`sources-local/Methodology/vwba-2.0/` (the Meta report under `published-reports/`), and rename
+the guidebook and the 2021 paper to the paid library's naming pattern. Fix every "local copy"
+path in cards and proposals to match. Add a short README saying the folder mirrors the paid
+repository, untracked, carried by hand, never committed. Docs PR, stop.
+
+### What was found and done
+
+The move had already happened: `sources-local/Methodology/vwba-2.0/` existed with the Meta
+report correctly under `published-reports/`, but the guidebook and the 2021 paper still carried
+their old names. Confirmed the 2021 paper's identity from its own text (Reig and Vionnet 2021,
+*Volumetric Water Benefit Accounting (VWBA): A Practical Guide to Implementing Water Replenishment
+Targets*, working paper for Bluerisk, Valuing Nature and the CEO Water Mandate) before renaming it.
+Both files renamed to the paid library's pattern:
+`VWBA_V2.0_Volumetric-Water-Benefit-Accounting-2.0-Guidebook.pdf` and
+`VWBA_2021_Volumetric-Water-Benefit-Accounting-A-Practical-Guide-to-Implementing-Water-Replenishment-Targets.pdf`.
+
+Every "Local copy" line citing the old paths, in six tracked and untracked card files
+(`eligibility-cards-vwba.md`, `feasibility-cards-vwba.md`, `applies-cards-vwba.md`,
+`routes-cards-vwba.md`, the two untracked Appendix C and glossary drafts) plus one prose reference
+in `grader-notes.md` and the Meta report's path on `routes-cards-vwba.md`, rewritten to the new
+paths. Swept the two proposals and the newest draft for the same strings; none held one. The card
+module regenerated.
+
+`sources-local/README.md` written: what the folder mirrors, why, the layout and naming pattern,
+what lives here today, and what it is not — never a place a card points a reader to, never
+committed. It is itself gitignored, confirmed with `git check-ignore`.
+
+### How it was proven
+
+`check-cards` green, 267 checks. The path-line change reaches Phoebe's prompt, because
+`eligibility-cards-vwba.md` and `feasibility-cards-vwba.md` embed whole into it; a sixty-request
+measured run on the renamed-path prompt came back 0 empty in 60, 1,400,140 input tokens. Grepped
+the whole tree for the old path strings after the edit: none remained outside the mirror folder
+itself; grepped code files (`.ts`, `.tsx`, `.mjs`) for the same strings: none found.
+
+### Decisions
+
+- **The measured run was made even though the brief called this a docs change.** The distinction
+  this session already drew — a "docs only" pull request is not docs only when the document is a
+  card file the generator embeds — held here too: a path string is a small change, but it is still
+  a change to what Phoebe reads, and the rule is about what reaches the prompt, not about how big
+  the edit looks.
+- **The README lives in `sources-local/`, gitignored, not at the repository root.** The brief said
+  untracked and carried by hand; putting it where the mirror itself lives, rather than in a tracked
+  root document that points at an untracked folder, keeps the one fact — what this folder is — in
+  the one place a maintainer opening the folder would look first.
+
+### Housekeeping
+
+Dev server started for the measured run and stopped after it. `main` equal to `origin` at 92df1ef
+before this branch opened. No OPEN_ITEMS row: the work is complete, not an open thread, so it is
+recorded here and in the pull request rather than given a row that would need closing on arrival.

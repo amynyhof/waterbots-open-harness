@@ -55,7 +55,7 @@ here is why it may matter to you.* Guidance, offered; never a verdict, delivered
 | **DOI** | https://doi.org/10.46830/wrigb.23.00112 |
 | **Section cited** | Appendix B, "Project selection considerations" |
 | **Pages** | 34–36 |
-| **Local copy** | `sources-local/VWBA Full Manual.pdf` — 72 pages; printed page numbers match PDF page numbers 1:1, confirmed against the page footers |
+| **Local copy** | `sources-local/Methodology/vwba-2.0/VWBA_V2.0_Volumetric-Water-Benefit-Accounting-2.0-Guidebook.pdf` — 72 pages; printed page numbers match PDF page numbers 1:1, confirmed against the page footers |
 
 Cross-reference used for context: **Step 2.3 summary box, p. 20**, which lists all ten in short form
 and states that they are not required to generate benefits.

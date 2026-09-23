@@ -55,7 +55,7 @@ they are a separate set rather than more cards here. ~~Not to be drafted until a
 | **DOI** | https://doi.org/10.46830/wrigb.23.00112 |
 | **Section cited** | Appendix A, "Project eligibility criteria" |
 | **Pages** | 32–33 |
-| **Local copy** | `sources-local/VWBA Full Manual.pdf` — 72 pages; printed page numbers match PDF page numbers 1:1, confirmed against the page footers |
+| **Local copy** | `sources-local/Methodology/vwba-2.0/VWBA_V2.0_Volumetric-Water-Benefit-Accounting-2.0-Guidebook.pdf` — 72 pages; printed page numbers match PDF page numbers 1:1, confirmed against the page footers |
 
 Cross-references used for context, cited on the cards where they apply:
 

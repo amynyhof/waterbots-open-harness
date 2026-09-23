@@ -49,7 +49,7 @@ apply* for the pathway.
 | **Version and date** | Version 1, September 2025 |
 | **DOI** | https://doi.org/10.46830/wrigb.23.00112 |
 | **Sections cited** | Glossary, pp. 65–66; Appendix A, criterion 1, p. 32; Appendix C, Table C-1, pp. 37–39; Step 3, p. 21 |
-| **Local copy** | `sources-local/VWBA Full Manual.pdf` — 72 pages; printed page numbers match PDF page numbers 1:1, confirmed against the page footers |
+| **Local copy** | `sources-local/Methodology/vwba-2.0/VWBA_V2.0_Volumetric-Water-Benefit-Accounting-2.0-Guidebook.pdf` — 72 pages; printed page numbers match PDF page numbers 1:1, confirmed against the page footers |
 
 ---
 
