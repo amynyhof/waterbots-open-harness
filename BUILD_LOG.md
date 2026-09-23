@@ -1710,3 +1710,64 @@ batch closed. Two node processes running belong to the production repository and
 alone under rule zero. No dev server started. The migration gate checked and clear. The two older
 untracked DRAFT files (activity table, glossary) untouched; two new untracked DRAFT files beside
 them. The proposal file stays at the root until the work merges.
+
+## 23 September 2026 — a guide, not a gate (items A18 and A16): the proposal, her rulings, and the rulings into the record
+
+Two briefs in one sitting, both pasted before she graded K7's applies cards. First: a proposal,
+not a build, on five findings from her card review — Wellington names a standard project type
+from a cited list and confirms before logging; Phoebe is a guide, not a gate; never invented;
+unknown is not a fail; a readiness read, not pass or fail. Then her rulings on it, R1 to R9 yes
+with three riders, and a second brief: build pull request 1, the rulings into the record, and
+step 2, the types file draft, and stop at stop 2 for her grade of twenty-five lines.
+
+### What was built
+
+The proposal, `PROPOSAL_guide-not-gate.md`, untracked at the root: the three standing rulings it
+moves and why the source carries the change (Figure 3's own loop); a twenty-four-type list on two
+axes in one shared file, confirm then log, "what kind" retired; five row states with Blocked
+only where a card's **Can it be fixed?** line allows; the readiness read's three words and their
+definitions; twenty-eight cited routes, nine water and nineteen carbon, resting on pages already
+read and one real published project, the Meta 2023 report's Navajo water supply; the offer of a
+person through the save door with two fields on the seal; the reading-level rule found already in
+the rulebook; nine steps, five eyeball stops, one contract change for production; nine rulings.
+
+Then, on her rulings, on `feat/guide-not-gate-rulings` stacked on K7's branch: the fifth rule under
+*Pace and posture* in AGENT_RULES.md in her words; the hard-gate design decision of 20 Aug 2026
+struck and corrected in place at the head of `eligibility-cards-vwba.md`; item A16 expanded with
+her finding and the roster rule for the types file; a new item A18 as the work's home with her
+riders verbatim; three carries added to item O14; the K7 proposal marked superseded in part; pack
+changelogs bumped. And `project-types-DRAFT.md` at the root, untracked, twenty-five lines.
+
+### How it was proven
+
+`check-cards` green after the correction; the relay's card module regenerated and confirmed to
+hold the corrected paragraph; `check-roster` untouched. **The correction reaches Phoebe's prompt**,
+which the proposal's "docs only" label for pull request 1 did not foresee: the card file embeds
+whole. So the measured run was made, sixty requests against the local relay, and its counts are on
+the pull request; the corrected paragraph tells her the worksheet keeps its three states until the
+build lands, so her behaviour today is unchanged by design.
+
+### Decisions
+
+- **The correction goes into the card file now, not at the build.** The visible-corrections rule
+  wants a superseded assertion struck where it stands, and the rule's one home is the rulebook;
+  the card file points there. The cost is one measured run, paid.
+- **"The reviewer" and "Q11" are recorded in her words and not decoded.** Who the reviewer is and
+  what Q1 to Q10 are is the paid side's; the carry on item O14 says what she said.
+- **The types file is drafted here and will be owned there.** Her rider makes it the roster's
+  twin: once carried, this site is held to it by a check and never edits it.
+
+### What was learned
+
+- A "docs only" pull request is not docs only when the document is a card file: the generator
+  embeds every card file whole, so any edit above the first card is a prompt change. Worth
+  remembering before the next design-decision correction; the AGENT-FACING region pattern is the
+  way to keep people-facing prose out of a prompt, and the card files do not use it.
+- The proposal's own For Amy block came in at 152 words on the first count and had to be cut
+  twice to reach 149; count before claiming.
+
+### Housekeeping
+
+Dev server started on 5173 for the measured run and stopped after it. `main` still equal to
+`origin` at a86bf9e; pull request #99 open and unchanged. The migration gate checked and clear.
+Four untracked DRAFT files and two untracked proposals at the root, all named on their items.

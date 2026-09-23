@@ -1,10 +1,10 @@
 # phoebe-eligibility — eligibility and feasibility (open)
 
-**Version 0.5.0.** Phoebe staffs Eligibility. ~~Her Knowledge Pack is
-[`vwba-2.0/`](./vwba-2.0/).~~ **From 22 Sep 2026 she has two packs:**
-[`vwba-2.0/`](./vwba-2.0/), live, and [`gs-paa-v2.0/`](./gs-paa-v2.0/), a scaffold
-with no approved card, not read by anything. The two water card files live in
-[`vwba-2.0/cards/`](./vwba-2.0/cards/), and the live site reads them from there.
+**Version 0.5.1.** Phoebe staffs Eligibility. From 22 Sep 2026 she has two
+packs: [`vwba-2.0/`](./vwba-2.0/), live, and [`gs-paa-v2.0/`](./gs-paa-v2.0/), a
+scaffold with no approved card, not read by anything. The two water card files
+live in [`vwba-2.0/cards/`](./vwba-2.0/cards/), and the live site reads them from
+there.
 
 ~~This pack **points at those files**. It does not copy them. This tree stays a
 pointer.~~ **Struck 17 Sep 2026, by the maintainer's ruling: the pack is the
@@ -31,9 +31,8 @@ follow one at a time, each on its own brief. The rule is written in the
 | [`gs-paa-v2.0/evals/`](./gs-paa-v2.0/evals/) | No exam sat. |
 | [`gs-paa-v2.0/CHANGELOG.md`](./gs-paa-v2.0/CHANGELOG.md) | The second pack's own versions. |
 
-~~A later standard gets its own folder beside `vwba-2.0/`. It is not folded in.~~
-**It has one, from 22 Sep 2026:** `gs-paa-v2.0/` sits beside `vwba-2.0/`, and neither
-is folded into the other.
+From 22 Sep 2026 `gs-paa-v2.0/` sits beside `vwba-2.0/`, and neither is folded
+into the other.
 
 Draft card files stay untracked until the maintainer approves them, and they
 are never read.

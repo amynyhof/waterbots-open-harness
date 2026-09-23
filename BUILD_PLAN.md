@@ -102,10 +102,33 @@ packs to the new shape, is item K9.
 
 The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
 
+## In progress — a guide, not a gate (items A18 and A16): pull request 1 open at stop 2
+
+**23 Sep 2026. Proposed, ruled, and the rulings put into the record on `feat/guide-not-gate-rulings`,
+stacked on K7's branch; the pull request is open and waits on her grade of twenty-five lines.** Her
+five findings from reviewing Phoebe's applies cards became `PROPOSAL_guide-not-gate.md`, untracked
+at the root, and her rulings on its §10 the same day were R1 to R9 yes as proposed, with three
+riders: a grade-6 target printed and not enforced; the Blocked colour interim until her pixels; the
+carbon "no" list to the reviewer as Q11, a paid-side note; and `project-types.md` on the roster's
+rule, drafted here, carried by her hand, the paid repository its source.
+
+- **Pull request 1, built:** the fifth rule under *Pace and posture* in AGENT_RULES.md, her words;
+  the hard-gate design decision of 20 Aug 2026 struck and corrected in place at the head of the
+  eligibility cards, which reaches Phoebe's prompt and says her worksheet keeps its three states
+  until the build lands (measured run on the pull request); item A16 expanded with the type work;
+  new item A18; three carries on item O14. Pack versions bumped.
+- **Step 2, built:** `project-types-DRAFT.md` at the root, untracked: twenty VWBA activity types,
+  four Gold Standard classes and "none of these", each cited, one plain sentence each. **Stop 2.**
+- **Next, on her grade:** the fixability line on every eligibility card and the two routes files
+  (stop 3), with K7's card steps; Wellington's runtime on its own; Phoebe's runtime inside K7's
+  pull requests C and D. Nothing beyond step 2 is started.
+- **Merge order:** K7's pull request A (#99) first, then this one; both touch OPEN_ITEMS.
+
 ## In progress — Phoebe's carbon pack (item K7): pull request A open at eyeball stop 1
 
 **22 Sep 2026. Proposed, ruled, and steps 1 and 2 built on `feat/k7-gs-paa-pack`; the pull
-request is open and waits on her grade of six cards.** The proposal, `PROPOSAL_K7_gs-paa-v2.0.md`,
+request is open and waits on her grade of six cards.** **23 Sep 2026: the row model of its §4.1
+and §9.2 is superseded by the guide proposal above; the cards, the tests and the steps stand.** The proposal, `PROPOSAL_K7_gs-paa-v2.0.md`,
 untracked at the root, read the sources at three layers and found 32 basic eligibility
 requirements, each cited; it proposed one card and one worksheet row per requirement, a cited
 "does this apply" test per pack, one tool with two sections, and nine steps in four pull requests.
@@ -125,10 +148,9 @@ at 20, revisited after the first real walk.** Item K7 keeps her words.
   grade (stops 2 and 3); then pull request B, the pack-keyed reader and gate; C, the worksheet and
   the record; D, Phoebe's prompt and the measured walk. Nothing beyond step 2 is started.
 
-~~## Next brief — Phoebe's carbon pack (item K7)~~
+## The K7 brief as it was given — proposed and ruled 22 Sep 2026; see above
 
-~~**Not started. Proposal first, on the maintainer's word.**~~ **Proposed and ruled 22 Sep 2026; see
-above.** Her ruling at eyeball stop 4, 21 Sep
+Her ruling at eyeball stop 4, 21 Sep
 2026: the carbon card pass drafted from the two Gold Standard PDFs, graded by her, becomes her
 second pack, `gs-paa-v2.0`, in the pack shape beside `vwba-2.0` — `cards/`, `tool/`, `evals/`,
 README, CHANGELOG — with a cited "does this apply" test on every pack, including `vwba-2.0`, so she

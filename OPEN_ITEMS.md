@@ -92,6 +92,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | **[Surfaces](#family-surfaces)** | What a visitor sees and works with — the map, the worksheet, the chat layer. |
 | **[Data](#family-data)** | Where real, verifiable data comes from, and whether it exists yet. |
 | **[Operations](#family-operations)** | The deploy, the repository, settings and limits that outlast the session that made them. |
+| **[Cleanup](#family-cleanup)** | Debt in the documents themselves — wording, strikes, structure — that no other family owns. **Started 23 Sep 2026 by the maintainer's ruling**, with the sweep of struck lines as its first item; the reason is that a document-wide sweep belongs to no surface, agent, dataset or deploy. |
 
 | # | Item | Family | Bucket | State |
 |---|---|---|---|---|
@@ -101,7 +102,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | closed | canon, ruled 26 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K5 | The VWBA 2.0 D-3 screening pack | Knowledge | closed | **built 1 Sep 2026** — the first pack in the slot — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | closed | **built 2 Sep 2026** — two packs, one module, the transition delta — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; ~~**the next brief, 22 Sep 2026** — not built, proposal first~~ **proposed and ruled 22 Sep 2026; steps 1 and 2 built, pull request A open at eyeball stop 1, her grade of six applies cards** |
+| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; **proposed and ruled 22 Sep 2026; steps 1 and 2 built, pull request A open at eyeball stop 1, her grade of six applies cards** |
 | K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K9 | Calvin's and Bridget's packs move to the new pack shape | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — one brief each, the way Phoebe's did; not started |
 | K10 | Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — not started |
@@ -120,8 +121,9 @@ file at the root, untracked, and deleted once the sweep merged.
 | A14 | Screen host role words — one home | Agents | BONES | **logged 18 Sep 2026 from the maintainer's word** — not fixed now |
 | A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Agents | BONES | ~~**ruled 20 Sep 2026; the batch approved the same day** — steps 0 to 3 merged (#93, #94, #95) by 21 Sep; steps 4 to 6 open as pull request D, #97, at her eyeball~~ **built 22 Sep 2026, all four pull requests merged (#93, #94, #95, #97), eyeball stop 4 passed** — line 9 is the one gap left, carried by item A17 |
 | A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | ~~**logged 18 Sep 2026 from the maintainer's brief** — waits on her carry~~ **built 18 Sep 2026, #91 merged** — the free and Commons columns stay "unconfirmed" until she carries a confirmed file |
-| A16 | Wellington guides and leads — he never asks "water or carbon" | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; not started |
+| A16 | Wellington guides and leads — he never asks "water or carbon" — **and names the project type from a cited list** | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; **expanded and ruled 23 Sep 2026**: a cited list of twenty-four types, confirm then log; the types file drafted at the root for her grade, pull request open |
 | A17 | The handoff goes both ways — forward and back | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — her hand-back is built; his side of the return is not; not started |
+| A18 | A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person | Agents | BONES | **ruled 23 Sep 2026 from her review of Phoebe's cards** — the rule is in AGENT_RULES.md; the proposal's nine rulings all yes; nothing runtime built; the cards and the build follow in order |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
 | S2 | The shared chat layer | Surfaces | closed | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | S3 | Level 3 citation pop-out | Surfaces | closed | out of scope — paid platform — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -142,6 +144,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | S18 | Agent Commons — a public gallery of graded knowledge packs, each wearing an agent face | Surfaces | PARTNER | **v0 done — slices 1 to 3 built and merged by 11 Sep 2026 (#68 to #70)**; slice 4 waits on Deb's per-case file; slice 5, the flag button, later |
 | S19 | The Workshop — make your own agent on the Commons | Surfaces | PARTNER | **logged 11 Sep 2026, not built** — slice 3 has landed; the proposal is next, on the maintainer's word |
 | S20 | "Connect with a human expert" on every Commons agent | Surfaces | PARTNER | **logged 11 Sep 2026, not built** — two design questions open for the session |
+| S21 | Every tool exportable as an easy-to-read, properly cited document | Surfaces | PARK | **logged 23 Sep 2026 from the maintainer's word** — with or without answers; not started |
 | D1 | Corporate water stewardship goals and target geographies | Data | PARK | open |
 | D2 | Project points | Data | PARK | blocked on data |
 | O1 | Rate limit on public chat | Operations | PARK | shipped 25 Aug 2026, number to revisit |
@@ -158,6 +161,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | O12 | The map page is heavy — the renderer stalls on a basin redraw | Operations | WALKTHROUGH | **logged 7 Sep 2026**, not this slice |
 | O13 | Phoebe's relay still says `validate()` — a banned word in old code | Operations | BONES | **logged 7 Sep 2026** — rename to "check" in a later hygiene pass, not now |
 | O14 | Carries owed by the maintainer's hand — listed once | Operations | PARK | **adopted 18 Sep 2026**; each waits on her hand |
+| C1 | Sweep every existing struck line into the archive | Cleanup | BONES | **logged 23 Sep 2026 from the maintainer's ruling** — the batch of 22–23 Sep is clean; every older strike waits; not started |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
 > reference to them elsewhere in the repository was updated in the same edit rather than left to
@@ -990,7 +994,34 @@ prompt, his route list, and the desk's own words is the work of the brief, not o
 the pathways she holds cards for — one today. This row and item A17 and item K7 are one piece of
 work seen from three sides, and the K7 row carries the pack side.
 
-**Not scheduled. Proposal first. Bucket BONES.**
+### Expanded and ruled 23 Sep 2026 — he names the project type from a cited list
+
+Her finding, from her review of the applies cards, in her words:
+
+> Wellington translates the visitor's words into a standard project type from the rulebooks
+> (e.g. "pipes and a borehole" -> Community Water Supply) and stores that type in the project
+> context, not the raw words. He confirms in plain words first: "That sounds like a Community
+> Water Supply - [simple definition] - does that sound right?" then logs it on yes. Needs a cited
+> list of the standard project types he matches to (GS four classes; VWBA activity table).
+
+**The proposal, `PROPOSAL_guide-not-gate.md`, untracked at the root, and her rulings R1 to R9 on
+it, all yes as proposed, 23 Sep 2026.** The list is twenty-four types in one shared file,
+`knowledge-packs/product-shared/project-types.md`: the twenty rows of the VWBA guidebook's
+activity table (Appendix C, Table C-1, pp. 37–39) and Gold Standard's four technology classes
+(GS4GG PAA M400-12 V2.0, Table 2, pp. 6–7; Table 3, p. 9), plus "none of these", each with a
+one-line plain definition and its citation. He matches in his own words, says the definition
+back, and logs `type` (and `gsClass` for a drinking-water project) only on the visitor's yes;
+the relay checks both against the file; the raw words stay in "What it does". **"What kind"
+retires** (R2). **The file follows the roster rule, her word of 23 Sep 2026: drafted here,
+carried by her hand, and the paid repository becomes its source** — after which it is never edited
+here, and a check holds this site to it, as `roster.yaml` is held. The carry is on item O14's list.
+
+**Where it stands, 23 Sep 2026.** The rule is in the record; the types file is drafted at the root
+as `project-types-DRAFT.md`, untracked, for her grade of twenty-five lines (stop 2 of the
+proposal). His prompt, his fields, the rail and the seal change at the proposal's step 5, not
+started. Item A18 carries Phoebe's side of the same brief.
+
+**Ruled 23 Sep 2026. Types file drafted, at her grade. Bucket BONES.**
 
 ## A17. The handoff goes both ways — forward and back
 
@@ -1013,6 +1044,68 @@ found, in his own words, never as a recital. Rule zero and the agent-phrasing ru
 2026 both apply.
 
 **Not scheduled. Proposal first. Bucket BONES.**
+
+## A18. A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person
+
+**Ruled 23 Sep 2026 from the maintainer's review of Phoebe's applies cards, before she graded
+them.** Her findings 2 to 5, in her words, are the fifth ruling under *Pace and posture* in
+[AGENT_RULES.md](./AGENT_RULES.md), which is the rule's one home. This row is the work's home.
+
+**What it replaces.** The hard gate of 20 Aug 2026 — six absolute criteria, no partial credit —
+is struck and corrected in place at the head of `eligibility-cards-vwba.md`. The guidebook's own
+Figure 3 loops a miss back to the implementer before it ends in "not eligible" (VWBA 2.0, Step 2.3,
+p. 19), so the source carries the change. The three row states of `criteriaState.ts` and the
+relay's worksheet reader become five when the build lands. Until then nothing runtime changes: a
+criterion not met is "Not yet" with a route forward, and Phoebe's prompt says so in the corrected
+paragraph she reads.
+
+**The proposal, `PROPOSAL_guide-not-gate.md`, untracked at the root, and her rulings on its §10,
+23 Sep 2026: R1 to R9 yes as proposed**, with three riders in her words:
+
+> R8: print a grade-6 target, not enforced. The Blocked colour is the interim one until my pixels.
+> The carbon "no" list also goes to the reviewer as Q11 (note it for the paid side).
+> project-types.md follows the roster rule: drafted here, carried by my hand, the paid repo
+> becomes its source.
+
+**What the build holds, in the proposal's order.**
+
+1. **Five row states**: Not yet checked, Met, Fixable with a cited route, Unknown with what to find
+   out, Blocked. Blocked only where the card's **Can it be fixed?** line says *no*, or *depends*
+   after the visitor declines the design change. The first "no" list is in the proposal's §4.1,
+   for her grade with the cards; **the carbon part of it also goes to the reviewer as Q11**, her
+   word, a paid-side note carried by her hand (item O14).
+2. **The readiness read per pathway**: likely eligible (every row that applies is Met), likely
+   not (any row Blocked), not enough known yet (anything else, with the list). Shown on the Tool
+   tab, the desk row and the seal. "Likely" because nothing here is verified.
+3. **Routes cards**, one cited fix per common gap: nine for the water pathway, nineteen for
+   carbon, resting on the guidebook, the methodology and the documents it names as binding, or one
+   real published project. One is held today — LimnoTech for Meta, *Volumetric Water Benefits: 2023
+   Report*, 25 June 2024, the Navajo Community Water Supply project, pp. 25–26. A gap with no source
+   gets no card. Item K3 is where more reports arrive, by her hand.
+4. **Unknown is not a fail.** For an unknown baseline or survey she names the cited route (the
+   methodology's Baseline Scenario Survey and Gold Standard's questionnaire workbooks; the
+   guidebook's Appendix E) and offers the save door.
+5. **The door to a person**: rung 3 of the abstention ladder, live for the free site through the
+   save door that already exists (item S7), with two fields on the seal, `wantsHuman` and a short
+   note in the visitor's words, and a consent line that says what happens. Production builds the
+   receiving side. Item S20's form stays the Commons door.
+6. **A reading-grade figure** printed by `check-cards` for every route card and plain-words line,
+   against a grade-6 target, not enforced. Her rider on R8.
+7. **The Blocked colour** reuses `--state-pending` with the word "Blocked" until her pixels; a
+   raise for the brand book's §2.5, which has no stopped state that is not an error.
+
+**Sequencing (R9).** The rulings into the record first, then the types file (item A16), then the
+fixability line on every eligibility card and the two routes files, each at her grade; then
+Wellington's runtime on its own; Phoebe's runtime inside item K7's pull requests C and D so the
+worksheet, the record, the seal and the prompts change once. One contract change for production,
+told once, covering K7's per-pathway rows and this item's fields; on item O14's list.
+
+**Where it stands, 23 Sep 2026.** The rule and the correction are in the record on this pull
+request. No card is drafted for this item; nothing runtime is built. K7's pull request A (#99)
+stays at its stop 1, unchanged.
+
+**Ruled 23 Sep 2026. The rule in the rulebook; the build in order behind A16 and K7. Bucket
+BONES.**
 
 
 # Family: Surfaces
@@ -1701,6 +1794,29 @@ a mailbox, production — is a fact the maintainer carries, never guessed here (
 ---
 
 
+## S21. Every tool exportable as an easy-to-read, properly cited document
+
+**Logged 23 Sep 2026 from the maintainer's word. Not started.** Her words:
+
+> Every tool, with or without answers, exportable as an easy-to-read, properly cited
+> informational document.
+
+**What it means.** Each tool on this site — the eligibility worksheet with its criteria, rows and
+routes; the calculator with its fields and figures; the map with its pinned basin and its two
+attributions — can be turned into a document a person can read away from the screen: the tool's
+own plain words, every citation in the four-part shape of [CITATIONS.md](./CITATIONS.md), the
+licence lines the data requires, and, where answers exist, the answers with their provenance and
+the consultant-review tag. With no answers it is the blank tool, honestly blank. Nothing in it is
+computed that the screen does not already compute, and nothing is kept here by making it.
+
+**Read against the canon already ruled.** Estimates say estimate; derived values say derived;
+Level 4 stress says area-weighted; both attributions stay separate; the bridge's rule that never a
+computed number crosses to production is a rule about the seal, not about a document a visitor
+takes for themselves. Format, look and where the door sits are the proposal's, from a captured
+reference (design work starts from an image).
+
+**Not scheduled. Proposal first. Bucket PARK.**
+
 # Family: Data
 
 Where real, verifiable data comes from, and whether it exists yet.
@@ -2051,9 +2167,52 @@ zero holds for every one: nothing here is fetched, written to, or guessed at on 
 | The three changes Deb's rig needs, and later the trigger | Deb | item S18, slice 4; item S19 |
 | ~~`roster.yaml` from production~~ **Landed 18 Sep 2026**, version 0.3.0; the next carry is the confirmed one | This site | item A13 |
 | The specialist contract — the nine-line section of AGENT_RULES.md, her words | Production | item A15 |
+| `project-types.md` — drafted here, the paid repository becomes its source and this site is then held to it, the roster's rule; her word of 23 Sep 2026 | Production, then back to this site | item A16 |
+| The carbon "no" list — the rows that can be Blocked — to the reviewer as Q11; her word of 23 Sep 2026 | The paid side | item A18 |
+| One contract change to the seal: `type` and `gsClass` for `kind`; rows and a readiness read per pathway; `wantsHuman` and a note | Production, before this site's sender changes | items K7, A16, A18 |
 
 A carry is struck from this table when it lands, with the date. Nothing is built toward any of them
 from here.
 
 Logged 18 Sep 2026. **Each waits on her hand. Bucket PARK.**
 
+
+# Family: Cleanup
+
+Debt in the documents themselves — wording, strikes, structure — that no other family owns.
+**Started 23 Sep 2026 by the maintainer's ruling**, when she made the no-strikes rule canon and
+asked for one open item in a cleanup family, creating it if none existed. None did. Its reason: a
+document-wide sweep belongs to no surface, agent, dataset or deploy, and a family that has to hold
+one row nobody else can is the sign the families were one short.
+
+Governed by [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md), *Corrections replace
+text; the archive keeps the old wording*, and by *docs never drift* in [CLAUDE.md](./CLAUDE.md).
+
+## C1. Sweep every existing struck line into the archive
+
+**Logged 23 Sep 2026 from the maintainer's ruling. Not started.** Her words:
+
+> No crossed-out text in any live document. A correction replaces the text; the old wording and
+> its date go to the archive or the CHANGELOG, never struck in place. Apply it in #100 now: the
+> 20 Aug paragraph and any other strike in this batch move to the archive; live docs hold only
+> current text. Log one open item in a cleanup family (create it if none): sweep every existing
+> struck line into the archive.
+
+**What is already clean.** The batch of 22–23 Sep 2026 (pull requests #99 and #100): the head of
+the eligibility card file, the seat, water-pack and tree READMEs, the K7 row here and the K7
+heading in BUILD_PLAN. Their old wording is in the pack CHANGELOGs and in
+[docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md), the file this rule made.
+
+**What waits.** Every strike that existed before the ruling: in CLAUDE.md, PROCESS_RULES,
+AGENT_RULES, CITATIONS, this file's index table and item bodies, BUILD_PLAN, the tree and pack
+READMEs, the feasibility and eligibility card files below their heads, and code comments that
+carry a struck fact. One document at a time, each its own commit: the strike replaced by current
+text, the old wording moved whole with its date and reason to the archive file or the pack's
+CHANGELOG. Where a struck line reaches an agent's prompt (the card files), the measured run follows,
+as it did for #100.
+
+**Sizing.** A document is one step; a sitting may hold several. The card files and the rulebooks
+each get their own pull request because canon lifts out alone. Proposal first, with the count of
+strikes per document, so she can order them.
+
+Logged 23 Sep 2026. **Not started. Proposal first. Bucket BONES.**

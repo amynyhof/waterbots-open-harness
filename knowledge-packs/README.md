@@ -1,6 +1,6 @@
 # Knowledge packs — open tree
 
-**Version ~~0.2.0~~ ~~0.3.0~~ ~~0.3.1~~ ~~0.4.0~~ ~~0.5.0~~ ~~0.5.1~~ 0.6.0 (open).** ~~Scaffold only. Nothing in this folder is wired into the live
+**Version 0.6.1 (open); the history is in [CHANGELOG.md](./CHANGELOG.md).** ~~Scaffold only. Nothing in this folder is wired into the live
 site.~~ **Corrected 17 Sep 2026:** Phoebe's pack is wired. The live site reads her two
 card sets from [`phoebe-eligibility/vwba-2.0/cards/`](./phoebe-eligibility/vwba-2.0/cards/).
 The other packs are still scaffold; the console reads their method packs and map data
@@ -73,7 +73,7 @@ yet. That is Wellington today.
 |---|---|---|
 | [product-shared/](./product-shared/) | Shared journey, open free pathway, and **the roster — `roster.yaml`, carried from production, checked at every build from 18 Sep 2026** | none — by design |
 | [wellington-host/](./wellington-host/) | Host and orchestrator stub | note: no named tools yet |
-| [phoebe-eligibility/](./phoebe-eligibility/) | Eligibility and feasibility — **the cards' home, new shape** | none — [`vwba-2.0/`](./phoebe-eligibility/vwba-2.0/) holds `cards`, `tool`, `evals`; ~~a later standard gets its own folder beside it~~ **[`gs-paa-v2.0/`](./phoebe-eligibility/gs-paa-v2.0/) sits beside it from 22 Sep 2026, a scaffold, not live** |
+| [phoebe-eligibility/](./phoebe-eligibility/) | Eligibility and feasibility — **the cards' home, new shape** | none — [`vwba-2.0/`](./phoebe-eligibility/vwba-2.0/) holds `cards`, `tool`, `evals`; [`gs-paa-v2.0/`](./phoebe-eligibility/gs-paa-v2.0/) sits beside it from 22 Sep 2026, a scaffold, not live |
 | [bridget-map/](./bridget-map/) | Map datasets already on open | `hydrosheds-hydrobasins`, `wri-aqueduct-4.0` |
 | [calvin-quantify/](./calvin-quantify/) | Screening method packs | one folder per live `methodPacks` key, plus empty stubs for D-methods already named as not built |
 | [reggie-library/](./reggie-library/) | Library seat stub — this site has no library seat yet | empty stubs, one package per standard already on open, to show the contract |

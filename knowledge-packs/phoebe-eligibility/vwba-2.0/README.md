@@ -1,11 +1,10 @@
 # vwba-2.0 — Phoebe's Knowledge Pack
 
-**Version 0.4.4.** ~~This folder is the one home of what Phoebe knows.~~
-**Corrected 22 Sep 2026: this folder is the one home of what Phoebe knows about
-the water pathway.** Her carbon pathway has its own folder beside this one,
-[`../gs-paa-v2.0/`](../gs-paa-v2.0/), a scaffold, not live. The card
-files live in [`cards/`](./cards/), and everything on the live site that reads
-them reads them from here. Maintainer's ruling, 17 Sep 2026.
+**Version 0.4.5.** This folder is the one home of what Phoebe knows about the
+water pathway (corrected 22 Sep 2026; see the CHANGELOG). Her carbon pathway has
+its own folder beside this one, [`../gs-paa-v2.0/`](../gs-paa-v2.0/), a scaffold,
+not live. The card files live in [`cards/`](./cards/), and everything on the live
+site that reads them reads them from here. Maintainer's ruling, 17 Sep 2026.
 
 ## What she knows
 
@@ -36,12 +35,11 @@ and the publisher's canonical link, so each one stands alone.
 
 - **Working a number out.** That is the Quantify step, and it is Calvin's.
 - **The map.** That is the Partners step, and it is Bridget's.
-- **Any standard other than VWBA 2.0.** ~~Gold Standard's methodology lives in
-  Calvin's packs, not here.~~ **Corrected 22 Sep 2026:** Gold Standard's
-  safe-water methodology has its own eligibility pack beside this one,
-  [`../gs-paa-v2.0/`](../gs-paa-v2.0/), a scaffold with no approved card; its
-  arithmetic still lives in Calvin's packs. Until that pack is live she checks
-  nothing carbon and says so.
+- **Any standard other than VWBA 2.0.** Gold Standard's safe-water methodology
+  has its own eligibility pack beside this one, [`../gs-paa-v2.0/`](../gs-paa-v2.0/),
+  a scaffold with no approved card; its arithmetic lives in Calvin's packs. Until
+  that pack is live she checks nothing carbon and says so (corrected 22 Sep 2026;
+  see the CHANGELOG).
 - **The activity table (Appendix C) and the glossary.** Drafted, not approved,
   not read. Draft card files stay untracked until the maintainer approves them.
 - **Whether a benefit was delivered or verified.** Nothing here says so.

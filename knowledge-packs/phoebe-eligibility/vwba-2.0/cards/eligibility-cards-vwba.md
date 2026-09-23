@@ -10,19 +10,28 @@ this file cites and links it, and does not reproduce it.
 
 ---
 
-## Design decision — hard gate, with solutions
+## Design decision — a guide, not a gate
 
-**Maintainer's ruling, 20 Aug 2026.** The Gatekeeper treats all six criteria as absolute. Miss one
-and the project is not eligible. There is no weighting, no partial credit, and no averaging across
-criteria.
+**Maintainer's ruling, 23 Sep 2026.** It replaces the ruling of 20 Aug 2026, whose wording is in
+this pack's CHANGELOG under 0.4.5. All six criteria still have to be met for a project to generate
+a benefit; what changed is what a miss means. A criterion not met today is one of three things:
+fixable, with a cited route from the guidebook or a real published project; unknown, with what to
+find out; or truly blocked, and only the cards say which criteria can ever be that. The answer for
+the pathway is a readiness read, likely eligible, likely not, or not enough known yet, never pass
+or fail. There is still no weighting, no partial credit and no averaging across criteria; a
+readiness read is a sort, not a score. The rule itself has one home, *Pace and posture* in
+AGENT_RULES.md; the worksheet carries the three kinds of miss and the read once item A18 builds.
+**Until then the worksheet has its three states, and a criterion not met is "Not yet" with a route
+forward**, which was always the posture.
 
 **Every "not yet" has to arrive with a route forward.** A verdict that only reports failure is not
-an acceptable output. Whenever the Gatekeeper finds a criterion unmet, it states what would change
-that — the specific evidence, document, consultation, or design change that would move the project
-from *not yet* to *met*. The gate is hard; the posture is not.
+an acceptable output. Whenever Phoebe finds a criterion unmet, she states what would change that:
+the specific evidence, document, consultation, or design change that would move the project from
+*not yet* to *met*. The posture is the rule.
 
-This resolves the wording tension noted at the foot of this file — Appendix A reads as mandatory,
-the Step 2.3 summary box reads softer, and Figure 3 is absolute. The build follows Figure 3.
+**Figure 3 is not only absolute.** It loops a project that misses back to the implementer to
+revisit scope and re-evaluate, and only the second miss ends in "not eligible" (Step 2.3,
+Figure 3, p. 19). The build follows the whole figure, loop included.
 
 ## Naming — where this card set sits
 

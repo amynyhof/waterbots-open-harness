@@ -3,6 +3,13 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.6.1 — 23 Sep 2026
+
+- **A guide, not a gate.** `phoebe-eligibility@0.5.1` (`vwba-2.0@0.4.5`): the hard-gate
+  design decision at the head of the eligibility cards struck and corrected in place on
+  the maintainer's ruling of 23 Sep 2026; the rule's home is AGENT_RULES.md. No card
+  changed. Item A18.
+
 ## 0.6.0 — 22 Sep 2026
 
 - **The first seat with two packs.** `phoebe-eligibility@0.5.0` (`gs-paa-v2.0@0.1.0`,

@@ -280,46 +280,42 @@ ones are not reformatted.
 - Mistakes are self-reported honestly and immediately. Amy makes all
   rulings.
 
-## Visible corrections over rewritten history
+## Corrections replace text; the archive keeps the old wording
 
-**Maintainer's ruling, 28 Aug 2026.** It had been practised on both sites for a
-while and was written down nowhere, which is how it came to be applied by habit
-rather than by rule. It is law here now.
+**Maintainer's ruling, 23 Sep 2026, canon.** It replaces the rule of 28 Aug 2026
+that struck a false line through in place; that rule's whole text is the first
+entry in [docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md).
 
-> **Visible corrections over rewritten history — a false line in any tracked
-> document is struck through and corrected in place, never silently rewritten.
-> The record keeps what was believed and when it was corrected.**
+> **No crossed-out text in any live document. A correction replaces the text;
+> the old wording and its date go to the archive or the CHANGELOG, never struck
+> in place.**
 
-**Why it is worth a rule.** A document that quietly changes its mind teaches its
-reader to trust it less, not more. Once a reader knows that a line may have been
-different yesterday with no sign of it, every line has to be checked against
-something else — and the point of a written record is that it does not have to
-be.
-
-**It also carries the reason a thing was wrong**, which is usually worth more
-than the correct value. "This said 8,192 until 26 Aug 2026" tells a later
-session that a number was left behind when a fault was fixed. Replacing 8,192
-with 16,000 tells them nothing.
+**Why it is worth a rule.** A live document is read for what is true now. A
+line that carries its own past wording makes every reader do the correction
+again, and a document with many of them stops being a briefing. The record of
+what was believed and when it changed still matters, so it is kept, in one
+place made for it, where a reader who goes looking will find it.
 
 **What it applies to.** Every tracked document: the rulebooks, the open items,
-the build plan, ~~the handoff,~~ the card sets, and code comments that state a fact
-about the system. **Corrected 17 Sep 2026:** there is no live root handoff.
-**It is about corrections, not about editing.** Rewriting a
-paragraph that was merely unclear, tightening prose, or reorganising a file are
-ordinary edits and need none of this. The rule bites when something the document
-*asserted* turns out to be untrue.
+the build plan, the card sets, and code comments that state a fact about the
+system. **It is about corrections, not about editing.** Rewriting a paragraph
+that was merely unclear, tightening prose, or reorganising a file are ordinary
+edits and need no entry. The rule bites when something the document *asserted*
+turns out to be untrue.
 
-**How it is done.** Strike the false words rather than deleting them, state what
-is true, and date the correction. A short note is enough; this is not a ceremony.
-
-**What it does not license.** It is not a reason to keep stale material lying
-around, and it does not override *docs never drift* in
-[CLAUDE.md](./CLAUDE.md). A corrected line is still corrected — the strike marks
-where the record moved, and the true statement stands next to it.
+**How it is done.** Replace the false words with the true ones. Then write the
+old wording, whole, with the date and a line on why, in the archive or the
+CHANGELOG: a pack's old wording goes in that pack's CHANGELOG; anything else
+goes in `docs/archive/CORRECTIONS.md`. The live document may say "corrected on
+a date, see the changelog" in a few words; it never shows the old text.
 
 **Where a correction is large enough to be its own thing**, it becomes an open
-item and the false record points at it, rather than the item's whole story being
-retold in two places.
+item and the live document points at it, rather than the item's whole story
+being retold in two places.
+
+**The sweep.** Every strike that existed when this rule was made is item C1's
+to move, one document at a time; until a document is swept, its old strikes
+stand and are not a defect of that document.
 
 ## Open items and families
 
