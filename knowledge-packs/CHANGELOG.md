@@ -3,6 +3,14 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.6.0 — 22 Sep 2026
+
+- **The first seat with two packs.** `phoebe-eligibility@0.5.0` (`gs-paa-v2.0@0.1.0`,
+  `vwba-2.0@0.4.4`): Gold Standard's safe-water carbon methodology gets its own
+  eligibility pack beside the water one, in the ruled shape, as a scaffold with no
+  approved card and no reader. Docs only; the live site is unchanged. Item K7, steps 1
+  and 2, on the maintainer's rulings of 22 Sep 2026.
+
 ## 0.5.1 — 21 Sep 2026
 
 - **Phoebe sees her worksheet.** `phoebe-eligibility@0.4.1` (`vwba-2.0@0.4.1`):

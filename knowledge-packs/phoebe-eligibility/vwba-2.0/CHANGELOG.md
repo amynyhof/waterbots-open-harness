@@ -1,5 +1,12 @@
 # Changelog — vwba-2.0
 
+## 0.4.4 — 22 Sep 2026
+
+- **README points at the sibling pack.** The line saying Gold Standard's
+  methodology lives only in Calvin's packs is struck and corrected: its
+  eligibility pack is `../gs-paa-v2.0/`, a scaffold, not live. Docs only; no
+  card, no reader, no prompt changed. Item K7, step 1.
+
 ## 0.4.3 — 21 Sep 2026
 
 - **Her scope is a fact she phrases.** The maintainer's ruling at eyeball stop 4:
