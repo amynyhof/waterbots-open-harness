@@ -2,14 +2,35 @@
 
 ## 0.4.5 — 23 Sep 2026
 
-- **The design decision is corrected in place: a guide, not a gate.** The
-  maintainer's ruling of 23 Sep 2026 (item A18) supersedes the hard gate of
-  20 Aug 2026 at the head of `cards/eligibility-cards-vwba.md`: struck, corrected,
-  dated. No card changed; the six criteria and their evidence lists are as they
-  were. The relay's generated copy was rebuilt, so the corrected paragraph
-  reaches Phoebe's prompt; it tells her the worksheet keeps its three states
-  until the build lands, so her behaviour today is unchanged. Measured run
-  reported on the pull request.
+- **The design decision is replaced: a guide, not a gate.** The maintainer's
+  ruling of 23 Sep 2026 (item A18) supersedes the hard gate of 20 Aug 2026 at the
+  head of `cards/eligibility-cards-vwba.md`. No card changed; the six criteria and
+  their evidence lists are as they were. The relay's generated copy was rebuilt,
+  so the new paragraph reaches Phoebe's prompt; it tells her the worksheet keeps
+  its three states until the build lands, so her behaviour today is unchanged.
+  Measured run reported on the pull request. Under the no-strikes rule of the same
+  day the old wording is kept here, whole:
+
+  > ## Design decision — hard gate, with solutions
+  >
+  > **Maintainer's ruling, 20 Aug 2026.** The Gatekeeper treats all six criteria
+  > as absolute. Miss one and the project is not eligible. There is no weighting,
+  > no partial credit, and no averaging across criteria.
+  >
+  > **Every "not yet" has to arrive with a route forward.** A verdict that only
+  > reports failure is not an acceptable output. Whenever the Gatekeeper finds a
+  > criterion unmet, it states what would change that — the specific evidence,
+  > document, consultation, or design change that would move the project from
+  > *not yet* to *met*. The gate is hard; the posture is not.
+  >
+  > This resolves the wording tension noted at the foot of this file — Appendix A
+  > reads as mandatory, the Step 2.3 summary box reads softer, and Figure 3 is
+  > absolute. The build follows Figure 3.
+
+- **README, old wording kept here** from 0.4.4's correction: the head line read
+  "This folder is the one home of what Phoebe knows." and the not-covered line
+  read "Any standard other than VWBA 2.0. Gold Standard's methodology lives in
+  Calvin's packs, not here." Both now carry only the current text.
 
 ## 0.4.4 — 22 Sep 2026
 

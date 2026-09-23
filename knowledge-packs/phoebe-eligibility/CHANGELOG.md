@@ -3,8 +3,12 @@
 ## 0.5.1 — 23 Sep 2026
 
 - `vwba-2.0@0.4.5` — the design decision at the head of the eligibility cards
-  corrected in place, a guide not a gate, on the maintainer's ruling of
-  23 Sep 2026. No card changed. Item A18.
+  replaced, a guide not a gate, on the maintainer's ruling of 23 Sep 2026; the
+  old paragraph is kept whole in that pack's CHANGELOG. No card changed. Item A18.
+- **Old wording kept here** under the no-strikes rule of 23 Sep 2026, from the
+  0.5.0 corrections to this README: the head read "Her Knowledge Pack is
+  `vwba-2.0/`." and the folder note read "A later standard gets its own folder
+  beside `vwba-2.0/`. It is not folded in." Both now carry only current text.
 
 ## 0.5.0 — 22 Sep 2026
 
