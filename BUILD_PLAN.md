@@ -122,11 +122,21 @@ rule, drafted here, carried by her hand, the paid repository its source.
 - **Step 2, graded "ships" with one citation edit:** `project-types.md` lives in
   `knowledge-packs/product-shared/` from 23 Sep 2026, approved, on the roster rule; nothing reads
   it yet. Shared pack 0.4.0, tree 0.7.0.
-- **Step 3 and the water half of step 4, drafted at the root, untracked, for her grade:**
-  `can-it-be-fixed-vwba-DRAFT.md`, six lines, one *depends* and five *yes*; and
-  `routes-cards-vwba-DRAFT.md`, nine cited routes, one resting on a published project. **Stop 3.**
-- **Next, on her grade:** the carbon fixability lines and nineteen carbon routes with K7's card
-  steps; Wellington's runtime on its own; Phoebe's runtime inside K7's pull requests C and D.
+- **Step 3 and the water half of step 4, graded "ships as written" and in the pack, 23 Sep 2026
+  (#101 merged; the move on `feat/water-routes-into-pack`, pull request open):** the six
+  **Can it be fixed?** paragraphs on the water cards, criterion 4 *depends*; the nine routes as
+  `routes-cards-vwba.md`, R-8 with the Meta line, its title confirmed by her. Water pack 0.5.0,
+  seat 0.6.0, tree 0.8.0. The paragraphs reach Phoebe's prompt; measured run on the pull request.
+- **A third ruling the same day, canon for every agent:** wherever a Fixable or Unknown row shows,
+  the visitor is told, as a fact phrased, that WaterBots is building tools and resources on the paid
+  site for exactly these fixes, and can save the project and sign up; the same line on the save
+  door. In AGENT_RULES.md under ruling 5; production's side on item O14.
+- **The six applies cards' "If the answer is no" sections redrafted** under the guide-not-gate rule,
+  at the root, untracked, for her grade with K7's stop 1: each no sorted into Fixable with a cited
+  route, Unknown not a fail, or Blocked where no route exists.
+- **Next, on her grade:** K7's stop 1 (the six applies cards); the carbon fixability lines and
+  nineteen carbon routes with K7's card steps; Wellington's runtime on its own; Phoebe's runtime
+  inside K7's pull requests C and D.
 
 ## In progress — Phoebe's carbon pack (item K7): pull request A merged; at eyeball stop 1
 

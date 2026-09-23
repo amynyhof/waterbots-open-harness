@@ -1,5 +1,11 @@
 # Changelog — phoebe-eligibility
 
+## 0.6.0 — 23 Sep 2026
+
+- `vwba-2.0@0.5.0` — "Can it be fixed?" on all six eligibility cards, and a third
+  card set, the nine water routes, both graded by the maintainer the same day and
+  moved into the pack. Nothing reads the routes yet. Item A18.
+
 ## 0.5.1 — 23 Sep 2026
 
 - `vwba-2.0@0.4.5` — the design decision at the head of the eligibility cards

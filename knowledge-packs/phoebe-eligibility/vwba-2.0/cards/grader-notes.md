@@ -174,3 +174,46 @@ file it was cut from. The status line, the design decision and the source table 
 9. **Scope.** Appendix B only. This completes the pair Phoebe is named for — Eligibility from
    Appendix A, committed; Feasibility from Appendix B, this file. The activity set from Appendix C
    and the definitions set from the glossary remain drafts awaiting grading.
+
+---
+
+## "Can it be fixed?" lines — added to the six eligibility cards on 23 Sep 2026
+
+Graded "ships as written"; criterion 4 stays *depends*. The notes that sat at the foot of the draft:
+
+These notes are for the maintainer and go to `grader-notes.md` before the lines are read by
+anything.
+
+1. **Only one *depends*, no *no*.** The proposal's first cut (§4.1) put criterion 4 as the water
+   "no". Read again against the card, a plain *no* would make the two carve-outs unreachable; the
+   line is written as *depends* on the one legal fact, with Blocked allowed once that fact is
+   confirmed. This is the single line where a water project can be Blocked, and she may prefer *no*
+   with the carve-outs as exceptions; either is one word.
+2. **Figure 3's loop** is the source behind every *yes*: a project that misses is sent back to the
+   implementer to revisit scope and be re-evaluated, and only the second miss ends in "not
+   eligible" (p. 19). The lines do not repeat that on each card; the design decision at the head of
+   the card file carries it once.
+3. **Nothing here changes a card's rule or evidence list.** Six paragraphs are added; nothing is
+   reworded.
+
+---
+
+## Routes set — moved into `routes-cards-vwba.md` on 23 Sep 2026
+
+Graded "ships as written"; R-8 ships with the Meta line, the title confirmed by the maintainer. The notes that sat at the foot of the draft:
+
+These notes are for the maintainer and go to `grader-notes.md` before the file is read by
+anything.
+
+1. **Nine routes, every one on a page already read.** No route rests on anything outside the
+   guidebook and the one published report. Gaps with no source and so no card on the water
+   pathway: none found; every criterion has at least one route, which is what Figure 3's loop
+   implies.
+2. **R-8 is the only card with two canonical links**, one per document. The Meta address resolved
+   but could not be read by the checking tool because of its size; if she cannot open it either,
+   R-8 ships with the guidebook citation alone and the published-project line comes out.
+3. **The shape** adds two labels the gate does not know yet, "The gap" and "What it does not
+   promise"; the gate learns them at the proposal's step 5 with the routes reader.
+4. **Page numbers** were checked against the local copy's footers: Step 1 begins on p. 16, Step 3
+   and Step 4.3 and 4.4 are on pp. 21 and 25, D-3 is on pp. 44–45, Appendix E on pp. 62–64. Every
+   criterion page matches the criteria cards already approved.

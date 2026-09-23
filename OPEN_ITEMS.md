@@ -102,7 +102,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | closed | canon, ruled 26 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K5 | The VWBA 2.0 D-3 screening pack | Knowledge | closed | **built 1 Sep 2026** — the first pack in the slot — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | closed | **built 2 Sep 2026** — two packs, one module, the transition delta — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; **proposed and ruled 22 Sep 2026; steps 1 and 2 built, pull request A merged 23 Sep 2026 (#99); eyeball stop 1, her grade of six applies cards, still waits** |
+| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; **proposed and ruled 22 Sep 2026; steps 1 and 2 built, pull request A merged 23 Sep 2026 (#99); eyeball stop 1, her grade of six applies cards, still waits — their "no" sections redrafted under the guide-not-gate rule the same day** |
 | K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K9 | Calvin's and Bridget's packs move to the new pack shape | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — one brief each, the way Phoebe's did; not started |
 | K10 | Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — not started |
@@ -123,7 +123,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | ~~**logged 18 Sep 2026 from the maintainer's brief** — waits on her carry~~ **built 18 Sep 2026, #91 merged** — the free and Commons columns stay "unconfirmed" until she carries a confirmed file |
 | A16 | Wellington guides and leads — he never asks "water or carbon" — **and names the project type from a cited list** | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; **expanded and ruled 23 Sep 2026**: a cited list of twenty-four types, confirm then log; **the types file graded and moved into `product-shared/` the same day**, on the roster rule; his runtime not started |
 | A17 | The handoff goes both ways — forward and back | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — her hand-back is built; his side of the return is not; not started |
-| A18 | A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person | Agents | BONES | **ruled 23 Sep 2026 from her review of Phoebe's cards** — the rule is in AGENT_RULES.md (#100, merged); the six water fixability lines and nine water routes drafted at the root the same day, at stop 3 for her grade; nothing runtime built |
+| A18 | A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person | Agents | BONES | **ruled 23 Sep 2026 from her review of Phoebe's cards** — the rule is in AGENT_RULES.md (#100, merged); **stop 3 passed the same day**: fixability lines on the six water cards and nine water routes in the pack; the "tools on the paid site" line ruled canon; the applies cards' "no" sections redrafted at the root for her grade; nothing runtime built |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
 | S2 | The shared chat layer | Surfaces | closed | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | S3 | Level 3 citation pop-out | Surfaces | closed | out of scope — paid platform — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -1103,12 +1103,21 @@ Wellington's runtime on its own; Phoebe's runtime inside item K7's pull requests
 worksheet, the record, the seal and the prompts change once. One contract change for production,
 told once, covering K7's per-pathway rows and this item's fields; on item O14's list.
 
-**Where it stands, 23 Sep 2026.** The rule and the correction are in the record (#100, merged).
-Drafted at the root, untracked, for her grade at stop 3: `can-it-be-fixed-vwba-DRAFT.md`, the
-**Can it be fixed?** line for each of the six water criteria — one *depends*, criterion 4 on the
-one legal fact, and five *yes* — and `routes-cards-vwba-DRAFT.md`, the nine water routes, R-1 to
-R-9, one of them resting on the Meta 2023 report's Navajo project. Nothing runtime is built. K7's
-six applies cards still wait at their own stop 1.
+**A third ruling under this item, 23 Sep 2026, canon for every agent**, recorded in her words
+under *Pace and posture* in AGENT_RULES.md: wherever Phoebe shows a Fixable or Unknown row, she
+also says, as a fact she phrases, that WaterBots is building tools and resources on the paid site
+to help implementers do exactly these fixes, and that they can save their project and sign up for
+updates and access; the same line goes on the save door's copy. A fact, never a sales line; said
+there and nowhere else. It reaches her prompt and the save door with this item's build, and
+production's side of the door is a carry on item O14.
+
+**Where it stands, 23 Sep 2026, later.** Stop 3 passed: both drafts graded "ships as written",
+criterion 4 stays *depends*, R-8 ships with the Meta line, its title confirmed by her. The six
+**Can it be fixed?** paragraphs are on the cards in `vwba-2.0/cards/eligibility-cards-vwba.md`,
+reaching Phoebe's prompt (measured run on the pull request); the nine routes are
+`vwba-2.0/cards/routes-cards-vwba.md`, read by nothing yet. Both drafts' notes are in
+`grader-notes.md`. The six applies cards' "If the answer is no" sections are redrafted under this
+rule at the root, untracked, for her grade with K7's stop 1. Nothing runtime is built.
 
 **Ruled 23 Sep 2026. The rule in the rulebook; the build in order behind A16 and K7. Bucket
 BONES.**
@@ -2176,6 +2185,7 @@ zero holds for every one: nothing here is fetched, written to, or guessed at on 
 | `project-types.md` — drafted here, the paid repository becomes its source and this site is then held to it, the roster's rule; her word of 23 Sep 2026 | Production, then back to this site | item A16 |
 | The carbon "no" list — the rows that can be Blocked — to the reviewer as Q11; her word of 23 Sep 2026 | The paid side | item A18 |
 | One contract change to the seal: `type` and `gsClass` for `kind`; rows and a readiness read per pathway; `wantsHuman` and a note | Production, before this site's sender changes | items K7, A16, A18 |
+| The "tools and resources on the paid site" line, her canon of 23 Sep 2026: production's side of the save door and its sign-up should say the same thing this site's save door will say | Production | item A18 |
 
 A carry is struck from this table when it lands, with the date. Nothing is built toward any of them
 from here.

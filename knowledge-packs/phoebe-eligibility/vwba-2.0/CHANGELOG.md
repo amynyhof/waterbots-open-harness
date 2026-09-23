@@ -1,5 +1,22 @@
 # Changelog — vwba-2.0
 
+## 0.5.0 — 23 Sep 2026
+
+- **"Can it be fixed?" on every eligibility card.** One labelled paragraph after
+  "The rule in plain words" on each of the six cards, graded "ships as written" at
+  the root the same day: five *yes*, and criterion 4 *depends* on whether the
+  sponsor is legally obliged, with the card's two carve-outs kept reachable. It is
+  the only place the word Blocked can come from; Phoebe reads it and never
+  decides it. The paragraphs reach her prompt through the regenerated card module;
+  the measured run is on the pull request. The draft's grader notes are in
+  `cards/grader-notes.md`. Item A18, step 3.
+- **A third card set, `cards/routes-cards-vwba.md`.** Nine cited routes, R-1 to
+  R-9, each two or three short sentences resting on a guidebook page, and R-8 also
+  on the Meta 2023 report's Navajo Community Water Supply project, its canonical
+  address confirmed by the maintainer at the grade. Moved in whole from the root
+  draft on her word; nothing reads it until the routes reader is built (step 5).
+  Its grader notes are in `cards/grader-notes.md`. Item A18, step 4, water half.
+
 ## 0.4.5 — 23 Sep 2026
 
 - **The design decision is replaced: a guide, not a gate.** The maintainer's
