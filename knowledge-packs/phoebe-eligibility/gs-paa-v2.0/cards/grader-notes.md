@@ -56,3 +56,28 @@ anything.
 5. **Second canonical links** are given where a card also cites a framework document, each a page
    confirmed on 22 Sep 2026. The WHO and JMP pages named under "External standard" on M3, M4, M5
    and M7 are the ones the pack README lists as still to be confirmed.
+
+---
+
+## Framework and general set, P1–P2 and G1–G13 — appended to `eligibility-cards-gs.md` on 23 Sep 2026
+
+Graded "all pass as drafted". The notes that sat at the foot of the draft:
+
+These notes are for the maintainer and go to `grader-notes.md` before the file is read by
+anything.
+
+1. **Three *depends*, no flat *no*.** P1 (a transitioning project that will not make the design
+   change), G6 (aid on condition that the credits go to the donor) and G12 (a retroactive project
+   past the year). Each names the fact that decides it; G12 is the one the addendum's §3 leans on
+   for a running project.
+2. **The tags.** All fifteen are *To start*; five carry *Kept up by* (G2, G7, G8, G10, G13). None
+   is *To remain eligible* on its own; the preview block for the carbon pathway is M17 plus the
+   clauses.
+3. **G9 for a running project.** The consultation rule does not make a running project
+   ineligible by itself; the year in G12 does. G9's route for a running project is the retroactive
+   meeting, held before submission.
+4. **Two documents cited here are not on the K7 proposal's confirmed-page list**: 118 and 104 were
+   found through the publisher's search on 22 Sep 2026 and are in the sources table above with the
+   rest; every page resolved.
+5. **What is deliberately not a row** is unchanged from the proposal's §5.4: the certification
+   cycle, the review stages, annual reports, templates and the auditor's own duties.

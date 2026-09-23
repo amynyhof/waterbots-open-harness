@@ -6,17 +6,19 @@
 met before the move: the WHO and JMP pages cited on M3, M4, M5 and M7 were confirmed on the
 publishers' sites on 23 Sep 2026 (the scheme report's page dates it 18 March 2026, corrected on
 M3); and the Blocked cases on M5, M12, M13 and M14 go to the reviewer as Q11, a carry on item O14.
-Moved here whole from the root draft. The fifteen framework and general cards (P1–P2, G1–G13) are
-drafted at the root for the next stop and are appended here on her grade. Item K7, step 3. **Nothing
-reads this file yet**: the pack-keyed reader and gate come at the K7 proposal's step 5.
+Moved here whole from the root draft. **The fifteen framework and general cards (P1–P2, G1–G13)
+were approved the same day, "all pass as drafted", and are appended below as part two**, so all 32
+rows of the carbon pathway sit in this one file. Items K7, steps 3 and 4. **Nothing reads this file
+yet**: the pack-keyed reader and gate come at the K7 proposal's step 5.
 
 **Every card carries a Phase line** from 23 Sep 2026, her addendum ruling: *To start*, or *To
 remain eligible*; a planned project's readiness read counts *To start* rows only, and the *To
 remain* rows and every *Kept up by* clause show together in one preview block, never as a mark
 against a planned project. A running or transitioning project gets every row.
 
-Seventeen cards, one per basic eligibility requirement in the methodology itself, one worksheet
-row each. Every card carries **Can it be fixed?**, the maintainer's ruling R3 of 23 Sep 2026: it is
+Thirty-two cards, one per basic eligibility requirement, one worksheet row each: seventeen from
+the methodology itself (part one), fifteen from the framework and the rules for every project
+(part two). Every card carries **Can it be fixed?**, the maintainer's ruling R3 of 23 Sep 2026: it is
 the only place the word Blocked can come from. All wording is a rewrite; no sentence is copied. The
 source PDFs stay in `sources-local/`, gitignored, never published; this file cites and links them.
 
@@ -672,3 +674,521 @@ plan approach, which the method names without a citation.
 
 - The regulatory summary.
 - The maintenance and repair plan; the campaign plan.
+
+---
+
+## Part two — the framework and the rules for every project
+
+**Cards P1–P2 and G1–G13, approved by the maintainer on 23 Sep 2026** ("all pass as drafted")
+and appended here whole on her word, after M17, so the carbon pathway's 32 rows sit in one file in
+the proposal's order: the methodology's own gate first (M1–M17), then the Paris-alignment framework
+(P1–P2), then the rules every Gold Standard project keeps (G1–G13). The same three kinds of miss,
+the same tags; the routes named are the proposal's planned carbon ids, drafted at the root for her
+grade.
+
+### Sources cited in part two
+
+| Doc | Document | Version | Canonical page |
+|---|---|---|---|
+| 119 | *Requirements for Paris Agreement Alignment*, PR100-01 | v1.1, 2 February 2026, effective 1 January 2026 | https://globalgoals.goldstandard.org/119_paa_pr_100-01 |
+| 120 | *PAA Validation and Verification Requirements for Methodologies Update*, VVS100-01 | v2.0, 10 July 2026 | https://globalgoals.goldstandard.org/120_paa-vvs100-01-paa-validation-and-verification-requirements-for-methodologies-update/ |
+| 201 | *Community Services Activity Requirements* | v1.2, effective 24 October 2019 | https://globalgoals.goldstandard.org/201-ar-community-services-activity-requirements/ |
+| 101 | *Principles & Requirements* | v2.1, 31 January 2025, effective 5 December 2024 | https://globalgoals.goldstandard.org/101-par-principles-requirements/ |
+| 103 | *Safeguarding Principles & Requirements* | v2.1, 29 June 2023 | https://globalgoals.goldstandard.org/103-par-safeguarding-principles-requirements/ |
+| 102 | *Stakeholder Consultation and Engagement Requirements* | v2.1, 14 June 2022 | https://globalgoals.goldstandard.org/102-par-stakeholder-consultation-requirements/ |
+| 104 | *Gender Equality Requirements & Guidelines* | v2.0, 16 May 2023 | https://globalgoals.goldstandard.org/104-par-gender-equality-requirements-and-guidelines/ |
+| 118 | *Requirements for Selection of Monitoring Indicators in the SDG Impact Tool* | v1.0, 18 October 2025 | https://globalgoals.goldstandard.org/118_par_requirements-for-monitoring-indicator-selection/ |
+| 501 | *GHG Emissions Reduction & Sequestration Product Requirements* | v3.2, 12 December 2025 | https://globalgoals.goldstandard.org/501-pr-ghg-emissions-reductions-sequestration/ |
+| 429 | *Emission Reductions from Safe Drinking Water Supply*, GS4GG PAA M400-12 | V2.0, 9 July 2026 | https://globalgoals.goldstandard.org/429-ee-sws-emission-reductions-from-safe-drinking-water-supply/ |
+
+Every page resolved on 22 or 23 Sep 2026 and named the version held. Publisher: Gold Standard
+Foundation, Geneva. No endorsement is implied. Local copies sit under
+`sources-local/Methodology/`, in `PAA-framework/`, `mandatory-for-all-projects/`, `V1-legacy/`
+and `V2-PAA/`.
+
+---
+
+## Card P1 — The right version of the method
+
+**The rule in plain words.** A new project submitted to Gold Standard after 30 June 2026 uses the
+Paris-aligned version of the method, the 2026 one. A project already certified under the 2021
+version keeps earning credits dated up to the end of 2025 on it, but earns nothing dated 2026 or
+later until it has made the move: a revised design and monitoring plan, an approved auditor's
+check, and Gold Standard's review. The renewal of its crediting period is where the move becomes
+compulsory. A transitioning project is judged on the same rows as a new one, on the auditor's
+timetable for this method: regulatory surplus and lock-in re-run at once, common practice, water
+quality and the baseline survey re-run at renewal.
+
+**Can it be fixed? Depends, on whether the move will be made.** A new project: the right version
+is simply the one it uses. A transitioning project that will make the design change: Fixable, the
+change itself is the route. One that says it will not: Blocked for any credit dated 2026 or later,
+by the standard's cut-off, with no route around it. Route source: 119 §4.3.2; planned carbon route
+R-19.
+
+**Phase.** To start. Kept up by: for a transitioning project, the re-runs Annex 5 sets at renewal.
+
+**Source.** *Requirements for Paris Agreement Alignment*, PR100-01 (v1.1, 2 February 2026),
+§3.1.1, p. 5; §4.1.1–4.1.3, p. 6; §4.3.2, p. 7; §4.4.1, p. 9. *PAA Validation and Verification
+Requirements for Methodologies Update*, VVS100-01 (v2.0, 10 July 2026), Annex 5, §A5.1.1–A5.1.4,
+p. 44; Table A5-1, pp. 45–47.
+
+**Canonical link.** <https://globalgoals.goldstandard.org/119_paa_pr_100-01> — the publisher's
+page for the Paris-alignment requirements. Second link:
+<https://globalgoals.goldstandard.org/120_paa-vvs100-01-paa-validation-and-verification-requirements-for-methodologies-update/>.
+Neither is a mirror or a re-hosted copy.
+
+**Applies to.** All; the second half only a transitioning project (applies card T4's flag).
+
+**External standard.** None.
+
+**What a project owner would be asked to show.**
+
+- Whether the project is registered with Gold Standard and under which version.
+- For a transitioning project: whether the design change is done, under way, or not started.
+
+---
+
+## Card P2 — A community-services activity
+
+**The rule in plain words.** This method sits under Gold Standard's community-services rules, so
+the project has to be one: it provides or improves access to a service at household, community or
+institution level, and water and sanitation is one of the named services. Treating industrial
+wastewater is not a community service and is outside these rules.
+
+**Can it be fixed? Yes.** A safe-water project for households, a community or an institution is a
+community-services activity by definition; the card exists so the family is named and its rules
+known. A project that turns out to be industrial wastewater treatment has already failed applies
+card T1, which is where that is said.
+
+**Phase.** To start.
+
+**Source.** *Community Services Activity Requirements* (v1.2, October 2019), §2.1.2, p. 3 and its
+footnote 1; §3.1.1 d, p. 4. Named as binding by GS4GG PAA M400-12 (V2.0, 9 July 2026), §3.4.1,
+p. 13.
+
+**Canonical link.** <https://globalgoals.goldstandard.org/201-ar-community-services-activity-requirements/>
+— the publisher's page. Second link:
+<https://globalgoals.goldstandard.org/429-ee-sws-emission-reductions-from-safe-drinking-water-supply/>.
+Neither is a mirror or a re-hosted copy.
+
+**Applies to.** All.
+
+**External standard.** None.
+
+**What a project owner would be asked to show.**
+
+- Who is served: households, a community, or an institution.
+
+---
+
+## Card G1 — A real activity on the ground, with a boundary
+
+**The rule in plain words.** A Gold Standard project involves physical action on the ground, and
+it has a defined project area and boundary, drawn on a map.
+
+**Can it be fixed? Yes.** Draw the boundary; describe the sites. A safe-water project is physical
+by nature.
+
+**Phase.** To start.
+
+**Source.** *Principles & Requirements* (v2.1, 31 January 2025), §3.1.1 a and c, p. 6.
+
+**Canonical link.** <https://globalgoals.goldstandard.org/101-par-principles-requirements/> — the
+publisher's page. Not a mirror or a re-hosted copy.
+
+**Applies to.** All.
+
+**External standard.** None.
+
+**What a project owner would be asked to show.**
+
+- A boundary map and a description of the sites.
+
+---
+
+## Card G2 — The project keeps the host country's law
+
+**The rule in plain words.** The project complies with the host country's legal, environmental,
+ecological and social rules. Where the safeguarding rules are stricter than the law, the stricter
+one applies.
+
+**Can it be fixed? Yes.** Get the permits; meet the rules. Unknown, when the owner has not yet
+looked: what to find out is which rules touch safe-water supply there, which M17's regulatory
+summary also asks.
+
+**Phase.** To start. Kept up by: staying within the rules while the project runs.
+
+**Source.** *Principles & Requirements* (v2.1, 31 January 2025), §3.1.1 d, p. 6. *Safeguarding
+Principles & Requirements* (v2.1, 29 June 2023), §4.1.2, p. 8.
+
+**Canonical link.** <https://globalgoals.goldstandard.org/101-par-principles-requirements/> — the
+publisher's page. Second link:
+<https://globalgoals.goldstandard.org/103-par-safeguarding-principles-requirements/>. Neither is a
+mirror or a re-hosted copy.
+
+**Applies to.** All.
+
+**External standard.** The host country's law.
+
+**What a project owner would be asked to show.**
+
+- Permits, and evidence of compliance.
+
+---
+
+## Card G3 — Everyone involved is named and in good standing
+
+**The rule in plain words.** Every participating organisation is named with its contacts, is
+legally registered and allowed to operate, and is in good standing: no insolvency, and no legal or
+criminal notices against it or its directors. Gold Standard may refuse a project on reputational
+grounds.
+
+**Can it be fixed? Yes.** Register; resolve what is outstanding; supply the documents. Unknown,
+when a partner's standing is not yet known: what to find out is the partner's registration and
+any notices.
+
+**Phase.** To start.
+
+**Source.** *Principles & Requirements* (v2.1, 31 January 2025), §3.1.1 e, p. 6.
+
+**Canonical link.** <https://globalgoals.goldstandard.org/101-par-principles-requirements/> — the
+publisher's page. Not a mirror or a re-hosted copy.
+
+**Applies to.** All.
+
+**External standard.** The jurisdiction's company registry.
+
+**What a project owner would be asked to show.**
+
+- Each organisation's registration certificate and a good-standing document.
+
+---
+
+## Card G4 — Ownership of the credits is clear and agreed
+
+**The rule in plain words.** Whoever claims the credits has full, uncontested ownership of them.
+Where the rights pass from the people who use the devices, the transfer is transparent and made
+with their free, prior and informed consent; for a distributed project the ownership along the
+chain is described, told to every participant, maker and retailer in writing, and discussed at
+the local consultation. Any dispute over tenure or rights is reported to Gold Standard at once.
+
+**Can it be fixed? Yes.** Write the ownership statement and the consent forms; put the assertions
+in the contracts. Route source: V2.0 §3.2.8.1 c–d; planned carbon route R-8.
+
+**Phase.** To start.
+
+**Source.** *Principles & Requirements* (v2.1, 31 January 2025), §3.1.1 f, p. 7. *Community
+Services Activity Requirements* (v1.2, October 2019), §3.1.4, p. 5. GS4GG PAA M400-12 (V2.0,
+9 July 2026), §3.2.8.1 c–d, p. 12; parameters SDWS 18 and 20, pp. 55–57.
+
+**Canonical link.** <https://globalgoals.goldstandard.org/101-par-principles-requirements/> — the
+publisher's page. Second links:
+<https://globalgoals.goldstandard.org/201-ar-community-services-activity-requirements/>,
+<https://globalgoals.goldstandard.org/429-ee-sws-emission-reductions-from-safe-drinking-water-supply/>.
+None is a mirror or a re-hosted copy.
+
+**Applies to.** All.
+
+**External standard.** None; free, prior and informed consent is the standard's own term.
+
+**What a project owner would be asked to show.**
+
+- The ownership and transfer agreements; the end-users' consent records.
+
+---
+
+## Card G5 — The other rights the project rests on are not in dispute
+
+**The rule in plain words.** Rights the project depends on, such as water rights and rights of
+access, are uncontested where the rules require them. A dispute is declared at once and settled
+before work continues in the place it affects.
+
+**Can it be fixed? Yes.** Settle the dispute, or get the right; work pauses there until it is
+settled. Unknown, when the owner has not yet checked who holds the water right: what to find out.
+
+**Phase.** To start.
+
+**Source.** *Principles & Requirements* (v2.1, 31 January 2025), §3.1.1 g, p. 7.
+
+**Canonical link.** <https://globalgoals.goldstandard.org/101-par-principles-requirements/> — the
+publisher's page. Not a mirror or a re-hosted copy.
+
+**Applies to.** All; a community supply drawing water first.
+
+**External standard.** The host country's law on water rights.
+
+**What a project owner would be asked to show.**
+
+- The rights and permits; any dispute and how it was settled.
+
+---
+
+## Card G6 — Aid money is declared, and none of it buys the credits
+
+**The rule in plain words.** In a country on the OECD's list of aid recipients, any official
+development assistance behind the project is declared to Gold Standard at design certification.
+A project is not eligible if that assistance is given on condition that the credits go to the
+donor country.
+
+**Can it be fixed? Depends, on the condition.** Aid with no strings on the credits: Fixable by the
+declaration. Aid given on condition that the credits go to the donor: Blocked unless the condition
+is removed, which is the donor's to change; the card says so and leaves it Unknown until the
+owner has asked.
+
+**Phase.** To start.
+
+**Source.** *Principles & Requirements* (v2.1, 31 January 2025), §3.1.1 h, p. 7. *GHG Emissions
+Reduction & Sequestration Product Requirements* (v3.2, 12 December 2025), §6.1.1–6.1.2, p. 6.
+
+**Canonical link.** <https://globalgoals.goldstandard.org/101-par-principles-requirements/> — the
+publisher's page. Second link:
+<https://globalgoals.goldstandard.org/501-pr-ghg-emissions-reductions-sequestration/>. Neither is
+a mirror or a re-hosted copy.
+
+**Applies to.** All, in a country on the OECD DAC list of aid recipients.
+
+**External standard.** The OECD DAC list of ODA recipients.
+
+**What a project owner would be asked to show.**
+
+- Whether any aid money is behind the project, and on what terms; the signed declaration.
+
+---
+
+## Card G7 — Three Sustainable Development Goals, one of them climate
+
+**The rule in plain words.** The project shows a real, direct and intended contribution to at
+least three Sustainable Development Goals, and one of them is SDG 13, climate action. A safe-water
+project reaches SDG 13 and SDG 6 by design; the third is the owner's to name. The contribution has
+to come from the project itself, not from its construction or a one-off, and it is monitored by
+indicators chosen from Gold Standard's own tool.
+
+**Can it be fixed? Yes.** Name the third goal and its indicator. Route source: 101 §4.1.12–4.1.17.
+
+**Phase.** To start. Kept up by: the chosen indicators monitored and reported through the crediting
+period.
+
+**Source.** *Principles & Requirements* (v2.1, 31 January 2025), §4.1.12–4.1.13, pp. 9–10;
+§4.1.16–4.1.17, p. 10. *Requirements for Selection of Monitoring Indicators in the SDG Impact
+Tool* (v1.0, 18 October 2025), §3.1.1–3.1.2, p. 3. GS4GG PAA M400-12 (V2.0, 9 July 2026),
+§3.2.4.5, p. 11.
+
+**Canonical link.** <https://globalgoals.goldstandard.org/101-par-principles-requirements/> — the
+publisher's page. Second links:
+<https://globalgoals.goldstandard.org/118_par_requirements-for-monitoring-indicator-selection/>,
+<https://globalgoals.goldstandard.org/429-ee-sws-emission-reductions-from-safe-drinking-water-supply/>.
+None is a mirror or a re-hosted copy.
+
+**Applies to.** All.
+
+**External standard.** The UN and national SDG indicator sets, as the standard's options allow.
+
+**What a project owner would be asked to show.**
+
+- The three goals and, for each, the contribution and its indicator.
+
+---
+
+## Card G8 — The safeguarding assessment is done and answered
+
+**The rule in plain words.** Before certification the project completes Gold Standard's
+safeguarding assessment against every principle, answers every question, writes mitigation for
+each identified risk into its design, and carries the "yes" and "potentially" answers into its
+monitoring. For a water project the principles that bite hardest are community health and safety,
+water resources, Indigenous peoples and land tenure. Some answers need an expert stakeholder's
+review.
+
+**Can it be fixed? Yes.** Complete the assessment; write the mitigation; appoint the expert where
+a principle calls for one. Route source: 103 Annex 1; planned carbon route R-16.
+
+**Phase.** To start. Kept up by: the assessment's open answers reported in each monitoring report.
+
+**Source.** *Safeguarding Principles & Requirements* (v2.1, 29 June 2023), §4.1.1, p. 8; §5.1.1
+and Table 3, pp. 10–11; Annex 1, pp. 40–41; Principle 3, pp. 14–15; Principles 4.3–4.4,
+pp. 17–20; Principle 8, pp. 27–28. *Principles & Requirements* (v2.1, 31 January 2025),
+§4.1.19–4.1.23, p. 11.
+
+**Canonical link.** <https://globalgoals.goldstandard.org/103-par-safeguarding-principles-requirements/>
+— the publisher's page. Second link:
+<https://globalgoals.goldstandard.org/101-par-principles-requirements/>. Neither is a mirror or a
+re-hosted copy.
+
+**Applies to.** All.
+
+**External standard.** The principles cite the Universal Declaration of Human Rights and the UN
+treaties, the ILO conventions, and the UNDP social and environmental standards; the card sends the
+reader to the principles for each.
+
+**What a project owner would be asked to show.**
+
+- The completed assessment with its justifications, and the mitigation plan.
+
+---
+
+## Card G9 — The people affected were consulted, in two rounds, before the start
+
+**The rule in plain words.** Stakeholders are consulted before the project's start date, in at
+least two rounds: a physical meeting, open to anyone, invited at least thirty days ahead with
+information shared a week before; and a feedback round of at least thirty days afterwards, with
+the updated documents public. The invitation list has a minimum: the people affected, holders of
+land rights, local and national officials, local groups and women's groups, Gold Standard and its
+supporters in the country. A project that started first is "retroactive": it explains why, and
+holds its meeting before it is submitted for preliminary review.
+
+**Can it be fixed? Yes.** Hold the rounds. For a running project, hold the meeting before
+submission and explain how comments will be taken into account. Route source: 102 §3.4–3.6;
+planned carbon route R-14.
+
+**Phase.** To start.
+
+**Source.** *Principles & Requirements* (v2.1, 31 January 2025), §4.1.26–4.1.28, p. 12; §4.1.42,
+p. 15. *Stakeholder Consultation and Engagement Requirements* (v2.1, 14 June 2022), §3.1.3,
+§3.2.1–3.2.2, pp. 6; §3.3.1, §3.4.2, §3.5.2, pp. 6–8; §3.6.1, §3.6.6–3.6.7, pp. 8–9.
+
+**Canonical link.** <https://globalgoals.goldstandard.org/101-par-principles-requirements/> — the
+publisher's page. Second link:
+<https://globalgoals.goldstandard.org/102-par-stakeholder-consultation-requirements/>. Neither is
+a mirror or a re-hosted copy.
+
+**Applies to.** All.
+
+**External standard.** None.
+
+**What a project owner would be asked to show.**
+
+- Meeting records, invitations with their dates, and the consultation report.
+
+---
+
+## Card G10 — A way to raise a grievance, for the life of the project
+
+**The rule in plain words.** A formal way for anyone to give input or raise a grievance exists for
+the whole life of the project. Its method is agreed at the physical meeting; at minimum a grievance
+book sits at an agreed place; every comment is acknowledged in writing unless it was anonymous; and
+what came in and what was done is reported in each annual or monitoring report.
+
+**Can it be fixed? Yes.** Set it up and agree it at the meeting. Route source: 102 §3.8; planned
+carbon route R-15.
+
+**Phase.** To start. Kept up by: the book kept, comments acknowledged and reported through the
+crediting period.
+
+**Source.** *Stakeholder Consultation and Engagement Requirements* (v2.1, 14 June 2022),
+§3.8.1–3.8.6, pp. 10–11; §3.10.1–3.10.2, p. 11. *Principles & Requirements* (v2.1, 31 January
+2025), §4.1.34, p. 13.
+
+**Canonical link.** <https://globalgoals.goldstandard.org/102-par-stakeholder-consultation-requirements/>
+— the publisher's page. Second link:
+<https://globalgoals.goldstandard.org/101-par-principles-requirements/>. Neither is a mirror or a
+re-hosted copy.
+
+**Applies to.** All.
+
+**External standard.** None.
+
+**What a project owner would be asked to show.**
+
+- The mechanism as described in the consultation report; later, its log.
+
+---
+
+## Card G11 — Gender-sensitive by design
+
+**The rule in plain words.** Every Gold Standard project is gender-sensitive: its design is
+checked against the host country's gender policy and Gold Standard's gender principles; it meets
+the gender safeguarding principle, doing no harm to women's work burden, access to resources or
+ownership; and its consultation was run so that women could take part equally. Going further,
+to claim gender goals, is optional.
+
+**Can it be fixed? Yes.** Take the three steps; a gender expert is recommended and may be
+required. Route source: 104 §2.1; planned carbon route R-17.
+
+**Phase.** To start.
+
+**Source.** *Gender Equality Requirements & Guidelines* (v2.0, 16 May 2023), §1.1.1, p. 5;
+§2.1.1–2.1.7, pp. 5–6. *Stakeholder Consultation and Engagement Requirements* (v2.1, 14 June
+2022), §3.1.2, pp. 5–6. *Safeguarding Principles & Requirements* (v2.1, 29 June 2023), Principle
+2, pp. 13–14.
+
+**Canonical link.** <https://globalgoals.goldstandard.org/104-par-gender-equality-requirements-and-guidelines/>
+— the publisher's page. Second links:
+<https://globalgoals.goldstandard.org/102-par-stakeholder-consultation-requirements/>,
+<https://globalgoals.goldstandard.org/103-par-safeguarding-principles-requirements/>. None is a
+mirror or a re-hosted copy.
+
+**Applies to.** All.
+
+**External standard.** The host country's national gender strategy.
+
+**What a project owner would be asked to show.**
+
+- The gender context in the design; the consultation records showing equal participation.
+
+---
+
+## Card G12 — Submitted within a year of starting
+
+**The rule in plain words.** The project is submitted to Gold Standard for preliminary review
+within one year of its start date. The start date is the first committed spend on
+implementation, not land or feasibility work; for distributed devices, the day the first unit is
+put to use. A project whose consultation came after its start is retroactive, and a retroactive
+project submitted later than a year after its start is not eligible. Credits reach back at most
+two years before design certification.
+
+**Can it be fixed? Depends, on the calendar.** Within the year: Fixable, submit now. Past the
+year, for a retroactive project: Blocked, by the standard's own words, with no route that reopens
+the year; Phoebe says to look at the water pathway. A planned project has not started the clock.
+Route source: 101 §4.1.49; planned carbon route R-18.
+
+**Phase.** To start.
+
+**Source.** *Principles & Requirements* (v2.1, 31 January 2025), §4.1.39–4.1.42, pp. 14–15;
+§4.1.49, p. 17; §5.1.37, p. 27. GS4GG PAA M400-12 (V2.0, 9 July 2026), Table 1, "start date",
+p. 5.
+
+**Canonical link.** <https://globalgoals.goldstandard.org/101-par-principles-requirements/> — the
+publisher's page. Second link:
+<https://globalgoals.goldstandard.org/429-ee-sws-emission-reductions-from-safe-drinking-water-supply/>.
+Neither is a mirror or a re-hosted copy.
+
+**Applies to.** All.
+
+**External standard.** None.
+
+**What a project owner would be asked to show.**
+
+- The first committed spend or the first installation, dated, against the submission date.
+
+---
+
+## Card G13 — A plan to monitor and report
+
+**The rule in plain words.** The design carries a monitoring and reporting plan that names, for
+everything tracked, the measure, how often, how and by whom it is collected, and its quality
+control. For this method that means the usage surveys, the water-quality tests, the distribution
+or flow records, and a database of units; the plan is presented at the auditor's check and is what
+each monitoring report follows.
+
+**Can it be fixed? Yes.** Write the plan into the design; the method's own annex says what it
+holds. Route source: 101 §4.1.43–4.1.45; V2.0 §14.1; the water pack's route R-6 is the same idea
+on the other pathway.
+
+**Phase.** To start: the plan is in the design. Kept up by: running it, which for a planned project
+shows in the preview block and is settled by consideration B-2.
+
+**Source.** *Principles & Requirements* (v2.1, 31 January 2025), §4.1.43–4.1.45, pp. 15–16. GS4GG
+PAA M400-12 (V2.0, 9 July 2026), §14.1.1–14.1.3, pp. 45–46.
+
+**Canonical link.** <https://globalgoals.goldstandard.org/101-par-principles-requirements/> — the
+publisher's page. Second link:
+<https://globalgoals.goldstandard.org/429-ee-sws-emission-reductions-from-safe-drinking-water-supply/>.
+Neither is a mirror or a re-hosted copy.
+
+**Applies to.** All.
+
+**External standard.** None here; the method also names the CDM sampling standard for surveys,
+which this repository does not hold.
+
+**What a project owner would be asked to show.**
+
+- The plan, with its measures, frequencies, collectors and checks.
