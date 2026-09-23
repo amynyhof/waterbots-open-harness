@@ -1,5 +1,16 @@
 # Changelog — vwba-2.0
 
+## 0.4.5 — 23 Sep 2026
+
+- **The design decision is corrected in place: a guide, not a gate.** The
+  maintainer's ruling of 23 Sep 2026 (item A18) supersedes the hard gate of
+  20 Aug 2026 at the head of `cards/eligibility-cards-vwba.md`: struck, corrected,
+  dated. No card changed; the six criteria and their evidence lists are as they
+  were. The relay's generated copy was rebuilt, so the corrected paragraph
+  reaches Phoebe's prompt; it tells her the worksheet keeps its three states
+  until the build lands, so her behaviour today is unchanged. Measured run
+  reported on the pull request.
+
 ## 0.4.4 — 22 Sep 2026
 
 - **README points at the sibling pack.** The line saying Gold Standard's

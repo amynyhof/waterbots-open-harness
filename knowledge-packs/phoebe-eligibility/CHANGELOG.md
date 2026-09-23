@@ -1,5 +1,11 @@
 # Changelog — phoebe-eligibility
 
+## 0.5.1 — 23 Sep 2026
+
+- `vwba-2.0@0.4.5` — the design decision at the head of the eligibility cards
+  corrected in place, a guide not a gate, on the maintainer's ruling of
+  23 Sep 2026. No card changed. Item A18.
+
 ## 0.5.0 — 22 Sep 2026
 
 - `gs-paa-v2.0@0.1.0` — the seat's second pack, a scaffold: README with the fourteen
