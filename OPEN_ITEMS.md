@@ -92,6 +92,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | **[Surfaces](#family-surfaces)** | What a visitor sees and works with — the map, the worksheet, the chat layer. |
 | **[Data](#family-data)** | Where real, verifiable data comes from, and whether it exists yet. |
 | **[Operations](#family-operations)** | The deploy, the repository, settings and limits that outlast the session that made them. |
+| **[Cleanup](#family-cleanup)** | Debt in the documents themselves — wording, strikes, structure — that no other family owns. **Started 23 Sep 2026 by the maintainer's ruling**, with the sweep of struck lines as its first item; the reason is that a document-wide sweep belongs to no surface, agent, dataset or deploy. |
 
 | # | Item | Family | Bucket | State |
 |---|---|---|---|---|
@@ -101,7 +102,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | closed | canon, ruled 26 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K5 | The VWBA 2.0 D-3 screening pack | Knowledge | closed | **built 1 Sep 2026** — the first pack in the slot — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | closed | **built 2 Sep 2026** — two packs, one module, the transition delta — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; ~~**the next brief, 22 Sep 2026** — not built, proposal first~~ **proposed and ruled 22 Sep 2026; steps 1 and 2 built, pull request A open at eyeball stop 1, her grade of six applies cards** |
+| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; **proposed and ruled 22 Sep 2026; steps 1 and 2 built, pull request A open at eyeball stop 1, her grade of six applies cards** |
 | K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K9 | Calvin's and Bridget's packs move to the new pack shape | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — one brief each, the way Phoebe's did; not started |
 | K10 | Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — not started |
@@ -143,6 +144,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | S18 | Agent Commons — a public gallery of graded knowledge packs, each wearing an agent face | Surfaces | PARTNER | **v0 done — slices 1 to 3 built and merged by 11 Sep 2026 (#68 to #70)**; slice 4 waits on Deb's per-case file; slice 5, the flag button, later |
 | S19 | The Workshop — make your own agent on the Commons | Surfaces | PARTNER | **logged 11 Sep 2026, not built** — slice 3 has landed; the proposal is next, on the maintainer's word |
 | S20 | "Connect with a human expert" on every Commons agent | Surfaces | PARTNER | **logged 11 Sep 2026, not built** — two design questions open for the session |
+| S21 | Every tool exportable as an easy-to-read, properly cited document | Surfaces | PARK | **logged 23 Sep 2026 from the maintainer's word** — with or without answers; not started |
 | D1 | Corporate water stewardship goals and target geographies | Data | PARK | open |
 | D2 | Project points | Data | PARK | blocked on data |
 | O1 | Rate limit on public chat | Operations | PARK | shipped 25 Aug 2026, number to revisit |
@@ -159,6 +161,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | O12 | The map page is heavy — the renderer stalls on a basin redraw | Operations | WALKTHROUGH | **logged 7 Sep 2026**, not this slice |
 | O13 | Phoebe's relay still says `validate()` — a banned word in old code | Operations | BONES | **logged 7 Sep 2026** — rename to "check" in a later hygiene pass, not now |
 | O14 | Carries owed by the maintainer's hand — listed once | Operations | PARK | **adopted 18 Sep 2026**; each waits on her hand |
+| C1 | Sweep every existing struck line into the archive | Cleanup | BONES | **logged 23 Sep 2026 from the maintainer's ruling** — the batch of 22–23 Sep is clean; every older strike waits; not started |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
 > reference to them elsewhere in the repository was updated in the same edit rather than left to
@@ -1791,6 +1794,29 @@ a mailbox, production — is a fact the maintainer carries, never guessed here (
 ---
 
 
+## S21. Every tool exportable as an easy-to-read, properly cited document
+
+**Logged 23 Sep 2026 from the maintainer's word. Not started.** Her words:
+
+> Every tool, with or without answers, exportable as an easy-to-read, properly cited
+> informational document.
+
+**What it means.** Each tool on this site — the eligibility worksheet with its criteria, rows and
+routes; the calculator with its fields and figures; the map with its pinned basin and its two
+attributions — can be turned into a document a person can read away from the screen: the tool's
+own plain words, every citation in the four-part shape of [CITATIONS.md](./CITATIONS.md), the
+licence lines the data requires, and, where answers exist, the answers with their provenance and
+the consultant-review tag. With no answers it is the blank tool, honestly blank. Nothing in it is
+computed that the screen does not already compute, and nothing is kept here by making it.
+
+**Read against the canon already ruled.** Estimates say estimate; derived values say derived;
+Level 4 stress says area-weighted; both attributions stay separate; the bridge's rule that never a
+computed number crosses to production is a rule about the seal, not about a document a visitor
+takes for themselves. Format, look and where the door sits are the proposal's, from a captured
+reference (design work starts from an image).
+
+**Not scheduled. Proposal first. Bucket PARK.**
+
 # Family: Data
 
 Where real, verifiable data comes from, and whether it exists yet.
@@ -2150,3 +2176,43 @@ from here.
 
 Logged 18 Sep 2026. **Each waits on her hand. Bucket PARK.**
 
+
+# Family: Cleanup
+
+Debt in the documents themselves — wording, strikes, structure — that no other family owns.
+**Started 23 Sep 2026 by the maintainer's ruling**, when she made the no-strikes rule canon and
+asked for one open item in a cleanup family, creating it if none existed. None did. Its reason: a
+document-wide sweep belongs to no surface, agent, dataset or deploy, and a family that has to hold
+one row nobody else can is the sign the families were one short.
+
+Governed by [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md), *Corrections replace
+text; the archive keeps the old wording*, and by *docs never drift* in [CLAUDE.md](./CLAUDE.md).
+
+## C1. Sweep every existing struck line into the archive
+
+**Logged 23 Sep 2026 from the maintainer's ruling. Not started.** Her words:
+
+> No crossed-out text in any live document. A correction replaces the text; the old wording and
+> its date go to the archive or the CHANGELOG, never struck in place. Apply it in #100 now: the
+> 20 Aug paragraph and any other strike in this batch move to the archive; live docs hold only
+> current text. Log one open item in a cleanup family (create it if none): sweep every existing
+> struck line into the archive.
+
+**What is already clean.** The batch of 22–23 Sep 2026 (pull requests #99 and #100): the head of
+the eligibility card file, the seat, water-pack and tree READMEs, the K7 row here and the K7
+heading in BUILD_PLAN. Their old wording is in the pack CHANGELOGs and in
+[docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md), the file this rule made.
+
+**What waits.** Every strike that existed before the ruling: in CLAUDE.md, PROCESS_RULES,
+AGENT_RULES, CITATIONS, this file's index table and item bodies, BUILD_PLAN, the tree and pack
+READMEs, the feasibility and eligibility card files below their heads, and code comments that
+carry a struck fact. One document at a time, each its own commit: the strike replaced by current
+text, the old wording moved whole with its date and reason to the archive file or the pack's
+CHANGELOG. Where a struck line reaches an agent's prompt (the card files), the measured run follows,
+as it did for #100.
+
+**Sizing.** A document is one step; a sitting may hold several. The card files and the rulebooks
+each get their own pull request because canon lifts out alone. Proposal first, with the count of
+strikes per document, so she can order them.
+
+Logged 23 Sep 2026. **Not started. Proposal first. Bucket BONES.**

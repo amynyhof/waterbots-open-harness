@@ -148,10 +148,9 @@ at 20, revisited after the first real walk.** Item K7 keeps her words.
   grade (stops 2 and 3); then pull request B, the pack-keyed reader and gate; C, the worksheet and
   the record; D, Phoebe's prompt and the measured walk. Nothing beyond step 2 is started.
 
-~~## Next brief — Phoebe's carbon pack (item K7)~~
+## The K7 brief as it was given — proposed and ruled 22 Sep 2026; see above
 
-~~**Not started. Proposal first, on the maintainer's word.**~~ **Proposed and ruled 22 Sep 2026; see
-above.** Her ruling at eyeball stop 4, 21 Sep
+Her ruling at eyeball stop 4, 21 Sep
 2026: the carbon card pass drafted from the two Gold Standard PDFs, graded by her, becomes her
 second pack, `gs-paa-v2.0`, in the pack shape beside `vwba-2.0` — `cards/`, `tool/`, `evals/`,
 README, CHANGELOG — with a cited "does this apply" test on every pack, including `vwba-2.0`, so she
