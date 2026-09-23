@@ -2099,3 +2099,52 @@ owed. Thirty-two `## Card` headings counted in the pack file.
 
 No dev server started. Two proposals and three draft files untracked at the root: the K7 and guide
 proposals, the two older VWBA drafts, and the carbon routes draft.
+
+## 23 September 2026, eighth sitting — the phase tags applied, the cap to thirty, the desk's build note, and the close-out with the next order
+
+Her grade of the phase-tags proposal: the tags pass as proposed; the free-site cap moves to thirty,
+matching Wellington's; the other rulings take the proposal's own recommendation. Then: one honest
+line on the desk in her words that the site is under build and a visitor can ask Wellington for a
+build update; a dated build-update fact he phrases, refreshed at every close-out, added to the
+close-out ritual; BUILD_PLAN names the next order, four pull requests; confirm each line of the
+close-out, then stop.
+
+### What was built
+
+The **Phase** line on all 38 cards replaced with the navigation's phase: water, criteria 1, 2 and 4
+Eligibility, 3 and 6 Partners, 5 Plan; carbon, nine Eligibility, thirteen Partners, one Quantify,
+ten Plan, M17 to remain eligible; the design-decision paragraph on each pack says what the tag
+means and names the free screen. The cap to thirty in `api/_cap.ts`, its comment, the visitor
+module's comments, CLAUDE.md, the README twice, item O1, and the one check in `check-wellington`
+that held Phoebe's cap at twenty, moved on her word. The desk's build note above Wellington's chat
+in her words, as a caption in the screen column. `knowledge-packs/wellington-host/build-update.md`
+with an agent-facing region, a new generator bundle to `api/_buildUpdate.generated.ts`, the region
+embedded in his prompt under "The build update, when asked", and a check that it is present, dated
+and unscripted. Step 8 in the close-out ritual. Items S11, S21 and A18 refreshed; item K11 closed
+into the Partners group the same day it was logged; BUILD_PLAN carries *The next order*.
+
+### How it was proven
+
+`check-cards`, `check-cap`, `check-roster` and `check-wellington` (137) green; `tsc` clean. The
+water cards and Wellington's prompt both changed, so Phoebe's sixty-request run and Wellington's
+measured run were made; counts on the pull request. One capture of the desk with its note,
+`captures/2026-09-23-desk-build-note.png`, by headless Chrome against the dev server.
+
+### Decisions
+
+- **The prompt-size gate tripped, and the bar was not moved.** Wellington's prompt has a gate of
+  24,000 characters; the first build-update region, about two thousand characters, took him to
+  25,492. The region was cut three times, to about three hundred characters, until the gate passed
+  with little room left. The trip and the number are reported on the pull request for her ruling;
+  the type-and-stage work next in the order will add more to his prompt, so the number needs her
+  word before that build.
+- **The cap check moved with the cap**, because her ruling named the number; a gate that holds a
+  superseded ruling is the one kind of threshold change that needs no proposal.
+- **Item K11 closed the day it opened.** The navigation-phase ruling made Partners one of six tags
+  rather than a third beside two; the rows it would have moved are the Partners group.
+
+### Housekeeping
+
+Dev server started for the runs and the capture and stopped after. Three proposals and two draft
+files untracked at the root. Pull request #106 (the carbon routes) still open at her grade; this
+work is stacked on it. `main` equal to `origin` at fb89aea, unchanged by this sitting.

@@ -191,7 +191,7 @@ credit line does not meet any of these bars.
   WaterBots console style, and a collapsible left-hand navigation
   rail. **Foundation meant the shell, and v1 shipped that way — but
   Phoebe has answered for real since 24 Aug 2026**, from two committed
-  card sets, capped at 20 messages a day per visitor. **Those two card
+  card sets, capped at 30 messages a day per visitor (20 until 23 Sep 2026). **Those two card
   sets live in her pack from 17 Sep 2026**, at
   `knowledge-packs/phoebe-eligibility/vwba-2.0/cards/` — the pack is
   their one home, by the maintainer's ruling, and the new pack shape
@@ -227,6 +227,9 @@ credit line does not meet any of these bars.
   are taken from saved production pages brought in by the maintainer's
   hand, and none of their data, composers, organisations, roles or
   saving.
+- **The desk says the site is under build, from 23 Sep 2026.** One line in the maintainer's words
+  above Wellington's chat, and a dated build-update fact he phrases when asked, refreshed at every
+  close-out (the ritual's step 8). Item S11.
 - **Agents phrase the roster's facts themselves, from 3 Sep 2026.** An
   agent is given facts and rules and writes its own two or three plain
   sentences; the maintainer approves rules, not wording, and no prompt
