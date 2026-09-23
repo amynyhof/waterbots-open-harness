@@ -120,8 +120,9 @@ file at the root, untracked, and deleted once the sweep merged.
 | A14 | Screen host role words — one home | Agents | BONES | **logged 18 Sep 2026 from the maintainer's word** — not fixed now |
 | A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Agents | BONES | ~~**ruled 20 Sep 2026; the batch approved the same day** — steps 0 to 3 merged (#93, #94, #95) by 21 Sep; steps 4 to 6 open as pull request D, #97, at her eyeball~~ **built 22 Sep 2026, all four pull requests merged (#93, #94, #95, #97), eyeball stop 4 passed** — line 9 is the one gap left, carried by item A17 |
 | A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | ~~**logged 18 Sep 2026 from the maintainer's brief** — waits on her carry~~ **built 18 Sep 2026, #91 merged** — the free and Commons columns stay "unconfirmed" until she carries a confirmed file |
-| A16 | Wellington guides and leads — he never asks "water or carbon" | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; not started |
+| A16 | Wellington guides and leads — he never asks "water or carbon" — **and names the project type from a cited list** | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; **expanded and ruled 23 Sep 2026**: a cited list of twenty-four types, confirm then log; the types file drafted at the root for her grade, pull request open |
 | A17 | The handoff goes both ways — forward and back | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — her hand-back is built; his side of the return is not; not started |
+| A18 | A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person | Agents | BONES | **ruled 23 Sep 2026 from her review of Phoebe's cards** — the rule is in AGENT_RULES.md; the proposal's nine rulings all yes; nothing runtime built; the cards and the build follow in order |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
 | S2 | The shared chat layer | Surfaces | closed | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | S3 | Level 3 citation pop-out | Surfaces | closed | out of scope — paid platform — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -990,7 +991,34 @@ prompt, his route list, and the desk's own words is the work of the brief, not o
 the pathways she holds cards for — one today. This row and item A17 and item K7 are one piece of
 work seen from three sides, and the K7 row carries the pack side.
 
-**Not scheduled. Proposal first. Bucket BONES.**
+### Expanded and ruled 23 Sep 2026 — he names the project type from a cited list
+
+Her finding, from her review of the applies cards, in her words:
+
+> Wellington translates the visitor's words into a standard project type from the rulebooks
+> (e.g. "pipes and a borehole" -> Community Water Supply) and stores that type in the project
+> context, not the raw words. He confirms in plain words first: "That sounds like a Community
+> Water Supply - [simple definition] - does that sound right?" then logs it on yes. Needs a cited
+> list of the standard project types he matches to (GS four classes; VWBA activity table).
+
+**The proposal, `PROPOSAL_guide-not-gate.md`, untracked at the root, and her rulings R1 to R9 on
+it, all yes as proposed, 23 Sep 2026.** The list is twenty-four types in one shared file,
+`knowledge-packs/product-shared/project-types.md`: the twenty rows of the VWBA guidebook's
+activity table (Appendix C, Table C-1, pp. 37–39) and Gold Standard's four technology classes
+(GS4GG PAA M400-12 V2.0, Table 2, pp. 6–7; Table 3, p. 9), plus "none of these", each with a
+one-line plain definition and its citation. He matches in his own words, says the definition
+back, and logs `type` (and `gsClass` for a drinking-water project) only on the visitor's yes;
+the relay checks both against the file; the raw words stay in "What it does". **"What kind"
+retires** (R2). **The file follows the roster rule, her word of 23 Sep 2026: drafted here,
+carried by her hand, and the paid repository becomes its source** — after which it is never edited
+here, and a check holds this site to it, as `roster.yaml` is held. The carry is on item O14's list.
+
+**Where it stands, 23 Sep 2026.** The rule is in the record; the types file is drafted at the root
+as `project-types-DRAFT.md`, untracked, for her grade of twenty-five lines (stop 2 of the
+proposal). His prompt, his fields, the rail and the seal change at the proposal's step 5, not
+started. Item A18 carries Phoebe's side of the same brief.
+
+**Ruled 23 Sep 2026. Types file drafted, at her grade. Bucket BONES.**
 
 ## A17. The handoff goes both ways — forward and back
 
@@ -1013,6 +1041,68 @@ found, in his own words, never as a recital. Rule zero and the agent-phrasing ru
 2026 both apply.
 
 **Not scheduled. Proposal first. Bucket BONES.**
+
+## A18. A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person
+
+**Ruled 23 Sep 2026 from the maintainer's review of Phoebe's applies cards, before she graded
+them.** Her findings 2 to 5, in her words, are the fifth ruling under *Pace and posture* in
+[AGENT_RULES.md](./AGENT_RULES.md), which is the rule's one home. This row is the work's home.
+
+**What it replaces.** The hard gate of 20 Aug 2026 — six absolute criteria, no partial credit —
+is struck and corrected in place at the head of `eligibility-cards-vwba.md`. The guidebook's own
+Figure 3 loops a miss back to the implementer before it ends in "not eligible" (VWBA 2.0, Step 2.3,
+p. 19), so the source carries the change. The three row states of `criteriaState.ts` and the
+relay's worksheet reader become five when the build lands. Until then nothing runtime changes: a
+criterion not met is "Not yet" with a route forward, and Phoebe's prompt says so in the corrected
+paragraph she reads.
+
+**The proposal, `PROPOSAL_guide-not-gate.md`, untracked at the root, and her rulings on its §10,
+23 Sep 2026: R1 to R9 yes as proposed**, with three riders in her words:
+
+> R8: print a grade-6 target, not enforced. The Blocked colour is the interim one until my pixels.
+> The carbon "no" list also goes to the reviewer as Q11 (note it for the paid side).
+> project-types.md follows the roster rule: drafted here, carried by my hand, the paid repo
+> becomes its source.
+
+**What the build holds, in the proposal's order.**
+
+1. **Five row states**: Not yet checked, Met, Fixable with a cited route, Unknown with what to find
+   out, Blocked. Blocked only where the card's **Can it be fixed?** line says *no*, or *depends*
+   after the visitor declines the design change. The first "no" list is in the proposal's §4.1,
+   for her grade with the cards; **the carbon part of it also goes to the reviewer as Q11**, her
+   word, a paid-side note carried by her hand (item O14).
+2. **The readiness read per pathway**: likely eligible (every row that applies is Met), likely
+   not (any row Blocked), not enough known yet (anything else, with the list). Shown on the Tool
+   tab, the desk row and the seal. "Likely" because nothing here is verified.
+3. **Routes cards**, one cited fix per common gap: nine for the water pathway, nineteen for
+   carbon, resting on the guidebook, the methodology and the documents it names as binding, or one
+   real published project. One is held today — LimnoTech for Meta, *Volumetric Water Benefits: 2023
+   Report*, 25 June 2024, the Navajo Community Water Supply project, pp. 25–26. A gap with no source
+   gets no card. Item K3 is where more reports arrive, by her hand.
+4. **Unknown is not a fail.** For an unknown baseline or survey she names the cited route (the
+   methodology's Baseline Scenario Survey and Gold Standard's questionnaire workbooks; the
+   guidebook's Appendix E) and offers the save door.
+5. **The door to a person**: rung 3 of the abstention ladder, live for the free site through the
+   save door that already exists (item S7), with two fields on the seal, `wantsHuman` and a short
+   note in the visitor's words, and a consent line that says what happens. Production builds the
+   receiving side. Item S20's form stays the Commons door.
+6. **A reading-grade figure** printed by `check-cards` for every route card and plain-words line,
+   against a grade-6 target, not enforced. Her rider on R8.
+7. **The Blocked colour** reuses `--state-pending` with the word "Blocked" until her pixels; a
+   raise for the brand book's §2.5, which has no stopped state that is not an error.
+
+**Sequencing (R9).** The rulings into the record first, then the types file (item A16), then the
+fixability line on every eligibility card and the two routes files, each at her grade; then
+Wellington's runtime on its own; Phoebe's runtime inside item K7's pull requests C and D so the
+worksheet, the record, the seal and the prompts change once. One contract change for production,
+told once, covering K7's per-pathway rows and this item's fields; on item O14's list.
+
+**Where it stands, 23 Sep 2026.** The rule and the correction are in the record on this pull
+request. No card is drafted for this item; nothing runtime is built. K7's pull request A (#99)
+stays at its stop 1, unchanged.
+
+**Ruled 23 Sep 2026. The rule in the rulebook; the build in order behind A16 and K7. Bucket
+BONES.**
 
 
 # Family: Surfaces
@@ -2051,6 +2141,9 @@ zero holds for every one: nothing here is fetched, written to, or guessed at on 
 | The three changes Deb's rig needs, and later the trigger | Deb | item S18, slice 4; item S19 |
 | ~~`roster.yaml` from production~~ **Landed 18 Sep 2026**, version 0.3.0; the next carry is the confirmed one | This site | item A13 |
 | The specialist contract — the nine-line section of AGENT_RULES.md, her words | Production | item A15 |
+| `project-types.md` — drafted here, the paid repository becomes its source and this site is then held to it, the roster's rule; her word of 23 Sep 2026 | Production, then back to this site | item A16 |
+| The carbon "no" list — the rows that can be Blocked — to the reviewer as Q11; her word of 23 Sep 2026 | The paid side | item A18 |
+| One contract change to the seal: `type` and `gsClass` for `kind`; rows and a readiness read per pathway; `wantsHuman` and a note | Production, before this site's sender changes | items K7, A16, A18 |
 
 A carry is struck from this table when it lands, with the date. Nothing is built toward any of them
 from here.
