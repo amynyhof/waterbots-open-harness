@@ -1839,3 +1839,52 @@ was too large for the fetching tool to read; the card says so and waits for her 
 
 Dev server started for the second measured run and stopped after it. Two proposals and five draft
 files untracked at the root, each named on its item. The migration gate checked and clear.
+
+## 23 September 2026, third sitting — stop 3 passed, the fixability lines and routes into the water pack, a third canon line, and the applies cards' "no" redrafted
+
+Her grade: both drafts ship as written, criterion 4 stays *depends*, R-8 ships with the Meta
+line, the title confirmed. A new canon for every agent: wherever Phoebe shows a Fixable or
+Unknown row she also says, as a fact she phrases, that WaterBots is building tools and resources
+on the paid site for exactly these fixes and that the visitor can save the project and sign up
+for updates and access; the same line on the save door. Then: merge #101, confirm main equals
+origin, redraft the six applies cards' "If the answer is no" sections under the guide-not-gate
+canon, keep them at the root, stop for her grade.
+
+### What was built
+
+#101 merged with its branch deleted; `main` equal to `origin` at fb7240a. On
+`feat/water-routes-into-pack`: the six **Can it be fixed?** paragraphs inserted after "The rule in
+plain words" on each water card, wording as graded; `routes-cards-vwba.md` moved whole into
+`vwba-2.0/cards/` with its status approved and the two Meta lines saying the address was
+confirmed; both drafts' grader notes appended to `grader-notes.md`; the two draft files removed.
+Water pack 0.5.0 with a three-set table on its README, seat 0.6.0, tree 0.8.0. The third canon
+line recorded under ruling 5 in AGENT_RULES.md in her words, under item A18, and as a carry on
+item O14 for production's side of the save door.
+
+The six "If the answer is no" sections of the applies cards (T1 to T4, W1 and W2), still untracked
+drafts at the root, redrafted: each no sorted into Fixable with a cited route (the water routes by
+id; the carbon ones by the methodology's section, since the carbon routes file is not drafted yet
+and the card says so), Unknown not a fail with the save door offered, or Blocked where no cited
+route exists and the other pathway may still apply. Both drafts' prefaces say the no is sorted.
+
+### How it was proven
+
+The runtime parser reads a card's rule paragraph up to the first blank line, so an added paragraph
+after it changes nothing the worksheet or the Knowledge pack tab shows; `check-cards` green on the
+new file. The card module regenerated, so the paragraphs reach Phoebe's prompt; the measured run
+on that prompt is on the pull request. The routes file is read by nothing and the generator does
+not name it.
+
+### Decisions
+
+- **The fixability paragraphs go on the cards now, not at the build.** The draft she graded said
+  so, and the design decision already tells her the worksheet keeps three states; the paragraphs
+  are knowledge about which criteria could ever be Blocked, consistent with the posture she holds.
+- **Carbon "no" sections cite the methodology directly** where the route would be, and say the
+  carbon routes card is not drafted yet, rather than inventing a route id that has no card.
+
+### Housekeeping
+
+Dev server started for the measured run and stopped after it. Two proposals and four draft files
+untracked at the root: the K7 and guide proposals, the two older VWBA drafts, and the two applies
+drafts now redrafted.
