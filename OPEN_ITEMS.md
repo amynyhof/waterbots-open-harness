@@ -101,7 +101,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | closed | canon, ruled 26 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K5 | The VWBA 2.0 D-3 screening pack | Knowledge | closed | **built 1 Sep 2026** — the first pack in the slot — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | closed | **built 2 Sep 2026** — two packs, one module, the transition delta — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; **the next brief, 22 Sep 2026** — not built, proposal first |
+| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; ~~**the next brief, 22 Sep 2026** — not built, proposal first~~ **proposed and ruled 22 Sep 2026; steps 1 and 2 built, pull request A open at eyeball stop 1, her grade of six applies cards** |
 | K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K9 | Calvin's and Bridget's packs move to the new pack shape | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — one brief each, the way Phoebe's did; not started |
 | K10 | Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — not started |
@@ -275,7 +275,54 @@ are the proposal's to answer, with her ruling on the shape.
 **Ordering.** The card pass above comes first — there is no pack without cards. Items A16 and A17
 are the same work seen from Wellington's side.
 
-Logged 2 Sep 2026. **Expanded 21 Sep 2026. Not started. Proposal first. Bucket BONES.**
+### Proposed and ruled, 22 Sep 2026
+
+**The proposal** is `PROPOSAL_K7_gs-paa-v2.0.md`, untracked at the repository root until the work
+merges. It read `sources-local/Methodology/` at three layers — the rules for every Gold Standard
+project (101, 102, 103, 104, 107, 118), the Paris-alignment framework (119, 120, 447, 454, 456,
+201, 461, 503, 446) and the methodology itself in both versions with its product rules (429 V2.0
+and its SI, 429 V1.0, 501) — plus the WHO and JMP standards the methodology hands conditions to.
+It found **32 basic eligibility requirements**, each cited by document, version, section and page:
+seventeen from the methodology's own gate, two from the framework, thirteen from the general
+rules; and a further set read and deliberately not made rows, each with its reason. It proposed one
+card and one worksheet row per requirement; a cited "does this apply" test per pack, four cards for
+the carbon pack and two for the water pack; one tool with two sections and a pathway state above
+each; rows keyed by pack in the record, the relay and the seal; nine steps in four pull requests
+with five eyeball stops; and seven rulings.
+
+**The three questions this item left open, answered by the proposal and ruled:** one tool with two
+sections, not two tools (R3); the record's eligibility section and the seal hold rows per pathway
+plus each pathway's state, and production is told before the sender changes (R6); Calvin's carbon
+packs and this one cite the same methodology page for different sections and different jobs, each
+card standing alone, nothing shared (§9.4 of the proposal, under R1).
+
+**Her rulings, in her words:**
+
+> Rulings on PROPOSAL_K7_gs-paa-v2.0.md §11: R1, R2, R3, R6, R7 yes as proposed. R4 yes, with
+> this: questions are written to cover both pathways whenever one answer can, so the free site
+> screens well; a verdict covers every row the answer settles; when a pathway drops out, she says
+> so and continues with the other. R5: the cap stays at 20; revisit after the first real walk.
+> Build pull request A, steps 1 and 2 only: the pack scaffold, confirm the four unconfirmed pages,
+> and the six applies cards as -DRAFT files at the root. Stop at Stop 1 for my grade.
+
+**What the read found in the sources and raised, never fixed** (proposal §12, ruling R7 says the
+cards say so in a line): the methodology's ongoing water-quality bar cites a WHO table that says
+non-detect while the text says under 10 per 100 ml; SODIS is on the positive list but not among
+the eligible technologies; the methodology and its supplement disagree on the 5 m³ a day
+groundwater line; corresponding adjustments and host-country authorisation appear in none of the
+held documents, only a negative-list check; the suppressed-demand requirements are cited as not yet
+published; the methodology carries two publication dates two days apart.
+
+**Steps 1 and 2 built the same day, on `feat/k7-gs-paa-pack`, pull request A open.** The scaffold
+`knowledge-packs/phoebe-eligibility/gs-paa-v2.0/` in the ruled shape, not live, nothing reading it,
+with every Gold Standard canonical page confirmed (twelve pages, fourteen documents; the guessed
+slugs for 104, 107, 118, 119 and 120 were found through the publisher's own search); the seat, the
+tree and the water pack's README corrected and bumped. The six applies cards drafted at the root as
+`applies-cards-gs-DRAFT.md` and `applies-cards-vwba-DRAFT.md`, untracked, never read. **Eyeball
+stop 1: her grade.** Nothing beyond step 2 is started.
+
+Logged 2 Sep 2026. **Expanded 21 Sep 2026. Proposed and ruled 22 Sep 2026; steps 1 and 2 built, at
+eyeball stop 1. Bucket BONES.**
 
 ## K8. Phoebe's VWBA pack is the cards' one home — closed, swept to the archive
 

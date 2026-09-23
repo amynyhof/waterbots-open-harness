@@ -1,5 +1,16 @@
 # Changelog — phoebe-eligibility
 
+## 0.5.0 — 22 Sep 2026
+
+- `gs-paa-v2.0@0.1.0` — the seat's second pack, a scaffold: README with the fourteen
+  cited Gold Standard documents and their confirmed pages, changelog, `cards/` with a note and no
+  cards, `tool/` and `evals/` READMEs. Not live; nothing reads it. Six applies cards
+  drafted at the repository root, untracked, for the maintainer's grade. Item K7,
+  proposal steps 1 and 2, on her rulings of 22 Sep 2026.
+- `vwba-2.0@0.4.4` — README: the line saying Gold Standard's methodology lives only
+  in Calvin's packs is struck and corrected; the water pack now points at its
+  sibling. Docs only; no card changed.
+
 ## 0.4.1 — 21 Sep 2026
 
 - `vwba-2.0@0.4.1` — contract table: lines 3 and 10 read yes, line 9 moves. The

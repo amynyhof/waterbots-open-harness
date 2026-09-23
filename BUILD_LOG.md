@@ -1629,3 +1629,84 @@ pack modules (`api/_cards.generated.ts`, `api/_tool.generated.ts`, the two prime
 current against their committed sources — this batch's changes live in `api/_systemPrompt.ts`
 and the hand-back/caption machinery, not in generated card or tool content, so nothing was
 owed there. Two untracked DRAFT card files left alone, as before.
+
+## 22 September 2026 — Phoebe's carbon pack (item K7): the three-layer read, the proposal, her rulings, and steps 1 and 2
+
+One brief, pasted at the open: the next brief from BUILD_PLAN, proposal only, to the repo root,
+untracked, no cards drafted. Read `sources-local/Methodology` at three layers and inventory every
+basic eligibility requirement for a safe-water project, citing document, version and section;
+then propose the card set, a cited "does this apply" test for both packs, how Phoebe decides which
+worksheets to fill and reports each pathway on its own, one worksheet row per requirement, sized in
+steps with eyeball stops. Then, the same day, her rulings on the proposal and a second brief: build
+pull request A, steps 1 and 2 only, and stop at stop 1 for her grade.
+
+### What was built
+
+The proposal, `PROPOSAL_K7_gs-paa-v2.0.md`, untracked at the root: a register of every document
+read with its canonical page and whether it resolved; an inventory of 32 basic eligibility
+requirements in three layers, each cited to section and page, with what it applies to and which
+external standard governs it, and a table of everything read and deliberately not made a row; the
+applies test, four cards for the carbon pack drawn from the methodology's scope words and the
+Paris-alignment sunset, two for the water pack drawn from the VWBA glossary and Appendix A; the
+walk, the arithmetic that trips the cap, one tool with two sections, rows keyed by pack in the
+record and the seal; nine steps in four pull requests; seven rulings; and the defects found in the
+sources, raised and not fixed.
+
+Then, on her rulings, steps 1 and 2 on `feat/k7-gs-paa-pack`. Step 1: the scaffold
+`knowledge-packs/phoebe-eligibility/gs-paa-v2.0/` in the ruled shape — README with what she will
+know, help with and not cover, the timing facts the standard fixes, and every cited document with
+its confirmed page; changelog; `cards/` with a note and no cards; `tool/` naming the carbon section
+of the one worksheet with no agent-facing region; `evals/` saying no exam sat. The seat README and
+changelog to 0.5.0, the tree to 0.6.0, the water pack's README to 0.4.4 with its "Gold Standard's
+methodology lives in Calvin's packs, not here" line struck and corrected. Step 2: six applies cards
+as two `-DRAFT` files at the root, untracked, never read, for her grade.
+
+### How it was proven
+
+`check-cards` 267 checks green; `check-roster` green; the three generated prompt modules current.
+Nothing on the live site reads the new folder: the reader, the gate and the generator still name
+the water pack's files by path, so the scaffold is invisible to the build. The site is unchanged.
+
+Every Gold Standard canonical page confirmed by fetching it on 22 Sep 2026: seven resolved at the
+`<number>-<slug>/` guess (101, 102, 103, 201, 429, 447, 501); the five that did not (104, 107, 118,
+119, 120) were found through the publisher's own site search, and their real slugs are written into
+the pack README. The three WHO and JMP pages are not yet confirmed and the README says so.
+
+### Decisions
+
+- **R4 as amended is a rule about how questions are written, not only how verdicts land.** Her
+  words: questions cover both pathways whenever one answer can, so the free site screens well. It
+  goes into the applies cards' "how the test is run" preface now, and into Phoebe's prompt at
+  step 8.
+- **R5: the cap stays at 20.** The proposal reported the trip (six rows in seven turns measured;
+  up to 32 rows plus the tests) and proposed 40. She held it at 20 and will revisit after the
+  first real walk. Recorded; not moved.
+- **Transitioning projects get no rows of their own.** The methodology has no transition clause;
+  the timetable for this method lives in Annex 5 of the auditor's requirements (120). So a
+  transitioning project is judged on V2.0's rows with a version flag from card T4 that changes
+  when certain rows must be met, and T4 cites 119 and 120 beside the methodology.
+- **"Basic" was defined before the rows were counted**, so the 145-row raw read did not become a
+  145-row worksheet: a condition in "shall" or "is not eligible" words that decides entry and that
+  an owner can answer at screening. Everything set aside is listed with its reason.
+
+### What was learned
+
+- `pdftotext` is on this machine's PATH; the Gold Standard PDFs extract cleanly with printed
+  footers matching the page index, and the VWBA manual does not. The V2.0 methodology's
+  definitions table mis-aligns labels against text under layout extraction and must never be
+  quoted raw. Saved to memory.
+- The inventory was fanned out to three parallel reads, one per layer, each returning a cited
+  table, then spot-checked against the source text at the lines that mattered most (the
+  applicability section, the positive list, the sunset clause, the transition annex). The layer
+  reads found two things a single pass would likely have missed: the mis-pointed WHO table, and
+  that the transition rule for this method sits in the auditor's document, not the methodology.
+- A heredoc through the shell failed on the proposal's length and punctuation; the dedicated
+  write tool was used instead. Not a rule, a note.
+
+### Housekeeping
+
+`main` equal to `origin` at a86bf9e at the open; nothing changed underneath since the contract
+batch closed. Two node processes running belong to the production repository and were left
+alone under rule zero. No dev server started. The migration gate checked and clear. The two older
+untracked DRAFT files (activity table, glossary) untouched; two new untracked DRAFT files beside
+them. The proposal file stays at the root until the work merges.

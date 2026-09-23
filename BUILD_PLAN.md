@@ -102,9 +102,33 @@ packs to the new shape, is item K9.
 
 The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
 
-## Next brief — Phoebe's carbon pack (item K7)
+## In progress — Phoebe's carbon pack (item K7): pull request A open at eyeball stop 1
 
-**Not started. Proposal first, on the maintainer's word.** Her ruling at eyeball stop 4, 21 Sep
+**22 Sep 2026. Proposed, ruled, and steps 1 and 2 built on `feat/k7-gs-paa-pack`; the pull
+request is open and waits on her grade of six cards.** The proposal, `PROPOSAL_K7_gs-paa-v2.0.md`,
+untracked at the root, read the sources at three layers and found 32 basic eligibility
+requirements, each cited; it proposed one card and one worksheet row per requirement, a cited
+"does this apply" test per pack, one tool with two sections, and nine steps in four pull requests.
+Her rulings the same day: R1, R2, R3, R6 and R7 yes as proposed; **R4 yes, with this: questions
+are written to cover both pathways whenever one answer can, a verdict covers every row the answer
+settles, and when a pathway drops out she says so and continues with the other; R5: the cap stays
+at 20, revisited after the first real walk.** Item K7 keeps her words.
+
+- **Step 1, built:** the pack scaffold `knowledge-packs/phoebe-eligibility/gs-paa-v2.0/` in the
+  ruled shape, not live, nothing reads it; every Gold Standard canonical page confirmed, twelve
+  pages for fourteen documents; seat and tree READMEs and changelogs bumped; the water pack's
+  README corrected to point at its sibling. Docs only.
+- **Step 2, built:** six applies cards, four for the carbon pack and two for the water pack, as
+  `applies-cards-gs-DRAFT.md` and `applies-cards-vwba-DRAFT.md` at the root, untracked, for her
+  grade. **Eyeball stop 1.**
+- **Next, on her grade:** steps 3 and 4, the 32 eligibility cards drafted in two sittings for her
+  grade (stops 2 and 3); then pull request B, the pack-keyed reader and gate; C, the worksheet and
+  the record; D, Phoebe's prompt and the measured walk. Nothing beyond step 2 is started.
+
+~~## Next brief — Phoebe's carbon pack (item K7)~~
+
+~~**Not started. Proposal first, on the maintainer's word.**~~ **Proposed and ruled 22 Sep 2026; see
+above.** Her ruling at eyeball stop 4, 21 Sep
 2026: the carbon card pass drafted from the two Gold Standard PDFs, graded by her, becomes her
 second pack, `gs-paa-v2.0`, in the pack shape beside `vwba-2.0` — `cards/`, `tool/`, `evals/`,
 README, CHANGELOG — with a cited "does this apply" test on every pack, including `vwba-2.0`, so she
