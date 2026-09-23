@@ -115,7 +115,21 @@ from her review of Phoebe's cards, in her words:
 
 It binds every specialist, not Phoebe alone. Which requirements are big
 disqualifiers is written on the cards, graded by her, never decided in
-conversation. A route is cited like any other claim, under
+conversation.
+
+**A second ruling under the same rule, 23 Sep 2026, canon for every agent**, in
+her words:
+
+> Wherever Phoebe shows a Fixable or Unknown row, she also tells the visitor, as
+> a fact she phrases, that WaterBots is building tools and resources on the paid
+> site to help implementers do exactly these fixes, and that they can save their
+> project and sign up for updates and access. The same line goes on the save
+> door's copy.
+
+It is a fact, phrased, never a sales line: it is said where a Fixable or Unknown
+row shows and nowhere else, and *never press a visitor to sign up* still holds
+everywhere else. It reaches the agents' prompts and the save door with item
+A18's build. A route is cited like any other claim, under
 [CITATIONS.md](./CITATIONS.md); a route with no source is not offered. The
 offer of a person is rung 3 of the abstention ladder below, and it goes live
 with this rule's build, item A18 in [OPEN_ITEMS.md](./OPEN_ITEMS.md). **Until

@@ -91,6 +91,12 @@ improvement then has to be countable as a volume. The count comes from comparing
 the project against the situation without it, worked out either with a VWBA method or with another
 method resting on the same principles.
 
+**Can it be fixed? Yes.** The criterion asks for a route, and a route is a thing that can be chosen
+after the fact: the activity table maps the common activities to an indicator and a method, and an
+activity outside the table can be counted by a method resting on the same principles. A project
+with no route yet has work to do, not a wall. Routes: R-3, R-8; for a project whose scope needs
+changing first, R-1. (Appendix A, criterion 1, p. 32; Step 3, p. 21.)
+
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 1 — "Established pathway for
 a quantifiable VWB", p. 32. Short restatement at p. 20.
 
@@ -113,6 +119,12 @@ guidebook, World Resources Institute. Not a mirror or a re-hosted copy.
 exists in that catchment or area. It should also be documented or well-understood locally — at
 community, basin, or regional level — and it has to matter to the people and bodies who depend on
 that water, including communities, agencies and tribes.
+
+**Can it be fixed? Yes.** Whether the water problem is real and documented is a matter of looking:
+the guidebook's first step is understanding the catchment and finding the shared challenges, by
+desktop research or by talking to the people who depend on the water. A project that has not yet
+named its challenge has not yet done Step 1. Route: R-2. (Appendix A, criterion 2, p. 32; Step 1,
+pp. 16–17.)
 
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 2 — "Water challenges
 addressed relevant to the catchment or area of interest", p. 32. Short restatement at p. 20.
@@ -137,6 +149,11 @@ communities, agencies, Indigenous peoples, and others who rely on it or speak fo
 broadly supportive of the hydrologic benefit being proposed. How deep the consultation goes depends
 on local conditions, and can be run by implementing partners or others with local knowledge. A
 high-risk project, or one in a place where reputation is delicate, deserves more of it.
+
+**Can it be fixed? Yes.** Buy-in inside the sponsor and support outside it are earned by
+consultation, and the criterion's own evidence list is a list of things a project can go and do.
+How much is needed scales with the risk of the place. Routes: R-4, R-9. (Appendix A, criterion 3,
+p. 33.)
 
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 3 — "Internal buy-in and
 general support from external water resources entities", p. 33. Short restatement at p. 20.
@@ -176,6 +193,16 @@ a project generating a benefit, provided the additionality and the intent are bo
 where the legal duty sits with the site owner but that owner has neither the capacity nor the
 engagement to deliver a real improvement, a sponsor who steps in may count the resulting benefit.
 
+**Can it be fixed? Depends, on one fact: whether the sponsor is legally obliged to do this work.**
+Work the sponsor must do by law to comply cannot be made additional by any evidence, and this is the
+one water criterion that can end Blocked. But the criterion names two situations that are outside
+that bar: money a sponsor must spend under a wider corporate social responsibility duty may fund a
+project that generates a benefit, if the additionality and the intent are both there; and where the
+legal duty sits with a site owner who cannot or will not deliver, a sponsor who steps in may count
+the benefit. Phoebe asks the one fact first; Blocked only when the visitor says the work is the
+sponsor's own legal duty and neither situation applies. Route for the two situations: R-5.
+(Appendix A, criterion 4, p. 33.)
+
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 4 — "Change delivered beyond
 the without-project conditions (change that would not have happened without the activity)", p. 33.
 Short restatement at p. 20.
@@ -197,6 +224,11 @@ guidebook, World Resources Institute. Not a mirror or a re-hosted copy.
 the project and reporting on it once the work is done. That means arrangements that persist —
 enough to keep confirming the project still does what it was built to do, for as long as the
 benefit is being claimed, or across the project's whole lifetime if that is what the sponsor wants.
+
+**Can it be fixed? Yes.** A tracking and reporting plan is made, not found: the guidebook says how,
+in Appendix E, and says to make it at selection or contracting time, with the implementer, and to
+write the money and the people for it into the agreement. Routes: R-6, R-9. (Appendix A, criterion
+5, p. 33; Appendix E, pp. 62–64; Step 4.3, p. 25.)
 
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 5 — "Established pathway to
 track project volumetric outputs", p. 33. Short restatement at p. 20. Appendix E carries the
@@ -222,6 +254,12 @@ before implementation, after it, or both. The guidance offers examples of the ki
 for: farmers harvesting less after changing practice, vegetation thinning once invasive species are
 pulled out, a stream's base flow dropping where reclaimed wastewater is used, and water access
 projects that serve one party at another's cost.
+
+**Can it be fixed? Yes.** Looking for trade-offs is work that can be done before the project
+starts, and the criterion's evidence list says what it looks like: a desktop review, consultation,
+technical evidence, closer attention where the risk is high, and the reasoning communicated. A very
+large project gets latitude on how exhaustively it maps them, never on whether it looked. Route:
+R-7. (Appendix A, criterion 6, p. 33.)
 
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 6 — "Trade-offs assessed,
 understood, and minimized", p. 33. Short restatement at p. 20.

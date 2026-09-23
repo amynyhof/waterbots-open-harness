@@ -3,6 +3,13 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.8.0 — 23 Sep 2026
+
+- **Fixability and routes on the water pack.** `phoebe-eligibility@0.6.0`
+  (`vwba-2.0@0.5.0`): every eligibility card carries "Can it be fixed?", and the nine
+  water routes are a third card set, both approved by the maintainer on 23 Sep 2026.
+  The routes are not read yet. Item A18.
+
 ## 0.7.0 — 23 Sep 2026
 
 - **The project-type list lives in the shared pack.** `product-shared@0.4.0`:
