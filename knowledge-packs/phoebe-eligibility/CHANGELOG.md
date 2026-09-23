@@ -1,5 +1,12 @@
 # Changelog — phoebe-eligibility
 
+## 0.8.0 — 23 Sep 2026
+
+- `gs-paa-v2.0@0.3.0` — the seventeen methodology cards approved and in the pack with
+  Phase lines; the fifteen framework cards drafted at the root. `vwba-2.0@0.7.0` — a
+  Phase line on each of the six water cards. Items K7 and A18.
+
+
 ## 0.7.0 — 23 Sep 2026
 
 - `gs-paa-v2.0@0.2.0` — the four applies cards approved and in the pack, with the

@@ -24,6 +24,12 @@ AGENT_RULES.md; the worksheet carries the three kinds of miss and the read once 
 **Until then the worksheet has its three states, and a criterion not met is "Not yet" with a route
 forward**, which was always the posture.
 
+**Every card carries a Phase line from 23 Sep 2026**, the maintainer's addendum ruling: *To start*
+or *To remain eligible*. A planned project's readiness read counts *To start* rows only; the *To
+remain* rows and every *Kept up by* clause show together in one preview block, never as a mark
+against a planned project. A running project gets every row. All six criteria here are *To start*;
+criterion 5 names the part that is kept up.
+
 **Every "not yet" has to arrive with a route forward.** A verdict that only reports failure is not
 an acceptable output. Whenever Phoebe finds a criterion unmet, she states what would change that:
 the specific evidence, document, consultation, or design change that would move the project from
@@ -97,6 +103,8 @@ activity outside the table can be counted by a method resting on the same princi
 with no route yet has work to do, not a wall. Routes: R-3, R-8; for a project whose scope needs
 changing first, R-1. (Appendix A, criterion 1, p. 32; Step 3, p. 21.)
 
+**Phase.** To start.
+
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 1 — "Established pathway for
 a quantifiable VWB", p. 32. Short restatement at p. 20.
 
@@ -126,6 +134,8 @@ desktop research or by talking to the people who depend on the water. A project 
 named its challenge has not yet done Step 1. Route: R-2. (Appendix A, criterion 2, p. 32; Step 1,
 pp. 16–17.)
 
+**Phase.** To start.
+
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 2 — "Water challenges
 addressed relevant to the catchment or area of interest", p. 32. Short restatement at p. 20.
 
@@ -154,6 +164,8 @@ high-risk project, or one in a place where reputation is delicate, deserves more
 consultation, and the criterion's own evidence list is a list of things a project can go and do.
 How much is needed scales with the risk of the place. Routes: R-4, R-9. (Appendix A, criterion 3,
 p. 33.)
+
+**Phase.** To start.
 
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 3 — "Internal buy-in and
 general support from external water resources entities", p. 33. Short restatement at p. 20.
@@ -203,6 +215,8 @@ the benefit. Phoebe asks the one fact first; Blocked only when the visitor says 
 sponsor's own legal duty and neither situation applies. Route for the two situations: R-5.
 (Appendix A, criterion 4, p. 33.)
 
+**Phase.** To start.
+
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 4 — "Change delivered beyond
 the without-project conditions (change that would not have happened without the activity)", p. 33.
 Short restatement at p. 20.
@@ -229,6 +243,8 @@ benefit is being claimed, or across the project's whole lifetime if that is what
 in Appendix E, and says to make it at selection or contracting time, with the implementer, and to
 write the money and the people for it into the agreement. Routes: R-6, R-9. (Appendix A, criterion
 5, p. 33; Appendix E, pp. 62–64; Step 4.3, p. 25.)
+
+**Phase.** To start: the plan is drawn up at selection or contracting time. Kept up by: running it for as long as the benefit is claimed (Appendix E, pp. 62–64), which for a planned project shows in the preview block and is settled by consideration B-2.
 
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 5 — "Established pathway to
 track project volumetric outputs", p. 33. Short restatement at p. 20. Appendix E carries the
@@ -260,6 +276,8 @@ starts, and the criterion's evidence list says what it looks like: a desktop rev
 technical evidence, closer attention where the risk is high, and the reasoning communicated. A very
 large project gets latitude on how exhaustively it maps them, never on whether it looked. Route:
 R-7. (Appendix A, criterion 6, p. 33.)
+
+**Phase.** To start.
 
 **Source.** VWBA 2.0 (Version 1, September 2025), Appendix A, criterion 6 — "Trade-offs assessed,
 understood, and minimized", p. 33. Short restatement at p. 20.

@@ -1,6 +1,6 @@
 # gs-paa-v2.0 — Phoebe's second Knowledge Pack
 
-**Version 0.2.0. Not live.** This folder is the home of what Phoebe will know
+**Version 0.3.0. Not live.** This folder is the home of what Phoebe will know
 about eligibility under Gold Standard's safe-drinking-water carbon methodology, the
 Paris-aligned version. **Nothing on the live site reads it yet**, no card is approved,
 and Phoebe still says that carbon eligibility is coming and not live. Item K7 in
@@ -20,7 +20,7 @@ only once approved:
 | Set | What it is | Cards | State |
 |---|---|---|---|
 | Applies | Whether this pathway is in play for a project at all. Four questions: safe water from a low-emission technology; boiling or going without today; one of four technology classes; which version. Never a verdict; each "no" is sorted into Fixable, Unknown or Blocked. | 4 | **Approved 23 Sep 2026**, in [`cards/applies-cards-gs.md`](./cards/applies-cards-gs.md); read by nothing until the pack-keyed reader (proposal step 5) |
-| Eligibility | One card per basic eligibility requirement, one worksheet row each: seventeen from the methodology's own gate, two from the Paris-alignment framework, thirteen from the rules for every Gold Standard project. Each with a **Can it be fixed?** line; a miss is Fixable, Unknown or Blocked. | 32 | The seventeen methodology cards M1–M17 drafted 23 Sep 2026 as an untracked file at the repository root, awaiting her grade (K7 stop 2); the fifteen framework and general cards not drafted |
+| Eligibility | One card per basic eligibility requirement, one worksheet row each: seventeen from the methodology's own gate, two from the Paris-alignment framework, thirteen from the rules for every Gold Standard project. Each with a **Can it be fixed?** line; a miss is Fixable, Unknown or Blocked. | 32 | **M1–M17 approved 23 Sep 2026**, in [`cards/eligibility-cards-gs.md`](./cards/eligibility-cards-gs.md), each with a Phase line; the fifteen framework and general cards P1–P2, G1–G13 drafted the same day as an untracked file at the repository root, awaiting her grade (K7 stop 3) |
 
 Every card is a rewrite in plain words. No sentence is copied from a source. Every card
 carries the four-part citation from [CITATIONS.md](../../../CITATIONS.md) and the
@@ -88,7 +88,7 @@ Carried here as facts, not rows, because they set the calendar rather than decid
 
 | | |
 |---|---|
-| [`cards/`](./cards/) | The approved applies set and the grader notes; the methodology cards drafted at the root, untracked, never read until approved. |
+| [`cards/`](./cards/) | The approved applies set and the approved methodology set, with the grader notes; the framework cards drafted at the root, untracked, never read until approved. |
 | [`tool/`](./tool/) | Names the worksheet section this pack will fill and its reader-to-be. No code. No agent-facing region yet. |
 | [`evals/`](./evals/) | No exam has been sat. Says so. |
 | `README.md` | This page. |
@@ -137,11 +137,11 @@ No endorsement is implied.
 | Standard | Edition the methodology points at | Link |
 |---|---|---|
 | WHO *Guidelines for Drinking-water Quality*, fourth edition | 2017 (first addendum) for the collection-point table; 2022 (first and second addenda) named in V2.0; the latest edition is the 2026 third addendum | https://www.who.int/publications/i/item/9789240045064 |
-| WHO *International Scheme to Evaluate Household Water Treatment Technologies* | Results of Rounds III and IV, 2025 | https://www.who.int/publications/i/item/9789240112124 |
+| WHO *International Scheme to Evaluate Household Water Treatment Technologies* | Results of Rounds III and IV, published 18 March 2026 (the local copy's file was created February 2026) | https://www.who.int/publications/i/item/9789240112124 |
 | WHO/UNICEF JMP *Core questions on water, sanitation and hygiene for household surveys* | 2018 update | https://washdata.org/reports/jmp-2018-core-questions-household-surveys |
 
-The three WHO and JMP links are the publishers' own pages and are to be confirmed at the
-grade of the card that first cites each, before that card ships.
+The three WHO and JMP pages were confirmed on the publishers' sites on 23 Sep 2026, the
+maintainer's condition on the M1–M17 grade, before those cards moved in.
 
 ## One thing kept straight with Calvin's packs
 
