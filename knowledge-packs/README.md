@@ -1,6 +1,6 @@
 # Knowledge packs — open tree
 
-**Version 0.9.0 (open); the history is in [CHANGELOG.md](./CHANGELOG.md).** ~~Scaffold only. Nothing in this folder is wired into the live
+**Version 0.10.0 (open); the history is in [CHANGELOG.md](./CHANGELOG.md).** ~~Scaffold only. Nothing in this folder is wired into the live
 site.~~ **Corrected 17 Sep 2026:** Phoebe's pack is wired. The live site reads her two
 card sets from [`phoebe-eligibility/vwba-2.0/cards/`](./phoebe-eligibility/vwba-2.0/cards/).
 The other packs are still scaffold; the console reads their method packs and map data

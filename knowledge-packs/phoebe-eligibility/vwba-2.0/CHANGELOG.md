@@ -1,5 +1,15 @@
 # Changelog — vwba-2.0
 
+## 0.7.0 — 23 Sep 2026
+
+- **A Phase line on every eligibility card**, the maintainer's addendum ruling of
+  23 Sep 2026: all six *To start*; criterion 5 names the part kept up (running the
+  tracking plan, Appendix E), which for a planned project shows in the preview block
+  and is settled by consideration B-2. One paragraph on the design decision says what
+  the tag means. The lines reach Phoebe's prompt; measured run on the pull request.
+  No rule or evidence list changed. Item A18.
+
+
 ## 0.6.0 — 23 Sep 2026
 
 - **A fourth card set, `cards/applies-cards-vwba.md`.** The two applies cards, W1 and

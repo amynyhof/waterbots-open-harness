@@ -3,6 +3,13 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.10.0 — 23 Sep 2026
+
+- **Phase tags, and the methodology set approved.** `phoebe-eligibility@0.8.0`
+  (`gs-paa-v2.0@0.3.0`, `vwba-2.0@0.7.0`): every eligibility card on both pathways carries
+  a Phase line, *To start* or *To remain eligible*; M1–M17 approved and in the carbon pack;
+  the framework cards drafted at the root. Items K7 and A18.
+
 ## 0.9.0 — 23 Sep 2026
 
 - **The applies sets are approved, both packs.** `phoebe-eligibility@0.7.0`

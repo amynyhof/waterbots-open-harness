@@ -1,6 +1,6 @@
 # vwba-2.0 — Phoebe's Knowledge Pack
 
-**Version 0.6.0.** This folder is the one home of what Phoebe knows about the
+**Version 0.7.0.** This folder is the one home of what Phoebe knows about the
 water pathway (corrected 22 Sep 2026; see the CHANGELOG). Her carbon pathway has
 its own folder beside this one, [`../gs-paa-v2.0/`](../gs-paa-v2.0/), a scaffold,
 not live. The card files live in [`cards/`](./cards/), and everything on the live

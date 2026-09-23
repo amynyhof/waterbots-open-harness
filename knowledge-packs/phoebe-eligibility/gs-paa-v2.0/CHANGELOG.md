@@ -1,5 +1,19 @@
 # Changelog — gs-paa-v2.0
 
+## 0.3.0 — 23 Sep 2026
+
+- **The methodology set is approved and in the pack**: `cards/eligibility-cards-gs.md`, M1
+  to M17, graded "all 17 pass" with two conditions met before the move — the WHO and JMP
+  pages on M3, M4, M5 and M7 confirmed on the publishers' sites (the scheme report's page
+  dates it 18 March 2026, corrected on M3 and on the README), and the Blocked cases on M5,
+  M12, M13 and M14 carried to the reviewer as Q11 (item O14). Every card gains a **Phase**
+  line under her addendum ruling of the same day: sixteen *To start*, M17 *To remain
+  eligible*, eight with a *Kept up by* clause. Grader notes to `cards/grader-notes.md`.
+  Nothing reads the set yet. K7 stop 2 passed.
+- **The fifteen framework and general cards, P1–P2 and G1–G13, drafted** at the repository
+  root as `eligibility-cards-gs-framework-DRAFT.md`, tagged, for her grade at K7 stop 3.
+
+
 ## 0.2.0 — 23 Sep 2026
 
 - **The applies set is approved and in the pack**: `cards/applies-cards-gs.md`, T1 to
