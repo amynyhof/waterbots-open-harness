@@ -2148,3 +2148,65 @@ measured run were made; counts on the pull request. One capture of the desk with
 Dev server started for the runs and the capture and stopped after. Three proposals and two draft
 files untracked at the root. Pull request #106 (the carbon routes) still open at her grade; this
 work is stacked on it. `main` equal to `origin` at fb89aea, unchanged by this sitting.
+
+## 23 September 2026, ninth sitting — an inventory, the carbon routes into the pack, OPEN_ITEMS swept, V1's done line, the seal, and close-out
+
+Orientation with a written inventory of every knowledge pack (`INVENTORY_knowledge-packs.md`,
+untracked, docs only, no build). Then two pull requests on her word: the nineteen carbon routes
+into the pack and OPEN_ITEMS.md actually swept; then her later ruling the same day, "V1 — the
+done line," replacing the next-order section and sealing every card set. Both merged. Close-out
+runs with a short Wellington run in place of the standing sixty, her ruling now folded into the
+done line.
+
+### What was built
+
+`routes-cards-gs.md` — the nineteen approved carbon routes, moved whole from the untracked root
+draft into `knowledge-packs/phoebe-eligibility/gs-paa-v2.0/cards/`, with the pack, seat and tree
+versions and changelogs bumped and the grader notes appended (pull request #108). The
+knowledge-packs README's stale version footer corrected under the no-strikes rule. Item K1 in
+OPEN_ITEMS.md notes the two parked water drafts (activity types, glossary) by name. OPEN_ITEMS.md
+itself swept: 27 closed items whose full write-up was still sitting in the live file, though most
+already said "moved to the archive," actually moved — K11 into the archive for the first time,
+the other 26 reduced to their index row, matching how item S16 was already handled. Then
+BUILD_PLAN.md's "The next order" section (four pull requests) replaced with her later ruling,
+"V1 — the done line": what v1 means for the whole free site, one bullet per seat, what is parked,
+and a seven-step build order (pull request #109); the old section kept whole in
+`docs/archive/CORRECTIONS.md`. The seal recorded in `knowledge-packs/CHANGELOG.md`, tree version
+0.13.0: every card set frozen at its version on this date until a real project fails on one. At
+close, CLAUDE.md gets a short pointer to the done line and the seal; OPEN_ITEMS.md's K7 row
+refreshed to say the routes are approved and in the pack, not still drafted.
+
+### How it was proven
+
+All fourteen check scripts green on both pull requests (267 roster checks, both card gates,
+attribution, cap, reply guard, visitor id, basemap key, both method-pack gates, basins, stress,
+palette) and `tsc` + the Vite build clean on both. No prompt changed on either pull request, so
+no measured run was owed for them. At close, a short Wellington run (one pass each of his five
+standing questions plus Phoebe's three, eight requests, not the standing sixty) confirmed he still
+routes correctly and abstains where he should, and Phoebe's behaviour is unchanged: all eight
+requests came back 200, routing and abstention as wanted, one abstain on the out-of-lane question
+as wanted.
+
+### Decisions
+
+- **A short run stood in for the sixty-request measured run**, her ruling now folded into "V1 —
+  the done line": one short run after a prompt change, no new exam questions. No prompt changed
+  this sitting, so this run was a sanity check on the close-out step itself, not a gate owed by a
+  change — recorded here so the count is honest about why it is eight and not sixty.
+- **26 of the 27 swept items were already duplicated in `docs/OPEN_ITEMS_ARCHIVE.md`.** Only K11
+  was missing from the archive; the other 26 had been copied there at an earlier sweep but never
+  actually removed from the live file, which is the exact defect *record once, point everywhere
+  else* exists to catch. Fixed by removing the live-file body for all 27 and adding K11's full
+  text to the archive once.
+- **The seal's version number (0.13.0) was the engineer's judgment call**, reported to her as
+  such on the pull request rather than assumed to need no comment, since a threshold or version
+  number is hers to confirm even when the change itself was already approved in words.
+
+### Housekeeping
+
+Dev server started for the Wellington run and stopped after. `for-reviewer-Q11.md` and
+`INVENTORY_knowledge-packs.md` remain untracked at the root, for her use, not for this session's
+pull requests. The two old water drafts (`activity-cards-vwba-DRAFT.md`,
+`definitions-cards-vwba-DRAFT.md`) and the three earlier proposal files remain untracked at the
+root, named and parked by item K1 and the done line. `main` equal to `origin` at 0358cfe before
+this close-out's own commit.
