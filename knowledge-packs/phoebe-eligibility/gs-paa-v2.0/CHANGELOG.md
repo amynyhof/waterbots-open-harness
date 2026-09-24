@@ -1,5 +1,17 @@
 # Changelog — gs-paa-v2.0
 
+## 0.6.0 — 24 Sep 2026
+
+- **The tool definition file**, `tool/eligibility-worksheet.yaml`: this pack's section of
+  the one eligibility worksheet, the same tool id as the water pack's file and its own
+  `section`. Thirty-six rows in the card files' order — the four applies questions, then
+  M1–M17, P1–P2 and G1–G13 — each citing its card by id, its routes by route card id, and
+  carrying the phase and the "Can it be fixed?" value its card carries. Eleven cited
+  documents, each held equal to its row of this README's tables. A fourth closed list,
+  the version flag card T4 sets. No card changed and no card wording is copied into it.
+  Nothing reads the file yet, and nothing in this pack is live.
+  `eligibility-worksheet@0.1.0`.
+
 ## 0.5.0 — 23 Sep 2026
 
 - **The routes set is approved and in the pack**: `cards/routes-cards-gs.md`, R-1 to R-19,

@@ -3,6 +3,16 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.14.0 — 24 Sep 2026
+
+- **Both of Phoebe's packs carry a tool definition file**, the contract of 24 Sep 2026:
+  `phoebe-eligibility/vwba-2.0/tool/eligibility-worksheet.yaml@0.1.0` and
+  `phoebe-eligibility/gs-paa-v2.0/tool/eligibility-worksheet.yaml@0.1.0` — one tool, two
+  sections, one file each. Forty-four rows between them, every one citing its card by id.
+  `scripts/check-tool.mjs` is the gate and runs with the other checks. No card set changed,
+  so the seal of 23 Sep 2026 is untouched. Packs at `vwba-2.0@0.8.0` and
+  `gs-paa-v2.0@0.6.0`.
+
 ## 0.13.0 — 23 Sep 2026
 
 - **Every card set on the free site is sealed at its version on this date**, the maintainer's

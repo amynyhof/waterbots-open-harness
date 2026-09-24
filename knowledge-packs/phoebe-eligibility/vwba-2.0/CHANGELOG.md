@@ -1,5 +1,17 @@
 # Changelog — vwba-2.0
 
+## 0.8.0 — 24 Sep 2026
+
+- **The tool definition file**, `tool/eligibility-worksheet.yaml`: this pack's section of
+  the one eligibility worksheet, written to the tool definition contract of 24 Sep 2026
+  (`PROPOSAL_knowledge-tab-and-tool-contract.md` §7). Eight rows — the two applies
+  questions, then the six criteria in the manual's order — each citing its card by id and
+  its routes by route card id, with the record fields the tool reads first, the closed
+  lists of states it uses, and what it posts back. No card changed and no card wording is
+  copied into it; it names cards. `tool/README.md` is unchanged, agent-facing region
+  included, and is still what reaches Phoebe's prompt. Nothing reads the file yet; the gate
+  `scripts/check-tool.mjs` holds it to the cards. `eligibility-worksheet@0.1.0`.
+
 ## 0.7.0 — 23 Sep 2026
 
 - **A Phase line on every eligibility card**, the maintainer's addendum ruling of
