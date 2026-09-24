@@ -139,11 +139,34 @@ number for each fit; its basin; and save it.
 (3) Phoebe's carbon runtime; (4) the Commons check; (5) Calvin's brief with the carried engine;
 (6) Bridget's hello; (7) the carry to the paid site, by the maintainer's hand.
 
-**Step 1, in progress, 24 Sep 2026.** Pull request A, the reader and Phoebe's tab, merged on her
-word as #111. Pull request B, Calvin's and Bridget's tabs, is next, per
-`PROPOSAL_knowledge-tab-and-tool-contract.md` §6. The water tool file of that proposal's §7 —
-one YAML file for the eligibility worksheet's water section, the contract's shape — is pulled
-forward into this step by her word today, ahead of Phoebe's runtime step where §7 first named it.
+**Step 5 carries one ruling of its own, 24 Sep 2026.** Every field a baseline survey could later
+change carries **the teal marker**, on every method and every project type — the same colour and
+the same meaning as the paid site's baseline marker. It is one mark with one meaning across both
+properties, so a visitor who crosses over reads it without learning it twice. The marker is a
+design value the maintainer carries from production by her hand, under rule zero; this file records
+that it is owed, not what it looks like.
+
+**Step 1 is done, 24 Sep 2026; step 2, Wellington type and stage, is next.** Four pull requests,
+all merged on her word, and the proposal file deleted at the close-out.
+
+- **#111** — the pack-keyed reader and Phoebe's Knowledge tab: every approved card in both packs,
+  grouped water then carbon, each set with its own approval chip, the drafts saying Draft, the
+  Evals section, and the honest line that she reads the water cards today.
+- **#113** — Calvin's and Bridget's tabs: a version on every row read from its tool folder, the
+  same Evals section, Bridget's rows onto the shared component, `MapSources` retired, so one
+  component draws every agent's Knowledge tab.
+- **#114** — the water pack's tool definition file, the contract of §7, **pulled forward into this
+  step by her word**, ahead of Phoebe's runtime step where §7 first named it; and
+  `scripts/check-tool.mjs`, the gate, run by hand with the other checks on her ruling.
+- **#115 and #116** — the carbon pack's tool file, thirty-six rows; then the optional ninth key,
+  `applies`, ruling R9 as amended: which rows exist for a project's technology class or version,
+  read from the card's own line. The gate holds a row's title, its fixability, its phase and its
+  `applies` to the card.
+
+**Nothing reads either tool file yet.** Both `tool/README.md` files and their agent-facing regions
+stand as they are and still feed Phoebe's prompt; they retire when her runtime step reads the file
+instead. The three fixes a carbon card describes that no route card carries are logged on the
+carbon pack's page as route cards to draft after v1.
 
 **The standing rules hold across every step:** a proposal before each, one eyeball stop per pull
 request at least, the measured run after any prompt change, and the build-update fact refreshed at

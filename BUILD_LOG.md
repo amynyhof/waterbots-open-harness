@@ -2210,3 +2210,98 @@ pull requests. The two old water drafts (`activity-cards-vwba-DRAFT.md`,
 `definitions-cards-vwba-DRAFT.md`) and the three earlier proposal files remain untracked at the
 root, named and parked by item K1 and the done line. `main` equal to `origin` at 0358cfe before
 this close-out's own commit.
+
+## 24 September 2026 — build-order step 1: the Knowledge tabs, and the tool definition contract built
+
+Five pull requests, all merged on her word: #111 (already merged when the sitting opened), #113,
+#114, #115 and #116. Build-order step 1 under "V1 — the done line" is done, and the tool definition
+contract of `PROPOSAL_knowledge-tab-and-tool-contract.md` §7 was pulled forward into it by her word
+rather than waiting for Phoebe's runtime step. No prompt changed, so no measured run was owed.
+
+### What was built
+
+**Calvin's and Bridget's Knowledge tabs (#113).** A new reader, `src/lib/toolReadmes.ts`, reads
+each live tool folder's README for its version, its plain sentence and the document it cites.
+Calvin's three method-pack rows wear their folders' versions; Bridget's two dataset rows moved onto
+the shared `KnowledgePackTab` and `MapSources` — her own second drawing of the same look — was
+deleted, so one component now draws every agent's Knowledge tab. Both tabs gained the Evals
+section. `src/lib/licences.ts` gained the two publishers and the two canonical addresses as their
+own exports, all four already present word for word inside the verbatim attribution strings above
+them; no existing string changed. `CiteLine` learned to drop an empty page slot with its separator,
+because a dataset has a version and a publisher and no printed page. Two captures at 1280 wide, by
+headless Chrome against the dev server.
+
+**The water tool file (#114).** `knowledge-packs/phoebe-eligibility/vwba-2.0/tool/eligibility-worksheet.yaml`:
+the eight keys of §7.2, eight rows in the order asked — the two applies questions, then the six
+criteria — each with the eight keys of §7.3 and no others, citing its card by id and its routes by
+route card id. `scripts/check-tool.mjs` is the gate, written in the check family's shape and
+re-deriving the cards from the card files rather than importing the reader.
+
+**The carbon tool file (#115).** Thirty-six rows in the card files' order: T1–T4, M1–M17, P1–P2,
+G1–G13. Eleven cited documents, each held equal to its row of the pack README's four tables. All
+nineteen carbon routes are named by at least one row. The rows were generated from the card files
+rather than typed, and the gate grew to hold a row's title, its "Can it be fixed?" value and its
+phase to the card.
+
+**The `applies` key (#116).** Ruling R9 as amended: one optional ninth key per row, which rows
+exist for a project's technology class or version, read from the card's own "Applies to" line,
+absent meaning every project. Six carbon rows carry it; no water row does. Both packs and the tree
+bumped; the seat pack caught up at 0.11.0, so every level agrees.
+
+### What was learned
+
+**A gate that derives is worth more than a gate that lists.** The first version of `check-tool`
+checked shapes and closed lists. It passed a tool file whose rows could have said anything about
+their own cards. Holding four facts — title, fixability, phase, `applies` — to the card turned the
+same script from a format check into a mirror check, and it is what made generating the carbon
+rows from the card files safe rather than merely quick.
+
+**A skip has to be counted or it reads as a pass.** Four applies cards carry no fixability line and
+no Phase line, and the water pack's six criteria carry no "Applies to" line. The gate prints how
+many rows it skipped for each check, so a set that quietly stops carrying a line cannot look like a
+set that agrees.
+
+**The derivation had to be mechanical before a line of it was written.** The "Applies to" rule was
+run over all forty-four cards in a scratch script first: six rows resolve to a class, thirty-eight
+to every project, and no card limits a row to a version today. A line the rule cannot read is
+reported rather than assumed to mean "all".
+
+**Where a card described a fix and no route card carried it, nothing was invented.** Three rows —
+T1's and M2's change of pump drive, M14's justified sub-national area — name no route, say so in a
+comment, and are logged on the carbon pack's own page as route cards to draft after v1.
+
+### Decisions
+
+- **The licences module gained four values rather than a regex.** The proposal said Bridget's link
+  is read "from the licences module where it already carries the address", and both addresses sat
+  inside verbatim licence strings that must not be altered to get at them. Naming them as exports
+  beside the strings they come from was the engineer's call, reported on the pull request for her
+  word; she let it stand.
+- **The gate stays hand-run, her ruling of 24 Sep 2026.** The contract says it "runs with the
+  others and fails the build"; in this repository only `check-roster` is inside `npm run build`,
+  and `check-cards` says the same thing in the same sense. `check-tool` matches `check-cards`.
+- **The state colours stay as they are until build-order step 3, her ruling the same day.**
+  Blocked's colour is recorded as interim; the pathway state's and the readiness reads' are left
+  empty rather than invented, because a colour is approved on pixels.
+- **The W1/W2 fixability reading stands as commented, her ruling the same day.** The water applies
+  cards carry no "Can it be fixed?" line; their values are read from "If the answer is no" and the
+  file says so.
+
+### How it was proven
+
+`check-tool`, `check-cards`, `check-attribution`, `check-api-exports`, `check-cap`, `check-handoff`,
+`check-reply-guard`, `check-visitor-id`, `check-wellington` (137), `check-gs-sdws` (109),
+`check-vwba-d3` (69), `check-palette` and `check-roster` (267) green on every pull request;
+`npm run build` green. Twenty-eight failure modes were introduced across the three gate pull
+requests and each confirmed to fail the gate, then reverted. Two captures committed under
+`captures/` and embedded in #113's For Amy block.
+
+### Housekeeping
+
+`PROPOSAL_knowledge-tab-and-tool-contract.md` deleted at this close-out, its work merged. The dev
+server was started for the two captures and stopped; a headless Chrome driven over the DevTools
+protocol took them, scratch only, never committed. **Wellington's prompt is 23,940 characters of
+its 24,000 gate** after this close-out's build-update refresh — sixty characters of room, and step
+2 adds to his prompt, so the trim-or-raise question is due before it and is hers. The two old water
+drafts and three earlier proposal files remain untracked at the root. Tagged `v1-tools-2026-09-24`
+on her word, so a collaborator can read this exact version by link.

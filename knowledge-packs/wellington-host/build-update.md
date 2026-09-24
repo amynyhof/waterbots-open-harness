@@ -15,10 +15,10 @@ about three hundred characters is the budget today; the pull request that adds a
 larger region reports the room left under the gate, and the number is hers to move.
 
 <!-- AGENT-FACING: BEGIN -->
-# The build, as of 23 September 2026
+# The build, as of 24 September 2026
 
 Live: the basin map; Eligibility, Phoebe's water cards and chat; Quantify, three screening
-calculators; this desk; saving to the paid site. Being built: Phoebe's carbon pathway, a readiness
-read with cited routes, your type-and-stage question. Not live: Bridget's and Calvin's chats; Plan,
-Monitor and Communicate, which run on the paid site.
+calculators; this desk; saving to the paid site. New: every agent's Knowledge tab shows its cards
+and sources. Next: your type-and-stage question, then Phoebe's carbon pathway with cited routes.
+Not live: Bridget's and Calvin's chats; Plan, Monitor and Communicate, on the paid site.
 <!-- AGENT-FACING: END -->
