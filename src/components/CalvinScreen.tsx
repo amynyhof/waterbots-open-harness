@@ -19,6 +19,14 @@
  * from the pack and never re-typed. A pack added to the registry appears
  * here the same day.
  *
+ * EACH ROW WEARS ITS TOOL FOLDER'S VERSION from 24 Sep 2026 (ruling R10), read
+ * from knowledge-packs/calvin-quantify/tools/<key>/README.md and never typed.
+ * In the old pack shape the tool folder is the versioned thing, so the version
+ * sits on the row rather than beside the heading; item K9 moves his pack to
+ * the new shape and the tag follows it there. The Evals section joined the
+ * foot of the tab the same day (ruling R5), the same sentence every agent's
+ * tab carries.
+ *
  * THERE IS NO "NEXT PHASE" ON QUANTIFY. The phase after it is Plan, which
  * opens with a saved project, so the way on is the save button at the foot
  * of the crew rail — the proposal's fourth slice, approved 8 Sep 2026.
@@ -33,6 +41,7 @@ import type { AgentHost } from '../chat/evidence';
 import { nextPhaseAfter, nextPhaseCompetes } from '../lib/journey';
 import { livePacks, type PackValues } from '../lib/methodPacks';
 import type { Surface } from '../lib/surfaces';
+import { toolVersion } from '../lib/toolReadmes';
 import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, { type PackView } from '../screen/KnowledgePackTab';
@@ -104,9 +113,7 @@ const PACKS = livePacks();
 
 export const CALVIN_PACK: PackView = {
   heading: "Calvin's Knowledge Pack",
-  /* One section, unlabelled, so it draws as the tab drew before 23 Sep 2026:
-     the version tag and the Evals section are build-order step 1's second
-     pull request, not this one. */
+  /* One section, unlabelled: he holds one set of tools, not two pathways. */
   sections: [
     {
       key: 'method-packs',
@@ -127,6 +134,7 @@ export const CALVIN_PACK: PackView = {
             id: `pack-${p.key}`,
             badge: String(PACKS.indexOf(p) + 1),
             title: p.name,
+            tag: `v${toolVersion(p.key)}`,
             layers: [
               { heading: 'What it measures', text: p.measures },
               { heading: 'What it covers', text: p.scope },
@@ -138,5 +146,5 @@ export const CALVIN_PACK: PackView = {
       ],
     },
   ],
-  evals: false,
+  evals: true,
 };

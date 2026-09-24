@@ -9,6 +9,12 @@
  *
  * EVERY VALUE COMES FROM A COMMITTED CARD FILE, by way of the agent's adapter.
  * The agent supplied a number and nothing else.
+ *
+ * A DATASET HAS NO PAGE, and from 24 Sep 2026 the page slot may be empty for
+ * that reason — Bridget's Knowledge tab cites two published datasets, which
+ * carry a version and a publisher and no printed page. The slot is dropped
+ * with its separator rather than drawn empty; nothing else about the line, its
+ * contents or its order changes, and a card with a page still shows one.
  */
 
 import type { Evidence } from './evidence';
@@ -23,8 +29,12 @@ export default function CiteLine({ item, id }: { item: Evidence; id?: string }) 
       <span>{citation.version}</span>
       <span aria-hidden="true">·</span>
       <span>{citation.section}</span>
-      <span aria-hidden="true">·</span>
-      <span>{citation.page}</span>
+      {citation.page && (
+        <>
+          <span aria-hidden="true">·</span>
+          <span>{citation.page}</span>
+        </>
+      )}
       <a className="wb-cite-link" href={citation.href} target="_blank" rel="noopener noreferrer">
         Source
         <span className="wb-cite-ext" aria-hidden="true">
