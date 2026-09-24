@@ -104,29 +104,39 @@ const PACKS = livePacks();
 
 export const CALVIN_PACK: PackView = {
   heading: "Calvin's Knowledge Pack",
-  tags: PACKS.map((p) => p.citation.document).filter((d, i, all) => all.indexOf(d) === i),
-  approved: null,
-  source: (
-    <>
-      Calvin carries no rule cards. He works from {PACKS.length} method packs, one tool per way of
-      working a number out, each read from its published method and cited beneath. Everything a
-      pack produces is a screening estimate: anticipated, not delivered, and not verified.
-    </>
-  ),
-  groups: [
+  /* One section, unlabelled, so it draws as the tab drew before 23 Sep 2026:
+     the version tag and the Evals section are build-order step 1's second
+     pull request, not this one. */
+  sections: [
     {
-      label: `METHOD PACKS · ${PACKS.length} LIVE`,
-      rows: PACKS.map((p) => ({
-        id: `pack-${p.key}`,
-        badge: String(PACKS.indexOf(p) + 1),
-        title: p.name,
-        layers: [
-          { heading: 'What it measures', text: p.measures },
-          { heading: 'What it covers', text: p.scope },
-          { heading: 'The indicator', text: `${p.method.indicator}, in ${p.method.indicatorUnit}. ${p.method.definition}` },
-        ],
-        citation: p.citation,
-      })),
+      key: 'method-packs',
+      tags: PACKS.map((p) => p.citation.document).filter((d, i, all) => all.indexOf(d) === i),
+      version: null,
+      source: (
+        <>
+          Calvin carries no rule cards. He works from {PACKS.length} method packs, one tool per way of
+          working a number out, each read from its published method and cited beneath. Everything a
+          pack produces is a screening estimate: anticipated, not delivered, and not verified.
+        </>
+      ),
+      sets: [
+        {
+          label: `METHOD PACKS · ${PACKS.length} LIVE`,
+          approved: null,
+          rows: PACKS.map((p) => ({
+            id: `pack-${p.key}`,
+            badge: String(PACKS.indexOf(p) + 1),
+            title: p.name,
+            layers: [
+              { heading: 'What it measures', text: p.measures },
+              { heading: 'What it covers', text: p.scope },
+              { heading: 'The indicator', text: `${p.method.indicator}, in ${p.method.indicatorUnit}. ${p.method.definition}` },
+            ],
+            citation: p.citation,
+          })),
+        },
+      ],
     },
   ],
+  evals: false,
 };
