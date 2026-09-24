@@ -8,8 +8,10 @@
  * conversation; the transcript and every citation are the chat layer's. Her
  * tabs: Chat, her conversation in bubbles on her Anemone tint; Tool, the
  * eligibility worksheet, which the shell still holds so her verdicts and its
- * rows cannot disagree; Knowledge pack, the two card sets she reads from,
- * assembled from src/lib/phoebeCards.ts so every word is a committed card's;
+ * rows cannot disagree; Knowledge pack, every approved card set in both her
+ * packs, water then carbon, assembled from src/lib/phoebeCards.ts so every
+ * word is a committed card's — the two water sets she reads from today and
+ * the five she does not yet, said so on the tab (23 Sep 2026);
  * Credentials, exam and scores only, honest that no exam has been sat.
  *
  * THE CONVERSATION IS HELD HERE, by her seat — one conversation per agent,
@@ -40,26 +42,44 @@
  * access, shaped with founding users.
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
 import type { AgentHost, AgentTurn } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
+import type { Citation } from '../lib/citation';
 import { worksheetCaption, type CriterionStatus } from '../lib/criteriaState';
 import { nextPhaseAfter, nextPhaseCompetes } from '../lib/journey';
 import { DESK_LABEL } from '../lib/surfaces';
 import { WELLINGTON } from '../lib/wellington';
 import {
-  CARDS_APPROVED_ON,
+  APPROVED_ON,
+  CARBON_APPLIES,
+  CARBON_ELIGIBILITY,
+  CARBON_ELIGIBILITY_PARTS,
+  CARBON_PACK,
+  CARBON_ROUTES,
   CONSIDERATIONS,
   CONSIDERATION_GROUPS,
   CRITERIA,
+  WATER_APPLIES,
+  WATER_PACK,
+  WATER_ROUTES,
+  type AppliesCard,
+  type PackInfo,
+  type Phase,
+  type RouteCard,
 } from '../lib/phoebeCards';
 import { applyCriterionUpdates, askPhoebe, carriedRecord, type CriterionUpdate } from '../lib/phoebeClient';
 import type { Surface } from '../lib/surfaces';
 import type { VisitContext } from '../lib/visit';
 import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
-import KnowledgePackTab, { type PackView } from '../screen/KnowledgePackTab';
+import KnowledgePackTab, {
+  type PackLayer,
+  type PackRow,
+  type PackSection,
+  type PackView,
+} from '../screen/KnowledgePackTab';
 import ScreenChat from '../screen/ScreenChat';
 import EligibilityWorksheet from './EligibilityWorksheet';
 
@@ -184,44 +204,105 @@ export default function PhoebeScreen({
 }
 
 /* --------------------------------------------------------------------------
-   Her Knowledge Pack, assembled from the registry. The version and the
-   canonical link are read from the cards' own citations, never re-typed.
+   Her Knowledge Pack, assembled from the registry — every approved set in
+   both packs, water then carbon, one row per card (build-order step 1,
+   23 Sep 2026, rulings R1 to R5). The version, the document name, the source
+   and the canonical link are read from the packs' own files, never re-typed.
+   The carbon cards are shown and not yet read by her, and the tab says so
+   (R3); the line is struck at build-order step 3.
    -------------------------------------------------------------------------- */
 
 const FIRST = CRITERIA[0].citation;
+const FIRST_CARBON = CARBON_ELIGIBILITY[0].citation;
 
-export const PHOEBE_PACK: PackView = {
-  heading: "Phoebe's Knowledge Pack",
-  tags: [FIRST.document, 'Appendix A and B'],
-  approved: `approved ${CARDS_APPROVED_ON}`,
-  source: (
+const EVIDENCE_HEADING = 'What a project owner would be asked to show';
+
+/** The pack's source line, in the words of its eligibility file's source table. */
+function sourceLine(pack: PackInfo, citation: Citation): ReactNode {
+  return (
     <>
-      Volumetric Water Benefit Accounting ({FIRST.document}), {FIRST.version}, published by the
-      World Resources Institute and its co-authors. Every card is reworded in our own words and
-      cites its section and page. Canonical link:{' '}
-      <a className="wb-row-action" href={FIRST.href} target="_blank" rel="noopener noreferrer">
-        {FIRST.href.replace(/^https?:\/\//, '')}
+      {pack.source.document}. {citation.version}. {pack.source.publisher}. Every card is reworded in
+      our own words and cites its section and page. Canonical link:{' '}
+      <a className="wb-row-action" href={citation.href} target="_blank" rel="noopener noreferrer">
+        {citation.href.replace(/^https?:\/\//, '')}
       </a>
     </>
-  ),
-  groups: [
+  );
+}
+
+/** The Phase layer is drawn only when the card carries a "Kept up by" clause; the word is the row's tag. */
+function phaseLayer(phase: Phase): PackLayer[] {
+  return phase.keptUp ? [{ heading: 'Phase', text: `${phase.phase}. ${phase.keptUp}` }] : [];
+}
+
+function appliesRow(prefix: string, card: AppliesCard): PackRow {
+  return {
+    id: `${prefix}-applies-${card.id}`,
+    badge: card.id,
+    title: card.title,
+    layers: [
+      { heading: 'The test in plain words', text: card.test },
+      { heading: 'Applies to', text: card.appliesTo },
+      { heading: EVIDENCE_HEADING, bullets: card.evidence },
+      { heading: card.ifNo.heading, text: card.ifNo.text },
+    ],
+    citation: card.citation,
+    moreLinks: card.moreLinks,
+  };
+}
+
+function routeRow(prefix: string, card: RouteCard): PackRow {
+  return {
+    id: `${prefix}-routes-${card.id}`,
+    badge: card.id,
+    title: card.title,
+    layers: [
+      { heading: 'The gap', text: card.gap },
+      { heading: 'The route in plain words', text: card.route },
+      { heading: 'What it does not promise', text: card.notPromise },
+    ],
+    citation: card.citation,
+    moreLinks: card.moreLinks,
+  };
+}
+
+const approved = (date: string) => `approved ${date}`;
+
+const WATER_SECTION: PackSection = {
+  key: 'water',
+  label: 'Water pathway',
+  tags: [FIRST.document],
+  version: WATER_PACK.version,
+  source: sourceLine(WATER_PACK, FIRST),
+  sets: [
+    {
+      label: `APPLIES · ${WATER_APPLIES.length} QUESTIONS · DOES THIS PATHWAY APPLY?`,
+      approved: approved(APPROVED_ON.waterApplies),
+      rows: WATER_APPLIES.map((c) => appliesRow('water', c)),
+    },
     {
       label: `ELIGIBILITY · ${CRITERIA.length === 6 ? 'SIX' : CRITERIA.length} CRITERIA, ALL MUST BE MET`,
+      approved: approved(APPROVED_ON.waterEligibility),
       rows: CRITERIA.map((c) => ({
-        id: `eligibility-${c.number}`,
+        id: `water-eligibility-${c.number}`,
         badge: String(c.number),
         title: c.title,
+        tag: c.phase.phase,
         layers: [
           { heading: 'The rule in plain words', text: c.rule },
-          { heading: 'What a project owner would be asked to show', bullets: c.evidence },
+          { heading: 'Can it be fixed?', text: c.fixable.text },
+          ...phaseLayer(c.phase),
+          { heading: EVIDENCE_HEADING, bullets: c.evidence },
         ],
         citation: c.citation,
+        moreLinks: c.moreLinks,
       })),
     },
-    ...CONSIDERATION_GROUPS.map((group) => ({
+    ...CONSIDERATION_GROUPS.map((group, i) => ({
       label: `FEASIBILITY · ${group.label.toUpperCase()} · GUIDANCE ONLY`,
+      approved: i === 0 ? approved(APPROVED_ON.waterFeasibility) : null,
       rows: CONSIDERATIONS.filter((c) => c.group === group.key).map((c) => ({
-        id: `feasibility-${c.number}`,
+        id: `water-feasibility-${c.number}`,
         badge: `B-${c.number}`,
         title: c.title,
         layers: [
@@ -232,14 +313,69 @@ export const PHOEBE_PACK: PackView = {
         citation: c.citation,
       })),
     })),
+    {
+      label: `ROUTES · ${WATER_ROUTES.length} CITED FIXES`,
+      approved: approved(APPROVED_ON.waterRoutes),
+      rows: WATER_ROUTES.map((c) => routeRow('water', c)),
+    },
   ],
+};
+
+const CARBON_SECTION: PackSection = {
+  key: 'carbon',
+  label: 'Carbon pathway',
+  tags: [FIRST_CARBON.document],
+  version: CARBON_PACK.version,
+  source: sourceLine(CARBON_PACK, FIRST_CARBON),
+  sets: [
+    {
+      label: `APPLIES · ${CARBON_APPLIES.length} QUESTIONS · DOES THIS PATHWAY APPLY?`,
+      approved: approved(APPROVED_ON.carbonApplies),
+      rows: CARBON_APPLIES.map((c) => appliesRow('carbon', c)),
+    },
+    ...CARBON_ELIGIBILITY_PARTS.map((part, i) => ({
+      label: `ELIGIBILITY · ${part.label.toUpperCase()} · ${part.range}`,
+      approved: i === 0 ? approved(APPROVED_ON.carbonEligibility) : null,
+      rows: CARBON_ELIGIBILITY.filter((c) => c.part === part.key).map((c) => ({
+        id: `carbon-eligibility-${c.id}`,
+        badge: c.id,
+        title: c.title,
+        tag: c.phase.phase,
+        layers: [
+          { heading: 'The rule in plain words', text: c.rule },
+          { heading: 'Can it be fixed?', text: c.fixable.text },
+          ...phaseLayer(c.phase),
+          { heading: 'Applies to', text: c.appliesTo },
+          { heading: 'External standard', text: c.external },
+          { heading: EVIDENCE_HEADING, bullets: c.evidence },
+        ],
+        citation: c.citation,
+        moreLinks: c.moreLinks,
+      })),
+    })),
+    {
+      label: `ROUTES · ${CARBON_ROUTES.length} CITED FIXES`,
+      approved: approved(APPROVED_ON.carbonRoutes),
+      rows: CARBON_ROUTES.map((c) => routeRow('carbon', c)),
+    },
+  ],
+};
+
+export const PHOEBE_PACK: PackView = {
+  heading: "Phoebe's Knowledge Pack",
+  /* Site copy, not a prompt: the carbon cards are shown here and reach her
+     at build-order step 3. Struck then. Ruling R3, 23 Sep 2026. */
+  note:
+    "Phoebe reads the water pathway's cards today. The carbon pathway's cards are shown here and " +
+    'reach her when her carbon runtime is built.',
+  sections: [WATER_SECTION, CARBON_SECTION],
   /* Two sets are drafted and wait for the maintainer's grading; neither is
      committed and Phoebe does not read a draft. Named here so the tab is
-     honest about what she does not yet hold. Struck when they are graded. */
+     honest about what she does not yet hold; parked until after v1 (item K1).
+     Struck when they are graded. */
   drafts: [
     { badge: 'C', title: 'Activity types, Appendix C' },
     { badge: 'G', title: 'Definitions, the glossary' },
   ],
-  draftsNote:
-    'Phoebe does not read a draft. When she is asked about an activity type she says she does not have that card yet.',
+  evals: true,
 };
