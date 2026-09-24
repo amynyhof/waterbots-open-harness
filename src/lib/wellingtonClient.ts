@@ -12,24 +12,40 @@
  * (src/lib/visit.ts). Nothing is read out of his prose.
  *
  * THE VISIT GOES WITH EVERY ASK from 16 Sep 2026, when anything is filled,
- * so he treats does / name / place / kind as known rather than asking again.
- * An empty visit sends no record.
+ * so he treats what is there as known rather than asking again. An empty
+ * visit sends no record.
+ *
+ * TYPE, CLASS AND STAGE from 24 Sep 2026 (item A16), each an id from the
+ * closed lists in the generated project-type module, each logged only on
+ * the visitor's yes. "What kind" retired the same day.
  */
 
+import {
+  GS_CLASS_IDS,
+  PROJECT_STAGE_IDS,
+  PROJECT_TYPE_IDS,
+  type GsClassId,
+  type ProjectStageId,
+  type ProjectTypeId,
+} from './projectTypes.generated';
+
 export type WellingtonRoute = 'none' | 'eligibility' | 'quantification' | 'map' | 'paid';
-export type LearnedKind = 'water' | 'carbon' | 'unsure';
 
 export interface Learned {
   does?: string;
   name?: string;
   place?: string;
-  kind?: LearnedKind;
+  type?: ProjectTypeId;
+  gsClass?: GsClassId;
+  stage?: ProjectStageId;
 }
 
 /** The visit as the relay's `readRecord` expects it. Empty strings are fine; omit the object when nothing is filled. */
 export interface VisitRecord {
   does: string;
-  kind: string;
+  type: string;
+  gsClass: string;
+  stage: string;
   place: string;
   name: string;
 }
@@ -46,7 +62,6 @@ export interface WellingtonAnswer {
 export class WellingtonError extends Error {}
 
 const ROUTES: WellingtonRoute[] = ['none', 'eligibility', 'quantification', 'map', 'paid'];
-const KINDS: LearnedKind[] = ['water', 'carbon', 'unsure'];
 
 export async function askWellington(
   history: { role: 'user' | 'assistant'; content: string }[],
@@ -122,7 +137,12 @@ export async function askWellington(
     if (typeof c.does === 'string' && c.does.trim()) learned.does = c.does.trim();
     if (typeof c.name === 'string' && c.name.trim()) learned.name = c.name.trim();
     if (typeof c.place === 'string' && c.place.trim()) learned.place = c.place.trim();
-    if (KINDS.includes(c.kind as LearnedKind)) learned.kind = c.kind as LearnedKind;
+    const type = PROJECT_TYPE_IDS.find((id) => id === c.type);
+    if (type) learned.type = type;
+    const gsClass = GS_CLASS_IDS.find((id) => id === c.gsClass);
+    if (gsClass) learned.gsClass = gsClass;
+    const projectStage = PROJECT_STAGE_IDS.find((id) => id === c.stage);
+    if (projectStage) learned.stage = projectStage;
   }
 
   return {

@@ -4,7 +4,7 @@
  *   node scripts/check-wellington.mjs
  *
  * WHAT IT PROVES. That his relay checks the model's output rather than
- * trusting it — an unknown route becomes "none", an unknown kind is dropped,
+ * trusting it — an unknown route becomes "none", an unknown type, class or stage is dropped,
  * an essay is not a project name, an empty reply is refused. That his region
  * of the primer reaches him and only him, and the roster names him for
  * Phoebe. That the visit's one-source-of-truth rule holds: a typed entry is
@@ -72,6 +72,7 @@ const { WELLINGTON, WELLINGTON_DAILY_CAP, PHOEBE } = await loadApi('_cap.js');
 const { WELLINGTON_SYSTEM_PROMPT, WELLINGTON_RESPONSE_SCHEMA } = await loadApi('_wellingtonPrompt.js');
 const { AGENT_PRIMER_MD } = await loadApi('_primer.generated.js');
 const { WELLINGTON_PRIMER_MD } = await loadApi('_wellingtonPrimer.generated.js');
+const { PROJECT_TYPES_MD, PROJECT_TYPES, PROJECT_TYPE_IDS, GS_CLASS_IDS, PROJECT_STAGE_IDS, DRINKING_WATER_TYPE } = await loadApi('_projectTypes.generated.js');
 const { WELLINGTON_BUILD_UPDATE_MD } = await loadApi('_buildUpdate.generated.js');
 const { SYSTEM_PROMPT: PHOEBE_PROMPT } = await loadApi('_systemPrompt.js');
 
@@ -94,16 +95,19 @@ const ctx = validate({
   reply: 'Thanks — a borehole in Turkana. Phoebe can say whether it counts.',
   route: 'eligibility',
   abstained: false,
-  context: { name: 'Turkana borehole', place: 'Turkana, Kenya', kind: 'water' },
+  context: { name: 'Turkana borehole', place: 'Turkana, Kenya', type: 'C-19', gsClass: 'CWS', stage: 'paper' },
 });
 expect(
-  'stated context comes through — name, place, kind',
-  ctx?.context?.name === 'Turkana borehole' && ctx?.context?.place === 'Turkana, Kenya' && ctx?.context?.kind === 'water',
+  'stated context comes through — name, place, type, class, stage',
+  ctx?.context?.name === 'Turkana borehole' && ctx?.context?.place === 'Turkana, Kenya' && ctx?.context?.type === 'C-19' && ctx?.context?.gsClass === 'CWS' && ctx?.context?.stage === 'paper',
   JSON.stringify(ctx?.context)
 );
-const badKind = validate({ reply: 'Noted, that sounds like a biodiversity project.', route: 'none', abstained: false, context: { kind: 'biodiversity' } });
-expect('an unknown kind is dropped, never recorded', badKind?.context === undefined, JSON.stringify(badKind?.context));
-expect('"unsure" is a first-class kind', validate({ reply: 'Not sure is a fine answer. Phoebe can settle it.', route: 'eligibility', abstained: false, context: { kind: 'unsure' } })?.context?.kind === 'unsure', 'unsure was dropped');
+const badType = validate({ reply: 'Noted, that sounds like a biodiversity project.', route: 'none', abstained: false, context: { type: 'biodiversity', gsClass: 'solar', stage: 'soon' } });
+expect('an unknown type, class or stage is dropped, never recorded', badType?.context === undefined, JSON.stringify(badType?.context));
+expect('a class is never a type', validate({ reply: 'Noted.', route: 'none', abstained: false, context: { type: 'CWS' } })?.context === undefined, 'a class landed as a type');
+expect('a class without a drinking-water type is dropped', validate({ reply: 'Noted.', route: 'none', abstained: false, context: { type: 'C-11', gsClass: 'HWT' } })?.context?.gsClass === undefined, 'a class rode beside C-11');
+expect('a class beside a drinking-water type already on the visit is kept', validate({ reply: 'Noted.', route: 'none', abstained: false, context: { gsClass: 'HWT' } }, { type: 'C-19' })?.context?.gsClass === 'HWT', 'the class was dropped although the visit holds C-19');
+expect('"none of these" is a first-class type', validate({ reply: 'None of these fits, and that is fine. Phoebe can sort it.', route: 'eligibility', abstained: false, context: { type: 'NONE' } })?.context?.type === 'NONE', 'NONE was dropped');
 const essay = validate({ reply: 'Noted.', route: 'none', abstained: false, context: { name: 'x'.repeat(400) } });
 expect('an essay is not a project name', essay?.context === undefined, 'a 400-character name was kept');
 const blanks = validate({ reply: 'Tell me a little more about where it is.', route: 'none', abstained: false, context: { name: '  ', place: '' } });
@@ -120,10 +124,17 @@ expect(
   JSON.stringify(WELLINGTON_RESPONSE_SCHEMA.properties.route.enum)
 );
 expect(
-  'the schema closes the kind list',
-  JSON.stringify(WELLINGTON_RESPONSE_SCHEMA.properties.context.properties.kind.enum) === JSON.stringify(['water', 'carbon', 'unsure']),
-  'the kinds are open'
+  'the schema closes the type, class and stage lists to the file\'s',
+  JSON.stringify(WELLINGTON_RESPONSE_SCHEMA.properties.context.properties.type.enum) === JSON.stringify(PROJECT_TYPE_IDS) &&
+    JSON.stringify(WELLINGTON_RESPONSE_SCHEMA.properties.context.properties.gsClass.enum) === JSON.stringify(GS_CLASS_IDS) &&
+    JSON.stringify(WELLINGTON_RESPONSE_SCHEMA.properties.context.properties.stage.enum) === JSON.stringify(PROJECT_STAGE_IDS) &&
+    !('kind' in WELLINGTON_RESPONSE_SCHEMA.properties.context.properties),
+  'a list is open, or kind survived'
 );
+expect('the type list is the file\'s: twenty water types and NONE, four classes, C-19 the one that takes a class', PROJECT_TYPE_IDS.length === 21 && PROJECT_TYPE_IDS[0] === 'C-1' && PROJECT_TYPE_IDS[19] === 'C-20' && PROJECT_TYPE_IDS[20] === 'NONE' && JSON.stringify(GS_CLASS_IDS) === JSON.stringify(['HWT', 'IWT', 'CWT', 'CWS']) && DRINKING_WATER_TYPE === 'C-19' && PROJECT_TYPES.length === 25, `${PROJECT_TYPE_IDS.length} types, ${GS_CLASS_IDS.length} classes`);
+expect('the short form carries every id and no page cite', PROJECT_TYPES.every((t) => PROJECT_TYPES_MD.includes(`- ${t.id} — ${t.name}: `)) && !/\(Table|\(Appendix|pp?\. \d/.test(PROJECT_TYPES_MD), 'an id is missing from the short form, or a cite got in');
+expect('his prompt carries the short form and the confirm-then-log rule, and never "what kind"', WELLINGTON_SYSTEM_PROMPT.includes(PROJECT_TYPES_MD) && /Return type only after the visitor says yes/.test(WELLINGTON_SYSTEM_PROMPT) && /return stage only on the visitor's yes/.test(WELLINGTON_SYSTEM_PROMPT) && /Never say the id/.test(WELLINGTON_SYSTEM_PROMPT) && !/what kind/i.test(WELLINGTON_SYSTEM_PROMPT), 'the list, the rule or the retirement is missing');
+expect("Phoebe's prompt does not carry the type list", !PHOEBE_PROMPT.includes(PROJECT_TYPES_MD), 'the type list leaked into her prompt');
 
 /* ---------------------------------------------------------------------------
    His region reaches him and only him.
@@ -151,9 +162,18 @@ expect('his prompt states the five things he never does', /quote no figure/.test
 /* The ceiling was 20,000 until 7 Sep 2026. Three rules the maintainer added
    that week — phase names, no tabs, plain words — each cost about a hundred
    characters, and trimming rules to fit a round number had started working
-   against the rules. 24,000 still keeps any card set out: Phoebe's, the
-   smallest of hers, is over 40,000. Raised by the engineer, and said so. */
-expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 24000 && PHOEBE_PROMPT.length > 40000, `his ${WELLINGTON_SYSTEM_PROMPT.length} chars, hers ${PHOEBE_PROMPT.length}`);
+   against the rules. 24,000 was the engineer's raise, said so after, and the
+   maintainer's ruling that gates change on her word came from it.
+
+   26,197 FROM 24 SEP 2026, THE MAINTAINER'S RULING, by the measured amount:
+   the trim of the same day (#118) took his prompt to 19,811; the type-and-
+   stage build then added the twenty-five-line short form of the project-type
+   list (4,034) and the confirm-then-log and stage rules, and it measured
+   25,697. Her word: raise by the measured amount to leave 500 characters of
+   room, and record the number with the reason. 25,697 + 500 = 26,197. It
+   still keeps any card set out: Phoebe's, the smallest of hers, is over
+   40,000. */
+expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 26197 && PHOEBE_PROMPT.length > 40000, `his ${WELLINGTON_SYSTEM_PROMPT.length} chars, hers ${PHOEBE_PROMPT.length}`);
 
 /* ---------------------------------------------------------------------------
    The record the desk carries to Phoebe — slice 3, 7 Sep 2026.
@@ -162,17 +182,20 @@ expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length <
 console.log('\n  The record carried to Phoebe\n');
 const { readRecord, recordBlock, visitBlock, phoebeNotesBlock, RECORD_HEADING, VISIT_HEADING } = await loadApi('_record.js');
 expect('a junk record is nothing, never a block', readRecord('x') === null && readRecord({}) === null && readRecord({ does: '   ' }) === null && readRecord(null) === null, 'junk passed');
-expect('kind comes only from the closed set', readRecord({ kind: 'gold' }) === null && readRecord({ kind: 'water' })?.kind === 'water', 'an unknown kind leaked');
+expect('type, class and stage come only from the closed lists', readRecord({ type: 'gold', stage: 'soon' }) === null && readRecord({ type: 'C-11' })?.type === 'C-11' && readRecord({ stage: 'running' })?.stage === 'running', 'an unknown type or stage leaked');
+expect('a class rides only beside a drinking-water type', readRecord({ type: 'C-11', gsClass: 'HWT' })?.gsClass === '' && readRecord({ type: 'C-19', gsClass: 'HWT' })?.gsClass === 'HWT' && readRecord({ gsClass: 'HWT' }) === null, 'a class rode alone or beside C-11');
 expect('an over-long field is dropped whole, never cut', readRecord({ does: 'x'.repeat(281) }) === null && readRecord({ does: 'x'.repeat(280) })?.does.length === 280, 'length handling');
 const block = recordBlock(readRecord({ does: 'Boreholes for households', place: 'Kampala, Uganda' }));
-expect('the block carries only what was said, and says it is never a verdict', block.includes('Boreholes for households') && block.includes('Kampala, Uganda') && !block.includes('What kind') && !block.includes('What it is called') && /never a verdict/.test(block), block);
+expect('the block carries only what was said, and says it is never a verdict', block.includes('Boreholes for households') && block.includes('Kampala, Uganda') && !block.includes('What type') && !block.includes('Stage') && !block.includes('What it is called') && /never a verdict/.test(block), block);
+const typedBlock = recordBlock(readRecord({ does: 'A borehole', type: 'C-19', gsClass: 'CWS', stage: 'paper' }));
+expect("the block names the type, its class and the stage in the standard's words, never by id alone", /- What type: Access to potable water supply — Giving households/.test(typedBlock) && /- Which class of drinking-water project: Community water supply technologies — /.test(typedBlock) && /- Stage: on paper — still a plan/.test(typedBlock) && !/C-19/.test(typedBlock), typedBlock);
 expect("Phoebe's prompt names the block and keeps the cards as the only judge", PHOEBE_PROMPT.includes(RECORD_HEADING) && /only the cards decide that/.test(PHOEBE_PROMPT), 'her prompt does not know the block');
 
 /* Contract lines 2, 7, 8 and 10 — item A15, 21 Sep 2026. Her tool comes from
    her pack's tool README, generated; it must name the four record fields as
    the block prints them, the six rows, and the record block's own heading,
    so what she is told about her inputs cannot drift from what she is sent. */
-const RECORD_FIELDS = ['What it does', 'What kind', 'Where it is', 'What it is called'];
+const RECORD_FIELDS = ['What it does', 'What type', 'Stage', 'Where it is', 'What it is called'];
 expect(
   "Phoebe's prompt carries her tool from her pack — the six rows, the four record fields as the block names them, and the block's heading",
   /# Your tool/.test(PHOEBE_PROMPT) &&
@@ -210,15 +233,17 @@ expect(
   'field lines drifted'
 );
 const hisBlock = visitBlock(
-  readRecord({ does: 'Boreholes for households', name: 'Walk Borehole', place: 'Turkana, Kenya', kind: 'water' })
+  readRecord({ does: 'Boreholes for households', name: 'Walk Borehole', place: 'Turkana, Kenya', type: 'C-19', gsClass: 'CWS', stage: 'building' })
 );
 expect(
-  'with facts on the visit, the block lists them — including kind — and tells him not to re-ask',
+  'with facts on the visit, the block lists them — including type, class and stage — and tells him not to re-ask',
   hisBlock.includes(VISIT_HEADING) &&
     hisBlock.includes('Boreholes for households') &&
     hisBlock.includes('Walk Borehole') &&
     hisBlock.includes('Turkana, Kenya') &&
-    /What kind:/.test(hisBlock) &&
+    /What type: Access to potable water supply/.test(hisBlock) &&
+    /Which class of drinking-water project: Community water supply technologies/.test(hisBlock) &&
+    /Stage: being built/.test(hisBlock) &&
     /Do not ask for them again as if they were blank/.test(hisBlock) &&
     !/never a verdict/.test(hisBlock) &&
     !/only the cards decide/.test(hisBlock),
@@ -229,7 +254,8 @@ expect(
   visitBlock(readRecord({ does: 'wells', name: 'Walk' })).includes('wells') &&
     visitBlock(readRecord({ does: 'wells', name: 'Walk' })).includes('Walk') &&
     !visitBlock(readRecord({ does: 'wells', name: 'Walk' })).includes('Where it is') &&
-    !visitBlock(readRecord({ does: 'wells', name: 'Walk' })).includes('What kind'),
+    !visitBlock(readRecord({ does: 'wells', name: 'Walk' })).includes('What type') &&
+    !visitBlock(readRecord({ does: 'wells', name: 'Walk' })).includes('Stage'),
   visitBlock(readRecord({ does: 'wells', name: 'Walk' }))
 );
 expect('with an empty visit there is no block, so he may still ask', readRecord({}) === null && readRecord(null) === null, 'empty produced a record');
@@ -237,7 +263,7 @@ expect(
   'his prompt names the visit block and tells him not to re-ask what it holds',
   WELLINGTON_SYSTEM_PROMPT.includes(VISIT_HEADING) &&
     /do not ask for them again as if they were blank/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /Kind is never in a carried link/.test(WELLINGTON_SYSTEM_PROMPT),
+    /Type, class and stage are never in a carried link/.test(WELLINGTON_SYSTEM_PROMPT),
   'the visit block is missing from his prompt'
 );
 expect("Phoebe's prompt still does not carry his visit heading", !PHOEBE_PROMPT.includes(VISIT_HEADING), 'his heading leaked into her prompt');
@@ -390,10 +416,11 @@ const { nextPhaseCompetes } = createRequire(import.meta.url)(join(libOut, 'journ
 
 const typed = typedContext(EMPTY_CONTEXT, 'name', 'Walk Borehole');
 expect('a typed name carries typed provenance', typed.name === 'Walk Borehole' && typed.provenance.name === 'typed', JSON.stringify(typed));
-const heard = learnedContext(typed, { name: 'The borehole project', place: 'Turkana', kind: 'water' });
+const heard = learnedContext(typed, { name: 'The borehole project', place: 'Turkana', type: 'C-11', stage: 'paper' });
 expect('a typed name is never overwritten by what he heard', heard.name === 'Walk Borehole' && heard.provenance.name === 'typed', JSON.stringify(heard));
 expect('a blank place takes his hearing, marked as from the conversation', heard.place === 'Turkana' && heard.provenance.place === 'chat', JSON.stringify(heard));
-expect('the kind lands with its provenance', heard.kind === 'water' && heard.provenance.kind === 'chat', JSON.stringify(heard));
+expect('the type and the stage land with their provenance', heard.type === 'C-11' && heard.provenance.type === 'chat' && heard.stage === 'paper' && heard.provenance.stage === 'chat', JSON.stringify(heard));
+expect('a class lands only beside a drinking-water type, and a change of type clears it', learnedContext(EMPTY_CONTEXT, { type: 'C-11', gsClass: 'HWT' }).gsClass === '' && learnedContext(EMPTY_CONTEXT, { type: 'C-19', gsClass: 'HWT' }).gsClass === 'HWT' && learnedContext(learnedContext(EMPTY_CONTEXT, { type: 'C-19', gsClass: 'HWT' }), { type: 'C-11' }).gsClass === '', 'the class rode where it should not');
 const retyped = typedContext(heard, 'place', 'Turkana County, Kenya');
 expect('the visitor can still overtype a heard place, and it becomes typed', retyped.place === 'Turkana County, Kenya' && retyped.provenance.place === 'typed', JSON.stringify(retyped));
 const heardAgain = learnedContext(retyped, { place: 'somewhere else' });
@@ -408,7 +435,8 @@ expect('a pin never overwrites a typed place', pinnedContext(typedContext(EMPTY_
 expect('a pin never overwrites a place told to Wellington', pinnedContext(learnedContext(EMPTY_CONTEXT, { place: 'Turkana' }), pin).place === 'Turkana', 'the pin overwrote a heard place');
 expect("the visitor's words to Wellington replace a pin-filled place", learnedContext(pinned, { place: 'Turkana' }).place === 'Turkana', 'the pin outranked the visitor');
 expect('unpinning clears only a place the pin wrote', pinnedContext(pinned, null).place === '' && pinnedContext(learnedContext(EMPTY_CONTEXT, { place: 'Turkana' }), null).place === 'Turkana', 'unpinning touched the wrong place');
-expect('"unsure" is a kind the visit keeps', learnedContext(EMPTY_CONTEXT, { kind: 'unsure' }).kind === 'unsure', 'unsure was dropped');
+expect('"none of these" is a type the visit keeps', learnedContext(EMPTY_CONTEXT, { type: 'NONE' }).type === 'NONE', 'NONE was dropped');
+expect('the empty context has no kind field — retired 24 Sep 2026', !('kind' in EMPTY_CONTEXT) && !('kind' in EMPTY_CONTEXT.provenance), 'kind survived');
 expect('the empty context has no standard-of-interest field', !('standard' in EMPTY_CONTEXT), 'the chips concept survived');
 
 console.log('\n  The screening loop — invite first, place does not skip\n');
@@ -528,7 +556,7 @@ expect('the desk does not start a conversation of its own', !/useConversation\(/
    A question carried in from the production landing — the receiver, item
    S13, 9 Sep 2026. Optional does, name and place joined it on 15 Sep 2026.
    The contract is `?question=<≤500>[&does=<≤300>][&name=<≤80>][&place=<≤80>]`,
-   percent-encoded UTF-8. Omit empty keys. No kind. No provenance in the URL.
+   percent-encoded UTF-8. Omit empty keys. No type, class or stage. No provenance in the URL.
    Bad or empty input is ignored with no error: the page opens honestly empty
    and never invents a question or a fact.
 --------------------------------------------------------------------------- */
@@ -574,7 +602,7 @@ const adapterSource = readFileSync('src/lib/wellington.ts', 'utf8');
 expect(
   'the adapter reads the visit at send time and omits a blank record',
   /recordFrom\(visit\)/.test(adapterSource) &&
-    /return record\.does \|\| record\.kind \|\| record\.place \|\| record\.name \? record : null/.test(adapterSource),
+    /return record\.does \|\| record\.type \|\| record\.stage \|\| record\.place \|\| record\.name \? record : null/.test(adapterSource),
   'a blank visit would still be posted'
 );
 expect(
@@ -640,7 +668,7 @@ expect(
 );
 expect('runs of whitespace in a fact fold to one space', readCarriedFacts('?does=a%0A%0Ab%20%20c').does === 'a b c', JSON.stringify(readCarriedFacts('?does=a%0A%0Ab%20%20c')));
 expect('only the first of each fact key is read', readCarriedFacts('?name=first&name=second').name === 'first', JSON.stringify(readCarriedFacts('?name=first&name=second')));
-expect('kind in the address is never read', readCarriedFacts('?kind=water&does=wells').kind === undefined && readCarriedFacts('?kind=water&does=wells').does === 'wells', JSON.stringify(readCarriedFacts('?kind=water&does=wells')));
+expect('a type, class or stage in the address is never read', readCarriedFacts('?type=C-19&gsClass=CWS&stage=paper&does=wells').type === undefined && readCarriedFacts('?type=C-19&stage=paper&does=wells').stage === undefined && readCarriedFacts('?type=C-19&does=wells').does === 'wells', JSON.stringify(readCarriedFacts('?type=C-19&does=wells')));
 expect(
   'the address is cleaned of question and facts, and keeps unknown keys and the fragment',
   withoutCarried('https://map.waterbots.ai/?a=1&does=wells&question=hi&name=Walk&place=Turkana&kind=water#frag') ===
@@ -662,8 +690,10 @@ expect(
     stamped.provenance.name === 'chat' &&
     stamped.place === 'Turkana' &&
     stamped.provenance.place === 'chat' &&
-    stamped.kind === '' &&
-    stamped.provenance.kind === '',
+    stamped.type === '' &&
+    stamped.provenance.type === '' &&
+    stamped.stage === '' &&
+    stamped.provenance.stage === '',
   JSON.stringify(stamped)
 );
 expect(
@@ -674,7 +704,7 @@ expect(
   'facts are not written through learnedContext'
 );
 expect('the shell does not toast a bad carry', !/toast/i.test(appSource), 'a toast was added for a bad carry');
-expect('the contract comment names the four keys and forbids kind', /question=<≤500>\[&does=<≤300>\]\[&name=<≤80>\]\[&place=<≤80>\]/.test(readFileSync('src/lib/carried.ts', 'utf8')) && /No kind/.test(readFileSync('src/lib/carried.ts', 'utf8')), 'the contract comment does not match Shell A');
+expect('the contract comment names the four keys and forbids type, class and stage', /question=<≤500>\[&does=<≤300>\]\[&name=<≤80>\]\[&place=<≤80>\]/.test(readFileSync('src/lib/carried.ts', 'utf8')) && /No type, class or stage/.test(readFileSync('src/lib/carried.ts', 'utf8')), 'the contract comment does not match Shell A');
 
 /* ---------------------------------------------------------------------------
    The walk in order and the shown line — contract lines 4 and 5, item A15,

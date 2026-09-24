@@ -19,7 +19,7 @@
  *   https://map.waterbots.ai/?question=<≤500>[&does=<≤300>][&name=<≤80>][&place=<≤80>]
  *
  * Percent-encoded as UTF-8 the way encodeURIComponent does it. Caps are
- * counted after decoding. Omit empty keys. No kind. No provenance in the
+ * counted after decoding. Omit empty keys. No type, class or stage. No provenance in the
  * URL — this site stamps chat. Caps are the sender's job; this site ignores
  * broken, over-long, or empty fields, never cuts them, and never shows an
  * error. Only the first of each key is read. Unknown keys are left in the
@@ -60,7 +60,7 @@ const CARRIED_FACT_MAX = {
 
 const CARRIED_KEYS = ['question', 'does', 'name', 'place'] as const;
 
-/** Optional facts that fill the visit card. Never includes kind. */
+/** Optional facts that fill the visit card. Never the type, its class or the stage. */
 export interface CarriedFacts {
   does?: string;
   name?: string;
@@ -102,7 +102,7 @@ export function readCarriedQuestion(search: string): string | null {
 
 /**
  * Read optional does, name and place. Missing, blank, over-long or unreadable
- * keys are omitted; a bad field does not drop the others. Kind is never read.
+ * keys are omitted; a bad field does not drop the others. Type, class and stage are never read.
  */
 export function readCarriedFacts(search: string): CarriedFacts {
   const params = parseSearch(search);
@@ -121,7 +121,7 @@ export function readCarriedFacts(search: string): CarriedFacts {
  * The same address with the carried question and fact keys taken out of it —
  * what the browser's address bar is set to once they have been read, so
  * nothing of them stays in the address. Other parameters and the fragment
- * are kept, including kind if someone sent it.
+ * are kept, including a type if someone sent one.
  */
 export function withoutCarried(href: string): string {
   let url: URL;

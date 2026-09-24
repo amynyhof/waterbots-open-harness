@@ -156,7 +156,9 @@ const { HANDOFF_DAILY_CAP } = await load('_cap.js');
 const sample = () => ({
   record: {
     does: { value: 'Protects a spring and pipes it to a village', source: 'chat' },
-    kind: { value: 'water', source: 'chat' },
+    type: { value: 'C-19', source: 'chat' },
+    gsClass: { value: 'CWS', source: 'chat' },
+    stage: { value: 'paper', source: 'chat' },
     place: { value: 'HYBAS 1040021560 · Level 6 · High (40-80%)', source: 'pin' },
     name: { value: 'Test spring', source: 'typed' },
   },
@@ -299,14 +301,54 @@ await refused(
   'status'
 );
 await refused(
-  'a kind outside the closed set is turned away',
+  'a type outside the closed set is turned away',
   (() => {
     const s = sample();
-    s.record.kind.value = 'other';
+    s.record.type.value = 'other';
     return s;
   })(),
   400,
-  'record.kind.value'
+  'record.type.value'
+);
+await refused(
+  'a class is never a type',
+  (() => {
+    const s = sample();
+    s.record.type.value = 'CWS';
+    return s;
+  })(),
+  400,
+  'record.type.value'
+);
+await refused(
+  'a class beside a type that is not drinking water is turned away',
+  (() => {
+    const s = sample();
+    s.record.type.value = 'C-11';
+    return s;
+  })(),
+  400,
+  'record.gsClass.value'
+);
+await refused(
+  'a stage outside the closed set is turned away',
+  (() => {
+    const s = sample();
+    s.record.stage.value = 'soon';
+    return s;
+  })(),
+  400,
+  'record.stage.value'
+);
+await refused(
+  'the old kind field is not part of a seal',
+  (() => {
+    const s = sample();
+    s.record.kind = { value: 'water', source: 'chat' };
+    return s;
+  })(),
+  400,
+  'kind'
 );
 await refused(
   'a source tag outside typed, chat, pin is turned away',
@@ -492,7 +534,7 @@ const packs = livePacks();
 const examplePack = packs.find((p) => p.example !== undefined);
 const pin = { hybasId: 1040041430, pfafId: 1, level: 4, stressLabel: 'Arid and Low Water Use', subAreaKm2: 87466 };
 let context = typedContext(EMPTY_VISIT.context, 'name', 'Test spring');
-context = learnedContext(context, { does: 'Protects a spring and pipes it to a village', kind: 'water' });
+context = learnedContext(context, { does: 'Protects a spring and pipes it to a village', type: 'C-11', stage: 'running' });
 context = pinnedContext(context, pin);
 const visit = {
   context,

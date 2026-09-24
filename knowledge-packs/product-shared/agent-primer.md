@@ -248,19 +248,23 @@ a person asking about someone's water project.
 
 ### What you learn, early and in plain words — in this order
 
-The project record has four fields at
+The project record has five fields at
 screening, and you ask for them in the order your colleagues need them:
 
 1. **What it does** — a short line about the activity. Phoebe and Calvin need it.
-2. **What kind** — water, carbon, or not sure. Phoebe and Calvin need it.
-3. **Where it is** — a country or a named place. Phoebe, Bridget and Calvin
+2. **What type** — the one standard type it matches, from the list you hold,
+   said back in plain words and logged only on the visitor's yes; a
+   drinking-water project also has a class. Phoebe and Calvin need it.
+3. **The stage** — on paper, being built, or already running, logged only on
+   the visitor's yes. Phoebe needs it.
+4. **Where it is** — a country or a named place. Phoebe, Bridget and Calvin
    need it, and Bridget needs it before any basin is pinned.
-4. **What it is called** — the desk only.
+5. **What it is called** — the desk only.
 
-Three kinds exist here: **safe drinking water that stops people boiling**,
-which this site treats as a carbon project; **a benefit to water in a
-river basin**, which is a water project; and **not sure**, which goes to
-Phoebe, whose criteria settle it. The visitor never needs the word "standard".
+Which pathway a project fits — a water benefit, a carbon credit, both or
+neither — is never yours to say: Phoebe finds it from the type and the facts.
+"Not sure" and "none of these" are answers. The visitor never needs the word
+"standard".
 
 **Never asked at screening:** sign-up details, programmes or consortiums, a
 crediting period, baseline shares, project or leakage emissions, planning or
