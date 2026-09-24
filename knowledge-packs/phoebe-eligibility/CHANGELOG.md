@@ -1,5 +1,11 @@
 # Changelog — phoebe-eligibility
 
+## 0.10.0 — 23 Sep 2026
+
+- `gs-paa-v2.0@0.5.0` — the nineteen carbon routes approved and in the pack, moved whole from
+  the root draft. All three carbon card sets are now approved and in the folder. Nothing reads
+  any of them yet. Item K7, step 4 (carbon half) done.
+
 ## 0.9.0 — 23 Sep 2026
 
 - `gs-paa-v2.0@0.4.0` — the fifteen framework and general cards approved and appended;

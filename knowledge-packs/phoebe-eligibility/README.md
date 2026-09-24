@@ -1,6 +1,6 @@
 # phoebe-eligibility — eligibility and feasibility (open)
 
-**Version 0.9.0.** Phoebe staffs Eligibility. From 22 Sep 2026 she has two
+**Version 0.10.0.** Phoebe staffs Eligibility. From 22 Sep 2026 she has two
 packs: [`vwba-2.0/`](./vwba-2.0/), live, and [`gs-paa-v2.0/`](./gs-paa-v2.0/), a
 scaffold with no approved card, not read by anything. The two water card files
 live in [`vwba-2.0/cards/`](./vwba-2.0/cards/), and the live site reads them from
@@ -26,7 +26,7 @@ follow one at a time, each on its own brief. The rule is written in the
 | [`vwba-2.0/evals/`](./vwba-2.0/evals/) | No exam sat yet. |
 | [`vwba-2.0/CHANGELOG.md`](./vwba-2.0/CHANGELOG.md) | The pack's own versions. |
 | [`gs-paa-v2.0/README.md`](./gs-paa-v2.0/README.md) | Gold Standard's safe-drinking-water carbon methodology, Paris-aligned. What she will know and help with; the cited documents, every Gold Standard page confirmed. **Scaffold, 22 Sep 2026. Not live.** |
-| [`gs-paa-v2.0/cards/`](./gs-paa-v2.0/cards/) | Four applies cards and all 32 eligibility cards, approved 23 Sep 2026, read by nothing yet. The nineteen carbon routes drafted at the root, untracked, for the maintainer's grade. |
+| [`gs-paa-v2.0/cards/`](./gs-paa-v2.0/cards/) | Four applies cards, all 32 eligibility cards, and nineteen routes, all approved 23 Sep 2026 and read by nothing yet. |
 | [`gs-paa-v2.0/tool/`](./gs-paa-v2.0/tool/) | The carbon section of the one worksheet, named. No reader yet. |
 | [`gs-paa-v2.0/evals/`](./gs-paa-v2.0/evals/) | No exam sat. |
 | [`gs-paa-v2.0/CHANGELOG.md`](./gs-paa-v2.0/CHANGELOG.md) | The second pack's own versions. |

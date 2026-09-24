@@ -1,6 +1,6 @@
 # Knowledge packs — open tree
 
-**Version 0.11.0 (open); the history is in [CHANGELOG.md](./CHANGELOG.md).** ~~Scaffold only. Nothing in this folder is wired into the live
+**Version 0.12.0 (open); the history is in [CHANGELOG.md](./CHANGELOG.md).** ~~Scaffold only. Nothing in this folder is wired into the live
 site.~~ **Corrected 17 Sep 2026:** Phoebe's pack is wired. The live site reads her two
 card sets from [`phoebe-eligibility/vwba-2.0/cards/`](./phoebe-eligibility/vwba-2.0/cards/).
 The other packs are still scaffold; the console reads their method packs and map data
@@ -103,4 +103,7 @@ stay separate. Derived values are labelled derived. Those rules live in
 
 ## Version
 
-Tree **v0.5.1**. See [CHANGELOG.md](./CHANGELOG.md).
+See [CHANGELOG.md](./CHANGELOG.md) for the tree's full version history. Corrected 23 Sep 2026:
+this line used to restate the version number here too, and had drifted stale (it read "Tree
+v0.5.1" against a head that already said 0.11.0); the old wording is kept in the tree's own
+[CHANGELOG.md](./CHANGELOG.md). One number, stated once, at the top of this page.
