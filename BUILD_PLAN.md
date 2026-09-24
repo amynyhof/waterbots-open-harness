@@ -102,26 +102,44 @@ packs to the new shape, is item K9.
 
 The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
 
-## The next order — ruled 23 Sep 2026 at the close-out
+## V1 — the done line (the maintainer, 23 Sep 2026)
 
-**Four pull requests, in this order, each on her go at its own proposal or step.** Her word at the
-close of 23 Sep 2026.
+**Corrected 23 Sep 2026.** This replaces the section that stood here, "The next order — ruled
+23 Sep 2026 at the close-out," a four-pull-request order from the same day's earlier close-out.
+That order is not wrong so much as overtaken: this ruling, made later the same day, says what
+"done" means for the whole free site rather than ordering the next four pull requests, and it
+folds the earlier order's work into a seven-step build order below. The old section's whole text
+is kept in [docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md), dated, under the
+no-strikes rule.
 
-1. **Wellington's pull request 3: type and stage, confirm-and-log.** The types file and the stage
-   question into his prompt and his fields, checked against the closed lists; "What type" and the
-   stage on the rail; "what kind" retired; the seal's fields. Items A16 and A18; the guide
-   proposal's step 5 with the addendum's §2.
-2. **Phoebe's runtime, K7's pull requests C and D**, with the guide-not-gate rules and the phase
-   tags: the pack-keyed reader and gate first (K7 step 5), then five row states, the readiness read
-   on the Eligibility rows of both pathways, the shown groups by phase with the seat that helps, the
-   routes on Fixable rows, the human door once, the cap at thirty, her prompt and the measured walk.
-   Items K7 and A18; the phase-tags proposal's step 2.
-3. **The Knowledge tab with both packs and the sources index, and the screening report as the
-   first export** (item S21), in the phase-tags proposal's §7 shape.
-4. **The Commons check**: Phoebe's Commons seat against all of it, applies tests, both pathways,
-   the read; no memory, its own cap; the shelf card's short document names.
+The free site is v1 when a stranger with a real project can, in thirty messages, learn: the
+project type and stage; which pathway it likely fits (water, carbon, both, neither); a screening
+number for each fit; its basin; and save it.
 
-**Between them, the standing rules hold:** a proposal before each, one eyeball stop per pull
+- **Wellington** asks type, stage, place, name; sends to Phoebe, then Calvin; reads back what
+  Phoebe found. Done when one real walk goes end to end with no wrong turn.
+- **Phoebe** runs both packs: five row states, readiness per pathway, the tools line, the human
+  door once. Done at an 80% pass.
+- **Calvin** talks; picks the pack from the record; asks only for what is missing; his carbon
+  number comes from the same engine as the paid site. Done when the Malawi test project gives the
+  same number on both sites.
+- **Bridget**: map and pin as today. She introduces herself, says what the map shows, hands back.
+- **Commons**: Phoebe and Calvin work there too, no memory; Bridget introduces herself. Two Calvin
+  cards on one engine: screening, transition.
+- **The screening report exports free.**
+- **Card sets are sealed at their versions on this date.** No new cards until a real project fails
+  on one.
+- **Every card set shows as cards in its agent's Knowledge tab.** An unreviewed card says Draft.
+  The Evals section says "no exams run yet" until the harness runs.
+- **Runs**: one short run after a prompt change. No new exam questions.
+- **Parked until after v1**: Water Wide Web, the Reggie, Monty and Audrey packs, D-4, D-6, the
+  cleanup sweep, harness grades, fees, the two draft water card sets.
+
+**Build order after the seal:** (1) the Knowledge and Tool tab; (2) Wellington type and stage;
+(3) Phoebe's carbon runtime; (4) the Commons check; (5) Calvin's brief with the carried engine;
+(6) Bridget's hello; (7) the carry to the paid site, by the maintainer's hand.
+
+**The standing rules hold across every step:** a proposal before each, one eyeball stop per pull
 request at least, the measured run after any prompt change, and the build-update fact refreshed at
 every close-out (the close-out ritual's step 8).
 

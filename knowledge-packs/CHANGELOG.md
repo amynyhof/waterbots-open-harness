@@ -3,6 +3,17 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.13.0 — 23 Sep 2026
+
+- **Every card set on the free site is sealed at its version on this date**, the maintainer's
+  ruling of 23 Sep 2026, "V1 — the done line" (BUILD_PLAN.md). No card in a sealed set changes,
+  and no card is added, until a real project fails on one; a tool README's or seat README's
+  wording may still be corrected without touching the cards themselves. The sealed sets, by
+  their version today: `phoebe-eligibility@0.10.0` (`vwba-2.0@0.7.0`, `gs-paa-v2.0@0.5.0`).
+  Parked until after v1, untouched by the seal because none of them is a live card set today:
+  the two draft water card sets at the root (activity types, the glossary), the Reggie, Monty
+  and Audrey packs, D-4, D-6.
+
 ## 0.12.0 — 23 Sep 2026
 
 - **The nineteen carbon routes approved and in the pack.** `phoebe-eligibility@0.10.0`

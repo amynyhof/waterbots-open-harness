@@ -16,6 +16,40 @@ CHANGELOG, the pack's old wording goes there instead and this file is not used.
 
 ---
 
+## 23 Sep 2026 — BUILD_PLAN.md, "The next order — ruled 23 Sep 2026 at the close-out"
+
+**Why it changed.** The maintainer's later ruling the same day, "V1 — the done line," replaces
+this section. It does not amend the four-pull-request order below; it says what "done" means for
+the whole free site and folds that order's work into a seven-step build order of its own. The
+section is rewritten under the new heading, in [BUILD_PLAN.md](../../BUILD_PLAN.md).
+
+**Old wording, whole:**
+
+> ## The next order — ruled 23 Sep 2026 at the close-out
+>
+> **Four pull requests, in this order, each on her go at its own proposal or step.** Her word at
+> the close of 23 Sep 2026.
+>
+> 1. **Wellington's pull request 3: type and stage, confirm-and-log.** The types file and the
+>    stage question into his prompt and his fields, checked against the closed lists; "What type"
+>    and the stage on the rail; "what kind" retired; the seal's fields. Items A16 and A18; the
+>    guide proposal's step 5 with the addendum's §2.
+> 2. **Phoebe's runtime, K7's pull requests C and D**, with the guide-not-gate rules and the phase
+>    tags: the pack-keyed reader and gate first (K7 step 5), then five row states, the readiness
+>    read on the Eligibility rows of both pathways, the shown groups by phase with the seat that
+>    helps, the routes on Fixable rows, the human door once, the cap at thirty, her prompt and the
+>    measured walk. Items K7 and A18; the phase-tags proposal's step 2.
+> 3. **The Knowledge tab with both packs and the sources index, and the screening report as the
+>    first export** (item S21), in the phase-tags proposal's §7 shape.
+> 4. **The Commons check**: Phoebe's Commons seat against all of it, applies tests, both pathways,
+>    the read; no memory, its own cap; the shelf card's short document names.
+>
+> **Between them, the standing rules hold:** a proposal before each, one eyeball stop per pull
+> request at least, the measured run after any prompt change, and the build-update fact refreshed
+> at every close-out (the close-out ritual's step 8).
+
+---
+
 ## 23 Sep 2026 — PROCESS_RULES_for_ShellB.md, "Visible corrections over rewritten history"
 
 **Why it changed.** The maintainer's ruling of 23 Sep 2026 replaced the strike-in-place practice
