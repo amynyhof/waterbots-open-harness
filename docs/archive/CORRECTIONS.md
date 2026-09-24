@@ -129,3 +129,17 @@ The seat README, the `vwba-2.0` README and the head of `eligibility-cards-vwba.m
 made on 22 and 23 Sep 2026. Their old wording is in the pack CHANGELOGs, the pack rule above:
 `phoebe-eligibility/CHANGELOG.md` 0.5.0 and 0.5.1, `vwba-2.0/CHANGELOG.md` 0.4.4 and 0.4.5. The
 20 Aug 2026 design-decision paragraph, whole, is in `vwba-2.0/CHANGELOG.md` under 0.4.5.
+
+---
+
+## 24 Sep 2026 — CLAUDE.md, the handoff-receiver bullet, "filled does / name / place / kind"
+
+**Why it changed.** "What kind" retired on 24 Sep 2026 (item A16, #119); the record's fields are
+does, name, place, type, class and stage, and Wellington treats the filled ones as known. The
+sentence asserted a field that no longer exists.
+
+**Old wording, whole:**
+
+> so filled does / name / place / kind are treated as known. He may still ask for anything missing.
+
+**Current text** is in [CLAUDE.md](../../CLAUDE.md), the same bullet.

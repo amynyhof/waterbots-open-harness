@@ -294,7 +294,8 @@ credit line does not meet any of these bars.
   and place fill the visit card as chat provenance; a bad or empty fact is
   ignored with no toast. ~~Wellington's chat was not rewritten this slice.~~ **Visit-aware from
   16 Sep 2026, #76:** he receives the same record on every ask, including the first carried turn,
-  so filled does / name / place / kind are treated as known. He may still ask for anything missing.
+  so filled does / name / place / type / stage are treated as known (corrected 24 Sep 2026, see
+  docs/archive/CORRECTIONS.md). He may still ask for anything missing.
   It lives in `src/lib/carried.ts` and under item S13, and production carries it
   by the maintainer's hand. **The hero chat (item S12) is parked**, a later item, not
   built; the same receiver will feed it.
@@ -352,6 +353,21 @@ credit line does not meet any of these bars.
   `scripts/check-tool.mjs`, which holds every row to the card it cites. **Nothing reads
   either file yet**, and each pack's `tool/README.md` with its agent-facing region stands
   until Phoebe's runtime step reads the file instead.
+- **Wellington names the project type and asks the stage, from 24 Sep 2026 (item A16, #119).**
+  Build-order step 2. The shared list `knowledge-packs/product-shared/project-types.md` — twenty
+  VWBA activity types, four Gold Standard technology classes, "none of these" — is parsed once by
+  the prompt generator into a module for his relay and one for the rail, and reaches his prompt
+  in its short form: id, the standard's name, one plain sentence, no cites. He matches from what
+  the project does, says the definition back in his own words and never the id, and `type` is
+  logged only on the visitor's yes; a drinking-water project is asked its class the same way,
+  kept only beside that type; the stage — on paper, being built, already running — is asked and
+  logged the same way. **"What kind" is retired** from his answer, the visit, the rail, both
+  agents' record blocks, Phoebe's tool text and the seal; the rail shows "What type" with the
+  definition behind it and "Stage". The seal carries `type`, `gsClass` and `stage`, told to
+  production once on item O14. Which pathway a project fits is never a field: Phoebe finds it.
+  **His prompt gate is 26,199** from the same day, her ruling — measured 25,699 after the build
+  plus 500 — after the trim of #118 had taken it from 23,940 to 19,811; the reason is written
+  above the check.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material
