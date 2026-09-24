@@ -3,6 +3,13 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.16.0 — 24 Sep 2026
+
+- **The agent primer is swept clean of struck text and date stamps**, and Wellington's region
+  loses the stamp that carried a person's name. `product-shared@0.5.0`. The maintainer's
+  ruling of 24 Sep 2026 on `PROPOSAL_wellington-prompt-trim.md`; the old wording, whole, is
+  in that pack's CHANGELOG. No card set changed; the seal of 23 Sep 2026 is untouched.
+
 ## 0.15.0 — 24 Sep 2026
 
 - **The tool definition contract gains its one optional key**, `applies`, ruling R9 as

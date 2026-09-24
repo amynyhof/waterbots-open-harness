@@ -139,6 +139,8 @@ number for each fit; its basin; and save it.
 (3) Phoebe's carbon runtime; (4) the Commons check; (5) Calvin's brief with the carried engine;
 (6) Bridget's hello; (7) the carry to the paid site, by the maintainer's hand.
 
+**Amended 24 Sep 2026, her word:** Calvin's brief (step 5) moves ahead of Phoebe's carbon runtime (step 3) once the paid site's engine is sealed and carried by her hand; Wellington (step 2) proceeds now.
+
 **Step 5 carries one ruling of its own, 24 Sep 2026.** Every field a baseline survey could later
 change carries **the teal marker**, on every method and every project type — the same colour and
 the same meaning as the paid site's baseline marker. It is one mark with one meaning across both
