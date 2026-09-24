@@ -139,6 +139,12 @@ number for each fit; its basin; and save it.
 (3) Phoebe's carbon runtime; (4) the Commons check; (5) Calvin's brief with the carried engine;
 (6) Bridget's hello; (7) the carry to the paid site, by the maintainer's hand.
 
+**Step 1, in progress, 24 Sep 2026.** Pull request A, the reader and Phoebe's tab, merged on her
+word as #111. Pull request B, Calvin's and Bridget's tabs, is next, per
+`PROPOSAL_knowledge-tab-and-tool-contract.md` §6. The water tool file of that proposal's §7 —
+one YAML file for the eligibility worksheet's water section, the contract's shape — is pulled
+forward into this step by her word today, ahead of Phoebe's runtime step where §7 first named it.
+
 **The standing rules hold across every step:** a proposal before each, one eyeball stop per pull
 request at least, the measured run after any prompt change, and the build-update fact refreshed at
 every close-out (the close-out ritual's step 8).
