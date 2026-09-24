@@ -1,5 +1,19 @@
 # Changelog — vwba-2.0
 
+## 0.10.0 — 24 Sep 2026
+
+- `tool/README.md`, the agent-facing region: the record Phoebe reads first has five facts,
+  not four — "What kind" is replaced by "What type" (the standard type Wellington confirmed,
+  with its class for a drinking-water project) and "Stage" (on paper, being built, already
+  running). Item A16's build; "what kind" retired the same day. Which pathway a project fits
+  stays hers to find, never read from the type. Old wording, whole:
+
+  > - **What kind** — one of three: a benefit to water in a basin, safe drinking
+  >   water that stops people boiling, or not sure. One choice.
+
+  and "The four facts you read first" / "Its four fields" / "one of the four facts" now say
+  five. No card changed; the seal of 23 Sep 2026 is untouched.
+
 ## 0.9.0 — 24 Sep 2026
 
 - `eligibility-worksheet@0.2.0` — the optional ninth key, `applies`, ruling R9 as amended

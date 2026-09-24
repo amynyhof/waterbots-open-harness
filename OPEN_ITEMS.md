@@ -122,7 +122,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | A14 | Screen host role words — one home | Agents | BONES | **logged 18 Sep 2026 from the maintainer's word** — not fixed now |
 | A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Agents | BONES | ~~**ruled 20 Sep 2026; the batch approved the same day** — steps 0 to 3 merged (#93, #94, #95) by 21 Sep; steps 4 to 6 open as pull request D, #97, at her eyeball~~ **built 22 Sep 2026, all four pull requests merged (#93, #94, #95, #97), eyeball stop 4 passed** — line 9 is the one gap left, carried by item A17 |
 | A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | ~~**logged 18 Sep 2026 from the maintainer's brief** — waits on her carry~~ **built 18 Sep 2026, #91 merged** — the free and Commons columns stay "unconfirmed" until she carries a confirmed file |
-| A16 | Wellington guides and leads — he never asks "water or carbon" — **and names the project type from a cited list** | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; **expanded and ruled 23 Sep 2026**: a cited list of twenty-four types, confirm then log; **the types file graded and moved into `product-shared/` the same day**, on the roster rule; his runtime not started |
+| A16 | Wellington guides and leads — he never asks "water or carbon" — **and names the project type from a cited list** | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; **expanded and ruled 23 Sep 2026**: a cited list of twenty-four types, confirm then log; **the types file graded and moved into `product-shared/` the same day**, on the roster rule; **his runtime built 24 Sep 2026**, pull request open at Stop 4: the short-form list in his prompt, type and class and stage confirmed then logged, "what kind" retired from the record, the rail and the seal; the gate to 26,199 by the measured amount |
 | A17 | The handoff goes both ways — forward and back | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — her hand-back is built; his side of the return is not; not started |
 | A18 | A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person | Agents | BONES | **ruled 23 Sep 2026 from her review of Phoebe's cards** — the rule is in AGENT_RULES.md (#100, merged); **stop 3 passed the same day**: fixability lines on the six water cards and nine water routes in the pack; the "tools on the paid site" line ruled canon; **her addendum of 23 Sep 2026 ruled and its tags built**: a Phase line on every eligibility card, the stage question, framing from the stage, the door once; nothing runtime built |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
@@ -980,8 +980,24 @@ confirmation, from a closed list; each standard's start-date definition is cited
 (101 v2.1 §4.1.39–4.1.41, §5.1.29; V2.0 Table 1; VWBA Glossary p. 66 and Step 3 p. 21). Builds at
 the proposal's step 5 with the type.
 
-**Ruled 23 Sep 2026. Types file approved and in the shared pack; the stage question ruled. Bucket
-BONES.**
+**Built 24 Sep 2026, on her word of the same day, one pull request, at Stop 4 for her desk
+walk.** The list reaches him in its short form — id, the standard's name, one plain sentence, no
+cites — parsed once from the shared file into a module for the relay and one for the browser,
+both under the staleness gate. He matches from what the project does, says the definition back
+in his own words and never the id, and `type` is returned only on the visitor's yes; NONE on a
+yes to none of these; no type when they are not sure. A drinking-water project (C-19) is asked
+its class the same way, and `gsClass` is kept only beside C-19, on the relay, in the client and
+on the seal. The stage — on paper, being built, already running — is asked and `stage` returned
+only on the visitor's yes. "What kind" is gone from his answer, the visit, the rail, both agents'
+record blocks, Phoebe's tool text and the seal; the rail shows a "What type" row with the
+standard's name and its sentence behind it, and a "Stage" row. The seal carries `type`,
+`gsClass` and `stage` for `kind`, told to production once on item O14. His prompt measured
+25,699 after the build; the gate is 26,199, her ruling, raised by the measured amount to leave
+500. One short run each for him and for Phoebe; one four-turn walk against the relay logged the
+type on the second turn, the class on the third, the stage on the fourth. Item A17, his reading
+of what Phoebe found, is untouched.
+
+**Ruled 23 Sep 2026; built 24 Sep 2026. Bucket BONES.**
 
 ## A17. The handoff goes both ways — forward and back
 
@@ -2099,7 +2115,7 @@ zero holds for every one: nothing here is fetched, written to, or guessed at on 
 | The specialist contract — the nine-line section of AGENT_RULES.md, her words | Production | item A15 |
 | `project-types.md` — drafted here, the paid repository becomes its source and this site is then held to it, the roster's rule; her word of 23 Sep 2026 | Production, then back to this site | item A16 |
 | The carbon "no" list to the reviewer as Q11; her word of 23 Sep 2026, named at the M1–M17 grade: the Blocked cases on M5 (nobody boils or goes without), M12 (the host country's list excludes the activity), M13 (viable without carbon finance, pricing will not change), M14 (common practice with no justified narrower area) | The paid side | items A18, K7 |
-| One contract change to the seal: `type` and `gsClass` for `kind`; rows and a readiness read per pathway; `wantsHuman` and a note | Production, before this site's sender changes | items K7, A16, A18 |
+| One contract change to the seal: `type`, `gsClass` and `stage` for `kind` (**this site's sender changed 24 Sep 2026**, item A16: `record.type` an id from `project-types.md` or NONE or blank, `record.gsClass` one of HWT, IWT, CWT, CWS only beside C-19, `record.stage` one of paper, building, running, each with its source tag; `record.kind` is refused); rows and a readiness read per pathway; `wantsHuman` and a note | Production | items K7, A16, A18 |
 | The "tools and resources on the paid site" line, her canon of 23 Sep 2026: production's side of the save door and its sign-up should say the same thing this site's save door will say | Production | item A18 |
 | The transition-assistance module, overseen by trusted consultants, that card T4 tells a transitioning project is coming to the paid site; her word of 23 Sep 2026 | Production | items K7, A18 |
 

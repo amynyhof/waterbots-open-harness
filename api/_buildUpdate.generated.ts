@@ -12,4 +12,4 @@
  * Sources: knowledge-packs/wellington-host/build-update.md (AGENT-FACING region only)
  */
 
-export const WELLINGTON_BUILD_UPDATE_MD: string = "# The build, as of 24 September 2026\n\nLive: the basin map; Eligibility, Phoebe's water cards and chat; Quantify, three screening\ncalculators; this desk; saving to the paid site. New: every agent's Knowledge tab shows its cards\nand sources. Next: your type-and-stage question, then Phoebe's carbon pathway with cited routes.\nNot live: Bridget's and Calvin's chats; Plan, Monitor and Communicate, on the paid site.\n";
+export const WELLINGTON_BUILD_UPDATE_MD: string = "# The build, as of 24 September 2026\n\nLive: the basin map; Eligibility, Phoebe's water cards and chat; Quantify, three screening\ncalculators; this desk; saving to the paid site. New today: you name a project's standard type\nand ask its stage, logged only on the visitor's yes. Next: Phoebe's carbon pathway with cited\nroutes. Not live: Bridget's and Calvin's chats; Plan, Monitor and Communicate, on the paid site.\n";

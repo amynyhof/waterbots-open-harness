@@ -165,15 +165,15 @@ expect('his prompt states the five things he never does', /quote no figure/.test
    against the rules. 24,000 was the engineer's raise, said so after, and the
    maintainer's ruling that gates change on her word came from it.
 
-   26,197 FROM 24 SEP 2026, THE MAINTAINER'S RULING, by the measured amount:
+   26,199 FROM 24 SEP 2026, THE MAINTAINER'S RULING, by the measured amount:
    the trim of the same day (#118) took his prompt to 19,811; the type-and-
    stage build then added the twenty-five-line short form of the project-type
-   list (4,034) and the confirm-then-log and stage rules, and it measured
-   25,697. Her word: raise by the measured amount to leave 500 characters of
-   room, and record the number with the reason. 25,697 + 500 = 26,197. It
+   list (4,034), the confirm-then-log and stage rules and the refreshed build-update fact, and it measured
+   25,699. Her word: raise by the measured amount to leave 500 characters of
+   room, and record the number with the reason. 25,699 + 500 = 26,199. It
    still keeps any card set out: Phoebe's, the smallest of hers, is over
    40,000. */
-expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 26197 && PHOEBE_PROMPT.length > 40000, `his ${WELLINGTON_SYSTEM_PROMPT.length} chars, hers ${PHOEBE_PROMPT.length}`);
+expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 26199 && PHOEBE_PROMPT.length > 40000, `his ${WELLINGTON_SYSTEM_PROMPT.length} chars, hers ${PHOEBE_PROMPT.length}`);
 
 /* ---------------------------------------------------------------------------
    The record the desk carries to Phoebe — slice 3, 7 Sep 2026.

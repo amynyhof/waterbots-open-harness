@@ -1,5 +1,25 @@
 # Changelog — product-shared
 
+## 0.6.0 — 24 Sep 2026
+
+- **`project-types.md` is read**, item A16's build: `scripts/build-prompt-modules.mjs` parses
+  its twenty-five rows once and writes `api/_projectTypes.generated.ts` and
+  `src/lib/projectTypes.generated.ts`, both under the staleness gate; the short form —
+  id, the standard's name, one plain sentence, no cites — goes into Wellington's prompt, the
+  closed lists check his logged type, class and stage, and the rail reads the name and the
+  sentence. The file itself is unchanged.
+- **Wellington's region asks five fields**, not four: "What kind" (water, carbon, or not
+  sure) is replaced by "What type" and "The stage", each logged only on the visitor's yes,
+  and the "Three kinds exist here" paragraph is gone; which pathway a project fits is
+  Phoebe's to find. Old wording, whole, under the no-strikes rule:
+
+  > 2. **What kind** — water, carbon, or not sure. Phoebe and Calvin need it.
+
+  > Three kinds exist here: **safe drinking water that stops people boiling**,
+  > which this site treats as a carbon project; **a benefit to water in a
+  > river basin**, which is a water project; and **not sure**, which goes to
+  > Phoebe, whose criteria settle it. The visitor never needs the word "standard".
+
 ## 0.5.0 — 24 Sep 2026
 
 - **Wellington's region loses two stamps**, the maintainer's ruling on
