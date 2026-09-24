@@ -336,6 +336,22 @@ credit line does not meet any of these bars.
   [BUILD_PLAN.md](./BUILD_PLAN.md), which owns the order work is built in. Every card set on
   the free site is sealed at its version on that date; no card changes or is added until a real
   project fails on one. The seal is recorded in `knowledge-packs/CHANGELOG.md`.
+- **Every card set shows on its agent's Knowledge tab, and one component draws every tab,
+  from 24 Sep 2026.** Build-order step 1. Phoebe's tab shows every approved card in both
+  packs, water then carbon, each set with its own approval date; an ungraded set says
+  **Draft** and nothing more; an Evals section on every agent's tab says no exam has run
+  yet and points at Credentials. Calvin's and Bridget's rows wear their tool folders'
+  versions, read from the folder and never typed. `MapSources`, Bridget's own second
+  drawing of the same look, is retired.
+- **A tool is defined once, in one file in its pack, from 24 Sep 2026.**
+  `<pack>/tool/<tool-id>.yaml` holds the tool's rows, their states, what each takes, where
+  a value comes from, and its citations **by card id** — the file names the card, it never
+  copies it. One tool may have a section per pack; the eligibility worksheet has two, one
+  in each of Phoebe's packs. A row carries eight keys, and one optional ninth, `applies`,
+  saying which rows exist for a project's technology class or version. The gate is
+  `scripts/check-tool.mjs`, which holds every row to the card it cites. **Nothing reads
+  either file yet**, and each pack's `tool/README.md` with its agent-facing region stands
+  until Phoebe's runtime step reads the file instead.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material

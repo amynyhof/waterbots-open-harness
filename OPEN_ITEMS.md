@@ -102,7 +102,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | closed | canon, ruled 26 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K5 | The VWBA 2.0 D-3 screening pack | Knowledge | closed | **built 1 Sep 2026** — the first pack in the slot — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | closed | **built 2 Sep 2026** — two packs, one module, the transition delta — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt** — **expanded 21 Sep 2026 from her walk**; **proposed and ruled 22 Sep 2026; steps 1 and 2 built (#99); stops 1, 2 and 3 passed 23 Sep 2026, the applies sets and all 32 carbon eligibility cards approved and in their packs; the nineteen carbon routes approved and in the pack as `routes-cards-gs.md`, step 4 done. All three carbon card sets sealed at their version, 23 Sep 2026 ("V1 — the done line"); step 5, the pack-keyed reader, is next in the build order** |
+| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt**; **expanded 21 Sep 2026; proposed and ruled 22 Sep 2026; steps 1 to 4 built by 23 Sep 2026** — both applies sets, all 32 carbon eligibility cards and the nineteen carbon routes approved and in their packs, then sealed at their versions ("V1 — the done line"). **Step 5 built 24 Sep 2026 (#111, #113)**, and the tool definition contract with it (#114 to #116): both packs carry a tool file, gated by `scripts/check-tool.mjs`, read by nothing yet. Her runtime — the worksheet, the record and her prompt — is what is left |
 | K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K9 | Calvin's and Bridget's packs move to the new pack shape | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — one brief each, the way Phoebe's did; not started |
 | K10 | Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — not started |
@@ -349,8 +349,31 @@ removed through the Principles & Requirements and say so, for her to strike. **H
 nineteen is the next stop.** The tag rule of the addendum stands as written, her word the same day.
 A third tag, "Partners phase", is item K11, the next version, not built.
 
+**Step 5 built, 24 Sep 2026 — the pack-keyed reader, and the tool files with it.** Four pull
+requests merged on her word, build-order step 1 under "V1 — the done line". `src/lib/phoebeCards.ts`
+is pack-keyed and reads seven card files and both pack READMEs; every approved card in both packs
+shows on Phoebe's Knowledge tab, water then carbon, each set with its own approval date, the two
+untracked drafts saying Draft and nothing more, and one honest line saying she reads the water
+cards today (#111). Calvin's and Bridget's tabs took a version on every row and the same Evals
+section, and Bridget's rows moved onto the shared component so one component draws every agent's
+tab (#113).
+
+**And the tool definition contract landed with it, pulled forward on her word.** Both packs now
+carry `tool/eligibility-worksheet.yaml` — one tool, a section each, forty-four rows between them,
+every row citing its card by id and its routes by route card id (#114, #115). Ruling R9 as amended
+24 Sep 2026 gave a row one optional ninth key, `applies`: which rows exist for a project's
+technology class or version, read from the card's own "Applies to" line, absent meaning every
+project (#116). `scripts/check-tool.mjs` is the gate; it holds a row's title, its fixability, its
+phase and its `applies` to the card, and runs by hand with the other checks on her ruling.
+**Nothing reads either file yet**, and both `tool/README.md` files with their agent-facing regions
+stand as they are until her runtime step. **Three fixes a carbon card describes that no route card
+carries — T1's and M2's change of pump drive, M14's justified sub-national area — are logged on the
+carbon pack's own page as route cards to draft after v1.**
+
 Logged 2 Sep 2026. **Expanded 21 Sep 2026. Proposed and ruled 22 Sep 2026; stops 1 to 3 passed
-23 Sep 2026; the carbon routes drafted, at her grade. Bucket BONES.**
+23 Sep 2026; the carbon routes approved and step 4 done the same day; step 5 built 24 Sep 2026.
+What is left is her runtime: the worksheet and the record (pull request C) and her prompt and the
+measured walk (D). Bucket BONES.**
 
 ## K9. Calvin's and Bridget's packs move to the new pack shape
 
