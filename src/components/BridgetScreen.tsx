@@ -22,6 +22,16 @@
  * the licences module already carries, never re-typed. The derived-value
  * rule is stated where the values are described (CLAUDE.md, data licensing).
  *
+ * IT IS DRAWN BY THE SHARED COMPONENT from 24 Sep 2026, the Knowledge-tab
+ * proposal's step 3 and ruling R6. MapSources, her own second drawing of the
+ * same look, is retired: one component now draws every agent's Knowledge tab,
+ * which is how a rule binding "every agent's Knowledge tab" stays kept. Each
+ * dataset row gained its tool folder's version, its plain-words line and its
+ * publisher's canonical link, and the tab gained the Evals section every
+ * agent's tab carries. NOTHING ABOUT THE MAP'S DATA, LICENCES OR ATTRIBUTION
+ * MOVED: the two attributions are still two rows, the WWF statement is still
+ * text, and the words under each row are the licences module's, verbatim.
+ *
  * BRIDGET IS SHARED, NOT COPIED (BRAND.md §6): same accent, same portrait,
  * same name as the shared crew's. Surf may carry a keyline and a tint and
  * never text, so her name is set in ink, as everywhere else.
@@ -32,17 +42,22 @@ import type { AgentHost } from '../chat/evidence';
 import { nextPhaseAfter, nextPhaseCompetes } from '../lib/journey';
 import {
   AQUEDUCT_CITATION,
+  AQUEDUCT_HREF,
   AQUEDUCT_LICENCE,
+  AQUEDUCT_PUBLISHER,
   HYDROBASINS_CITATION,
   HYDROSHEDS_CITATION,
+  HYDROSHEDS_HREF,
+  HYDROSHEDS_PUBLISHER,
 } from '../lib/licences';
 import { PROJECT_MAPPING_NOTE } from '../lib/site';
 import type { Surface } from '../lib/surfaces';
+import { citedDocument, toolSummary, toolVersion } from '../lib/toolReadmes';
 import type { MapPin } from '../lib/visit';
 import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
+import KnowledgePackTab, { type PackRow, type PackView } from '../screen/KnowledgePackTab';
 import NotLiveChat from '../screen/NotLiveChat';
-import { SCREEN_COLUMN } from '../screen/ScreenChat';
 import BasinMap, { type MapStatus } from './BasinMap';
 
 export const BRIDGET: AgentHost = {
@@ -89,7 +104,7 @@ export default function BridgetScreen({
             <BasinMap onStatus={onStatus} pinnedHybas={pinnedHybas} onPin={onPin} />
           </div>
         ),
-        pack: <MapSources />,
+        pack: <KnowledgePackTab view={BRIDGET_PACK} />,
         credentials: <CredentialsTab host={BRIDGET} />,
       }}
     />
@@ -97,61 +112,91 @@ export default function BridgetScreen({
 }
 
 /* --------------------------------------------------------------------------
-   Her Knowledge Pack — the two datasets the map is drawn from, cited as the
-   licences module cites them.
+   Her Knowledge Pack, assembled from the two dataset folders and the licences
+   module — build-order step 1 under "V1 — the done line", 24 Sep 2026.
+
+   WHAT COMES FROM WHERE. The row's plain words and its tool version come from
+   knowledge-packs/bridget-map/tools/<id>/README.md, which is the folder's own
+   statement of what it is; the document and its version come from that
+   README's cited-document table; the publisher and the canonical link come
+   from src/lib/licences.ts, the one home for this site's attribution facts;
+   and the words inside each open row are the licences module's required
+   strings, verbatim and unchanged. Nothing on this tab is typed twice.
+
+   A DATASET HAS NO PAGE. The cite line draws document · version · publisher →
+   link, and CiteLine drops the empty page slot rather than drawing it blank.
    -------------------------------------------------------------------------- */
 
-const SOURCES = [
-  {
-    badge: 'HB',
-    title: 'HydroSHEDS HydroBASINS — the basins',
-    lines: [HYDROBASINS_CITATION, HYDROSHEDS_CITATION],
-  },
-  {
-    badge: 'AQ',
-    title: 'WRI Aqueduct 4.0 — water stress',
-    lines: [AQUEDUCT_CITATION, AQUEDUCT_LICENCE],
-  },
-];
+const BASINS = 'hydrosheds-hydrobasins';
+const STRESS = 'wri-aqueduct-4.0';
 
-export function MapSources() {
-  return (
-    <div style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
-      <div style={{ maxWidth: SCREEN_COLUMN, margin: '0 auto', padding: '22px var(--gutter) 24px' }}>
-        <h2 style={{ fontSize: 20, margin: '0 0 8px', letterSpacing: '-0.015em', lineHeight: 1.25 }}>
-          {BRIDGET.name}&rsquo;s Knowledge Pack
-        </h2>
-        <p className="t-body" style={{ margin: 0, fontSize: 13.5, lineHeight: 1.55, color: 'var(--ink-2)' }}>
+/** One dataset row: what it is, then the citations the licence requires. */
+function datasetRow(
+  id: string,
+  badge: string,
+  title: string,
+  publisher: string,
+  href: string,
+  citations: { heading: string; lines: string[] }[]
+): PackRow {
+  const cited = citedDocument(id);
+  return {
+    id: `dataset-${id}`,
+    badge,
+    title,
+    tag: `v${toolVersion(id)}`,
+    layers: [
+      { heading: 'What it is', text: toolSummary(id) },
+      ...citations.map((c) =>
+        c.lines.length === 1 ? { heading: c.heading, text: c.lines[0] } : { heading: c.heading, bullets: c.lines }
+      ),
+    ],
+    citation: {
+      document: cited.document,
+      version: cited.version,
+      section: publisher,
+      page: '',
+      full: `${cited.document} · ${cited.version} · ${publisher}`,
+      href,
+    },
+  };
+}
+
+export const BRIDGET_PACK: PackView = {
+  heading: `${BRIDGET.name}’s Knowledge Pack`,
+  /* One section, unlabelled: two datasets, not two pathways. It carries no
+     tags and no version of its own — in the old pack shape each tool folder
+     is the versioned thing, so the version sits on the row (item K9). */
+  sections: [
+    {
+      key: 'datasets',
+      tags: [],
+      version: null,
+      source: (
+        <>
           Bridget carries no rule cards. Her tool is the map, drawn from two published datasets.
           From zoom 5 the map shows WRI&rsquo;s published water-stress figures for each basin; the
           world view&rsquo;s colours are derived from them, an area-weighted majority of each larger
           basin&rsquo;s children, and the legend says so. The full attributions and licences are
           under &ldquo;Data &amp; licences&rdquo; on the map.
-        </p>
-
-        <div className="wb-pack-sec">
-          <span className="label" style={{ color: 'var(--ink-3)' }}>
-            THE DATASETS
-          </span>
-        </div>
-        <div className="wb-pack-group">
-          {SOURCES.map((source) => (
-            <div key={source.badge}>
-              <div className="wb-pack-row" style={{ cursor: 'default' }}>
-                <span className="wb-pack-badge">{source.badge}</span>
-                <span>{source.title}</span>
-              </div>
-              <div className="wb-pack-open">
-                {source.lines.map((line, i) => (
-                  <p key={i} style={{ margin: i === 0 ? 0 : '8px 0 0' }}>
-                    {line}
-                  </p>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+        </>
+      ),
+      sets: [
+        {
+          label: 'THE DATASETS · 2 PUBLISHED SOURCES',
+          approved: null,
+          rows: [
+            datasetRow(BASINS, 'HB', 'HydroSHEDS HydroBASINS — the basins', HYDROSHEDS_PUBLISHER, HYDROSHEDS_HREF, [
+              { heading: 'Scientific citations', lines: [HYDROBASINS_CITATION, HYDROSHEDS_CITATION] },
+            ]),
+            datasetRow(STRESS, 'AQ', 'WRI Aqueduct 4.0 — water stress', AQUEDUCT_PUBLISHER, AQUEDUCT_HREF, [
+              { heading: 'Scientific citation', lines: [AQUEDUCT_CITATION] },
+              { heading: 'Licence', lines: [AQUEDUCT_LICENCE] },
+            ]),
+          ],
+        },
+      ],
+    },
+  ],
+  evals: true,
+};

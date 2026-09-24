@@ -63,3 +63,30 @@ export const SHORT_CREDIT =
   '&copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a> &middot; ' +
   'HydroSHEDS &copy; WWF &middot; WRI Aqueduct 4.0 &middot; ' +
   '<a href="#" class="wb-licences-link">Data &amp; licences</a>';
+
+/* ---------------------------------------------------------------------------
+   The publishers and their canonical pages, named on their own.
+
+   ADDED 24 SEP 2026, build-order step 1 under "V1 — the done line". Bridget's
+   Knowledge tab draws the same four-part citation line every other tab draws
+   — document · version · publisher → link — so it needs the publisher and the
+   address as values, not buried inside a verbatim statement that must not be
+   altered to get at them. Every one of these four already appears, word for
+   word, in the attribution strings above; they are named here so the tab
+   reads them rather than re-typing them.
+
+   NAMING WWF IN ATTRIBUTION TEXT IS WHAT EXHIBIT B REQUIRES. It is still text
+   only: no WWF logo, mark or trade name use anywhere in this product.
+--------------------------------------------------------------------------- */
+
+/** The copyright holder Exhibit B names for the HydroSHEDS v1 database. */
+export const HYDROSHEDS_PUBLISHER = 'World Wildlife Fund, Inc.';
+
+/** The page Exhibit B and the HydroBASINS citation both send a reader to. */
+export const HYDROSHEDS_HREF = 'https://www.hydrosheds.org';
+
+/** The publisher of the Aqueduct 4.0 technical note, and of the stress data. */
+export const AQUEDUCT_PUBLISHER = 'World Resources Institute';
+
+/** The DOI the suggested citation gives, written out with its scheme. */
+export const AQUEDUCT_HREF = 'https://doi.org/10.46830/writn.23.00061';

@@ -48,7 +48,7 @@ import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab from '../screen/KnowledgePackTab';
 import NotLiveChat from '../screen/NotLiveChat';
 import ScreenChat from '../screen/ScreenChat';
-import { BRIDGET, MapSources } from './BridgetScreen';
+import { BRIDGET, BRIDGET_PACK } from './BridgetScreen';
 import { CALVIN, CALVIN_NOT_LIVE_LINE, CALVIN_PACK } from './CalvinScreen';
 import EligibilityWorksheet from './EligibilityWorksheet';
 import { PHOEBE, PHOEBE_PACK } from './PhoebeScreen';
@@ -151,7 +151,7 @@ export function BridgetCommonsSeat() {
       next={null}
       tabs={{
         chat: <NotLiveChat host={BRIDGET} line={BRIDGET_COMMONS_LINE} />,
-        pack: <MapSources />,
+        pack: <KnowledgePackTab view={BRIDGET_PACK} />,
         credentials: <CredentialsTab host={BRIDGET} />,
       }}
     />

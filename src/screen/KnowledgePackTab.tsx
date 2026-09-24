@@ -28,6 +28,12 @@
  * with no section label draws as the tab drew before this day, so a seat that
  * holds one pack looks as it did.
  *
+ * CALVIN AND BRIDGET JOINED IT ON 24 SEP 2026, the proposal's step 3: their
+ * rows wear their tool folders' versions, both tabs gained the Evals section,
+ * and Bridget's own MapSources component was retired into this one, so one
+ * component now draws every agent's Knowledge tab. An unlabelled section with
+ * nothing to tag draws no tag strip at all.
+ *
  * A TAG IS A VALUE, A CHIP IS A STATE — CITATIONS.md's own test. The
  * document's short name, the version and the phase are tags; an approval
  * date and "Draft" are chips.
@@ -49,7 +55,11 @@ export interface PackRow {
   /** "1", "B-3", "M12" or "R-5" — the card's id as the set numbers it. */
   badge: string;
   title: string;
-  /** A value drawn as a tag on the row — the card's phase, where it has one. */
+  /**
+   * A value drawn as a tag on the row — the card's phase, where it has one,
+   * or a tool folder's own version, where the row is a tool rather than a
+   * card (Calvin's method packs and Bridget's datasets, 24 Sep 2026).
+   */
   tag?: string;
   layers: PackLayer[];
   citation: Citation;
@@ -137,9 +147,11 @@ export default function KnowledgePackTab({ view }: { view: PackView }) {
                 <Tags section={section} />
               </div>
             ) : (
-              <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 10 }}>
-                <Tags section={section} />
-              </div>
+              (section.tags.length > 0 || section.version) && (
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 10 }}>
+                  <Tags section={section} />
+                </div>
+              )
             )}
             <p className="t-body" style={{ margin: 0, fontSize: 13.5, lineHeight: 1.55, color: 'var(--ink-2)' }}>
               {section.source}
