@@ -1,5 +1,19 @@
 # Changelog — gs-paa-v2.0
 
+## 0.7.0 — 24 Sep 2026
+
+- `eligibility-worksheet@0.2.0` — the optional ninth key, `applies`, ruling R9 as amended
+  24 Sep 2026. Six rows carry it — M2, M3, M4, M8, M9 and M16, the rows a technology class
+  limits — and the other thirty say "every project" by carrying no key at all. The values
+  are card T3's four classes and card T4's two version flags, and `scripts/check-tool.mjs`
+  derives the expected value from each card's "Applies to" line and holds the file to it.
+- **Three route cards to draft after v1 are logged on this page**: T1's and M2's change of
+  pump drive, and M14's justified sub-national area. Each is a fix a card describes that no
+  route card carries; the tool file names no route on those rows and says so in a comment.
+  Nothing about the sealed card sets changes — a route card would be an addition.
+- The README's `tool/` row now points at the file as this pack's section of the tool and
+  its one home. No card changed.
+
 ## 0.6.0 — 24 Sep 2026
 
 - **The tool definition file**, `tool/eligibility-worksheet.yaml`: this pack's section of

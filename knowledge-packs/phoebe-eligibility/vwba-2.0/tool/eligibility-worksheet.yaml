@@ -18,6 +18,12 @@
 # what reaches Phoebe's prompt. When the generator reads this file instead, the
 # region retires and the tool has one home.
 #
+# WHICH ROWS EXIST FOR A PROJECT. Ruling R9 as amended 24 Sep 2026 gave a row
+# one optional ninth key, `applies`, read from the card's own "Applies to" line:
+# the technology class or the version a row exists for. Absent means every
+# project. No row in this section carries it, because this pathway sorts no row
+# that way; see the `applies-to` list below, which says so in one place.
+#
 # EVERY ROW CITES A CARD, NEVER A SOURCE. This pack has cards, so a row names
 # the card that carries its words and the card file carries them: the tool file
 # names the card, it never copies it. A route is always a route card's id.
@@ -41,7 +47,7 @@ pack:
   key: vwba-2.0
   # Equal to the pack README's own "**Version x.y.z.**" line; the gate holds the
   # two together, and check-cards already holds that line to the CHANGELOG head.
-  version: 0.8.0
+  version: 0.9.0
 
 section:
   id: water
@@ -159,6 +165,24 @@ states:
       carries: which kind of no it is — fixable with a cited route, unknown, or blocked — and that the other pathway is separate
       colour: null
 
+  # Which projects a row exists for — the values a row's optional `applies` key
+  # may name, ruling R9 as amended 24 Sep 2026. It is not a state and is never
+  # drawn: it sorts rows before the conversation starts, so that the tool file
+  # says which rows this project has, the row states say what is done and what
+  # is left, and the agent asks only what is left.
+  #
+  # THIS PATHWAY SORTS NO ROW. The guidebook's six criteria carry no "Applies
+  # to" line at all, and both applies cards say "every project asking about this
+  # pathway", so every row here exists for every project and not one of them
+  # carries the key. The list is written down anyway, with the one value it has,
+  # because an absent list and a list with nothing in it read the same and mean
+  # different things.
+  applies-to:
+    - id: all
+      label: Every project on this pathway
+      # NEVER WRITTEN ON A ROW. Leaving the key out is how a row says it, and
+      # two ways of saying one thing is what drifts. The gate refuses it.
+
   # The read for the pathway, drawn from the row states and never from prose.
   # "Likely" is the honest word: nothing on this site verifies anything.
   readiness-read:
@@ -178,7 +202,9 @@ states:
       colour: null
 
 # One entry per row, in the order asked: the two "does this apply" questions
-# first, then the six criteria in the manual's order.
+# first, then the six criteria in the manual's order. Every row carries the
+# contract's eight keys; none carries the optional ninth, `applies`, because
+# every row here exists for every project on this pathway.
 #
 # `asked` is the phase on the navigation where the row is acted on, the
 # phase-tags ruling of 23 Sep 2026. On this site Phoebe asks Eligibility rows

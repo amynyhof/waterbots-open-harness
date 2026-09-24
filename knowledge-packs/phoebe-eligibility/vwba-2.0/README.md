@@ -1,6 +1,6 @@
 # vwba-2.0 — Phoebe's Knowledge Pack
 
-**Version 0.8.0.** This folder is the one home of what Phoebe knows about the
+**Version 0.9.0.** This folder is the one home of what Phoebe knows about the
 water pathway (corrected 22 Sep 2026; see the CHANGELOG). Her carbon pathway has
 its own folder beside this one, [`../gs-paa-v2.0/`](../gs-paa-v2.0/), a scaffold,
 not live. The card files live in [`cards/`](./cards/), and everything on the live
@@ -74,7 +74,7 @@ moves. Read as of 21 Sep 2026.
 | | |
 |---|---|
 | [`cards/`](./cards/) | The two card sets. The live site reads these files. From 20 Sep 2026 [`cards/grader-notes.md`](./cards/grader-notes.md) sits beside them: the notes to the maintainer that used to sit at the foot of each card file, moved out whole so Phoebe does not read them as knowledge. Nothing reads it. |
-| [`tool/`](./tool/) | Names the checklist and its live reader, and carries the agent-facing region her prompt embeds about her tool (from 21 Sep 2026). No code lives here. |
+| [`tool/`](./tool/) | **[`eligibility-worksheet.yaml`](./tool/eligibility-worksheet.yaml) is this pack's section of the tool, and its one home** (24 Sep 2026): every row, what it takes, where its value comes from, which card it cites and which routes it may name. [`README.md`](./tool/README.md) names the checklist and its live reader and carries the agent-facing region her prompt embeds; that region stays until Phoebe's runtime step reads the file instead, and then it retires. No code lives here. |
 | [`evals/`](./evals/) | No exam has been sat. Says so. |
 | `README.md` | This page. |
 | [`CHANGELOG.md`](./CHANGELOG.md) | This pack's own version history. |

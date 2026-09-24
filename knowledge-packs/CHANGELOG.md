@@ -3,6 +3,18 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.15.0 — 24 Sep 2026
+
+- **The tool definition contract gains its one optional key**, `applies`, ruling R9 as
+  amended 24 Sep 2026: which rows exist for a project's technology class or version, read
+  from the card's own "Applies to" line, absent meaning every project. It is what lets the
+  tool file say which rows this project has, the row states say what is done and what is
+  left, and the agent ask only what is left. `phoebe-eligibility@0.11.0`
+  (`vwba-2.0@0.9.0`, `gs-paa-v2.0@0.7.0`), `eligibility-worksheet@0.2.0` in both packs.
+  `scripts/check-tool.mjs` holds the key to the card the way it already holds a row's
+  title, its fixability and its phase. No card set changed; the seal of 23 Sep 2026 is
+  untouched.
+
 ## 0.14.0 — 24 Sep 2026
 
 - **Both of Phoebe's packs carry a tool definition file**, the contract of 24 Sep 2026:
