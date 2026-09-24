@@ -11,7 +11,8 @@
  * WHAT CROSSES IS WHAT WAS RULED AND NOTHING ELSE. `buildSeal` is the one
  * place the visit becomes a seal, and it reads only:
  *
- *   - the four record fields with their source tags;
+ *   - the record fields with their source tags — what it does, its type, its
+ *     class beside a drinking-water type, its stage, where, what it is called;
  *   - the pin as ids, level, label and published area;
  *   - each criterion's state and its way forward;
  *   - each pack's answers as typed, the pack's own word for where it stands
@@ -42,7 +43,14 @@ export interface SealField {
 }
 
 export interface SealBody {
-  record: { does: SealField; kind: SealField; place: SealField; name: SealField };
+  record: {
+    does: SealField;
+    type: SealField;
+    gsClass: SealField;
+    stage: SealField;
+    place: SealField;
+    name: SealField;
+  };
   pin: {
     hybasId: number;
     pfafId: number;
@@ -76,13 +84,20 @@ export function buildSeal(
   packs: MethodPack[]
 ): SealBody {
   const { context, pin } = visit;
-  const field = (name: 'does' | 'kind' | 'place' | 'name'): SealField => ({
+  const field = (name: 'does' | 'type' | 'gsClass' | 'stage' | 'place' | 'name'): SealField => ({
     value: context[name],
     source: context.provenance[name],
   });
 
   return {
-    record: { does: field('does'), kind: field('kind'), place: field('place'), name: field('name') },
+    record: {
+      does: field('does'),
+      type: field('type'),
+      gsClass: field('gsClass'),
+      stage: field('stage'),
+      place: field('place'),
+      name: field('name'),
+    },
     pin: pin
       ? {
           hybasId: pin.hybasId,

@@ -56,7 +56,9 @@ export class PhoebeError extends Error {}
  */
 export interface CarriedRecord {
   does: string;
-  kind: string;
+  type: string;
+  gsClass: string;
+  stage: string;
   place: string;
   name: string;
 }
@@ -64,11 +66,13 @@ export interface CarriedRecord {
 export function carriedRecord(context: CarriedRecord): CarriedRecord | null {
   const record = {
     does: context.does.trim(),
-    kind: context.kind,
+    type: context.type,
+    gsClass: context.gsClass,
+    stage: context.stage,
     place: context.place.trim(),
     name: context.name.trim(),
   };
-  return record.does || record.kind || record.place || record.name ? record : null;
+  return record.does || record.type || record.stage || record.place || record.name ? record : null;
 }
 
 /**

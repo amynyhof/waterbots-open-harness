@@ -26,6 +26,7 @@
 
 import type { CriterionStatus } from './criteriaState';
 import type { MethodPack, PackValues } from './methodPacks';
+import { DRINKING_WATER_TYPE, type GsClassId, type ProjectStageId, type ProjectTypeId } from './projectTypes.generated';
 import type { Surface } from './surfaces';
 
 /* --------------------------------------------------------------------------
@@ -33,19 +34,20 @@ import type { Surface } from './surfaces';
    -------------------------------------------------------------------------- */
 
 /**
- * What kind of project it is, in the visitor's own answer to Wellington's
- * plain question. The console maps the answer to a standard internally; the
- * visitor never needs the word. "unsure" is a first-class answer and routes to
- * Phoebe. Maintainer's brief, 2 Sep 2026 — the "standard of interest" chips
- * died as a form concept the same day.
+ * THE TYPE AND THE STAGE, for "what kind" — item A16, 24 Sep 2026. The type
+ * is the one standard project type Wellington matched the visitor's words to
+ * and they confirmed, as an id from the shared file; a drinking-water project
+ * also carries its class; the stage is on paper, being built, or already
+ * running. Each is logged only on the visitor's yes, in his prompt, and each
+ * is checked against the closed lists by the relay and again by the client.
+ * "What kind" — water, carbon or unsure, the maintainer's brief of 2 Sep
+ * 2026 — retired the same day: which pathway a project fits is Phoebe's to
+ * find, never a field. The "standard of interest" chips died on 2 Sep 2026
+ * and stay dead.
  */
-export type ProjectKind = '' | 'water' | 'carbon' | 'unsure';
-
-export const KIND_LABEL: Record<Exclude<ProjectKind, ''>, string> = {
-  water: 'A water benefit in a basin',
-  carbon: 'Safe drinking water that stops boiling · carbon',
-  unsure: 'Not sure yet — Phoebe’s criteria settle it',
-};
+export type ProjectType = '' | ProjectTypeId;
+export type ProjectClass = '' | GsClassId;
+export type ProjectStage = '' | ProjectStageId;
 
 /**
  * Where a context field came from. Provenance stays honest on the card:
@@ -65,24 +67,37 @@ export interface VisitContext {
   name: string;
   /** Where it is, in their words — or the pinned basin's, if they left it blank. */
   place: string;
-  kind: ProjectKind;
-  provenance: { does: Provenance; name: Provenance; place: Provenance; kind: Provenance };
+  type: ProjectType;
+  gsClass: ProjectClass;
+  stage: ProjectStage;
+  provenance: {
+    does: Provenance;
+    name: Provenance;
+    place: Provenance;
+    type: Provenance;
+    gsClass: Provenance;
+    stage: Provenance;
+  };
 }
 
 export const EMPTY_CONTEXT: VisitContext = {
   does: '',
   name: '',
   place: '',
-  kind: '',
-  provenance: { does: '', name: '', place: '', kind: '' },
+  type: '',
+  gsClass: '',
+  stage: '',
+  provenance: { does: '', name: '', place: '', type: '', gsClass: '', stage: '' },
 };
 
-/** What Wellington learned this turn, from the visitor's own words. */
+/** What Wellington learned this turn, from the visitor's own words and their yes. */
 export interface Learned {
   does?: string;
   name?: string;
   place?: string;
-  kind?: Exclude<ProjectKind, ''>;
+  type?: ProjectTypeId;
+  gsClass?: GsClassId;
+  stage?: ProjectStageId;
 }
 
 /**
@@ -106,7 +121,7 @@ export function typedContext(context: VisitContext, field: 'name' | 'place', val
  */
 export function learnedContext(context: VisitContext, learned: Learned): VisitContext {
   let next = context;
-  const take = (field: 'does' | 'name' | 'place' | 'kind', value: string) => {
+  const take = (field: 'does' | 'name' | 'place' | 'type' | 'gsClass' | 'stage', value: string) => {
     if (next.provenance[field] === 'typed') return;
     next = {
       ...next,
@@ -117,7 +132,14 @@ export function learnedContext(context: VisitContext, learned: Learned): VisitCo
   if (learned.does) take('does', learned.does);
   if (learned.name) take('name', learned.name);
   if (learned.place) take('place', learned.place);
-  if (learned.kind) take('kind', learned.kind);
+  if (learned.type) take('type', learned.type);
+  /* A class is a fact about a drinking-water project and nothing else: it
+     lands only beside C-19, and a type that is not C-19 clears any class. */
+  if (next.type !== DRINKING_WATER_TYPE && next.gsClass) {
+    next = { ...next, gsClass: '', provenance: { ...next.provenance, gsClass: '' } };
+  }
+  if (learned.gsClass && next.type === DRINKING_WATER_TYPE) take('gsClass', learned.gsClass);
+  if (learned.stage) take('stage', learned.stage);
   return next;
 }
 

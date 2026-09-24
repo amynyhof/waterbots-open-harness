@@ -3,8 +3,8 @@
  *
  * SLICE 3 OF THE DESK PLAN, 7 Sep 2026 — Phoebe's row closes the loop. What
  * Wellington learned at the desk, or the visitor typed on the rail — what the
- * project does, what kind, where it is, what it is called — travels with each
- * of Phoebe's requests, so nobody says it twice. Her verdicts already come
+ * project does, its type and stage, where it is, what it is called — travels
+ * with each of Phoebe's requests, so nobody says it twice. Her verdicts already come
  * back the other way, through the criteria to her row on the desk.
  *
  * WELLINGTON READS THE SAME RECORD from 16 Sep 2026. One reader (`readRecord`),
@@ -16,18 +16,38 @@
  * WHAT CROSSES IS THE VISITOR'S OWN WORDS AND NOTHING ELSE. Never a verdict,
  * never a figure, never the desk conversation's turns — the same line the
  * bridge (item S7) draws. It is checked here and nowhere else: strings only,
- * each field capped at the length the desk already caps it at, the kind from
- * the closed set. A field that is too long is dropped whole rather than cut,
- * because a cut sentence is not the visitor's sentence.
+ * each field capped at the length the desk already caps it at, the type, the
+ * class and the stage from the closed lists. A field that is too long is
+ * dropped whole rather than cut, because a cut sentence is not the visitor's
+ * sentence.
  *
- * This file imports nothing so the check scripts can load it plain.
+ * TYPE, CLASS AND STAGE for "what kind" from 24 Sep 2026, item A16. The type
+ * is an id from the shared project-type file; the class rides only beside a
+ * drinking-water type; the stage is one of three. Each line the agents read
+ * carries the standard's name and its plain sentence, so neither agent has
+ * to know an id.
+ *
+ * This file imports only the generated project-type module, which imports
+ * nothing, so the check scripts can still load it plain.
  */
 
-export type RecordKind = 'water' | 'carbon' | 'unsure';
+import {
+  DRINKING_WATER_TYPE,
+  GS_CLASS_IDS,
+  PROJECT_STAGES,
+  PROJECT_STAGE_IDS,
+  PROJECT_TYPE_IDS,
+  projectType,
+  type GsClassId,
+  type ProjectStageId,
+  type ProjectTypeId,
+} from './_projectTypes.generated.js';
 
 export interface ProjectRecord {
   does: string;
-  kind: RecordKind | '';
+  type: ProjectTypeId | '';
+  gsClass: GsClassId | '';
+  stage: ProjectStageId | '';
   place: string;
   name: string;
 }
@@ -59,8 +79,6 @@ const STAGE_LINES: Record<ScreeningStage, string> = {
     'Screening step: Quantify is next. Calvin is not answering yet; point at the calculator. Do not pretend his chat is live.',
 };
 
-const KINDS: readonly RecordKind[] = ['water', 'carbon', 'unsure'];
-
 function field(value: unknown): string {
   if (typeof value !== 'string') return '';
   const trimmed = value.trim();
@@ -74,29 +92,32 @@ function field(value: unknown): string {
 export function readRecord(value: unknown): ProjectRecord | null {
   if (typeof value !== 'object' || value === null) return null;
   const v = value as Record<string, unknown>;
-  const kind = KINDS.find((k) => k === v.kind) ?? '';
+  const type = PROJECT_TYPE_IDS.find((id) => id === v.type) ?? '';
+  /* A class is a fact about a drinking-water project and nothing else. */
+  const gsClass = type === DRINKING_WATER_TYPE ? (GS_CLASS_IDS.find((id) => id === v.gsClass) ?? '') : '';
+  const stage = PROJECT_STAGE_IDS.find((id) => id === v.stage) ?? '';
   const record: ProjectRecord = {
     does: field(v.does),
-    kind,
+    type,
+    gsClass,
+    stage,
     place: field(v.place),
     name: field(v.name),
   };
-  if (!record.does && !record.kind && !record.place && !record.name) return null;
+  if (!record.does && !record.type && !record.stage && !record.place && !record.name) return null;
   return record;
 }
 
-/** The kinds in the words the desk uses for them. */
-const KIND_WORDS: Record<RecordKind, string> = {
-  water: 'a benefit to water in a river basin — a water project',
-  carbon: 'safe drinking water that stops people boiling — treated here as a carbon project',
-  unsure: 'not sure yet, in the visitor’s own words',
-};
-
-/** The four field lines, only those that were said. Shared by both blocks. */
+/** The field lines, only those that were said. Shared by both blocks. */
 function recordLines(record: ProjectRecord): string[] {
   const lines: string[] = [];
   if (record.does) lines.push(`- What it does: ${record.does}`);
-  if (record.kind) lines.push(`- What kind: ${KIND_WORDS[record.kind]}`);
+  const type = record.type ? projectType(record.type) : undefined;
+  if (type) lines.push(`- What type: ${type.name} — ${type.plain}`);
+  const gsClass = record.gsClass ? projectType(record.gsClass) : undefined;
+  if (gsClass) lines.push(`- Which class of drinking-water project: ${gsClass.name} — ${gsClass.plain}`);
+  const stage = record.stage ? PROJECT_STAGES.find((s) => s.id === record.stage) : undefined;
+  if (stage) lines.push(`- Stage: ${stage.words} — ${stage.plain}`);
   if (record.place) lines.push(`- Where it is: ${record.place}`);
   if (record.name) lines.push(`- What it is called: ${record.name}`);
   return lines;
@@ -149,7 +170,7 @@ export function visitBlock(record: ProjectRecord | null, stage?: ScreeningStage 
   ].join('\n');
 }
 
-/** Stage-only block when the visit has no does/name/place/kind yet. */
+/** Stage-only block when the visit has no record fields yet. */
 export function stageBlock(stage: ScreeningStage): string {
   return [`# ${VISIT_HEADING}`, '', STAGE_LINES[stage]].join('\n');
 }

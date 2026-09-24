@@ -1,6 +1,6 @@
 # product-shared — journey, roster, pathway (open)
 
-**Version 0.5.0.** Shared facts for the open free pathway. No tools folder — this
+**Version 0.6.0.** Shared facts for the open free pathway. No tools folder — this
 pack is not a seat with tools.
 
 **The project-type list lives here from 23 Sep 2026**, at
@@ -30,7 +30,7 @@ is wired. The live lists stay in code:
 | Six phase names | [`src/lib/journey.ts`](../../src/lib/journey.ts) |
 | Desk label “Dispatches” | [`src/lib/surfaces.ts`](../../src/lib/surfaces.ts) |
 | The crew — every seat, every door | [`roster.yaml`](./roster.yaml), here, from 18 Sep 2026; checked by `scripts/check-roster.mjs` on every build |
-| The project types — twenty-four cited types and "none of these" | [`project-types.md`](./project-types.md), here, from 23 Sep 2026; nothing reads it until item A16's build, then Wellington's prompt and a check |
+| The project types — twenty-four cited types and "none of these" | [`project-types.md`](./project-types.md), here, from 23 Sep 2026; read from 24 Sep 2026 by `scripts/build-prompt-modules.mjs` into Wellington's prompt (short form), his relay's closed lists and the rail |
 | ~~Four agents~~ **The seats built on this site's screens** — portrait, colour, which screen opens | [`src/lib/crew.ts`](../../src/lib/crew.ts), checked against the roster, never a second list of it. **Amended 18 Sep 2026.** |
 
 ## Pathway (open, free)

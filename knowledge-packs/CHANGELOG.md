@@ -3,6 +3,14 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.17.0 — 24 Sep 2026
+
+- **Wellington names the project type and asks the stage**, item A16, step 2 of the build
+  order. `product-shared@0.6.0`: `project-types.md` is read, parsed once into two generated
+  modules, and his region asks five fields. `phoebe-eligibility@0.12.0` (`vwba-2.0@0.10.0`):
+  her tool text reads the same five. "What kind" retired. No card changed; the seal of
+  23 Sep 2026 is untouched.
+
 ## 0.16.0 — 24 Sep 2026
 
 - **The agent primer is swept clean of struck text and date stamps**, and Wellington's region

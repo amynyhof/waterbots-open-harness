@@ -46,11 +46,13 @@ export function actionFor(route: WellingtonRoute): TurnAction | undefined {
 function recordFrom(visit: Visit): VisitRecord | null {
   const record: VisitRecord = {
     does: visit.context.does.trim(),
-    kind: visit.context.kind,
+    type: visit.context.type,
+    gsClass: visit.context.gsClass,
+    stage: visit.context.stage,
     place: visit.context.place.trim(),
     name: visit.context.name.trim(),
   };
-  return record.does || record.kind || record.place || record.name ? record : null;
+  return record.does || record.type || record.stage || record.place || record.name ? record : null;
 }
 
 /**

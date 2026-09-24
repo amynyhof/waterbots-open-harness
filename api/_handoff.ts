@@ -11,9 +11,11 @@
  *
  * WHAT THE SEAL HOLDS, as ruled:
  *
- *   - the four record fields — what it does, what kind, where it is, what it
- *     is called — each with its source tag: typed, told Wellington, or from
- *     the pin;
+ *   - the record fields — what it does, its type, its class where it is a
+ *     drinking-water project, its stage, where it is, what it is called —
+ *     each with its source tag: typed, told Wellington, or from the pin
+ *     (type, class and stage for "what kind" from 24 Sep 2026, item A16;
+ *     told to production once, item O14);
  *   - the basin pin as ids: the HydroSHEDS and Pfafstetter ids, the level,
  *     the stress label, the published area;
  *   - Phoebe's worksheet: each criterion's state and its way forward;
@@ -44,6 +46,15 @@
  */
 
 import { randomBytes } from 'node:crypto';
+import {
+  DRINKING_WATER_TYPE,
+  GS_CLASS_IDS,
+  PROJECT_STAGE_IDS,
+  PROJECT_TYPE_IDS,
+  type GsClassId,
+  type ProjectStageId,
+  type ProjectTypeId,
+} from './_projectTypes.generated.js';
 
 /** The name of this shape, so production can tell a seal from anything else. */
 export const SEAL_SHAPE = 'waterbots-open-harness/handoff/1';
@@ -72,12 +83,16 @@ const MAX_PACKS = 10;
 const MAX_ANSWERS_PER_PACK = 40;
 
 export type SealSource = '' | 'typed' | 'chat' | 'pin';
-export type SealKind = '' | 'water' | 'carbon' | 'unsure';
+export type SealType = '' | ProjectTypeId;
+export type SealClass = '' | GsClassId;
+export type SealStage = '' | ProjectStageId;
 export type SealCriterionState = 'unchecked' | 'met' | 'not-yet';
 export type SealPackStatus = 'complete' | 'incomplete' | 'pending' | 'blocked';
 
 const SOURCES: readonly SealSource[] = ['', 'typed', 'chat', 'pin'];
-const KINDS: readonly SealKind[] = ['', 'water', 'carbon', 'unsure'];
+const TYPES: readonly SealType[] = ['', ...PROJECT_TYPE_IDS];
+const CLASSES: readonly SealClass[] = ['', ...GS_CLASS_IDS];
+const STAGES_OF_PROJECT: readonly SealStage[] = ['', ...PROJECT_STAGE_IDS];
 const STATES: readonly SealCriterionState[] = ['unchecked', 'met', 'not-yet'];
 const STATUSES: readonly SealPackStatus[] = ['complete', 'incomplete', 'pending', 'blocked'];
 
@@ -88,7 +103,9 @@ export interface SealField {
 
 export interface SealRecord {
   does: SealField;
-  kind: SealField & { value: SealKind };
+  type: SealField & { value: SealType };
+  gsClass: SealField & { value: SealClass };
+  stage: SealField & { value: SealStage };
   place: SealField;
   name: SealField;
 }
@@ -191,11 +208,20 @@ function field(value: unknown, where: string, max: number): SealField {
 }
 
 function readRecord(value: unknown): SealRecord {
-  const v = object(value, 'record', ['does', 'kind', 'place', 'name']);
-  const kind = field(v.kind, 'record.kind', MAX_LABEL_CHARS);
+  const v = object(value, 'record', ['does', 'type', 'gsClass', 'stage', 'place', 'name']);
+  const type = field(v.type, 'record.type', MAX_LABEL_CHARS);
+  const gsClass = field(v.gsClass, 'record.gsClass', MAX_LABEL_CHARS);
+  const stage = field(v.stage, 'record.stage', MAX_LABEL_CHARS);
+  const typeValue = oneOf(type.value, 'record.type.value', TYPES);
+  const classValue = oneOf(gsClass.value, 'record.gsClass.value', CLASSES);
+  if (classValue !== '' && typeValue !== DRINKING_WATER_TYPE) {
+    refuse(`record.gsClass.value is set but record.type.value is not ${DRINKING_WATER_TYPE}, the one type that takes a class`);
+  }
   return {
     does: field(v.does, 'record.does', MAX_DOES_CHARS),
-    kind: { value: oneOf(kind.value, 'record.kind.value', KINDS), source: kind.source },
+    type: { value: typeValue, source: type.source },
+    gsClass: { value: classValue, source: gsClass.source },
+    stage: { value: oneOf(stage.value, 'record.stage.value', STAGES_OF_PROJECT), source: stage.source },
     place: field(v.place, 'record.place', MAX_PLACE_CHARS),
     name: field(v.name, 'record.name', MAX_NAME_CHARS),
   };

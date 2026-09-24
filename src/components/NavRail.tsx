@@ -4,9 +4,12 @@
  *
  * RESHAPED 4 Sep 2026, maintainer's ruling 3. The project context left the
  * desk's centre and became this: the project card, then one row per field —
- * what it does, what kind, where it is, what it is called, in the order the
- * seats need them (ruled 5 Sep 2026) — each showing the value or a
- * dash, and where the value came from. **A visitor who never chats
+ * what it does, what type, the stage, where it is, what it is called, in the
+ * order the seats need them (ruled 5 Sep 2026; type and stage for "what kind"
+ * from 24 Sep 2026, item A16) — each showing the value or a dash, and where
+ * the value came from. The type row shows the standard's name, and its
+ * one-line definition sits behind it on hover, the way the record's explainer
+ * sits behind the (i). **A visitor who never chats
  * loses nothing**: name and place stay typeable here, quietly, and a typed
  * entry is never overwritten by what he heard.
  *
@@ -23,7 +26,8 @@
 
 import { useEffect, useState } from 'react';
 import { SITE_LABEL, SITE_URL } from '../lib/site';
-import { KIND_LABEL, type Provenance, type VisitContext } from '../lib/visit';
+import { PROJECT_STAGES, projectType } from '../lib/projectTypes.generated';
+import type { Provenance, VisitContext } from '../lib/visit';
 
 const EXPANDED = 224;
 const COLLAPSED = 52;
@@ -158,7 +162,7 @@ export default function NavRail({
             </div>
           </div>
 
-          {/* THE RECORD his interview populates. Three rows; a dash until he
+          {/* THE RECORD his interview populates. Four rows; a dash until he
               has heard it. The explainer sits behind the (i). */}
           <div
             className="eyebrow"
@@ -177,14 +181,21 @@ export default function NavRail({
           </div>
 
           {/* THE ORDER IS THE SEATS' — ruled 5 Sep 2026: what it
-              does (Phoebe, Calvin), what kind (Phoebe, Calvin), where it is
-              (Phoebe, Bridget before any pin, Calvin), what it is called (the
-              desk only). Wellington asks in this order. */}
+              does (Phoebe, Calvin), what type and the stage (Phoebe, Calvin),
+              where it is (Phoebe, Bridget before any pin, Calvin), what it is
+              called (the desk only). Wellington asks in this order. */}
           <RecordRow label="What it does" value={context.does} provenance={context.provenance.does} />
           <RecordRow
-            label="What kind"
-            value={context.kind ? KIND_LABEL[context.kind] : ''}
-            provenance={context.provenance.kind}
+            label="What type"
+            value={typeWords(context)}
+            hint={typeHint(context)}
+            provenance={context.provenance.type}
+          />
+          <RecordRow
+            label="Stage"
+            value={PROJECT_STAGES.find((s) => s.id === context.stage)?.words ?? ''}
+            hint={PROJECT_STAGES.find((s) => s.id === context.stage)?.plain}
+            provenance={context.provenance.stage}
           />
           <RecordRow
             label="Where it is"
@@ -231,21 +242,40 @@ export default function NavRail({
   );
 }
 
+/** The type row's value: the standard's name, and the class beside a drinking-water type. */
+function typeWords(context: VisitContext): string {
+  const type = context.type ? projectType(context.type) : undefined;
+  if (!type) return '';
+  const gsClass = context.gsClass ? projectType(context.gsClass) : undefined;
+  return gsClass ? `${type.name} · ${gsClass.name}` : type.name;
+}
+
+/** The one-line definitions, behind the value on hover. */
+function typeHint(context: VisitContext): string | undefined {
+  const type = context.type ? projectType(context.type) : undefined;
+  if (!type) return undefined;
+  const gsClass = context.gsClass ? projectType(context.gsClass) : undefined;
+  return gsClass ? `${type.plain} ${gsClass.plain}` : type.plain;
+}
+
 /**
  * One row of the record. A value once known, a dash until then, and the
- * source in a small caption. Name and place carry a quiet input so a visitor
+ * source in a small caption. A hint, where the row has one, is the
+ * definition behind the value, shown on hover. Name and place carry a quiet input so a visitor
  * who never chats can still say them; the input shows only when the field is
  * blank or was typed, so a value from the conversation reads as a value.
  */
 function RecordRow({
   label,
   value,
+  hint,
   provenance,
   editable,
   last,
 }: {
   label: string;
   value: string;
+  hint?: string;
   provenance: Provenance;
   editable?: { value: string; onChange: (v: string) => void; placeholder: string };
   last?: boolean;
@@ -271,6 +301,7 @@ function RecordRow({
         />
       ) : (
         <div
+          title={value ? hint : undefined}
           style={{
             fontSize: 12.5,
             lineHeight: 1.45,

@@ -1,7 +1,9 @@
 /**
  * Generates the TypeScript modules the relay needs from committed markdown.
  *
- * Two bundles today: Phoebe's card sets, and the shared agent primer.
+ * Two bundles today: Phoebe's card sets, and the shared agent primer. Five by
+ * 23 Sep 2026; the project-type list joined on 24 Sep 2026 as the sixth, and
+ * it is the one bundle that is parsed rather than embedded whole.
  *
  * WHY THIS EXISTS. The browser gets committed markdown through Vite's `?raw`
  * import. The serverless relay cannot — it is built by Vercel's Node builder,
@@ -53,6 +55,121 @@ import { join } from 'node:path';
 --------------------------------------------------------------------------- */
 
 const PACKS_MARKER = '{{FITTED_PACKS}}';
+
+/* ---------------------------------------------------------------------------
+   The project types — item A16, built 24 Sep 2026.
+
+   ONE FILE, ONE PARSER, TWO READERS. `product-shared/project-types.md` is
+   the cited list Wellington matches a visitor's project to: twenty VWBA
+   activity types, four Gold Standard technology classes, and "none of these".
+   The relay needs it twice — as the short list in his prompt, and as the
+   closed lists his logged type, class and stage are checked against — and
+   the browser needs it once, to show the standard's name and its plain
+   sentence on the rail. Three readers parsing one markdown table would be
+   three parsers that can drift, so this script parses it once and writes
+   two modules, one under api/ and one under src/lib/, both committed and
+   both under the staleness gate.
+
+   THE SHORT FORM, the maintainer's ruling of 24 Sep 2026: one line per type
+   — the id, the standard's own name, the plain sentence — and no per-row
+   page cites, because he never writes citation text. The cites stay on the
+   file, for people and for Phoebe's applies cards. A page reference inside
+   a plain sentence is dropped from the short form for the same reason.
+--------------------------------------------------------------------------- */
+
+const TYPE_ROW = /^\| (C-\d{1,2}|HWT|IWT|CWT|CWS|NONE) \| ([^|]+?) \| ([^|]+?) \|$/;
+
+function parseProjectTypes(text) {
+  const types = [];
+  for (const line of text.split('\n')) {
+    const m = line.match(TYPE_ROW);
+    if (!m) continue;
+    const [, id, name, plainRaw] = m;
+    const axis = id === 'NONE' ? 'none' : id.startsWith('C-') ? 'water' : 'carbon';
+    /* Cites inside the sentence — "(Table 2, p. 6; Table 3, p. 9)",
+       "(Appendix C, pp. 37–39; the note itself on p. 39)" — come out of the
+       short form. Any other bracket stays. */
+    const plain = plainRaw
+      .replace(/\s*\((?:Table|Appendix|§)[^)]*\)/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    types.push({ id, name: name.trim(), plain, axis });
+  }
+  const water = types.filter((t) => t.axis === 'water').length;
+  const carbon = types.filter((t) => t.axis === 'carbon').length;
+  const none = types.filter((t) => t.axis === 'none').length;
+  if (water !== 20 || carbon !== 4 || none !== 1) {
+    throw new Error(
+      `project-types.md parsed to ${water} water types, ${carbon} carbon classes and ${none} "none" rows; expected 20, 4 and 1. The table's shape has changed, and both generated modules would be wrong.`
+    );
+  }
+  const ids = new Set(types.map((t) => t.id));
+  if (ids.size !== types.length) throw new Error('project-types.md carries a duplicate id.');
+  return types;
+}
+
+/** The short list as Wellington reads it. */
+function projectTypesShortForm(types) {
+  const line = (t) => `- ${t.id} — ${t.name}: ${t.plain}`;
+  return [
+    '## Water stewardship activity types — the VWBA guidebook',
+    '',
+    ...types.filter((t) => t.axis === 'water').map(line),
+    '',
+    '## Safe-water technology classes — the Gold Standard methodology, asked only for a drinking-water project (C-19)',
+    '',
+    ...types.filter((t) => t.axis === 'carbon').map(line),
+    '',
+    '## None of these',
+    '',
+    ...types.filter((t) => t.axis === 'none').map(line),
+    '',
+  ].join('\n');
+}
+
+/** The stages Wellington asks, from the guide-not-gate addendum §2, 23 Sep 2026. */
+const PROJECT_STAGES = [
+  { id: 'paper', words: 'on paper', plain: 'still a plan — nothing has been spent on building it yet' },
+  { id: 'building', words: 'being built', plain: 'work has started and it is not running yet' },
+  { id: 'running', words: 'already running', plain: 'it is in use today' },
+];
+
+function renderProjectTypes(text) {
+  const types = parseProjectTypes(text);
+  const short = projectTypesShortForm(types);
+  const typeIds = types.filter((t) => t.axis !== 'carbon').map((t) => t.id);
+  const classIds = types.filter((t) => t.axis === 'carbon').map((t) => t.id);
+  return [
+    `/** The list as Wellington reads it: id, the standard's name, one plain sentence; no cites. */`,
+    `export const PROJECT_TYPES_MD: string = ${JSON.stringify(short)};`,
+    '',
+    `export interface ProjectType { id: string; name: string; plain: string; axis: 'water' | 'carbon' | 'none' }`,
+    '',
+    `/** Every row of the file, in file order. */`,
+    `export const PROJECT_TYPES: readonly ProjectType[] = ${JSON.stringify(types, null, 2)};`,
+    '',
+    `/** What \`type\` may hold: the twenty water-axis ids and NONE. A class is never a type. */`,
+    `export const PROJECT_TYPE_IDS = ${JSON.stringify(typeIds)} as const;`,
+    `export type ProjectTypeId = (typeof PROJECT_TYPE_IDS)[number];`,
+    '',
+    `/** What \`gsClass\` may hold, and only beside a drinking-water project, C-19. */`,
+    `export const GS_CLASS_IDS = ${JSON.stringify(classIds)} as const;`,
+    `export type GsClassId = (typeof GS_CLASS_IDS)[number];`,
+    '',
+    `/** The one type that also takes a class. */`,
+    `export const DRINKING_WATER_TYPE: ProjectTypeId = 'C-19';`,
+    '',
+    `/** The stage of a project, as Wellington asks it and logs it on the visitor's yes. */`,
+    `export const PROJECT_STAGES = ${JSON.stringify(PROJECT_STAGES, null, 2)} as const;`,
+    `export const PROJECT_STAGE_IDS = ${JSON.stringify(PROJECT_STAGES.map((s) => s.id))} as const;`,
+    `export type ProjectStageId = (typeof PROJECT_STAGE_IDS)[number];`,
+    '',
+    `export function projectType(id: string): ProjectType | undefined {`,
+    `  return PROJECT_TYPES.find((t) => t.id === id);`,
+    `}`,
+    '',
+  ].join('\n');
+}
 
 const COUNT_WORD = ['no', 'one', 'two', 'three', 'four', 'five', 'six'];
 
@@ -143,6 +260,21 @@ const BUNDLES = [
     stale: 'Wellington would deploy with an out-of-date region, so he could welcome and route in words the maintainer never signed.',
   },
   {
+    label: 'types',
+    target: 'api/_projectTypes.generated.ts',
+    /* The project-type list, parsed rather than embedded — item A16, 24 Sep
+       2026. The same render is written a second time under src/lib/ so the
+       rail reads the same rows; see the bundle after this one. */
+    sources: [{ name: 'PROJECT_TYPES', file: 'knowledge-packs/product-shared/project-types.md', render: renderProjectTypes }],
+    stale: 'Wellington would deploy matching to a list of types the maintainer has since changed, and his relay would check a logged type against the wrong list.',
+  },
+  {
+    label: 'types (browser)',
+    target: 'src/lib/projectTypes.generated.ts',
+    sources: [{ name: 'PROJECT_TYPES', file: 'knowledge-packs/product-shared/project-types.md', render: renderProjectTypes }],
+    stale: "The rail would name a type or a definition the file no longer carries.",
+  },
+  {
     label: 'build-update',
     target: 'api/_buildUpdate.generated.ts',
     /* The dated build-update fact Wellington phrases when a visitor asks how the
@@ -173,7 +305,7 @@ function render({ target, sources }) {
 `;
 
   const body = sources
-    .map(({ name, file, region }) => {
+    .map(({ name, file, region, render }) => {
       /* Normalised to LF before embedding. Git may check these files out with
          CRLF on Windows and LF on Vercel's Linux builders; without this the
          generated module differs by platform and the staleness gate fails on a
@@ -209,6 +341,8 @@ function render({ target, sources }) {
       if (text.includes('{{')) {
         throw new Error(`${file} still carries an unreplaced marker: ${text.match(/\{\{[^}]*\}\}/)}`);
       }
+      /* A parsed source renders its own module body. */
+      if (render) return render(text);
       /* JSON.stringify gives a correctly escaped TypeScript string literal —
          backslashes, quotes, newlines and any stray control characters included. */
       return `export const ${name}: string = ${JSON.stringify(text)};\n`;

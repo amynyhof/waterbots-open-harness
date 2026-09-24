@@ -1,5 +1,10 @@
 # Changelog — phoebe-eligibility
 
+## 0.12.0 — 24 Sep 2026
+
+- `vwba-2.0@0.10.0` — her tool text reads five facts from the desk's record: type and stage
+  for kind, item A16's build. No card changed.
+
 ## 0.11.0 — 24 Sep 2026
 
 - `vwba-2.0@0.9.0` and `gs-paa-v2.0@0.7.0` — both packs carry a tool definition file,

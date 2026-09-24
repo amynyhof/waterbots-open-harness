@@ -27,7 +27,7 @@
  * a different frame. There are NO scripted messages and no fake typing.
  *
  * HE ASKS THE PROJECT QUESTIONS HIMSELF, in the order the seats need them:
- * what it does, where, what it is called, what kind. His answers come back as
+ * what it does, its type and stage, where, what it is called. His answers come back as
  * a field and write into the visit under one rule — a typed entry is never
  * overwritten, and the rail says where each field came from.
  *

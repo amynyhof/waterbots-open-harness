@@ -305,7 +305,9 @@ export async function POST(req: Request): Promise<Response> {
     );
   }
 
-  const answer = validate(parsed);
+  /* A class returned this turn is kept only beside a drinking-water type,
+     confirmed this turn or already on the visit. */
+  const answer = validate(parsed, { type: record?.type });
   if (!answer) {
     console.error(`wellington: returned an empty answer — ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens`);
     return undelivered(
