@@ -106,7 +106,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K9 | Calvin's and Bridget's packs move to the new pack shape | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — one brief each, the way Phoebe's did; not started |
 | K10 | Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — not started |
-| K11 | A third phase tag, "Partners phase" — rows where Bridget helps on the paid site | Knowledge | closed | **logged 23 Sep 2026** — **overtaken the same day** by the phase-tags-by-nav ruling: every row carries its navigation phase, and thirteen carbon rows and two water rows are Partners; closed into item A18 |
+| K11 | A third phase tag, "Partners phase" — rows where Bridget helps on the paid site | Knowledge | closed | **logged 23 Sep 2026** — **overtaken the same day** by the phase-tags-by-nav ruling: every row carries its navigation phase, and thirteen carbon rows and two water rows are Partners; closed into item A18 — **swept 23 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | A1 | Phoebe abstention loop | Agents | PARK | built 25 Aug 2026 |
 | A2 | Final agent staffing | Agents | closed | settled 24 Aug 2026; Bridget's colour settled 29 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | A3 | Agent handoff primer | Agents | closed | shipped 28 Aug 2026 — rung 2 live — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -190,6 +190,14 @@ The output is a written proposal listing candidate sets, not the sets themselves
 
 Opened 21 Aug 2026. Not started.
 
+**Two full draft card sets already exist, ahead of this item's own scope.**
+`activity-cards-vwba-DRAFT.md` (20 cards, Appendix C, the activity-type lookup) and
+`definitions-cards-vwba-DRAFT.md` (34 cards, the glossary) sit untracked at the repository
+root. Neither is approved, and neither is read by anything; the live Knowledge tab names both
+as "not yet graded" drafts. On the maintainer's word, both are **parked until after v1** —
+not graded this cycle, not folded into this item's proposal, and not deleted. The files stay
+where they are.
+
 ## K2. Co-benefit quantification module
 
 **Per-method cards — carbon methodologies, water quality benefit accounting, the SDG-tool pattern —
@@ -217,24 +225,6 @@ common to all of them, to shape the production report product.
 Opened 20 Aug 2026; **no action taken yet**. The same cite-and-link posture applies — reports live
 in `sources-local/`, which never publishes, and the repo carries citations and findings rather than
 copied text.
-
-## K4. "Knowledge Pack" — closed, swept to the archive
-
-**Canon, ruled 26 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
-## K5. The VWBA 2.0 D-3 screening pack — closed, swept to the archive
-
-**Built 1 Sep 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
-## K6. The Gold Standard safe-drinking-water carbon packs — closed, swept to the archive
-
-**Built 2 Sep 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
 
 ## K7. A carbon card pass in Phoebe's card format — and her second pack, with a "does this apply" test
 
@@ -362,12 +352,6 @@ A third tag, "Partners phase", is item K11, the next version, not built.
 Logged 2 Sep 2026. **Expanded 21 Sep 2026. Proposed and ruled 22 Sep 2026; stops 1 to 3 passed
 23 Sep 2026; the carbon routes drafted, at her grade. Bucket BONES.**
 
-## K8. Phoebe's VWBA pack is the cards' one home — closed, swept to the archive
-
-**Built and canon, 17 Sep 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
 ## K9. Calvin's and Bridget's packs move to the new pack shape
 
 **Logged 18 Sep 2026 from the maintainer's brief. Not started.** Her words, kept whole:
@@ -421,94 +405,6 @@ Logged 18 Sep 2026. **Not started. Bucket BONES.**
 4). Parts 1 and 2 can go first. Proposal before any of it.
 
 Logged 18 Sep 2026. **Not started. Bucket BONES.**
-
-## K11. A third phase tag, "Partners phase" — rows where Bridget helps on the paid site
-
-**Logged 23 Sep 2026 from the maintainer's word, at her grade of the framework cards. Not built.**
-Her words:
-
-> Log one item for the next version: some "to start" rows will move to a third tag, "Partners
-> phase", where Bridget helps on the paid site; not built now.
-
-**What it means.** Today every eligibility card carries one of two tags, *To start* or *To remain
-eligible* (item A18's addendum, the engineer's rule standing as written). Some *To start* rows are
-not the project owner's alone to settle: they turn on partners, permissions and the people around
-the water — the consultation rounds (G9), the grievance mechanism (G10), rights that must be
-uncontested (G5), buy-in and support (water criterion 3), the host country's list (M12). On the
-paid site those are the Partners phase, Bridget's, and a third tag would send them there. Which
-rows move is the next version's proposal, from the cards as they stand; nothing moves now.
-
-**Overtaken the same day, 23 Sep 2026.** The phase-tags-by-nav ruling (`PROPOSAL_phase-tags-by-nav.md`,
-graded the same day) gave every row its navigation phase, so Partners is one of six tags, not a
-third beside two; thirteen carbon rows and two water rows carry it. Nothing further to build under
-this item. **Closed; its row stays in the index; item A18 carries the tags.**
-
-
-# Family: Agents
-
-How agents behave, what they may say, how they hand off, and who staffs which post.
-
-Governed by [AGENT_RULES.md](./AGENT_RULES.md). One rulebook, one family.
-
-## A1. Phoebe abstention loop
-
-**Log every abstention visibly, so the maintainer can grade each one and decide whether it becomes
-a new card.**
-
-When Phoebe declines to answer — because no card covers the question, because the source is silent,
-or because the evidence a project owner supplied does not reach any criterion — that abstention is
-recorded where it can be read, not swallowed. Each logged abstention is then graded, and the
-outcome is a maintainer decision: leave it as a legitimate limit of the card set, or turn it into a
-new card.
-
-This is the mechanism by which the card sets grow from real questions rather than from guesses
-about what might be asked. It also keeps the honest-states rule true for the agent as well as the
-map: a refusal to answer has to be visible, not silent.
-
-**Built 25 Aug 2026 and live in production.** Every abstention is now recorded and readable.
-
-**What a record holds:** when it happened, what Phoebe called the topic in her own few words, and
-the question as the person typed it. The real question is kept — maintainer's ruling, 25 Aug 2026 —
-because "curve number method" tells you a gap exists while the question tells you what card to
-write. A question longer than 500 characters is cut and the record says plainly that it was.
-
-**What a record does not hold: any trace of who asked.** The scrambled identity the daily cap counts
-against is deliberately not written here, so a question can never be tied back to a person, or to
-any other question by the same person. The two stores share a database and nothing else, and a check
-enforces that rather than a comment asking for it.
-
-The most recent 500 are kept; older ones fall off the end. Writing a record can never cost someone
-their answer — a failure to record goes to the log and the answer still goes out.
-
-**Reading them:** `/api/abstentions?key=…`, guarded by `PHOEBE_LOG_KEY`. A guarded address was
-chosen over the storage dashboard on 25 Aug 2026, because this file describes grading as a routine
-and a routine built on an awkward tool is a routine that stops happening. It returns data rather
-than a page, deliberately: every question in it was typed by a member of the public.
-
-**What is left of this item is the grading itself**, which is a maintainer job and not a repository
-one. Read the log, and for each gap decide: a legitimate limit of the card set, or a card to write.
-
-Opened 21 Aug 2026. Mechanism built 25 Aug 2026; grading is ongoing.
-
----
-
-## A2. Final agent staffing — closed, swept to the archive
-
-**Settled 24 Aug 2026; Calvin settled 1 Sep 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
-## A3. Agent handoff primer — closed, swept to the archive
-
-**Shipped 28 Aug 2026, rung 2 live. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
-## A4. Phoebe returned an empty answer — closed, swept to the archive
-
-**One cause fixed 25 Aug 2026; the rest is item A6. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
 
 ## A5. Primer review against the abstention log, once there is real traffic
 
@@ -820,24 +716,6 @@ the guard proposal.**
 
 ---
 
-## A7. An abstention cited a card, once — closed, swept to the archive
-
-**Closed 18 Sep 2026, the benign reading accepted. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
-## A8. Wellington's chat, live on the desk — closed, swept to the archive
-
-**Built 3 Sep 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
-## A9. Agents phrase the roster's facts themselves — closed, swept to the archive
-
-**Canon, ruled 3 Sep 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
 ## A10. Wellington's answers run long
 
 **Logged 3 Sep 2026 as debt, by the maintainer's instruction. Not for now.**
@@ -851,12 +729,6 @@ was — counts, not impressions — and a check that reads sentence counts off a
 comes later, on the maintainer's word.
 
 Logged 3 Sep 2026. **Open, not due.**
-
-## A11. The phase names are canon, and agents point at the step, never a tab — closed, swept to the archive
-
-**Ruled and resolved 5 Sep 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
 
 ## A12. The two chats not built — Bridget's and Calvin's
 
@@ -1238,25 +1110,6 @@ organised there.
 
 Opened 21 Aug 2026. Not started.
 
-## S2. The shared chat layer — closed, swept to the archive
-
-**Built through Level 2, 23 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
-## S3. Level 3 citation pop-out — closed, swept to the archive
-
-**Ruled out of scope, 22 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
-## S4. Chat docks were thrown away on a surface switch — closed, swept to the archive
-
-**Fixed 23 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
-with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
 ## S5. The citation line wraps awkwardly in the narrow dock
 
 **Cosmetic. Logged 24 Aug 2026 in the maintainer's browser check, and deliberately not fixed.**
@@ -1361,33 +1214,6 @@ larger; the second is cheap and partial. Neither is designed yet.
 
 **What not to do.** Do not fix this by giving development its own copy of the handler. Two copies
 that drift is a worse problem than one copy resolved two ways.
-
-## S7. The bridge — handing a finished screening to the paid platform — closed, swept to the archive
-
-**Built 8 Sep 2026, pull request #56. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) the
-same day**, in full, with the contract, the three facts, the rulings and the live-site check intact.
-Nothing was summarised away in the move.
-
----
-
-## S8. Brightness pull-up to the book's published Frost values — closed, swept to the archive
-
-**Closed 29 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
-with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
-## S9. The return to the brand book — closed, swept to the archive
-
-**Closed 30 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
-## S10. The Quantification step — closed, swept to the archive
-
-**Built 1 Sep 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
 
 ## S11. The free desk, and the console in the production shape
 
@@ -1550,12 +1376,6 @@ Logged 3 Sep 2026. **Not built. Waiting on the reference file.**
 was built the same day without it — a carried question lands on the desk, which is Wellington's
 screen, rather than on a hero page. When the hero chat is built, the same receiver feeds it: the
 shell holds the one conversation and any frame around it shows the thread.
-
-## S13. The handoff receiver — closed, swept to the archive
-
-**Built 9 Sep 2026, amended 15 and 16 Sep. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
 
 ## S14. Typing dots — the book's third motion exception
 
@@ -2026,20 +1846,6 @@ number is still a starting point, not a figure from usage.
 
 **Three rows wait on the same thing, real usage** — this one, item A5 (the primer review) and item O9 (the basemap ceiling). Recorded 18 Sep 2026 so that when there is traffic they are looked at together.
 
-## O2. Restore branch protection on `main` — closed, swept to the archive
-
-**Closed 24 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
-with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
-## O3. Reverse link from waterbots.ai — closed, swept to the archive
-
-**Closed 24 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
-with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
 ## O4. Cosmetic and housekeeping items
 
 - **The collapsed legend strip wraps** at very narrow columns. Cosmetic; left alone deliberately.
@@ -2049,32 +1855,6 @@ with its dates and its reasoning intact. Nothing was summarised away in the move
 - **Data files ship with unhashed filenames**, so they do not get immutable-asset caching. They
   carry ETags with `must-revalidate`, so a rebuild will not serve stale data. Only worth revisiting
   if traffic makes it matter.
-
----
-
-## O5. The engineer pushed without a commit word, twice — closed, swept to the archive
-
-**Logged 24 Aug 2026; rule carried to the process rules 18 Sep 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
-## O6. The card gate reports stale cards that are not stale — closed, swept to the archive
-
-**Closed 27 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
-with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
-## O7. Merged branches pile up, and are now to be cleared — closed, swept to the archive
-
-**Closed 27 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 30 Aug 2026**, in full,
-with its dates and its reasoning intact. Nothing was summarised away in the move.
-
----
-
-## O8. The export step in the close-out ritual — closed, swept to the archive
-
-**Closed 17 Sep 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 18 Sep 2026**, in full, with its dates and its reasoning intact. Nothing was summarised away in the move.
 
 ---
 
@@ -2141,13 +1921,6 @@ thing itself.**
 Logged 27 Aug 2026. **Open as a standing dependency, with nothing due until there is real usage.**
 
 **Folded in, 18 Sep 2026:** Route C, a custom CARTO vector basemap styled to the brand book, logged under item S9 as the only route that gives real control over sea and land. It changes this dependency, so it lives here now. Not proposed, not built.
-
----
-
-## O10. Line endings are pinned in git but not in the working folder — closed, swept to the archive
-
-**Closed 30 Aug 2026. Moved to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) on 2 Sep 2026**, in full,
-with its dates and its measurements intact. Nothing was summarised away in the move.
 
 ---
 

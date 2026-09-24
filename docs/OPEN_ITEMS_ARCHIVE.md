@@ -213,6 +213,31 @@ Built 17 Sep 2026. **Canon.**
 
 ---
 
+## K11. A third phase tag, "Partners phase" — rows where Bridget helps on the paid site
+
+**Logged 23 Sep 2026 from the maintainer's word, at her grade of the framework cards. Not built.**
+Her words:
+
+> Log one item for the next version: some "to start" rows will move to a third tag, "Partners
+> phase", where Bridget helps on the paid site; not built now.
+
+**What it means.** Today every eligibility card carries one of two tags, *To start* or *To remain
+eligible* (item A18's addendum, the engineer's rule standing as written). Some *To start* rows are
+not the project owner's alone to settle: they turn on partners, permissions and the people around
+the water — the consultation rounds (G9), the grievance mechanism (G10), rights that must be
+uncontested (G5), buy-in and support (water criterion 3), the host country's list (M12). On the
+paid site those are the Partners phase, Bridget's, and a third tag would send them there. Which
+rows move is the next version's proposal, from the cards as they stand; nothing moves now.
+
+**Overtaken the same day, 23 Sep 2026.** The phase-tags-by-nav ruling (`PROPOSAL_phase-tags-by-nav.md`,
+graded the same day) gave every row its navigation phase, so Partners is one of six tags, not a
+third beside two; thirteen carbon rows and two water rows carry it. Nothing further to build under
+this item. **Closed; its row stays in the index; item A18 carries the tags.**
+
+Swept from [OPEN_ITEMS.md](../OPEN_ITEMS.md) on 23 Sep 2026, in full.
+
+---
+
 # Family: Agents
 
 How agents behave, what they may say, how they hand off, and who staffs which post.

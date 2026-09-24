@@ -1,5 +1,13 @@
 # Changelog — gs-paa-v2.0
 
+## 0.5.0 — 23 Sep 2026
+
+- **The routes set is approved and in the pack**: `cards/routes-cards-gs.md`, R-1 to R-19,
+  approved as written on the maintainer's word; moved here whole from the root draft. Its
+  grader notes are appended to `cards/grader-notes.md`. All three card sets this pack needs
+  are now approved and in the folder. Nothing reads any of them until the pack-keyed reader
+  and gate are built (K7 proposal, step 5). K7 step 4, carbon half, done.
+
 ## 0.4.0 — 23 Sep 2026
 
 - **The framework and general set is approved and in the pack**: P1–P2 and G1–G13 graded

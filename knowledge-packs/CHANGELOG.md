@@ -3,6 +3,18 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.12.0 — 23 Sep 2026
+
+- **The nineteen carbon routes approved and in the pack.** `phoebe-eligibility@0.10.0`
+  (`gs-paa-v2.0@0.5.0`): `routes-cards-gs.md`, R-1 to R-19, moved whole from the root
+  draft, approved as written. All three carbon card sets are now in the folder; nothing
+  reads any of them yet. Item K7, step 4 (carbon half) done.
+- **A stale version footer corrected on the tree README.** It closed with "Tree v0.5.1",
+  left over from before the pack-shape rewrite, against a head that already read 0.11.0.
+  Old wording, whole, under the no-strikes rule: `## Version` followed by `Tree **v0.5.1**.
+  See [CHANGELOG.md](./CHANGELOG.md).` Replaced with a line pointing at this changelog
+  once, no second number.
+
 ## 0.11.0 — 23 Sep 2026
 
 - **All 32 carbon eligibility cards approved.** `phoebe-eligibility@0.9.0`

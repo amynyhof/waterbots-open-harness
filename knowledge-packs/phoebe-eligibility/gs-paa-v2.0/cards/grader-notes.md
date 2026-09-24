@@ -81,3 +81,29 @@ anything.
    rest; every page resolved.
 5. **What is deliberately not a row** is unchanged from the proposal's §5.4: the certification
    cycle, the review stages, annual reports, templates and the auditor's own duties.
+
+---
+
+## Routes set, R-1 to R-19 — moved into `routes-cards-gs.md` on 23 Sep 2026
+
+Approved as written on the maintainer's word of 23 Sep 2026. The notes that sat at the foot of
+the draft:
+
+1. **Four cards rest on documents one link removed from the methodology**: R-14 and R-15 (the
+   consultation requirements, 102), R-17 (the gender requirements, 104) and R-19 (the
+   Paris-alignment requirements, 119). The methodology names 101 as binding; 101 names 102; 102
+   names 104. The methodology names the PA-Alignment Design Change at §6.3.6 without citing 119 by
+   number. Each card shows its chain; her word of 23 Sep 2026 says "the documents it names as
+   binding", and she may read any of the four as too far and strike it. Without them, G9, G10, G11
+   and P1 would have no route and would fall to Unknown or the offer of a person.
+2. **No published carbon project is held**, so no card cites one; the K3 corpus is where one
+   would arrive.
+3. **The gaps with no route**, as the proposal said: a technology not in the method (M1's *no*
+   case), no baseline at all (T2), a host country's exclusion (M12's *no* case), the year already
+   passed (G12's *no* case). Those are where the person is offered.
+4. **R-1's workbooks** are Gold Standard's own files, listed on the methodology's page and held
+   locally; the card cites the methodology's annex as the route's source and names the workbooks
+   as the tool.
+5. **Sections cited** are those the eligibility cards already cite, plus §14.4.3 (field kits, R-3),
+   §A5.4.1 (documenting the list conditions, R-10) and 101 §5.1.5–5.1.8 (what a submission holds,
+   R-18), each read this session.
