@@ -1,6 +1,6 @@
 # gs-paa-v2.0 — Phoebe's second Knowledge Pack
 
-**Version 0.5.0. Not live.** This folder is the home of what Phoebe will know
+**Version 0.6.0. Not live.** This folder is the home of what Phoebe will know
 about eligibility under Gold Standard's safe-drinking-water carbon methodology, the
 Paris-aligned version. **Nothing on the live site reads it yet**, no card is approved,
 and Phoebe still says that carbon eligibility is coming and not live. Item K7 in

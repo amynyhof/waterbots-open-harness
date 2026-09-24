@@ -41,7 +41,7 @@ pack:
   key: vwba-2.0
   # Equal to the pack README's own "**Version x.y.z.**" line; the gate holds the
   # two together, and check-cards already holds that line to the CHANGELOG head.
-  version: 0.7.0
+  version: 0.8.0
 
 section:
   id: water

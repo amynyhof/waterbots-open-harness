@@ -13,10 +13,17 @@
  * module agrees with itself. It reads the card files, the pack README and the
  * tool file, and holds them to each other.
  *
- * ONE FILE TODAY, 24 Sep 2026: the water pack's section of the eligibility
- * worksheet. The carbon pack's section and Calvin's and Bridget's tool files
- * join this list as they are written, and the checks below are written per
- * pack, not per tool, so joining costs one entry.
+ * TWO FILES, 24 Sep 2026: the water pack's section of the eligibility worksheet
+ * and the carbon pack's. Calvin's and Bridget's tool files join this list as
+ * they are written, and the checks below are written per pack, not per tool, so
+ * joining costs one entry.
+ *
+ * IT ALSO HOLDS THREE FACTS TO THE CARD ITSELF, beyond the contract's own list:
+ * a row's title, its "Can it be fixed?" value and the phase it is asked in are
+ * the card's, and the card is the one home for all three. A card set with no
+ * such line — the applies cards carry neither a fixability line nor a Phase
+ * line — is skipped for that check and counted in the report, so a silent skip
+ * cannot look like a pass.
  *
  * WHAT IT FAILS ON, the contract's own list (§7.4):
  *   - a row cites a card id that is not in the named set;
@@ -81,6 +88,15 @@ const TOOLS = [
     /** The set a route id is looked up in. */
     routes: { file: 'cards/routes-cards-vwba.md', word: 'Route' },
   },
+  {
+    file: 'knowledge-packs/phoebe-eligibility/gs-paa-v2.0/tool/eligibility-worksheet.yaml',
+    packDir: 'knowledge-packs/phoebe-eligibility/gs-paa-v2.0',
+    sets: {
+      applies: { file: 'cards/applies-cards-gs.md', word: 'Card' },
+      eligibility: { file: 'cards/eligibility-cards-gs.md', word: 'Card' },
+    },
+    routes: { file: 'cards/routes-cards-gs.md', word: 'Route' },
+  },
 ];
 
 const problems = [];
@@ -95,9 +111,34 @@ const read = (path) => {
   }
 };
 
-/** The ids a card file carries, in the file's own order. */
-function cardIds(text, word) {
-  return [...text.matchAll(new RegExp(`^## ${word} ([^\\s—]+)\\s+—`, 'gm'))].map((m) => m[1]);
+/**
+ * Every card a file carries, in the file's own order: its id, its title, and
+ * the two labelled lines the tool file mirrors. A card that carries neither
+ * line returns null for both, and the caller counts the skip rather than
+ * passing silently.
+ */
+function readCards(text, word) {
+  const heads = [...text.matchAll(new RegExp(String.raw`^## ${word} (\S+)\s+\u2014\s+(.+)$`, 'gm'))];
+  return heads.map((head, i) => {
+    const body = text.slice(head.index + head[0].length, heads[i + 1]?.index ?? text.length);
+    return {
+      id: head[1],
+      title: head[2].trim(),
+      fixable: labelledWord(body, String.raw`Can it be fixed\?`),
+      phase: labelledWord(body, String.raw`Phase\.`),
+    };
+  });
+}
+
+/**
+ * The first word of a labelled line, lower-cased and slugged: "**Can it be
+ * fixed? Depends, on one fact: ...**" gives "depends"; "**Phase.** To remain
+ * eligible." gives "to-remain-eligible". Null when the card has no such line.
+ */
+function labelledWord(body, label) {
+  const match = body.match(new RegExp(String.raw`\*\*${label}\s*(?:\*\*)?\s*([^.*,:;]+)`));
+  if (!match) return null;
+  return match[1].trim().toLowerCase().replace(/\s+/g, '-');
 }
 
 /** Prose from a README table cell, flattened the way the card reader flattens it. */
@@ -110,9 +151,42 @@ const flatten = (text) =>
 
 /** One row of a two-column README table, by its bold label. */
 const tableRow = (text, label) => {
-  const match = text.match(new RegExp(`^\\| \\*\\*${label}\\*\\* \\| (.+?) \\|\\s*$`, 'm'));
+  const match = text.match(new RegExp(String.raw`^\| \*\*${label}\*\* \| (.+?) \|\s*$`, 'm'));
   return match ? flatten(match[1]) : null;
 };
+
+/**
+ * Every document a pack README cites, as {document, version, link}.
+ *
+ * TWO TABLE SHAPES, BECAUSE THE TWO PACKS HAVE TWO. The water pack cites one
+ * document and writes it down the page, a bold label per row. The carbon pack
+ * cites fourteen and writes them across four tables, a document per row. Both
+ * are read here rather than one shape being imposed on a README that has
+ * already been graded — a gate that asks a document to be reformatted for its
+ * own convenience is the wrong way round.
+ *
+ * A row with no link is skipped, which is how the carbon README's two "same
+ * page" rows fall out. A tool file does not have to list every document its
+ * pack cites; what it lists has to agree.
+ */
+function citedDocuments(readme) {
+  const found = [];
+
+  const labelled = tableRow(readme, 'Link');
+  if (labelled && /^https?:\/\//.test(labelled)) {
+    found.push({
+      document: tableRow(readme, 'Document'),
+      version: tableRow(readme, 'Version'),
+      link: labelled,
+    });
+  }
+
+  for (const m of readme.matchAll(/^\| (.+?) \| (.+?) \| (https?:\/\/\S+?) \|\s*$/gm)) {
+    found.push({ document: flatten(m[1]), version: flatten(m[2]), link: flatten(m[3]) });
+  }
+
+  return found;
+}
 
 const isPlainObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 
@@ -165,31 +239,35 @@ for (const tool of TOOLS) {
 
   /* ---- The sources, against the README's cited-document table -------------- */
 
-  const cited = {
-    document: tableRow(readme, 'Document'),
-    version: tableRow(readme, 'Version'),
-    link: tableRow(readme, 'Link'),
-  };
-  if (!cited.document) note(`${tool.packDir}/README.md: no Document row in the cited-document table`);
+  const cited = citedDocuments(readme);
+  if (cited.length === 0) note(`${tool.packDir}/README.md: no cited-documents table with a link`);
 
   const sources = Array.isArray(doc.sources) ? doc.sources : [];
   if (sources.length === 0) note(`${tool.file}: no sources listed`);
   for (const source of sources) {
     if (!source?.id) note(`${tool.file}: a source has no id`);
-    for (const [key, want] of Object.entries(cited)) {
-      if (!want) continue;
-      const got = source?.[key];
-      /* The README writes the document's short name; the tool file must not
-         quietly say something else. A README cell that wraps its value in
-         emphasis has already been flattened above. */
-      if (got !== want) {
+    if (!source?.publisher) note(`${tool.file}: source "${source?.id}" has no publisher`);
+
+    /* A source is found by its link, which is the one part of a citation that
+       cannot be worded two ways. Then the document and the version must be the
+       README's, word for word: the pack README is their one home, and a tool
+       file that says something else about a document is the drift this catches. */
+    const row = cited.find((r) => r.link === source?.link);
+    if (!row) {
+      note(
+        `${tool.file}: source "${source?.id}" links to ${JSON.stringify(source?.link)}, which is ` +
+          `no row of ${tool.packDir}/README.md's cited-documents tables`
+      );
+      continue;
+    }
+    for (const key of ['document', 'version']) {
+      if (source[key] !== row[key]) {
         note(
-          `${tool.file}: source "${source?.id}" ${key} is ${JSON.stringify(got)} but the pack ` +
-            `README's cited-document table says ${JSON.stringify(want)}`
+          `${tool.file}: source "${source.id}" ${key} is ${JSON.stringify(source[key])} but the pack ` +
+            `README says ${JSON.stringify(row[key])}`
         );
       }
     }
-    if (!source?.publisher) note(`${tool.file}: source "${source?.id}" has no publisher`);
   }
 
   /* ---- The closed lists the file declares --------------------------------- */
@@ -230,15 +308,22 @@ for (const tool of TOOLS) {
 
   /* ---- The cards this pack holds ------------------------------------------ */
 
+  const setCards = {};
   const setIds = {};
   for (const [name, set] of Object.entries(tool.sets)) {
-    setIds[name] = cardIds(read(`${tool.packDir}/${set.file}`), set.word);
+    setCards[name] = new Map(readCards(read(`${tool.packDir}/${set.file}`), set.word).map((c) => [c.id, c]));
+    setIds[name] = [...setCards[name].keys()];
     if (setIds[name].length === 0) note(`${tool.packDir}/${set.file}: no cards found`);
   }
-  const routeIds = cardIds(read(`${tool.packDir}/${tool.routes.file}`), tool.routes.word);
+  const routeIds = readCards(read(`${tool.packDir}/${tool.routes.file}`), tool.routes.word).map((c) => c.id);
   if (routeIds.length === 0) note(`${tool.packDir}/${tool.routes.file}: no route cards found`);
 
   const hasCards = Object.values(setIds).some((ids) => ids.length > 0);
+
+  /* Rows whose card carries no labelled line to hold them to. Counted, and
+     printed, so a skip is never mistaken for a check that passed. */
+  let skippedFixable = 0;
+  let skippedPhase = 0;
 
   /* ---- Every row ----------------------------------------------------------- */
 
@@ -327,11 +412,26 @@ for (const tool of TOOLS) {
       note(`${where}: cites the set "${setName}", which this pack does not hold`);
       return;
     }
-    if (!setIds[setName].includes(cardId)) {
+    const card = setCards[setName].get(cardId);
+    if (!card) {
       note(`${where}: cites card "${cite.card}", which is not in ${tool.sets[setName].file}`);
       return;
     }
     (citedPerSet[setName] ??= []).push(cardId);
+
+    /* The card is the one home for these three. A tool file that says
+       something else about its own row is the drift this gate exists for. */
+    if (row.title !== card.title) {
+      note(`${where}: title is ${JSON.stringify(row.title)} but card ${cite.card} is titled ${JSON.stringify(card.title)}`);
+    }
+    if (card.fixable === null) skippedFixable += 1;
+    else if (row.fixable !== card.fixable) {
+      note(`${where}: fixable is ${JSON.stringify(row.fixable)} but card ${cite.card} says ${JSON.stringify(card.fixable)}`);
+    }
+    if (card.phase === null) skippedPhase += 1;
+    else if (row.asked !== card.phase) {
+      note(`${where}: asked is ${JSON.stringify(row.asked)} but card ${cite.card}'s Phase line says ${JSON.stringify(card.phase)}`);
+    }
   });
 
   /* ---- The row count, against the card set each row mirrors ---------------- */
@@ -374,6 +474,8 @@ for (const tool of TOOLS) {
       .join(' · '),
     routes: routeIds.length,
     states: Object.keys(states).length,
+    skippedFixable,
+    skippedPhase,
   });
 }
 
@@ -386,6 +488,11 @@ for (const row of summary) {
   console.log(`    cards mirrored      ${row.sets}`);
   console.log(`    route cards to cite ${row.routes}`);
   console.log(`    closed lists        ${row.states}`);
+  console.log(
+    `    held to the card    ${row.rows} title(s) · ${row.rows - row.skippedFixable} fixable ` +
+      `(${row.skippedFixable} card(s) carry no such line) · ${row.rows - row.skippedPhase} phase ` +
+      `(${row.skippedPhase} carry no Phase line)`
+  );
 }
 console.log(
   '\n  every row carries the contract\'s eight keys and no others; every row cites a card id\n' +
