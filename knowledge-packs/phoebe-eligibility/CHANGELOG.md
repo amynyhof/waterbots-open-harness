@@ -1,5 +1,18 @@
 # Changelog — phoebe-eligibility
 
+## 0.11.0 — 24 Sep 2026
+
+- `vwba-2.0@0.9.0` and `gs-paa-v2.0@0.7.0` — both packs carry a tool definition file,
+  `eligibility-worksheet@0.2.0`, one tool with a section each: forty-four rows between
+  them, every one citing its card by id, and the optional `applies` key on the six rows a
+  technology class limits. Both pack READMEs point at their file as the tool's one home;
+  both `tool/README.md` files and their agent-facing regions are unchanged and stay until
+  Phoebe's runtime step. `scripts/check-tool.mjs` is the gate. Nothing reads either file
+  yet, and no card set changed, so the seal of 23 Sep 2026 is untouched.
+- **This entry catches the seat up with its packs.** The tool files landed at
+  `vwba-2.0@0.8.0` and `gs-paa-v2.0@0.6.0` on 24 Sep 2026 without a seat entry; it is
+  recorded here rather than backdated, and every level now agrees.
+
 ## 0.10.0 — 23 Sep 2026
 
 - `gs-paa-v2.0@0.5.0` — the nineteen carbon routes approved and in the pack, moved whole from

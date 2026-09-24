@@ -1,6 +1,6 @@
 # gs-paa-v2.0 — Phoebe's second Knowledge Pack
 
-**Version 0.6.0. Not live.** This folder is the home of what Phoebe will know
+**Version 0.7.0. Not live.** This folder is the home of what Phoebe will know
 about eligibility under Gold Standard's safe-drinking-water carbon methodology, the
 Paris-aligned version. **Nothing on the live site reads it yet**, no card is approved,
 and Phoebe still says that carbon eligibility is coming and not live. Item K7 in
@@ -63,6 +63,24 @@ and not the pack. For this pack the honest line, 22 Sep 2026: **not live; nothin
 it; no line moves until the worksheet, the record and her prompt carry two pathways**
 (proposal steps 5 to 8).
 
+## Route cards to draft after v1
+
+**Logged 24 Sep 2026, when the tool file was written.** Three cards describe a fix that a
+route card would carry, and no route card carries it. The tool file names no route on those
+rows rather than inventing an id or pointing at prose, and says so in a comment on each.
+**Nothing here changes a card**: the card sets are sealed at their versions of 23 Sep 2026,
+and a route card is an addition to the routes set, not an edit to these three.
+
+| Row | The fix the card describes | Where the card rests it |
+|---|---|---|
+| T1 | Change a pump on its own fossil-fuel engine for a handpump, a solar pump or a grid pump | V2.0 §3.2.1.1 b and §3.2.1.2, p. 9 |
+| M2 | The same change of drive, seen from the eligibility row | V2.0 §3.2.1.2, p. 9 |
+| M14 | A justified sub-national area for the common-practice test, or a change of design | V2.0 §6.7.3, p. 23 |
+
+**After v1**, with the other parked work in [BUILD_PLAN.md](../../../BUILD_PLAN.md). Two of the
+three are one fix seen twice, so the drafting is likely two cards, not three. Until they exist,
+a project that hits one of these hears the fix in the card's own words with no route to render.
+
 ## Timing facts the standard fixes
 
 Carried here as facts, not rows, because they set the calendar rather than decide entry.
@@ -90,7 +108,7 @@ Carried here as facts, not rows, because they set the calendar rather than decid
 | | |
 |---|---|
 | [`cards/`](./cards/) | All three card sets approved — applies, all 32 eligibility cards, and the nineteen routes — with the grader notes. None is read by the site yet. |
-| [`tool/`](./tool/) | Names the worksheet section this pack will fill and its reader-to-be. No code. No agent-facing region yet. |
+| [`tool/`](./tool/) | **[`eligibility-worksheet.yaml`](./tool/eligibility-worksheet.yaml) is this pack's section of the tool, and its one home** (24 Sep 2026): all thirty-six rows, what each takes, where its value comes from, which card it cites, which routes it may name and which projects it exists for. [`README.md`](./tool/README.md) names the worksheet section and its reader-to-be. No code. No agent-facing region yet; one arrives with Phoebe's runtime step. |
 | [`evals/`](./evals/) | No exam has been sat. Says so. |
 | `README.md` | This page. |
 | [`CHANGELOG.md`](./CHANGELOG.md) | This pack's own version history. |

@@ -1,6 +1,6 @@
 # phoebe-eligibility — eligibility and feasibility (open)
 
-**Version 0.10.0.** Phoebe staffs Eligibility. From 22 Sep 2026 she has two
+**Version 0.11.0.** Phoebe staffs Eligibility. From 22 Sep 2026 she has two
 packs: [`vwba-2.0/`](./vwba-2.0/), live, and [`gs-paa-v2.0/`](./gs-paa-v2.0/), a
 scaffold with no approved card, not read by anything. The two water card files
 live in [`vwba-2.0/cards/`](./vwba-2.0/cards/), and the live site reads them from

@@ -22,10 +22,14 @@
 # the card that carries its words and the card file carries them: the tool file
 # names the card, it never copies it. A route is always a route card's id.
 #
-# WHAT A ROW DOES NOT CARRY. The contract fixes eight keys and no others, so a
-# row has no place for the card's "Applies to" line — the technology class,
-# scale or version flag that decides whether a row opens at all. That line lives
-# on the card, which the row cites, and a reader that needs it reads it there.
+# WHICH ROWS EXIST FOR A PROJECT. Ruling R9 as amended 24 Sep 2026 gave a row
+# one optional ninth key, `applies`, read from the card's own "Applies to" line:
+# the technology class or the version a row exists for. Absent means every
+# project, which is how thirty of these thirty-six say it. The point is a
+# division of labour — the tool file says which rows this project has, the row
+# states say what is done and what is left, and the agent asks only what is
+# left. What the line says about WHEN a row is asked or re-run stays on the
+# card, because that is not the same question.
 #
 # THE GATE IS scripts/check-tool.mjs, which reads this file and the water one.
 #
@@ -43,7 +47,7 @@ pack:
   key: gs-paa-v2.0
   # Equal to the pack README's own "**Version x.y.z.**" line; the gate holds the
   # two together, and check-cards already holds that line to the CHANGELOG head.
-  version: 0.6.0
+  version: 0.7.0
 
 section:
   id: carbon
@@ -247,6 +251,37 @@ states:
       carries: the one fact that would settle it — a Gold Standard registration under the 2021 version — and that the project is treated as new meanwhile
       colour: null
 
+  # Which projects a row exists for — the values a row's optional `applies` key
+  # may name, ruling R9 as amended 24 Sep 2026. It is not a state and is never
+  # drawn: it sorts rows before the conversation starts, so that the tool file
+  # says which rows this project has, the row states say what is done and what
+  # is left, and the agent asks only what is left.
+  #
+  # THE FOUR CLASSES ARE CARD T3'S, in the words that card uses. The version
+  # flags are card T4's. Every value is read from a card's "Applies to" line and
+  # the gate holds it there.
+  applies-to:
+    - id: all
+      label: Every project on this pathway
+      # NEVER WRITTEN ON A ROW. Leaving the key out is how a row says it, and
+      # two ways of saying one thing is what drifts. The gate refuses it.
+    - id: hwt
+      label: Household treatment
+    - id: iwt
+      label: Institutional treatment
+    - id: cwt
+      label: Community treatment
+    - id: cws
+      label: Community supply
+    - id: transitioning
+      label: A transitioning project
+      # DECLARED, NOT USED TODAY. No card limits a row to one version: where a
+      # card's line names a transitioning project it is saying when the row is
+      # re-run, which is the card's business. The value is here so that a card
+      # that does limit a row has somewhere to land.
+    - id: new
+      label: A new project
+
   # The read for the pathway, drawn from the row states and never from prose.
   # "Likely" is the honest word: nothing on this site verifies anything.
   readiness-read:
@@ -280,6 +315,10 @@ states:
 # applies cards carry no such line; they sort a no under "If the answer is no",
 # and their values are read from there. Every one of them names a Blocked case
 # or, for T4, no fail at all.
+#
+# `applies` is the optional ninth key, and only six rows carry one: M2, M3, M4,
+# M8, M9 and M16, the rows a class limits. Every other row exists for every
+# project and says so by carrying no key at all.
 #
 # `routes` names route cards by id, and only where the card itself names one.
 # Fourteen rows name none. Most of those describe a fix that is simply doing the
@@ -376,6 +415,7 @@ rows:
     title: No pump on its own fossil-fuel engine
     # The card’s fix is a change of drive. No route card carries it, so none is named.
     asked: eligibility
+    applies: [cws]
     takes:
       kind: state
       of: row-state
@@ -391,6 +431,7 @@ rows:
   - id: M3
     title: The treatment technology is shown to work
     asked: plan
+    applies: [hwt, iwt]
     takes:
       kind: state
       of: row-state
@@ -405,6 +446,7 @@ rows:
   - id: M4
     title: The water at the collection point is safe
     asked: plan
+    applies: [cwt, cws]
     takes:
       kind: state
       of: row-state
@@ -462,6 +504,7 @@ rows:
   - id: M8
     title: Collected water is within reach
     asked: partners
+    applies: [cwt, cws]
     takes:
       kind: state
       of: row-state
@@ -476,6 +519,7 @@ rows:
   - id: M9
     title: A restored system was really out of action
     asked: eligibility
+    applies: [cwt, cws]
     takes:
       kind: state
       of: row-state
@@ -579,6 +623,7 @@ rows:
   - id: M16
     title: Groundwater is drawn within what the aquifer can give
     asked: partners
+    applies: [cws]
     takes:
       kind: state
       of: row-state

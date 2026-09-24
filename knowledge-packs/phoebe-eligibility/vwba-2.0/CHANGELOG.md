@@ -1,5 +1,16 @@
 # Changelog — vwba-2.0
 
+## 0.9.0 — 24 Sep 2026
+
+- `eligibility-worksheet@0.2.0` — the optional ninth key, `applies`, ruling R9 as amended
+  24 Sep 2026: which projects a row exists for, read from the card's own "Applies to" line,
+  absent meaning every project. **No row in this section carries it**, because the six
+  criteria carry no such line and both applies cards say "every project asking about this
+  pathway"; the `applies-to` list is written down with its one value so that the absence is
+  stated rather than assumed. The README's `tool/` row now points at the file as this
+  pack's section of the tool and its one home; `tool/README.md` and its agent-facing region
+  are unchanged and stay until Phoebe's runtime step. No card changed.
+
 ## 0.8.0 — 24 Sep 2026
 
 - **The tool definition file**, `tool/eligibility-worksheet.yaml`: this pack's section of
