@@ -5,7 +5,7 @@
  * RESHAPED 4 Sep 2026, maintainer's ruling 3. The project context left the
  * desk's centre and became this: the project card, then one row per field —
  * what it does, what kind, where it is, what it is called, in the order the
- * seats need them (ruled 5 Sep 2026, from Bob) — each showing the value or a
+ * seats need them (ruled 5 Sep 2026) — each showing the value or a
  * dash, and where the value came from. **A visitor who never chats
  * loses nothing**: name and place stay typeable here, quietly, and a typed
  * entry is never overwritten by what he heard.
@@ -176,7 +176,7 @@ export default function NavRail({
             </span>
           </div>
 
-          {/* THE ORDER IS THE SEATS' — ruled 5 Sep 2026, from Bob: what it
+          {/* THE ORDER IS THE SEATS' — ruled 5 Sep 2026: what it
               does (Phoebe, Calvin), what kind (Phoebe, Calvin), where it is
               (Phoebe, Bridget before any pin, Calvin), what it is called (the
               desk only). Wellington asks in this order. */}

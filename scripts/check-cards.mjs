@@ -1,15 +1,28 @@
 /**
  * Phoebe's card sets — build check.
  *
- * The eligibility worksheet reads its rows from the committed card files
- * rather than from a hand-typed copy, so the card files are load-bearing UI
- * input as well as published documents. This script is the guard on that.
+ * The eligibility worksheet and the Knowledge pack tab read their rows from
+ * the committed card files rather than from a hand-typed copy, so the card
+ * files are load-bearing UI input as well as published documents. This
+ * script is the guard on that.
  *
- * It re-derives both card sets INDEPENDENTLY of src/lib/phoebeCards.ts rather
+ * It re-derives every card set INDEPENDENTLY of src/lib/phoebeCards.ts rather
  * than importing it. Importing the module would only prove the module agrees
  * with itself. Deriving the same facts a second way is what makes this a
  * check — the same reasoning behind check-attribution reading the built
  * bundle instead of the source.
+ *
+ * SEVEN FILES FROM 23 SEP 2026 (build-order step 1 under "V1 — the done
+ * line"): the water pack's applies, eligibility, feasibility and routes sets
+ * and the carbon pack's applies, eligibility and routes sets, plus each pack's
+ * README and CHANGELOG for its version. Every set is held to its graded
+ * count, its ids in order, its plain-words paragraphs, a Source line with a
+ * version and a page, and canonical links that are the publisher's pages the
+ * pack already names; an eligibility card is held to a "Can it be fixed?"
+ * value and a Phase word from their closed lists; a feasibility card to its
+ * "guidance, not a gate" framing; a pack's README version to the head of its
+ * CHANGELOG (ruling R10). The relay's generated copy of the two water files
+ * is still checked for staleness; nothing else reaches the relay.
  *
  * Run it with the others:
  *   node scripts/check-cards.mjs
@@ -17,40 +30,118 @@
 
 import { existsSync, readFileSync } from 'node:fs';
 
-/* The cards' one home is Phoebe's pack, by the maintainer's ruling of
-   17 Sep 2026. They were at the repository root before that day. */
-const CARDS_DIR = 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards';
-const ELIGIBILITY = `${CARDS_DIR}/eligibility-cards-vwba.md`;
-const FEASIBILITY = `${CARDS_DIR}/feasibility-cards-vwba.md`;
+const SEAT = 'knowledge-packs/phoebe-eligibility';
 
-/* The manual's own counts. Appendix A gives six criteria, Appendix B ten
-   considerations. These are the numbers the committed cards were graded
-   against, so a change here needs a maintainer's word, not a quick edit. */
-const EXPECT_CRITERIA = 6;
-const EXPECT_CONSIDERATIONS = 10;
+const range = (prefix, from, to) => Array.from({ length: to - from + 1 }, (_, i) => `${prefix}${from + i}`);
 
-/* Every card carries the publisher's canonical link, per the maintainer's
-   ruling of 21 Aug 2026 that each card must stand alone. */
-const CANONICAL = 'https://doi.org/10.46830/wrigb.23.00112';
+/* The values the two labelled lines may take — item A18 and the phase-tags
+   ruling of 23 Sep 2026. A new word is a maintainer's ruling, not an edit. */
+const FIXABLE = ['yes', 'no', 'depends'];
+const PHASES = ['Eligibility', 'Partners', 'Quantify', 'Plan', 'Monitor', 'Communicate', 'To remain eligible'];
 
-/* The four-part citation shape requires the version inside each citation. */
-const VERSION = 'Version 1, September 2025';
+const EVIDENCE = 'What a project owner would be asked to show.';
+
+/**
+ * Every set, in the order the packs hold them. The counts are the numbers the
+ * committed cards were graded against, so a change here needs a maintainer's
+ * word, not a quick edit.
+ */
+const PACKS = [
+  {
+    key: 'vwba-2.0',
+    dir: `${SEAT}/vwba-2.0`,
+    sets: [
+      {
+        name: 'water applies',
+        file: 'cards/applies-cards-vwba.md',
+        word: 'Card',
+        ids: ['W1', 'W2'],
+        text: ['The test in plain words.', 'Applies to.'],
+        head: ['If the answer is'],
+        bullets: EVIDENCE,
+      },
+      {
+        name: 'water eligibility',
+        file: 'cards/eligibility-cards-vwba.md',
+        word: 'Card',
+        ids: range('', 1, 6),
+        text: ['The rule in plain words.'],
+        bullets: EVIDENCE,
+        fixable: true,
+        phase: true,
+        appendix: /Appendix A/,
+      },
+      {
+        name: 'water feasibility',
+        file: 'cards/feasibility-cards-vwba.md',
+        word: 'Card',
+        ids: range('B-', 1, 10),
+        text: ['The consideration in plain words.', 'Why it matters.'],
+        bullets: 'How to weigh it',
+        /* The never-a-gate framing is load-bearing, not decoration. If this
+           label is ever softened away, the worksheet would start reading like
+           a verdict. */
+        mustInclude: 'guidance, not a gate',
+        appendix: /Appendix B/,
+      },
+      {
+        name: 'water routes',
+        file: 'cards/routes-cards-vwba.md',
+        word: 'Route',
+        ids: range('R-', 1, 9),
+        text: ['The gap.', 'The route in plain words.', 'What it does not promise.'],
+      },
+    ],
+  },
+  {
+    key: 'gs-paa-v2.0',
+    dir: `${SEAT}/gs-paa-v2.0`,
+    sets: [
+      {
+        name: 'carbon applies',
+        file: 'cards/applies-cards-gs.md',
+        word: 'Card',
+        ids: range('T', 1, 4),
+        text: ['The test in plain words.', 'Applies to.'],
+        head: ['If the answer is'],
+        bullets: EVIDENCE,
+      },
+      {
+        name: 'carbon eligibility',
+        file: 'cards/eligibility-cards-gs.md',
+        word: 'Card',
+        ids: [...range('M', 1, 17), ...range('P', 1, 2), ...range('G', 1, 13)],
+        text: ['The rule in plain words.', 'Applies to.', 'External standard.'],
+        bullets: EVIDENCE,
+        fixable: true,
+        phase: true,
+      },
+      {
+        name: 'carbon routes',
+        file: 'cards/routes-cards-gs.md',
+        word: 'Route',
+        ids: range('R-', 1, 19),
+        text: ['The gap.', 'The route in plain words.', 'What it does not promise.'],
+      },
+    ],
+  },
+];
 
 const problems = [];
 const note = (m) => problems.push(m);
+const read = (file) => readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
 
-function cards(file) {
-  const text = readFileSync(file, 'utf8');
+function cards(text, word) {
   return text
-    .split(/^## Card /m)
+    .split(new RegExp(`^## ${word} `, 'm'))
     .slice(1)
     .map((part) => {
       const nl = part.indexOf('\n');
-      return { heading: part.slice(0, nl).trim(), body: part.slice(nl + 1), file };
+      return { heading: part.slice(0, nl).trim(), body: part.slice(nl + 1) };
     });
 }
 
-/** Reads a `**Label.** …` paragraph without reusing the app's helper. */
+/** Reads a `**Label…** …` paragraph without reusing the app's helper. */
 function section(body, label) {
   const start = body.indexOf(`**${label}`);
   if (start < 0) return null;
@@ -61,100 +152,145 @@ function section(body, label) {
   return body.slice(from, end < 0 ? undefined : end).replace(/\s+/g, ' ').trim();
 }
 
+/** The bold head after a label — "Yes." on "**Can it be fixed? Yes.**". */
+function head(body, label) {
+  const start = body.indexOf(`**${label}`);
+  if (start < 0) return null;
+  const afterLabel = body.indexOf('**', start + 2 + label.length);
+  if (afterLabel < 0) return null;
+  return body.slice(start + 2 + label.length, afterLabel).replace(/\s+/g, ' ').trim();
+}
+
 function bulletsAfter(body, label) {
   const start = body.indexOf(`**${label}`);
   if (start < 0) return null;
   const rest = body.slice(start);
+  /* A list ends at a rule, the next card, or a bold paragraph after the
+     first bullet; a bold paragraph before the first bullet is passed over. */
   const stop = rest.search(/\n---|\n## /);
   const block = stop < 0 ? rest : rest.slice(0, stop);
-  return block.split(/^- /m).slice(1).map((b) => b.replace(/\s+/g, ' ').trim());
+  const firstBullet = block.search(/^- /m);
+  if (firstBullet < 0) return [];
+  const trailing = block.slice(firstBullet).search(/\n\n\*\*/);
+  const list = trailing < 0 ? block.slice(firstBullet) : block.slice(firstBullet, firstBullet + trailing);
+  return list.split(/^- /m).slice(1).map((b) => b.replace(/\s+/g, ' ').trim());
 }
 
-function checkCitation(card, label) {
-  const source = section(card.body, 'Source.');
-  const link = section(card.body, 'Canonical link.');
+const links = (text) => (text.match(/https?:\/\/[^\s<>)|\]]+/g) ?? []).map((h) => h.replace(/[.,;]+$/, ''));
 
-  if (!source) return note(`${label}: no Source line`);
-  if (!link) return note(`${label}: no Canonical link line`);
-  if (!source.includes(VERSION)) note(`${label}: citation is missing the document version`);
-  if (!/\bp{1,2}\.\s*\d+/.test(source)) note(`${label}: citation names no page`);
-  if (!/Appendix [AB]/.test(source)) note(`${label}: citation names no appendix`);
-  if (!link.includes(CANONICAL)) note(`${label}: canonical link is not the publisher's DOI`);
-}
+/* ---- Every pack, every set ---------------------------------------------- */
 
-/* ---- Eligibility: the hard gate ---------------------------------------- */
+const summary = [];
 
-const criteria = cards(ELIGIBILITY);
-if (criteria.length !== EXPECT_CRITERIA) {
-  note(`${ELIGIBILITY}: expected ${EXPECT_CRITERIA} criteria, found ${criteria.length}`);
-}
-const seenCriteria = new Set();
-for (const card of criteria) {
-  const m = card.heading.match(/^(\d+)\s+—\s+(.+)$/);
-  if (!m) {
-    note(`${ELIGIBILITY}: heading does not parse — "${card.heading}"`);
-    continue;
+for (const pack of PACKS) {
+  const readme = read(`${pack.dir}/README.md`);
+  const changelog = read(`${pack.dir}/CHANGELOG.md`);
+
+  /* The version, once, on the README; the CHANGELOG's head must agree. */
+  const version = readme.match(/\*\*Version (\d+\.\d+\.\d+)\b/)?.[1];
+  const changelogHead = changelog.match(/^## (\d+\.\d+\.\d+) —/m)?.[1];
+  if (!version) note(`${pack.dir}/README.md: no "**Version x.y.z" line`);
+  if (!changelogHead) note(`${pack.dir}/CHANGELOG.md: no "## x.y.z —" heading`);
+  if (version && changelogHead && version !== changelogHead) {
+    note(`${pack.dir}: README says version ${version} but the CHANGELOG's head is ${changelogHead}`);
   }
-  const label = `criterion ${m[1]}`;
-  seenCriteria.add(Number(m[1]));
-  if (!section(card.body, 'The rule in plain words.')) note(`${label}: no plain-words rule`);
-  const evidence = bulletsAfter(card.body, 'What a project owner would be asked to show.');
-  if (!evidence || evidence.length === 0) note(`${label}: no evidence bullets`);
-  checkCitation(card, label);
-}
-for (let i = 1; i <= EXPECT_CRITERIA; i++) {
-  if (!seenCriteria.has(i)) note(`${ELIGIBILITY}: criterion ${i} is missing`);
-}
 
-/* ---- Feasibility: guidance, never a gate -------------------------------- */
+  /* The publisher's pages this pack may cite: those on its README, and those
+     in a card file's own head, before its first card (the routes file names
+     the one published project it cites there). */
+  const readmeLinks = new Set(links(readme));
 
-const considerations = cards(FEASIBILITY);
-if (considerations.length !== EXPECT_CONSIDERATIONS) {
-  note(
-    `${FEASIBILITY}: expected ${EXPECT_CONSIDERATIONS} considerations, found ${considerations.length}`
-  );
-}
-const seenConsiderations = new Set();
-for (const card of considerations) {
-  const m = card.heading.match(/^B-(\d+)\s+—\s+(.+)$/);
-  if (!m) {
-    note(`${FEASIBILITY}: heading does not parse — "${card.heading}"`);
-    continue;
+  for (const set of pack.sets) {
+    const file = `${pack.dir}/${set.file}`;
+    const text = read(file);
+    const firstCard = text.search(new RegExp(`^## ${set.word} `, 'm'));
+    const headText = firstCard < 0 ? text : text.slice(0, firstCard);
+    const allowed = new Set([...readmeLinks, ...links(headText)]);
+
+    if (!/\*\*Status: approved by the maintainer, \d{1,2} \w{3} \d{4}/.test(headText)) {
+      note(`${file}: no dated "Status: approved by the maintainer" line at its head`);
+    }
+
+    const found = cards(text, set.word);
+    if (found.length !== set.ids.length) {
+      note(`${file}: expected ${set.ids.length} cards, found ${found.length}`);
+    }
+
+    found.forEach((card, i) => {
+      const m = card.heading.match(/^([A-Z]?-?\d+)\s+—\s+(.+)$/);
+      if (!m) {
+        note(`${file}: heading does not parse — "${card.heading}"`);
+        return;
+      }
+      const id = m[1];
+      const label = `${set.name} ${id}`;
+      if (set.ids[i] !== id) note(`${file}: card ${i + 1} is ${id}, expected ${set.ids[i]}`);
+
+      for (const t of set.text) {
+        if (!section(card.body, t)) note(`${label}: no "${t}" paragraph`);
+      }
+      for (const h of set.head ?? []) {
+        if (!head(card.body, h)) note(`${label}: no "${h} …" paragraph`);
+      }
+      if (set.bullets) {
+        const items = bulletsAfter(card.body, set.bullets);
+        if (!items || items.length === 0) note(`${label}: no bullets under "${set.bullets}"`);
+      }
+      if (set.mustInclude && !card.body.includes(set.mustInclude)) {
+        note(`${label}: the "${set.mustInclude}" framing is missing`);
+      }
+      if (set.fixable) {
+        const value = head(card.body, 'Can it be fixed?')?.match(/^(yes|no|depends)\b/i)?.[1]?.toLowerCase();
+        if (!value || !FIXABLE.includes(value)) note(`${label}: "Can it be fixed?" is not yes, no or depends`);
+      }
+      if (set.phase) {
+        const line = section(card.body, 'Phase.') ?? '';
+        const word = line.split('.')[0].trim();
+        if (!PHASES.includes(word)) note(`${label}: Phase "${word}" is not one of ${PHASES.join(', ')}`);
+      }
+
+      /* The four-part citation: a version in parentheses, a page, and the
+         publisher's own page as the link — every link, where a card names
+         more than one. */
+      const source = section(card.body, 'Source.');
+      const link = section(card.body, 'Canonical link.');
+      if (!source) note(`${label}: no Source line`);
+      else {
+        if (!/\((?:Version|v\d)[^)]*\)/.test(source)) note(`${label}: citation is missing the document version`);
+        if (!/\bp{1,2}\.\s*\d+/.test(source)) note(`${label}: citation names no page`);
+        if (set.appendix && !set.appendix.test(source)) note(`${label}: citation names no appendix`);
+      }
+      if (!link) note(`${label}: no Canonical link line`);
+      else {
+        const hrefs = links(link);
+        if (hrefs.length === 0) note(`${label}: canonical link paragraph carries no link`);
+        for (const h of hrefs) {
+          if (!allowed.has(h)) note(`${label}: ${h} is not a publisher's page the pack names`);
+        }
+      }
+    });
+
+    summary.push({ file, count: found.length, expected: set.ids.length });
   }
-  const label = `consideration ${m[1]}`;
-  seenConsiderations.add(Number(m[1]));
-  if (!section(card.body, 'The consideration in plain words.')) note(`${label}: no plain words`);
-  if (!section(card.body, 'Why it matters.')) note(`${label}: no "why it matters"`);
-  const weigh = bulletsAfter(card.body, 'How to weigh it');
-  if (!weigh || weigh.length === 0) note(`${label}: no weighing bullets`);
-  /* The never-a-gate framing is load-bearing, not decoration. If this label
-     is ever softened away, the worksheet would start reading like a verdict. */
-  if (!card.body.includes('guidance, not a gate')) {
-    note(`${label}: the "guidance, not a gate" framing is missing`);
-  }
-  checkCitation(card, label);
-}
-for (let i = 1; i <= EXPECT_CONSIDERATIONS; i++) {
-  if (!seenConsiderations.has(i)) note(`${FEASIBILITY}: consideration ${i} is missing`);
 }
 
 /* ---- The relay's copy of the cards -------------------------------------- */
 
-/* api/_cards.generated.ts carries the card text into the serverless function.
-   If it has drifted, the deployed relay answers from stale cards while the
-   worksheet shows the current ones — a disagreement no visitor could see. */
+/* api/_cards.generated.ts carries the two water files into the serverless
+   function. If it has drifted, the deployed relay answers from stale cards
+   while the worksheet shows the current ones — a disagreement no visitor
+   could see. The other five files do not reach the relay (23 Sep 2026). */
 const generated = 'api/_cards.generated.ts';
 if (!existsSync(generated)) {
   note(`${generated} has not been generated — run: node scripts/build-prompt-modules.mjs`);
 } else {
   const current = readFileSync(generated, 'utf8');
   for (const [name, file] of [
-    ['ELIGIBILITY_MD', ELIGIBILITY],
-    ['FEASIBILITY_MD', FEASIBILITY],
+    ['ELIGIBILITY_MD', `${SEAT}/vwba-2.0/cards/eligibility-cards-vwba.md`],
+    ['FEASIBILITY_MD', `${SEAT}/vwba-2.0/cards/feasibility-cards-vwba.md`],
   ]) {
     /* Same LF normalisation the generator applies — see its note on why. */
-    const source = readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
-    const expected = `export const ${name}: string = ${JSON.stringify(source)};`;
+    const expected = `export const ${name}: string = ${JSON.stringify(read(file))};`;
     if (!current.includes(expected)) {
       note(`${generated} is stale for ${file} — run: node scripts/build-prompt-modules.mjs`);
     }
@@ -164,23 +300,25 @@ if (!existsSync(generated)) {
 /* ---- Report ------------------------------------------------------------- */
 
 console.log("Phoebe's cards — build check\n");
-console.log(`  ${ELIGIBILITY}`);
-console.log(`    criteria            ${criteria.length} (expected ${EXPECT_CRITERIA})`);
-console.log(`  ${FEASIBILITY}`);
-console.log(`    considerations      ${considerations.length} (expected ${EXPECT_CONSIDERATIONS})`);
-console.log(`    likelihood of success  ${[...seenConsiderations].filter((n) => n <= 5).length}`);
-console.log(`    added impact or value  ${[...seenConsiderations].filter((n) => n > 5).length}`);
-console.log(`\n  every card carries: plain words, a page-level citation, and the canonical link`);
+for (const row of summary) {
+  console.log(`  ${row.file}`);
+  console.log(`    cards               ${row.count} (expected ${row.expected})`);
+}
+console.log(
+  '\n  every card carries: plain words, a page-level citation, and a canonical link the pack names;\n' +
+    '  every eligibility card a "Can it be fixed?" value and a Phase word from the closed lists;\n' +
+    "  each pack's README version equals its CHANGELOG head"
+);
 
 if (problems.length) {
   console.log(`\nFAILED — ${problems.length} problem${problems.length === 1 ? '' : 's'}:`);
   for (const p of problems) console.log(`  - ${p}`);
   console.log(
-    '\nThe worksheet reads these files directly, so a formatting change here\n' +
-      'changes the product. Fix the card, or update src/lib/phoebeCards.ts and\n' +
-      'this script together.'
+    '\nThe worksheet and the Knowledge pack tab read these files directly, so a\n' +
+      'formatting change here changes the product. Fix the card, or update\n' +
+      'src/lib/phoebeCards.ts and this script together.'
   );
   process.exit(1);
 }
 
-console.log('\nPASSED — both card sets parse, and every card is complete.');
+console.log('\nPASSED — every card set parses, and every card is complete.');
