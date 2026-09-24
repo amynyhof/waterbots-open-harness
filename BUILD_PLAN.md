@@ -148,11 +148,13 @@ properties, so a visitor who crosses over reads it without learning it twice. Th
 design value the maintainer carries from production by her hand, under rule zero; this file records
 that it is owed, not what it looks like.
 
-**Step 2, Wellington type and stage, is built 24 Sep 2026, one pull request open at Stop 4 for her
-desk walk** — item A16 in [OPEN_ITEMS.md](./OPEN_ITEMS.md) is its home: the short-form list in his
-prompt, type and class and stage confirmed then logged, "what kind" retired everywhere, the seal's
-contract change on item O14, the gate to 26,199 by the measured amount. Step 3, Phoebe's carbon
-runtime, is next, unless the paid engine is carried first (the amendment above).
+**Step 2, Wellington type and stage, is done 24 Sep 2026: #119, merged on her word** — item A16 in
+[OPEN_ITEMS.md](./OPEN_ITEMS.md) is its home: the short-form list in his prompt, type and class and
+stage confirmed then logged, "what kind" retired everywhere, the seal's contract change on item O14,
+the gate to 26,199 by the measured amount. The trim that made room for it is #118, the same day.
+**Step 3, Phoebe's carbon runtime, is next**, while the paid engine finishes; when that engine is
+sealed and carried by her hand, Calvin's brief (step 5) moves ahead of it (the amendment above).
+Proposal first, on her word.
 
 **Step 1 is done, 24 Sep 2026.** Four pull requests,
 all merged on her word, and the proposal file deleted at the close-out.

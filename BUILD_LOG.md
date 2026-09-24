@@ -2305,3 +2305,65 @@ its 24,000 gate** after this close-out's build-update refresh — sixty characte
 2 adds to his prompt, so the trim-or-raise question is due before it and is hers. The two old water
 drafts and three earlier proposal files remain untracked at the root. Tagged `v1-tools-2026-09-24`
 on her word, so a collaborator can read this exact version by link.
+
+## 24 September 2026, second sitting — the prompt trim, then build-order step 2: Wellington's type and stage
+
+Two pull requests, both merged on her word: #118, the trim, and #119, the build. Step 2 under "V1 —
+the done line" is done. Both prompts changed, so one short run each was run after each pull
+request, her word; the sixty-run measurement was not owed and is not claimed.
+
+### The trim (#118)
+
+Her ruling at the close of 23 Sep had been trim first, raise only if a trim cannot make space.
+`PROPOSAL_wellington-prompt-trim.md` measured his prompt section by section — 23,940 against the
+24,000 gate, 60 of room — and found about 4,200 characters that could go without losing a rule:
+his prompt's code stated rules his primer region already stated, and the shared roster region
+carried seven struck passages and five date stamps that reached Phoebe too. She ruled both tiers,
+the old wording to the pack CHANGELOG under the no-strikes rule, the types list in its short form,
+and the gate held at 24,000 until the build landed, then raised by the measured amount to leave
+500. Tier 1 took him to 21,199; Tier 2 to 19,811 and Phoebe from 68,288 to 66,900; the agent
+primer is now clean of strikes, item C1's sweep for that file. The name stamp left his region and
+is recorded nowhere, her word.
+
+### The build (#119)
+
+**The list, parsed once.** `scripts/build-prompt-modules.mjs` gained a parsed bundle:
+`product-shared/project-types.md` is read once, its shape checked (20 water types, 4 classes,
+1 none), and written to `api/_projectTypes.generated.ts` and `src/lib/projectTypes.generated.ts`,
+both under the staleness gate. The short form — id, the standard's name, one plain sentence, no
+cites — is 4,034 characters.
+
+**His chat.** The type rule in his prompt: match from what the project does, say the definition
+back, never the id, return `type` only on the visitor's yes, NONE on a yes to none of these, no
+type when not sure; the class asked only for a drinking-water project and `gsClass` kept only
+beside C-19 — on the relay, in the client, and on the seal; the stage asked and `stage` returned
+only on yes. His region gives five fields in the seats' order; the three kinds are gone.
+
+**"What kind" retired** from his answer and schema, the visit context, the rail — which shows
+"What type" wearing the standard's name with the sentence on hover, and "Stage" — both agents'
+record blocks (the standard's words, never an id alone), Phoebe's tool text (five facts) and one
+sentence of her prompt, and the seal, which now carries `record.type`, `record.gsClass` and
+`record.stage`, refuses the old `kind` key, and refuses a class beside any type but C-19.
+Production's carry is written on item O14 in one line.
+
+**The gate.** His prompt measured 25,699 after the whole build, including the refreshed
+build-update fact; the gate is 26,199, measured plus 500, her ruling, with the reason above the
+check. The runtime commit had said 26,197, measured before the fact was refreshed; the docs commit
+corrected it.
+
+### How it was proven
+
+`check-wellington` (148), `check-handoff` (69), `check-roster` (267), `check-cards`,
+`check-tool`, `check-api-exports`, `check-cap`, `check-reply-guard`, `check-visitor-id`,
+`check-vwba-d3` (69), `check-gs-sdws` (109), the staleness gate and `npm run build` green.
+One short run each after each pull request: Wellington 5 of 5 as wanted, Phoebe 3 of 3, none empty.
+One four-turn walk against the relay logged the type on the second turn, the class on the third,
+the stage on the fourth, then routed to Eligibility. The desk-walk script for Stop 4 is in #119's
+For Amy block; she merged on her word.
+
+### Housekeeping
+
+`PROPOSAL_wellington-prompt-trim.md` deleted at this close-out, its work merged. The build-update
+fact was refreshed inside #119, so no run was owed at the close. No migrations exist; no stray
+server. Item A17, Wellington reading Phoebe's verdicts back, is untouched. Step 3, Phoebe's carbon
+runtime, is next while the paid engine finishes.
