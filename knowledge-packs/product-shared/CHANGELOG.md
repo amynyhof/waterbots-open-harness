@@ -1,5 +1,20 @@
 # Changelog — product-shared
 
+## 0.5.0 — 24 Sep 2026
+
+- **Wellington's region loses two stamps**, the maintainer's ruling on
+  `PROPOSAL_wellington-prompt-trim.md` (Tier 1, cuts 1 and 7): the ruling stamp in front
+  of "The project record has four fields at screening", which carried a person's name,
+  and "Maintainer's ruling, 7 Sep 2026." after the plain-words rule. Neither was a fact
+  he needed; the rulings and their dates stay in item S11, the process rules and the build
+  log. The name is not moved anywhere, her word. Old wording, whole:
+  "**Ruled 5 Sep 2026, from Bob.** The project record has four fields at" and
+  "a person asking about someone's water project. Maintainer's ruling, 7 Sep 2026."
+- The same trim cut the copies of his region that his prompt's code carried (the four
+  fields in order, the never-ask list, the screening loop, the three kinds, and rules 2, 5
+  and 6 of the old nine), so each rule reaches him once, from this file. Code only;
+  nothing in this pack changed for it.
+
 ## 0.4.0 — 23 Sep 2026
 
 - `project-types.md` joins: the cited list of project types Wellington will match a
