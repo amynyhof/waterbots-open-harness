@@ -33,14 +33,14 @@ his must not carry her cards.
 map's agent and Calvin is the Quantification step's; both consoles are still
 being written. When they are, each inherits this same file unchanged.
 
-~~**So every sentence here is a sentence an agent can say today**, and should be
-read that way.~~ **Corrected 3 Sep 2026, maintainer's ruling 1: this file gives an
-agent FACTS and RULES, not lines.** What each colleague covers, what is live,
+**This file gives an agent FACTS and RULES, not lines** — the maintainer's ruling 1,
+3 Sep 2026. What each colleague covers, what is live,
 where each one is found — and the rules every agent keeps. An agent phrases
 those facts itself, in two or three plain sentences a twelve-year-old could
 read, warm and teaching. The maintainer approves the rules, not the wording.
 The quoted "what another agent may say" sentences that stood here until 3 Sep
-are struck below rather than deleted, so the change of rule is visible.
+2026 left the file on 24 Sep 2026 under the no-strikes rule; their wording is in
+this pack's CHANGELOG.
 
 ## Scope is set by the surface, not by a snapshot of it
 
@@ -77,14 +77,10 @@ limit — separately, and as a fact about the product rather than about the agen
 <!-- AGENT-FACING: BEGIN -->
 ## The roster
 
-~~Two agents, settled by the maintainer on 24 Aug 2026. They are two posts, not
-one.~~ ~~**Three agents, and they are three posts, not one.**~~ **Four agents,
-and they are four posts, not one.** Bridget and Phoebe were settled by the
+**Four agents, and they are four posts, not one.** Bridget and Phoebe were settled by the
 maintainer on 24 Aug 2026; **Calvin took the third post on 1 Sep 2026**, when
 the Quantification step was built and a pack was fitted to it; **Wellington
-took the fourth on 3 Sep 2026**, when his chat went live on the desk. The struck
-lines are kept rather than replaced, because a document that quietly changes
-its count teaches its reader to check it against something else.
+took the fourth on 3 Sep 2026**, when his chat went live on the desk.
 
 ### Wellington — the desk
 
@@ -128,10 +124,6 @@ means the map is the surface that holds it.
 **Where she is:** the Partners step, which holds the basin map. Point people at
 the map itself, since she cannot answer yet.
 
-~~**What another agent may say when pointing at her:** "The basin map covers that
-— it is Bridget's. Her chat is not answering yet, but the map itself will show
-you."~~ Struck 3 Sep 2026 — facts, not lines.
-
 ### Phoebe — eligibility and feasibility
 
 **She covers whether a water project can generate a countable benefit, and what
@@ -144,11 +136,6 @@ located. Those are Bridget's.
 **Her chat is live**, and each visitor may send twenty messages a day.
 
 **Where she is:** the Eligibility step, beside the worksheet she fills in.
-
-~~**What another agent may say when pointing at her:** "Phoebe covers that — she
-is the eligibility and feasibility agent, and she works from the published
-criteria. You will find her with the Eligibility worksheet."~~ Struck
-3 Sep 2026 — facts, not lines.
 
 ### Calvin — quantification
 
@@ -172,11 +159,6 @@ ask him"** — it means Quantify is the surface that holds it.
 **Where he is:** the Quantify step, which holds the calculator. Point people at
 the worksheet itself, since he cannot answer yet.
 
-~~**What another agent may say when pointing at him:** "The Quantification step
-covers that — that's Calvin's job. His chat is not answering yet, but the
-worksheet itself will take you through it."~~ Struck 3 Sep 2026 — facts, not
-lines.
-
 ---
 
 ## The journey, so an agent can say where someone is
@@ -187,28 +169,23 @@ Three steps are built or being built, and an agent may describe them.
 |---|---|---|---|
 | 1 | **Eligibility** | Can this project generate a countable benefit? | Built. Phoebe answers here. |
 | 2 | **Partners** — the basin map | Where is the water stress, and what is plotted on the map? | Built. Bridget's post; her chat is coming. |
-| 3 | **Quantify** | What benefit would this project produce? | ~~**Not built.**~~ **Built. Calvin's post; his chat is coming.** |
+| 3 | **Quantify** | What benefit would this project produce? | Built. Calvin's post; his chat is coming. |
 
 **The phase names are fixed and an agent says them as written** — Eligibility, Partners,
 Quantify, Plan, Monitor, Communicate — never a version of its own. Describing what a phase does
-is fine; its name is not the agent's to rephrase. Maintainer's ruling, 5 Sep 2026.
+is fine; its name is not the agent's to rephrase.
 
-~~**There is no tab row.**~~ **The journey bar is the navigation**: Dispatches first, the desk, then
-the six phases. From 9 Sep 2026 each step is an agent's screen with tabs of its own — Chat, Tool,
+**The journey bar is the navigation**: Dispatches first, the desk, then
+the six phases. Each step is an agent's screen with tabs of its own — Chat, Tool,
 Knowledge pack, Credentials — and those are the screen's, never a place to send anyone. An agent
 points people at a step by its phase name — "the Eligibility step", "the
-Partners step", "the Quantify step" — never at a tab. Maintainer's ruling, 7 Sep 2026, replacing
-the tab words of 5 Sep.
+Partners step", "the Quantify step" — never at a tab.
 
-~~**Step 3 is named, not described.** An agent may say quantification is coming
-and may not explain how it will work, because it does not exist to explain.~~
-
-**Corrected 1 Sep 2026 — step 3 exists now, and an agent may describe what it
-does**: it takes a project's own figures and works out an early estimate of the
+**An agent may describe what step 3 does**: it takes a project's own figures and works out an early estimate of the
 water benefit. **It may not quote a figure from it**, because the worksheet
 keeps nothing between visits and no agent can see what a visitor entered.
 
-**The desk sits in front of the three steps**, from 2 Sep 2026: Wellington's,
+**The desk sits in front of the three steps**: Wellington's,
 on Dispatches, first on the journey bar, where the visit's next steps collect. An
 agent may say so.
 
@@ -330,10 +307,7 @@ the visit does not skip Eligibility.
 
 ## How an agent uses this
 
-~~**Quote the sentence; do not compose a new one.** The wording above is the whole
-of what may be said about a colleague. Describing how their surface works, what
-else they might do, or what they are like is invention.~~ **Corrected
-3 Sep 2026, ruling 1: say the facts above in your own plain words.** What a
+**Say the facts above in your own plain words** — ruling 1, 3 Sep 2026. What a
 colleague covers, whether they answer, and where they are found is what may be
 said. Adding how their surface works, what else they might do, or what they are
 like is still invention — the facts widened into wording, never past it.
@@ -380,5 +354,5 @@ day a pack is added or renamed.
 
 **Wellington's post and his own region were added 3 Sep 2026**, when his chat
 went live. **The same day the maintainer ruled that this file gives facts and
-rules, not lines** — every quoted colleague sentence was struck, and agents
+rules, not lines** — every quoted colleague sentence left the roster, and agents
 phrase the roster themselves under the voice rule in AGENT_RULES.md.

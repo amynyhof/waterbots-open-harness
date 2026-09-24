@@ -7,13 +7,104 @@
   of "The project record has four fields at screening", which carried a person's name,
   and "Maintainer's ruling, 7 Sep 2026." after the plain-words rule. Neither was a fact
   he needed; the rulings and their dates stay in item S11, the process rules and the build
-  log. The name is not moved anywhere, her word. Old wording, whole:
-  "**Ruled 5 Sep 2026, from Bob.** The project record has four fields at" and
-  "a person asking about someone's water project. Maintainer's ruling, 7 Sep 2026."
+  log. The name is recorded nowhere, her word, so the old wording here carries a blank
+  where it stood: "**Ruled 5 Sep 2026, from [a name].** The project record has four fields
+  at" and "a person asking about someone's water project. Maintainer's ruling, 7 Sep 2026."
 - The same trim cut the copies of his region that his prompt's code carried (the four
   fields in order, the never-ask list, the screening loop, the three kinds, and rules 2, 5
   and 6 of the old nine), so each rule reaches him once, from this file. Code only;
   nothing in this pack changed for it.
+- **Every struck passage and date stamp leaves the file** (Tier 2 of the same ruling, cuts 8
+  and 9; item C1's sweep for this one file under the no-strikes rule of 23 Sep 2026). Each
+  is replaced by its live wording alone. The roster region reaches Phoebe as well as
+  Wellington, so both prompts changed: his from 21,199 to 19,811 characters, hers from
+  68,288 to 66,900; one short run each afterwards. What an agent is told did not change —
+  a strike is text an agent reads past, and every live fact stays. The rulings' dates stay
+  in AGENT_RULES.md, the process rules and the build log. The old wording, whole, in the
+  order it stood in the file; where a passage was struck text with no replacement, it is
+  simply gone:
+
+  *Outside the regions, "Who has this", the opening of the facts-and-rules paragraph* — old wording:
+
+  > ~~**So every sentence here is a sentence an agent can say today**, and should be
+  > read that way.~~ **Corrected 3 Sep 2026, maintainer's ruling 1: this file gives an
+  > agent FACTS and RULES, not lines.** What each colleague covers, what is live,
+
+  *Outside the regions, the same paragraph's last sentence* — old wording:
+
+  > The quoted "what another agent may say" sentences that stood here until 3 Sep
+  > are struck below rather than deleted, so the change of rule is visible.
+
+  *Roster region, the head of "The roster"* — old wording:
+
+  > ~~Two agents, settled by the maintainer on 24 Aug 2026. They are two posts, not
+  > one.~~ ~~**Three agents, and they are three posts, not one.**~~ **Four agents,
+  > and they are four posts, not one.** Bridget and Phoebe were settled by the
+  > maintainer on 24 Aug 2026; **Calvin took the third post on 1 Sep 2026**, when
+  > the Quantification step was built and a pack was fitted to it; **Wellington
+  > took the fourth on 3 Sep 2026**, when his chat went live on the desk. The struck
+  > lines are kept rather than replaced, because a document that quietly changes
+  > its count teaches its reader to check it against something else.
+
+  *Roster region, under Bridget* — old wording:
+
+  > ~~**What another agent may say when pointing at her:** "The basin map covers that
+  > — it is Bridget's. Her chat is not answering yet, but the map itself will show
+  > you."~~ Struck 3 Sep 2026 — facts, not lines.
+
+  *Roster region, under Phoebe* — old wording:
+
+  > ~~**What another agent may say when pointing at her:** "Phoebe covers that — she
+  > is the eligibility and feasibility agent, and she works from the published
+  > criteria. You will find her with the Eligibility worksheet."~~ Struck
+  > 3 Sep 2026 — facts, not lines.
+
+  *Roster region, under Calvin* — old wording:
+
+  > ~~**What another agent may say when pointing at him:** "The Quantification step
+  > covers that — that's Calvin's job. His chat is not answering yet, but the
+  > worksheet itself will take you through it."~~ Struck 3 Sep 2026 — facts, not
+  > lines.
+
+  *Roster region, the journey table, row 3, State* — old wording:
+
+  > | ~~**Not built.**~~ **Built. Calvin's post; his chat is coming.** |
+
+  *Roster region, the phase-names paragraph, last sentence* — old wording:
+
+  > is fine; its name is not the agent's to rephrase. Maintainer's ruling, 5 Sep 2026.
+
+  *Roster region, the journey-bar paragraph, opening* — old wording:
+
+  > ~~**There is no tab row.**~~ **The journey bar is the navigation**: Dispatches first, the desk, then
+  > the six phases. From 9 Sep 2026 each step is an agent's screen with tabs of its own — Chat, Tool,
+
+  *Roster region, the journey-bar paragraph, last sentence* — old wording:
+
+  > Partners step", "the Quantify step" — never at a tab. Maintainer's ruling, 7 Sep 2026, replacing
+  > the tab words of 5 Sep.
+
+  *Roster region, the struck step-3 paragraph and the opening of the one after it* — old wording:
+
+  > ~~**Step 3 is named, not described.** An agent may say quantification is coming
+  > and may not explain how it will work, because it does not exist to explain.~~
+  > 
+  > **Corrected 1 Sep 2026 — step 3 exists now, and an agent may describe what it
+  > does**: it takes
+
+  *Roster region, the desk sentence* — old wording:
+
+  > **The desk sits in front of the three steps**, from 2 Sep 2026: Wellington's,
+
+  *Outside the regions, "How an agent uses this", the opening* — old wording:
+
+  > ~~**Quote the sentence; do not compose a new one.** The wording above is the whole
+  > of what may be said about a colleague. Describing how their surface works, what
+  > else they might do, or what they are like is invention.~~ **Corrected
+  > 3 Sep 2026, ruling 1: say the facts above in your own plain words.** What a
+
+  *Outside the regions, "Where this scope came from"* — "every quoted colleague sentence was
+  struck" now reads "left the roster".
 
 ## 0.4.0 — 23 Sep 2026
 
