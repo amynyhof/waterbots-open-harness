@@ -16,6 +16,42 @@ CHANGELOG, the pack's old wording goes there instead and this file is not used.
 
 ---
 
+## 25 Sep 2026 — CLAUDE.md, BUILD_PLAN.md and OPEN_ITEMS.md: "what kind" was said to be gone from the seal
+
+**Why it changed.** It was true for one day. The maintainer's live test of 25 Sep 2026 found that a
+saved project arrived on production as an empty record, because production's receiver still reads
+`record.kind`. Her ruling the same day put the word back on the seal alone, derived from the type,
+until the carry updates that receiver. Three live documents said the word was gone from the seal,
+and that had stopped being true. The whole account is under item A16 in
+[OPEN_ITEMS.md](../../OPEN_ITEMS.md), *The save door broke, and the word came back*; the carry is on
+item O14.
+
+**Old wording, whole — CLAUDE.md, the scope bullet for 24 Sep 2026:**
+
+> **"What kind" is retired** from his answer, the visit, the rail, both
+> agents' record blocks, Phoebe's tool text and the seal; the rail shows "What type" with the
+> definition behind it and "Stage". The seal carries `type`, `gsClass` and `stage`, told to
+> production once on item O14.
+
+**Old wording, whole — BUILD_PLAN.md, under "V1 — the done line":**
+
+> stage confirmed then logged, "what kind" retired everywhere, the seal's contract change on item O14,
+> the gate to 26,199 by the measured amount.
+
+**Old wording, whole — OPEN_ITEMS.md, the A16 row of the index table:**
+
+> "what kind" retired from the record, the rail and the seal
+
+**Old wording, whole — OPEN_ITEMS.md, item A16's body:**
+
+> "What kind" is gone from his answer, the visit, the rail, both agents' record blocks, Phoebe's
+> tool text and the seal
+
+**Where the current text is.** [CLAUDE.md](../../CLAUDE.md), the same bullet;
+[BUILD_PLAN.md](../../BUILD_PLAN.md), the same paragraph; [OPEN_ITEMS.md](../../OPEN_ITEMS.md),
+item A16's index row and its body. The retirement everywhere a visitor or an agent can see it was
+never undone; only the wire to production carries the word.
+
 ## 23 Sep 2026 — BUILD_PLAN.md, "The next order — ruled 23 Sep 2026 at the close-out"
 
 **Why it changed.** The maintainer's later ruling the same day, "V1 — the done line," replaces

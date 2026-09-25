@@ -159,6 +159,9 @@ const sample = () => ({
     type: { value: 'C-19', source: 'chat' },
     gsClass: { value: 'CWS', source: 'chat' },
     stage: { value: 'paper', source: 'chat' },
+    /* Derived from the type: C-19 is the one type both standards' lists name,
+       so the word is "both". The save-door patch of 25 Sep 2026. */
+    kind: { value: 'both', source: 'chat' },
     place: { value: 'HYBAS 1040021560 · Level 6 · High (40-80%)', source: 'pin' },
     name: { value: 'Test spring', source: 'typed' },
   },
@@ -341,14 +344,35 @@ await refused(
   'record.stage.value'
 );
 await refused(
-  'the old kind field is not part of a seal',
+  'a kind outside the closed set is turned away',
   (() => {
     const s = sample();
-    s.record.kind = { value: 'water', source: 'chat' };
+    s.record.kind.value = 'unsure';
     return s;
   })(),
   400,
-  'kind'
+  'record.kind.value'
+);
+await refused(
+  'a kind that does not match the type is turned away',
+  (() => {
+    const s = sample();
+    /* C-19 derives "both". A sender that says "water" is not this site's. */
+    s.record.kind.value = 'water';
+    return s;
+  })(),
+  400,
+  'record.kind.value'
+);
+await refused(
+  'a seal with no kind at all is turned away, because production still reads it',
+  (() => {
+    const s = sample();
+    delete s.record.kind;
+    return s;
+  })(),
+  400,
+  'record.kind'
 );
 await refused(
   'a source tag outside typed, chat, pin is turned away',
@@ -529,6 +553,7 @@ const requireLib = createRequire(import.meta.url);
 const { buildSeal, handoffAddress } = requireLib(join(libOut, 'handoff.js'));
 const { livePacks } = requireLib(join(libOut, 'methodPacks.js'));
 const { EMPTY_VISIT, typedContext, learnedContext, pinnedContext } = requireLib(join(libOut, 'visit.js'));
+const { pathwayKind } = requireLib(join(libOut, 'projectTypes.generated.js'));
 
 const packs = livePacks();
 const examplePack = packs.find((p) => p.example !== undefined);
@@ -553,6 +578,24 @@ const built = buildSeal(visit, sheet, [1, 2, 3, 4, 5, 6], packs);
 const reading = readSeal(built);
 
 expect('the seal the desk builds is one the server accepts', 'seal' in reading, JSON.stringify(reading));
+/* THE SAVE-DOOR PATCH, 25 Sep 2026. Production's receiver still reads
+   `record.kind`, and a seal without it arrived there as an empty record. The
+   word is derived from the type, and this is the table it is derived by. */
+expect(
+  'the seal carries the retired kind word, derived from the type',
+  built.record.kind.value === 'water' && built.record.kind.source === 'chat',
+  JSON.stringify(built.record.kind)
+);
+expect(
+  'the word is derived from the type and from nothing else',
+  pathwayKind('') === '' &&
+    pathwayKind('C-19') === 'both' &&
+    pathwayKind('C-11') === 'water' &&
+    pathwayKind('NONE') === 'neither' &&
+    pathwayKind('CWS') === '' &&
+    pathwayKind('not-a-type') === '',
+  [pathwayKind(''), pathwayKind('C-19'), pathwayKind('C-11'), pathwayKind('NONE'), pathwayKind('CWS')].join(' / ')
+);
 expect(
   'the record carries its source tags — typed, chat, pin',
   built.record.name.source === 'typed' && built.record.does.source === 'chat' && built.record.place.source === 'pin',

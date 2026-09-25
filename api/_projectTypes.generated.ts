@@ -206,3 +206,44 @@ export type ProjectStageId = (typeof PROJECT_STAGE_IDS)[number];
 export function projectType(id: string): ProjectType | undefined {
   return PROJECT_TYPES.find((t) => t.id === id);
 }
+
+/**
+ * The retired "what kind" word, derived from the type — the save-door patch
+ * of 25 Sep 2026.
+ *
+ * "What kind" was Wellington's question until 24 Sep 2026, when the project
+ * type replaced it (item A16). PRODUCTION'S RECEIVER STILL READS
+ * `record.kind`, and a seal without it arrived there as an empty record —
+ * the maintainer's live test of 25 Sep 2026, where a full desk conversation
+ * crossed and came back as "your screening didn't make it across". So the
+ * seal carries the word again, derived here from the type and never asked of
+ * anyone, until her carry updates production's side. Item O14.
+ *
+ * IT IS A HINT, NEVER A VERDICT. It says which standards' lists name this
+ * kind of activity. Which pathway a project actually fits is Phoebe's to
+ * find, on her applies cards (item A16), and her verdicts cross in the
+ * worksheet, not here.
+ *
+ * "carbon" is in the list because production reads the word and because a
+ * carbon-only type could join the list later. No type on the list yields it
+ * today: the four Gold Standard classes sit on the carbon axis, and a class
+ * is never a type.
+ */
+export const PATHWAY_KINDS = ['', 'water', 'carbon', 'both', 'neither'] as const;
+export type PathwayKind = (typeof PATHWAY_KINDS)[number];
+
+export function pathwayKind(type: string): PathwayKind {
+  if (type === '') return '';
+  /* The one type both standards name: the guidebook's potable-water row,
+     which is also the safe-water carbon method's whole subject. */
+  if (type === DRINKING_WATER_TYPE) return 'both';
+  const found = projectType(type);
+  /* A class is not a type, and nor is anything off the list. The seal's own
+     reader refuses both before this is reached. */
+  if (!found || found.axis === 'carbon') return '';
+  /* "None of these" means no listed type matched, not that no pathway
+     applies: the guidebook's table is not a closed list, and the applies
+     test is what decides. */
+  if (found.axis === 'none') return 'neither';
+  return 'water';
+}

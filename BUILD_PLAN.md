@@ -150,8 +150,11 @@ that it is owed, not what it looks like.
 
 **Step 2, Wellington type and stage, is done 24 Sep 2026: #119, merged on her word** — item A16 in
 [OPEN_ITEMS.md](./OPEN_ITEMS.md) is its home: the short-form list in his prompt, type and class and
-stage confirmed then logged, "what kind" retired everywhere, the seal's contract change on item O14,
-the gate to 26,199 by the measured amount. The trim that made room for it is #118, the same day.
+stage confirmed then logged, "what kind" retired from the record, the rail and both prompts, the
+seal's contract change on item O14, the gate to 26,199 by the measured amount. **The seal carries the
+word `kind` again from 25 Sep 2026**, derived from the type, because production's receiver still
+reads it; item O14 holds the carry, and the correction is in
+[docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md). The trim that made room for it is #118, the same day.
 **Step 3, Phoebe's carbon runtime, is next**, while the paid engine finishes; when that engine is
 sealed and carried by her hand, Calvin's brief (step 5) moves ahead of it (the amendment above).
 Proposal first, on her word.

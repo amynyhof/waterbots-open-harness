@@ -16,6 +16,15 @@
  *     each with its source tag: typed, told Wellington, or from the pin
  *     (type, class and stage for "what kind" from 24 Sep 2026, item A16;
  *     told to production once, item O14);
+ *   - `kind`, the retired word, derived from the type and asked of nobody.
+ *     PRODUCTION'S RECEIVER STILL READS IT. A seal sent without it arrived
+ *     there as an empty record — the maintainer's live test of 25 Sep 2026,
+ *     where a full desk conversation crossed and the visitor was told their
+ *     screening had not made it across. So the word rides alongside the three
+ *     new fields until her carry updates production's side, and it retires
+ *     here on that day. Item O14. Where it comes from, and why it is a hint
+ *     and never a verdict, is written above `pathwayKind` in
+ *     `_projectTypes.generated.ts`;
  *   - the basin pin as ids: the HydroSHEDS and Pfafstetter ids, the level,
  *     the stress label, the published area;
  *   - Phoebe's worksheet: each criterion's state and its way forward;
@@ -49,9 +58,12 @@ import { randomBytes } from 'node:crypto';
 import {
   DRINKING_WATER_TYPE,
   GS_CLASS_IDS,
+  PATHWAY_KINDS,
   PROJECT_STAGE_IDS,
   PROJECT_TYPE_IDS,
+  pathwayKind,
   type GsClassId,
+  type PathwayKind,
   type ProjectStageId,
   type ProjectTypeId,
 } from './_projectTypes.generated.js';
@@ -86,6 +98,8 @@ export type SealSource = '' | 'typed' | 'chat' | 'pin';
 export type SealType = '' | ProjectTypeId;
 export type SealClass = '' | GsClassId;
 export type SealStage = '' | ProjectStageId;
+/** The retired word, derived from the type. See `pathwayKind`. */
+export type SealKind = PathwayKind;
 export type SealCriterionState = 'unchecked' | 'met' | 'not-yet';
 export type SealPackStatus = 'complete' | 'incomplete' | 'pending' | 'blocked';
 
@@ -93,6 +107,7 @@ const SOURCES: readonly SealSource[] = ['', 'typed', 'chat', 'pin'];
 const TYPES: readonly SealType[] = ['', ...PROJECT_TYPE_IDS];
 const CLASSES: readonly SealClass[] = ['', ...GS_CLASS_IDS];
 const STAGES_OF_PROJECT: readonly SealStage[] = ['', ...PROJECT_STAGE_IDS];
+const KINDS: readonly SealKind[] = PATHWAY_KINDS;
 const STATES: readonly SealCriterionState[] = ['unchecked', 'met', 'not-yet'];
 const STATUSES: readonly SealPackStatus[] = ['complete', 'incomplete', 'pending', 'blocked'];
 
@@ -106,6 +121,7 @@ export interface SealRecord {
   type: SealField & { value: SealType };
   gsClass: SealField & { value: SealClass };
   stage: SealField & { value: SealStage };
+  kind: SealField & { value: SealKind };
   place: SealField;
   name: SealField;
 }
@@ -208,20 +224,34 @@ function field(value: unknown, where: string, max: number): SealField {
 }
 
 function readRecord(value: unknown): SealRecord {
-  const v = object(value, 'record', ['does', 'type', 'gsClass', 'stage', 'place', 'name']);
+  const v = object(value, 'record', ['does', 'type', 'gsClass', 'stage', 'kind', 'place', 'name']);
   const type = field(v.type, 'record.type', MAX_LABEL_CHARS);
   const gsClass = field(v.gsClass, 'record.gsClass', MAX_LABEL_CHARS);
   const stage = field(v.stage, 'record.stage', MAX_LABEL_CHARS);
+  const kind = field(v.kind, 'record.kind', MAX_LABEL_CHARS);
   const typeValue = oneOf(type.value, 'record.type.value', TYPES);
   const classValue = oneOf(gsClass.value, 'record.gsClass.value', CLASSES);
   if (classValue !== '' && typeValue !== DRINKING_WATER_TYPE) {
     refuse(`record.gsClass.value is set but record.type.value is not ${DRINKING_WATER_TYPE}, the one type that takes a class`);
+  }
+  /* The pair has to agree. `kind` is derived from the type and nothing else,
+     so a seal whose two fields disagree was not built by this site's sender
+     and is turned away rather than passed on. The source tag is not held to
+     the type's: the word derives from the type, and how the type came to be
+     known is a separate fact. */
+  const kindValue = oneOf(kind.value, 'record.kind.value', KINDS);
+  const derived = pathwayKind(typeValue);
+  if (kindValue !== derived) {
+    refuse(
+      `record.kind.value is "${kindValue}" but the type "${typeValue}" derives "${derived}"`
+    );
   }
   return {
     does: field(v.does, 'record.does', MAX_DOES_CHARS),
     type: { value: typeValue, source: type.source },
     gsClass: { value: classValue, source: gsClass.source },
     stage: { value: oneOf(stage.value, 'record.stage.value', STAGES_OF_PROJECT), source: stage.source },
+    kind: { value: kindValue, source: kind.source },
     place: field(v.place, 'record.place', MAX_PLACE_CHARS),
     name: field(v.name, 'record.name', MAX_NAME_CHARS),
   };

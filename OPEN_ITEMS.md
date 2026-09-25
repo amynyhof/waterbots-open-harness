@@ -122,7 +122,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | A14 | Screen host role words — one home | Agents | BONES | **logged 18 Sep 2026 from the maintainer's word** — not fixed now |
 | A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Agents | BONES | ~~**ruled 20 Sep 2026; the batch approved the same day** — steps 0 to 3 merged (#93, #94, #95) by 21 Sep; steps 4 to 6 open as pull request D, #97, at her eyeball~~ **built 22 Sep 2026, all four pull requests merged (#93, #94, #95, #97), eyeball stop 4 passed** — line 9 is the one gap left, carried by item A17 |
 | A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | ~~**logged 18 Sep 2026 from the maintainer's brief** — waits on her carry~~ **built 18 Sep 2026, #91 merged** — the free and Commons columns stay "unconfirmed" until she carries a confirmed file |
-| A16 | Wellington guides and leads — he never asks "water or carbon" — **and names the project type from a cited list** | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; **expanded and ruled 23 Sep 2026**: a cited list of twenty-four types, confirm then log; **the types file graded and moved into `product-shared/` the same day**, on the roster rule; **his runtime built 24 Sep 2026, #119 merged on her word**: the short-form list in his prompt, type and class and stage confirmed then logged, "what kind" retired from the record, the rail and the seal; the gate to 26,199 by the measured amount |
+| A16 | Wellington guides and leads — he never asks "water or carbon" — **and names the project type from a cited list** | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; **expanded and ruled 23 Sep 2026**: a cited list of twenty-four types, confirm then log; **the types file graded and moved into `product-shared/` the same day**, on the roster rule; **his runtime built 24 Sep 2026, #119 merged on her word**: the short-form list in his prompt, type and class and stage confirmed then logged, "what kind" retired from the record and the rail; the gate to 26,199 by the measured amount; **the save-door patch of 25 Sep 2026** puts the word back on the seal alone, derived from the type, until production's receiver is carried |
 | A17 | The handoff goes both ways — forward and back | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — her hand-back is built; his side of the return is not; not started |
 | A18 | A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person | Agents | BONES | **ruled 23 Sep 2026 from her review of Phoebe's cards** — the rule is in AGENT_RULES.md (#100, merged); **stop 3 passed the same day**: fixability lines on the six water cards and nine water routes in the pack; the "tools on the paid site" line ruled canon; **her addendum of 23 Sep 2026 ruled and its tags built**: a Phase line on every eligibility card, the stage question, framing from the stage, the door once; nothing runtime built |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
@@ -989,7 +989,7 @@ yes to none of these; no type when they are not sure. A drinking-water project (
 its class the same way, and `gsClass` is kept only beside C-19, on the relay, in the client and
 on the seal. The stage — on paper, being built, already running — is asked and `stage` returned
 only on the visitor's yes. "What kind" is gone from his answer, the visit, the rail, both agents'
-record blocks, Phoebe's tool text and the seal; the rail shows a "What type" row with the
+record blocks and Phoebe's tool text; the rail shows a "What type" row with the
 standard's name and its sentence behind it, and a "Stage" row. The seal carries `type`,
 `gsClass` and `stage` for `kind`, told to production once on item O14. His prompt measured
 25,699 after the build; the gate is 26,199, her ruling, raised by the measured amount to leave
@@ -997,7 +997,38 @@ standard's name and its sentence behind it, and a "Stage" row. The seal carries 
 type on the second turn, the class on the third, the stage on the fourth. Item A17, his reading
 of what Phoebe found, is untouched.
 
-**Ruled 23 Sep 2026; built 24 Sep 2026. Bucket BONES.**
+### The save door broke, and the word came back — 25 Sep 2026
+
+**Found by the maintainer's own live test**, the day after #119 merged: she held a full
+conversation with Wellington at the desk — the project's name, what it does, its type, its stage
+and its country — clicked save, and arrived on production to be told her screening had not made
+it across. The record reached production empty.
+
+**Why.** Production's receiver still reads `record.kind`, the field this site retired the day
+before. The three fields that replaced it — `type`, `gsClass`, `stage` — mean nothing to it yet,
+and without the word it knew, it read the record as empty. Nothing was lost on this side and no
+visitor's words were mishandled; the save simply did not arrive as a project.
+
+**Her ruling, 25 Sep 2026.** Until the carry updates production's receiver, this site's sender
+carries `kind` alongside the three new fields, derived from the type — water, carbon, both,
+neither — and this site's own check allows the pair. Built the same day as its own small pull
+request, ahead of build-order step 3.
+
+**How it is derived, and what it is not.** `pathwayKind` in the generated project-type module is
+the one home: no type gives a blank, the potable-water type C-19 gives *both* because it is the
+one type both standards' lists name, any other activity type gives *water*, and "none of these"
+gives *neither*. *Carbon* stays in the closed list because production reads the word and a
+carbon-only type could join the list later; no type on the list yields it today, because the four
+Gold Standard classes are classes and a class is never a type. **It is a hint about which
+standards name this kind of activity and never a verdict on a pathway** — which pathway a project
+fits is Phoebe's to find, and her verdicts cross in the worksheet, not here. The seal's reader
+refuses a `kind` that disagrees with the type, so the pair cannot drift apart.
+
+**What is still owed.** The carry on item O14 now has two parts: production's receiver reads
+`type`, `gsClass` and `stage`, and on that day the word retires from the seal here. The retirement
+everywhere a visitor or an agent can see it is unchanged and was never undone.
+
+**Ruled 23 Sep 2026; built 24 Sep 2026; the save-door patch 25 Sep 2026. Bucket BONES.**
 
 ## A17. The handoff goes both ways — forward and back
 
@@ -2115,7 +2146,7 @@ zero holds for every one: nothing here is fetched, written to, or guessed at on 
 | The specialist contract — the nine-line section of AGENT_RULES.md, her words | Production | item A15 |
 | `project-types.md` — drafted here, the paid repository becomes its source and this site is then held to it, the roster's rule; her word of 23 Sep 2026 | Production, then back to this site | item A16 |
 | The carbon "no" list to the reviewer as Q11; her word of 23 Sep 2026, named at the M1–M17 grade: the Blocked cases on M5 (nobody boils or goes without), M12 (the host country's list excludes the activity), M13 (viable without carbon finance, pricing will not change), M14 (common practice with no justified narrower area) | The paid side | items A18, K7 |
-| One contract change to the seal: `type`, `gsClass` and `stage` for `kind` (**this site's sender changed 24 Sep 2026**, item A16: `record.type` an id from `project-types.md` or NONE or blank, `record.gsClass` one of HWT, IWT, CWT, CWS only beside C-19, `record.stage` one of paper, building, running, each with its source tag; `record.kind` is refused); rows and a readiness read per pathway; `wantsHuman` and a note | Production | items K7, A16, A18 |
+| One contract change to the seal: `type`, `gsClass` and `stage` for `kind` (**this site's sender changed 24 Sep 2026**, item A16: `record.type` an id from `project-types.md` or NONE or blank, `record.gsClass` one of HWT, IWT, CWT, CWS only beside C-19, `record.stage` one of paper, building, running, each with its source tag). **Until this carry lands the seal also carries `kind` again**, her ruling of 25 Sep 2026 after a live save arrived on production as an empty record: derived from the type, one of water, carbon, both, neither, and refused when it disagrees with the type. The word retires from the seal on the day production's receiver reads the three new fields. The whole account is under item A16, *The save door broke, and the word came back*. Also owed: rows and a readiness read per pathway; the send-to-a-person field and a note | Production | items K7, A16, A18 |
 | The "tools and resources on the paid site" line, her canon of 23 Sep 2026: production's side of the save door and its sign-up should say the same thing this site's save door will say | Production | item A18 |
 | The transition-assistance module, overseen by trusted consultants, that card T4 tells a transitioning project is coming to the paid site; her word of 23 Sep 2026 | Production | items K7, A18 |
 
