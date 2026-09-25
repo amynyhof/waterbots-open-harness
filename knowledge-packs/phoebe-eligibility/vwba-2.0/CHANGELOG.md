@@ -2,6 +2,10 @@
 
 ## 0.10.0 — 24 Sep 2026
 
+- Corrected 25 Sep 2026: `tool/eligibility-worksheet.yaml` still said `pack.version: 0.9.0` after
+  this release bumped the pack, so `scripts/check-tool.mjs` was failing on `main`. The line now
+  says 0.10.0. Nothing else in the tool file changed, and no row, card or citation moved.
+
 - `tool/README.md`, the agent-facing region: the record Phoebe reads first has five facts,
   not four — "What kind" is replaced by "What type" (the standard type Wellington confirmed,
   with its class for a drinking-water project) and "Stage" (on paper, being built, already
