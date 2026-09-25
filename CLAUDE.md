@@ -362,9 +362,13 @@ credit line does not meet any of these bars.
   logged only on the visitor's yes; a drinking-water project is asked its class the same way,
   kept only beside that type; the stage — on paper, being built, already running — is asked and
   logged the same way. **"What kind" is retired** from his answer, the visit, the rail, both
-  agents' record blocks, Phoebe's tool text and the seal; the rail shows "What type" with the
+  agents' record blocks and Phoebe's tool text; the rail shows "What type" with the
   definition behind it and "Stage". The seal carries `type`, `gsClass` and `stage`, told to
-  production once on item O14. Which pathway a project fits is never a field: Phoebe finds it.
+  production once on item O14 — **and from 25 Sep 2026 the word `kind` again beside them**,
+  derived from the type and asked of nobody, because production's receiver still reads it and
+  a seal without it arrived there as an empty record. It retires from the seal on the day her
+  carry updates that receiver. Corrected 25 Sep 2026; the old wording is in
+  [docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md). Which pathway a project fits is never a field: Phoebe finds it.
   **His prompt gate is 26,199** from the same day, her ruling — measured 25,699 after the build
   plus 500 — after the trim of #118 had taken it from 23,940 to 19,811; the reason is written
   above the check.
