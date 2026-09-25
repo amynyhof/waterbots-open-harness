@@ -13,6 +13,9 @@
  *
  *   - the record fields with their source tags — what it does, its type, its
  *     class beside a drinking-water type, its stage, where, what it is called;
+ *   - `kind`, the retired word, derived from the type and asked of nobody,
+ *     because production's receiver still reads it (item O14, the save-door
+ *     patch of 25 Sep 2026);
  *   - the pin as ids, level, label and published area;
  *   - each criterion's state and its way forward;
  *   - each pack's answers as typed, the pack's own word for where it stands
@@ -29,6 +32,7 @@
 
 import type { CriterionStatus } from './criteriaState';
 import type { MethodPack } from './methodPacks';
+import { pathwayKind } from './projectTypes.generated';
 import { HANDOFF_LANDING } from './site';
 import { isWorkedExample, type Visit } from './visit';
 
@@ -48,6 +52,7 @@ export interface SealBody {
     type: SealField;
     gsClass: SealField;
     stage: SealField;
+    kind: SealField;
     place: SealField;
     name: SealField;
   };
@@ -95,6 +100,10 @@ export function buildSeal(
       type: field('type'),
       gsClass: field('gsClass'),
       stage: field('stage'),
+      /* Derived from the type, never asked. It carries the type's own source
+         tag, because the type is the fact it is derived from. Where no type is
+         known it is blank, exactly as the type is. */
+      kind: { value: pathwayKind(context.type), source: context.provenance.type },
       place: field('place'),
       name: field('name'),
     },
