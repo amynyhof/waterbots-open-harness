@@ -477,6 +477,89 @@ export const CARBON_ELIGIBILITY: CarbonCard[] = splitCards(eligibilityCarbonRaw,
 
 export const CARBON_ROUTES: RouteCard[] = readRoutes(routesCarbonRaw, CARBON_ROUTES_FILE);
 
+/* -------------------------------------------------------------------------
+   Looking a card up the way a tool file names it — from 25 Sep 2026.
+
+   A tool row cites its card as "set/id": `eligibility/4`, `applies/W1`,
+   `eligibility/M5`. The worksheet, the chat layer and the relay all need the
+   card behind a row, so the lookup lives here, beside the parsing, rather than
+   being written again in each reader. A name that matches no card returns
+   undefined, and every caller drops rather than renders — the same arrangement
+   that keeps a citation from ever being invented.
+------------------------------------------------------------------------- */
+
+/** What a row's card gives a reader, whichever set it came from. */
+export interface RowCard {
+  id: string;
+  title: string;
+  /** The rule, the test or the question, in the card's own plain words. */
+  plain: string;
+  citation: Citation;
+  /** What a project owner would be asked to show. */
+  evidence: string[];
+  /** The card's own "Can it be fixed?" line, where its set carries one. */
+  fixable?: Fixable;
+}
+
+export function cardFor(pack: string, cite: string): RowCard | undefined {
+  const [set, id] = cite.split('/');
+  if (!set || !id) return undefined;
+  if (pack === 'vwba-2.0') {
+    if (set === 'applies') {
+      const card = WATER_APPLIES.find((c) => c.id === id);
+      return card && { id: card.id, title: card.title, plain: card.test, citation: card.citation, evidence: card.evidence };
+    }
+    if (set === 'eligibility') {
+      const card = CRITERIA.find((c) => String(c.number) === id);
+      return (
+        card && {
+          id: String(card.number),
+          title: card.title,
+          plain: card.rule,
+          citation: card.citation,
+          evidence: card.evidence,
+          fixable: card.fixable,
+        }
+      );
+    }
+    if (set === 'feasibility') {
+      /* The cards are headed "Card B-1" in their file, so B-1 is the id she
+         reads and the id she cites. A bare number resolves too, because the
+         same card is the manual's consideration 1 and a reader may name it
+         either way. */
+      const number = id.replace(/^[A-Za-z]+-/, '');
+      const card = CONSIDERATIONS.find((c) => String(c.number) === number);
+      return card && { id: String(card.number), title: card.title, plain: card.summary, citation: card.citation, evidence: card.weigh };
+    }
+  }
+  if (pack === 'gs-paa-v2.0') {
+    if (set === 'applies') {
+      const card = CARBON_APPLIES.find((c) => c.id === id);
+      return card && { id: card.id, title: card.title, plain: card.test, citation: card.citation, evidence: card.evidence };
+    }
+    if (set === 'eligibility') {
+      const card = CARBON_ELIGIBILITY.find((c) => c.id === id);
+      return (
+        card && {
+          id: card.id,
+          title: card.title,
+          plain: card.rule,
+          citation: card.citation,
+          evidence: card.evidence,
+          fixable: card.fixable,
+        }
+      );
+    }
+  }
+  return undefined;
+}
+
+/** A route card by its id, within one pack. Both packs number theirs R-1 up. */
+export function routeFor(pack: string, id: string): RouteCard | undefined {
+  const set = pack === 'vwba-2.0' ? WATER_ROUTES : pack === 'gs-paa-v2.0' ? CARBON_ROUTES : [];
+  return set.find((route) => route.id === id);
+}
+
 /** The three parts of the carbon eligibility file, in the file's order, labelled as it labels them. */
 export const CARBON_ELIGIBILITY_PARTS: { key: CarbonCard['part']; label: string; range: string }[] = [
   { key: 'M', label: "The methodology's own gate", range: 'M1–M17' },

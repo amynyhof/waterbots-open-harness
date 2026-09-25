@@ -179,8 +179,17 @@ export interface Layout {
   unmarked: Evidence[];
 }
 
-/** `[[eligibility-4]]` — the set and number the agent was given, nothing else. */
-const MARKER = /\[\[([a-z]+-\d+)\]\]/g;
+/**
+ * `[[water:eligibility/4]]` — the evidence id the agent was given, nothing else.
+ *
+ * WIDENED 25 SEP 2026. Phoebe's cards used to be two sets in one pack, so
+ * `[[eligibility-4]]` could not be ambiguous. With a pack per pathway, a card
+ * set per pack and route cards numbered from one in each, an id now carries its
+ * section and its set: `water:eligibility/4`, `water:routes/R-3`. The pattern
+ * takes both shapes, because an agent whose evidence ids are still the old
+ * shape keeps working.
+ */
+const MARKER = /\[\[([A-Za-z0-9][A-Za-z0-9.:/_-]*)\]\]/g;
 
 /**
  * Turns an agent's raw text into paragraphs and numbered markers.

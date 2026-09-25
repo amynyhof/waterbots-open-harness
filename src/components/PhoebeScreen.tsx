@@ -47,7 +47,8 @@ import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
 import type { AgentHost, AgentTurn } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
 import type { Citation } from '../lib/citation';
-import { worksheetCaption, type CriterionStatus } from '../lib/criteriaState';
+import { worksheetCaption, contextFor, applyUpdates, type Sheet, type Verdicts } from '../lib/worksheetState';
+import { HER_PACKS } from '../lib/worksheet.generated';
 import { nextPhaseAfter, nextPhaseCompetes } from '../lib/journey';
 import { DESK_LABEL } from '../lib/surfaces';
 import { WELLINGTON } from '../lib/wellington';
@@ -69,7 +70,7 @@ import {
   type Phase,
   type RouteCard,
 } from '../lib/phoebeCards';
-import { applyCriterionUpdates, askPhoebe, carriedRecord, type CriterionUpdate } from '../lib/phoebeClient';
+import { askPhoebe, carriedRecord, carriedSheet } from '../lib/phoebeClient';
 import type { Surface } from '../lib/surfaces';
 import type { VisitContext } from '../lib/visit';
 import AgentScreen from '../screen/AgentScreen';
@@ -90,15 +91,15 @@ export const PHOEBE: AgentHost = {
   colourToken: '--bot-phoebe',
   beta: true,
   composerPlaceholder: 'Tell her about your project, or ask about a criterion.',
-  composerNote: 'Nothing is kept between visits. Twenty messages a day.',
+  composerNote: 'Nothing is kept between visits. Thirty messages a day.',
   /* A visitor's words for what she is doing — canon rule 4, 8 Sep 2026. */
   thinkingLine: 'Phoebe is reviewing the criteria…',
 };
 
 export default function PhoebeScreen({
-  onCriteriaUpdate,
+  onVerdicts,
   record,
-  statuses,
+  sheet,
   onOpenMap,
   onNavigate,
   visible,
@@ -106,11 +107,11 @@ export default function PhoebeScreen({
   eligibilityDone,
   inviteSurface,
 }: {
-  onCriteriaUpdate: (updates: CriterionUpdate[]) => void;
+  onVerdicts: (verdicts: Verdicts) => void;
   /** The visit's project record, carried to Phoebe with every ask. */
   record: VisitContext;
-  /** The worksheet's rows, held by the shell. */
-  statuses: CriterionStatus[];
+  /** The worksheet as the shell holds it, per pack and per row. */
+  sheet: Sheet;
   onOpenMap: () => void;
   onNavigate: (surface: Surface) => void;
   /** True while Eligibility is the visible step — first-open runs then, not on mount. */
@@ -122,6 +123,13 @@ export default function PhoebeScreen({
   inviteSurface: Surface | null;
 }) {
   const carried = carriedRecord(record);
+
+  /* The card sets she has been given this visit. Staged loading (ruling R6)
+     sends only what the visit has reached, and a set she has already used must
+     not vanish from under her, so the console remembers what came back and
+     sends it with the next ask. It is visit state, not memory: a reload clears
+     it with everything else. */
+  const loaded = useRef<string[]>([]);
 
   async function ask(
     history: { role: 'user' | 'agent'; text: string }[],
@@ -137,12 +145,28 @@ export default function PhoebeScreen({
       signal,
       /* The rows go with every ask — contract line 3, 21 Sep 2026 — so she
          sees what is filled in and what is still missing. */
-      { opened: meta?.opened === true, eligibilityDone, worksheet: statuses }
+      {
+        opened: meta?.opened === true,
+        eligibilityDone,
+        sheet: carriedSheet(sheet, HER_PACKS),
+        loaded: loaded.current,
+      }
     );
+
+    if (answer.loaded) loaded.current = answer.loaded;
 
     /* Her side effect, fired before the turn is returned so a failed request
        never half-moves the worksheet. */
-    if (answer.updates.length) onCriteriaUpdate(answer.updates);
+    const moved = answer.rows.length > 0 || answer.pathways.length > 0;
+    if (moved || Object.keys(answer.flags).length > 0) {
+      onVerdicts({ rows: answer.rows, pathways: answer.pathways, flags: answer.flags });
+    }
+
+    const after = applyUpdates(sheet, {
+      rows: answer.rows,
+      pathways: answer.pathways,
+      flags: answer.flags,
+    });
 
     return {
       role: 'agent',
@@ -151,8 +175,16 @@ export default function PhoebeScreen({
       abstained: answer.abstained,
       /* The shown line — contract line 5: what the worksheet holds after this
          turn, from her verdicts alone, only under a turn that moved a row. */
-      ...(answer.updates.length
-        ? { caption: worksheetCaption(applyCriterionUpdates(statuses, answer.updates)) }
+      ...(moved
+        ? {
+            caption: worksheetCaption(
+              after,
+              HER_PACKS.map((pack) => ({
+                pack,
+                context: contextFor(after, pack, record.gsClass),
+              }))
+            ),
+          }
         : {}),
       /* The way back to him, from the field alone. */
       ...(answer.handBack === 'wellington'
@@ -195,7 +227,14 @@ export default function PhoebeScreen({
       nextQuiet={nextPhaseCompetes('eligibility', inviteSurface)}
       tabs={{
         chat: <ScreenChat host={PHOEBE} chat={chat} composerId="wb-phoebe-composer" />,
-        tool: <EligibilityWorksheet statuses={statuses} onOpenMap={onOpenMap} />,
+        tool: (
+          <EligibilityWorksheet
+            sheet={sheet}
+            gsClass={record.gsClass}
+            herPacks={HER_PACKS}
+            onOpenMap={onOpenMap}
+          />
+        ),
         pack: <KnowledgePackTab view={PHOEBE_PACK} />,
         credentials: <CredentialsTab host={PHOEBE} />,
       }}

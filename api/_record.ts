@@ -42,6 +42,18 @@ import {
   type ProjectStageId,
   type ProjectTypeId,
 } from './_projectTypes.generated.js';
+import {
+  PATHWAY_STATE_IDS,
+  PATHWAY_STATE_LABEL,
+  READINESS_LABEL,
+  ROW_STATE_IDS,
+  ROW_STATE_LABEL,
+  pathwayStateOf,
+  readinessOf,
+  rowsFor,
+  section,
+  type RowContext,
+} from './_worksheet.generated.js';
 
 export interface ProjectRecord {
   does: string;
@@ -131,7 +143,7 @@ export function recordBlock(record: ProjectRecord): string {
   return [
     `# ${RECORD_HEADING}`,
     '',
-    'These are the visitor’s own words about their project, carried from the desk so they need not say them twice. They are facts about the project and never a verdict on any criterion; only the cards decide that. Start from them, do not ask again for what is here, and ask for what is missing.',
+    'These are the visitor’s own words about their project, carried from the desk so they need not say them twice. They are facts about the project and never a verdict on any row of your worksheet; only the cards decide that. Start from them, do not ask again for what is here, and ask for what is missing.',
     '',
     ...recordLines(record),
   ].join('\n');
@@ -147,7 +159,7 @@ export function phoebeNotesBlock(notes: { opened?: boolean; eligibilityDone?: bo
   }
   if (notes.eligibilityDone) {
     extra.push(
-      'Every eligibility criterion on the worksheet has a verdict for this visit. Send them back to Wellington on Dispatches with a clear next step, and set handBack to "wellington". Do not leave them with no way on.'
+      'Every row you ask on this site has a verdict for this visit. Give the read for each pathway, show once the rows that are acted on at later phases, send them back to Wellington on Dispatches with a clear next step, and set handBack to "wellington". Do not leave them with no way on.'
     );
   }
   return extra.length ? extra.join('\n\n') : null;
@@ -177,79 +189,133 @@ export function stageBlock(stage: ScreeningStage): string {
 
 /* --------------------------------------------------------------------------
    The worksheet, as it stands — contract line 3, item A15, step 3,
-   21 Sep 2026. The six rows travel with every ask, from the console and from
-   the Commons seat, and come back to Phoebe as a block after the cache
-   breakpoint. Every verdict in it is one she set earlier this visit; the
-   shell holds the rows and nobody else writes them. Checked here: a row is
-   a number in the manual's range, a state from the closed set, and a route
-   forward only on a Not yet row, capped; anything else is dropped whole.
+   21 Sep 2026, and per pack with five states from 25 Sep 2026.
+
+   Every pack she works travels with every ask: its rows as they stand, its
+   pathway state, its version flag where it has one, and the read those rows
+   give. Every verdict in it is one she set earlier this visit; the shell holds
+   the rows and nobody else writes them. Checked here: a pack and a row id the
+   tool files know, a state from the closed list, and the sentence a state
+   carries, capped. Anything else is dropped whole.
    -------------------------------------------------------------------------- */
 
-export type WorksheetState = 'unchecked' | 'met' | 'not-yet';
+export interface SheetRow {
+  id: string;
+  state: string;
+  because?: string;
+  routes?: string[];
+}
 
-export interface WorksheetRow {
-  number: number;
-  state: WorksheetState;
-  routeForward?: string;
+export interface PackSheet {
+  pack: string;
+  rows: SheetRow[];
+  flag?: string;
 }
 
 /** The heading Phoebe's prompt names, so she knows the block when she sees it. */
 export const WORKSHEET_HEADING = 'What the worksheet shows';
 
-/** Six criteria, the manual's own count; a row outside it is dropped. */
-export const WORKSHEET_ROWS = 6;
-
-/** A route forward is a sentence or two, never an essay. */
-export const MAX_ROUTE_CHARS = 500;
-
-const STATES: readonly WorksheetState[] = ['unchecked', 'met', 'not-yet'];
+/** A sentence a state carries is a sentence or two, never an essay. */
+export const MAX_BECAUSE_CHARS = 500;
 
 /**
- * Read the rows off a request body. Null when nothing usable came, which is
+ * Read the sheet off a request body. Null when nothing usable came, which is
  * the case for an old client or a caller that is not the console.
  */
-export function readWorksheet(value: unknown): WorksheetRow[] | null {
+export function readSheet(value: unknown): PackSheet[] | null {
   if (!Array.isArray(value)) return null;
-  const rows: WorksheetRow[] = [];
-  const seen = new Set<number>();
+  const out: PackSheet[] = [];
   for (const raw of value) {
     if (typeof raw !== 'object' || raw === null) continue;
-    const r = raw as Record<string, unknown>;
-    const number = typeof r.number === 'number' && Number.isInteger(r.number) ? r.number : null;
-    if (number === null || number < 1 || number > WORKSHEET_ROWS || seen.has(number)) continue;
-    const state = STATES.find((s) => s === r.state);
-    if (!state) continue;
-    const route = typeof r.routeForward === 'string' ? r.routeForward.trim() : '';
-    if (state === 'not-yet' && route.length > MAX_ROUTE_CHARS) continue;
-    seen.add(number);
-    rows.push(state === 'not-yet' && route ? { number, state, routeForward: route } : { number, state });
+    const entry = raw as Record<string, unknown>;
+    const pack = typeof entry.pack === 'string' ? entry.pack : '';
+    const found = section(pack);
+    if (!found) continue;
+    const rows: SheetRow[] = [];
+    const seen = new Set<string>();
+    if (Array.isArray(entry.rows)) {
+      for (const rawRow of entry.rows) {
+        if (typeof rawRow !== 'object' || rawRow === null) continue;
+        const r = rawRow as Record<string, unknown>;
+        const id = typeof r.id === 'string' ? r.id : '';
+        if (!id || seen.has(id)) continue;
+        const row = found.rows.find((candidate) => candidate.id === id);
+        if (!row) continue;
+        const state = typeof r.state === 'string' ? r.state : '';
+        const known =
+          ROW_STATE_IDS.some((s) => s === state) || PATHWAY_STATE_IDS.some((s) => s === state);
+        if (!known) continue;
+        const because = typeof r.because === 'string' ? r.because.trim() : '';
+        if (because.length > MAX_BECAUSE_CHARS) continue;
+        const routes = Array.isArray(r.routes)
+          ? r.routes.filter((id2): id2 is string => typeof id2 === 'string' && row.routes.includes(id2))
+          : [];
+        seen.add(id);
+        rows.push({
+          id,
+          state,
+          ...(because ? { because } : {}),
+          ...(routes.length ? { routes } : {}),
+        });
+      }
+    }
+    const flag = typeof entry.flag === 'string' && found.versionFlags.some((w) => w.id === entry.flag)
+      ? entry.flag
+      : '';
+    out.push({ pack, rows, ...(flag ? { flag } : {}) });
   }
-  if (rows.length === 0) return null;
-  rows.sort((a, b) => a.number - b.number);
-  return rows;
+  return out.length ? out : null;
 }
 
-const STATE_WORDS: Record<WorksheetState, string> = {
-  unchecked: 'Not yet checked',
-  met: 'Met',
-  'not-yet': 'Not yet',
-};
+/** What the project is known to be, for sorting which rows it has. */
+function contextOf(record: ProjectRecord | null, sheet: PackSheet): RowContext {
+  const gsClass = record?.gsClass ? record.gsClass.toLowerCase() : '';
+  return {
+    ...(gsClass ? { gsClass } : {}),
+    ...(sheet.flag ? { versionFlag: sheet.flag } : {}),
+  };
+}
+
+function label(state: string): string {
+  return ROW_STATE_LABEL[state] ?? PATHWAY_STATE_LABEL[state] ?? state;
+}
 
 /**
- * The block as Phoebe reads it: each row's state, where a verdict came from,
- * and the one rule for what to do with it.
+ * The block as Phoebe reads it: each pack's pathway, its rows with what each
+ * state carries, and the read those rows give — so her words and the screen
+ * cannot disagree, because both are drawn from the same rows by the same
+ * function.
  */
-export function worksheetBlock(rows: WorksheetRow[]): string {
-  const lines = rows.map((row) => {
-    if (row.state === 'unchecked') return `- Row ${row.number}: ${STATE_WORDS.unchecked}.`;
-    const route = row.routeForward ? ` — what would change it: ${row.routeForward}` : '';
-    return `- Row ${row.number}: ${STATE_WORDS[row.state]}${route} — from your own earlier turn in this conversation.`;
-  });
-  return [
+export function worksheetBlock(sheets: PackSheet[], record: ProjectRecord | null): string {
+  const parts: string[] = [
     `# ${WORKSHEET_HEADING}`,
     '',
-    'The rows of your eligibility worksheet as they stand for this visit. Every verdict below is one you set earlier in this conversation, from what the visitor told you; a row marked Not yet checked has not been looked at. Start from the first row not yet checked, and do not ask again for what a Met row already settled. When the visitor asks where a row stands, read it from here.',
-    '',
-    ...lines,
-  ].join('\n');
+    'Your eligibility worksheet as it stands for this visit. Every verdict below is one you set earlier in this conversation, from what the visitor told you; a row not listed has not been looked at. Start from the first row still unchecked, do not ask again for what a Met row already settled, and when the visitor asks where a row stands, read it from here. The read at the end of each pathway is worked out from these rows, and it is what the screen shows — say it in your own words and never a different one.',
+  ];
+
+  for (const sheet of sheets) {
+    const found = section(sheet.pack);
+    if (!found) continue;
+    const context = contextOf(record, sheet);
+    const states: Record<string, string> = {};
+    for (const row of sheet.rows) states[row.id] = row.state;
+    const pathway = pathwayStateOf(sheet.pack, states, context);
+    parts.push('', `## ${found.sectionName} — ${PATHWAY_STATE_LABEL[pathway]}`, '');
+
+    const rows = rowsFor(sheet.pack, context).filter((row) => row.asked === 'eligibility');
+    for (const row of rows) {
+      const held = sheet.rows.find((r) => r.id === row.id);
+      if (!held) {
+        parts.push(`- ${row.id}: ${ROW_STATE_LABEL.unchecked}.`);
+        continue;
+      }
+      const carried = held.because ? ` — ${held.because}` : '';
+      const routes = held.routes?.length ? ` — route${held.routes.length > 1 ? 's' : ''} ${held.routes.join(', ')}` : '';
+      parts.push(`- ${row.id}: ${label(held.state)}${carried}${routes}.`);
+    }
+    if (sheet.flag) parts.push(`- Version: ${sheet.flag}.`);
+    parts.push('', `The read from these rows: **${READINESS_LABEL[readinessOf(sheet.pack, states, context)]}**.`);
+  }
+
+  return parts.join('\n');
 }

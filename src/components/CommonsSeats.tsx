@@ -36,13 +36,19 @@
  * clicked.
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { AgentTurn } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
-import { initialStatuses, worksheetCaption, type CriterionStatus } from '../lib/criteriaState';
+import {
+  EMPTY_SHEET,
+  applyUpdates,
+  contextFor,
+  worksheetCaption,
+  type Sheet,
+} from '../lib/worksheetState';
+import { HER_PACKS } from '../lib/worksheet.generated';
 import { fittedPack, type PackValues } from '../lib/methodPacks';
-import { CRITERIA } from '../lib/phoebeCards';
-import { applyCriterionUpdates, askPhoebe } from '../lib/phoebeClient';
+import { askPhoebe, carriedSheet } from '../lib/phoebeClient';
 import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab from '../screen/KnowledgePackTab';
@@ -55,7 +61,8 @@ import { PHOEBE, PHOEBE_PACK } from './PhoebeScreen';
 import QuantificationWorksheet from './QuantificationWorksheet';
 
 export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
-  const [statuses, setStatuses] = useState<CriterionStatus[]>(() => initialStatuses(CRITERIA.length));
+  const [sheet, setSheet] = useState<Sheet>(EMPTY_SHEET);
+  const loaded = useRef<string[]>([]);
 
   async function ask(
     history: { role: 'user' | 'agent'; text: string }[],
@@ -71,17 +78,28 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
       })),
       null,
       signal,
-      { worksheet: statuses }
+      { sheet: carriedSheet(sheet, HER_PACKS), loaded: loaded.current }
     );
-    if (answer.updates.length) setStatuses((s) => applyCriterionUpdates(s, answer.updates));
+    if (answer.loaded) loaded.current = answer.loaded;
+    const verdicts = { rows: answer.rows, pathways: answer.pathways, flags: answer.flags };
+    const moved = answer.rows.length > 0 || answer.pathways.length > 0;
+    if (moved || Object.keys(answer.flags).length > 0) {
+      setSheet((current) => applyUpdates(current, verdicts));
+    }
+    const after = applyUpdates(sheet, verdicts);
     return {
       role: 'agent',
       text: answer.reply,
       evidence: answer.evidence,
       abstained: answer.abstained,
       /* The shown line — contract line 5 — from her verdicts alone. */
-      ...(answer.updates.length
-        ? { caption: worksheetCaption(applyCriterionUpdates(statuses, answer.updates)) }
+      ...(moved
+        ? {
+            caption: worksheetCaption(
+              after,
+              HER_PACKS.map((pack) => ({ pack, context: contextFor(after, pack, '') }))
+            ),
+          }
         : {}),
       /* The way back to the shelf, from the field alone. */
       ...(answer.handBack === 'wellington' ? { action: { label: 'Back to the shelf', go: onBack } } : {}),
@@ -97,7 +115,7 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
       next={null}
       tabs={{
         chat: <ScreenChat host={PHOEBE} chat={chat} composerId="wb-commons-phoebe-composer" />,
-        tool: <EligibilityWorksheet statuses={statuses} />,
+        tool: <EligibilityWorksheet sheet={sheet} gsClass="" herPacks={HER_PACKS} />,
         pack: <KnowledgePackTab view={PHOEBE_PACK} />,
         credentials: <CredentialsTab host={PHOEBE} />,
       }}

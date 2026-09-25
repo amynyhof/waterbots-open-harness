@@ -17,7 +17,8 @@
  *     because production's receiver still reads it (item O14, the save-door
  *     patch of 25 Sep 2026);
  *   - the pin as ids, level, label and published area;
- *   - each criterion's state and its way forward;
+ *   - each of the water pathway's criteria, its state in production's three
+ *     words, and its way forward where there is one;
  *   - each pack's answers as typed, the pack's own word for where it stands
  *     — complete, incomplete, pending, blocked — and whether the answers are
  *     the pack's worked example.
@@ -30,11 +31,34 @@
  * ticket. A reload after the click starts over, as any reload does.
  */
 
-import type { CriterionStatus } from './criteriaState';
+import { section } from './worksheet.generated';
+import { stateOf, type Sheet } from './worksheetState';
 import type { MethodPack } from './methodPacks';
 import { pathwayKind } from './projectTypes.generated';
 import { HANDOFF_LANDING } from './site';
 import { isWorkedExample, type Visit } from './visit';
+
+/**
+ * The pack whose rows cross today.
+ *
+ * Production claims six numbered criteria, which are the water pathway's. The
+ * carbon pathway's rows go over with the per-pathway carry on item O14.
+ */
+const WATER_PACK = 'vwba-2.0';
+
+/**
+ * The six numbered criteria, from the tool file rather than from a list here.
+ *
+ * Their ids are the manual's own numbers, so the seal says "criterion 3" the
+ * way the guidebook does. The applies tests are not among them: production
+ * claims six criteria, and the pathway's own questions are this site's.
+ */
+function waterCriteria(): string[] {
+  return (section(WATER_PACK)?.rows ?? [])
+    .filter((row) => row.card.startsWith('eligibility/'))
+    .map((row) => row.id)
+    .sort((a, b) => Number(a) - Number(b));
+}
 
 /* --------------------------------------------------------------------------
    The seal, as the client builds it. The server's reader (api/_handoff.ts)
@@ -64,7 +88,7 @@ export interface SealBody {
     subAreaKm2: number;
     stressDerived: boolean;
   } | null;
-  worksheet: { number: number; state: CriterionStatus['state']; routeForward?: string }[];
+  worksheet: { number: number; state: 'unchecked' | 'met' | 'not-yet'; routeForward?: string }[];
   packs: {
     key: string;
     name: string;
@@ -82,10 +106,36 @@ export interface SealBody {
  * packs with something typed are included; a pack nobody touched has
  * nothing to carry.
  */
+/**
+ * The five row states, mapped onto the three words production reads.
+ *
+ * WHY A MAPPING AND NOT THE NEW SHAPE. The seal is a contract with the paid
+ * site, and on 25 Sep 2026 a seal that dropped one key it knew arrived there as
+ * an empty record (item A16). The per-pathway rows and the readiness read are
+ * owed to production as one carry, on item O14, and they go over on the day that
+ * carry lands. Until then the water pathway's six criteria cross in the shape
+ * production already claims, and the mapping below is lossy but says nothing
+ * untrue:
+ *
+ *   Met        → met
+ *   Fixable    → not yet, with her own sentence on what it would take as the
+ *                way forward; the route card's id stays on this site, where the
+ *                console draws the route with its citation
+ *   Unknown    → not yet, with what would find it out as the way forward
+ *   Blocked    → not yet, with no way forward, because there is none to give
+ *   Not yet checked → unchecked
+ *
+ * Nothing here invents a route, and nothing calls a blocked row fixable.
+ */
+function sealState(state: string): 'unchecked' | 'met' | 'not-yet' {
+  if (state === 'met') return 'met';
+  if (state === 'unchecked') return 'unchecked';
+  return 'not-yet';
+}
+
 export function buildSeal(
   visit: Visit,
-  statuses: CriterionStatus[],
-  numbers: number[],
+  sheet: Sheet,
   packs: MethodPack[]
 ): SealBody {
   const { context, pin } = visit;
@@ -117,11 +167,18 @@ export function buildSeal(
           stressDerived: pin.level === 4,
         }
       : null,
-    worksheet: statuses.map((status, i) => ({
-      number: numbers[i] ?? i + 1,
-      state: status.state,
-      ...(status.routeForward !== undefined ? { routeForward: status.routeForward } : {}),
-    })),
+    worksheet: waterCriteria().map((id) => {
+      const held = stateOf(sheet, WATER_PACK, id);
+      /* The way forward is her own sentence, and only where the state carries
+         one. A Blocked row has none to give, and inventing one there would be
+         the fabrication this whole arrangement exists to prevent. */
+      const forward = held.state === 'fixable' || held.state === 'unknown' ? held.because : undefined;
+      return {
+        number: Number(id),
+        state: sealState(held.state),
+        ...(forward ? { routeForward: forward } : {}),
+      };
+    }),
     packs: packs.flatMap((pack) => {
       const values = visit.packValues[pack.key];
       if (!values) return [];
