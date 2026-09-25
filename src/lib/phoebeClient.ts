@@ -47,8 +47,8 @@ export interface PhoebeAnswer {
   evidence: Evidence[];
   rows: RowUpdate[];
   pathways: PathwayUpdate[];
-  /** A pack's version flag, where its own test set one this turn. */
-  flags: Record<string, string>;
+  /** What a pack's own tests settled about which rows this project has. */
+  sorts: { pack: string; value: string }[];
   handBack: HandBack;
   abstained: boolean;
   abstentionTopic?: string;
@@ -96,7 +96,8 @@ export function carriedRecord(context: CarriedRecord): CarriedRecord | null {
 export interface CarriedSheet {
   pack: string;
   rows: { id: string; state: string; because?: string; routes?: string[] }[];
-  flag?: string;
+  /** The class and the version, where this pack's own tests have settled them. */
+  sorts?: string[];
 }
 
 export function carriedSheet(sheet: Sheet, packs: readonly string[]): CarriedSheet[] {
@@ -110,7 +111,8 @@ export function carriedSheet(sheet: Sheet, packs: readonly string[]): CarriedShe
         ...(status.because ? { because: status.because } : {}),
         ...(status.routes?.length ? { routes: status.routes } : {}),
       }));
-      return { pack, rows, ...(sheet.flags[pack] ? { flag: sheet.flags[pack] } : {}) };
+      const sorts = sheet.sorts[pack] ?? [];
+      return { pack, rows, ...(sorts.length ? { sorts } : {}) };
     });
 }
 
@@ -188,7 +190,7 @@ export async function askPhoebe(
     evidence: resolveEvidence(data.cited),
     rows: resolveRows(data.rows),
     pathways: resolvePathways(data.pathways),
-    flags: resolveFlags(data.flags),
+    sorts: resolveSorts(data.sorts),
     handBack: HAND_BACKS.find((h) => h === data.handBack) ?? 'none',
     abstained: data.abstained === true,
     abstentionTopic:
@@ -310,23 +312,28 @@ function resolvePathways(value: unknown): PathwayUpdate[] {
 }
 
 /**
- * Her version flags, from a list into the map the shell holds.
+ * What her tests settled about which rows a project has: its class, its
+ * version, or both.
  *
- * She returns a list of pack and version, because the API refuses a schema for
- * the keys of an object. The shell keeps a map, one entry per pack, and a flag
- * a pack's own list does not hold is dropped.
+ * A word a pack does not declare is dropped, and so is "all", which is what an
+ * absent key already says. The shell holds them per pack; the relay checks the
+ * same list before they get here.
  */
-function resolveFlags(value: unknown): Record<string, string> {
-  if (!Array.isArray(value)) return {};
-  const out: Record<string, string> = {};
+function resolveSorts(value: unknown): { pack: string; value: string }[] {
+  if (!Array.isArray(value)) return [];
+  const out: { pack: string; value: string }[] = [];
   for (const raw of value) {
     if (typeof raw !== 'object' || raw === null) continue;
     const u = raw as Record<string, unknown>;
     const pack = typeof u.pack === 'string' ? u.pack : '';
-    const flag = typeof u.flag === 'string' ? u.flag : '';
+    const word = typeof u.value === 'string' ? u.value : '';
     const found = section(pack);
-    if (!found || !found.versionFlags.some((word) => word.id === flag)) continue;
-    out[pack] = flag;
+    if (!found || word === 'all') continue;
+    const known =
+      found.appliesTo.some((entry) => entry.id === word) ||
+      found.versionFlags.some((entry) => entry.id === word);
+    if (!known) continue;
+    out.push({ pack, value: word });
   }
   return out;
 }

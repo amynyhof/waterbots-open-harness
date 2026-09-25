@@ -158,14 +158,14 @@ export default function PhoebeScreen({
     /* Her side effect, fired before the turn is returned so a failed request
        never half-moves the worksheet. */
     const moved = answer.rows.length > 0 || answer.pathways.length > 0;
-    if (moved || Object.keys(answer.flags).length > 0) {
-      onVerdicts({ rows: answer.rows, pathways: answer.pathways, flags: answer.flags });
+    if (moved || answer.sorts.length > 0) {
+      onVerdicts({ rows: answer.rows, pathways: answer.pathways, sorts: answer.sorts });
     }
 
     const after = applyUpdates(sheet, {
       rows: answer.rows,
       pathways: answer.pathways,
-      flags: answer.flags,
+      sorts: answer.sorts,
     });
 
     return {
@@ -402,11 +402,14 @@ const CARBON_SECTION: PackSection = {
 
 export const PHOEBE_PACK: PackView = {
   heading: "Phoebe's Knowledge Pack",
-  /* Site copy, not a prompt: the carbon cards are shown here and reach her
-     at build-order step 3. Struck then. Ruling R3, 23 Sep 2026. */
+  /* THE HONEST LINE IS GONE, 25 SEP 2026. It said she read the water pathway
+     today and the carbon cards were shown but not hers. Both packs are hers
+     from build-order step 3, pull request B, so the line stopped being true
+     and was removed rather than reworded. Ruling R3 of 23 Sep 2026 asked for
+     it only while it was true; the old wording is in the pack CHANGELOG. */
   note:
-    "Phoebe reads the water pathway's cards today. The carbon pathway's cards are shown here and " +
-    'reach her when her carbon runtime is built.',
+    'Phoebe reads both pathways from these cards. A set she has not been given on a turn is one ' +
+    'she asks for; she never answers from a card that is not in front of her.',
   sections: [WATER_SECTION, CARBON_SECTION],
   /* Two sets are drafted and wait for the maintainer's grading; neither is
      committed and Phoebe does not read a draft. Named here so the tab is
