@@ -566,15 +566,20 @@ const visit = {
   pin,
   packValues: examplePack ? { [examplePack.key]: { ...examplePack.example.values } } : {},
 };
-const sheet = [
-  { state: 'met' },
-  { state: 'not-yet', routeForward: 'Show the basin has a published stress reading.' },
-  { state: 'unchecked' },
-  { state: 'unchecked' },
-  { state: 'unchecked' },
-  { state: 'unchecked' },
-];
-const built = buildSeal(visit, sheet, [1, 2, 3, 4, 5, 6], packs);
+/* The worksheet as the shell holds it from 25 Sep 2026: rows keyed by pack and
+   by the row's own id, in five states. The seal maps them onto the three words
+   production reads, which is the mapping this file checks below. */
+const sheet = {
+  rows: {
+    'vwba-2.0': {
+      '1': { state: 'met', because: 'the volume is counted against the without-project case' },
+      '2': { state: 'fixable', because: 'Show the basin has a published stress reading.', routes: ['R-2'] },
+      '4': { state: 'blocked', because: 'the sponsor is under a compliance order to do this work' },
+    },
+  },
+  flags: {},
+};
+const built = buildSeal(visit, sheet, packs);
 const reading = readSeal(built);
 
 expect('the seal the desk builds is one the server accepts', 'seal' in reading, JSON.stringify(reading));
@@ -604,7 +609,27 @@ expect(
 expect('a Level 4 pin says its label is derived', built.pin.level === 4 && built.pin.stressDerived === true, JSON.stringify(built.pin));
 expect(
   'the worksheet says each criterion by the manual’s number, with the way forward where there is one',
-  built.worksheet[1].number === 2 && built.worksheet[1].routeForward.startsWith('Show') && built.worksheet[0].routeForward === undefined,
+  built.worksheet.length === 6 &&
+    built.worksheet[1].number === 2 &&
+    built.worksheet[1].routeForward.startsWith('Show') &&
+    built.worksheet[0].routeForward === undefined,
+  JSON.stringify(built.worksheet)
+);
+/* THE FIVE STATES MAP ONTO PRODUCTION'S THREE, and nothing untrue crosses:
+   Fixable and Unknown are "not yet" with her sentence, Blocked is "not yet"
+   with none, because a blocked row has no way forward to give. The per-pathway
+   rows and the readiness read are owed to production as one carry (item O14). */
+expect(
+  'a fixable row crosses as not yet with her sentence, and a blocked row with none',
+  built.worksheet[1].state === 'not-yet' &&
+    built.worksheet[3].number === 4 &&
+    built.worksheet[3].state === 'not-yet' &&
+    built.worksheet[3].routeForward === undefined,
+  JSON.stringify(built.worksheet)
+);
+expect(
+  'a row nobody looked at crosses as unchecked, never as a failure',
+  built.worksheet[2].state === 'unchecked' && built.worksheet[4].state === 'unchecked',
   JSON.stringify(built.worksheet)
 );
 expect(
@@ -624,7 +649,7 @@ expect(
   built.packs.every((p) => Object.values(p.answers).every((v) => typeof v === 'string')),
   JSON.stringify(built.packs)
 );
-const untouched = buildSeal(EMPTY_VISIT, sheet.map(() => ({ state: 'unchecked' })), [1, 2, 3, 4, 5, 6], packs);
+const untouched = buildSeal(EMPTY_VISIT, { rows: {}, flags: {} }, packs);
 expect(
   'an empty visit seals as empty fields, a null pin, six unchecked criteria and no packs — never invented',
   'seal' in readSeal(untouched) && untouched.pin === null && untouched.packs.length === 0 &&

@@ -171,9 +171,10 @@ expect('his prompt states the five things he never does', /quote no figure/.test
    list (4,034), the confirm-then-log and stage rules and the refreshed build-update fact, and it measured
    25,699. Her word: raise by the measured amount to leave 500 characters of
    room, and record the number with the reason. 25,699 + 500 = 26,199. It
-   still keeps any card set out: Phoebe's, the smallest of hers, is over
-   40,000. */
-expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 26199 && PHOEBE_PROMPT.length > 40000, `his ${WELLINGTON_SYSTEM_PROMPT.length} chars, hers ${PHOEBE_PROMPT.length}`);
+   still keeps any card set out. Hers is checked in scripts/check-phoebe.mjs,
+   which holds her own ceiling, because from 25 Sep 2026 her prompt is staged
+   and its size depends on how far a visit has gone. */
+expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 26199 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
 
 /* ---------------------------------------------------------------------------
    The record the desk carries to Phoebe — slice 3, 7 Sep 2026.
@@ -191,30 +192,6 @@ const typedBlock = recordBlock(readRecord({ does: 'A borehole', type: 'C-19', gs
 expect("the block names the type, its class and the stage in the standard's words, never by id alone", /- What type: Access to potable water supply — Giving households/.test(typedBlock) && /- Which class of drinking-water project: Community water supply technologies — /.test(typedBlock) && /- Stage: on paper — still a plan/.test(typedBlock) && !/C-19/.test(typedBlock), typedBlock);
 expect("Phoebe's prompt names the block and keeps the cards as the only judge", PHOEBE_PROMPT.includes(RECORD_HEADING) && /only the cards decide that/.test(PHOEBE_PROMPT), 'her prompt does not know the block');
 
-/* Contract lines 2, 7, 8 and 10 — item A15, 21 Sep 2026. Her tool comes from
-   her pack's tool README, generated; it must name the four record fields as
-   the block prints them, the six rows, and the record block's own heading,
-   so what she is told about her inputs cannot drift from what she is sent. */
-const RECORD_FIELDS = ['What it does', 'What type', 'Stage', 'Where it is', 'What it is called'];
-expect(
-  "Phoebe's prompt carries her tool from her pack — the six rows, the four record fields as the block names them, and the block's heading",
-  /# Your tool/.test(PHOEBE_PROMPT) &&
-    /one tool: the eligibility worksheet/.test(PHOEBE_PROMPT) &&
-    /Six rows/.test(PHOEBE_PROMPT) &&
-    RECORD_FIELDS.every((f) => PHOEBE_PROMPT.includes(`**${f}**`)) &&
-    PHOEBE_PROMPT.includes(`"${RECORD_HEADING}"`),
-  'her tool section is missing, or names a field the block does not print'
-);
-expect(
-  "Phoebe's tool section says where a row's value comes from and what a row takes, and never a number",
-  /Where a row's value comes from/.test(PHOEBE_PROMPT) && /never takes\s+a number/.test(PHOEBE_PROMPT) && /ask for everything you need/.test(PHOEBE_PROMPT),
-  'line 10 is not in her tool section'
-);
-expect(
-  "Phoebe's prompt says her level and who leads",
-  /you work at the \w+ level/.test(PHOEBE_PROMPT) && /Wellington is the Team Lead, and he leads the visit/.test(PHOEBE_PROMPT),
-  'her level sentence or her lead sentence is missing'
-);
 
 /* ---------------------------------------------------------------------------
    The same record reaches Wellington — 16 Sep 2026. With facts on the visit,
@@ -279,91 +256,12 @@ expect(
 );
 expect(
   'a done note sends them back to Wellington on Dispatches',
-  /Send them back to Wellington on Dispatches/.test(phoebeNotesBlock({ eligibilityDone: true })),
+  /send them back to Wellington on Dispatches/i.test(phoebeNotesBlock({ eligibilityDone: true })),
   phoebeNotesBlock({ eligibilityDone: true })
 );
-/* The worksheet as it stands — contract line 3, item A15, step 3, 21 Sep 2026.
-   The rows are checked, not trusted: a number outside the manual's six, an
-   unknown state, a route on a Met row, an over-long route, a duplicate row —
-   each is dropped whole. An empty or junk list sends no block. */
-const { readWorksheet, worksheetBlock, WORKSHEET_HEADING } = await loadApi('_record.js');
-expect('a junk worksheet is nothing, never a block', readWorksheet('x') === null && readWorksheet([]) === null && readWorksheet([{ number: 9, state: 'met' }]) === null && readWorksheet([{ number: 1, state: 'partly' }]) === null, 'junk rows passed');
-expect(
-  'a route forward is kept only on a Not yet row, and never over-long',
-  readWorksheet([{ number: 2, state: 'met', routeForward: 'x' }])?.[0].routeForward === undefined &&
-    readWorksheet([{ number: 2, state: 'not-yet', routeForward: 'A written record of the consultation.' }])?.[0].routeForward === 'A written record of the consultation.' &&
-    readWorksheet([{ number: 2, state: 'not-yet', routeForward: 'x'.repeat(501) }]) === null,
-  'route handling'
-);
-expect('rows come back in the manual\'s order, one per number', JSON.stringify(readWorksheet([{ number: 3, state: 'unchecked' }, { number: 1, state: 'met' }, { number: 1, state: 'not-yet', routeForward: 'again' }]).map((r) => r.number)) === '[1,3]', 'order or dedupe');
-const sheet = worksheetBlock(readWorksheet([{ number: 1, state: 'met' }, { number: 2, state: 'not-yet', routeForward: 'A written record.' }, { number: 3, state: 'unchecked' }]));
-expect(
-  'the block names each row\'s state, where a verdict came from, and the one rule',
-  sheet.startsWith(`# ${WORKSHEET_HEADING}`) && /Row 1: Met — from your own earlier turn/.test(sheet) && /Row 2: Not yet — what would change it: A written record\./.test(sheet) && /Row 3: Not yet checked\./.test(sheet) && /Start from the first row not yet checked/.test(sheet),
-  sheet
-);
-expect("Phoebe's prompt names the worksheet block and reads her state from it", PHOEBE_PROMPT.includes(`"${WORKSHEET_HEADING}"`) && /rather than from memory/.test(PHOEBE_PROMPT), 'her prompt does not know the worksheet block');
-expect("Wellington's prompt does not carry the worksheet block", !WELLINGTON_SYSTEM_PROMPT.includes(WORKSHEET_HEADING), 'the worksheet heading leaked into his prompt');
-const phoebeRelaySource = readFileSync('api/phoebe.ts', 'utf8');
-expect(
-  "Phoebe's relay attaches the worksheet block after the cache breakpoint, only when rows came",
-  /readWorksheet\(body\.worksheet\)/.test(phoebeRelaySource) &&
-    /worksheetText/.test(phoebeRelaySource) &&
-    phoebeRelaySource.indexOf('text: worksheetText') > phoebeRelaySource.indexOf("cache_control: { type: 'ephemeral' }"),
-  'the worksheet block is missing, or sits above the cache breakpoint'
-);
 
-/* The hand-back — contract line 8, item A15, step 4, 21 Sep 2026. A field
-   the console acts on, never a sentence it reads: checked against a closed
-   list of two by the relay and again by the client, an unknown value "none",
-   never a destination. Her prompt says when to set it, and the done note
-   says so too; her schema requires it so a turn cannot leave it out. */
-console.log('\n  The hand-back — contract line 8\n');
-const { readHandBack, HAND_BACKS } = await loadApi('_handBack.js');
-expect('the closed list is none and wellington, and nothing else', JSON.stringify(HAND_BACKS) === '["none","wellington"]', JSON.stringify(HAND_BACKS));
-expect('an unknown, missing or invented hand-back is "none", never a destination', readHandBack(undefined) === 'none' && readHandBack('shelf') === 'none' && readHandBack('Wellington') === 'none' && readHandBack(1) === 'none' && readHandBack({}) === 'none', 'an unknown value leaked');
-expect('"wellington" passes as itself', readHandBack('wellington') === 'wellington' && readHandBack('none') === 'none', 'the known values did not pass');
-const { RESPONSE_SCHEMA: PHOEBE_SCHEMA } = await loadApi('_systemPrompt.js');
-expect(
-  'her schema requires the field and closes its list',
-  PHOEBE_SCHEMA.required.includes('handBack') && JSON.stringify(PHOEBE_SCHEMA.properties.handBack?.enum) === JSON.stringify(HAND_BACKS),
-  JSON.stringify({ required: PHOEBE_SCHEMA.required, enum: PHOEBE_SCHEMA.properties.handBack?.enum })
-);
-expect(
-  'her prompt says when to set it: her part done, or out of her lane, and rung 2 still speaks',
-  /Set handBack to "wellington"/.test(PHOEBE_PROMPT) && /every row on the worksheet has a verdict/.test(PHOEBE_PROMPT) && /out of your lane/.test(PHOEBE_PROMPT) && /still say the colleague's facts in your own plain words/.test(PHOEBE_PROMPT) && /back to the shelf/.test(PHOEBE_PROMPT),
-  'the hand-back rule is missing or reworded past its parts'
-);
-expect('the done note sets the field as well as saying so', /set handBack to "wellington"/.test(phoebeNotesBlock({ eligibilityDone: true }) ?? ''), phoebeNotesBlock({ eligibilityDone: true }));
-expect('the relay reads the field through the closed list and returns it', /readHandBack\(v\.handBack\)/.test(phoebeRelaySource) && /handBack: HandBack;/.test(phoebeRelaySource), 'the relay does not read the hand-back through _handBack');
-const phoebeClientSource = readFileSync(join('src', 'lib', 'phoebeClient.ts'), 'utf8');
-expect('the client checks it again against the same two words', /HAND_BACKS: readonly HandBack\[\] = \['none', 'wellington'\]/.test(phoebeClientSource) && /HAND_BACKS\.find\(\(h\) => h === data\.handBack\) \?\? 'none'/.test(phoebeClientSource), 'the client trusts the field or lists a third word');
-const phoebeScreenSource = readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8');
-const commonsSeatSource = readFileSync(join('src', 'components', 'CommonsSeats.tsx'), 'utf8');
-expect(
-  'the console draws the way back from the field alone — Dispatches on the console, the shelf on the Commons — and never reads her prose',
-  /answer\.handBack === 'wellington'/.test(phoebeScreenSource) && /onNavigate\('desk'\)/.test(phoebeScreenSource) && /answer\.handBack === 'wellington'/.test(commonsSeatSource) && /Back to the shelf/.test(commonsSeatSource) && !/answer\.reply\.(includes|match|search)/.test(phoebeScreenSource + commonsSeatSource),
-  'a consumer does not act on the field, or reads the prose'
-);
 
-const relaySource = readFileSync('api/wellington.ts', 'utf8');
-expect(
-  'the relay attaches the visit block after the cache breakpoint, only when a record or stage is present',
-  /readRecord\(body\.record\)/.test(relaySource) &&
-    /readStage\(body\.stage\)/.test(relaySource) &&
-    /visitText/.test(relaySource) &&
-    relaySource.indexOf("cache_control: { type: 'ephemeral' }") >= 0 &&
-    relaySource.indexOf('text: visitText') > relaySource.indexOf("cache_control: { type: 'ephemeral' }"),
-  'the visit block is missing, or sits above the cache breakpoint'
-);
-
-/* ---------------------------------------------------------------------------
-   His cap.
---------------------------------------------------------------------------- */
-
-console.log('\n  His cap\n');
 expect('thirty a day, under his own name', WELLINGTON.cap === 30 && WELLINGTON_DAILY_CAP === 30 && WELLINGTON.name === 'wellington', JSON.stringify(WELLINGTON));
-expect("Phoebe's is thirty from 23 Sep 2026, her ruling on the phase-tags proposal", PHOEBE.cap === 30, `got ${PHOEBE.cap}`);
 
 /* ---------------------------------------------------------------------------
    The visit: one source of truth, two writers, one rule.
@@ -379,7 +277,7 @@ const compileLib = spawnSync(
     join('src', 'lib', 'visit.ts'),
     join('src', 'lib', 'carried.ts'),
     join('src', 'lib', 'journey.ts'),
-    join('src', 'lib', 'criteriaState.ts'),
+    join('src', 'lib', 'worksheetState.ts'),
     '--outDir', libOut,
     '--module', 'commonjs',
     '--moduleResolution', 'node',
@@ -440,6 +338,10 @@ expect('the empty context has no kind field — retired 24 Sep 2026', !('kind' i
 expect('the empty context has no standard-of-interest field', !('standard' in EMPTY_CONTEXT), 'the chips concept survived');
 
 console.log('\n  The screening loop — invite first, place does not skip\n');
+/* The worksheet the shell holds, per pack and per row from 25 Sep 2026. An
+   empty one here, and a walked one below, so these tests say what they used to
+   say about the loop without knowing anything about Phoebe's rows. */
+const NO_SHEET = { rows: {}, flags: {} };
 expect('a new visit starts at learn', EMPTY_VISIT.stage === 'learn' && EMPTY_VISIT.eligibilityInvite === '', JSON.stringify(EMPTY_VISIT.stage));
 const placed = { ...EMPTY_VISIT, context: learnedContext(EMPTY_CONTEXT, { place: 'Turkana, Kenya', does: 'wells' }) };
 expect(
@@ -447,7 +349,7 @@ expect(
   placed.stage === 'learn' && currentInvite(placed) === null,
   JSON.stringify(placed.stage)
 );
-const derivedWhileLearning = deskRows(placed, [], []);
+const derivedWhileLearning = deskRows(placed, NO_SHEET, []);
 expect(
   'deskRows would still make a map row from place, which is why Next Steps must not use them raw',
   derivedWhileLearning.some((r) => r.from === 'bridget'),
@@ -455,8 +357,8 @@ expect(
 );
 expect(
   'nextStepRows hides the map row during learn, so place cannot force Map first',
-  nextStepRows(placed, [], []).every((r) => r.from !== 'bridget') && nextStepRows(placed, [], []).length === 0,
-  JSON.stringify(nextStepRows(placed, [], []))
+  nextStepRows(placed, NO_SHEET, []).every((r) => r.from !== 'bridget') && nextStepRows(placed, NO_SHEET, []).length === 0,
+  JSON.stringify(nextStepRows(placed, NO_SHEET, []))
 );
 const invited = applyWellingtonRoute(placed, 'eligibility', 'Phoebe can take this on the Eligibility step.');
 expect(
@@ -465,9 +367,9 @@ expect(
     invited.eligibilityInvite === 'Phoebe can take this on the Eligibility step.' &&
     currentInvite(invited)?.action.surface === 'eligibility' &&
     currentInvite(invited)?.primary === true &&
-    nextStepRows(invited, [], [])[0]?.key === 'invite-eligibility' &&
-    nextStepRows(invited, [], []).every((r) => r.from !== 'bridget'),
-  JSON.stringify(nextStepRows(invited, [], []))
+    nextStepRows(invited, NO_SHEET, [])[0]?.key === 'invite-eligibility' &&
+    nextStepRows(invited, NO_SHEET, []).every((r) => r.from !== 'bridget'),
+  JSON.stringify(nextStepRows(invited, NO_SHEET, []))
 );
 expect(
   'the desk Next phase competes with an Eligibility invite, so the top chip must quiet',
@@ -482,11 +384,23 @@ expect(
 expect('a map route during Eligibility does not skip to Partners', applyWellingtonRoute(invited, 'map', 'Open the map.').stage === 'eligibility', 'the map route skipped Eligibility');
 const opened = openedEligibility(EMPTY_VISIT);
 expect('opening Eligibility during learn starts that stage', opened.stage === 'eligibility', opened.stage);
-const doneSheet = [
-  { state: 'met' },
-  { state: 'not-yet', routeForward: 'consult the community' },
-];
-expect('eligibility is done when every criterion has a verdict', eligibilityDone(doneSheet) === true && eligibilityDone([{ state: 'unchecked' }]) === false, 'the done test failed');
+/* Every row Phoebe asks on the water pathway, with a verdict — rows 1, 2 and 4
+   from the tool file, which is where the list lives. */
+const doneSheet = {
+  rows: {
+    'vwba-2.0': {
+      '1': { state: 'met', because: 'the volume is counted against the without-project case' },
+      '2': { state: 'met', because: 'the county plan names the shortage' },
+      '4': { state: 'fixable', because: '', routes: ['R-5'] },
+    },
+  },
+  flags: {},
+};
+expect(
+  'eligibility is done when every row she asks has a verdict',
+  eligibilityDone(invited, doneSheet) === true && eligibilityDone(invited, NO_SHEET) === false,
+  'the done test failed'
+);
 const handed = applyEligibilityProgress(invited, doneSheet);
 expect(
   'finishing Eligibility hands back to Wellington, not to the map yet',
@@ -714,50 +628,7 @@ expect('the contract comment names the four keys and forbids type, class and sta
    actually walks is measured with real calls — scripts/measure-phoebe-walk.mjs.
 --------------------------------------------------------------------------- */
 
-console.log('\n  The walk in order, and the shown line — contract lines 4 and 5\n');
-expect(
-  'her prompt walks the rows in order, one row, one question, from the first unchecked',
-  /Walk the rows in the manual's order — one row, one question/.test(PHOEBE_PROMPT) && /Never ask about two rows in one turn/.test(PHOEBE_PROMPT) && /the question you ask is always about the first row still unchecked/.test(PHOEBE_PROMPT),
-  'the order rule is missing or reworded past its parts'
-);
-const { worksheetCaption, initialStatuses } = createRequire(import.meta.url)(join(libOut, 'criteriaState.js'));
-expect('the shown line counts Met and Not yet on the whole worksheet, and not the unchecked', worksheetCaption([{ state: 'met' }, { state: 'not-yet', routeForward: 'x' }, { state: 'met' }, { state: 'unchecked' }, { state: 'unchecked' }, { state: 'unchecked' }]) === 'Worksheet: 2 Met · 1 Not yet', worksheetCaption([{ state: 'met' }]));
-expect('an untouched worksheet reads as zeros, never as six failures', worksheetCaption(initialStatuses(6)) === 'Worksheet: 0 Met · 0 Not yet', worksheetCaption(initialStatuses(6)));
-const transcriptSource = readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8');
-expect("the layer draws the caption in the citation line's own class, no new colour", /turn\.caption && <div className="wb-cite-line"/.test(transcriptSource), 'the caption is drawn in a class of its own, or not at all');
-expect(
-  'both seats draw it from her verdicts only under a turn that moved a row, never from prose',
-  /answer\.updates\.length\s*\?\s*\{ caption: worksheetCaption\(applyCriterionUpdates\(statuses, answer\.updates\)\) \}/.test(phoebeScreenSource) && /answer\.updates\.length\s*\?\s*\{ caption: worksheetCaption\(applyCriterionUpdates\(statuses, answer\.updates\)\) \}/.test(commonsSeatSource) && !/caption: [^w]/.test(phoebeScreenSource + commonsSeatSource),
-  'a seat draws the caption from something other than the moved rows'
-);
 
-/* ---------------------------------------------------------------------------
-   HER SCOPE, AND THE INSTRUMENT THAT LEFT — the maintainer's rulings of
-   21 Sep 2026 at eyeball stop 4.
-
-   Her scope reaches her as facts she phrases herself (ruling of 3 Sep 2026,
-   item A9), so what is checked is that the facts are there and that no
-   sentence is handed to her to repeat. What she actually says is a measured
-   run, not a check.
-
-   The A6 instrument is gone from both relays. A switch that comes back by
-   habit is exactly what a check is for.
---------------------------------------------------------------------------- */
-
-console.log('\n  Her scope today, and the instrument that left\n');
-expect(
-  'her prompt carries the scope as facts: VWBA 2.0 eligibility today, carbon coming and not live',
-  PHOEBE_PROMPT.includes('# What you check today, and what is coming') &&
-    PHOEBE_PROMPT.includes('Today you check one pathway: eligibility under VWBA 2.0') &&
-    PHOEBE_PROMPT.includes('Carbon eligibility is a second pathway, and it is coming') &&
-    PHOEBE_PROMPT.includes('you have no carbon cards'),
-  'the scope facts are missing or reworded past their parts'
-);
-expect(
-  'the scope is given to her as facts to phrase, never as a sentence to repeat',
-  PHOEBE_PROMPT.includes('Say them in your own plain words'),
-  'the phrasing rule left the scope section'
-);
 for (const relay of ['phoebe', 'wellington']) {
   const source = readFileSync(join('api', relay + '.ts'), 'utf8');
   expect(

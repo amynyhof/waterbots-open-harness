@@ -1,4 +1,12 @@
 # Changelog — product-shared
+## 0.6.1 — 25 Sep 2026
+
+- `agent-primer.md`: Phoebe's line said each visitor may send twenty messages a
+  day. Her cap moved to thirty on the maintainer's ruling of 23 Sep 2026 and the
+  code moved with it; the primer did not, so both agents were reading a number
+  that was wrong. Corrected. Old wording:
+
+  > **Her chat is live**, and each visitor may send twenty messages a day.
 
 ## 0.6.0 — 24 Sep 2026
 
