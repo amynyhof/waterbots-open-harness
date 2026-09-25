@@ -155,9 +155,11 @@ seal's contract change on item O14, the gate to 26,199 by the measured amount. *
 word `kind` again from 25 Sep 2026**, derived from the type, because production's receiver still
 reads it; item O14 holds the carry, and the correction is in
 [docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md). The trim that made room for it is #118, the same day.
-**Step 3, Phoebe's carbon runtime, is next**, while the paid engine finishes; when that engine is
-sealed and carried by her hand, Calvin's brief (step 5) moves ahead of it (the amendment above).
-Proposal first, on her word.
+**Step 3, Phoebe's carbon runtime, is in flight, 25 Sep 2026:** pull request A is merged as #122 — the
+water pathway on its tool file, five row states, the readiness read — and B is next, per §12 of
+`PROPOSAL_phoebe-carbon-runtime.md` with its ruling R6 amended to staged loading; then C, the door to
+a person; the close-out after C. When the paid engine is sealed and carried by her hand, Calvin's
+brief (step 5) moves ahead of what is left (the amendment above).
 
 **Step 1 is done, 24 Sep 2026.** Four pull requests,
 all merged on her word, and the proposal file deleted at the close-out.
