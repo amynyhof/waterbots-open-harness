@@ -94,7 +94,7 @@ if (compileApi.status !== 0) {
 writeFileSync(join(apiOut, 'package.json'), '{"type":"module"}');
 const loadApi = (name) => import(pathToFileURL(join(apiOut, name)).href);
 
-const { SYSTEM_PROMPT, RESPONSE_SCHEMA, cardsBlock, setsFor, CARD_SETS } = await loadApi('_systemPrompt.js');
+const { SYSTEM_PROMPT, RESPONSE_SCHEMA, cardsBlock, setsFor, CARD_SETS, ON_REQUEST } = await loadApi('_systemPrompt.js');
 const { PHOEBE_TOOL_MD } = await loadApi('_tool.generated.js');
 const {
   TOOL_SECTIONS,
@@ -127,6 +127,10 @@ const worksheetSource = readFileSync(join('src', 'components', 'EligibilityWorks
 
 const water = section('vwba-2.0');
 const carbon = section('gs-paa-v2.0');
+const pathwayRowsOf = (pack) =>
+  section(pack)
+    .rows.filter((row) => row.takes.of === 'pathway-state')
+    .map((row) => row.id);
 
 expect(
   'both packs are in the model, each with its own section and version',
@@ -186,6 +190,19 @@ expect(
   `${rowsFor('gs-paa-v2.0', { gsClass: 'hwt' }).length} of ${carbon.rows.length}`
 );
 expect(
+  'the carbon rows sorted by class are the tool file’s, and a class it does not name is not hidden',
+  rowsFor('gs-paa-v2.0', { gsClass: 'hwt' }).some((r) => r.id === 'M3') &&
+    !rowsFor('gs-paa-v2.0', { gsClass: 'hwt' }).some((r) => r.id === 'M2') &&
+    rowsFor('gs-paa-v2.0', { gsClass: 'cws' }).some((r) => r.id === 'M2'),
+  JSON.stringify(rowsFor('gs-paa-v2.0', { gsClass: 'hwt' }).map((r) => r.id))
+);
+expect(
+  'the carbon pathway’s four tests are its own, and one of them is the version',
+  JSON.stringify(pathwayRowsOf('gs-paa-v2.0')) === JSON.stringify(['T1', 'T2', 'T3']) &&
+    carbon.rows.find((r) => r.id === 'T4')?.takes.of === 'version-flag',
+  JSON.stringify(pathwayRowsOf('gs-paa-v2.0'))
+);
+expect(
   'only a row whose card allows it can ever be Blocked',
   canBlock('vwba-2.0', '4') === true && canBlock('vwba-2.0', '1') === false && canBlock('vwba-2.0', '2') === false,
   'the fixability line is not being read'
@@ -230,24 +247,58 @@ expect(
 
 console.log('\n  Staged loading\n');
 
-const stage1 = setsFor({ pathways: [{ pack: 'vwba-2.0', state: 'unchecked' }] });
-const stage2 = setsFor({ pathways: [{ pack: 'vwba-2.0', state: 'applies' }] });
-const dropped = setsFor({ pathways: [{ pack: 'vwba-2.0', state: 'does-not-apply' }] });
+const both = (state) => [
+  { pack: 'vwba-2.0', state },
+  { pack: 'gs-paa-v2.0', state },
+];
+const stage1 = setsFor({ pathways: both('unchecked') });
+const stage2 = setsFor({
+  pathways: [
+    { pack: 'vwba-2.0', state: 'applies' },
+    { pack: 'gs-paa-v2.0', state: 'unchecked' },
+  ],
+});
+const bothApply = setsFor({ pathways: both('applies') });
+const dropped = setsFor({
+  pathways: [
+    { pack: 'vwba-2.0', state: 'applies' },
+    { pack: 'gs-paa-v2.0', state: 'does-not-apply' },
+  ],
+});
 
 expect(
-  'stage 1 is the applies cards only',
-  JSON.stringify(stage1) === JSON.stringify(['water:applies']),
+  'stage 1 is both packs’ applies cards and nothing else',
+  JSON.stringify(stage1) === JSON.stringify(['water:applies', 'carbon:applies']),
   JSON.stringify(stage1)
 );
 expect(
-  'stage 2 adds that pack’s eligibility and routes cards, and not the considerations',
-  JSON.stringify(stage2) === JSON.stringify(['water:applies', 'water:eligibility', 'water:routes']),
+  'a pathway that applies opens its own pack in full, and only its own',
+  JSON.stringify(stage2) === JSON.stringify(['water:applies', 'water:eligibility', 'water:routes', 'carbon:applies']),
   JSON.stringify(stage2)
 );
 expect(
-  'a pathway that does not apply loads no eligibility cards for it',
-  !dropped.includes('water:eligibility') && !dropped.includes('water:routes'),
+  'both pathways applying opens both packs, without the considerations',
+  JSON.stringify(bothApply) ===
+    JSON.stringify([
+      'water:applies',
+      'water:eligibility',
+      'water:routes',
+      'carbon:applies',
+      'carbon:eligibility',
+      'carbon:routes',
+    ]),
+  JSON.stringify(bothApply)
+);
+expect(
+  'a pathway that does not apply is never loaded again, while the other one is',
+  !dropped.some((set) => set.startsWith('carbon:')) && dropped.includes('water:eligibility'),
   JSON.stringify(dropped)
+);
+expect(
+  'any set this turn does not carry can be asked for, not the considerations alone',
+  JSON.stringify([...ON_REQUEST]) === JSON.stringify([...CARD_SETS]) &&
+    JSON.stringify(RESPONSE_SCHEMA.properties.needCards.enum) === JSON.stringify(['none', ...CARD_SETS]),
+  JSON.stringify(RESPONSE_SCHEMA.properties.needCards.enum)
 );
 expect(
   'the considerations arrive when every row is met, or when she has asked for them',
@@ -286,26 +337,47 @@ expect(
 );
 expect(
   'the one extra call happens only for a set she has not been given, and only once',
-  /answer\.needCards === 'feasibility' && !usedSets\.includes\('water:feasibility'\)/.test(relaySource) &&
+  /answer\.needCards !== 'none' && !usedSets\.includes\(answer\.needCards\)/.test(relaySource) &&
     /calls = 2/.test(relaySource),
   'the second pass is missing or unguarded'
 );
 
 /* ---------------------------------------------------------------------------
-   Her prompt's size. THE CEILING IS MEASURED ON THE LARGEST CASE — both
-   pathways in full — plus 500, the maintainer's ruling R6 of 25 Sep 2026, on
-   the pattern of Wellington's gate. It moves on her word and on a measurement,
-   never to make a build pass.
+   Her prompt's size.
+
+   THE CEILING IS MEASURED ON THE LARGEST CASE — both pathways in full, with the
+   considerations — plus 500, the maintainer's ruling R6 of 25 Sep 2026, on the
+   pattern of Wellington's gate. It moves on her word and on a measurement,
+   never to make a build pass: the rule is report the trip, propose the number.
+
+   203,787 FROM 25 SEP 2026, measured once the step was finished. With both
+   packs switched on: the static half 43,854 characters, every card set
+   159,433, so 203,287 in all, plus 500 of room. A visitor is almost never read that much — stage 1 is about 65,000
+   and one pathway in full about 98,000 — but the ceiling guards the case that
+   can actually happen, which is a project on both pathways that asks about the
+   considerations too.
+
+   IT WAS WRITTEN TWICE BEFORE THIS, EARLIER THE SAME DAY — 202,390, then
+   203,174 — and neither was a bar moved to make a build pass. The number never
+   left this pull request: it was first written when the carbon rules went in,
+   and twice after that the measured runs found a real gap that a sentence in
+   the prompt closed. She named the technology class in her reply without
+   recording it, so she is now told to record it; then the words to record were
+   not in front of her, so her tool text now lists them. The ceiling is defined
+   as the largest case plus 500, so a prompt that legitimately grew has a
+   legitimately larger ceiling, and every number it has held is written here.
+   The maintainer owns the one that stands: if she would rather the prompt came
+   back under an earlier number, the sentences come out.
 --------------------------------------------------------------------------- */
 
 console.log('\n  Her prompt’s size\n');
 
-const LARGEST = 500 + 43_000 + cardsBlock(CARD_SETS).length;
+const LARGEST = 203_787;
 const largest = SYSTEM_PROMPT.length + cardsBlock(CARD_SETS).length;
 expect(
   'the largest case is under the measured ceiling',
   largest < LARGEST,
-  `${largest} characters against ${LARGEST}`
+  `${largest} characters against ${LARGEST} — report the trip and propose the number; do not raise it to pass`
 );
 console.log(
   `        static ${SYSTEM_PROMPT.length}; stage 1 +${cardsBlock(stage1).length}; stage 2 +${cardsBlock(stage2).length}; every set +${cardsBlock(CARD_SETS).length}`
@@ -383,10 +455,41 @@ expect(
   'the stage framing is missing'
 );
 expect(
-  'the carbon pathway is named as hers and not read yet',
-  /The carbon pathway is a second pack of yours and you do not have its cards yet/.test(SYSTEM_PROMPT) &&
-    HER_PACKS.length === 1 && HER_PACKS[0] === 'vwba-2.0',
+  'both packs are hers, and which pathway a project fits is hers to find',
+  /You read two packs, one per pathway/.test(SYSTEM_PROMPT) &&
+    /A project may fit one, both or neither/.test(SYSTEM_PROMPT) &&
+    /Which pathway a project fits is yours to find/.test(SYSTEM_PROMPT) &&
+    JSON.stringify([...HER_PACKS]) === JSON.stringify(['vwba-2.0', 'gs-paa-v2.0']),
   'her scope and the packs she reads disagree'
+);
+expect(
+  'the tests run on both pathways, one question covering both where one answer can',
+  /Run the applies tests first, on both pathways/.test(SYSTEM_PROMPT) &&
+    /Write a question to cover both pathways whenever one answer can/.test(SYSTEM_PROMPT) &&
+    /A pathway that does not apply is said once, with its reason, and dropped/.test(SYSTEM_PROMPT),
+  'a both-pathways rule is missing'
+);
+expect(
+  'the class and the version sort the carbon rows, and a transitioning project hears its fact once',
+  /technology class and the version sort the carbon rows/.test(SYSTEM_PROMPT) &&
+    /never hears about boreholes/.test(SYSTEM_PROMPT) &&
+    /transition-assistance module, overseen by trusted consultants/.test(SYSTEM_PROMPT) &&
+    /goes into the sorts field on that same turn/.test(SYSTEM_PROMPT) &&
+    /Saying it in your reply is not recording it/.test(SYSTEM_PROMPT),
+  'the sorting rule, the field rule or the transition fact is missing'
+);
+expect(
+  'a running project hears the carbon standard’s own rule before the walk, not after it',
+  /Already running is hard on the carbon pathway, and you say so before the walk/.test(SYSTEM_PROMPT) &&
+    /retroactive project/.test(SYSTEM_PROMPT) &&
+    /the water pathway is separate/.test(SYSTEM_PROMPT),
+  'the retroactive framing is missing'
+);
+expect(
+  'the Monitor group opens with the reporting fact, and never marks a planned project down',
+  /routine reporting is the critical part of impact funding/.test(SYSTEM_PROMPT) &&
+    /never as a mark against a project that has not started/.test(SYSTEM_PROMPT),
+  'the Monitor block’s fact is missing'
 );
 expect(
   'she cites by token and never writes a citation',
@@ -449,7 +552,7 @@ expect(
     JSON.stringify(['met', 'fixable', 'unknown', 'blocked']) &&
     JSON.stringify(RESPONSE_SCHEMA.properties.pathways.items.properties.state.enum) ===
       JSON.stringify(['applies', 'does-not-apply']) &&
-    JSON.stringify(RESPONSE_SCHEMA.properties.needCards.enum) === JSON.stringify(['none', 'feasibility']) &&
+    JSON.stringify(RESPONSE_SCHEMA.properties.needCards.enum) === JSON.stringify(['none', ...CARD_SETS]) &&
     JSON.stringify(RESPONSE_SCHEMA.properties.handBack.enum) === JSON.stringify(HAND_BACKS) &&
     RESPONSE_SCHEMA.required.includes('handBack'),
   JSON.stringify(RESPONSE_SCHEMA.required)

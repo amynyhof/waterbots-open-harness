@@ -1,5 +1,31 @@
 # Changelog — gs-paa-v2.0
 
+## 0.8.0 — 25 Sep 2026
+
+- **Phoebe reads this pack.** Build-order step 3, pull request B: its three approved sets — the four
+  applies cards, the thirty-two eligibility cards, the nineteen routes — are generated into her
+  relay and staged like the water pack's. The applies cards are at the door of every visit; the rest
+  arrive once this pathway applies, and never when it does not.
+- **The runtime reads `tool/eligibility-worksheet.yaml`.** The rows she asks here, the class and
+  version that sort them, the five row states, the pathway states and the readiness read all come
+  from the tool file through the generated model. Nothing about a card changed.
+- `tool/README.md` rewritten to say where the tool is defined and what reads it. It had said the
+  agent-facing region would arrive at proposal step 8; that region never arrives, because the region
+  on the water pack's page retired the same day and the tool file is the one home. Old wording of
+  that paragraph:
+
+  > ## What Phoebe will be told about this section
+  >
+  > An agent-facing region, between markers the generator recognises, arrives at proposal
+  > step 8 and not before: the carbon section, its rows, what each takes, where its value
+  > comes from, and the rule the maintainer gave on 22 Sep 2026 (R4) that questions are
+  > written to cover both pathways whenever one answer can, that a verdict covers every row
+  > the answer settles, and that when a pathway drops out she says so and continues with the
+  > other. **There is no such region on this page today**, so nothing here reaches her prompt.
+
+  That rule of 22 Sep 2026 is not lost: it is in her prompt from this release, under the
+  applies tests.
+
 ## 0.7.0 — 24 Sep 2026
 
 - `eligibility-worksheet@0.2.0` — the optional ninth key, `applies`, ruling R9 as amended
