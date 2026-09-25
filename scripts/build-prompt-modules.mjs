@@ -269,22 +269,20 @@ const BUNDLES = [
   {
     label: 'cards',
     target: 'api/_cards.generated.ts',
+    /* EVERY SET SHE MAY BE GIVEN, ONE CONSTANT EACH — from 25 Sep 2026. Her
+       prompt no longer carries them all on every request: the relay loads a set
+       when the visit reaches the stage that needs it (ruling R6, staged
+       loading), so each set is its own export and the relay decides. The cards
+       moved into Phoebe's pack on 17 Sep 2026; they were at the repository root
+       before that day. The carbon pack's sets join this list at pull request B
+       of build-order step 3. */
     sources: [
-      /* The cards moved into Phoebe's pack on 17 Sep 2026; they were at the
-         repository root before that day. */
-      { name: 'ELIGIBILITY_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/eligibility-cards-vwba.md' },
-      { name: 'FEASIBILITY_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/feasibility-cards-vwba.md' },
+      { name: 'WATER_APPLIES_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/applies-cards-vwba.md' },
+      { name: 'WATER_ELIGIBILITY_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/eligibility-cards-vwba.md' },
+      { name: 'WATER_ROUTES_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/routes-cards-vwba.md' },
+      { name: 'WATER_FEASIBILITY_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/feasibility-cards-vwba.md' },
     ],
     stale: 'The relay would deploy with out-of-date cards.',
-  },
-  {
-    label: 'tool',
-    target: 'api/_tool.generated.ts',
-    /* What Phoebe is told about her one tool, from her pack. Contract lines 2
-       and 10, item A15, 21 Sep 2026. Only the marked region embeds; the rest
-       of the README is for people. */
-    sources: [{ name: 'PHOEBE_TOOL_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/tool/README.md', region: 'AGENT-FACING' }],
-    stale: 'The relay would deploy with an out-of-date account of her tool, so she could describe a row or a field the pack no longer holds.',
   },
   {
     label: 'primer',

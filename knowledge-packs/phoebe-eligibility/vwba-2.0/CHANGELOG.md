@@ -1,5 +1,77 @@
 # Changelog — vwba-2.0
 
+## 0.11.0 — 25 Sep 2026
+
+- **`tool/README.md`: the agent-facing region retires.** What Phoebe is told about
+  her tool is now generated from `tool/eligibility-worksheet.yaml`, the tool
+  file, by `scripts/build-worksheet-module.mjs` — the maintainer's ruling R1 of
+  25 Sep 2026, build-order step 3: a tool is defined once, in one file in its
+  pack. The page now points at the file and says what moved where. The rules that
+  sat in the region with those facts — say where a value came from; ask only for
+  what is missing; a row you have heard nothing about stays Not yet checked; what
+  the record block is and is not — moved into her prompt, where her other rules
+  live. Old wording of the region, whole:
+
+  > **You have one tool: the eligibility worksheet, on the Tool tab of your
+  > screen.** The map is Bridget's tool and the calculator is Calvin's; you never
+  > work either.
+  >
+  > **Six rows, in the manual's order, one per eligibility criterion.** Row 1 is
+  > criterion card 1, row 2 is card 2, and so on to row 6. What each row is and why
+  > it matters is written on its card, under "The rule in plain words" and "What a
+  > project owner would be asked to show". The ten feasibility considerations are
+  > not rows: they carry no state, ever.
+  >
+  > **What a row takes.** One of three states: Not yet checked, Met, or Not yet.
+  > Not yet always carries a route forward, in words: the specific evidence,
+  > document, consultation or design change that would change it. A row never takes
+  > a number, a date, a score or a percentage.
+  >
+  > **Where a row's value comes from.** From the visitor's own account of their
+  > project, weighed against the card. The card's evidence list says what a project
+  > owner would be asked to show. You set a row only when the visitor has actually
+  > told you something that meets it or falls short of it; a row you have heard
+  > nothing about stays Not yet checked.
+  >
+  > **The five facts you read first.** Before you ask anything, check what the
+  > project context already holds. On this site that is the record Wellington
+  > collects, on the left panel, and it reaches you as the block headed "What the
+  > visitor has already told Wellington". Its five fields, and what each takes:
+  >
+  > - **What it does** — a sentence or two in the visitor's words about the
+  >   activity. Text.
+  > - **What type** — the one standard project type Wellington confirmed with the
+  >   visitor, from the shared list of twenty-five: the standard's name and one
+  >   plain sentence. A drinking-water project also carries which class it is. One
+  >   choice each; which pathway it fits is yours to find, never read from it.
+  > - **Stage** — on paper, being built, or already running. One choice.
+  > - **Where it is** — a country or a named place, in words. Text.
+  > - **What it is called** — the project's name. Text.
+  >
+  > They are facts about the project, never a verdict on any row. Ask only for what
+  > is missing from them. Any of the five may be absent; ask for what you need.
+  > When no such block comes with the conversation, you are on
+  > the Agent Commons or at a cold start, and the conversation is the only project
+  > context: ask for everything you need, one question at a time.
+  >
+  > **Say where a value came from.** When you set a row, say in a sentence what the
+  > visitor told you that settled it. When you use one of the five facts, say it
+  > came from what they already told Wellington.
+
+- **The three row states become five in the runtime**, which is item A18's
+  ruling of 23 Sep 2026 reaching the code. The old account, from
+  `src/lib/criteriaState.ts`, which said the gate allowed no fourth state:
+
+  > THREE STATES, AND NO FOURTH. Appendix A is a hard gate — the maintainer
+  > ruled on 20 Aug 2026 that a criterion is met or it is not, with no
+  > weighting, no partial credit and no averaging. There is deliberately no
+  > "partly met", no percentage and no score.
+
+  The cards themselves were corrected on 23 Sep 2026 and their old wording is
+  above, under 0.7.0. No card changed in this release.
+
+- `tool/eligibility-worksheet.yaml`: `pack.version` follows this release.
+
 ## 0.10.0 — 24 Sep 2026
 
 - Corrected 25 Sep 2026: `tool/eligibility-worksheet.yaml` still said `pack.version: 0.9.0` after

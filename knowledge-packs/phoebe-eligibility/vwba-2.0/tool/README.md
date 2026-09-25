@@ -2,10 +2,16 @@
 
 **No code lives here.** This page names the checklist and where it reads from.
 
-- **The checklist** is the Eligibility worksheet on the Tool tab of Phoebe's
-  screen: [`src/components/EligibilityWorksheet.tsx`](../../../../src/components/EligibilityWorksheet.tsx).
-  Six criteria, then ten considerations, each with its card's plain words and
-  its citation.
+- **The tool itself is defined in [`eligibility-worksheet.yaml`](./eligibility-worksheet.yaml)**,
+  beside this page: the rows, their states, what each takes, where a value comes
+  from, and each row's citations by card id. From 25 Sep 2026 the runtime reads
+  it — the worksheet on screen, Phoebe's prompt, and the checks all come from
+  that one file.
+- **The checklist on screen** is the Eligibility worksheet on the Tool tab of
+  Phoebe's screen: [`src/components/EligibilityWorksheet.tsx`](../../../../src/components/EligibilityWorksheet.tsx).
+  One section per pathway: the rows asked here with their five states and their
+  cited routes, then the rows acted on at later phases, then the ten
+  considerations.
 - **The live reader** is [`src/lib/phoebeCards.ts`](../../../../src/lib/phoebeCards.ts).
   It reads the two files in [`../cards/`](../cards/) and nothing else. It fails
   loudly if a card's shape drifts, so an empty worksheet cannot be shown as if
@@ -27,57 +33,23 @@ nothing else, so those notes no longer reach Phoebe's prompt. Item K10, part 2.
 
 ## What Phoebe is told about her tool
 
-**The region between the two markers below is generated into her prompt**, the
-way the primer's regions are: `scripts/build-prompt-modules.mjs` embeds only that
-region into `api/_tool.generated.ts`, and its staleness gate fails the build if
-the copy drifts. Everything outside the markers is for people. Contract lines 2
-and 10, item A15, 21 Sep 2026. Facts and rules, never lines: she phrases her own
-sentences.
+**The tool file is the one home, from 25 Sep 2026.** What Phoebe is told about
+this tool — its rows, the order they are asked in, what each one takes, where a
+value may come from, the five row states and what each carries, the pathway
+states, the readiness reads, and the record fields the tool reads — is generated
+from [`eligibility-worksheet.yaml`](./eligibility-worksheet.yaml) beside this
+page by [`scripts/build-worksheet-module.mjs`](../../../../scripts/build-worksheet-module.mjs),
+which writes `api/_tool.generated.ts` under a staleness gate.
 
-<!-- AGENT-FACING: BEGIN -->
-**You have one tool: the eligibility worksheet, on the Tool tab of your
-screen.** The map is Bridget's tool and the calculator is Calvin's; you never
-work either.
+**This page used to carry that text itself**, in a marked agent-facing region
+that the prompt generator embedded. The region retired when the runtime started
+reading the tool file, by the maintainer's ruling R1 of 25 Sep 2026, so that one
+fact about this tool is written in one place. Its whole wording is in this pack's
+[CHANGELOG](../CHANGELOG.md).
 
-**Six rows, in the manual's order, one per eligibility criterion.** Row 1 is
-criterion card 1, row 2 is card 2, and so on to row 6. What each row is and why
-it matters is written on its card, under "The rule in plain words" and "What a
-project owner would be asked to show". The ten feasibility considerations are
-not rows: they carry no state, ever.
+**The rules that sat in that region moved into her prompt**, where her other
+rules live: say where a value came from, ask only for what is missing, a row you
+have heard nothing about stays Not yet checked, and what the record block is and
+is not. They were never facts about the tool; they are how she behaves.
 
-**What a row takes.** One of three states: Not yet checked, Met, or Not yet.
-Not yet always carries a route forward, in words: the specific evidence,
-document, consultation or design change that would change it. A row never takes
-a number, a date, a score or a percentage.
-
-**Where a row's value comes from.** From the visitor's own account of their
-project, weighed against the card. The card's evidence list says what a project
-owner would be asked to show. You set a row only when the visitor has actually
-told you something that meets it or falls short of it; a row you have heard
-nothing about stays Not yet checked.
-
-**The five facts you read first.** Before you ask anything, check what the
-project context already holds. On this site that is the record Wellington
-collects, on the left panel, and it reaches you as the block headed "What the
-visitor has already told Wellington". Its five fields, and what each takes:
-
-- **What it does** — a sentence or two in the visitor's words about the
-  activity. Text.
-- **What type** — the one standard project type Wellington confirmed with the
-  visitor, from the shared list of twenty-five: the standard's name and one
-  plain sentence. A drinking-water project also carries which class it is. One
-  choice each; which pathway it fits is yours to find, never read from it.
-- **Stage** — on paper, being built, or already running. One choice.
-- **Where it is** — a country or a named place, in words. Text.
-- **What it is called** — the project's name. Text.
-
-They are facts about the project, never a verdict on any row. Ask only for what
-is missing from them. Any of the five may be absent; ask for what you need.
-When no such block comes with the conversation, you are on
-the Agent Commons or at a cold start, and the conversation is the only project
-context: ask for everything you need, one question at a time.
-
-**Say where a value came from.** When you set a row, say in a sentence what the
-visitor told you that settled it. When you use one of the five facts, say it
-came from what they already told Wellington.
-<!-- AGENT-FACING: END -->
+**Nothing on this page reaches her prompt.** It is for people.
