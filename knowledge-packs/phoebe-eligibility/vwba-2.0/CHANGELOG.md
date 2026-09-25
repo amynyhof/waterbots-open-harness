@@ -1,5 +1,17 @@
 # Changelog — vwba-2.0
 
+## 0.12.0 — 25 Sep 2026
+
+- **The Knowledge tab's honest line is gone**, because it stopped being true: both packs are hers
+  from build-order step 3, pull request B. It read:
+
+  > Phoebe reads the water pathway's cards today. The carbon pathway's cards are shown here and
+  > reach her when her carbon runtime is built.
+
+  The tab now says she reads both pathways from these cards, and that a set she has not been given
+  on a turn is one she asks for. Ruling R3 of 23 Sep 2026 asked for the old line only while it was
+  true. No card changed.
+
 ## 0.11.0 — 25 Sep 2026
 
 - **`tool/README.md`: the agent-facing region retires.** What Phoebe is told about

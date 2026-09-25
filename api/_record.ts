@@ -209,7 +209,8 @@ export interface SheetRow {
 export interface PackSheet {
   pack: string;
   rows: SheetRow[];
-  flag?: string;
+  /** The class and the version, where this pack's own tests have settled them. */
+  sorts?: string[];
 }
 
 /** The heading Phoebe's prompt names, so she knows the block when she sees it. */
@@ -259,20 +260,35 @@ export function readSheet(value: unknown): PackSheet[] | null {
         });
       }
     }
-    const flag = typeof entry.flag === 'string' && found.versionFlags.some((w) => w.id === entry.flag)
-      ? entry.flag
-      : '';
-    out.push({ pack, rows, ...(flag ? { flag } : {}) });
+    const sorts = Array.isArray(entry.sorts)
+      ? entry.sorts.filter(
+          (word): word is string =>
+            typeof word === 'string' &&
+            word !== 'all' &&
+            (found.appliesTo.some((entry2) => entry2.id === word) ||
+              found.versionFlags.some((entry2) => entry2.id === word))
+        )
+      : [];
+    out.push({ pack, rows, ...(sorts.length ? { sorts } : {}) });
   }
   return out.length ? out : null;
 }
 
-/** What the project is known to be, for sorting which rows it has. */
+/**
+ * What the project is known to be, for sorting which rows it has.
+ *
+ * Wellington's record carries the class for a drinking-water project; Phoebe's
+ * own tests settle it for a visitor who never went through the desk, and settle
+ * the version besides. Either fills the same context.
+ */
 function contextOf(record: ProjectRecord | null, sheet: PackSheet): RowContext {
-  const gsClass = record?.gsClass ? record.gsClass.toLowerCase() : '';
+  const found = section(sheet.pack);
+  const sorted = sheet.sorts?.find((word) => found?.appliesTo.some((entry) => entry.id === word));
+  const version = sheet.sorts?.find((word) => found?.versionFlags.some((entry) => entry.id === word));
+  const gsClass = sorted ?? (record?.gsClass ? record.gsClass.toLowerCase() : '');
   return {
     ...(gsClass ? { gsClass } : {}),
-    ...(sheet.flag ? { versionFlag: sheet.flag } : {}),
+    ...(version ? { versionFlag: version } : {}),
   };
 }
 
@@ -313,7 +329,10 @@ export function worksheetBlock(sheets: PackSheet[], record: ProjectRecord | null
       const routes = held.routes?.length ? ` — route${held.routes.length > 1 ? 's' : ''} ${held.routes.join(', ')}` : '';
       parts.push(`- ${row.id}: ${label(held.state)}${carried}${routes}.`);
     }
-    if (sheet.flag) parts.push(`- Version: ${sheet.flag}.`);
+    for (const word of sheet.sorts ?? []) {
+      const isVersion = found.versionFlags.some((entry) => entry.id === word);
+      parts.push(`- ${isVersion ? 'Version' : 'Which kind of project'}: ${word}.`);
+    }
     parts.push('', `The read from these rows: **${READINESS_LABEL[readinessOf(sheet.pack, states, context)]}**.`);
   }
 

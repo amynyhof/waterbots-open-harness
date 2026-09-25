@@ -577,7 +577,7 @@ const sheet = {
       '4': { state: 'blocked', because: 'the sponsor is under a compliance order to do this work' },
     },
   },
-  flags: {},
+  sorts: {},
 };
 const built = buildSeal(visit, sheet, packs);
 const reading = readSeal(built);
@@ -649,7 +649,7 @@ expect(
   built.packs.every((p) => Object.values(p.answers).every((v) => typeof v === 'string')),
   JSON.stringify(built.packs)
 );
-const untouched = buildSeal(EMPTY_VISIT, { rows: {}, flags: {} }, packs);
+const untouched = buildSeal(EMPTY_VISIT, { rows: {}, sorts: {} }, packs);
 expect(
   'an empty visit seals as empty fields, a null pin, six unchecked criteria and no packs — never invented',
   'seal' in readSeal(untouched) && untouched.pin === null && untouched.packs.length === 0 &&

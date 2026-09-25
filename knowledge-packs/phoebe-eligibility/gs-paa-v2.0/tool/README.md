@@ -1,31 +1,33 @@
 # tool — the carbon section of the eligibility worksheet
 
-**No code lives here, and nothing reads this page yet.** It names the tool this pack will
-fill and where that tool will read from, once built.
+**No code lives here.** This page names the tool this pack fills and where that tool reads from.
 
-- **The tool** is the eligibility worksheet on the Tool tab of Phoebe's screen, the same
-  one tool the water pack names. By the maintainer's ruling of 22 Sep 2026 (R3) the
-  worksheet holds **one section per pack**, each with a pathway state above its rows:
-  Not yet checked, Applies, or Does not apply with the cited reason. This pack fills the
-  carbon section. Rows keep the three states they have today.
-- **Which rows open** is decided by the applies cards: the technology class and the
-  version set which of the 32 rows a project is asked about. A household filter project
-  never hears about boreholes.
-- **The live reader-to-be** is [`src/lib/phoebeCards.ts`](../../../../src/lib/phoebeCards.ts),
-  pack-keyed at proposal step 5. Today it reads the water pack's two files and nothing
-  else.
-- **The build gate-to-be** is [`scripts/check-cards.mjs`](../../../../scripts/check-cards.mjs),
-  which will re-derive this pack's sets a second way at step 5. Today it names the water
-  pack's files only.
-- **Her relay** will read this pack through
-  [`scripts/build-prompt-modules.mjs`](../../../../scripts/build-prompt-modules.mjs) at
-  step 5, under the same staleness gate.
+- **The tool is defined in [`eligibility-worksheet.yaml`](./eligibility-worksheet.yaml)**, beside
+  this page: the rows, their states, what each takes, where a value comes from, which class or
+  version each row exists for, and each row's citations by card id. From 25 Sep 2026 the runtime
+  reads it — the worksheet on screen, Phoebe's prompt, and the checks all come from that one file.
+- **One tool, one section per pack.** By the maintainer's ruling of 22 Sep 2026 (R3) the eligibility
+  worksheet holds one section per pack, each with a pathway state above its rows: Not yet checked,
+  Applies, or Does not apply with the cited reason. This pack fills the carbon section; the water
+  pack fills the other.
+- **Which rows open** is decided by the applies cards: the technology class and the version set
+  which of the 32 rows a project is asked about. A household filter project never hears about
+  boreholes.
+- **The live reader** is [`src/lib/worksheet.generated.ts`](../../../../src/lib/worksheet.generated.ts)
+  and its twin under `api/`, both written from the tool files by
+  [`scripts/build-worksheet-module.mjs`](../../../../scripts/build-worksheet-module.mjs) under a
+  staleness gate, so the console and the relay cannot hold different rows.
+- **The build gates** are [`scripts/check-tool.mjs`](../../../../scripts/check-tool.mjs), which holds
+  every row to the card it cites, and [`scripts/check-phoebe.mjs`](../../../../scripts/check-phoebe.mjs),
+  which holds the runtime to the tool files.
+- **Her relay reads this pack's cards** through
+  [`scripts/build-prompt-modules.mjs`](../../../../scripts/build-prompt-modules.mjs), staged: the
+  applies cards at the door, the rest once this pathway applies, never when it does not.
 
-## What Phoebe will be told about this section
+## What Phoebe is told about this section
 
-An agent-facing region, between markers the generator recognises, arrives at proposal
-step 8 and not before: the carbon section, its rows, what each takes, where its value
-comes from, and the rule the maintainer gave on 22 Sep 2026 (R4) that questions are
-written to cover both pathways whenever one answer can, that a verdict covers every row
-the answer settles, and that when a pathway drops out she says so and continues with the
-other. **There is no such region on this page today**, so nothing here reaches her prompt.
+**It is generated from the tool file**, not written here. There is no agent-facing region on this
+page and there never was one: the region on the water pack's page retired on 25 Sep 2026, by the
+maintainer's ruling R1 of that day, so that a tool is defined once in one file in its pack.
+
+**Nothing on this page reaches her prompt.** It is for people.

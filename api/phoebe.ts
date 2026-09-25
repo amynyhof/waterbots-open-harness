@@ -32,7 +32,7 @@ import { recordAbstention } from './_abstentions.js';
 import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
 import { PHOEBE, countOneMessage, timeUntilReset } from './_cap.js';
 import { readHandBack, type HandBack } from './_handBack.js';
-import { RESPONSE_SCHEMA, SYSTEM_PROMPT, cardsBlock, setsFor, type CardSet } from './_systemPrompt.js';
+import { CARD_SETS, RESPONSE_SCHEMA, SYSTEM_PROMPT, cardsBlock, setsFor, type CardSet } from './_systemPrompt.js';
 import {
   MAX_BECAUSE_CHARS,
   phoebeNotesBlock,
@@ -526,15 +526,15 @@ export async function POST(req: Request): Promise<Response> {
 
   /* THE ONE EXTRA CALL — ruling R6, staged loading, 25 Sep 2026.
      A set she has not been given is not a missing card, and she must never say
-     it is. So when a question needs her feasibility cards she says so in a
-     field, and the same question is asked again with those cards in front of
-     her. The visitor sees the second answer and nothing of the first.
-     ONE EXTRA CALL AND NO MORE: the second pass cannot ask for anything, so a
-     loop is impossible. It is not counted against anyone's day either — the cap
-     counts answers delivered to a visitor, and this is one answer. */
-  if (answer.needCards === 'feasibility' && !usedSets.includes('water:feasibility')) {
-    usedSets = [...usedSets, 'water:feasibility'];
-    console.log('phoebe: asked for her feasibility cards, so the same question goes again with them');
+     it is. So when a question needs a set this turn does not carry, she names
+     that set in a field, and the same question is asked again with it in front
+     of her. The visitor sees the second answer and nothing of the first.
+     ONE EXTRA CALL AND NO MORE: the second answer's own request is ignored, so
+     a loop is impossible. It is not counted against anyone's day either — the
+     cap counts answers delivered to a visitor, and this is one answer. */
+  if (answer.needCards !== 'none' && !usedSets.includes(answer.needCards)) {
+    usedSets = [...usedSets, answer.needCards];
+    console.log(`phoebe: asked for ${answer.needCards}, so the same question goes again with it`);
     try {
       response = await callOnce(usedSets);
     } catch (error) {
@@ -577,10 +577,19 @@ export async function POST(req: Request): Promise<Response> {
    The stage, and reading her answer. Her output is checked, not trusted.
 ------------------------------------------------------------------------- */
 
-/** What the project is known to be, for sorting which rows it has. */
-function contextOf(record: ReturnType<typeof readRecord>, flag?: string): RowContext {
-  const gsClass = record?.gsClass ? record.gsClass.toLowerCase() : '';
-  return { ...(gsClass ? { gsClass } : {}), ...(flag ? { versionFlag: flag } : {}) };
+/**
+ * What the project is known to be, for sorting which rows it has.
+ *
+ * The record's class is Wellington's; the sheet's sorts are Phoebe's own tests'.
+ * Either fills the same context, and the pack's own lists say which word is a
+ * class and which is a version.
+ */
+function contextOf(record: ReturnType<typeof readRecord>, pack: string, sorts?: string[]): RowContext {
+  const found = section(pack);
+  const sorted = sorts?.find((word) => found?.appliesTo.some((entry) => entry.id === word));
+  const version = sorts?.find((word) => found?.versionFlags.some((entry) => entry.id === word));
+  const gsClass = sorted ?? (record?.gsClass ? record.gsClass.toLowerCase() : '');
+  return { ...(gsClass ? { gsClass } : {}), ...(version ? { versionFlag: version } : {}) };
 }
 
 /**
@@ -599,7 +608,7 @@ function pathwaysOf(
     if (!sheet) return { pack, state: 'unchecked' };
     const states: Record<string, string> = {};
     for (const row of sheet.rows) states[row.id] = row.state;
-    return { pack, state: pathwayStateOf(pack, states, contextOf(record, sheet.flag)) };
+    return { pack, state: pathwayStateOf(pack, states, contextOf(record, pack, sheet.sorts)) };
   });
 }
 
@@ -613,7 +622,7 @@ function pathwaysOf(
 function allMet(sheets: PackSheet[] | null, record: ReturnType<typeof readRecord>): boolean {
   if (!sheets) return false;
   return sheets.some((sheet) => {
-    const rows = verdictRows(sheet.pack, contextOf(record, sheet.flag));
+    const rows = verdictRows(sheet.pack, contextOf(record, sheet.pack, sheet.sorts));
     if (rows.length === 0) return false;
     return rows.every((row) => sheet.rows.find((held) => held.id === row.id)?.state === 'met');
   });
@@ -625,9 +634,9 @@ interface Answer {
   cited: string[];
   rows: { pack: string; id: string; state: string; because?: string; routes?: string[] }[];
   pathways: { pack: string; id: string; state: string; because?: string }[];
-  flags: { pack: string; flag: string }[];
-  /** Ruling R6: the one set she may ask for when this turn does not carry it. */
-  needCards: 'none' | 'feasibility';
+  sorts: { pack: string; value: string }[];
+  /** Ruling R6: a set she may ask for when this turn does not carry it. */
+  needCards: 'none' | CardSet;
   /** Contract line 8: the way back to Wellington, a field the console acts on. See _handBack.ts. */
   handBack: HandBack;
   abstained: boolean;
@@ -730,20 +739,31 @@ function readAnswer(value: unknown): Answer | null {
     }
   }
 
-  const flags: { pack: string; flag: string }[] = [];
-  if (Array.isArray(v.flags)) {
-    for (const raw of v.flags) {
+  /* A word that sorts the rows is one of that pack's own — a class from its
+     applies-to list or a version from its version list. "all" is refused: an
+     absent key already says it, and two ways of saying one thing is what
+     drifts. */
+  const sorts: { pack: string; value: string }[] = [];
+  if (Array.isArray(v.sorts)) {
+    for (const raw of v.sorts) {
       if (typeof raw !== 'object' || raw === null) continue;
       const u = raw as Record<string, unknown>;
       const pack = typeof u.pack === 'string' ? u.pack : '';
-      const flag = typeof u.flag === 'string' ? u.flag : '';
+      const word = typeof u.value === 'string' ? u.value : '';
       const found = section(pack);
-      if (!found || !found.versionFlags.some((word) => word.id === flag)) continue;
-      flags.push({ pack, flag });
+      if (!found || word === 'all') continue;
+      const known =
+        found.appliesTo.some((entry) => entry.id === word) ||
+        found.versionFlags.some((entry) => entry.id === word);
+      if (!known) continue;
+      sorts.push({ pack, value: word });
     }
   }
 
-  const needCards = v.needCards === 'feasibility' ? 'feasibility' : 'none';
+  const asked = typeof v.needCards === 'string' ? v.needCards : 'none';
+  const needCards: Answer['needCards'] = (CARD_SETS as readonly string[]).includes(asked)
+    ? (asked as CardSet)
+    : 'none';
 
   /* Checked against the closed list, never trusted: an unknown hand-back is
      "none", the ordinary turn, and the console draws nothing for it. */
@@ -757,7 +777,7 @@ function readAnswer(value: unknown): Answer | null {
     cited,
     rows,
     pathways,
-    flags,
+    sorts,
     needCards,
     handBack,
     abstained,
