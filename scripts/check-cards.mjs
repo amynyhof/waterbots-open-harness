@@ -276,18 +276,22 @@ for (const pack of PACKS) {
 
 /* ---- The relay's copy of the cards -------------------------------------- */
 
-/* api/_cards.generated.ts carries the two water files into the serverless
-   function. If it has drifted, the deployed relay answers from stale cards
-   while the worksheet shows the current ones — a disagreement no visitor
-   could see. The other five files do not reach the relay (23 Sep 2026). */
+/* api/_cards.generated.ts carries the water pack's four sets into the
+   serverless function, one constant each from 25 Sep 2026, because her prompt
+   is staged and the relay chooses which sets a turn is given. If a copy has
+   drifted, the deployed relay answers from stale cards while the worksheet
+   shows the current ones — a disagreement no visitor could see. The carbon
+   pack's sets join this list at pull request B of build-order step 3. */
 const generated = 'api/_cards.generated.ts';
 if (!existsSync(generated)) {
   note(`${generated} has not been generated — run: node scripts/build-prompt-modules.mjs`);
 } else {
   const current = readFileSync(generated, 'utf8');
   for (const [name, file] of [
-    ['ELIGIBILITY_MD', `${SEAT}/vwba-2.0/cards/eligibility-cards-vwba.md`],
-    ['FEASIBILITY_MD', `${SEAT}/vwba-2.0/cards/feasibility-cards-vwba.md`],
+    ['WATER_APPLIES_MD', `${SEAT}/vwba-2.0/cards/applies-cards-vwba.md`],
+    ['WATER_ELIGIBILITY_MD', `${SEAT}/vwba-2.0/cards/eligibility-cards-vwba.md`],
+    ['WATER_ROUTES_MD', `${SEAT}/vwba-2.0/cards/routes-cards-vwba.md`],
+    ['WATER_FEASIBILITY_MD', `${SEAT}/vwba-2.0/cards/feasibility-cards-vwba.md`],
   ]) {
     /* Same LF normalisation the generator applies — see its note on why. */
     const expected = `export const ${name}: string = ${JSON.stringify(read(file))};`;

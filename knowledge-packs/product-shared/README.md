@@ -1,6 +1,6 @@
 # product-shared — journey, roster, pathway (open)
 
-**Version 0.6.0.** Shared facts for the open free pathway. No tools folder — this
+**Version 0.6.1.** Shared facts for the open free pathway. No tools folder — this
 pack is not a seat with tools.
 
 **The project-type list lives here from 23 Sep 2026**, at

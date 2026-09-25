@@ -133,7 +133,7 @@ eligibility criteria and the feasibility considerations, and from nothing else.
 **She does not cover** the map, the water-stress figures, or where anything is
 located. Those are Bridget's.
 
-**Her chat is live**, and each visitor may send twenty messages a day.
+**Her chat is live**, and each visitor may send thirty messages a day.
 
 **Where she is:** the Eligibility step, beside the worksheet she fills in.
 

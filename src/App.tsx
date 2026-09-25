@@ -84,9 +84,13 @@ import Wordmark from './components/Wordmark';
 import { DEFAULT_SURFACE, type Surface } from './lib/surfaces';
 import { useConversation } from './chat/useConversation';
 import { WELLINGTON, wellingtonAsk } from './lib/wellington';
-import { CRITERIA } from './lib/phoebeCards';
-import { initialStatuses, type CriterionStatus } from './lib/criteriaState';
-import { applyCriterionUpdates, type CriterionUpdate } from './lib/phoebeClient';
+import {
+  EMPTY_SHEET,
+  applyUpdates as applySheetUpdates,
+  type Sheet,
+  type Verdicts,
+} from './lib/worksheetState';
+import { eligibilityDone as sheetDone } from './lib/visit';
 import { fittedPack, livePacks, type PackValues } from './lib/methodPacks';
 import {
   EMPTY_VISIT,
@@ -141,12 +145,10 @@ export default function App() {
   /* The worksheet lives here so Phoebe's answers and the rows she is filling
      in cannot disagree. It is plain component state and nothing writes it to
      storage — v1 keeps no memory across visits, and a reload starts over. */
-  const [statuses, setStatuses] = useState<CriterionStatus[]>(() =>
-    initialStatuses(CRITERIA.length)
-  );
+  const [sheet, setSheet] = useState<Sheet>(EMPTY_SHEET);
 
-  const applyUpdates = useCallback((updates: CriterionUpdate[]) => {
-    setStatuses((current) => applyCriterionUpdates(current, updates));
+  const onVerdicts = useCallback((verdicts: Verdicts) => {
+    setSheet((current) => applySheetUpdates(current, verdicts));
   }, []);
 
   /* The rest of the visit: the project context, the pin, the pack answers. */
@@ -269,13 +271,13 @@ export default function App() {
     if (surface === 'eligibility') setVisit((v) => openedEligibility(v));
   }, [surface]);
   useEffect(() => {
-    setVisit((v) => applyEligibilityProgress(v, statuses));
-  }, [statuses]);
+    setVisit((v) => applyEligibilityProgress(v, sheet));
+  }, [sheet]);
 
   /* The current invite first, then derived rows that never outrank it. */
-  const rows = useMemo(() => nextStepRows(visit, statuses, LIVE_PACKS), [visit, statuses]);
+  const rows = useMemo(() => nextStepRows(visit, sheet, LIVE_PACKS), [visit, sheet]);
   const invite = inviteSurface(visit);
-  const progress = useMemo(() => journeyProgress(visit, statuses, LIVE_PACKS), [visit, statuses]);
+  const progress = useMemo(() => journeyProgress(visit, sheet, LIVE_PACKS), [visit, sheet]);
 
   /* THE BRIDGE (item S7, built 8 Sep 2026). The click seals the visit as it
      stands — the record with its source tags, the pin, the worksheet, each
@@ -286,7 +288,7 @@ export default function App() {
   const onSeal = useCallback(async () => {
     setSealing({ kind: 'sealing' });
     try {
-      const seal = buildSeal(visit, statuses, CRITERIA.map((c) => c.number), LIVE_PACKS);
+      const seal = buildSeal(visit, sheet, LIVE_PACKS);
       const { ticketId } = await sealVisit(seal);
       setSealing({ kind: 'sealed' });
       window.location.assign(handoffAddress(ticketId));
@@ -299,7 +301,7 @@ export default function App() {
             : 'Something went wrong on our side. Nothing was kept.',
       });
     }
-  }, [visit, statuses]);
+  }, [visit, sheet]);
 
   const onDesk = surface === 'desk';
   const onMap = surface === 'map';
@@ -443,14 +445,14 @@ export default function App() {
                 aria-hidden={!onEligibility}
               >
                 <PhoebeScreen
-                  onCriteriaUpdate={applyUpdates}
+                  onVerdicts={onVerdicts}
                   record={visit.context}
-                  statuses={statuses}
+                  sheet={sheet}
                   onOpenMap={openMap}
                   onNavigate={setSurface}
                   visible={onEligibility}
                   eligibilityInvite={visit.eligibilityInvite}
-                  eligibilityDone={statuses.length > 0 && statuses.every((s) => s.state !== 'unchecked')}
+                  eligibilityDone={sheetDone(visit, sheet)}
                   inviteSurface={invite}
                 />
               </div>

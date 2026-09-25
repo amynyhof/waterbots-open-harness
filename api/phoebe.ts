@@ -5,7 +5,7 @@
  * environment variables and is read here, on the server. It is never sent to
  * the browser, never written into the bundle, and never committed.
  *
- * TWENTY MESSAGES A DAY, per visitor. The counting itself lives in _cap.ts;
+ * THIRTY MESSAGES A DAY, per visitor. The counting itself lives in _cap.ts;
  * what a visitor is told about it lives here, with every other message a
  * visitor reads. A message is counted only when an answer is actually
  * delivered — anything that fails on our side is put back.
@@ -15,10 +15,16 @@
  * so it can be graded into a card. See _abstentions.ts for what is kept and
  * what deliberately is not.
  *
- * THE PROMPT IS CACHED. The system prompt holds both card sets, roughly 12,000
- * tokens, identical on every request. It carries a cache breakpoint so that
- * after the first message it is read at about a tenth of the input price.
- * Nothing volatile may be added above that breakpoint.
+ * THE PROMPT IS STAGED, AND BOTH HALVES ARE CACHED. From 25 Sep 2026 the cards
+ * are no longer all sent on every request: the static half of the prompt — who
+ * she is, her rules, her tool, her colleagues — carries the first cache
+ * breakpoint, and the card sets this visit has actually reached carry the
+ * second. So the static half stays cached when the stage moves, a run of turns
+ * inside one stage is read at about a tenth of the input price, and a visitor
+ * on one pathway is never read the other pathway's cards. The maintainer's
+ * ruling R6, 25 Sep 2026; the staging itself is in _systemPrompt.ts.
+ *
+ * Nothing volatile may be added above those breakpoints.
  */
 
 import Anthropic from '@anthropic-ai/sdk';
@@ -26,8 +32,26 @@ import { recordAbstention } from './_abstentions.js';
 import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
 import { PHOEBE, countOneMessage, timeUntilReset } from './_cap.js';
 import { readHandBack, type HandBack } from './_handBack.js';
-import { RESPONSE_SCHEMA, SYSTEM_PROMPT } from './_systemPrompt.js';
-import { phoebeNotesBlock, readRecord, readWorksheet, recordBlock, worksheetBlock } from './_record.js';
+import { RESPONSE_SCHEMA, SYSTEM_PROMPT, cardsBlock, setsFor, type CardSet } from './_systemPrompt.js';
+import {
+  MAX_BECAUSE_CHARS,
+  phoebeNotesBlock,
+  readRecord,
+  readSheet,
+  recordBlock,
+  worksheetBlock,
+  type PackSheet,
+} from './_record.js';
+import {
+  HER_PACKS,
+  PATHWAY_STATE_IDS,
+  ROW_STATE_IDS,
+  TOOL_SECTIONS,
+  pathwayStateOf,
+  section,
+  verdictRows,
+  type RowContext,
+} from './_worksheet.generated.js';
 
 /**
  * Claude Sonnet 5 — the maintainer's ruling of 21 Aug 2026.
@@ -197,7 +221,8 @@ export async function POST(req: Request): Promise<Response> {
   let body: {
     messages?: IncomingMessage[];
     record?: unknown;
-    worksheet?: unknown;
+    sheet?: unknown;
+    loaded?: unknown;
     opened?: unknown;
     eligibilityDone?: unknown;
   };
@@ -205,7 +230,8 @@ export async function POST(req: Request): Promise<Response> {
     body = (await req.json()) as {
       messages?: IncomingMessage[];
       record?: unknown;
-      worksheet?: unknown;
+      sheet?: unknown;
+      loaded?: unknown;
       opened?: unknown;
       eligibilityDone?: unknown;
     };
@@ -263,12 +289,23 @@ export async function POST(req: Request): Promise<Response> {
   const notes = phoebeNotesBlock({ opened, eligibilityDone });
 
   /* THE WORKSHEET AS IT STANDS — contract line 3, item A15, step 3,
-     21 Sep 2026. The six rows the shell holds, checked in _record.ts, or
-     null for an old client. It rides as a system block AFTER the cache
-     breakpoint, beside the record, so her cards stay cached and only these
-     small blocks change between asks. Every verdict in it is her own. */
-  const worksheet = readWorksheet(body.worksheet);
-  const worksheetText = worksheet ? worksheetBlock(worksheet) : null;
+     21 Sep 2026; per pack, with five states, from 25 Sep 2026. The rows the
+     shell holds, checked in _record.ts, or null for an old client. It rides as
+     a system block AFTER both cache breakpoints, beside the record, so her
+     cards stay cached and only these small blocks change between asks. Every
+     verdict in it is her own. */
+  const sheet = readSheet(body.sheet);
+  const sheetText = sheet ? worksheetBlock(sheet, record) : null;
+
+  /* WHICH CARDS THIS TURN GETS — ruling R6, staged loading. The pathway states
+     come from her own answers to the applies tests, worked out by the same
+     function the console draws with, so the stage is never guessed at. A set
+     the visit has already been given rides along in `loaded`, because a set she
+     has used must not disappear from under her mid-conversation. */
+  const loaded = Array.isArray(body.loaded)
+    ? body.loaded.filter((set): set is string => typeof set === 'string')
+    : [];
+  const sets = setsFor({ pathways: pathwaysOf(sheet, record), loaded, allMet: allMet(sheet, record) });
 
 
   /* The configuration check sits AFTER the request is validated, on purpose.
@@ -329,19 +366,22 @@ export async function POST(req: Request): Promise<Response> {
   /* One attempt, and a second only for a late 400 — see LATE_400_MS. The
      retry is inside a single visitor message: the cap was charged before this
      point and is refunded by undelivered() if both attempts fail, so a retry
-     never costs anyone two of their twenty. Confirmed in
+     never costs anyone two of their thirty. Confirmed in
      scripts/check-cap.mjs rather than assumed. */
-  const callModel = (): Promise<Anthropic.Message> =>
+  const callModel = (withSets: readonly CardSet[]): Promise<Anthropic.Message> =>
     client.messages.create(
       {
         model: MODEL,
         max_tokens: MAX_TOKENS,
-        /* The cache breakpoint. Everything above it is byte-identical between
-           requests; the conversation below it is not cached. */
+        /* TWO CACHE BREAKPOINTS. The first block is byte-identical on every
+           request; the second changes only when the visit reaches a new stage,
+           so the first stays cached across a stage change. Everything below
+           them is this visitor's and is not cached. */
         system: [
           { type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
+          { type: 'text', text: cardsBlock(withSets), cache_control: { type: 'ephemeral' } },
           ...(record ? [{ type: 'text' as const, text: recordBlock(record) }] : []),
-          ...(worksheetText ? [{ type: 'text' as const, text: worksheetText }] : []),
+          ...(sheetText ? [{ type: 'text' as const, text: sheetText }] : []),
           ...(notes ? [{ type: 'text' as const, text: notes }] : []),
         ],
         messages: clean,
@@ -357,9 +397,10 @@ export async function POST(req: Request): Promise<Response> {
       { timeout: CALL_TIMEOUT_MS }
     );
 
-  try {
+  /** One call, with one narrow retry for a late 400 — see LATE_400_MS. */
+  const callOnce = async (withSets: readonly CardSet[]): Promise<Anthropic.Message> => {
     try {
-      response = await callModel();
+      return await callModel(withSets);
     } catch (first) {
       const status = pick(first, 'status');
       const elapsed = Date.now() - calledAt;
@@ -368,8 +409,13 @@ export async function POST(req: Request): Promise<Response> {
       console.error(
         `phoebe: a 400 arrived after ${(elapsed / 1000).toFixed(1)}s, which is too late to be a malformed request — retrying once`
       );
-      response = await callModel();
+      return await callModel(withSets);
     }
+  };
+
+  let usedSets: CardSet[] = [...sets];
+  try {
+    response = await callOnce(usedSets);
   } catch (error) {
     return undelivered(fromApiError(error));
   }
@@ -402,62 +448,104 @@ export async function POST(req: Request): Promise<Response> {
     );
   }
 
-  const text = response.content
-    .filter((b): b is Anthropic.TextBlock => b.type === 'text')
-    .map((b) => b.text)
-    .join('');
+  /**
+   * One model response, read into an answer or into the honest failure it is.
+   *
+   * It runs once on the ordinary turn and twice when she asks for a card set
+   * she was not given — see the second pass below — so every failure message
+   * is written once rather than in two places that could drift apart.
+   */
+  const readTurn = (message: Anthropic.Message): { answer: Answer } | { problem: Response } => {
+    const text = message.content
+      .filter((b): b is Anthropic.TextBlock => b.type === 'text')
+      .map((b) => b.text)
+      .join('');
 
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(text);
-  } catch {
-    console.error(
-      `phoebe: reply was not the JSON shape requested — ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens`
-    );
-    return undelivered(
-      problem(
-        502,
-        'Phoebe answered in a shape this console could not read. Nothing has been recorded. Try asking again.'
-      )
-    );
-  }
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      console.error(
+        `phoebe: reply was not the JSON shape requested — ${message.usage.output_tokens} of ${MAX_TOKENS} output tokens`
+      );
+      return {
+        problem: problem(
+          502,
+          'Phoebe answered in a shape this console could not read. Nothing has been recorded. Try asking again.'
+        ),
+      };
+    }
 
-  /* An answer with nothing in it is its own failure, and it is now said as one.
-     validate() refuses for exactly one reason — a reply that is missing, not
-     text, or empty once trimmed — so reaching here means she said nothing at
-     all. It used to be reported as "a shape this console could not read", which
-     described a different fault and sent two days of hunting in the wrong
-     direction. Item A4. Do not paper over it by accepting an empty reply:
-     showing a blank turn would be the dishonest fix. */
-  const answer = validate(parsed);
-  if (!answer) {
-    console.error(
-      `phoebe: returned an empty answer — ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens, most of it hidden thinking`
-    );
-    return undelivered(
-      problem(
-        502,
-        'Phoebe returned an empty answer — she did not say anything at all. Nothing has been recorded. This is a fault on our side rather than something you did, and asking again usually works.'
-      )
-    );
-  }
+    /* An answer with nothing in it is its own failure, and it is said as one.
+       readAnswer() refuses for exactly one reason — a reply that is missing,
+       not text, or empty once trimmed — so reaching here means she said nothing
+       at all. It used to be reported as "a shape this console could not read",
+       which described a different fault and sent two days of hunting in the
+       wrong direction. Item A4. Do not paper over it by accepting an empty
+       reply: showing a blank turn would be the dishonest fix. */
+    const answer = readAnswer(parsed);
+    if (!answer) {
+      console.error(
+        `phoebe: returned an empty answer — ${message.usage.output_tokens} of ${MAX_TOKENS} output tokens, most of it hidden thinking`
+      );
+      return {
+        problem: problem(
+          502,
+          'Phoebe returned an empty answer — she did not say anything at all. Nothing has been recorded. This is a fault on our side rather than something you did, and asking again usually works.'
+        ),
+      };
+    }
 
-  /* An answer of one to three characters is the empty answer wearing a
-     character. validate() refuses a reply that is empty once trimmed; measured
-     on 28 Aug 2026, four replies of one to three characters got past it and
-     reached callers. Refused here for the same reason and with the same honest
-     message — see api/_reply.ts for where the number comes from and why this
-     is not the schema minimum item A4 refused. */
-  if (isDegenerateReply(answer.reply)) {
-    console.error(
-      `phoebe: returned an answer too short to be one — ${answer.reply.trim().length} characters against a floor of ${MIN_REPLY_CHARS}, ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens`
-    );
-    return undelivered(
-      problem(
-        502,
-        'Phoebe returned an answer with almost nothing in it — a few characters and no substance. Nothing has been recorded. This is a fault on our side rather than something you did, and asking again usually works.'
-      )
-    );
+    /* An answer of one to three characters is the empty answer wearing a
+       character. readAnswer() refuses a reply that is empty once trimmed;
+       measured on 28 Aug 2026, four replies of one to three characters got past
+       it and reached callers. Refused here for the same reason and with the same
+       honest message — see api/_reply.ts for where the number comes from and
+       why this is not the schema minimum item A4 refused. */
+    if (isDegenerateReply(answer.reply)) {
+      console.error(
+        `phoebe: returned an answer too short to be one — ${answer.reply.trim().length} characters against a floor of ${MIN_REPLY_CHARS}, ${message.usage.output_tokens} of ${MAX_TOKENS} output tokens`
+      );
+      return {
+        problem: problem(
+          502,
+          'Phoebe returned an answer with almost nothing in it — a few characters and no substance. Nothing has been recorded. This is a fault on our side rather than something you did, and asking again usually works.'
+        ),
+      };
+    }
+
+    return { answer };
+  };
+
+  let outcome = readTurn(response);
+  if ('problem' in outcome) return undelivered(outcome.problem);
+  let answer = outcome.answer;
+  let calls = 1;
+  let inputTokens = response.usage.input_tokens;
+  let outputTokens = response.usage.output_tokens;
+
+  /* THE ONE EXTRA CALL — ruling R6, staged loading, 25 Sep 2026.
+     A set she has not been given is not a missing card, and she must never say
+     it is. So when a question needs her feasibility cards she says so in a
+     field, and the same question is asked again with those cards in front of
+     her. The visitor sees the second answer and nothing of the first.
+     ONE EXTRA CALL AND NO MORE: the second pass cannot ask for anything, so a
+     loop is impossible. It is not counted against anyone's day either — the cap
+     counts answers delivered to a visitor, and this is one answer. */
+  if (answer.needCards === 'feasibility' && !usedSets.includes('water:feasibility')) {
+    usedSets = [...usedSets, 'water:feasibility'];
+    console.log('phoebe: asked for her feasibility cards, so the same question goes again with them');
+    try {
+      response = await callOnce(usedSets);
+    } catch (error) {
+      return undelivered(fromApiError(error));
+    }
+    outcome = readTurn(response);
+    if ('problem' in outcome) return undelivered(outcome.problem);
+    answer = outcome.answer;
+    calls = 2;
+    inputTokens += response.usage.input_tokens;
+    outputTokens += response.usage.output_tokens;
   }
 
   /* Recorded before the answer goes out, and awaited rather than left running:
@@ -470,72 +558,192 @@ export async function POST(req: Request): Promise<Response> {
 
   return json(200, {
     ...answer,
+    /* Which card sets this answer was given, so the console can send them back
+       with the next ask and a set she has used does not disappear. */
+    loaded: usedSets,
     usage: {
       /* Surfaced so the cache can be confirmed working rather than assumed. */
       cacheRead: response.usage.cache_read_input_tokens ?? 0,
       cacheWrite: response.usage.cache_creation_input_tokens ?? 0,
-      input: response.usage.input_tokens,
-      output: response.usage.output_tokens,
+      input: inputTokens,
+      output: outputTokens,
+      /* Two on the one turn where she asked for a set she did not have. */
+      calls,
     },
   });
 }
 
 /* -------------------------------------------------------------------------
-   Validation. The model's output is checked, not trusted.
+   The stage, and reading her answer. Her output is checked, not trusted.
 ------------------------------------------------------------------------- */
+
+/** What the project is known to be, for sorting which rows it has. */
+function contextOf(record: ReturnType<typeof readRecord>, flag?: string): RowContext {
+  const gsClass = record?.gsClass ? record.gsClass.toLowerCase() : '';
+  return { ...(gsClass ? { gsClass } : {}), ...(flag ? { versionFlag: flag } : {}) };
+}
+
+/**
+ * Each pack's pathway state, from her own answers to its applies tests.
+ *
+ * Worked out by the same function the console draws with, so the cards a turn
+ * is given and the sections a visitor sees cannot disagree about which pathway
+ * is in play.
+ */
+function pathwaysOf(
+  sheets: PackSheet[] | null,
+  record: ReturnType<typeof readRecord>
+): { pack: string; state: string }[] {
+  return HER_PACKS.map((pack) => {
+    const sheet = sheets?.find((s) => s.pack === pack);
+    if (!sheet) return { pack, state: 'unchecked' };
+    const states: Record<string, string> = {};
+    for (const row of sheet.rows) states[row.id] = row.state;
+    return { pack, state: pathwayStateOf(pack, states, contextOf(record, sheet.flag)) };
+  });
+}
+
+/**
+ * True when every row she asks on a pathway is Met.
+ *
+ * It is one of the two doors to the feasibility cards (ruling R6): the
+ * considerations are for choosing between projects that already qualify, so a
+ * project that has just cleared the rows is exactly when they become useful.
+ */
+function allMet(sheets: PackSheet[] | null, record: ReturnType<typeof readRecord>): boolean {
+  if (!sheets) return false;
+  return sheets.some((sheet) => {
+    const rows = verdictRows(sheet.pack, contextOf(record, sheet.flag));
+    if (rows.length === 0) return false;
+    return rows.every((row) => sheet.rows.find((held) => held.id === row.id)?.state === 'met');
+  });
+}
 
 interface Answer {
   reply: string;
-  citedCards: { set: 'eligibility' | 'feasibility'; number: number }[];
-  criteriaUpdates: { number: number; state: 'met' | 'not-yet'; routeForward?: string }[];
+  /** Card tokens, `section:set/id`. The console renders each one's citation. */
+  cited: string[];
+  rows: { pack: string; id: string; state: string; because?: string; routes?: string[] }[];
+  pathways: { pack: string; id: string; state: string; because?: string }[];
+  flags: { pack: string; flag: string }[];
+  /** Ruling R6: the one set she may ask for when this turn does not carry it. */
+  needCards: 'none' | 'feasibility';
   /** Contract line 8: the way back to Wellington, a field the console acts on. See _handBack.ts. */
   handBack: HandBack;
   abstained: boolean;
   abstentionTopic?: string;
 }
 
-function validate(value: unknown): Answer | null {
+/** A card token is `section:set/id`, and the section has to be one of the tool's. */
+const TOKEN = /^([a-z][a-z0-9-]*):([a-z]+)\/([A-Za-z0-9-]+)$/;
+const CARD_SET_WORDS = ['applies', 'eligibility', 'feasibility', 'routes'];
+const SECTION_IDS = TOOL_SECTIONS.map((s) => s.sectionId);
+
+/**
+ * The states that carry a sentence.
+ *
+ * The tool file says what each state carries: a Met row one sentence on what
+ * settled it, an Unknown row what to find out, a Blocked row the card's own
+ * reason. A Fixable row carries its route card's id "and never prose alone",
+ * and it is held to a sentence here as well, because the older rule it replaces
+ * refused a shortfall with no way out — a verdict that only reports failure is
+ * not an acceptable output. So a Fixable row carries both: the id the console
+ * draws the route from, and her own sentence saying what it would take, which
+ * is what crosses to the paid site on the seal.
+ */
+const CARRIES_A_SENTENCE = ['met', 'fixable', 'unknown', 'blocked'];
+
+function readAnswer(value: unknown): Answer | null {
   if (typeof value !== 'object' || value === null) return null;
   const v = value as Record<string, unknown>;
 
   if (typeof v.reply !== 'string' || v.reply.trim() === '') return null;
 
-  const citedCards: Answer['citedCards'] = [];
-  if (Array.isArray(v.citedCards)) {
-    for (const raw of v.citedCards) {
-      if (typeof raw !== 'object' || raw === null) continue;
-      const c = raw as Record<string, unknown>;
-      const set = c.set === 'eligibility' || c.set === 'feasibility' ? c.set : null;
-      const number = typeof c.number === 'number' ? c.number : null;
-      if (!set || number === null) continue;
-      /* Six eligibility criteria, ten feasibility considerations. A reference
-         outside those ranges is dropped rather than rendered — the console
-         would otherwise show a citation for a card that does not exist. */
-      const ceiling = set === 'eligibility' ? 6 : 10;
-      if (!Number.isInteger(number) || number < 1 || number > ceiling) continue;
-      citedCards.push({ set, number });
+  /* A token whose shape or whose section is wrong is dropped here; whether the
+     card behind it exists is the console's to know, because the console is
+     where the card files are parsed and the citation is rendered. A token it
+     cannot resolve is dropped there and its marker leaves the prose with it. */
+  const cited: string[] = [];
+  if (Array.isArray(v.cited)) {
+    for (const raw of v.cited) {
+      if (typeof raw !== 'string') continue;
+      const token = raw.trim();
+      const match = token.match(TOKEN);
+      if (!match) continue;
+      if (!SECTION_IDS.includes(match[1]) || !CARD_SET_WORDS.includes(match[2])) continue;
+      if (!cited.includes(token)) cited.push(token);
     }
   }
 
-  const criteriaUpdates: Answer['criteriaUpdates'] = [];
-  if (Array.isArray(v.criteriaUpdates)) {
-    for (const raw of v.criteriaUpdates) {
+  /* EVERY VERDICT IS HELD TO THE TOOL FILE. A row that does not exist in that
+     pack, a state that is not one of the five, a Fixable row with no route from
+     its own list, a Blocked row whose card says the miss can be fixed, or a
+     state that carries a sentence and has none: each is dropped whole rather
+     than shown. A verdict that cannot be defended is not an acceptable output,
+     and showing it would be worse than losing it. */
+  const rows: Answer['rows'] = [];
+  if (Array.isArray(v.rows)) {
+    for (const raw of v.rows) {
       if (typeof raw !== 'object' || raw === null) continue;
       const u = raw as Record<string, unknown>;
-      const number = typeof u.number === 'number' ? u.number : null;
-      const state = u.state === 'met' || u.state === 'not-yet' ? u.state : null;
-      if (number === null || !Number.isInteger(number) || number < 1 || number > 6) continue;
-      if (!state) continue;
-      const routeForward = typeof u.routeForward === 'string' ? u.routeForward.trim() : '';
-      /* The hard rule, enforced here and not merely asked for: a shortfall
-         without a way out is not an acceptable verdict, so it is discarded
-         rather than shown. */
-      if (state === 'not-yet' && routeForward === '') continue;
-      criteriaUpdates.push(
-        state === 'not-yet' ? { number, state, routeForward } : { number, state }
-      );
+      const pack = typeof u.pack === 'string' ? u.pack : '';
+      const id = typeof u.id === 'string' ? u.id : '';
+      const state = typeof u.state === 'string' ? u.state : '';
+      const row = section(pack)?.rows.find((r) => r.id === id);
+      if (!row) continue;
+      if (!(ROW_STATE_IDS as readonly string[]).includes(state) || state === 'unchecked') continue;
+      const because = typeof u.because === 'string' ? u.because.trim() : '';
+      const routes = Array.isArray(u.routes)
+        ? u.routes.filter((r): r is string => typeof r === 'string' && row.routes.includes(r))
+        : [];
+      if (state === 'fixable' && routes.length === 0) continue;
+      if (state === 'blocked' && row.fixable === 'yes') continue;
+      if (CARRIES_A_SENTENCE.includes(state) && because === '') continue;
+      if (because.length > MAX_BECAUSE_CHARS) continue;
+      rows.push({
+        pack,
+        id,
+        state,
+        ...(because ? { because } : {}),
+        ...(routes.length ? { routes } : {}),
+      });
     }
   }
+
+  const pathways: Answer['pathways'] = [];
+  if (Array.isArray(v.pathways)) {
+    for (const raw of v.pathways) {
+      if (typeof raw !== 'object' || raw === null) continue;
+      const u = raw as Record<string, unknown>;
+      const pack = typeof u.pack === 'string' ? u.pack : '';
+      const id = typeof u.id === 'string' ? u.id : '';
+      const state = typeof u.state === 'string' ? u.state : '';
+      const row = section(pack)?.rows.find((r) => r.id === id);
+      if (!row || row.takes.of !== 'pathway-state') continue;
+      if (!(PATHWAY_STATE_IDS as readonly string[]).includes(state) || state === 'unchecked') continue;
+      const because = typeof u.because === 'string' ? u.because.trim() : '';
+      /* A pathway that does not apply says why, because that sentence is the
+         whole of what a visitor gets from it. */
+      if (state === 'does-not-apply' && because === '') continue;
+      if (because.length > MAX_BECAUSE_CHARS) continue;
+      pathways.push({ pack, id, state, ...(because ? { because } : {}) });
+    }
+  }
+
+  const flags: { pack: string; flag: string }[] = [];
+  if (Array.isArray(v.flags)) {
+    for (const raw of v.flags) {
+      if (typeof raw !== 'object' || raw === null) continue;
+      const u = raw as Record<string, unknown>;
+      const pack = typeof u.pack === 'string' ? u.pack : '';
+      const flag = typeof u.flag === 'string' ? u.flag : '';
+      const found = section(pack);
+      if (!found || !found.versionFlags.some((word) => word.id === flag)) continue;
+      flags.push({ pack, flag });
+    }
+  }
+
+  const needCards = v.needCards === 'feasibility' ? 'feasibility' : 'none';
 
   /* Checked against the closed list, never trusted: an unknown hand-back is
      "none", the ordinary turn, and the console draws nothing for it. */
@@ -546,8 +754,11 @@ function validate(value: unknown): Answer | null {
 
   return {
     reply: v.reply.trim(),
-    citedCards,
-    criteriaUpdates,
+    cited,
+    rows,
+    pathways,
+    flags,
+    needCards,
     handBack,
     abstained,
     ...(abstained && topic ? { abstentionTopic: topic } : {}),

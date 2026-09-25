@@ -24,7 +24,16 @@
  * else, and this site keeps no copy.
  */
 
-import type { CriterionStatus } from './criteriaState';
+import { HER_PACKS, READINESS_LABEL, section, verdictRows } from './worksheet.generated';
+import {
+  contextFor,
+  counts,
+  packDone,
+  pathwayState,
+  readiness,
+  stateOf,
+  type Sheet,
+} from './worksheetState';
 import type { MethodPack, PackValues } from './methodPacks';
 import { DRINKING_WATER_TYPE, type GsClassId, type ProjectStageId, type ProjectTypeId } from './projectTypes.generated';
 import type { Surface } from './surfaces';
@@ -212,9 +221,21 @@ export const EMPTY_VISIT: Visit = {
   invitedQuantify: false,
 };
 
-/** Every criterion has a verdict — met or not-yet. Unchecked means she is not done. */
-export function eligibilityDone(statuses: CriterionStatus[]): boolean {
-  return statuses.length > 0 && statuses.every((s) => s.state !== 'unchecked');
+/**
+ * Every row she asks has a verdict, on at least one pathway she reads.
+ *
+ * A pathway whose own test says it does not apply is done too: there is nothing
+ * left to ask there, and holding the visit open for rows that do not exist would
+ * be a wait for something that is never coming.
+ */
+export function eligibilityDone(visit: Visit, sheet: Sheet): boolean {
+  const packs = HER_PACKS.filter((pack) => section(pack) !== undefined);
+  if (packs.length === 0) return false;
+  return packs.some((pack) => {
+    const context = contextFor(sheet, pack, visit.context.gsClass);
+    if (pathwayState(sheet, pack, context) === 'does-not-apply') return true;
+    return packDone(sheet, pack, context);
+  });
 }
 
 /** Opening Eligibility during learn starts that stage. Later stages stay put. */
@@ -250,8 +271,8 @@ export function applyWellingtonRoute(
 }
 
 /** When every criterion has a verdict, Eligibility is done and the loop returns to Wellington. */
-export function applyEligibilityProgress(visit: Visit, statuses: CriterionStatus[]): Visit {
-  if ((visit.stage === 'learn' || visit.stage === 'eligibility') && eligibilityDone(statuses)) {
+export function applyEligibilityProgress(visit: Visit, sheet: Sheet): Visit {
+  if ((visit.stage === 'learn' || visit.stage === 'eligibility') && eligibilityDone(visit, sheet)) {
     return { ...visit, stage: 'partners' };
   }
   return visit;
@@ -308,29 +329,40 @@ const group = (n: number) => n.toLocaleString('en-GB');
  * because a row that named a number while the benefit was incomplete would be
  * claiming more than the worksheet does. The save row is always last.
  */
-export function deskRows(
-  visit: Visit,
-  statuses: CriterionStatus[],
-  packs: MethodPack[]
-): DeskRow[] {
+export function deskRows(visit: Visit, sheet: Sheet, packs: MethodPack[]): DeskRow[] {
   const rows: DeskRow[] = [];
 
-  /* Phoebe — the eligibility worksheet. */
-  const touched = statuses.filter((s) => s.state !== 'unchecked').length;
-  if (touched > 0) {
-    const met = statuses.filter((s) => s.state === 'met').length;
-    const notYet = statuses.filter((s) => s.state === 'not-yet').length;
-    const total = statuses.length;
-    let sentence: string;
-    if (met === total) {
-      sentence = `All ${total} eligibility criteria are met on the worksheet, so this project looks eligible.`;
-    } else if (notYet > 0) {
-      sentence = `${met} of ${total} eligibility criteria are met and ${notYet} ${notYet === 1 ? 'is' : 'are'} not yet, each with a route forward on the worksheet.`;
-    } else {
-      sentence = `${met} of ${total} eligibility criteria are met so far; ${total - met} ${total - met === 1 ? 'has' : 'have'} not been checked yet.`;
+  /* Phoebe — one row per pathway she has worked, and the pathway's own reading
+     on it. Never one merged verdict for the project: a project can be likely
+     eligible on water and not enough known on carbon, and saying one word for
+     both would be a claim neither pathway made. */
+  for (const pack of HER_PACKS) {
+    const part = section(pack);
+    if (!part) continue;
+    const context = contextFor(sheet, pack, visit.context.gsClass);
+    const state = pathwayState(sheet, pack, context);
+    const tally = counts(sheet, pack, context);
+    const looked = verdictRows(pack, context).filter(
+      (row) => stateOf(sheet, pack, row.id).state !== 'unchecked'
+    ).length;
+
+    let sentence = '';
+    if (state === 'does-not-apply') {
+      sentence = `${part.sectionName} does not apply to this project, and Phoebe says on the worksheet why.`;
+    } else if (looked > 0) {
+      const open = [
+        tally.fixable ? `${tally.fixable} fixable` : '',
+        tally.unknown ? `${tally.unknown} still unknown` : '',
+        tally.blocked ? `${tally.blocked} blocked` : '',
+      ].filter(Boolean);
+      const read = READINESS_LABEL[readiness(sheet, pack, context)].toLowerCase();
+      sentence = open.length
+        ? `${part.sectionName} reads ${read}: ${tally.met} met, ${open.join(', ')}, each with what would change it on the worksheet.`
+        : `${part.sectionName} reads ${read}, with ${tally.met} of the rows asked here met. Nothing is verified.`;
     }
+    if (!sentence) continue;
     rows.push({
-      key: 'phoebe',
+      key: `phoebe-${pack}`,
       from: 'phoebe',
       sentence,
       action: { kind: 'surface', label: 'Open the Eligibility worksheet', surface: 'eligibility' },
@@ -446,9 +478,9 @@ export function currentInvite(visit: Visit): DeskRow | null {
  * follow and never outrank it. Bridget's place-row waits until Partners;
  * Calvin's figures wait until Quantify.
  */
-export function nextStepRows(visit: Visit, statuses: CriterionStatus[], packs: MethodPack[]): DeskRow[] {
+export function nextStepRows(visit: Visit, sheet: Sheet, packs: MethodPack[]): DeskRow[] {
   const invite = currentInvite(visit);
-  const derived = deskRows(visit, statuses, packs).filter((row) => {
+  const derived = deskRows(visit, sheet, packs).filter((row) => {
     if (row.from === 'bridget') return visit.stage === 'partners' || visit.stage === 'quantify';
     if (row.from === 'calvin') return visit.stage === 'quantify';
     if (row.from === 'phoebe') return visit.stage !== 'learn';
@@ -470,11 +502,15 @@ export function inviteSurface(visit: Visit): Surface | null {
 /** Whether each of the three open phases has something from this visit. */
 export function journeyProgress(
   visit: Visit,
-  statuses: CriterionStatus[],
+  sheet: Sheet,
   packs: MethodPack[]
 ): Record<'eligibility' | 'partners' | 'quantify', boolean> {
   return {
-    eligibility: statuses.some((s) => s.state !== 'unchecked'),
+    eligibility: HER_PACKS.some((pack) =>
+      verdictRows(pack, contextFor(sheet, pack, visit.context.gsClass)).some(
+        (row) => stateOf(sheet, pack, row.id).state !== 'unchecked'
+      )
+    ),
     partners: visit.pin !== null,
     quantify: packs.some((p) => {
       const v = visit.packValues[p.key];

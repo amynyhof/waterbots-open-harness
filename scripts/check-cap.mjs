@@ -166,7 +166,7 @@ const ask = (address) =>
    The cap.
 --------------------------------------------------------------------------- */
 
-console.log('\n  Twenty messages a day\n');
+console.log('\n  Thirty messages a day\n');
 
 const decisions = [];
 for (let i = 0; i < DAILY_CAP + 2; i += 1) {

@@ -5,21 +5,30 @@
  * Everything goes through /api/phoebe, which is the only place the key exists.
  *
  * SHE NAMES CARDS; THIS FILE RENDERS THEM. The relay returns card references —
- * a set and a number — never citation text. The citation a reader sees is
- * looked up here, from the same committed card files the worksheet reads. A
- * wrong page or an invented link is therefore not something she can produce.
- * If she names a card that does not exist, the reference is dropped.
+ * a pack and a name like `eligibility/4` — never citation text. The citation a
+ * reader sees is looked up here, from the same committed card files the
+ * worksheet reads. A wrong page or an invented link is therefore not something
+ * she can produce. If she names a card that does not exist, the reference is
+ * dropped.
+ *
+ * PER-PACK ROWS FROM 25 SEP 2026. Her verdicts used to be six numbers with
+ * three states. They are now rows keyed by pack and by the row's own id, with
+ * five states, plus each pathway's own test answers and, for a pack that has
+ * one, its version flag. Every id and every word is checked against the tool
+ * files' generated model, here and again in the relay.
  */
 
-import { CONSIDERATIONS, CRITERIA } from './phoebeCards';
-import type { CriterionState, CriterionStatus } from './criteriaState';
+import { cardFor, routeFor } from './phoebeCards';
+import type { PathwayUpdate, RowStatus, RowUpdate, Sheet } from './worksheetState';
+import {
+  PATHWAY_STATE_IDS,
+  ROW_STATE_IDS,
+  TOOL_SECTIONS,
+  section,
+  type PathwayStateId,
+  type RowStateId,
+} from './worksheet.generated';
 import type { Evidence } from '../chat/evidence';
-
-export interface CriterionUpdate {
-  number: number;
-  state: Extract<CriterionState, 'met' | 'not-yet'>;
-  routeForward?: string;
-}
 
 /**
  * The hand-back — contract line 8, item A15, step 4, 21 Sep 2026. A field
@@ -27,8 +36,6 @@ export interface CriterionUpdate {
  * when the visitor's way on is back to him, "none" on the ordinary turn. The
  * relay checks it against this same closed list (api/_handBack.ts); it is
  * checked again here, and an unknown value is "none", never a destination.
- * What is drawn for it is the consumer's — the way back to Dispatches on the
- * console, the way back to the shelf on the Commons.
  */
 export type HandBack = 'none' | 'wellington';
 
@@ -38,10 +45,15 @@ export interface PhoebeAnswer {
   reply: string;
   /** What the answer rests on, in the shared chat layer's shape. */
   evidence: Evidence[];
-  updates: CriterionUpdate[];
+  rows: RowUpdate[];
+  pathways: PathwayUpdate[];
+  /** A pack's version flag, where its own test set one this turn. */
+  flags: Record<string, string>;
   handBack: HandBack;
   abstained: boolean;
   abstentionTopic?: string;
+  /** Which card sets the relay had loaded for this answer, so later asks keep them. */
+  loaded?: string[];
   usage?: { cacheRead: number; cacheWrite: number; input: number; output: number };
 }
 
@@ -76,38 +88,51 @@ export function carriedRecord(context: CarriedRecord): CarriedRecord | null {
 }
 
 /**
- * A worksheet row as the relay expects it — contract line 3, item A15,
- * step 3, 21 Sep 2026. The number is the criterion's own; the state and the
- * route forward are the row's as the shell holds them. The relay checks each
- * row again (api/_record.ts) and drops what it cannot read.
+ * The worksheet as it travels — contract line 3, item A15, step 3. One entry
+ * per pack she works, each with its rows as they stand and its version flag.
+ * The relay reads it back to her as a block, so she sees what is filled in and
+ * what is still missing rather than remembering it from her own turns.
  */
-export interface CarriedRow {
-  number: number;
-  state: CriterionState;
-  routeForward?: string;
+export interface CarriedSheet {
+  pack: string;
+  rows: { id: string; state: string; because?: string; routes?: string[] }[];
+  flag?: string;
 }
 
-/** The six rows in the manual's order, from wherever they are held. */
-export function carriedWorksheet(statuses: CriterionStatus[]): CarriedRow[] {
-  return statuses.map((status, i) => ({
-    number: CRITERIA[i]?.number ?? i + 1,
-    state: status.state,
-    ...(status.state === 'not-yet' && status.routeForward ? { routeForward: status.routeForward } : {}),
-  }));
+export function carriedSheet(sheet: Sheet, packs: readonly string[]): CarriedSheet[] {
+  return packs
+    .filter((pack) => section(pack) !== undefined)
+    .map((pack) => {
+      const held = sheet.rows[pack] ?? {};
+      const rows = Object.entries(held).map(([id, status]: [string, RowStatus]) => ({
+        id,
+        state: status.state,
+        ...(status.because ? { because: status.because } : {}),
+        ...(status.routes?.length ? { routes: status.routes } : {}),
+      }));
+      return { pack, rows, ...(sheet.flags[pack] ? { flag: sheet.flags[pack] } : {}) };
+    });
 }
 
 export async function askPhoebe(
   history: { role: 'user' | 'assistant'; content: string }[],
   record: CarriedRecord | null,
   signal?: AbortSignal,
-  opts?: { opened?: boolean; eligibilityDone?: boolean; worksheet?: CriterionStatus[] }
+  opts?: {
+    opened?: boolean;
+    eligibilityDone?: boolean;
+    sheet?: CarriedSheet[];
+    /** Card sets already loaded earlier this visit, so a stage does not unload. */
+    loaded?: string[];
+  }
 ): Promise<PhoebeAnswer> {
   let response: Response;
   try {
     const body: {
       messages: typeof history;
       record?: CarriedRecord;
-      worksheet?: CarriedRow[];
+      sheet?: CarriedSheet[];
+      loaded?: string[];
       opened?: true;
       eligibilityDone?: true;
     } = { messages: history };
@@ -115,7 +140,8 @@ export async function askPhoebe(
     /* The rows go with every ask, from the console and from the Commons
        seat, so she sees her tool's state — what is filled in and what is
        still missing — rather than remembering it from her own turns. */
-    if (opts?.worksheet && opts.worksheet.length > 0) body.worksheet = carriedWorksheet(opts.worksheet);
+    if (opts?.sheet && opts.sheet.length > 0) body.sheet = opts.sheet;
+    if (opts?.loaded && opts.loaded.length > 0) body.loaded = opts.loaded;
     if (opts?.opened) body.opened = true;
     if (opts?.eligibilityDone) body.eligibilityDone = true;
     response = await fetch('/api/phoebe', {
@@ -159,12 +185,15 @@ export async function askPhoebe(
 
   return {
     reply: data.reply,
-    evidence: resolveEvidence(data.citedCards),
-    updates: resolveUpdates(data.criteriaUpdates),
+    evidence: resolveEvidence(data.cited),
+    rows: resolveRows(data.rows),
+    pathways: resolvePathways(data.pathways),
+    flags: resolveFlags(data.flags),
     handBack: HAND_BACKS.find((h) => h === data.handBack) ?? 'none',
     abstained: data.abstained === true,
     abstentionTopic:
       typeof data.abstentionTopic === 'string' ? data.abstentionTopic : undefined,
+    loaded: Array.isArray(data.loaded) ? data.loaded.filter((s): s is string => typeof s === 'string') : undefined,
     usage: data.usage as PhoebeAnswer['usage'],
   };
 }
@@ -172,10 +201,12 @@ export async function askPhoebe(
 /**
  * Phoebe's adapter into the shared chat layer.
  *
- * She returns a set and a number. This turns each one into an Evidence record
- * the layer can render — the card's title, its plain words, and the citation,
- * all read from the committed card file. She supplies none of it beyond the
- * number, which is the whole point: see CITATIONS.md.
+ * She returns a pack and a card name. This turns each one into an Evidence
+ * record the layer can render — the card's title, its plain words, and the
+ * citation, all read from the committed card file. She supplies none of it
+ * beyond the name, which is the whole point: see CITATIONS.md. A route card
+ * she names comes through the same door, so the fix a visitor reads is the
+ * pack's own sentence with its own citation.
  */
 function resolveEvidence(value: unknown): Evidence[] {
   if (!Array.isArray(value)) return [];
@@ -183,77 +214,119 @@ function resolveEvidence(value: unknown): Evidence[] {
   const seen = new Set<string>();
 
   for (const raw of value) {
-    if (typeof raw !== 'object' || raw === null) continue;
-    const ref = raw as Record<string, unknown>;
-    const set = ref.set === 'eligibility' || ref.set === 'feasibility' ? ref.set : null;
-    const number = typeof ref.number === 'number' ? ref.number : null;
-    if (!set || number === null) continue;
+    if (typeof raw !== 'string') continue;
+    const token = raw.trim();
+    if (seen.has(token)) continue;
 
-    const key = `${set}-${number}`;
-    if (seen.has(key)) continue;
-
-    const card =
-      set === 'eligibility'
-        ? CRITERIA.find((c) => c.number === number)
-        : CONSIDERATIONS.find((c) => c.number === number);
+    /* `water:eligibility/4` — the section, the set, the card's own id. THE
+       EVIDENCE ID IS THE TOKEN ITSELF, because the same token is the marker she
+       writes in her prose: if the two were built differently they could differ,
+       and a marker with no evidence behind it reaches the reader as brackets. */
+    const match = token.match(/^([a-z][a-z0-9-]*):([a-z]+)\/(.+)$/);
+    if (!match) continue;
+    const [, sectionId, set, id] = match;
+    const pack = TOOL_SECTIONS.find((part) => part.sectionId === sectionId)?.pack;
+    if (!pack) continue;
 
     /* A reference to a card that does not exist is dropped in silence here
        rather than rendered — showing a citation for a missing card would be
-       the fabrication this whole arrangement exists to prevent. */
+       the fabrication this whole arrangement exists to prevent. The marker
+       leaves the prose with it. */
+    if (set === 'routes') {
+      const route = routeFor(pack, id);
+      if (!route) continue;
+      seen.add(token);
+      out.push({
+        id: token,
+        label: `Route ${route.id} — ${route.title}`,
+        citation: route.citation,
+        plainEnglish: route.route,
+      });
+      continue;
+    }
+    const card = cardFor(pack, `${set}/${id}`);
     if (!card) continue;
-
-    seen.add(key);
+    seen.add(token);
     out.push({
-      id: key,
-      label: `${set === 'eligibility' ? 'Criterion' : 'Consideration'} ${number} — ${card.title}`,
+      id: token,
+      label: `${setWord(set)} ${card.id} — ${card.title}`,
       citation: card.citation,
-      plainEnglish: 'rule' in card ? card.rule : card.summary,
+      plainEnglish: card.plain,
     });
   }
   return out;
 }
 
-function resolveUpdates(value: unknown): CriterionUpdate[] {
-  if (!Array.isArray(value)) return [];
-  const out: CriterionUpdate[] = [];
+function setWord(set: string): string {
+  if (set === 'eligibility') return 'Criterion';
+  if (set === 'feasibility') return 'Consideration';
+  if (set === 'applies') return 'Does this apply —';
+  return 'Card';
+}
 
+/** A row update is dropped unless its pack, its row and its state all exist. */
+function resolveRows(value: unknown): RowUpdate[] {
+  if (!Array.isArray(value)) return [];
+  const out: RowUpdate[] = [];
   for (const raw of value) {
     if (typeof raw !== 'object' || raw === null) continue;
     const u = raw as Record<string, unknown>;
-    const number = typeof u.number === 'number' ? u.number : null;
-    const state = u.state === 'met' || u.state === 'not-yet' ? u.state : null;
-    if (number === null || !state) continue;
-    if (!CRITERIA.some((c) => c.number === number)) continue;
+    const pack = typeof u.pack === 'string' ? u.pack : '';
+    const id = typeof u.id === 'string' ? u.id : '';
+    const state = ROW_STATE_IDS.find((s) => s === u.state) as RowStateId | undefined;
+    if (!pack || !id || !state) continue;
+    const row = section(pack)?.rows.find((r) => r.id === id);
+    if (!row) continue;
+    const because = typeof u.because === 'string' ? u.because.trim() : '';
+    const routes = Array.isArray(u.routes)
+      ? u.routes.filter((r): r is string => typeof r === 'string' && row.routes.includes(r))
+      : [];
+    out.push({
+      pack,
+      id,
+      state,
+      ...(because ? { because } : {}),
+      ...(routes.length ? { routes } : {}),
+    });
+  }
+  return out;
+}
 
-    const routeForward = typeof u.routeForward === 'string' ? u.routeForward.trim() : '';
-    /* The relay drops these too. Checked again here because a "Not yet" with
-       no way forward must never reach the worksheet. */
-    if (state === 'not-yet' && routeForward === '') continue;
-
-    out.push(state === 'not-yet' ? { number, state, routeForward } : { number, state });
+function resolvePathways(value: unknown): PathwayUpdate[] {
+  if (!Array.isArray(value)) return [];
+  const out: PathwayUpdate[] = [];
+  for (const raw of value) {
+    if (typeof raw !== 'object' || raw === null) continue;
+    const u = raw as Record<string, unknown>;
+    const pack = typeof u.pack === 'string' ? u.pack : '';
+    const id = typeof u.id === 'string' ? u.id : '';
+    const state = PATHWAY_STATE_IDS.find((s) => s === u.state) as PathwayStateId | undefined;
+    if (!pack || !id || !state) continue;
+    if (!section(pack)?.rows.some((r) => r.id === id)) continue;
+    const because = typeof u.because === 'string' ? u.because.trim() : '';
+    out.push({ pack, id, state, ...(because ? { because } : {}) });
   }
   return out;
 }
 
 /**
- * Phoebe's verdicts applied to a worksheet's rows — one home for the move,
- * from 11 Sep 2026, when the Agent Commons gave her a second worksheet (item
- * S18, slice 3). The shell's rows and the Commons seat's rows both move
- * through this; a verdict for a criterion that does not exist is dropped.
- * Pure: a new array, the old one untouched.
+ * Her version flags, from a list into the map the shell holds.
+ *
+ * She returns a list of pack and version, because the API refuses a schema for
+ * the keys of an object. The shell keeps a map, one entry per pack, and a flag
+ * a pack's own list does not hold is dropped.
  */
-export function applyCriterionUpdates(
-  current: CriterionStatus[],
-  updates: CriterionUpdate[]
-): CriterionStatus[] {
-  const next = [...current];
-  for (const update of updates) {
-    const index = CRITERIA.findIndex((c) => c.number === update.number);
-    if (index < 0) continue;
-    next[index] =
-      update.state === 'not-yet'
-        ? { state: 'not-yet', routeForward: update.routeForward }
-        : { state: 'met' };
+function resolveFlags(value: unknown): Record<string, string> {
+  if (!Array.isArray(value)) return {};
+  const out: Record<string, string> = {};
+  for (const raw of value) {
+    if (typeof raw !== 'object' || raw === null) continue;
+    const u = raw as Record<string, unknown>;
+    const pack = typeof u.pack === 'string' ? u.pack : '';
+    const flag = typeof u.flag === 'string' ? u.flag : '';
+    const found = section(pack);
+    if (!found || !found.versionFlags.some((word) => word.id === flag)) continue;
+    out[pack] = flag;
   }
-  return next;
+  return out;
 }

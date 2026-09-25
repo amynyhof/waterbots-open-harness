@@ -1,11 +1,11 @@
 /**
- * A measured walk of Phoebe through her six rows, through the local relay,
+ * A measured walk of Phoebe through the rows she asks, through the local relay,
  * with real model calls. NOT A GATE — it spends money on every run, so it is
  * run by hand after a change to her prompt and its counts are reported, never
  * assumed.
  *
  *   npx vite                                 (with ANTHROPIC_API_KEY in the environment)
- *   node scripts/measure-phoebe-walk.mjs [runs=3] [budget=20]
+ *   node scripts/measure-phoebe-walk.mjs [runs=1] [budget=10]
  *
  * CONTRACT LINES 4 AND 5 — item A15, step 5, 21 Sep 2026. Line 4 says she
  * walks the visitor through the tool by talking, one question at a time; line
@@ -14,63 +14,122 @@
  * line; only real calls can say whether she keeps to it. This is that
  * measurement, on measure-wellington's pattern.
  *
+ * REWRITTEN 25 SEP 2026 for build-order step 3. What changed:
+ *
+ *   the rows are per pack and carry five states, and the applies tests come
+ *     first, so the walk is the tests then the Eligibility rows the tool file
+ *     names — three on the water pathway, not six;
+ *   the readiness read is reported per pathway, from the rows the relay
+ *     returns, so a walk says what the screen would say;
+ *   THE SHEET SIZE IS REPORTED AT EACH STAGE (the maintainer's ruling R6):
+ *     the relay returns which card sets it loaded, and the input-token count
+ *     beside it is what that stage cost.
+ *
  * THE SCRIPTED VISITOR. A test stand-in, never shown to anyone — the
  * maintainer's ruling of 25 Aug 2026 on stand-ins for a check. It opens with
- * one sentence about a planned project, then answers each of her questions
- * with the fact for the FIRST ROW STILL UNCHECKED on the worksheet it tracks,
- * exactly as the console tracks it: her verdicts are applied in order and the
- * six rows go back with every ask. If she walks in the manual's order her
- * question and the visitor's answer line up; if she skips ahead, they do not,
- * and the counts say so.
+ * one sentence about a planned project, then answers whatever Phoebe asks with
+ * the fact for the first row still unchecked on the sheet it tracks, exactly as
+ * the console tracks it. If she walks in the tool file's order her question and
+ * the visitor's answer line up; if she skips ahead, they do not, and the counts
+ * say so.
  *
- * WHAT IT COUNTS, per run: turns to six verdicts (or where it stopped);
- * questions per reply, by question marks; turns whose moved rows include the
- * first unchecked row, which is the order rule kept; turns that moved a row
- * at all, which is where the shown line would draw; empty, refused or failed
- * turns; cards cited. A budget caps the total requests across all runs, so a
- * short run costs what it says. The cost line at the end is calls and tokens.
+ * WHAT IT COUNTS, per run: turns to a verdict on every asked row (or where it
+ * stopped); questions per reply, by question marks; turns whose moved rows
+ * include the first unchecked row, which is the order rule kept; turns that
+ * moved a row at all, which is where the shown line would draw; empty, refused
+ * or failed turns; cards cited; the routes she named. A budget caps the total
+ * requests across all runs, so a short run costs what it says.
  */
 
+import { spawnSync } from 'node:child_process';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
 const BASE = process.env.WB_BASE ?? 'http://localhost:5173';
-const RUNS = Number(process.argv[2] ?? 3);
-const BUDGET = Number(process.argv[3] ?? 20);
-const MAX_TURNS = 8;
+const RUNS = Number(process.argv[2] ?? 1);
+const BUDGET = Number(process.argv[3] ?? 10);
+const MAX_TURNS = 10;
+const PACK = 'vwba-2.0';
+
+/* The rows and the reads come from the tool file, through the generated model,
+   so this instrument cannot drift from what she is actually asked to walk. */
+const out = mkdtempSync(join(tmpdir(), 'wb-walk-'));
+const compile = spawnSync(
+  process.execPath,
+  [
+    join('node_modules', 'typescript', 'bin', 'tsc'),
+    join('src', 'lib', 'worksheet.generated.ts'),
+    '--outDir', out,
+    '--module', 'commonjs',
+    '--moduleResolution', 'node',
+    '--target', 'es2022',
+    '--skipLibCheck',
+  ],
+  { encoding: 'utf8' }
+);
+if (compile.status !== 0) {
+  console.error(compile.stdout || compile.stderr);
+  process.exit(1);
+}
+writeFileSync(join(out, 'package.json'), '{"type":"commonjs"}');
+const { askedRows, readinessOf, pathwayStateOf, READINESS_LABEL, ROW_STATE_LABEL, PATHWAY_STATE_LABEL } =
+  createRequire(import.meta.url)(join(out, 'worksheet.generated.js'));
+rmSync(out, { recursive: true, force: true });
+
+const ASKED = askedRows(PACK).map((row) => row.id);
 
 const OPENING =
   'We are planning a solar-powered borehole and piped supply for about 800 households near Lodwar in Turkana, Kenya. Nothing is built yet.';
 
-/** One fact per criterion, in the manual's order — the answer for that row. */
-const FACTS = [
-  'The aim is to replace river collection with a reliable supply, and we would count the volume supplied to households against the without-project case using a VWBA method.',
-  'The county water plan lists Lodwar as chronically short of safe water, and the households collect from the Turkwel river now, so the shortage is real in that place.',
-  'Our board has approved the budget, and the Lodwar community water committee and the county water office both wrote letters of support after two consultation meetings.',
-  'No law requires us to do this; we are not under a compliance order, and the county has no funded plan to serve these households.',
-  'The implementer will meter the boreholes and report volumes to us every quarter, and that plan is written into the contract with money and a named person behind it.',
-  'A hydrogeologist checked the aquifer and the design caps abstraction below recharge; we also looked at whether the pipes would cut across grazing routes and moved them.',
-];
+/** One fact per row she asks, by the row's own id. */
+const FACTS = {
+  W1: 'The aim is to replace river collection with a reliable piped supply, and we would state the benefit as the volume supplied to households against what they collect today.',
+  W2: 'We would count it as water supplied to households, using the guidebook method for volume provided.',
+  1: 'We will meter the boreholes, so the volume supplied is measured, and we would compare it to the river water the households collect now.',
+  2: 'The county water plan lists Lodwar as chronically short of safe water, and the households collect from the Turkwel river now, so the shortage is real in that place.',
+  4: 'No law requires us to do this; we are not under a compliance order, and the county has no funded plan to serve these households.',
+};
 
 const EMPTY = /empty answer|almost nothing in it/;
 
 /** The console's move, in the script's own hands. */
-function apply(statuses, updates) {
-  const next = statuses.map((s) => ({ ...s }));
-  for (const u of updates ?? []) {
-    if (!Number.isInteger(u.number) || u.number < 1 || u.number > 6) continue;
-    next[u.number - 1] = u.state === 'not-yet' ? { state: 'not-yet', routeForward: u.routeForward } : { state: 'met' };
+function apply(held, rows, pathways) {
+  const next = { ...held };
+  for (const u of rows ?? []) {
+    if (u.pack !== PACK) continue;
+    next[u.id] = { state: u.state, because: u.because, routes: u.routes };
+  }
+  for (const u of pathways ?? []) {
+    if (u.pack !== PACK) continue;
+    next[u.id] = { state: u.state, because: u.because };
   }
   return next;
 }
-const firstUnchecked = (statuses) => statuses.findIndex((s) => s.state === 'unchecked') + 1;
-const rows = (statuses) => statuses.map((s, i) => ({ number: i + 1, state: s.state, ...(s.routeForward ? { routeForward: s.routeForward } : {}) }));
 
-async function ask(messages, worksheet) {
+const firstUnchecked = (held) => ASKED.find((id) => !held[id]) ?? null;
+const carried = (held) => [
+  {
+    pack: PACK,
+    rows: Object.entries(held).map(([id, row]) => ({
+      id,
+      state: row.state,
+      ...(row.because ? { because: row.because } : {}),
+      ...(row.routes?.length ? { routes: row.routes } : {}),
+    })),
+  },
+];
+const states = (held) => Object.fromEntries(Object.entries(held).map(([id, row]) => [id, row.state]));
+
+async function ask(messages, sheet, loaded) {
   const started = Date.now();
   let res;
   try {
     res = await fetch(`${BASE}/api/phoebe`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ messages, worksheet }),
+      body: JSON.stringify({ messages, sheet, loaded }),
     });
   } catch (e) {
     return { status: 0, ms: Date.now() - started, error: String(e) };
@@ -85,67 +144,97 @@ async function ask(messages, worksheet) {
   return { status: res.status, ms, ...body };
 }
 
-console.log(`\nPhoebe — measured walk, up to ${RUNS} run(s), ${BUDGET} requests in all, against ${BASE}\n`);
+console.log(`\nPhoebe — measured walk, up to ${RUNS} run(s), ${BUDGET} requests in all, against ${BASE}`);
+console.log(`Rows she asks on the water pathway, from the tool file: ${ASKED.join(', ')}\n`);
 
 let calls = 0;
 let input = 0;
 let output = 0;
 const runs = [];
+const stages = [];
 
 for (let r = 0; r < RUNS && calls < BUDGET; r += 1) {
   const messages = [];
-  let statuses = Array.from({ length: 6 }, () => ({ state: 'unchecked' }));
-  const run = { turns: 0, moved: 0, inOrder: 0, questions: [], empty: 0, other: 0, cards: 0, done: null, log: [] };
+  let held = {};
+  let loaded = [];
+  const run = { turns: 0, moved: 0, inOrder: 0, questions: [], empty: 0, other: 0, cards: 0, routes: 0, done: null };
   let next = OPENING;
   console.log(`--- run ${r + 1}`);
   while (calls < BUDGET && run.turns < MAX_TURNS) {
     messages.push({ role: 'user', content: next });
-    const target = firstUnchecked(statuses);
-    const res = await ask(messages, rows(statuses));
+    const target = firstUnchecked(held);
+    const res = await ask(messages, carried(held), loaded);
     calls += 1;
     run.turns += 1;
     if (res.status !== 200) {
       if (res.status === 502 && EMPTY.test(res.error ?? '')) run.empty += 1;
       else run.other += 1;
-      console.log(`  turn ${run.turns}  ${res.status}  ${(res.ms / 1000).toFixed(1)}s  FAIL  ${(res.error ?? '').slice(0, 120)}`);
+      console.log(`  turn ${run.turns}  ${res.status}  ${(res.ms / 1000).toFixed(1)}s  FAIL  ${(res.error ?? '').slice(0, 140)}`);
       messages.pop();
       if (run.other + run.empty >= 2) break;
       continue;
     }
     input += (res.usage?.input ?? 0) + (res.usage?.cacheRead ?? 0) + (res.usage?.cacheWrite ?? 0);
     output += res.usage?.output ?? 0;
-    const updates = Array.isArray(res.criteriaUpdates) ? res.criteriaUpdates : [];
-    const movedRows = updates.map((u) => u.number);
+    if (Array.isArray(res.loaded)) {
+      loaded = res.loaded;
+      stages.push({
+        turn: `${r + 1}.${run.turns}`,
+        sets: res.loaded.join(' + '),
+        input: res.usage?.input ?? 0,
+        cacheRead: res.usage?.cacheRead ?? 0,
+        cacheWrite: res.usage?.cacheWrite ?? 0,
+        calls: res.usage?.calls ?? 1,
+      });
+    }
+    const rows = Array.isArray(res.rows) ? res.rows : [];
+    const pathways = Array.isArray(res.pathways) ? res.pathways : [];
+    const movedIds = [...rows, ...pathways].filter((u) => u.pack === PACK).map((u) => u.id);
     const questionMarks = (res.reply.match(/\?/g) ?? []).length;
     run.questions.push(questionMarks);
-    run.cards += Array.isArray(res.citedCards) ? res.citedCards.length : 0;
-    if (movedRows.length) {
+    run.cards += Array.isArray(res.cited) ? res.cited.length : 0;
+    run.routes += rows.reduce((n, u) => n + (u.routes?.length ?? 0), 0);
+    if (movedIds.length) {
       run.moved += 1;
-      if (target > 0 && movedRows.includes(target)) run.inOrder += 1;
+      if (target && movedIds.includes(target)) run.inOrder += 1;
     }
-    statuses = apply(statuses, updates);
-    const met = statuses.filter((s) => s.state === 'met').length;
-    const notYet = statuses.filter((s) => s.state === 'not-yet').length;
+    held = apply(held, rows, pathways);
+    const read = READINESS_LABEL[readinessOf(PACK, states(held))];
+    const pathway = PATHWAY_STATE_LABEL[pathwayStateOf(PACK, states(held))];
     console.log(
-      `  turn ${run.turns}  200  ${(res.ms / 1000).toFixed(1)}s  asked row ${target || '-'}  moved [${movedRows.join(',')}]  ?=${questionMarks}  cards=${(res.citedCards ?? []).length}  handBack=${res.handBack}  → Worksheet: ${met} Met · ${notYet} Not yet`
+      `  turn ${run.turns}  200  ${(res.ms / 1000).toFixed(1)}s  asked ${target ?? '-'}  moved [${movedIds.join(',')}]  ?=${questionMarks}  cards=${(res.cited ?? []).length}  handBack=${res.handBack}  → pathway ${pathway}, read ${read}`
     );
-    if (r === 0) console.log(`      A: ${res.reply.replace(/\s+/g, ' ').slice(0, 360)}`);
+    for (const u of rows) {
+      console.log(`      ${u.id}: ${ROW_STATE_LABEL[u.state]}${u.routes?.length ? ` [${u.routes.join(',')}]` : ''} — ${(u.because ?? '').slice(0, 120)}`);
+    }
+    if (r === 0) console.log(`      A: ${res.reply.replace(/\s+/g, ' ').slice(0, 400)}`);
     messages.push({ role: 'assistant', content: res.reply });
-    if (firstUnchecked(statuses) === 0) {
+    if (!firstUnchecked(held)) {
       run.done = run.turns;
       break;
     }
-    next = FACTS[firstUnchecked(statuses) - 1];
+    next = FACTS[firstUnchecked(held)] ?? 'I am not sure about that one.';
   }
   runs.push(run);
 }
 
-console.log('\n| run | turns | six verdicts by turn | turns that moved a row | of those, first unchecked row moved | questions per reply | empty | other failures | cards cited |');
-console.log('|---|---|---|---|---|---|---|---|---|');
+console.log('\n| run | turns | every asked row by turn | turns that moved a row | of those, first unchecked moved | questions per reply | empty | other failures | cards cited | routes named |');
+console.log('|---|---|---|---|---|---|---|---|---|---|');
 for (const [i, run] of runs.entries()) {
   console.log(
-    `| ${i + 1} | ${run.turns} | ${run.done ?? 'not reached'} | ${run.moved} | ${run.inOrder} | ${run.questions.join(' ')} | ${run.empty} | ${run.other} | ${run.cards} |`
+    `| ${i + 1} | ${run.turns} | ${run.done ?? 'not reached'} | ${run.moved} | ${run.inOrder} | ${run.questions.join(' ')} | ${run.empty} | ${run.other} | ${run.cards} | ${run.routes} |`
   );
+}
+
+if (stages.length) {
+  console.log('\nThe sheet at each stage — ruling R6, staged loading\n');
+  console.log('| turn | card sets loaded | input tokens | cache read | cache write | model calls |');
+  console.log('|---|---|---|---|---|---|');
+  for (const stage of stages) {
+    console.log(
+      `| ${stage.turn} | ${stage.sets} | ${stage.input.toLocaleString('en-GB')} | ${stage.cacheRead.toLocaleString('en-GB')} | ${stage.cacheWrite.toLocaleString('en-GB')} | ${stage.calls} |`
+    );
+  }
 }
 
 const empty = runs.reduce((n, r) => n + r.empty, 0);
