@@ -372,6 +372,15 @@ credit line does not meet any of these bars.
   **His prompt gate is 26,199** from the same day, her ruling — measured 25,699 after the build
   plus 500 — after the trim of #118 had taken it from 23,940 to 19,811; the reason is written
   above the check.
+- **Phoebe is a guide on both pathways, from 26 Sep 2026 (items A18 and K7, #122 to #126).**
+  Build-order step 3. She reads both packs from their tool files, loaded in stages by pathway
+  state; every row takes one of five states — Not yet checked, Met, Fixable with a cited route,
+  Unknown, Blocked only where the card allows it — and each pathway ends in a readiness read
+  worked out from the rows: likely eligible, likely not, or not enough known yet. She asks the
+  Eligibility rows only and shows the rest once, by phase, with the colleague who helps. On a
+  Blocked row she offers a person once; a ticked box at the save door sends one email to
+  hello@waterbots.ai through Resend, its key the hosting secret `RESEND_API_KEY`, never in the
+  repository. The seal carries `wantsHuman` and `humanNote` only on a tick.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material

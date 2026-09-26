@@ -15,10 +15,11 @@ about three hundred characters is the budget today; the pull request that adds a
 larger region reports the room left under the gate, and the number is hers to move.
 
 <!-- AGENT-FACING: BEGIN -->
-# The build, as of 24 September 2026
+# The build, as of 26 September 2026
 
-Live: the basin map; Eligibility, Phoebe's water cards and chat; Quantify, three screening
-calculators; this desk; saving to the paid site. New today: you name a project's standard type
-and ask its stage, logged only on the visitor's yes. Next: Phoebe's carbon pathway with cited
-routes. Not live: Bridget's and Calvin's chats; Plan, Monitor and Communicate, on the paid site.
+Live: the basin map; Eligibility, where Phoebe checks both the water and carbon pathways and gives
+each a readiness read; Quantify, three screening calculators; this desk; saving to the paid site.
+New: a visitor whose project is blocked can ask, at the save, for a person at WaterBots to look
+at it. Next: Calvin's chat, once the paid site's calculator arrives. Not live: Bridget's and
+Calvin's chats; Plan, Monitor and Communicate, on the paid site.
 <!-- AGENT-FACING: END -->

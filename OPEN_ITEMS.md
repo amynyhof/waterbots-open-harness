@@ -102,7 +102,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | closed | canon, ruled 26 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K5 | The VWBA 2.0 D-3 screening pack | Knowledge | closed | **built 1 Sep 2026** — the first pack in the slot — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | closed | **built 2 Sep 2026** — two packs, one module, the transition delta — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
-| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt**; **expanded 21 Sep 2026; proposed and ruled 22 Sep 2026; steps 1 to 4 built by 23 Sep 2026** — both applies sets, all 32 carbon eligibility cards and the nineteen carbon routes approved and in their packs, then sealed at their versions ("V1 — the done line"). **Step 5 built 24 Sep 2026 (#111, #113)**, and the tool definition contract with it (#114 to #116): both packs carry a tool file, gated by `scripts/check-tool.mjs`, read by nothing yet. Her runtime — the worksheet, the record and her prompt — is what is left |
+| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt**; **expanded 21 Sep 2026; proposed and ruled 22 Sep 2026; steps 1 to 4 built by 23 Sep 2026** — both applies sets, all 32 carbon eligibility cards and the nineteen carbon routes approved and in their packs, then sealed at their versions ("V1 — the done line"). **Step 5 built 24 Sep 2026 (#111, #113)**, and the tool definition contract with it (#114 to #116): both packs carry a tool file, gated by `scripts/check-tool.mjs`, read by nothing yet. Her runtime — the worksheet, the record and her prompt — is what is left **Her runtime built 25–26 Sep 2026 (#122, #124, #126), step 3 under V1's done line; built, sweep due** |
 | K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K9 | Calvin's and Bridget's packs move to the new pack shape | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — one brief each, the way Phoebe's did; not started |
 | K10 | Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — not started |
@@ -123,8 +123,8 @@ file at the root, untracked, and deleted once the sweep merged.
 | A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Agents | BONES | ~~**ruled 20 Sep 2026; the batch approved the same day** — steps 0 to 3 merged (#93, #94, #95) by 21 Sep; steps 4 to 6 open as pull request D, #97, at her eyeball~~ **built 22 Sep 2026, all four pull requests merged (#93, #94, #95, #97), eyeball stop 4 passed** — line 9 is the one gap left, carried by item A17 |
 | A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | ~~**logged 18 Sep 2026 from the maintainer's brief** — waits on her carry~~ **built 18 Sep 2026, #91 merged** — the free and Commons columns stay "unconfirmed" until she carries a confirmed file |
 | A16 | Wellington guides and leads — he never asks "water or carbon" — **and names the project type from a cited list** | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; **expanded and ruled 23 Sep 2026**: a cited list of twenty-four types, confirm then log; **the types file graded and moved into `product-shared/` the same day**, on the roster rule; **his runtime built 24 Sep 2026, #119 merged on her word**: the short-form list in his prompt, type and class and stage confirmed then logged, "what kind" retired from the record and the rail; the gate to 26,199 by the measured amount; **the save-door patch of 25 Sep 2026** puts the word back on the seal alone, derived from the type, until production's receiver is carried |
-| A17 | The handoff goes both ways — forward and back | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — her hand-back is built; his side of the return is not; not started |
-| A18 | A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person | Agents | BONES | **ruled 23 Sep 2026 from her review of Phoebe's cards** — the rule is in AGENT_RULES.md (#100, merged); **stop 3 passed the same day**: fixability lines on the six water cards and nine water routes in the pack; the "tools on the paid site" line ruled canon; **her addendum of 23 Sep 2026 ruled and its tags built**: a Phase line on every eligibility card, the stage question, framing from the stage, the door once; nothing runtime built |
+| A17 | The handoff goes both ways — forward and back | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — her hand-back is built; his side of the return is not; not started **Listed 26 Sep 2026 as open v1 work** — the done line's "reads back what Phoebe found" |
+| A18 | A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person | Agents | BONES | **ruled 23 Sep 2026 from her review of Phoebe's cards** — the rule is in AGENT_RULES.md (#100, merged); **stop 3 passed the same day**: fixability lines on the six water cards and nine water routes in the pack; the "tools on the paid site" line ruled canon; **her addendum of 23 Sep 2026 ruled and its tags built**: a Phase line on every eligibility card, the stage question, framing from the stage, the door once; nothing runtime built **Built 25–26 Sep 2026 (#122, #124, #126)**: five row states, the readiness read per pathway, the cited routes, the tools line, and the door to a person — her offer once on a Blocked row, a box and note at the save door, an email to the WaterBots team on a ticked save; built, sweep due |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
 | S2 | The shared chat layer | Surfaces | closed | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | S3 | Level 3 citation pop-out | Surfaces | closed | out of scope — paid platform — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -145,7 +145,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | S18 | Agent Commons — a public gallery of graded knowledge packs, each wearing an agent face | Surfaces | PARTNER | **v0 done — slices 1 to 3 built and merged by 11 Sep 2026 (#68 to #70)**; slice 4 waits on Deb's per-case file; slice 5, the flag button, later |
 | S19 | The Workshop — make your own agent on the Commons | Surfaces | PARTNER | **logged 11 Sep 2026, not built** — slice 3 has landed; the proposal is next, on the maintainer's word |
 | S20 | "Connect with a human expert" on every Commons agent | Surfaces | PARTNER | **logged 11 Sep 2026, not built** — two design questions open for the session |
-| S21 | Every tool exportable as an easy-to-read, properly cited document | Surfaces | PARK | **logged 23 Sep 2026 from the maintainer's word** — with or without answers; not started |
+| S21 | Every tool exportable as an easy-to-read, properly cited document | Surfaces | PARK | **logged 23 Sep 2026 from the maintainer's word** — with or without answers; not started **Listed 26 Sep 2026 as open v1 work** — the done line says the screening report exports free |
 | D1 | Corporate water stewardship goals and target geographies | Data | PARK | open |
 | D2 | Project points | Data | PARK | blocked on data |
 | O1 | Rate limit on public chat | Operations | PARK | shipped 25 Aug 2026 at twenty; **thirty from 23 Sep 2026**, her ruling on the phase-tags proposal; still to revisit against real usage |
@@ -1155,8 +1155,18 @@ reaching Phoebe's prompt (measured run on the pull request); the nine routes are
 `grader-notes.md`. The six applies cards' "If the answer is no" sections are redrafted under this
 rule at the root, untracked, for her grade with K7's stop 1. Nothing runtime is built.
 
-**Ruled 23 Sep 2026. The rule in the rulebook; the build in order behind A16 and K7. Bucket
-BONES.**
+**Built 25–26 Sep 2026, step 3 under V1's done line.** #122 the water pathway on its tool file,
+the five states and the read; #124 the carbon pathway, staged by pathway state; #126 the door to a
+person. On #126, by her word the same day: a ticked save sends one email to hello@waterbots.ai —
+name, place, type, stage, each pathway's read worked out on the server, its Blocked rows with the
+card's reason, the note, and a line that the project reaches the paid site at sign-up and the team
+replies from there; no visitor contact. Resend over HTTPS; the key is the hosting secret
+`RESEND_API_KEY` and waterbots.ai is verified with Resend, both hers to set. Until both are set, a
+ticked save is refused and says so. If the email fails, the save is taken back. The seal carries
+`wantsHuman` and `humanNote` only on a tick; production's side is on item O14. The Blocked colour is
+still the interim one until her pixels, and the grade-6 figure is not built.
+
+**Ruled 23 Sep 2026; built 26 Sep 2026. Bucket BONES until swept.**
 
 
 # Family: Surfaces

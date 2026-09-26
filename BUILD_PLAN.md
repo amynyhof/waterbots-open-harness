@@ -155,11 +155,19 @@ seal's contract change on item O14, the gate to 26,199 by the measured amount. *
 word `kind` again from 25 Sep 2026**, derived from the type, because production's receiver still
 reads it; item O14 holds the carry, and the correction is in
 [docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md). The trim that made room for it is #118, the same day.
-**Step 3, Phoebe's carbon runtime, is in flight, 26 Sep 2026:** pull requests A and B are merged —
-#122, the water pathway on its tool file, five row states, the readiness read; #124, the carbon
-pathway beside it, staged by pathway state and sorted by class and version — and C is next, the door
-to a person, per §12 of `PROPOSAL_phoebe-carbon-runtime.md`; the close-out after C. When the paid engine is sealed and carried by her hand, Calvin's
-brief (step 5) moves ahead of what is left (the amendment above).
+**Step 3, Phoebe's carbon runtime, is done, 26 Sep 2026.** Four pull requests, all merged on her
+word: #121, the save-door patch (`kind` back on the seal); #122, the water pathway on its tool file,
+five row states, the readiness read; #124, the carbon pathway beside it, staged by pathway state and
+sorted by class and version; #126, the door to a person — her offer once on a Blocked row, a box and
+a note at the save door, the tools line there, and on a ticked save an email to the WaterBots team,
+which waits on the mail key she sets in the host's settings. Items A18 and K7 are built; the proposal
+file is deleted. Her done line's 80% pass is not measured yet; that is the harness's to say.
+
+**Next: Calvin's brief (step 5), once the paid engine's new seal is carried by her hand.** Until
+then nothing is started. Still to come after it, in the order above: the Commons check (step 4),
+Bridget's hello (step 6), the carry to the paid site (step 7). Two items outside the numbered steps
+are part of v1's done line and still open: **Wellington reading back what Phoebe found (item A17)**
+and **the screening report export (item S21)**.
 
 **Step 1 is done, 24 Sep 2026.** Four pull requests,
 all merged on her word, and the proposal file deleted at the close-out.
@@ -187,7 +195,10 @@ carbon pack's page as route cards to draft after v1.
 request at least, the measured run after any prompt change, and the build-update fact refreshed at
 every close-out (the close-out ritual's step 8).
 
-## In progress — a guide, not a gate (items A18 and A16): the types file landed; at stop 3
+## Previously — a guide, not a gate (items A18 and A16)
+
+**Built by 26 Sep 2026**: item A16 with step 2 (#119), item A18 with step 3 (#122 to #126). What
+follows is how it stood on 23 Sep 2026.
 
 **23 Sep 2026. Pull request #100 merged on her word, the types file moved into the shared pack on
 `feat/project-types-shared` (pull request open), and the two drafts for stop 3 at the root.** Her
@@ -238,7 +249,10 @@ rule, drafted here, carried by her hand, the paid repository its source.
   request open.
 - **Next:** the order under *The next order* above, once #106 and this pull request land.
 
-## In progress — Phoebe's carbon pack (item K7): pull request A merged; at eyeball stop 1
+## Previously — Phoebe's carbon pack (item K7)
+
+**Built by 26 Sep 2026**: the cards and tool file by 24 Sep, her runtime with step 3. What follows
+is how it stood on 22–23 Sep 2026.
 
 **22 Sep 2026. Proposed, ruled, and steps 1 and 2 built on `feat/k7-gs-paa-pack`; merged as #99 on
 23 Sep 2026 on her word. Stop 1 passed the same day: both applies sets approved and in their
