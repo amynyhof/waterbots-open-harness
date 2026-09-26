@@ -156,6 +156,10 @@ export default function App() {
      in cannot disagree. It is plain component state and nothing writes it to
      storage — v1 keeps no memory across visits, and a reload starts over. */
   const [sheet, setSheet] = useState<Sheet>(EMPTY_SHEET);
+  /* Read at send time, like the visit, so Wellington sees what Phoebe found
+     on the ask that follows her last verdict (item A17). */
+  const sheetRef = useRef(sheet);
+  sheetRef.current = sheet;
 
   const onVerdicts = useCallback((verdicts: Verdicts) => {
     setSheet((current) => applySheetUpdates(current, verdicts));
@@ -204,7 +208,7 @@ export default function App() {
   /* Look pass, 8 Sep 2026: his route no longer draws a button under his turn.
      He names the step in words, and the next steps live in the right rail. */
   const ask = useMemo(
-    () => wellingtonAsk(onLearned, () => visitRef.current, onRouted),
+    () => wellingtonAsk(onLearned, () => visitRef.current, onRouted, () => sheetRef.current),
     [onLearned, onRouted]
   );
   const chat = useConversation(ask, WELLINGTON.name);
@@ -283,6 +287,19 @@ export default function App() {
   useEffect(() => {
     setVisit((v) => applyEligibilityProgress(v, sheet));
   }, [sheet]);
+
+  /* HE GREETS THE VISITOR BACK — item A17, ruling R2, 26 Sep 2026. The first
+     time Dispatches shows after Phoebe's worksheet is done, the desk sends him
+     one turn, once, the way her screen greets on opening: no bubble for the
+     visitor, and his answer knows what she found. It counts as one of his
+     thirty, like any answer. */
+  const greetedBack = useRef(false);
+  const askReturned = chat.askOpened;
+  useEffect(() => {
+    if (greetedBack.current || surface !== 'desk' || visit.stage !== 'partners') return;
+    greetedBack.current = true;
+    void askReturned();
+  }, [surface, visit.stage, askReturned]);
 
   /* The current invite first, then derived rows that never outrank it. */
   const rows = useMemo(() => nextStepRows(visit, sheet, LIVE_PACKS), [visit, sheet]);

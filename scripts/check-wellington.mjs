@@ -450,7 +450,9 @@ expect(
 );
 expect(
   'his prompt names the screening loop and forbids a fake live chat',
-  /Eligibility with Phoebe/.test(WELLINGTON_SYSTEM_PROMPT) && /Do not invent a live chat/.test(WELLINGTON_SYSTEM_PROMPT),
+  /* Rule 2 carries it: the line in rule 4 that said it again was cut on
+     26 Sep 2026, item A17, ruling R3. */
+  /Eligibility with Phoebe/.test(WELLINGTON_SYSTEM_PROMPT) && /Bridget's and Calvin's chats are not live/.test(WELLINGTON_SYSTEM_PROMPT),
   'the loop rule is missing from his prompt'
 );
 
@@ -523,7 +525,7 @@ expect(
   'the first carried send reads the visit from a ref written before the send, not the last paint',
   /visitRef\.current/.test(appSource) &&
     /learnedContext\(visitRef\.current\.context, learned\)/.test(appSource) &&
-    /wellingtonAsk\(onLearned, \(\) => visitRef\.current, onRouted\)/.test(appSource) &&
+    /wellingtonAsk\(onLearned, \(\) => visitRef\.current, onRouted, \(\) => sheetRef\.current\)/.test(appSource) &&
     /void sendCarried\(question, \{ carried: true \}\)/.test(appSource),
   'the first ask can still see a blank visit'
 );
@@ -636,6 +638,56 @@ for (const relay of ['phoebe', 'wellington']) {
     !source.includes('PHOEBE_DIAGNOSE') && !source.includes('diag('),
     'the diagnosis switch or one of its calls came back'
   );
+}
+
+/* ---------------------------------------------------------------------------
+   What Phoebe found — item A17, 26 Sep 2026. His side of the return: each
+   pathway's read and the rows behind it, by id and tool-file title, never
+   her sentences; the route guard; the one turn when the visitor comes back.
+   No model call.
+--------------------------------------------------------------------------- */
+
+console.log('\n  What Phoebe found\n');
+{
+  const { phoebeFound, readSheet, FOUND_HEADING } = await loadApi('_record.js');
+  const { section, verdictRows } = await loadApi('_worksheet.generated.js');
+  const water = verdictRows('vwba-2.0');
+  const [first, second] = water;
+  const secret = 'HER OWN SENTENCE ABOUT THIS ROW';
+
+  expect('nothing found yet is no block', phoebeFound(readSheet([{ pack: 'vwba-2.0', rows: [] }]), null) === null && phoebeFound(null, null) === null, 'a block came with no verdict');
+
+  const allMet = phoebeFound(readSheet([{ pack: 'vwba-2.0', rows: water.map((r) => ({ id: r.id, state: 'met' })) }]), null);
+  expect('every row Met reads likely eligible', allMet?.reads[0] === 'likely-eligible' && /Likely eligible/.test(allMet.text) && allMet.text.startsWith(`# ${FOUND_HEADING}`), allMet?.text);
+
+  const blocked = phoebeFound(readSheet([{ pack: 'vwba-2.0', rows: [
+    { id: first.id, state: 'blocked', because: secret },
+    { id: second.id, state: 'met' },
+  ] }]), null);
+  expect('a Blocked row crosses by id and by its title from the tool file', blocked?.reads[0] === 'likely-not' && blocked.text.includes(`Blocked: ${first.id} — ${first.title}`), blocked?.text);
+  expect('still-open rows cross by id and title too', blocked?.text.includes('Still open:') && !blocked.text.includes(`Still open: ${second.id}`), blocked?.text);
+  expect("her own sentences never cross", !blocked?.text.includes(secret), 'her because reached his block');
+
+  const carbon = section('gs-paa-v2.0');
+  const both = phoebeFound(readSheet([
+    { pack: 'vwba-2.0', rows: [{ id: first.id, state: 'blocked' }] },
+    { pack: 'gs-paa-v2.0', rows: [] },
+  ]), null);
+  expect('a pathway not looked at yet says so and reads not enough known', both?.reads.length === 2 && both.reads[1] === 'not-enough-known' && both.text.includes(`${carbon.sectionName}: Not enough known yet — not looked at yet.`), both?.text);
+
+  const q = { reply: 'The Quantify step can work out a screening figure.', route: 'quantification', abstained: false };
+  expect('Quantify is "none" when every pathway reads likely not', validate(q, { reads: ['likely-not'] })?.route === 'none' && validate(q, { reads: ['likely-not', 'does-not-apply'] })?.route === 'none', 'the guard let Quantify through');
+  expect('Quantify stands where a pathway is likely eligible or not enough known', validate(q, { reads: ['likely-not', 'not-enough-known'] })?.route === 'quantification' && validate(q, { reads: ['likely-eligible'] })?.route === 'quantification', 'the guard stopped a fit');
+  expect('with nothing found, the route is untouched', validate(q, {})?.route === 'quantification' && validate(q, { reads: [] })?.route === 'quantification', 'the guard fired with no reads');
+
+  expect('his prompt names the block and the rule', WELLINGTON_SYSTEM_PROMPT.includes(`"${FOUND_HEADING}"`) && /never her sentences, never a row id/.test(WELLINGTON_SYSTEM_PROMPT) && /Invite Quantify only for a pathway likely eligible or not enough known yet/.test(WELLINGTON_SYSTEM_PROMPT), 'the rule is missing');
+
+  const relay = readFileSync('api/wellington.ts', 'utf8');
+  const client = readFileSync('src/lib/wellington.ts', 'utf8');
+  const shell = readFileSync('src/App.tsx', 'utf8');
+  expect('the relay adds the block after the breakpoint and feeds the guard', /\.\.\.\(found \? \[\{ type: 'text' as const, text: found\.text \}\] : \[\]\)/.test(relay) && /reads: found\?\.reads/.test(relay) && /\(The visitor came back from Eligibility\.\)/.test(relay), 'the relay is not wired');
+  expect('the client sends rows by id and state only', /rows: rows\.map\(\(\{ id, state \}\) => \(\{ id, state \}\)\)/.test(client), 'more than id and state crosses');
+  expect('the desk greets back once, on the first return from Phoebe', /greetedBack\.current = true/.test(shell) && /visit\.stage !== 'partners'/.test(shell), 'the return greeting is not wired');
 }
 
 /* ------------------------------------------------------------------------- */

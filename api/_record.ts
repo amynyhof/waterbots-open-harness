@@ -52,6 +52,7 @@ import {
   readinessOf,
   rowsFor,
   section,
+  verdictRows,
   type RowContext,
 } from './_worksheet.generated.js';
 
@@ -337,4 +338,82 @@ export function worksheetBlock(sheets: PackSheet[], record: ProjectRecord | null
   }
 
   return parts.join('\n');
+}
+
+/* --------------------------------------------------------------------------
+   What Phoebe found, as Wellington reads it — item A17, 26 Sep 2026.
+
+   The same rows, read by the same functions that draw the screen, so his
+   words and the screen cannot disagree. Per pathway: the read, and the rows
+   behind it by id and by their title from the tool file — the card's words,
+   never hers. Her `because` sentences, her routes and her replies never
+   cross; a row carries its id and its state and nothing else. Nothing is
+   sent until at least one row has a verdict.
+   -------------------------------------------------------------------------- */
+
+/** The heading his prompt names, so he knows the block when he sees it. */
+export const FOUND_HEADING = 'What Phoebe found';
+
+/** A pathway's reading for him: the readiness read, or that it does not apply. */
+export type FoundRead = 'likely-eligible' | 'likely-not' | 'not-enough-known' | 'does-not-apply';
+
+export interface PhoebeFound {
+  text: string;
+  /** One per pathway on the sheet, for the route guard in _wellingtonAnswer.ts. */
+  reads: FoundRead[];
+}
+
+function titled(ids: string[], rows: { id: string; title: string }[]): string {
+  return ids.map((id) => `${id} — ${rows.find((row) => row.id === id)?.title ?? id}`).join('; ');
+}
+
+export function phoebeFound(sheets: PackSheet[] | null, record: ProjectRecord | null): PhoebeFound | null {
+  if (!sheets) return null;
+  const decided = sheets.some((sheet) => sheet.rows.some((row) => row.state !== 'unchecked'));
+  if (!decided) return null;
+
+  const lines: string[] = [];
+  const reads: FoundRead[] = [];
+  for (const sheet of sheets) {
+    const found = section(sheet.pack);
+    if (!found) continue;
+    const context = contextOf(record, sheet);
+    const states: Record<string, string> = {};
+    for (const row of sheet.rows) states[row.id] = row.state;
+    const name = found.sectionName;
+
+    if (pathwayStateOf(sheet.pack, states, context) === 'does-not-apply') {
+      reads.push('does-not-apply');
+      lines.push(`- ${name}: does not apply to this project.`);
+      continue;
+    }
+    const read = readinessOf(sheet.pack, states, context);
+    reads.push(read);
+    const rows = verdictRows(sheet.pack, context);
+    const looked = rows.some((row) => (states[row.id] ?? 'unchecked') !== 'unchecked');
+    if (!looked) {
+      lines.push(`- ${name}: ${READINESS_LABEL[read]} — not looked at yet.`);
+      continue;
+    }
+    const blocked = rows.filter((row) => states[row.id] === 'blocked').map((row) => row.id);
+    const open = rows
+      .filter((row) => states[row.id] !== 'met' && states[row.id] !== 'blocked')
+      .map((row) => row.id);
+    const parts = [`- ${name}: ${READINESS_LABEL[read]}.`];
+    if (blocked.length) parts.push(`Blocked: ${titled(blocked, rows)}.`);
+    if (open.length) parts.push(`Still open: ${titled(open, rows)}.`);
+    lines.push(parts.join(' '));
+  }
+  if (!lines.length) return null;
+
+  return {
+    text: [
+      `# ${FOUND_HEADING}`,
+      '',
+      'Worked out from Phoebe’s worksheet for this visit, from the same rows the screen shows. Each read is hers: say it in your own words and never read out a row id. A Blocked row is hers to explain, and she offers the visitor a person for it. Do not reopen her questions.',
+      '',
+      ...lines,
+    ].join('\n'),
+    reads,
+  };
 }

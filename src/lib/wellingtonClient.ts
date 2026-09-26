@@ -61,6 +61,13 @@ export interface WellingtonAnswer {
 /** Thrown with a message that is already fit to show a reader. */
 export class WellingtonError extends Error {}
 
+/** Phoebe's worksheet as it travels to him: rows by id and state, nothing she wrote. */
+export interface FoundSheet {
+  pack: string;
+  rows: { id: string; state: string }[];
+  sorts?: string[];
+}
+
 const ROUTES: WellingtonRoute[] = ['none', 'eligibility', 'quantification', 'map', 'paid'];
 
 export async function askWellington(
@@ -76,7 +83,13 @@ export async function askWellington(
   /** The visit as it stands. Null when nothing is filled — he may still ask. */
   record: VisitRecord | null = null,
   /** The screening loop stage the console owns. Never inferred from his prose. */
-  stage: 'learn' | 'eligibility' | 'partners' | 'quantify' = 'learn'
+  stage: 'learn' | 'eligibility' | 'partners' | 'quantify' = 'learn',
+  /**
+   * Item A17, 26 Sep 2026. `sheet` is Phoebe's worksheet as the shell holds
+   * it, each row by id and state only — never her own sentences. `returned` is
+   * true on the one turn the desk sends when the visitor comes back from her.
+   */
+  found: { sheet?: FoundSheet[]; returned?: boolean } = {}
 ): Promise<WellingtonAnswer> {
   let response: Response;
   try {
@@ -85,12 +98,16 @@ export async function askWellington(
       carried?: true;
       record?: VisitRecord;
       stage?: typeof stage;
+      sheet?: FoundSheet[];
+      returned?: true;
     } = {
       messages: history,
     };
     if (carried) body.carried = true;
     if (record) body.record = record;
     if (stage !== 'learn') body.stage = stage;
+    if (found.sheet && found.sheet.some((s) => s.rows.length > 0)) body.sheet = found.sheet;
+    if (found.returned) body.returned = true;
     response = await fetch('/api/wellington', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
