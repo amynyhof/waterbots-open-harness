@@ -544,6 +544,12 @@ expect(
     /Blocked: .+ — The permit requires this treatment by law/.test(mailText),
   mailText
 );
+expect(
+  'the email carries no visitor contact, and says the team replies from the paid site once they sign up',
+  /will appear on the paid site once the visitor signs up, and the team replies from there/.test(mailText) &&
+    !/@(?!waterbots\.ai)/.test(mailText),
+  mailText
+);
 expect('a pathway that does not apply says so and nothing more', /Carbon pathway: Does not apply\./.test(mailText), mailText);
 expect(
   'the rows for the team are never stored — the seal production claims is unchanged',

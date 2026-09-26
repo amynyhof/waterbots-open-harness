@@ -182,7 +182,13 @@ export function composeTeamMail(seal: SealBody, forTeam: TeamPathway[]): TeamMai
   }
 
   lines.push('', 'Their note:', seal.humanNote ? seal.humanNote : '(none)');
-  lines.push('', 'This is a screening from the free site, not a verdict.');
+  /* The maintainer's ruling of 26 Sep 2026: no visitor contact in the email.
+     The project reaches the paid site with the sign-up, and the team replies
+     from there. */
+  lines.push(
+    '',
+    'This is a screening from the free site, not a verdict. This project will appear on the paid site once the visitor signs up, and the team replies from there.'
+  );
 
   return {
     to: TEAM_ADDRESS,
