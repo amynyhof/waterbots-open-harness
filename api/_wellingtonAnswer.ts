@@ -62,6 +62,20 @@ const MAX_DOES_CHARS = 280;
  */
 export interface KnownContext {
   type?: string;
+  /**
+   * Each pathway's reading from Phoebe's worksheet, when it came with the ask
+   * (item A17). Absent, or empty, when she has found nothing yet.
+   */
+  reads?: readonly string[];
+}
+
+/**
+ * A pathway Calvin can screen: likely eligible, or not enough known yet.
+ * Likely not, and a pathway that does not apply, are not — item A17, ruling
+ * R4, 26 Sep 2026.
+ */
+function screenable(read: string): boolean {
+  return read === 'likely-eligible' || read === 'not-enough-known';
 }
 
 export function validate(value: unknown, known: KnownContext = {}): Answer | null {
@@ -71,7 +85,14 @@ export function validate(value: unknown, known: KnownContext = {}): Answer | nul
   if (typeof v.reply !== 'string' || v.reply.trim() === '') return null;
 
   /* An unknown route is "none", never an invented destination. */
-  const route: Route = ROUTES.includes(v.route as Route) ? (v.route as Route) : 'none';
+  let route: Route = ROUTES.includes(v.route as Route) ? (v.route as Route) : 'none';
+  /* CALVIN ONLY WHERE A PATHWAY FITS — item A17, ruling R4. The console acts
+     on this field, never on his prose, so the guard is here: when Phoebe has
+     found something and no pathway is one Calvin can screen, a route to
+     Quantify is "none". With no reads, nothing changes. */
+  if (route === 'quantification' && known.reads?.length && !known.reads.some(screenable)) {
+    route = 'none';
+  }
 
   let context: LearnedContext | undefined;
   if (typeof v.context === 'object' && v.context !== null) {

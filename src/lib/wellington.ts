@@ -15,8 +15,11 @@
 
 import wellingtonPortrait from '../../brand/assets/bots/wellington.svg';
 import type { AgentHost, AgentTurn, Ask, TurnAction } from '../chat/evidence';
+import { carriedSheet } from './phoebeClient';
 import type { Learned, Visit } from './visit';
-import { askWellington, type VisitRecord, type WellingtonRoute } from './wellingtonClient';
+import { askWellington, type FoundSheet, type VisitRecord, type WellingtonRoute } from './wellingtonClient';
+import { HER_PACKS } from './worksheet.generated';
+import type { Sheet } from './worksheetState';
 
 export const WELLINGTON: AgentHost = {
   name: 'Wellington',
@@ -64,10 +67,18 @@ function recordFrom(visit: Visit): VisitRecord | null {
 export function wellingtonAsk(
   onLearned: (learned: Learned) => void,
   getVisit: () => Visit,
-  onRouted: (route: WellingtonRoute, reply: string) => void
+  onRouted: (route: WellingtonRoute, reply: string) => void,
+  getSheet: () => Sheet
 ): Ask {
   return async (history, signal, meta): Promise<AgentTurn> => {
     const visit = getVisit();
+    /* WHAT PHOEBE FOUND goes with every ask — item A17, 26 Sep 2026 — as ids
+       and states only. Her `because` and her routes stay on her side. */
+    const sheet: FoundSheet[] = carriedSheet(getSheet(), HER_PACKS).map(({ pack, rows, sorts }) => ({
+      pack,
+      rows: rows.map(({ id, state }) => ({ id, state })),
+      ...(sorts ? { sorts } : {}),
+    }));
     const answer = await askWellington(
       history.map(({ role, text }) => ({
         role: role === 'agent' ? ('assistant' as const) : ('user' as const),
@@ -78,7 +89,10 @@ export function wellingtonAsk(
          relay can count it under the carried cap (item S13). */
       meta?.carried === true,
       recordFrom(visit),
-      visit.stage
+      visit.stage,
+      /* The desk's one turn when the visitor comes back from Phoebe is sent
+         through askOpened, so it arrives here as `opened`. */
+      { sheet, returned: meta?.opened === true }
     );
     if (Object.keys(answer.learned).length > 0) onLearned(answer.learned);
     onRouted(answer.route, answer.reply);

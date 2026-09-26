@@ -28,7 +28,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { recordAbstention } from './_abstentions.js';
 import { CARRIED, WELLINGTON, countOneMessage, timeUntilReset } from './_cap.js';
-import { readRecord, readStage, stageBlock, visitBlock } from './_record.js';
+import { phoebeFound, readRecord, readSheet, readStage, stageBlock, visitBlock } from './_record.js';
 import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
 import { validate } from './_wellingtonAnswer.js';
 import { WELLINGTON_RESPONSE_SCHEMA, WELLINGTON_SYSTEM_PROMPT } from './_wellingtonPrompt.js';
@@ -96,13 +96,22 @@ export async function GET(): Promise<Response> {
 }
 
 export async function POST(req: Request): Promise<Response> {
-  let body: { messages?: IncomingMessage[]; carried?: unknown; record?: unknown; stage?: unknown };
+  let body: {
+    messages?: IncomingMessage[];
+    carried?: unknown;
+    record?: unknown;
+    stage?: unknown;
+    sheet?: unknown;
+    returned?: unknown;
+  };
   try {
     body = (await req.json()) as {
       messages?: IncomingMessage[];
       carried?: unknown;
       record?: unknown;
       stage?: unknown;
+      sheet?: unknown;
+      returned?: unknown;
     };
   } catch {
     return problem(400, 'That request could not be read.');
@@ -113,8 +122,14 @@ export async function POST(req: Request): Promise<Response> {
      before his thirty. Exactly `true` counts; anything else is a typed turn. */
   const carried = body.carried === true;
 
+  /* THE VISITOR CAME BACK FROM PHOEBE — item A17, ruling R2, 26 Sep 2026.
+     The desk sends one turn, once, the first time it shows after her
+     worksheet is done, the way her screen sends `opened`. He may have said
+     nothing yet this visit, so an empty thread is allowed on this turn only. */
+  const returned = body.returned === true;
+
   const messages = Array.isArray(body.messages) ? body.messages : null;
-  if (!messages || messages.length === 0) {
+  if (!messages || (messages.length === 0 && !returned)) {
     return problem(400, 'No message was sent.');
   }
   if (messages.length > MAX_TURNS) {
@@ -140,6 +155,11 @@ export async function POST(req: Request): Promise<Response> {
     clean.push({ role: m.role, content: m.content });
     if (m.role === 'user') lastQuestion = m.content;
   }
+  if (returned && (clean.length === 0 || clean[clean.length - 1].role !== 'user')) {
+    /* The model needs a user turn. This line is never shown as a bubble. */
+    clean.push({ role: 'user', content: '(The visitor came back from Eligibility.)' });
+    if (!lastQuestion) lastQuestion = '(came back from Eligibility)';
+  }
   if (clean.length === 0 || clean[clean.length - 1].role !== 'user') {
     return problem(400, 'No message was sent.');
   }
@@ -152,6 +172,13 @@ export async function POST(req: Request): Promise<Response> {
   const record = readRecord(body.record);
   const stage = readStage(body.stage);
   const visitText = record ? visitBlock(record, stage) : stage ? stageBlock(stage) : null;
+
+  /* WHAT PHOEBE FOUND — item A17, 26 Sep 2026. Her worksheet as the shell
+     holds it, checked in _record.ts, read into each pathway's read and the
+     rows behind it by id and tool-file title. Never her own sentences. It
+     rides after the breakpoint beside the visit, or not at all when she has
+     found nothing yet. Its reads also feed the route guard. */
+  const found = phoebeFound(readSheet(body.sheet), record);
 
   /* Shape first, then whether we can actually answer — same order as Phoebe's,
      for the same reason. */
@@ -244,6 +271,7 @@ export async function POST(req: Request): Promise<Response> {
         system: [
           { type: 'text', text: WELLINGTON_SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
           ...(visitText ? [{ type: 'text' as const, text: visitText }] : []),
+          ...(found ? [{ type: 'text' as const, text: found.text }] : []),
         ],
         messages: clean,
         thinking: { type: 'adaptive' },
@@ -307,7 +335,7 @@ export async function POST(req: Request): Promise<Response> {
 
   /* A class returned this turn is kept only beside a drinking-water type,
      confirmed this turn or already on the visit. */
-  const answer = validate(parsed, { type: record?.type });
+  const answer = validate(parsed, { type: record?.type, reads: found?.reads });
   if (!answer) {
     console.error(`wellington: returned an empty answer — ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens`);
     return undelivered(
