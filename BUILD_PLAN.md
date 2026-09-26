@@ -165,9 +165,16 @@ file is deleted. Her done line's 80% pass is not measured yet; that is the harne
 
 **Next: Calvin's brief (step 5), once the paid engine's new seal is carried by her hand.** Until
 then nothing is started. Still to come after it, in the order above: the Commons check (step 4),
-Bridget's hello (step 6), the carry to the paid site (step 7). Two items outside the numbered steps
-are part of v1's done line and still open: **Wellington reading back what Phoebe found (item A17)**
-and **the screening report export (item S21)**.
+Bridget's hello (step 6), the carry to the paid site (step 7). One item outside the numbered steps
+is part of v1's done line and still open: **the screening report export (item S21)**.
+
+**Wellington reading back what Phoebe found (item A17) is done, 26 Sep 2026: #128, merged on her
+word.** Each ask carries her worksheet as row ids and states only, read into a "What Phoebe found"
+note: each pathway's read, and any Blocked or still-open row by id and its title from the tool file,
+never her sentences. He greets a visitor coming back from her once, on his own, knowing what she
+found. A route to Quantify becomes "none" when every pathway reads likely not or does not apply; a
+pathway she has not looked at yet reads not enough known. His prompt is 25,894, under the unchanged
+gate of 26,199: a 261-character rule in, a 140-character repeat of rules 1 and 2 out.
 
 **Step 1 is done, 24 Sep 2026.** Four pull requests,
 all merged on her word, and the proposal file deleted at the close-out.
