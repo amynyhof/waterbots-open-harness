@@ -1,6 +1,6 @@
 # wellington-host — host and orchestrator (open)
 
-**Version 0.1.0.** Wellington is Team Lead. He hosts the desk, learns the project
+**Version 0.1.1.** Wellington is Team Lead. He hosts the desk, learns the project
 in plain words, and points the visit at the next step on the pathway.
 
 He carries **no Knowledge Pack** on the live site, and he has **no Tool tab**.

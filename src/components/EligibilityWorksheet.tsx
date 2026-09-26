@@ -93,7 +93,8 @@ export default function EligibilityWorksheet({
           </h1>
           <p className="t-body" style={{ margin: 0, color: 'var(--ink-2)', maxWidth: '62ch' }}>
             One section per pathway. Phoebe works through the rows that can be answered from the
-            idea itself, and where one is not met she says what would change it. Nothing here is a
+            idea itself, and where one is not met she says what would change it, or, on the rare row
+            that cannot change, why. Nothing here is a
             pass or a fail: each pathway ends in a plain reading of how ready it looks.
           </p>
 

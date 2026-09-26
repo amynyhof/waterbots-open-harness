@@ -179,3 +179,54 @@ sentence asserted a field that no longer exists.
 > so filled does / name / place / kind are treated as known. He may still ask for anything missing.
 
 **Current text** is in [CLAUDE.md](../../CLAUDE.md), the same bullet.
+
+---
+
+## 26 Sep 2026 — AGENT_RULES.md, rung 3 of the abstention ladder, and the paragraph under ruling 5
+
+**Why it changed.** The door to a person was built and merged on 26 Sep 2026 (#126, item A18):
+rung 3 is live for a project with a Blocked row. Three places said it was not live yet, or would go
+live with a build that has now landed. Current text: [AGENT_RULES.md](../../AGENT_RULES.md), the
+same places.
+
+**Old wording, whole — the ladder table's third row:**
+
+> | **3** | **If no agent covers it, offer a human consultant.** | **Not yet live** — see below |
+
+**Old wording, whole — the section under the table:**
+
+> ### Rung 3 — not yet live
+>
+> **Human consultants are coming and are not available yet.** An agent that
+> reaches this rung says that consultants are coming. It does not promise one, does
+> not offer to arrange one, and does not point at a contact route, because there is
+> no contact route to point at.
+>
+> **"That's coming" is the whole of it.** Offering something the product cannot
+> deliver fails the honest-states rule as badly as a fabricated answer does.
+
+**Old wording, whole — under ruling 5, *Pace and posture*:**
+
+> The
+> offer of a person is rung 3 of the abstention ladder below, and it goes live
+> with this rule's build, item A18 in [OPEN_ITEMS.md](./OPEN_ITEMS.md). **Until
+> that build lands, a specialist keeps the states its tool has today**: a
+> criterion not met is "Not yet" with a route forward, which is already this
+> rule's posture. The build is what adds the sorting and the read.
+
+## 26 Sep 2026 — the Eligibility worksheet's header, and Phoebe's line in the next steps
+
+**Why it changed.** Both said a row that is not met carries "what would change it". A Blocked row
+carries the card's reason why it cannot change, so on a Blocked project both lines said something
+untrue. Found at Stop 3 of step 3; corrected at its close-out. Current text:
+`src/components/EligibilityWorksheet.tsx` and `deskRows` in `src/lib/visit.ts`.
+
+**Old wording, whole — the worksheet's header:**
+
+> One section per pathway. Phoebe works through the rows that can be answered from the
+> idea itself, and where one is not met she says what would change it. Nothing here is a
+> pass or a fail: each pathway ends in a plain reading of how ready it looks.
+
+**Old wording, whole — the next-steps line, where any row was not met:**
+
+> {pathway} reads {read}: {n} met, {open rows}, each with what would change it on the worksheet.

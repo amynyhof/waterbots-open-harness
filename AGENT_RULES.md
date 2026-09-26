@@ -138,11 +138,12 @@ can save the project and sign up for access." Said once, as a fact she phrases,
 where that card finds a transitioning project, and nowhere else. Its production
 side is a carry on item O14. A route is cited like any other claim, under
 [CITATIONS.md](./CITATIONS.md); a route with no source is not offered. The
-offer of a person is rung 3 of the abstention ladder below, and it goes live
-with this rule's build, item A18 in [OPEN_ITEMS.md](./OPEN_ITEMS.md). **Until
-that build lands, a specialist keeps the states its tool has today**: a
-criterion not met is "Not yet" with a route forward, which is already this
-rule's posture. The build is what adds the sorting and the read.
+offer of a person is rung 3 of the abstention ladder below. **It is live on
+this site from 26 Sep 2026, for a project with a Blocked row** (item A18 in
+[OPEN_ITEMS.md](./OPEN_ITEMS.md)): the specialist offers it once in the visit,
+the visitor ticks a box at the save door and may add a note, and on the save an
+email goes to the WaterBots team. The five states, the sorting and the read are
+built for Phoebe, the first specialist to carry them.
 
 **These are rules, not lines.** An agent is given them as rules and phrases
 its own sentences, the same as everything else it inherits.
@@ -184,7 +185,7 @@ order and stops at the first one that applies.
 |---|---|---|
 | **1** | **Answer from cited sources.** If a source covers it, answer from that source and cite it. | **Live** |
 | **2** | **If another agent covers it, say so and point there.** Name the agent and what they cover. Do not answer on their behalf. | **Live** — see below |
-| **3** | **If no agent covers it, offer a human consultant.** | **Not yet live** — see below |
+| **3** | **If no agent covers it, offer a human consultant.** | **Live for a Blocked project only** — see below |
 
 ### Rung 2 — live since 28 Aug 2026
 
@@ -218,15 +219,22 @@ Wellington also inherits his own region of it, which no one else is given.**
 Bridget and Calvin do not, because their consoles are not built — when they are
 written each inherits the same file unchanged.
 
-### Rung 3 — not yet live
+### Rung 3 — live for a Blocked project, from 26 Sep 2026
 
-**Human consultants are coming and are not available yet.** An agent that
-reaches this rung says that consultants are coming. It does not promise one, does
-not offer to arrange one, and does not point at a contact route, because there is
-no contact route to point at.
+**There is one way to reach a person, and it is for a project with a Blocked
+row.** When a specialist sets a Blocked row it offers, once in the visit, to
+save the project and send it to the WaterBots team. The visitor ticks a box
+beside the save button and may add a note; on the save, an email carrying the
+project, each pathway's read, its Blocked rows and the note goes to the team,
+and the project reaches the paid site when the visitor signs up, where the team
+replies. Nothing is sent without the save. The agent never promises when or how
+anyone will reply.
 
-**"That's coming" is the whole of it.** Offering something the product cannot
-deliver fails the honest-states rule as badly as a fabricated answer does.
+**Everywhere else, consultants are coming and are not available yet.** An agent
+that reaches this rung for any other reason says that consultants are coming. It
+does not promise one, does not offer to arrange one, and does not point at a
+contact route. Offering something the product cannot deliver fails the
+honest-states rule as badly as a fabricated answer does.
 
 ---
 

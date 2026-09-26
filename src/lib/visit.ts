@@ -356,8 +356,13 @@ export function deskRows(visit: Visit, sheet: Sheet, packs: MethodPack[]): DeskR
         tally.blocked ? `${tally.blocked} blocked` : '',
       ].filter(Boolean);
       const read = READINESS_LABEL[readiness(sheet, pack, context)].toLowerCase();
+      /* A Blocked row has no fix to show, only the card's reason, so where one
+         stands the line says "or why it cannot". Corrected 26 Sep 2026. */
+      const carries = tally.blocked
+        ? 'each with what would change it, or why it cannot, on the worksheet'
+        : 'each with what would change it on the worksheet';
       sentence = open.length
-        ? `${part.sectionName} reads ${read}: ${tally.met} met, ${open.join(', ')}, each with what would change it on the worksheet.`
+        ? `${part.sectionName} reads ${read}: ${tally.met} met, ${open.join(', ')}, ${carries}.`
         : `${part.sectionName} reads ${read}, with ${tally.met} of the rows asked here met. Nothing is verified.`;
     }
     if (!sentence) continue;

@@ -2367,3 +2367,76 @@ For Amy block; she merged on her word.
 fact was refreshed inside #119, so no run was owed at the close. No migrations exist; no stray
 server. Item A17, Wellington reading Phoebe's verdicts back, is untouched. Step 3, Phoebe's carbon
 runtime, is next while the paid engine finishes.
+
+## 25–26 September 2026 — build-order step 3: Phoebe's carbon runtime, the door to a person, and the close-out
+
+Five pull requests, all merged on her word: #121, #122, #124 and #126, with two one-line plan
+updates, #123 and #125. Step 3 under "V1 — the done line" is done. The proposal,
+`PROPOSAL_phoebe-carbon-runtime.md`, was ruled on 25 Sep 2026 — R1 to R5, R7, R9, R10 and R11 as
+proposed; R6 amended to staged loading; R8 amended to fix the save door first — and is deleted at
+this close-out, its work merged.
+
+### The save door first (#121)
+
+Her live test of 25 Sep: a full desk conversation reached production as an empty record, because
+production's receiver still reads `record.kind`. The word came back on the seal, derived from the
+type (`both`, `water`, `neither`, or blank), asked of nobody, and refused when it disagrees with the
+type. The full account is under item A16.
+
+### Pull request A (#122) — the water pathway on its tool file
+
+One generator reads both tool files and the roster and writes the same module for the relay and the
+browser. The water pack's agent-facing region retired into its changelog. Five row states, a
+readiness read computed from the rows, cited routes under a Fixable row, her verdicts as per-pack
+rows. Her cards load in stages. Her cap wording corrected in four places; the banned word left her
+relay. The seal kept production's three words rather than the per-pathway shape, a decision named
+in the pull request: the rows are owed on item O14.
+
+### Pull request B (#124) — the carbon pathway
+
+Both packs, the applies tests run together, questions written to cover both pathways, sorting by
+class and version. Two findings from the walks, both fixed: she named the class without recording
+it, and she abstained cold on a set staged loading had not handed her yet. Her size ceiling moved
+twice inside the pull request, each time by the measured amount of those fixes, to 203,787.
+
+### Pull request C (#126) — the door to a person
+
+On a Blocked row she offers a person once. A box and a note sit above the save button, only when a
+row is Blocked; the tools line sits on the door when a row is Fixable or Unknown. The seal carries
+`wantsHuman` and `humanNote` only on a tick, so an ordinary save keeps production's shape. Her size
+gate tripped by 157 on the first draft; the new text was shortened and the bar did not move.
+
+**Then, on her word before merge:** a ticked save emails hello@waterbots.ai. No mail path existed,
+so Resend was picked, over one HTTPS call, its key the hosting secret `RESEND_API_KEY`. The page
+sends each pathway's rows beside the seal; the server checks them against the tool model, works out
+the read itself, writes the email and keeps nothing. Seal first, email second; a failed email takes
+the seal back. Her ruling the same day: no visitor contact in the email, and one line that the
+project reaches the paid site at sign-up and the team replies from there. No real email was sent;
+the captured body from the real code is in `captures/2026-09-26-team-email-body.txt`.
+
+### How it was proven
+
+`check-handoff` 75 → 103, with a stand-in mail provider; `check-phoebe` 61 → 71; every other check
+and `npm run build` green. Short run after C: Phoebe 9 of 9 answered, none empty, one cold
+abstention on a feasibility question. One real walk to a Blocked row: criterion 4, the permit, with
+her offer made once and the box ticked. At the close, Wellington's short run after the build-update
+refresh: 4 of 5 as wanted; the fifth asked the type before sending a carbon-figure question to
+Quantify, and gave no figure.
+
+### What was learned
+
+A seal is a contract, and adding to it is safest as keys that appear only when they mean something.
+The door had to be true before it could be offered: the box's words promised a person, and the
+email is what made them so. Until her key and domain are set, the live site refuses a ticked save
+and says so.
+
+### The close-out
+
+AGENT_RULES.md: rung 3 is live for a Blocked project, and the "until that build lands" paragraph is
+replaced. The worksheet header and Phoebe's line in the next steps say "or why it cannot" where a
+row is Blocked. Old wording for both is in `docs/archive/CORRECTIONS.md`. BUILD_PLAN: step 3 done,
+Calvin's brief next once the paid engine's new seal is carried by her hand, items A17 and S21
+listed as open v1 work. OPEN_ITEMS: A18 and K7 built, sweep due. CLAUDE.md: the scope line.
+Wellington's build-update fact refreshed and regenerated; his prompt 25,735 against 26,199. No
+migrations exist. Noticed, not changed: the build-update file's own text still names his gate as
+24,000.
