@@ -32,7 +32,14 @@
  *     stands — complete, incomplete, pending or blocked (the maintainer's
  *     ruling of 8 Sep 2026: the pack's own word, a label and never a figure)
  *     — and flagged worked-example where that is what they are;
- *   - a sealed-at timestamp, written here on the server.
+ *   - a sealed-at timestamp, written here on the server;
+ *   - ONLY WHEN THE VISITOR TICKED THE BOX: `wantsHuman`, always true where it
+ *     is present, and `humanNote`, a short note in their own words. The door
+ *     to a person, item A18, built 26 Sep 2026: on a project with a Blocked
+ *     row, the visitor may ask for the WaterBots team to look at it. A save
+ *     without the tick carries neither key, so an ordinary save is the shape
+ *     production already reads. The two keys are owed to production as a
+ *     carry on item O14, and until that lands nobody there is reading them.
  *
  * NEVER A COMPUTED NUMBER. NEVER THE CONVERSATION'S TURNS. That line is not
  * only drawn in the client that builds the seal; it is enforced here, where
@@ -93,6 +100,9 @@ const MAX_ANSWER_CHARS = 200;
 const MAX_CRITERIA = 12;
 const MAX_PACKS = 10;
 const MAX_ANSWERS_PER_PACK = 40;
+/* The note to a person is the same length as "what it does": a few sentences,
+   in the visitor's own words, capped where the rail's box caps it. */
+export const MAX_HUMAN_NOTE_CHARS = 280;
 
 export type SealSource = '' | 'typed' | 'chat' | 'pin';
 export type SealType = '' | ProjectTypeId;
@@ -156,6 +166,10 @@ export interface SealBody {
   pin: SealPin | null;
   worksheet: SealCriterion[];
   packs: SealPack[];
+  /** Present only when the visitor ticked the box; never false. */
+  wantsHuman?: true;
+  /** Their note to the team, only beside `wantsHuman`. May be empty. */
+  humanNote?: string;
 }
 
 /** What is stored, and what production receives. */
@@ -328,18 +342,27 @@ function readPacks(value: unknown): SealPack[] {
  */
 export function readSeal(value: unknown): SealReading {
   try {
-    const v = object(value, 'the seal', ['record', 'pin', 'worksheet', 'packs']);
+    const v = object(value, 'the seal', ['record', 'pin', 'worksheet', 'packs', 'wantsHuman', 'humanNote']);
     if (!('record' in v) || !('pin' in v) || !('worksheet' in v) || !('packs' in v)) {
       refuse('the seal is missing one of record, pin, worksheet, packs');
     }
-    return {
-      seal: {
-        record: readRecord(v.record),
-        pin: readPin(v.pin),
-        worksheet: readWorksheet(v.worksheet),
-        packs: readPacks(v.packs),
-      },
+    const seal: SealBody = {
+      record: readRecord(v.record),
+      pin: readPin(v.pin),
+      worksheet: readWorksheet(v.worksheet),
+      packs: readPacks(v.packs),
     };
+    /* The door to a person. `false` is said by leaving the key out, so a seal
+       that carries it says only one thing; and a note without the ask is a
+       note to nobody, so it is turned away rather than passed on. */
+    if ('wantsHuman' in v) {
+      if (v.wantsHuman !== true) refuse('wantsHuman is present but is not true');
+      seal.wantsHuman = true;
+      if ('humanNote' in v) seal.humanNote = text(v.humanNote, 'humanNote', MAX_HUMAN_NOTE_CHARS);
+    } else if ('humanNote' in v) {
+      refuse('humanNote is present without wantsHuman');
+    }
+    return { seal };
   } catch (error) {
     if (error instanceof Refused) return { problem: error.message };
     throw error;

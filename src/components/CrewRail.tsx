@@ -24,7 +24,7 @@
  */
 
 import { CREW } from '../lib/crew';
-import type { SealState } from '../lib/handoff';
+import { MAX_HUMAN_NOTE_CHARS, type PersonAsk, type SealState } from '../lib/handoff';
 import type { Surface } from '../lib/surfaces';
 import type { DeskRow } from '../lib/visit';
 import CrewRow from './CrewRow';
@@ -35,10 +35,27 @@ import CrewRow from './CrewRow';
  * lists exactly what the seal holds (src/lib/handoff.ts) and names the two
  * things it never holds. If the seal ever changes, this line changes with it.
  */
-const CONSENT_LINE =
-  'Going with you: what you said about the project, the basin you pinned, where each ' +
-  'eligibility criterion stands, and the numbers you typed in. Not the results worked out ' +
-  'here, and not your conversation. Nothing stays on this site.';
+function consentLine(askingForPerson: boolean): string {
+  return (
+    'Going with you: what you said about the project, the basin you pinned, where each ' +
+    'eligibility criterion stands, ' +
+    (askingForPerson
+      ? 'the numbers you typed in, and your request for the WaterBots team to look at it, with your note. '
+      : 'and the numbers you typed in. ') +
+    'Not the results worked out here, and not your conversation. Nothing stays on this site.'
+  );
+}
+
+/**
+ * THE TOOLS LINE — the maintainer's canon of 23 Sep 2026, in AGENT_RULES.md
+ * under ruling 5: wherever a Fixable or Unknown row shows, the visitor is told
+ * that WaterBots is building tools for exactly those fixes, and the same line
+ * goes on the save door. A fact, never a sales line, so it shows only when the
+ * visit has such a row, and says nothing when it has none.
+ */
+const TOOLS_LINE =
+  'WaterBots is building tools and resources on waterbots.ai for exactly the fixes Phoebe ' +
+  'found. Save your project to sign up for updates and access.';
 
 export default function CrewRail({
   active,
@@ -47,6 +64,10 @@ export default function CrewRail({
   onNavigate,
   sealing,
   onSeal,
+  showTools,
+  showPerson,
+  person,
+  onPerson,
 }: {
   active: Surface;
   /** Open next steps on Wellington's desk. Null hides the count. */
@@ -61,7 +82,18 @@ export default function CrewRail({
   /** The bridge's state while a seal is in flight, and the click that starts one. */
   sealing: SealState;
   onSeal: () => void;
+  /** A Fixable or Unknown row stands on the sheet: the tools line shows. */
+  showTools: boolean;
+  /** A Blocked row stands on the sheet: the box to ask for a person shows. */
+  showPerson: boolean;
+  /** The box and the note, held by the shell so the save reads them. */
+  person: PersonAsk;
+  onPerson: (next: PersonAsk) => void;
 }) {
+  /* Only a box the visitor can see can be ticked. If the Blocked row goes
+     (Phoebe moves it), an old tick does not travel unseen. */
+  const asking = showPerson && person.wanted;
+  const busy = sealing.kind === 'sealing' || sealing.kind === 'sealed';
   return (
     <aside
       className="chrome"
@@ -173,11 +205,51 @@ export default function CrewRail({
           sits under it, before the click. Every state is shown; the page moves
           only once a ticket is back. */}
       <div style={{ flex: 'none', padding: '12px 18px 16px', borderTop: '1px solid var(--line)' }}>
+        {showTools && (
+          <p style={{ margin: '0 0 10px', fontSize: 11.5, lineHeight: 1.5, color: 'var(--ink-2)' }}>
+            {TOOLS_LINE}
+          </p>
+        )}
+
+        {/* THE DOOR TO A PERSON — item A18, 26 Sep 2026. Shown only once a
+            row is Blocked, because that is the one case where Phoebe offers
+            it. A box and a short note, in a visitor's words; nothing is sent
+            until the save button below is pressed, and then only with it. */}
+        {showPerson && (
+          <div style={{ margin: '0 0 12px' }}>
+            <label
+              style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12.5, lineHeight: 1.45, color: 'var(--ink)', cursor: 'pointer' }}
+            >
+              <input
+                type="checkbox"
+                checked={person.wanted}
+                disabled={busy}
+                onChange={(e) => onPerson({ ...person, wanted: e.target.checked })}
+                style={{ marginTop: 3, accentColor: 'var(--tide-ui)', flex: 'none' }}
+              />
+              Send my project to the WaterBots team so a person can look at it
+            </label>
+            {person.wanted && (
+              <textarea
+                className="wb-rail-input"
+                value={person.note}
+                disabled={busy}
+                onChange={(e) => onPerson({ ...person, note: e.target.value })}
+                placeholder="A note for them, if you like"
+                aria-label="A note for the WaterBots team"
+                maxLength={MAX_HUMAN_NOTE_CHARS}
+                rows={2}
+                style={{ resize: 'none', marginTop: 6 }}
+              />
+            )}
+          </div>
+        )}
+
         <button
           type="button"
           className="wb-save-button"
           onClick={onSeal}
-          disabled={sealing.kind === 'sealing' || sealing.kind === 'sealed'}
+          disabled={busy}
           aria-busy={sealing.kind === 'sealing' || undefined}
         >
           {sealing.kind === 'sealing' && 'Saving your project…'}
@@ -185,7 +257,7 @@ export default function CrewRail({
           {(sealing.kind === 'idle' || sealing.kind === 'failed') && 'Save this project and sign up'}
         </button>
         <p className="t-caption" style={{ margin: '8px 0 0', fontSize: 10.5, lineHeight: 1.55 }}>
-          {CONSENT_LINE}
+          {consentLine(asking)}
         </p>
         {sealing.kind === 'failed' && (
           <p role="alert" style={{ margin: '8px 0 0', fontSize: 12, lineHeight: 1.5, color: 'var(--state-pending)' }}>

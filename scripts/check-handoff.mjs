@@ -145,7 +145,7 @@ process.env.PHOEBE_VISITOR_SALT = 'a-test-secret-that-is-not-the-real-one';
 delete process.env.VERCEL;
 
 const sealRoute = await load('handoff/index.js');
-const { SEAL_SHAPE, TICKET_PATTERN, TICKET_TTL_SECONDS, MAX_SEAL_BYTES, readSeal, sealKey } =
+const { SEAL_SHAPE, TICKET_PATTERN, TICKET_TTL_SECONDS, MAX_SEAL_BYTES, MAX_HUMAN_NOTE_CHARS, readSeal, sealKey } =
   await load('_handoff.js');
 const { HANDOFF_DAILY_CAP } = await load('_cap.js');
 
@@ -419,6 +419,33 @@ await refused('a body that is not a seal at all is turned away', '"just a string
 await refused('an unreadable body is turned away', '{not json', 400, 'could not be read');
 await refused('a body heavier than a seal can be is turned away', 'x'.repeat(MAX_SEAL_BYTES + 1), 413, 'more than');
 
+/* THE DOOR TO A PERSON, item A18, 26 Sep 2026. Two keys, only together,
+   only when the visitor ticked the box. */
+await refused(
+  'a seal that says it does not want a person is turned away — no is said by leaving the key out',
+  { ...sample(), wantsHuman: false },
+  400,
+  'wantsHuman'
+);
+await refused(
+  'a note with no ask for a person is turned away',
+  { ...sample(), humanNote: 'Please call' },
+  400,
+  'humanNote is present without wantsHuman'
+);
+await refused(
+  'a note over its cap is refused, not cut',
+  { ...sample(), wantsHuman: true, humanNote: 'x'.repeat(MAX_HUMAN_NOTE_CHARS + 1) },
+  400,
+  'humanNote'
+);
+await refused(
+  'a note that is not text is turned away',
+  { ...sample(), wantsHuman: true, humanNote: 42 },
+  400,
+  'humanNote'
+);
+
 expect('none of those refusals stored anything', values.size === before, `the store grew from ${before} to ${values.size}`);
 expect(
   'none of those refusals counted against anyone — shape is checked before the cap is charged',
@@ -429,6 +456,23 @@ expect(
 /* The reader on its own, so the client's check can lean on it too. */
 expect('readSeal accepts the sample', 'seal' in readSeal(sample()), JSON.stringify(readSeal(sample())));
 expect('a null pin is a real answer', 'seal' in readSeal({ ...sample(), pin: null }), JSON.stringify(readSeal({ ...sample(), pin: null })));
+
+const asked = await post({ ...sample(), wantsHuman: true, humanNote: 'The sponsor cannot change the design.' }, '203.0.113.30');
+const askedBody = await asked.json();
+const askedStored = JSON.parse(values.get(sealKey(askedBody.ticketId)) ?? '{}');
+expect(
+  'a seal asking for a person is accepted and stored with the ask and the note, and nothing else new',
+  asked.status === 200 &&
+    askedStored.wantsHuman === true &&
+    askedStored.humanNote === 'The sponsor cannot change the design.' &&
+    Object.keys(askedStored).sort().join(',') === 'humanNote,packs,pin,record,sealedAt,shape,wantsHuman,worksheet',
+  `got ${asked.status}: ${JSON.stringify(askedStored).slice(0, 200)}`
+);
+expect(
+  'an ask with no note is a real ask',
+  'seal' in readSeal({ ...sample(), wantsHuman: true }),
+  JSON.stringify(readSeal({ ...sample(), wantsHuman: true }))
+);
 
 /* ---------------------------------------------------------------------------
    Ten a day, under the bridge's own counter.
@@ -648,6 +692,29 @@ expect(
   'every pack answer is the visitor’s text as typed',
   built.packs.every((p) => Object.values(p.answers).every((v) => typeof v === 'string')),
   JSON.stringify(built.packs)
+);
+expect(
+  'an unticked box sends neither door key, so an ordinary save is the shape production reads today',
+  !('wantsHuman' in built) && !('humanNote' in built),
+  Object.keys(built).join(', ')
+);
+const ticked = buildSeal(visit, sheet, packs, { wanted: true, note: '  Please look at criterion 4.  ' });
+expect(
+  'a ticked box sends the ask and the note, trimmed at its ends, and the server accepts it',
+  ticked.wantsHuman === true && ticked.humanNote === 'Please look at criterion 4.' && 'seal' in readSeal(ticked),
+  JSON.stringify({ wantsHuman: ticked.wantsHuman, humanNote: ticked.humanNote })
+);
+const tickedBlank = buildSeal(visit, sheet, packs, { wanted: true, note: '   ' });
+expect(
+  'a ticked box with an empty note sends the ask alone',
+  tickedBlank.wantsHuman === true && !('humanNote' in tickedBlank) && 'seal' in readSeal(tickedBlank),
+  JSON.stringify(tickedBlank.humanNote)
+);
+const noteUnticked = buildSeal(visit, sheet, packs, { wanted: false, note: 'typed, then unticked' });
+expect(
+  'a note typed and then unticked is not sent',
+  !('wantsHuman' in noteUnticked) && !('humanNote' in noteUnticked),
+  Object.keys(noteUnticked).join(', ')
 );
 const untouched = buildSeal(EMPTY_VISIT, { rows: {}, sorts: {} }, packs);
 expect(

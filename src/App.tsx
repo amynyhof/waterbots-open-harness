@@ -76,7 +76,15 @@ import JourneyBar from './components/JourneyBar';
 import Desk from './components/Desk';
 import CrewRail from './components/CrewRail';
 import Commons from './components/Commons';
-import { HandoffError, buildSeal, handoffAddress, sealVisit, type SealState } from './lib/handoff';
+import {
+  HandoffError,
+  NO_PERSON,
+  buildSeal,
+  handoffAddress,
+  sealVisit,
+  type PersonAsk,
+  type SealState,
+} from './lib/handoff';
 import BridgetScreen from './components/BridgetScreen';
 import PhoebeScreen from './components/PhoebeScreen';
 import CalvinScreen from './components/CalvinScreen';
@@ -86,6 +94,7 @@ import { useConversation } from './chat/useConversation';
 import { WELLINGTON, wellingtonAsk } from './lib/wellington';
 import {
   EMPTY_SHEET,
+  anyRowIn,
   applyUpdates as applySheetUpdates,
   type Sheet,
   type Verdicts,
@@ -285,10 +294,16 @@ export default function App() {
      to production's sign-up with only the ticket in the address. Nothing is
      kept here, and every state on the way is shown on the row. */
   const [sealing, setSealing] = useState<SealState>({ kind: 'idle' });
+  /* The door to a person (item A18): the box shows once a row is Blocked, and
+     the tools line once a row is Fixable or Unknown. A tick whose box is no
+     longer shown is not sent. */
+  const [person, setPerson] = useState<PersonAsk>(NO_PERSON);
+  const showPerson = useMemo(() => anyRowIn(sheet, ['blocked']), [sheet]);
+  const showTools = useMemo(() => anyRowIn(sheet, ['fixable', 'unknown']), [sheet]);
   const onSeal = useCallback(async () => {
     setSealing({ kind: 'sealing' });
     try {
-      const seal = buildSeal(visit, sheet, LIVE_PACKS);
+      const seal = buildSeal(visit, sheet, LIVE_PACKS, showPerson ? person : NO_PERSON);
       const { ticketId } = await sealVisit(seal);
       setSealing({ kind: 'sealed' });
       window.location.assign(handoffAddress(ticketId));
@@ -301,7 +316,7 @@ export default function App() {
             : 'Something went wrong on our side. Nothing was kept.',
       });
     }
-  }, [visit, sheet]);
+  }, [visit, sheet, person, showPerson]);
 
   const onDesk = surface === 'desk';
   const onMap = surface === 'map';
@@ -487,6 +502,10 @@ export default function App() {
               onNavigate={setSurface}
               sealing={sealing}
               onSeal={onSeal}
+              showTools={showTools}
+              showPerson={showPerson}
+              person={person}
+              onPerson={setPerson}
             />
           </div>
         </div>

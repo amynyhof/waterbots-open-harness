@@ -182,6 +182,19 @@ export function counts(
   return tally;
 }
 
+/**
+ * Whether any row on the sheet, on either pathway, stands in one of these
+ * states. The save door reads it: a Blocked row is what shows the box to ask
+ * for a person, and a Fixable or Unknown row is what puts the tools line on
+ * the door (item A18). It reads only what Phoebe set, so a row nobody looked
+ * at never shows either.
+ */
+export function anyRowIn(sheet: Sheet, states: readonly RowStateId[]): boolean {
+  return Object.values(sheet.rows).some((rows) =>
+    Object.values(rows).some((row) => states.includes(row.state))
+  );
+}
+
 /* --------------------------------------------------------------------------
    Moving the sheet.
    -------------------------------------------------------------------------- */
