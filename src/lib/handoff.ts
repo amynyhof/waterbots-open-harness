@@ -21,7 +21,10 @@
  *     words, and its way forward where there is one;
  *   - each pack's answers as typed, the pack's own word for where it stands
  *     — complete, incomplete, pending, blocked — and whether the answers are
- *     the pack's worked example.
+ *     the pack's worked example;
+ *   - only when the visitor ticked the box to send the project to a person,
+ *     `wantsHuman` and their note (item A18, the door to a person). Unticked,
+ *     neither key is sent, so the seal is the shape production reads today.
  *
  * It never reads a pack's figures, its headline, or a single computed
  * number, and it never sees the conversation. The server refuses a seal that
@@ -31,7 +34,7 @@
  * ticket. A reload after the click starts over, as any reload does.
  */
 
-import { section } from './worksheet.generated';
+import { HER_PACKS, section } from './worksheet.generated';
 import { stateOf, type Sheet } from './worksheetState';
 import type { MethodPack } from './methodPacks';
 import { pathwayKind } from './projectTypes.generated';
@@ -96,7 +99,23 @@ export interface SealBody {
     workedExample: boolean;
     answers: Record<string, string>;
   }[];
+  wantsHuman?: true;
+  humanNote?: string;
 }
+
+/**
+ * The door to a person, as the rail holds it: the box and the note.
+ *
+ * The note is capped where the server caps it (api/_handoff.ts), so the box
+ * stops the visitor at the limit rather than the save refusing afterwards.
+ */
+export interface PersonAsk {
+  wanted: boolean;
+  note: string;
+}
+
+export const NO_PERSON: PersonAsk = { wanted: false, note: '' };
+export const MAX_HUMAN_NOTE_CHARS = 280;
 
 /**
  * The visit as a seal.
@@ -136,7 +155,8 @@ function sealState(state: string): 'unchecked' | 'met' | 'not-yet' {
 export function buildSeal(
   visit: Visit,
   sheet: Sheet,
-  packs: MethodPack[]
+  packs: MethodPack[],
+  person: PersonAsk = NO_PERSON
 ): SealBody {
   const { context, pin } = visit;
   const field = (name: 'does' | 'type' | 'gsClass' | 'stage' | 'place' | 'name'): SealField => ({
@@ -198,7 +218,38 @@ export function buildSeal(
         },
       ];
     }),
+    /* Only a ticked box sends anything. The note is the visitor's own, trimmed
+       of blank space at its ends and nothing else; left empty, it is not sent. */
+    ...(person.wanted
+      ? { wantsHuman: true as const, ...(person.note.trim() ? { humanNote: person.note.trim() } : {}) }
+      : {}),
   };
+}
+
+/**
+ * Each pathway's rows, for the email to the WaterBots team (item A18,
+ * 26 Sep 2026). Sent beside the seal only when the box is ticked; the server
+ * works the readiness read out from them itself, writes the email, and keeps
+ * none of it. It is not part of the seal and production never sees it.
+ */
+export interface TeamPathway {
+  pack: string;
+  states: Record<string, string>;
+  blocked: Record<string, string>;
+  sorts: string[];
+}
+
+export function teamRows(sheet: Sheet): TeamPathway[] {
+  return HER_PACKS.map((pack) => {
+    const rows = sheet.rows[pack] ?? {};
+    const states: Record<string, string> = {};
+    const blocked: Record<string, string> = {};
+    for (const [id, status] of Object.entries(rows)) {
+      states[id] = status.state;
+      if (status.state === 'blocked' && status.because) blocked[id] = status.because;
+    }
+    return { pack, states, blocked, sorts: sheet.sorts[pack] ?? [] };
+  });
 }
 
 /* --------------------------------------------------------------------------
@@ -213,13 +264,17 @@ export interface Ticket {
   expiresAt: string;
 }
 
-export async function sealVisit(seal: SealBody, signal?: AbortSignal): Promise<Ticket> {
+export async function sealVisit(
+  seal: SealBody,
+  forTeam?: TeamPathway[],
+  signal?: AbortSignal
+): Promise<Ticket> {
   let response: Response;
   try {
     response = await fetch('/api/handoff', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(seal),
+      body: JSON.stringify(seal.wantsHuman && forTeam ? { ...seal, forTeam } : seal),
       signal,
     });
   } catch (error) {

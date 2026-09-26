@@ -419,6 +419,24 @@ expect(
     /Never press anyone to sign up/.test(SYSTEM_PROMPT),
   'the tools line is missing, or is not bounded'
 );
+/* THE DOOR TO A PERSON, item A18, 26 Sep 2026. Offered once, only on a
+   Blocked row, pointing at the box the save door shows; rung 3 still says
+   consultants are coming everywhere else, because everywhere else there is
+   still no way to reach one. */
+expect(
+  'on a Blocked row she offers a person once, points at the box, and promises no reply',
+  /When you set a Blocked row, offer a person, once in the visit/.test(SYSTEM_PROMPT) &&
+    /tick the box beside the save button/.test(SYSTEM_PROMPT) &&
+    /do not make it again/.test(SYSTEM_PROMPT) &&
+    /Never promise when or how anyone will reply/.test(SYSTEM_PROMPT),
+  'the door rule is missing a part'
+);
+expect(
+  'rung 3 still says consultants are coming, with the Blocked row as its one exception',
+  /Say that consultants are coming/.test(SYSTEM_PROMPT) &&
+    /A Blocked row is the exception: see section 3/.test(SYSTEM_PROMPT),
+  'rung 3 lost its default or its exception'
+);
 expect(
   'she asks the Eligibility rows only, one a turn, and shows the rest once',
   /Ask the Eligibility-phase rows, in the order your tool lists them, one row and one question a turn/.test(

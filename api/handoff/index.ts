@@ -17,6 +17,14 @@
  * of 8 Sep 2026), counted the way a chat message is: at the last moment
  * before the write, refunded if the write fails on our side.
  *
+ * A TICKED BOX SENDS AN EMAIL (item A18, 26 Sep 2026). When the visitor asks
+ * for a person, the page sends each pathway's rows beside the seal as
+ * `forTeam`; they are checked, used to write the email to the WaterBots team
+ * (_teamMail.ts), and never stored. The seal is written first and the email
+ * sent second; if the email does not go, the seal is taken back, the count is
+ * refunded, and the visitor is told nothing was saved. So "saved" always means
+ * the team was told, and "not saved" always means nothing went anywhere.
+ *
  * EVERY FAILURE SAYS WHAT HAPPENED, in words the desk can show. The one that
  * matters most is the honest local one: a laptop has no store, so the save
  * door on a laptop cannot seal, and it says so rather than pretending.
@@ -31,7 +39,15 @@ import {
   sealKey,
   sealed,
 } from '../_handoff.js';
-import { StoreError, putOnce, storeConfig } from '../_store.js';
+import { StoreError, putOnce, storeConfig, takeOnce } from '../_store.js';
+import {
+  TeamMailError,
+  composeTeamMail,
+  readForTeam,
+  sendTeamMail,
+  teamMailKey,
+  type TeamPathway,
+} from '../_teamMail.js';
 
 /** Someone opening the URL in a browser gets a straight answer, not a 404. */
 export async function GET(): Promise<Response> {
@@ -57,12 +73,30 @@ export async function POST(req: Request): Promise<Response> {
     return problem(400, 'That request could not be read.');
   }
 
+  /* The rows for the team's email ride beside the seal and are never part of
+     it: they are peeled off here, before the seal is read, and only allowed
+     with a ticked box. */
+  let forTeam: TeamPathway[] | null = null;
+  if (typeof body === 'object' && body !== null && !Array.isArray(body) && 'forTeam' in body) {
+    const { forTeam: rawTeam, ...rest } = body as Record<string, unknown>;
+    if ((rest as Record<string, unknown>).wantsHuman !== true) {
+      return problem(400, 'That could not be saved: forTeam is present without wantsHuman. Nothing was kept.');
+    }
+    const team = readForTeam(rawTeam);
+    if ('problem' in team) {
+      return problem(400, `That could not be saved: ${team.problem}. Nothing was kept.`);
+    }
+    forTeam = team.forTeam;
+    body = rest;
+  }
+
   /* Shape. The seal is exactly what was ruled or it is refused, and the
      refusal names the field. */
   const reading = readSeal(body);
   if ('problem' in reading) {
     return problem(400, `That could not be saved: ${reading.problem}. Nothing was kept.`);
   }
+  const wantsPerson = reading.seal.wantsHuman === true;
 
   /* The store. On a laptop there is none, and the honest answer is that the
      door does not work here. On the platform its absence is a fault. */
@@ -78,6 +112,18 @@ export async function POST(req: Request): Promise<Response> {
     return problem(
       503,
       'Saving only works on the live site, not on this test copy. Nothing was kept.'
+    );
+  }
+
+  /* The email's key, before anything is counted. A ticked box on a site that
+     cannot send the email is refused whole, and the visitor is told how to
+     save without it. */
+  const mailKey = wantsPerson ? teamMailKey() : null;
+  if (wantsPerson && !mailKey) {
+    console.error('handoff: RESEND_API_KEY is not set, so a request for a person cannot be sent');
+    return problem(
+      503,
+      'Sending your project to the WaterBots team is not working right now. This is a problem on our side. Nothing was kept. You can untick the box to save without it.'
     );
   }
 
@@ -126,6 +172,25 @@ export async function POST(req: Request): Promise<Response> {
       return undelivered(
         problem(503, 'Saving did not work just now. Nothing was kept. Trying again usually works.')
       );
+    }
+    if (landed && wantsPerson && mailKey) {
+      try {
+        await sendTeamMail(mailKey, composeTeamMail(reading.seal, forTeam ?? []));
+      } catch (error) {
+        const why = error instanceof TeamMailError ? error.message : String(error);
+        console.error(`handoff: the email to the team did not go, so the seal is taken back — ${why}`);
+        try {
+          await takeOnce(store, sealKey(ticketId));
+        } catch {
+          /* It expires within the hour on its own, and nobody holds its ticket. */
+        }
+        return undelivered(
+          problem(
+            502,
+            'Your project did not reach the WaterBots team just now, so nothing was saved. Trying again usually works, or you can untick the box to save without it.'
+          )
+        );
+      }
     }
     if (landed) {
       return json(200, {
