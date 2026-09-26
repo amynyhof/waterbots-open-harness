@@ -269,7 +269,7 @@ export const READINESS_READS: readonly ToolWord[] = [
 export const TOOL_SECTIONS: readonly ToolSection[] = [
   {
     "pack": "vwba-2.0",
-    "version": "0.11.0",
+    "version": "0.12.0",
     "sectionId": "water",
     "sectionName": "The water pathway",
     "pathway": "water",
@@ -496,7 +496,7 @@ export const TOOL_SECTIONS: readonly ToolSection[] = [
   },
   {
     "pack": "gs-paa-v2.0",
-    "version": "0.7.0",
+    "version": "0.8.0",
     "sectionId": "carbon",
     "sectionName": "The carbon pathway",
     "pathway": "carbon",
@@ -1285,7 +1285,8 @@ export const TOOL_SECTIONS: readonly ToolSection[] = [
  * saying it is not hers yet. This list is what her prompt is built from.
  */
 export const HER_PACKS: readonly string[] = [
-  "vwba-2.0"
+  "vwba-2.0",
+  "gs-paa-v2.0"
 ];
 
 /* The ids as literals, so a state that is not one of them does not compile. */

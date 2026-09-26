@@ -341,7 +341,7 @@ console.log('\n  The screening loop — invite first, place does not skip\n');
 /* The worksheet the shell holds, per pack and per row from 25 Sep 2026. An
    empty one here, and a walked one below, so these tests say what they used to
    say about the loop without knowing anything about Phoebe's rows. */
-const NO_SHEET = { rows: {}, flags: {} };
+const NO_SHEET = { rows: {}, sorts: {} };
 expect('a new visit starts at learn', EMPTY_VISIT.stage === 'learn' && EMPTY_VISIT.eligibilityInvite === '', JSON.stringify(EMPTY_VISIT.stage));
 const placed = { ...EMPTY_VISIT, context: learnedContext(EMPTY_CONTEXT, { place: 'Turkana, Kenya', does: 'wells' }) };
 expect(
@@ -394,7 +394,7 @@ const doneSheet = {
       '4': { state: 'fixable', because: '', routes: ['R-5'] },
     },
   },
-  flags: {},
+  sorts: {},
 };
 expect(
   'eligibility is done when every row she asks has a verdict',

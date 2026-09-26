@@ -52,15 +52,14 @@ const TOOL_FILES = [
 const ROSTER = 'knowledge-packs/product-shared/roster.yaml';
 
 /**
- * The packs Phoebe actually reads today.
+ * The packs Phoebe reads.
  *
- * Build-order step 3 lands in two halves on the maintainer's word: the water
- * pathway first (pull request A), then the carbon pathway (pull request B).
- * Until B, her prompt carries the water pack's cards and the carbon section is
- * shown on the worksheet as not read by her. This list is the one line that
- * changes on that day.
+ * Build-order step 3 landed in two halves on the maintainer's word: the water
+ * pathway on 25 Sep 2026 (pull request A, #122), the carbon pathway the same
+ * day (pull request B). Both are hers now, and the staging in _systemPrompt.ts
+ * is what keeps a visitor on one pathway from being read the other.
  */
-const HER_PACKS = ['vwba-2.0'];
+const HER_PACKS = ['vwba-2.0', 'gs-paa-v2.0'];
 
 /** The navigation's phases, in the order a visitor meets them. */
 const PHASES = ['eligibility', 'partners', 'quantify', 'plan', 'monitor', 'communicate'];
@@ -582,6 +581,28 @@ function toolText(sections, seats) {
           ? `- **${group.label}** — ${who}. ${rows.map((r) => `${r.id}, ${lower(r.title)}`).join('; ')}.`
           : `- **${group.label}** — ${who}. Nothing on this pathway is a row here yet, and you say so rather than leaving the group out.`
       );
+    }
+    const sorts = s.appliesTo.filter((word) => word.id !== 'all');
+    if (sorts.length || s.versionFlags.length) {
+      lines.push('');
+      lines.push(
+        '**What sorts these rows, and the words to record.** A row that does not exist for this project is not asked, and the worksheet cannot drop it until you have recorded which kind of project this is. Put the word — exactly as written here — in the sorts field on the turn your test settles it.',
+        ''
+      );
+      if (sorts.length) {
+        lines.push(
+          '- **Which kind of project:** ' +
+            sorts.map((word) => '`' + word.id + '` — ' + lower(word.label)).join('; ') +
+            '.'
+        );
+      }
+      if (s.versionFlags.length) {
+        lines.push(
+          '- **Which version:** ' +
+            s.versionFlags.map((word) => '`' + word.id + '` — ' + lower(word.label)).join('; ') +
+            '.'
+        );
+      }
     }
     lines.push('');
   }

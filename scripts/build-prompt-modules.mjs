@@ -281,6 +281,13 @@ const BUNDLES = [
       { name: 'WATER_ELIGIBILITY_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/eligibility-cards-vwba.md' },
       { name: 'WATER_ROUTES_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/routes-cards-vwba.md' },
       { name: 'WATER_FEASIBILITY_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/feasibility-cards-vwba.md' },
+      /* The carbon pack joined on 25 Sep 2026, pull request B of build-order
+         step 3. Its three sets are hers to read from that day; they are staged
+         like the water pack's, so a visitor on one pathway is never read the
+         other. */
+      { name: 'CARBON_APPLIES_MD', file: 'knowledge-packs/phoebe-eligibility/gs-paa-v2.0/cards/applies-cards-gs.md' },
+      { name: 'CARBON_ELIGIBILITY_MD', file: 'knowledge-packs/phoebe-eligibility/gs-paa-v2.0/cards/eligibility-cards-gs.md' },
+      { name: 'CARBON_ROUTES_MD', file: 'knowledge-packs/phoebe-eligibility/gs-paa-v2.0/cards/routes-cards-gs.md' },
     ],
     stale: 'The relay would deploy with out-of-date cards.',
   },

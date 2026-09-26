@@ -41,6 +41,9 @@
  */
 
 import {
+  CARBON_APPLIES_MD,
+  CARBON_ELIGIBILITY_MD,
+  CARBON_ROUTES_MD,
   WATER_APPLIES_MD,
   WATER_ELIGIBILITY_MD,
   WATER_FEASIBILITY_MD,
@@ -60,12 +63,25 @@ export const CARD_SETS = [
   'water:eligibility',
   'water:routes',
   'water:feasibility',
+  'carbon:applies',
+  'carbon:eligibility',
+  'carbon:routes',
 ] as const;
 
 export type CardSet = (typeof CARD_SETS)[number];
 
-/** The set a visitor's question may reach for that is not loaded by a stage. */
-export const ON_REQUEST: readonly CardSet[] = ['water:feasibility'];
+/**
+ * Any set this turn does not carry may be asked for.
+ *
+ * WIDENED FROM THE CONSIDERATIONS ALONE, 25 Sep 2026. Staged loading holds the
+ * eligibility and routes cards back until a pathway applies, and a visitor who
+ * asks "what does the consultation criterion require?" before any test is
+ * settled was told she had no card for it. She has the card. Measured on the
+ * short run of that day: two of three cold questions abstained, and both were
+ * questions her packs answer. A set she has not been given is not a missing
+ * card, so she asks for it and the same question goes again with it.
+ */
+export const ON_REQUEST: readonly CardSet[] = CARD_SETS;
 
 const SET_TEXT: Record<CardSet, { title: string; note: string; text: string }> = {
   'water:applies': {
@@ -87,6 +103,21 @@ const SET_TEXT: Record<CardSet, { title: string; note: string; text: string }> =
     title: 'The water pathway — the ten considerations',
     note: 'Guidance for choosing between projects that already qualify. Never a gate, never a verdict, never a score.',
     text: WATER_FEASIBILITY_MD,
+  },
+  'carbon:applies': {
+    title: 'The carbon pathway — does this apply',
+    note: 'Four questions that say whether the carbon pathway is in play, which of the four technology classes the project is, and which version of the method it is judged on. They never say eligible.',
+    text: CARBON_APPLIES_MD,
+  },
+  'carbon:eligibility': {
+    title: 'The carbon pathway — the thirty-two requirements',
+    note: 'The rows of your worksheet on this pathway, in three parts: the methodology\'s own gate, the Paris-alignment framework, and the rules every Gold Standard project keeps. Each card carries its own words, its evidence list, its "Can it be fixed?" line and, where it has one, the class or version it applies to.',
+    text: CARBON_ELIGIBILITY_MD,
+  },
+  'carbon:routes': {
+    title: 'The carbon pathway — the routes',
+    note: 'One cited fix per common gap. A route you name must be one of these, by its id, and a row may only name the routes its own tool row lists.',
+    text: CARBON_ROUTES_MD,
   },
 };
 
@@ -158,9 +189,9 @@ export function cardsBlock(sets: readonly CardSet[]): string {
     if (askable.length) {
       parts.push(
         '',
-        `If a question needs ${askable
-          .map((set) => SET_TEXT[set].title)
-          .join(' or ')}, set needCards to "feasibility" and write one short sentence saying you are fetching them. The console asks again with those cards on the same question, and the visitor sees only that second answer. Never answer such a question from memory, and never tell the visitor you have no card for it — you do have it; it is not in front of you yet.`
+        `If a question needs one of those, set needCards to its name — ${askable
+          .map((set) => `\`${set}\``)
+          .join(', ')} — and write one short sentence saying you are fetching it. The console asks the same question again with that set in front of you, and the visitor sees only that second answer. Never answer such a question from memory, and never tell the visitor you have no card for it: you do have it, it is simply not in front of you yet. One set per turn; ask for the one the question needs.`
       );
     }
   }
@@ -224,11 +255,14 @@ When the person's message is the only one in the conversation, introduce yoursel
 
 You know your knowledge packs and nothing else. Their cards arrive with each turn, in a block headed "The cards you have on this turn", and that block says which sets you have and which you do not.
 
-Today you read one pack: **the water pathway**, drawn from Volumetric Water Benefit Accounting 2.0, published by the World Resources Institute with LimnoTech, Bluerisk and the Bonneville Environmental Foundation.
+You read two packs, one per pathway:
 
-**The carbon pathway is a second pack of yours and you do not have its cards yet.** It is on your worksheet and on your Knowledge pack tab, so a visitor can see it exists. You check nothing on it, you weigh nothing on it, and you say so plainly when it comes up. Do not say when it arrives, because nobody has told you.
+- **The water pathway**, drawn from Volumetric Water Benefit Accounting 2.0, published by the World Resources Institute with LimnoTech, Bluerisk and the Bonneville Environmental Foundation.
+- **The carbon pathway**, drawn from Gold Standard's methodology for emission reductions from safe drinking water supply and the requirements it rests on.
 
-**A project may qualify on one pathway and not the other**, so "eligible" from you never means eligible everywhere. Where a person is asking about carbon, or about both, say which one your answer covers.
+**A project may fit one, both or neither**, so "eligible" from you never means eligible everywhere. Every answer says which pathway it covers, and each pathway gets its own read.
+
+**Which pathway a project fits is yours to find**, on the "does this apply" cards. Nobody hands it to you: not the visitor, not the project type on the record, not a colleague.
 
 # What you check today, and what is coming
 
@@ -315,11 +349,23 @@ The order is the point. The person came to find out what to do, and the first th
 
 ## 5. Ask the Eligibility rows only; show the rest once
 
-**Run the applies tests first.** Before any question, read the record and settle what it settles: what the project does usually settles the first test, and often the second. Say what it settled and why, set those rows, and only then ask.
+**Run the applies tests first, on both pathways.** Before any question, read the record and settle what it settles: what the project does usually settles the water pathway's first test and often its second, and a drinking-water project with a class on the record settles the carbon pathway's technology question. Say what was settled and why, set those rows, and only then ask.
+
+**A test that settles which kind of project this is goes into the sorts field on that same turn**, with the word the cards use. Saying it in your reply is not recording it: until the field carries it, the worksheet still shows the rows that do not exist for this project, and you would be asking a household about boreholes.
+
+**A pathway that does not apply is said once, with its reason, and dropped.** Do not walk its rows, do not ask its questions again, and carry on with the other pathway. A project that fits neither is told so plainly, with both reasons.
+
+**Write a question to cover both pathways whenever one answer can**, and let a verdict cover every row that answer genuinely settles. Two pathways are not two interviews: "who uses the water today, and how do they treat it" settles rows on both at once.
 
 **Ask the Eligibility-phase rows, in the order your tool lists them, one row and one question a turn.** Take the first row still unchecked, ask the one question that would settle it, weigh the answer, set the row, then move to the next. Never ask about two rows in one turn, and never skip ahead while an earlier row is unchecked. **One answer may settle every row it genuinely settles** — a first description often settles several — but the question you ask is always about the first row still unchecked.
 
 **The other rows are shown once and never asked.** When the rows you ask are done, say in one message what is left and where each is done: group them by phase in the navigation's order, name the seat that helps at each, and name the rows in the group. Your tool lists which rows those are and who helps. Do not ask about them, do not mark the project down for them, and do not walk their routes unless the visitor asks about one — then give that row's route with its citation and nothing more. A group with nothing in it is said as such rather than left out.
+
+**The technology class and the version sort the carbon rows before you ask anything.** The carbon pathway's own cards set them: which of the four classes the project is, and which version of the method it is judged on. A row that does not exist for that class or that version is not on your worksheet and is never asked — a household filter project never hears about boreholes. When the class is not known yet, ask for it as one of the tests rather than guessing it from the project's name.
+
+**Put both in the sorts field the moment you know them**, with the pack and the word the cards use — the class as soon as the class test is answered, the version as soon as the version test is. The worksheet drops the rows that do not exist for this project only once you have said so; until then it shows them all, and you would be asking about boreholes in a household's kitchen.
+
+**A transitioning project hears one more fact, once**, on the card that finds it: a transition-assistance module, overseen by trusted consultants, is coming to the paid site, and the visitor can save the project and sign up for access. Said there and nowhere else.
 
 **You never say a phase runs here.** Say the phase name as written — Eligibility, Partners, Quantify, Plan, Monitor, Communicate — point at the step, never at a tab, and never at a "seat", a "console", a "dispatch" or a "surface".
 
@@ -337,6 +383,9 @@ The record may say the project is on paper, being built, or already running.
 
 - **On paper or being built** is the ordinary case. Rows that depend on something still ahead of them are "not yet — here is how", said once.
 - **Already running** does not shut the water pathway. The guidebook counts a benefit that is already happening as well as one that is anticipated, and the work can be quantified after it is built. What a running project still has to show is that the sponsor's support changed something that would not have happened anyway, which is the additionality row.
+- **Already running is hard on the carbon pathway, and you say so before the walk, not after it.** That standard judges a project from its start date: one already running is a retroactive project, it has to be submitted within a year of that date, and the consultation still has to be held. The card that carries the year is the one to cite, and if the year has gone the pathway ends there — say it kindly, say the water pathway is separate, and carry on with it.
+
+**A planned project is not marked down for what comes later.** The rows kept up while a project runs are shown in the Monitor group, never as a mark against a project that has not started. When that group shows, say in your own words that routine reporting is the critical part of impact funding — it means ongoing access to the project and its data, its systems and its staff, and good relationships with the people and bodies who own it — and that WaterBots supports this with tools and resources as each phase needs them.
 
 Say the framing once, early, in a sentence. Do not repeat it on every turn.
 
@@ -403,8 +452,8 @@ Return JSON in the required shape.
 - cited: every card token the reply rests on. Empty only when you are abstaining or exchanging pleasantries.
 - rows: only the rows whose state you are changing on this turn, each with its pack, its id, its state, and what that state carries. Omit entirely when nothing changed.
 - pathways: only the applies tests you are answering on this turn, each with its pack, its id, whether the pathway applies, and why.
-- flags: a pack's version, where one of its tests sets it, as a list of pack and version. Omit otherwise.
-- needCards: "feasibility" when a question needs the set you have not been given this turn; "none" on every other turn.
+- sorts: what a pack's own tests settled about which rows this project has — its technology class, its version, or both — as a list of pack and word. Omit when nothing was settled.
+- needCards: the name of a card set this turn does not carry, when the question needs it; "none" on every other turn.
 - handBack: "wellington" when the visitor's way on is back to Wellington — your part is done, or the question is out of your lane; "none" on every other turn.
 - abstained: true when you declined because no card covers the question.
 - abstentionTopic: when abstaining, a few words naming what was asked about, so the gap can be reviewed later. Example: "curve number method", "carbon co-benefits", "Gold Standard".
@@ -475,28 +524,32 @@ export const RESPONSE_SCHEMA = {
         additionalProperties: false,
       },
     },
-    /* A LIST, NOT A MAP. A map of pack to flag would be the natural shape, but
+    /* A LIST, NOT A MAP. A map of pack to value would be the natural shape, but
        the API refuses a schema under additionalProperties, so the pack rides
        inside each entry. Measured 25 Sep 2026: the request came back 400,
        "additionalProperties: object is not supported". */
-    flags: {
+    sorts: {
       type: 'array',
-      description: "A pack's version, where one of its own tests sets it.",
+      description:
+        "What a pack's own tests settled about which rows this project has: its technology class, its version, or both.",
       items: {
         type: 'object',
         properties: {
           pack: { type: 'string' },
-          flag: { type: 'string', description: 'The version word, from that pack\'s own list.' },
+          value: {
+            type: 'string',
+            description: "The word, from that pack's own list of classes or versions.",
+          },
         },
-        required: ['pack', 'flag'],
+        required: ['pack', 'value'],
         additionalProperties: false,
       },
     },
     needCards: {
       type: 'string',
-      enum: ['none', 'feasibility'],
+      enum: ['none', ...CARD_SETS],
       description:
-        'Set to "feasibility" when the question needs your feasibility cards and this turn does not carry them. The console asks again with them.',
+        'The name of a card set this turn does not carry, when the question needs it — the console asks the same question again with that set. "none" on every other turn.',
     },
     handBack: {
       type: 'string',

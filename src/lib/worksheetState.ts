@@ -71,11 +71,21 @@ export type SheetRows = Record<string, Record<string, RowStatus>>;
  */
 export interface Sheet {
   rows: SheetRows;
-  /** Each pack's version flag, where its own test sets one. */
-  flags: Record<string, string>;
+  /**
+   * What sorts a pack's rows, from that pack's own tests: the technology class,
+   * the version, or both. A value is one of the pack's own declared words, and
+   * it decides which rows this project has rather than what any of them says.
+   *
+   * IT IS NOT ONLY WELLINGTON'S TO KNOW. The class reaches a visit two ways —
+   * he logs it on the record for a drinking-water project, and Phoebe's own
+   * "which of the four kinds is it" test settles it for a visitor who never
+   * went through the desk. Without the second, a household filter project was
+   * asked about boreholes; measured on the carbon walk of 25 Sep 2026.
+   */
+  sorts: Record<string, string[]>;
 }
 
-export const EMPTY_SHEET: Sheet = { rows: {}, flags: {} };
+export const EMPTY_SHEET: Sheet = { rows: {}, sorts: {} };
 
 /** How each state is named on screen. Complete words, never a symbol alone. */
 export const STATE_LABEL = ROW_STATE_LABEL;
@@ -113,11 +123,22 @@ export function statesOf(sheet: Sheet, pack: string): Record<string, string> {
   return Object.fromEntries(Object.entries(rows).map(([id, status]) => [id, status.state]));
 }
 
-/** What the project is known to be, for sorting which rows it has. */
+/**
+ * What the project is known to be, for sorting which rows it has.
+ *
+ * The record's class comes from Wellington; the sheet's sorts come from
+ * Phoebe's own tests. Either fills the same context, and the pack's own lists
+ * say which word is a class and which is a version.
+ */
 export function contextFor(sheet: Sheet, pack: string, gsClass: string): RowContext {
+  const found = section(pack);
+  const sorts = sheet.sorts[pack] ?? [];
+  const sorted = sorts.find((word) => found?.appliesTo.some((value) => value.id === word));
+  const version = sorts.find((word) => found?.versionFlags.some((value) => value.id === word));
+  const held = sorted ?? (gsClass ? gsClass.toLowerCase() : '');
   return {
-    ...(gsClass ? { gsClass: gsClass.toLowerCase() } : {}),
-    ...(sheet.flags[pack] ? { versionFlag: sheet.flags[pack] } : {}),
+    ...(held ? { gsClass: held } : {}),
+    ...(version ? { versionFlag: version } : {}),
   };
 }
 
@@ -191,7 +212,8 @@ export interface PathwayUpdate {
 export interface Verdicts {
   rows?: RowUpdate[];
   pathways?: PathwayUpdate[];
-  flags?: Record<string, string>;
+  /** What a pack's own tests settled about which rows this project has. */
+  sorts?: { pack: string; value: string }[];
 }
 
 export function applyUpdates(sheet: Sheet, updates: Verdicts): Sheet {
@@ -214,11 +236,21 @@ export function applyUpdates(sheet: Sheet, updates: Verdicts): Sheet {
       ...(update.because ? { because: update.because } : {}),
     });
   }
-  const flags = { ...sheet.flags };
-  for (const [pack, flag] of Object.entries(updates.flags ?? {})) {
-    if (section(pack)) flags[pack] = flag;
+  const sorts = { ...sheet.sorts };
+  for (const { pack, value } of updates.sorts ?? []) {
+    const found = section(pack);
+    if (!found) continue;
+    const known =
+      found.appliesTo.some((word) => word.id === value && word.id !== 'all') ||
+      found.versionFlags.some((word) => word.id === value);
+    if (!known) continue;
+    /* One word per list: a project has one class and one version, and a later
+       answer replaces an earlier one rather than piling up. */
+    const list = found.appliesTo.some((word) => word.id === value) ? found.appliesTo : found.versionFlags;
+    const kept = (sorts[pack] ?? []).filter((word) => !list.some((entry) => entry.id === word));
+    sorts[pack] = [...kept, value];
   }
-  return { rows, flags };
+  return { rows, sorts };
 }
 
 /**

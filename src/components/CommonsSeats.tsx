@@ -81,9 +81,9 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
       { sheet: carriedSheet(sheet, HER_PACKS), loaded: loaded.current }
     );
     if (answer.loaded) loaded.current = answer.loaded;
-    const verdicts = { rows: answer.rows, pathways: answer.pathways, flags: answer.flags };
+    const verdicts = { rows: answer.rows, pathways: answer.pathways, sorts: answer.sorts };
     const moved = answer.rows.length > 0 || answer.pathways.length > 0;
-    if (moved || Object.keys(answer.flags).length > 0) {
+    if (moved || answer.sorts.length > 0) {
       setSheet((current) => applyUpdates(current, verdicts));
     }
     const after = applyUpdates(sheet, verdicts);

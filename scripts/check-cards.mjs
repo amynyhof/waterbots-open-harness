@@ -281,7 +281,7 @@ for (const pack of PACKS) {
    is staged and the relay chooses which sets a turn is given. If a copy has
    drifted, the deployed relay answers from stale cards while the worksheet
    shows the current ones — a disagreement no visitor could see. The carbon
-   pack's sets join this list at pull request B of build-order step 3. */
+   pack's three sets joined on 25 Sep 2026, pull request B. */
 const generated = 'api/_cards.generated.ts';
 if (!existsSync(generated)) {
   note(`${generated} has not been generated — run: node scripts/build-prompt-modules.mjs`);
@@ -292,6 +292,9 @@ if (!existsSync(generated)) {
     ['WATER_ELIGIBILITY_MD', `${SEAT}/vwba-2.0/cards/eligibility-cards-vwba.md`],
     ['WATER_ROUTES_MD', `${SEAT}/vwba-2.0/cards/routes-cards-vwba.md`],
     ['WATER_FEASIBILITY_MD', `${SEAT}/vwba-2.0/cards/feasibility-cards-vwba.md`],
+    ['CARBON_APPLIES_MD', `${SEAT}/gs-paa-v2.0/cards/applies-cards-gs.md`],
+    ['CARBON_ELIGIBILITY_MD', `${SEAT}/gs-paa-v2.0/cards/eligibility-cards-gs.md`],
+    ['CARBON_ROUTES_MD', `${SEAT}/gs-paa-v2.0/cards/routes-cards-gs.md`],
   ]) {
     /* Same LF normalisation the generator applies — see its note on why. */
     const expected = `export const ${name}: string = ${JSON.stringify(read(file))};`;

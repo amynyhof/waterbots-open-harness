@@ -80,7 +80,10 @@ for (const q of QUESTIONS) {
       ms: r.ms,
       empty,
       chars: typeof r.reply === 'string' ? r.reply.length : 0,
-      cards: Array.isArray(r.citedCards) ? r.citedCards.length : 0,
+      /* `cited` from 25 Sep 2026: she returns card tokens, not the old
+         set-and-number pairs, and counting the field that no longer exists
+         reported every answer as uncited. */
+      cards: Array.isArray(r.cited) ? r.cited.length : 0,
       abstained: r.abstained === true,
       updates: Array.isArray(r.criteriaUpdates) ? r.criteriaUpdates.length : 0,
       /* Contract line 8, step 4: the hand-back as the relay returned it. */
