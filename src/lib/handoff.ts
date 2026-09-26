@@ -34,7 +34,7 @@
  * ticket. A reload after the click starts over, as any reload does.
  */
 
-import { section } from './worksheet.generated';
+import { HER_PACKS, section } from './worksheet.generated';
 import { stateOf, type Sheet } from './worksheetState';
 import type { MethodPack } from './methodPacks';
 import { pathwayKind } from './projectTypes.generated';
@@ -226,6 +226,32 @@ export function buildSeal(
   };
 }
 
+/**
+ * Each pathway's rows, for the email to the WaterBots team (item A18,
+ * 26 Sep 2026). Sent beside the seal only when the box is ticked; the server
+ * works the readiness read out from them itself, writes the email, and keeps
+ * none of it. It is not part of the seal and production never sees it.
+ */
+export interface TeamPathway {
+  pack: string;
+  states: Record<string, string>;
+  blocked: Record<string, string>;
+  sorts: string[];
+}
+
+export function teamRows(sheet: Sheet): TeamPathway[] {
+  return HER_PACKS.map((pack) => {
+    const rows = sheet.rows[pack] ?? {};
+    const states: Record<string, string> = {};
+    const blocked: Record<string, string> = {};
+    for (const [id, status] of Object.entries(rows)) {
+      states[id] = status.state;
+      if (status.state === 'blocked' && status.because) blocked[id] = status.because;
+    }
+    return { pack, states, blocked, sorts: sheet.sorts[pack] ?? [] };
+  });
+}
+
 /* --------------------------------------------------------------------------
    Sending it.
    -------------------------------------------------------------------------- */
@@ -238,13 +264,17 @@ export interface Ticket {
   expiresAt: string;
 }
 
-export async function sealVisit(seal: SealBody, signal?: AbortSignal): Promise<Ticket> {
+export async function sealVisit(
+  seal: SealBody,
+  forTeam?: TeamPathway[],
+  signal?: AbortSignal
+): Promise<Ticket> {
   let response: Response;
   try {
     response = await fetch('/api/handoff', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(seal),
+      body: JSON.stringify(seal.wantsHuman && forTeam ? { ...seal, forTeam } : seal),
       signal,
     });
   } catch (error) {

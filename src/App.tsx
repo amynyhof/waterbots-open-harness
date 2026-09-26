@@ -82,6 +82,7 @@ import {
   buildSeal,
   handoffAddress,
   sealVisit,
+  teamRows,
   type PersonAsk,
   type SealState,
 } from './lib/handoff';
@@ -304,7 +305,7 @@ export default function App() {
     setSealing({ kind: 'sealing' });
     try {
       const seal = buildSeal(visit, sheet, LIVE_PACKS, showPerson ? person : NO_PERSON);
-      const { ticketId } = await sealVisit(seal);
+      const { ticketId } = await sealVisit(seal, seal.wantsHuman ? teamRows(sheet) : undefined);
       setSealing({ kind: 'sealed' });
       window.location.assign(handoffAddress(ticketId));
     } catch (error) {

@@ -144,6 +144,27 @@ process.env.KV_REST_API_TOKEN = 'stand-in';
 process.env.PHOEBE_VISITOR_SALT = 'a-test-secret-that-is-not-the-real-one';
 delete process.env.VERCEL;
 
+/* THE STAND-IN MAIL PROVIDER (item A18, 26 Sep 2026). A ticked box sends an
+   email through the provider's one HTTPS address. Here that address is
+   answered by this script, which records what would have been sent and never
+   sends it; the key below is a stand-in, not the real one. */
+const MAIL_KEY = 'a-test-mail-key-that-is-not-the-real-one';
+process.env.RESEND_API_KEY = MAIL_KEY;
+const mails = [];
+let failNextMail = false;
+const realFetch = globalThis.fetch;
+globalThis.fetch = async (url, init) => {
+  if (String(url) === 'https://api.resend.com/emails') {
+    mails.push({ auth: init.headers.authorization, ...JSON.parse(init.body) });
+    if (failNextMail) {
+      failNextMail = false;
+      return new Response('{"message":"the stand-in provider refused on purpose"}', { status: 500 });
+    }
+    return new Response('{"id":"stand-in"}', { status: 200 });
+  }
+  return realFetch(url, init);
+};
+
 const sealRoute = await load('handoff/index.js');
 const { SEAL_SHAPE, TICKET_PATTERN, TICKET_TTL_SECONDS, MAX_SEAL_BYTES, MAX_HUMAN_NOTE_CHARS, readSeal, sealKey } =
   await load('_handoff.js');
@@ -469,10 +490,121 @@ expect(
   `got ${asked.status}: ${JSON.stringify(askedStored).slice(0, 200)}`
 );
 expect(
+  'a request for a person sends one email to the team, in plain words',
+  mails.length === 1 && mails[0].to.join() === 'hello@waterbots.ai' && mails[0].auth === `Bearer ${MAIL_KEY}`,
+  JSON.stringify(mails)
+);
+expect(
+  'the email carries the project, its type and stage, each pathway, and the note',
+  /Project: Test spring/.test(mails[0]?.text ?? '') &&
+    /Where: HYBAS 1040021560/.test(mails[0]?.text ?? '') &&
+    /Type: C-19, /.test(mails[0]?.text ?? '') &&
+    /Stage: on paper/.test(mails[0]?.text ?? '') &&
+    /Water pathway: Not enough known yet\./.test(mails[0]?.text ?? '') &&
+    /Carbon pathway: Not enough known yet\./.test(mails[0]?.text ?? '') &&
+    /The sponsor cannot change the design\./.test(mails[0]?.text ?? ''),
+  mails[0]?.text
+);
+expect(
+  'the email carries nothing else — not what it does, not the pin’s ids, not the ticket',
+  !/Protects a spring/.test(mails[0]?.text ?? '') &&
+    !/142534/.test(mails[0]?.text ?? '') &&
+    !(mails[0]?.text ?? '').includes(askedBody.ticketId),
+  mails[0]?.text
+);
+expect(
   'an ask with no note is a real ask',
   'seal' in readSeal({ ...sample(), wantsHuman: true }),
   JSON.stringify(readSeal({ ...sample(), wantsHuman: true }))
 );
+
+/* The rows for the team, and what happens when the email cannot go. */
+console.log('\n  The email to the team\n');
+
+const forTeam = () => [
+  {
+    pack: 'vwba-2.0',
+    states: { W1: 'applies', W2: 'applies', '1': 'met', '4': 'blocked' },
+    blocked: { '4': 'The permit requires this treatment by law, so it cannot be counted as additional.' },
+    sorts: [],
+  },
+  { pack: 'gs-paa-v2.0', states: { T1: 'does-not-apply' }, blocked: {}, sorts: [] },
+];
+const person = () => ({ ...sample(), wantsHuman: true, humanNote: 'Could part of the treatment go beyond the permit?' });
+
+mails.length = 0;
+const withRows = await post({ ...person(), forTeam: forTeam() }, '203.0.113.31');
+const withRowsBody = await withRows.json();
+const withRowsStored = JSON.parse(values.get(sealKey(withRowsBody.ticketId)) ?? '{}');
+const mailText = mails[0]?.text ?? '';
+expect(
+  'the read is worked out on the server from the rows: likely not, with the Blocked row and the card’s reason',
+  withRows.status === 200 &&
+    /Water pathway: Likely not\./.test(mailText) &&
+    /Blocked: .+ — The permit requires this treatment by law/.test(mailText),
+  mailText
+);
+expect('a pathway that does not apply says so and nothing more', /Carbon pathway: Does not apply\./.test(mailText), mailText);
+expect(
+  'the rows for the team are never stored — the seal production claims is unchanged',
+  !('forTeam' in withRowsStored) && withRowsStored.wantsHuman === true,
+  Object.keys(withRowsStored).join(', ')
+);
+if (process.env.SHOW_TEAM_MAIL) {
+  console.log(`\n--- the email as captured ---\nTo: ${mails[0].to.join()}\nFrom: ${mails[0].from}\nSubject: ${mails[0].subject}\n\n${mailText}\n--- end ---\n`);
+}
+
+await refused('rows for the team without a tick are turned away', { ...sample(), forTeam: forTeam() }, 400, 'forTeam is present without wantsHuman');
+await refused(
+  'a row that is not on that pathway is turned away',
+  { ...person(), forTeam: [{ pack: 'vwba-2.0', states: { '99': 'met' }, blocked: {}, sorts: [] }] },
+  400,
+  'row "99"'
+);
+await refused(
+  'a reason on a row that is not Blocked is turned away',
+  { ...person(), forTeam: [{ pack: 'vwba-2.0', states: { '4': 'met' }, blocked: { '4': 'x' }, sorts: [] }] },
+  400,
+  'not Blocked'
+);
+await refused(
+  'a state that is not a state is turned away',
+  { ...person(), forTeam: [{ pack: 'vwba-2.0', states: { '4': 'nearly' }, blocked: {}, sorts: [] }] },
+  400,
+  'is not a state'
+);
+
+mails.length = 0;
+await post(sample(), '203.0.113.32');
+expect('an unticked save sends no email', mails.length === 0, `${mails.length} sent`);
+
+const storedBeforeFail = values.size;
+failNextMail = true;
+const mailFailed = await post({ ...person(), forTeam: forTeam() }, '203.0.113.33');
+const mailFailedBody = await mailFailed.json();
+expect(
+  'when the email does not go, the save is taken back and the visitor is told nothing was saved',
+  mailFailed.status === 502 && /nothing was saved/.test(mailFailedBody.error) && values.size === storedBeforeFail,
+  `got ${mailFailed.status}: ${mailFailedBody.error}; store ${storedBeforeFail} → ${values.size}`
+);
+expect(
+  'and that visitor’s count is given back',
+  [...numbers.entries()].some(([k, n]) => k.startsWith('handoff:count:') && n === 0),
+  'no refunded count found'
+);
+
+delete process.env.RESEND_API_KEY;
+mails.length = 0;
+const storedBeforeNoKey = values.size;
+const noKey = await post({ ...person(), forTeam: forTeam() }, '203.0.113.34');
+const noKeyBody = await noKey.json();
+expect(
+  'with no mail key, a ticked save is refused whole, says how to save without it, and sends nothing',
+  noKey.status === 503 && /untick the box/.test(noKeyBody.error) && mails.length === 0 && values.size === storedBeforeNoKey,
+  `got ${noKey.status}: ${noKeyBody.error}`
+);
+expect('with no mail key, an unticked save still works', (await post(sample(), '203.0.113.35')).status === 200, 'an unticked save was refused');
+process.env.RESEND_API_KEY = MAIL_KEY;
 
 /* ---------------------------------------------------------------------------
    Ten a day, under the bridge's own counter.
@@ -594,7 +726,7 @@ if (compileLib.status !== 0) {
 }
 writeFileSync(join(libOut, 'package.json'), '{"type":"commonjs"}');
 const requireLib = createRequire(import.meta.url);
-const { buildSeal, handoffAddress } = requireLib(join(libOut, 'handoff.js'));
+const { buildSeal, handoffAddress, teamRows } = requireLib(join(libOut, 'handoff.js'));
 const { livePacks } = requireLib(join(libOut, 'methodPacks.js'));
 const { EMPTY_VISIT, typedContext, learnedContext, pinnedContext } = requireLib(join(libOut, 'visit.js'));
 const { pathwayKind } = requireLib(join(libOut, 'projectTypes.generated.js'));
@@ -709,6 +841,22 @@ expect(
   'a ticked box with an empty note sends the ask alone',
   tickedBlank.wantsHuman === true && !('humanNote' in tickedBlank) && 'seal' in readSeal(tickedBlank),
   JSON.stringify(tickedBlank.humanNote)
+);
+const rowsForTeam = teamRows(sheet);
+const waterForTeam = rowsForTeam.find((p) => p.pack === 'vwba-2.0');
+expect(
+  'the page sends every row’s state for the team, and a reason only on the Blocked row',
+  waterForTeam?.states['2'] === 'fixable' &&
+    waterForTeam?.states['4'] === 'blocked' &&
+    Object.keys(waterForTeam?.blocked ?? {}).join() === '4',
+  JSON.stringify(rowsForTeam)
+);
+mails.length = 0;
+const tickedThrough = await post({ ...ticked, forTeam: rowsForTeam }, '192.0.2.98');
+expect(
+  'the desk’s ticked save goes through the route and the team gets its email',
+  tickedThrough.status === 200 && mails.length === 1 && /Water pathway: Likely not\./.test(mails[0].text),
+  `got ${tickedThrough.status}: ${mails[0]?.text}`
 );
 const noteUnticked = buildSeal(visit, sheet, packs, { wanted: false, note: 'typed, then unticked' });
 expect(
