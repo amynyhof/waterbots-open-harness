@@ -15,7 +15,10 @@
  *     drinking-water project, its stage, where it is, what it is called —
  *     each with its source tag: typed, told Wellington, or from the pin
  *     (type, class and stage for "what kind" from 24 Sep 2026, item A16;
- *     told to production once, item O14);
+ *     told to production once, item O14); people served as the visitor
+ *     said it, a count and "people" or "households", never converted, from
+ *     27 Sep 2026 (ruling R4 of the people-served proposal; production
+ *     ignores it until the maintainer carries its storage);
  *   - `kind`, the retired word, derived from the type and asked of nobody.
  *     PRODUCTION'S RECEIVER STILL READS IT. A seal sent without it arrived
  *     there as an empty record — the maintainer's live test of 25 Sep 2026,
@@ -134,7 +137,19 @@ export interface SealRecord {
   kind: SealField & { value: SealKind };
   place: SealField;
   name: SealField;
+  /**
+   * People served, as the visitor said it — 27 Sep 2026, ruling R4. The count
+   * as digits, or blank; the unit beside it, or blank with a blank count.
+   * Households are never converted here. Production's receiver ignores a
+   * field it does not know; storing it there is the maintainer's carry.
+   */
+  served: SealField & { unit: SealServedUnit };
 }
+
+export type SealServedUnit = '' | 'people' | 'households';
+const SERVED_UNITS: readonly SealServedUnit[] = ['', 'people', 'households'];
+/** The relay's own ceiling for a count (api/_wellingtonAnswer.ts). */
+const MAX_SERVED = 10_000_000;
 
 export interface SealPin {
   hybasId: number;
@@ -237,8 +252,23 @@ function field(value: unknown, where: string, max: number): SealField {
   };
 }
 
+/** Blank, or a whole count from 1 to ten million with a unit; the two blank together. */
+function readServed(value: unknown): SealRecord['served'] {
+  if (value === undefined) return { value: '', unit: '', source: '' };
+  const v = object(value, 'record.served', ['value', 'unit', 'source']);
+  const count = text(v.value, 'record.served.value', 8);
+  const unit = oneOf(v.unit, 'record.served.unit', SERVED_UNITS);
+  const source = oneOf(v.source, 'record.served.source', SOURCES);
+  if (count === '' && unit === '') return { value: '', unit: '', source };
+  const n = /^[1-9][0-9]*$/.test(count) ? Number(count) : NaN;
+  if (!(n >= 1 && n <= MAX_SERVED) || unit === '') {
+    refuse('record.served is not a whole count from 1 to 10,000,000 with "people" or "households"');
+  }
+  return { value: count, unit, source };
+}
+
 function readRecord(value: unknown): SealRecord {
-  const v = object(value, 'record', ['does', 'type', 'gsClass', 'stage', 'kind', 'place', 'name']);
+  const v = object(value, 'record', ['does', 'type', 'gsClass', 'stage', 'kind', 'place', 'name', 'served']);
   const type = field(v.type, 'record.type', MAX_LABEL_CHARS);
   const gsClass = field(v.gsClass, 'record.gsClass', MAX_LABEL_CHARS);
   const stage = field(v.stage, 'record.stage', MAX_LABEL_CHARS);
@@ -268,6 +298,7 @@ function readRecord(value: unknown): SealRecord {
     kind: { value: kindValue, source: kind.source },
     place: field(v.place, 'record.place', MAX_PLACE_CHARS),
     name: field(v.name, 'record.name', MAX_NAME_CHARS),
+    served: readServed(v.served),
   };
 }
 

@@ -73,18 +73,23 @@ export interface CarriedRecord {
   stage: string;
   place: string;
   name: string;
+  /** People served, as the visitor said it — ruling R5, 27 Sep 2026, so she need not ask again. */
+  served?: { count: number; unit: string } | null;
 }
 
 export function carriedRecord(context: CarriedRecord): CarriedRecord | null {
-  const record = {
+  const record: CarriedRecord = {
     does: context.does.trim(),
     type: context.type,
     gsClass: context.gsClass,
     stage: context.stage,
     place: context.place.trim(),
     name: context.name.trim(),
+    ...(context.served ? { served: context.served } : {}),
   };
-  return record.does || record.type || record.stage || record.place || record.name ? record : null;
+  return record.does || record.type || record.stage || record.place || record.name || record.served
+    ? record
+    : null;
 }
 
 /**

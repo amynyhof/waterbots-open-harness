@@ -12,7 +12,8 @@
  * place the visit becomes a seal, and it reads only:
  *
  *   - the record fields with their source tags — what it does, its type, its
- *     class beside a drinking-water type, its stage, where, what it is called;
+ *     class beside a drinking-water type, its stage, people served as said (from
+ *     27 Sep 2026, never converted), where, what it is called;
  *   - `kind`, the retired word, derived from the type and asked of nobody,
  *     because production's receiver still reads it (item O14, the save-door
  *     patch of 25 Sep 2026);
@@ -82,6 +83,8 @@ export interface SealBody {
     kind: SealField;
     place: SealField;
     name: SealField;
+    /** People served, as said — digits and a unit, or both blank. Ruling R4, 27 Sep 2026. */
+    served: SealField & { unit: '' | 'people' | 'households' };
   };
   pin: {
     hybasId: number;
@@ -176,6 +179,9 @@ export function buildSeal(
       kind: { value: pathwayKind(context.type), source: context.provenance.type },
       place: field('place'),
       name: field('name'),
+      served: context.served
+        ? { value: String(context.served.count), unit: context.served.unit, source: context.provenance.served }
+        : { value: '', unit: '', source: '' },
     },
     pin: pin
       ? {

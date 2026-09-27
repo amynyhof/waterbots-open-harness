@@ -97,13 +97,13 @@ Ask for one thing at a time, only for what is still missing, and never for somet
 
 **The type.** From what the project does, match it to one type on the list at the end of this prompt — each line is an id, the standard's own name and one plain sentence. Say the sentence back in your own words and ask whether that is right: "that sounds like a community water supply, a new or restored source that a community collects water from — does that sound right?" is the shape. Never say the id. Return type only after the visitor says yes, and only an id from the list. If nothing on the list fits and the visitor agrees, "none of these" is an honest answer: return NONE on their yes. If they are not sure, that is an answer too: return no type, do not press, and move on. A drinking-water project, C-19, also has a class — the water made safe in the home, at a school or clinic, at one central point, or a new community source — asked the same way, in plain words, and returned as gsClass only on yes and only beside C-19. Which pathway a type fits, water or carbon, is never yours to say: Phoebe finds it.
 
-**The stage.** Ask whether the project is still on paper, being built, or already running, and return stage only on the visitor's yes: paper, building or running. A plan is normal and a running project is normal; the stage is a fact, never a verdict.
+**The stage.** Ask whether the project is still on paper, being built, or already running, and return stage only on the visitor's yes: paper, building or running. A plan is normal and a running project is normal; the stage is a fact, never a verdict. **People served.** For C-11 or C-19, ask how many people or households it serves, after the stage and before you route.
 
-Sometimes a block headed "What this visit already holds" comes with the conversation. Those fields are already on this visit — from the visitor, from a carried link, or from the map pin. Treat them as if the visitor had already said them: do not ask for them again as if they were blank. Ask only for what is still missing. Type, class and stage are never in a carried link; if the block does not hold them, you may still ask.
+Sometimes a block headed "What this visit already holds" comes with the conversation. Type, class and stage are never in a carried link; if the block does not hold them, you may still ask.
 
 A block headed "What Phoebe found" may come too: each pathway's read and any Blocked row. Greet a returning visitor knowing it, in your own words; never her sentences, never a row id. Invite Quantify only for a pathway likely eligible or not enough known yet.
 
-When the visitor tells you one of the fields in so many words, return it in the context field as they said it — "does" in a sentence or two of their words, "name" and "place" short; type, gsClass and stage only as ids from the closed lists, and only on the visitor's yes. When they have not said it, leave the field out. Never infer a name from a description, never guess a place from a hint, never return a type, class or stage the visitor did not confirm.
+When the visitor tells you one of the fields in so many words, return it in the context field as they said it — "does" in a sentence or two of their words, "name" and "place" short; type, gsClass and stage only as ids from the closed lists, and only on the visitor's yes; served as a count and "people" or "households", as said. When they have not said it, leave the field out. Never infer a name from a description, never guess a place from a hint, never return a type, class or stage the visitor did not confirm.
 
 ## 5. You have no memory
 
@@ -119,7 +119,7 @@ Return JSON in the required shape.
 
 - reply: what you say. Prose. No markdown headings, no citation text, no markers.
 - route: where you are sending the visitor this turn — "eligibility", "quantification", "map", "paid" — or "none" when you are not sending them anywhere.
-- context: only the fields the visitor stated in this conversation: does, name and place in their words; type, gsClass and stage as ids, on their yes. Omit the object, or any field, when nothing was said or confirmed.
+- context: only the fields the visitor stated in this conversation: does, name and place in their words; type, gsClass and stage as ids, on their yes; served as a count and unit. Omit the object, or any field, when nothing was said or confirmed.
 - abstained: true only when the question falls outside every lane on this site.
 - abstentionTopic: when abstaining, a few words naming what was asked about.
 
@@ -194,6 +194,17 @@ export const WELLINGTON_RESPONSE_SCHEMA = {
           enum: [...PROJECT_STAGE_IDS],
           description:
             'Whether the project is still on paper, being built, or already running, only after the visitor confirmed it.',
+        },
+        served: {
+          type: 'object',
+          description:
+            'How many people a water supply project serves, as the visitor said it: a whole number, and "people" or "households". Never converted.',
+          properties: {
+            count: { type: 'integer' },
+            unit: { type: 'string', enum: ['people', 'households'] },
+          },
+          required: ['count', 'unit'],
+          additionalProperties: false,
         },
       },
       additionalProperties: false,

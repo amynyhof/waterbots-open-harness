@@ -54,8 +54,9 @@ function recordFrom(visit: Visit): VisitRecord | null {
     stage: visit.context.stage,
     place: visit.context.place.trim(),
     name: visit.context.name.trim(),
+    ...(visit.context.served ? { served: visit.context.served } : {}),
   };
-  return record.does || record.type || record.stage || record.place || record.name ? record : null;
+  return record.does || record.type || record.stage || record.place || record.name || record.served ? record : null;
 }
 
 /**

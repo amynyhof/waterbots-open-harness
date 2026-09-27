@@ -27,7 +27,7 @@
 import { useEffect, useState } from 'react';
 import { SITE_LABEL, SITE_URL } from '../lib/site';
 import { PROJECT_STAGES, projectType } from '../lib/projectTypes.generated';
-import type { Provenance, VisitContext } from '../lib/visit';
+import { WATER_SUPPLY_TYPES, servedWords, type Provenance, type VisitContext } from '../lib/visit';
 
 const EXPANDED = 224;
 const COLLAPSED = 52;
@@ -197,6 +197,16 @@ export default function NavRail({
             hint={PROJECT_STAGES.find((s) => s.id === context.stage)?.plain}
             provenance={context.provenance.stage}
           />
+          {/* PEOPLE SERVED — 27 Sep 2026, ruling R4: a row in the same shape,
+              after the stage, as Wellington asks it. Only for a water supply
+              project, or once said; households stay households. */}
+          {(context.served || WATER_SUPPLY_TYPES.includes(context.type)) && (
+            <RecordRow
+              label="People served"
+              value={context.served ? servedWords(context.served) : ''}
+              provenance={context.provenance.served}
+            />
+          )}
           <RecordRow
             label="Where it is"
             value={context.place}
