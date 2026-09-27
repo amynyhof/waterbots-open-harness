@@ -167,9 +167,12 @@ file is deleted. Her done line's 80% pass is not measured yet; that is the harne
 at the root holds the engine bundle at `calculator-seal-2026-09-26` (gs4gg-carbon v0.16.0), placed
 by her hand, untracked and left exactly as it is. Its hashes were checked on 27 Sep 2026: all 32
 files match `carry-hashes.sha256` and the manifest, and `carried/sources/registry.yaml` holds the
-twelve registry rows the data files cite. Two things the brief meets there: the household size,
-UN DESA *Household Size and Composition 2022*, whose rights row reads `pending-determination`; and
-the manifest's own flags, for her word before anything crosses into the build. Still to come after it, in the order above: the Commons check (step 4),
+twelve registry rows the data files cite; checked again the same day after her refresh of the
+registry, hash list and manifest, and all still match. The household size, UN DESA *Household Size
+and Composition 2022*, is cleared for attribution only — CC BY 3.0 IGO, the Carlisle determination
+27b on the paid side, 27 Sep 2026. No source in the bundle's registry is pending: each is cleared,
+or cite-and-link for redistribution. The brief still meets the manifest's own flags, for her word
+before anything crosses into the build. Still to come after it, in the order above: the Commons check (step 4),
 Bridget's hello (step 6), the carry to the paid site (step 7). One item outside the numbered steps
 is part of v1's done line and still open: **the screening report export (item S21)**.
 
