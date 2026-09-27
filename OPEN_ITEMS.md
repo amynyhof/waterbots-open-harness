@@ -123,7 +123,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Agents | BONES | ~~**ruled 20 Sep 2026; the batch approved the same day** — steps 0 to 3 merged (#93, #94, #95) by 21 Sep; steps 4 to 6 open as pull request D, #97, at her eyeball~~ **built 22 Sep 2026, all four pull requests merged (#93, #94, #95, #97), eyeball stop 4 passed** — line 9 is the one gap left, carried by item A17 |
 | A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | ~~**logged 18 Sep 2026 from the maintainer's brief** — waits on her carry~~ **built 18 Sep 2026, #91 merged** — the free and Commons columns stay "unconfirmed" until she carries a confirmed file |
 | A16 | Wellington guides and leads — he never asks "water or carbon" — **and names the project type from a cited list** | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; **expanded and ruled 23 Sep 2026**: a cited list of twenty-four types, confirm then log; **the types file graded and moved into `product-shared/` the same day**, on the roster rule; **his runtime built 24 Sep 2026, #119 merged on her word**: the short-form list in his prompt, type and class and stage confirmed then logged, "what kind" retired from the record and the rail; the gate to 26,199 by the measured amount; **the save-door patch of 25 Sep 2026** puts the word back on the seal alone, derived from the type, until production's receiver is carried |
-| A17 | The handoff goes both ways — forward and back | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — her hand-back is built; his side of the return is not; not started **Listed 26 Sep 2026 as open v1 work** — the done line's "reads back what Phoebe found" |
+| A17 | The handoff goes both ways — forward and back | Agents | BONES | **logged 21 Sep 2026 from her walk of #97**; **built 26 Sep 2026, #128 merged on her word** — he reads each pathway's read and any Blocked or still-open row by id and tool-file title, never her sentences; greets the visitor back once; Quantify only where a pathway fits; built, sweep due |
 | A18 | A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person | Agents | BONES | **ruled 23 Sep 2026 from her review of Phoebe's cards** — the rule is in AGENT_RULES.md (#100, merged); **stop 3 passed the same day**: fixability lines on the six water cards and nine water routes in the pack; the "tools on the paid site" line ruled canon; **her addendum of 23 Sep 2026 ruled and its tags built**: a Phase line on every eligibility card, the stage question, framing from the stage, the door once; nothing runtime built **Built 25–26 Sep 2026 (#122, #124, #126)**: five row states, the readiness read per pathway, the cited routes, the tools line, and the door to a person — her offer once on a Blocked row, a box and note at the save door, an email to the WaterBots team on a ticked save; built, sweep due |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
 | S2 | The shared chat layer | Surfaces | closed | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -1032,8 +1032,9 @@ everywhere a visitor or an agent can see it is unchanged and was never undone.
 
 ## A17. The handoff goes both ways — forward and back
 
-**Logged 21 Sep 2026 from the maintainer's walk of pull request #97, at eyeball stop 4. Not
-started.** Her ruling, in her words:
+**Logged 21 Sep 2026 from the maintainer's walk of pull request #97, at eyeball stop 4. Built
+26 Sep 2026, #128, merged on her word; the four rulings of its proposal approved as written.** Her
+ruling, in her words:
 
 > The handoff both ways, forward and back.
 
@@ -1050,7 +1051,12 @@ already travels; what is still open; and enough for him to greet the visitor kno
 found, in his own words, never as a recital. Rule zero and the agent-phrasing ruling of 3 Sep
 2026 both apply.
 
-**Not scheduled. Proposal first. Bucket BONES.**
+**What was built, #128.** Each ask to him carries her worksheet as row ids and states only, read
+into a "What Phoebe found" note after the cache breakpoint: each pathway's read, and any Blocked or
+still-open row by id and its title from the tool file. A pathway she has not looked at yet reads not
+enough known. The desk sends him one turn the first time the visitor comes back from her, so he
+greets them knowing it. A route to Quantify becomes "none" when every pathway reads likely not or
+does not apply. His prompt is 25,894, under the unchanged gate of 26,199. Bucket BONES.
 
 ## A18. A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person
 
