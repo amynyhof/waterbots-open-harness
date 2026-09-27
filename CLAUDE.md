@@ -381,6 +381,16 @@ credit line does not meet any of these bars.
   Blocked row she offers a person once; a ticked box at the save door sends one email to
   hello@waterbots.ai through Resend, its key the hosting secret `RESEND_API_KEY`, never in the
   repository. The seal carries `wantsHuman` and `humanNote` only on a tick.
+- **Wellington reads back what Phoebe found, and asks people served, from 26–27 Sep 2026 (items A17
+  and A16, #128 and #130).** Each ask carries her worksheet as row ids and states only; he greets a
+  visitor coming back from her knowing each pathway's read, never her sentences, and routes to
+  Quantify only where a pathway is likely eligible or not enough is known. For a water supply
+  project he asks how many people or households it serves, after the stage; it is kept as said,
+  households never converted here, on the record, the rail and the seal as `record.served`. His
+  prompt is 26,108 against the unchanged gate of 26,199.
+- **The engine bundle is at `carried/`, from 27 Sep 2026**, placed by the maintainer's hand at
+  `calculator-seal-2026-09-26`, untracked and left as it is; hashes checked the same day. Calvin's
+  brief reads it.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material

@@ -163,8 +163,16 @@ a note at the save door, the tools line there, and on a ticked save an email to 
 which waits on the mail key she sets in the host's settings. Items A18 and K7 are built; the proposal
 file is deleted. Her done line's 80% pass is not measured yet; that is the harness's to say.
 
-**Next: Calvin's brief (step 5), once the paid engine's new seal is carried by her hand.** Until
-then nothing is started. Still to come after it, in the order above: the Commons check (step 4),
+**Next: Calvin's brief (step 5), in a fresh session.** The paid engine's seal is carried: `carried/`
+at the root holds the engine bundle at `calculator-seal-2026-09-26` (gs4gg-carbon v0.16.0), placed
+by her hand, untracked and left exactly as it is. Its hashes were checked on 27 Sep 2026: all 32
+files match `carry-hashes.sha256` and the manifest, and `carried/sources/registry.yaml` holds the
+twelve registry rows the data files cite; checked again the same day after her refresh of the
+registry, hash list and manifest, and all still match. The household size, UN DESA *Household Size
+and Composition 2022*, is cleared for attribution only — CC BY 3.0 IGO, the Carlisle determination
+27b on the paid side, 27 Sep 2026. No source in the bundle's registry is pending: each is cleared,
+or cite-and-link for redistribution. The brief still meets the manifest's own flags, for her word
+before anything crosses into the build. Still to come after it, in the order above: the Commons check (step 4),
 Bridget's hello (step 6), the carry to the paid site (step 7). One item outside the numbered steps
 is part of v1's done line and still open: **the screening report export (item S21)**.
 
@@ -175,6 +183,17 @@ never her sentences. He greets a visitor coming back from her once, on his own, 
 found. A route to Quantify becomes "none" when every pathway reads likely not or does not apply; a
 pathway she has not looked at yet reads not enough known. His prompt is 25,894, under the unchanged
 gate of 26,199: a 261-character rule in, a 140-character repeat of rules 1 and 2 out.
+
+**Wellington collects people served, 27 Sep 2026: #130, merged on her word.** For a water supply
+project (C-11 or C-19) he asks how many people or households it serves, after the stage and before
+he routes, and logs a whole count and its unit as the visitor said it; households are never
+converted on this site, and the conversion is Calvin's brief, from a household size with a source.
+It reaches him and Phoebe on the record, shows as a People served row on the rail, and rides the
+seal as `record.served`. His primer's line that people counts and the technology wait for Quantify
+is replaced by the true rule: they come from the visitor's description and answers, and whatever is
+still missing when they reach Calvin, Calvin asks. His prompt's repeat of the visit block's own
+lines was cut to make room: 26,073, under the unchanged 26,199; 26,108 after the build-update
+refresh at this close-out.
 
 **Step 1 is done, 24 Sep 2026.** Four pull requests,
 all merged on her word, and the proposal file deleted at the close-out.
