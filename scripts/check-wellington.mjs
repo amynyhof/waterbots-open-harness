@@ -237,9 +237,12 @@ expect(
 );
 expect('with an empty visit there is no block, so he may still ask', readRecord({}) === null && readRecord(null) === null, 'empty produced a record');
 expect(
-  'his prompt names the visit block and tells him not to re-ask what it holds',
+  'his prompt names the visit block, and the block tells him not to re-ask what it holds',
   WELLINGTON_SYSTEM_PROMPT.includes(VISIT_HEADING) &&
-    /do not ask for them again as if they were blank/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /* The sentence lives in the block alone from 27 Sep 2026: his prompt's
+       copy was cut to make room for the people-served rule, her ruling. */
+    /Do not ask for them again as if they were blank/.test(visitBlock(readRecord({ does: 'wells' }))) &&
+    !/do not ask for them again as if they were blank/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Type, class and stage are never in a carried link/.test(WELLINGTON_SYSTEM_PROMPT),
   'the visit block is missing from his prompt'
 );
@@ -518,7 +521,7 @@ const adapterSource = readFileSync('src/lib/wellington.ts', 'utf8');
 expect(
   'the adapter reads the visit at send time and omits a blank record',
   /recordFrom\(visit\)/.test(adapterSource) &&
-    /return record\.does \|\| record\.type \|\| record\.stage \|\| record\.place \|\| record\.name \? record : null/.test(adapterSource),
+    /return record\.does \|\| record\.type \|\| record\.stage \|\| record\.place \|\| record\.name \|\| record\.served \? record : null/.test(adapterSource),
   'a blank visit would still be posted'
 );
 expect(
@@ -688,6 +691,35 @@ console.log('\n  What Phoebe found\n');
   expect('the relay adds the block after the breakpoint and feeds the guard', /\.\.\.\(found \? \[\{ type: 'text' as const, text: found\.text \}\] : \[\]\)/.test(relay) && /reads: found\?\.reads/.test(relay) && /\(The visitor came back from Eligibility\.\)/.test(relay), 'the relay is not wired');
   expect('the client sends rows by id and state only', /rows: rows\.map\(\(\{ id, state \}\) => \(\{ id, state \}\)\)/.test(client), 'more than id and state crosses');
   expect('the desk greets back once, on the first return from Phoebe', /greetedBack\.current = true/.test(shell) && /visit\.stage !== 'partners'/.test(shell), 'the return greeting is not wired');
+}
+
+/* ---------------------------------------------------------------------------
+   People served — 27 Sep 2026, the maintainer's rulings on the people-served
+   proposal. As the visitor said it, households never converted; carried to
+   both agents, the rail and the seal. No model call.
+--------------------------------------------------------------------------- */
+
+console.log('\n  People served\n');
+{
+  const r = await loadApi('_record.js');
+  const say = (served) => validate({ reply: 'Thank you.', route: 'none', abstained: false, context: { served } });
+  expect('a whole count with its unit is kept as said', JSON.stringify(say({ count: 240, unit: 'households' })?.context?.served) === '{"count":240,"unit":"households"}' && say({ count: 800, unit: 'people' })?.context?.served?.unit === 'people', 'a good count was dropped');
+  expect('a fraction, a zero, too many, or an unknown unit is dropped', !say({ count: 2.5, unit: 'people' })?.context && !say({ count: 0, unit: 'people' })?.context && !say({ count: 10_000_001, unit: 'people' })?.context && !say({ count: 240, unit: 'families' })?.context && !say({ count: '240', unit: 'people' })?.context, 'a bad count was kept');
+
+  const rec = r.readRecord({ served: { count: 2400, unit: 'households' } });
+  expect('the record keeps it alone, and never converts households', rec !== null && rec.served.count === 2400 && rec.served.unit === 'households', JSON.stringify(rec));
+  expect('both agents read it in the same words', r.visitBlock(rec).includes('- People served: 2,400 households, as the visitor said it') && r.recordBlock(rec).includes('- People served: 2,400 households, as the visitor said it'), r.visitBlock(rec));
+  expect('one is said as one', r.servedWords({ count: 1, unit: 'households' }) === '1 household' && r.servedWords({ count: 1, unit: 'people' }) === '1 person', r.servedWords({ count: 1, unit: 'people' }));
+
+  expect('his region has the sixth field and the corrected rule', /six fields/.test(WELLINGTON_PRIMER_MD) && /\*\*People served\*\* — a water supply project \(C-11 or C-19\) only/.test(WELLINGTON_PRIMER_MD) && /Type,\s+technology and people served come from the visitor's description and answers;\s+whatever is still missing when they reach Calvin, Calvin asks\./.test(WELLINGTON_PRIMER_MD) && !/Rough\s+people counts/.test(WELLINGTON_PRIMER_MD), 'the primer is not as ruled');
+  expect('his schema takes served as a count and a unit', WELLINGTON_RESPONSE_SCHEMA.properties.context.properties.served?.properties?.unit?.enum?.join(',') === 'people,households', 'the schema has no served');
+
+  const client = readFileSync('src/lib/wellington.ts', 'utf8');
+  const phoebe = readFileSync('src/lib/phoebeClient.ts', 'utf8');
+  const rail = readFileSync('src/components/NavRail.tsx', 'utf8');
+  const seal = readFileSync('src/lib/handoff.ts', 'utf8');
+  expect('it travels to him, to Phoebe, to the rail and on the seal', /served: visit\.context\.served/.test(client) && /served: context\.served/.test(phoebe) && /label="People served"/.test(rail) && /value: String\(context\.served\.count\), unit: context\.served\.unit/.test(seal), 'a carrier is missing');
+  expect('the rail row sits after the stage and before the place', rail.indexOf('label="Stage"') < rail.indexOf('label="People served"') && rail.indexOf('label="People served"') < rail.indexOf('label="Where it is"'), 'the row is out of order');
 }
 
 /* ------------------------------------------------------------------------- */

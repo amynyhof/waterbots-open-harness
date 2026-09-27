@@ -185,6 +185,8 @@ const sample = () => ({
     kind: { value: 'both', source: 'chat' },
     place: { value: 'HYBAS 1040021560 · Level 6 · High (40-80%)', source: 'pin' },
     name: { value: 'Test spring', source: 'typed' },
+    /* People served, as said — households never converted. 27 Sep 2026. */
+    served: { value: '240', unit: 'households', source: 'chat' },
   },
   pin: {
     hybasId: 1040021560,
@@ -282,6 +284,19 @@ const refused = async (label, body, expectedStatus, mention) => {
     `got ${response.status}: ${payload.error}`
   );
 };
+
+/* People served — 27 Sep 2026, ruling R4. A count and a unit, both or neither. */
+{
+  const withServed = (served) => {
+    const s = sample();
+    s.record.served = served;
+    return s;
+  };
+  await refused('people served as a fraction is turned away', withServed({ value: '240.5', unit: 'households', source: 'chat' }), 400, 'record.served');
+  await refused('people served above ten million is turned away', withServed({ value: '10000001', unit: 'people', source: 'chat' }), 400, 'record.served');
+  await refused('a count with no unit is turned away', withServed({ value: '240', unit: '', source: 'chat' }), 400, 'record.served');
+  await refused('an unknown unit is turned away', withServed({ value: '240', unit: 'families', source: 'chat' }), 400, 'record.served.unit');
+}
 
 await refused('a seal carrying the conversation is turned away', { ...sample(), messages: [{ role: 'user', content: 'hi' }] }, 400, '"messages"');
 await refused(
@@ -473,6 +488,22 @@ expect(
   numbers.size === countersBefore,
   `the counters grew from ${countersBefore} to ${numbers.size}`
 );
+
+/* People served, accepted: blank, and absent from an older sender. Posted
+   after the refusal block, which proves refusals store nothing. */
+{
+  const blank = sample();
+  blank.record.served = { value: '', unit: '', source: '' };
+  expect('a blank people served is accepted', (await post(blank, '198.51.100.21')).status === 200, 'a blank was refused');
+  const older = sample();
+  delete older.record.served;
+  const read = readSeal(older);
+  expect(
+    'a seal from before people served is accepted, the field blank',
+    'seal' in read && read.seal.record.served.value === '' && read.seal.record.served.unit === '',
+    JSON.stringify(read)
+  );
+}
 
 /* The reader on its own, so the client's check can lean on it too. */
 expect('readSeal accepts the sample', 'seal' in readSeal(sample()), JSON.stringify(readSeal(sample())));

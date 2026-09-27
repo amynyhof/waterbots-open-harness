@@ -42,6 +42,7 @@ import {
   type ProjectStageId,
   type ProjectTypeId,
 } from './_projectTypes.generated.js';
+import { readServed, type Served } from './_wellingtonAnswer.js';
 import {
   PATHWAY_STATE_IDS,
   PATHWAY_STATE_LABEL,
@@ -63,6 +64,8 @@ export interface ProjectRecord {
   stage: ProjectStageId | '';
   place: string;
   name: string;
+  /** People served, as the visitor said it; households are never converted here. */
+  served?: Served;
 }
 
 /** The desk's own ceiling for "what it does"; place and name are shorter on the rail. */
@@ -117,8 +120,16 @@ export function readRecord(value: unknown): ProjectRecord | null {
     place: field(v.place),
     name: field(v.name),
   };
-  if (!record.does && !record.type && !record.stage && !record.place && !record.name) return null;
+  const served = readServed(v.served);
+  if (served) record.served = served;
+  if (!record.does && !record.type && !record.stage && !record.place && !record.name && !record.served) return null;
   return record;
+}
+
+/** "2,400 households" — the count and the unit the visitor used, never converted. */
+export function servedWords(served: Served): string {
+  const unit = served.count === 1 ? served.unit.replace(/s$/, '').replace('people', 'person') : served.unit;
+  return `${served.count.toLocaleString('en-US')} ${unit}`;
 }
 
 /** The field lines, only those that were said. Shared by both blocks. */
@@ -131,6 +142,7 @@ function recordLines(record: ProjectRecord): string[] {
   if (gsClass) lines.push(`- Which class of drinking-water project: ${gsClass.name} — ${gsClass.plain}`);
   const stage = record.stage ? PROJECT_STAGES.find((s) => s.id === record.stage) : undefined;
   if (stage) lines.push(`- Stage: ${stage.words} — ${stage.plain}`);
+  if (record.served) lines.push(`- People served: ${servedWords(record.served)}, as the visitor said it`);
   if (record.place) lines.push(`- Where it is: ${record.place}`);
   if (record.name) lines.push(`- What it is called: ${record.name}`);
   return lines;

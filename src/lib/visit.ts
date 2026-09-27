@@ -65,6 +65,28 @@ export type ProjectStage = '' | ProjectStageId;
  */
 export type Provenance = '' | 'typed' | 'chat' | 'pin';
 
+/**
+ * PEOPLE SERVED — 27 Sep 2026, the maintainer's rulings on the people-served
+ * proposal. The standard measure for a water supply project, as the visitor
+ * said it. Households travel as households and are never converted on this
+ * site; the conversion is Calvin's brief, from a household size with a source.
+ * The relay checks it (api/_wellingtonAnswer.ts) and the client again.
+ */
+export type ServedUnit = 'people' | 'households';
+export interface Served {
+  count: number;
+  unit: ServedUnit;
+}
+
+/** The two water supply types — the only ones Wellington asks people served of. */
+export const WATER_SUPPLY_TYPES: readonly string[] = ['C-11', 'C-19'];
+
+/** "2,400 households" — the count and the unit the visitor used, never converted. */
+export function servedWords(served: Served): string {
+  const unit = served.count === 1 ? (served.unit === 'people' ? 'person' : 'household') : served.unit;
+  return `${served.count.toLocaleString('en-US')} ${unit}`;
+}
+
 export interface VisitContext {
   /**
    * What the project does, in the visitor's own words to Wellington. The
@@ -79,6 +101,8 @@ export interface VisitContext {
   type: ProjectType;
   gsClass: ProjectClass;
   stage: ProjectStage;
+  /** People served, as the visitor said it. Null until they say. */
+  served: Served | null;
   provenance: {
     does: Provenance;
     name: Provenance;
@@ -86,6 +110,7 @@ export interface VisitContext {
     type: Provenance;
     gsClass: Provenance;
     stage: Provenance;
+    served: Provenance;
   };
 }
 
@@ -96,7 +121,8 @@ export const EMPTY_CONTEXT: VisitContext = {
   type: '',
   gsClass: '',
   stage: '',
-  provenance: { does: '', name: '', place: '', type: '', gsClass: '', stage: '' },
+  served: null,
+  provenance: { does: '', name: '', place: '', type: '', gsClass: '', stage: '', served: '' },
 };
 
 /** What Wellington learned this turn, from the visitor's own words and their yes. */
@@ -107,6 +133,7 @@ export interface Learned {
   type?: ProjectTypeId;
   gsClass?: GsClassId;
   stage?: ProjectStageId;
+  served?: Served;
 }
 
 /**
@@ -149,6 +176,9 @@ export function learnedContext(context: VisitContext, learned: Learned): VisitCo
   }
   if (learned.gsClass && next.type === DRINKING_WATER_TYPE) take('gsClass', learned.gsClass);
   if (learned.stage) take('stage', learned.stage);
+  if (learned.served) {
+    next = { ...next, served: learned.served, provenance: { ...next.provenance, served: 'chat' } };
+  }
   return next;
 }
 

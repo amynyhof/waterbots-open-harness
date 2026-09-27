@@ -41,6 +41,37 @@ export interface LearnedContext {
   gsClass?: GsClassId;
   /** On paper, being built, or already running, confirmed. */
   stage?: ProjectStageId;
+  /** People served, as the visitor said it — people or households, never converted. */
+  served?: Served;
+}
+
+/**
+ * PEOPLE SERVED — 27 Sep 2026, the maintainer's rulings on the people-served
+ * proposal. The standard measure for a water supply project, as the visitor
+ * said it: a whole number and its unit. Households travel as households and
+ * are never converted on this site; the conversion is Calvin's brief, from a
+ * household size with a source.
+ */
+export const SERVED_UNITS = ['people', 'households'] as const;
+export type ServedUnit = (typeof SERVED_UNITS)[number];
+export interface Served {
+  count: number;
+  unit: ServedUnit;
+}
+
+/** Ten million: more than any one water supply project, less than a typo's reach. */
+export const MAX_SERVED = 10_000_000;
+
+/** A whole count from 1 to MAX_SERVED and a unit from the list, or nothing. */
+export function readServed(value: unknown): Served | undefined {
+  if (typeof value !== 'object' || value === null) return undefined;
+  const v = value as Record<string, unknown>;
+  const unit = SERVED_UNITS.find((u) => u === v.unit);
+  const count = v.count;
+  if (!unit || typeof count !== 'number' || !Number.isInteger(count) || count < 1 || count > MAX_SERVED) {
+    return undefined;
+  }
+  return { count, unit };
 }
 
 export interface Answer {
@@ -112,6 +143,8 @@ export function validate(value: unknown, known: KnownContext = {}): Answer | nul
     if (gsClass && typeInForce === DRINKING_WATER_TYPE) out.gsClass = gsClass;
     const stage = PROJECT_STAGE_IDS.find((id) => id === c.stage);
     if (stage) out.stage = stage;
+    const served = readServed(c.served);
+    if (served) out.served = served;
     if (Object.keys(out).length > 0) context = out;
   }
 

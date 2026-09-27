@@ -28,6 +28,7 @@ import {
   type ProjectStageId,
   type ProjectTypeId,
 } from './projectTypes.generated';
+import type { Served } from './visit';
 
 export type WellingtonRoute = 'none' | 'eligibility' | 'quantification' | 'map' | 'paid';
 
@@ -38,6 +39,22 @@ export interface Learned {
   type?: ProjectTypeId;
   gsClass?: GsClassId;
   stage?: ProjectStageId;
+  served?: Served;
+}
+
+/** Ten million, the relay's own ceiling (api/_wellingtonAnswer.ts). */
+const MAX_SERVED = 10_000_000;
+
+/** A whole count from 1 to ten million and a listed unit, or nothing. */
+function readServed(value: unknown): Served | undefined {
+  if (typeof value !== 'object' || value === null) return undefined;
+  const v = value as Record<string, unknown>;
+  const unit = v.unit === 'people' || v.unit === 'households' ? v.unit : undefined;
+  const count = v.count;
+  if (!unit || typeof count !== 'number' || !Number.isInteger(count) || count < 1 || count > MAX_SERVED) {
+    return undefined;
+  }
+  return { count, unit };
 }
 
 /** The visit as the relay's `readRecord` expects it. Empty strings are fine; omit the object when nothing is filled. */
@@ -48,6 +65,7 @@ export interface VisitRecord {
   stage: string;
   place: string;
   name: string;
+  served?: Served;
 }
 
 export interface WellingtonAnswer {
@@ -160,6 +178,8 @@ export async function askWellington(
     if (gsClass) learned.gsClass = gsClass;
     const projectStage = PROJECT_STAGE_IDS.find((id) => id === c.stage);
     if (projectStage) learned.stage = projectStage;
+    const served = readServed(c.served);
+    if (served) learned.served = served;
   }
 
   return {
