@@ -2440,3 +2440,54 @@ listed as open v1 work. OPEN_ITEMS: A18 and K7 built, sweep due. CLAUDE.md: the 
 Wellington's build-update fact refreshed and regenerated; his prompt 25,735 against 26,199. No
 migrations exist. Noticed, not changed: the build-update file's own text still names his gate as
 24,000.
+
+## 26–27 September 2026 — Wellington reads back what Phoebe found (A17), people served, and the engine bundle checked
+
+**What was built.** Two pull requests, each proposal first, each merged on her word.
+
+- **#128, item A17.** His side of the return. Each ask to him carries Phoebe's worksheet as row ids
+  and states only; the relay reads it into a "What Phoebe found" note after the cache breakpoint,
+  built by the functions that draw the screen: each pathway's read, and any Blocked or still-open
+  row by id and its title from the tool file, never her sentences. The desk sends him one turn the
+  first time the visitor comes back from her, on the pattern of her own greeting. A route to Quantify
+  becomes "none" in code when every pathway reads likely not or does not apply. A pathway she has
+  not looked at reads not enough known, so it does not stop the route. Prompt 25,773 → 25,894: a
+  261-character rule in, a 140-character repeat of rules 1 and 2 out. Docs followed in #129.
+- **#130, people served.** For C-11 and C-19 he asks how many people or households a project
+  serves, after the stage and before he routes, and logs a whole count and its unit as said. It
+  reaches him and Phoebe on the record, a People served row on the rail, and `record.served` on the
+  seal, checked on the server. Households are never converted here, her R1: the one household size
+  in the repository with a source arrived later, in the carried bundle, and its rights row is still
+  pending. His primer's line that people counts and the technology wait for Quantify was wrong and
+  was replaced by the true rule, her R2.
+
+**How it was proven.** `check-wellington` 118 → 142, `check-handoff` 103 → 109, every other gate and
+`npm run build` green. Short runs with real calls: three return greetings for A17 — likely
+eligible, Blocked on row 4 (named in plain words, no id), and a Blocked visit asking for a number,
+where he declined Quantify himself, so the code check did not fire in that run. For people served,
+two walks logged 240 households and 1,500 people correctly but he never asked; after the rule, one
+walk with the number held back: he asked it himself after the stage, logged it, then routed.
+
+**What was learned.**
+- A prompt with 8 characters of room cannot take a rule; the room came from a sentence his
+  prompt repeated from a runtime block that already says it every time it arrives. Look for
+  repeats before cutting a rule.
+- A primer line can be wrong, not just outdated: "people counts wait for Quantify" described a
+  choice nobody had made.
+- A walk that volunteers the answer proves logging, not asking. The walk has to hold the answer
+  back to test the question.
+- A default needs its source before it can be used silently. The request for a silent household
+  size ran into two non-negotiables, was raised rather than chosen, and was ruled as option A.
+
+**The engine bundle.** `carried/`, placed by her hand from the paid site's `calculator-seal-2026-09-26`
+(gs4gg-carbon v0.16.0). First check: 31 of 31 hashes matched, but no registry rows travelled. After
+her refresh: 32 of 32 match the hash list and the manifest's short hashes, and
+`carried/sources/registry.yaml` holds exactly the twelve rows the data files cite. One row,
+`mofuss-fnrb-2024`, has no version; the household-size row's rights read `pending-determination`.
+Untracked and left exactly as it is.
+
+**The close-out.** BUILD_PLAN: A17 and people served done, the bundle recorded, Calvin's brief next in
+a fresh session. OPEN_ITEMS: A16 carries people served, A15's line 9 closed by A17, O14 gains the
+`record.served` carry. CLAUDE.md: two scope lines. Wellington's build-update fact refreshed to
+27 Sep and regenerated; his prompt 26,108 against 26,199. Five stale proposal files deleted from the
+root, all untracked: A17, people served, K7, guide-not-gate, phase-tags-by-nav. No migrations exist.
