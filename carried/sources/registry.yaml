@@ -1,0 +1,331 @@
+# carried/sources/registry.yaml — a FILTERED SUBSET of sources/registry.yaml
+#
+# Carried alongside the calculator engine and its parameter data ([#227]'s data file is the one
+# named exclusion — see MANIFEST.md; nothing it cites is in this subset). Holds ONLY the twelve
+# rows the carried parameter data files under calculators/data/ actually cite — checked by reading
+# every registrySources field in every carried .json file, not assumed from a list.
+#
+# Each row is copied VERBATIM from the full registry: title, version, publisher, canonical link,
+# rights posture, and the source file's own SHA-256 (a hash of the primary-source PDF/XLSX, not of
+# anything in this bundle). NO SOURCE PDF CROSSES with this file — the `file:` field below names
+# where each source is held in the full repository, as documentation only; no binary is copied.
+#
+# Full registry, all other rows, and the rights-determination history: sources/registry.yaml and
+# sources/REGISTRY_VERIFICATION.md in the repository this bundle was carried from.
+
+sources:
+  # cited by: calculators/data/fnrb/countries.json
+  - id: a64-amt-009-fnrb
+    title: "Fraction of non-renewable biomass (fNRB)"
+    publisher: "UNFCCC (Article 6.4 Mechanism)"
+    doc_ref: "A6.4-AMT-009"
+    version: "1.0"
+    published: "2026-05-21"          # in force
+    isbn: null
+    canonical_url: "https://unfccc.int/sites/default/files/resource/A6.4-AMT-009-v01.0_public.pdf"
+    license: "UNFCCC public document; redistribution unconfirmed — cite-and-link only, pending legal review."
+    rights: ingest-and-cite
+    rights_basis: "in a context pack whose licence is INGEST-AND-CITE-SNIPPETS (unfccc-tools, Carlisle 2026-08-04). The row's own licence line stays cite-and-link for REDISTRIBUTION, which ingestion is not"
+    file: "Methodology/unfccc-tools/A6.4-AMT-009-v01.0_public.pdf"
+    sha256: "aafce9fa2ad84439e3da683e60ab7aa1ee81eab61022fb3504bda318b722f2b8"
+    bytes: 1087479
+    retrieval_date: "2026-07-14"
+    cited_by: ["CALCULATOR_SPEC §3 (fNRB, PAA)", "CROSSWALK §4.1.2.3g", "calculators/data/fnrb (the OFFICIAL source for national defaults — Amy's ruling (2), 2026-09-21)"]
+    supersedes: null
+    superseded_by: null
+    notes: >
+      PAA fNRB tool; V2.0 SDWS 25 (p.61) names "the approved A6.4 fNRB tool" as the source. In force
+      21 May 2026, valid to 20 May 2029 (¶4); defaults usable through 31 December 2029 (¶14). Table 2
+      multi-national (Asia 18 / Latin America 32 / Sub-Saharan Africa 40), Table 3 national (90 countries,
+      pp.5–7), Table 4 sub-national. ¶16: Tables 2–3 are the same values as CDM TOOL33 v03.0, all based on
+      Ghilardi & Bailis (2024). Verified 2026-09-22 by parsing both PDFs: 90 rows each, identical set, no
+      value differs; and all 90 equal the MoFuSS adm0 dataset (NOT the June 2024 report's Table 5).
+      Footnote 5 conditions multi-national values on charcoal-reducing activities — printed by the report
+      whenever a regional value is used (ruling (3), next sitting).
+
+  # cited by: calculators/data/fnrb/countries.json
+  - id: cdm-tool33
+    title: "Default values for common parameters"
+    publisher: "UNFCCC (CDM)"
+    doc_ref: "CDM TOOL33"
+    version: "3.0"
+    published: "2025-06-12"
+    isbn: null
+    canonical_url: "https://cdm.unfccc.int/methodologies/PAmethodologies/tools/am-tool-33-v3.pdf"
+    license: "UNFCCC public document; redistribution unconfirmed — cite-and-link only, pending legal review."
+    rights: ingest-and-cite
+    rights_basis: "in a context pack whose licence is INGEST-AND-CITE-SNIPPETS (unfccc-tools, Carlisle 2026-08-04). The row's own licence line stays cite-and-link for REDISTRIBUTION, which ingestion is not"
+    file: "Methodology/unfccc-tools/am-tool-33-v3.pdf"
+    sha256: "83bf5a90b9081f60bb1880951a22828fb065eb6e0c97afb0585545a736ea2412"
+    bytes: 220898
+    retrieval_date: "2026-07-14"
+    cited_by: ["CALCULATOR_SPEC §3 (common-parameter + fNRB defaults)", "CROSSWALK §4.1.2.3a"]
+    supersedes: null
+    superseded_by: null
+    notes: >
+      Default values for common parameters; v03.0 (EB 125 Annex 2, 12 June 2025) revised the
+      national and regional fNRB defaults (Table 3, pp.5-7) to the MoFuSS / Ghilardi & Bailis (2024)
+      national values — the adm0 dataset, NOT the June 2024 report's Table 5 (corrected 2026-09-22; five
+      of six anchor countries differ between the two). A6.4-AMT-009 v01.0 carries the same values (its ¶16)
+      and is the source the data file cites; TOOL33 is its origin. The
+      report's "fNRB rule update (2025)" line cites it (calculators/data/fnrb/countries.json,
+      ruleUpdate). The EARLIER national defaults were introduced by v02.0 (EB 115 Annex 5,
+      8 September 2022), not held here. The hunt for it is CLOSED (Amy's ruling (1), 2026-09-21):
+      transitioning projects use their filed value only; no earlier-default line is built.
+
+  # cited by: calculators/data/legacy/defaults.json
+  - id: gs-429-1-ertool-cws
+    title: "SWS ER-Tool — CWS"
+    publisher: "Gold Standard (GS4GG)"
+    doc_ref: "429.1 V1.0 SWS ER-Tool CWS"
+    version: "1.0"
+    published: "2022-05-02"
+    isbn: null
+    canonical_url: "https://globalgoals.goldstandard.org/safe-drinking-water-supply-er-tool-cws/"
+    license: "© Gold Standard Foundation; publicly downloadable; no explicit reuse licence granted; redistribution unconfirmed — cite-and-link only, pending legal review."
+    rights: cite-and-link
+    rights_basis: "this row's own licence line: no explicit reuse licence granted, redistribution unconfirmed. Not in any pack"
+    file: "Methodology/ER calculators/429.1_V1.0_SWS_ER-Tool_CWS.xlsx"
+    sha256: "3706352ede64395358e3b0f448742d638524d20b2f6c9706253d499c338de957"
+    bytes: 947812
+    retrieval_date: "2026-07-13"
+    cited_by: ["CALCULATOR_SPEC §2/§6 (reference implementation — Method 1)", "evals/gs4gg-carbon"]
+    supersedes: null
+    superseded_by: null
+    notes: "Reference implementation for BOTH legacy and PAA (GS published no v2.0 tool). Method 1 (CWT/CWS)."
+
+  # cited by: calculators/data/fnrb/countries.json, calculators/data/legacy/defaults.json
+  - id: gs-429-v1-methodology
+    title: "Emission Reductions from Safe Drinking Water Supply (legacy)"
+    publisher: "Gold Standard (GS4GG)"
+    doc_ref: "SDWS v1.0"
+    version: "1.0"
+    published: "2021-05-03"
+    isbn: null
+    canonical_url: "https://globalgoals.goldstandard.org/standards/429_V1.0_EE_SWS_Emission-reductions-from-Safe-Drinking-Water-Supply.pdf"
+    license: "© Gold Standard Foundation; publicly downloadable; no explicit reuse licence granted; redistribution unconfirmed — cite-and-link only, pending legal review."
+    rights: ingest-and-cite
+    rights_basis: "rag_posture on this row (Carlisle 2026-08-03); in a context pack whose licence is INGEST-AND-CITE-SNIPPETS (gs-sdws-v1)"
+    file: "Methodology/V1-legacy/429_V1.0_EE_SWS_Emission-reductions-from-Safe-Drinking-Water-Supply.pdf"
+    sha256: "c709c0930957d210255a706886c4e5407917492719100e9017ab29f70d99dc9b"
+    bytes: 1162283
+    retrieval_date: "2026-07-13"
+    cited_by: ["CALCULATOR_SPEC §2 (legacy Eq.1–11)"]
+    supersedes: null
+    superseded_by: gs-429-v2-methodology
+    rag_posture: "INGEST-AND-CITE-SNIPPETS (Carlisle 2026-08-03) under binding conditions — see REGISTRY_VERIFICATION.md §RAG"
+    notes: "Legacy method; retained for the legacy-vs-PAA transition analysis."
+
+  # cited by: calculators/data/embodied/factors.json, calculators/data/paa/fuel-factors.json
+  - id: gs-429-v2-methodology
+    title: "Emission Reductions from Safe Drinking Water Supply"
+    publisher: "Gold Standard (GS4GG)"
+    doc_ref: "GS4GG PAA M400-12"
+    version: "2.0"
+    published: "2026-07-09"          # cover + SI page headers agree 09/07/2026 (ERR-010); GS webpage lists 7 July
+    isbn: null
+    canonical_url: "https://globalgoals.goldstandard.org/429-ee-sws-emission-reductions-from-safe-drinking-water-supply/"
+    license: "© Gold Standard Foundation; publicly downloadable; no explicit reuse licence granted; redistribution unconfirmed — cite-and-link only, pending legal review."
+    rights: ingest-and-cite
+    rights_basis: "rag_posture on this row (Carlisle 2026-08-03); in a context pack whose licence is INGEST-AND-CITE-SNIPPETS (gs-sdws-v2)"
+    file: "Methodology/V2-PAA/429_V2.0_PAA-M400-12-Emission-reductions-from-Safe-Drinking-Water-Supply.pdf"
+    sha256: "4eb9050b21a8364c8cbfcc575b5946fdb8eb2333fd1daf0278c7c2c498365980"
+    bytes: 1595469
+    retrieval_date: "2026-07-13"
+    cited_by: ["CALCULATOR_SPEC §3 (all PAA equations)", "CROSSWALK (authoritative)"]
+    supersedes: gs-429-v1-methodology
+    superseded_by: null
+    rag_posture: "INGEST-AND-CITE-SNIPPETS (Carlisle 2026-08-03) under binding conditions — see REGISTRY_VERIFICATION.md §RAG"
+    notes: "Authoritative; governs over the SI where they differ."
+
+  # cited by: calculators/data/embodied/factors.json
+  - id: gs-429-v2-si
+    title: "Emission Reductions from Safe Drinking Water Supply — Supplementary Information"
+    publisher: "Gold Standard (GS4GG)"
+    doc_ref: "GS4GG PAA M400-12 SI"
+    version: "1.0"
+    published: "2026-07-09"          # cover + SI page headers agree 09/07/2026 (ERR-010); GS webpage lists 7 July
+    isbn: null
+    canonical_url: "https://globalgoals.goldstandard.org/standards/429_V2.0_PAA-M400-12-Emission-reductions-from-Safe-Drinking-Water-Supply_SI.pdf"
+    license: "© Gold Standard Foundation; publicly downloadable; no explicit reuse licence granted; redistribution unconfirmed — cite-and-link only, pending legal review."
+    rights: ingest-and-cite
+    rights_basis: "in a context pack whose licence is INGEST-AND-CITE-SNIPPETS (gs-sdws-v2); the registry meta block names the SI in the 2026-08-03 determination. NOTE: this row carries no rag_posture of its own while the meta block and the pack both clear it"
+    file: "Methodology/V2-PAA/429_V2.0_PAA-M400-12-Emission-reductions-from-Safe-Drinking-Water-Supply_SI.pdf"
+    sha256: "b31e297406116da4863dabc3c48c957e6c2e557e7d86a05cbd30e202d807c584"
+    bytes: 432553
+    retrieval_date: "2026-07-13"
+    cited_by: ["CALCULATOR_SPEC §3 (defaults: Table 9 tiers, blended 3.0 L/p/d)"]
+    supersedes: null
+    superseded_by: null
+    notes: >
+      Evidentiary basis for defaults. §S.1.4 blended household-weighted 3.0 L/p/d
+      is POST-5%-deduction and is NOT a Table 9 row — see CALCULATOR_SPEC decision log.
+
+  # cited by: calculators/data/daf/countries.json
+  - id: gs-457-daf
+    title: "Downward Adjustment Factor (DAF) Determination"
+    publisher: "Gold Standard (GS4GG)"
+    doc_ref: "GS4GG A6 MT400-05 (Tool 05)"
+    version: "1.0"
+    published: "2025-12-22"
+    isbn: null
+    canonical_url: "https://globalgoals.goldstandard.org/457_paa-ms_400_05_downward-adjustment-factor-determination/"
+    license: "© Gold Standard Foundation; publicly downloadable; no explicit reuse licence granted; redistribution unconfirmed — cite-and-link only, pending legal review."
+    rights: ingest-and-cite
+    rights_basis: "in a context pack whose licence is INGEST-AND-CITE-SNIPPETS (gs-paa-requirements)"
+    file: "Methodology/PAA-framework/paa-methodology-tools/457_v1.0_PAA-MS_400_05_Downward-adjustment-factor-determination.pdf"
+    sha256: "6ae551ef9793cde4f307b1dc5da142ae2e9fbf5e46c2abdc850607bc044fdf72"
+    bytes: 819229
+    retrieval_date: "2026-07-13"
+    cited_by: ["CALCULATOR_SPEC §3 (DAF, Eq.10–12)", "CROSSWALK §4.1.2.2g"]
+    supersedes: null
+    superseded_by: null
+    notes: "DAF table = version-pinned data source for /calculators/data. Methodology codes it MT400-05; file prefix MS_400_05."
+
+  # cited by: calculators/data/fnrb/countries.json
+  - id: mofuss-adm0-zenodo-18865904
+    title: "MoFuSS global simulations 1km 2010-2050 — national (adm0) fNRB summary"
+    publisher: "A. Ghilardi (UNAM) & R. Bailis (SEI) — MoFuSS"
+    doc_ref: "MoFuSS global sim, summary_adm0.csv"
+    version: "v6"
+    published: "2025-12-20"
+    isbn: null
+    canonical_url: "https://doi.org/10.5281/zenodo.18865904"
+    license: "Creative Commons Attribution 4.0 International (CC BY 4.0), per the licence stated on the Zenodo record page under 'Rights.' Attribution required; no other restriction."
+    rights: open-licence
+    rights_basis: "RIGHTS-DETERMINATION_Carlisle_2026-09-27c.docx (sources/REGISTRY_VERIFICATION.md, 'Fifth RAG determination')"
+    file: "legacy-reference/projects/mofuss_summary_adm0_zenodo-18865904.csv"
+    sha256: "86741a1c0f75e812c99462eaec4fb2d95f0df2baa361d5c4b9812cbe73fc06e9"
+    bytes: 18085
+    retrieval_date: "2026-07-22"
+    cited_by: ["calculators/data/fnrb (mofuss-adm0-csv vintage; default ex-ante vintage)"]
+    supersedes: null
+    superseded_by: null
+    notes: >
+      National (adm0) fNRB values behind the MoFuSS global simulations, column
+      `fNRB_2020_2030_mean` (÷100 → fraction), 90 countries. The DEFAULT ex-ante vintage
+      in calculators/data/fnrb (the "mofuss-adm0-csv" vintage). Its values differ slightly
+      from the June-2024 report Table 5 (report rounds/aggregates differently) — the two are
+      kept as SEPARATE vintages (OPEN #25). From 2026-09-22 the goldens anchor HERE — these are
+      the official A6.4-AMT-009 / TOOL33 v03.0 Table 3 values (Amy's ruling (4)). Source CSV
+      held locally (gitignored); downloaded with a browser User-Agent (Zenodo 403s empty UA).
+      DOI 10.5281/zenodo.18865904; identical values in the Dec-2024 record 14389323. We cite
+      MoFuSS's PUBLISHED values only — the model is never re-run.
+
+  # cited by: calculators/data/fnrb/countries.json
+  - id: mofuss-fnrb-2024
+    title: "Updated fNRB Values for Woodfuel Interventions"
+    publisher: "A. Ghilardi (UNAM) & R. Bailis (SEI) — MoFuSS"
+    doc_ref: "MoFuSS fNRB update"
+    version: null
+    published: "2024-06-20"
+    isbn: null
+    canonical_url: "https://www.mofuss.unam.mx/mofuss/files/Report_on_Updated_fNRB_Values_20_June_2024.pdf"
+    license: "Creative Commons Attribution 4.0 International (CC BY 4.0). The PDF itself carries no licence line of its own; the same report is deposited by its authors on Zenodo, record 14291479, under CC BY 4.0, and that deposit is read as the authors' own licence grant for the report."
+    rights: open-licence
+    rights_basis: "RIGHTS-DETERMINATION_Carlisle_2026-09-27c.docx §2 (sources/REGISTRY_VERIFICATION.md, 'Fifth RAG determination'). This covers RIGHTS only; ingestion into a context pack is a separate question, still held by context-packs/coverage-ignore.json, untouched by this determination"
+    file: "Methodology/MoFuss defaults/Report_on_Updated_fNRB_Values_20_June_2024.pdf"
+    sha256: "f299a7fc10682c1242a90b15337fcf33a0f6f906d0f6260d2cfbbc230e3ccd79"
+    bytes: 4050995
+    retrieval_date: "2026-07-13"
+    cited_by: ["CALCULATOR_SPEC §2.8/§3 (fNRB default source)"]
+    supersedes: null
+    superseded_by: null
+    notes: >
+      fNRB default values. The V1.0 ER workbooks carry APPLIED values (CWS 0.72, HWT 0.87 —
+      not defaults; Amy's R1, 2026-09-21) and cite CDM TOOL30; PAA cites AMT-009/TOOL33. Title/authors/licence web-sourced from the Zenodo DOI
+      record (10.5281/zenodo.14291479, CC BY 4.0; Zenodo posting 2024-12-06).
+      canonical_url is the MoFuSS/UNAM primary source (hash-verified byte-identical
+      to the held file); "Report on Updated fNRB Values" was the filename-derived
+      title. published = the report's own date (20 Jun 2024).
+
+  # cited by: calculators/data/household-size/countries.json
+  - id: un-hh-size-2022
+    title: "Household Size and Composition 2022 — Average household size by country"
+    publisher: "United Nations, Department of Economic and Social Affairs, Population Division"
+    doc_ref: "UN DESA/POP Household Size & Composition 2022"
+    version: "2022 update"
+    published: "2022"
+    isbn: null
+    canonical_url: "https://www.un.org/development/desa/pd/data/household-size-and-composition"
+    license: "Creative Commons Attribution 3.0 IGO (CC BY 3.0 IGO), per the licence line on the copyright page of the 2022 Methodology Report (UN DESA/POP/2022/DC/NO. 8), which governs this database. That line reads 'figures and tables in this publication' — it names the report, not the spreadsheet, which carries no licence line of its own; the determination reads the report's licence as governing the database it documents. Attribution required; no other restriction."
+    rights: open-licence
+    rights_basis: "RIGHTS-DETERMINATION_Carlisle_2026-09-27b.docx (sources/REGISTRY_VERIFICATION.md, 'Fourth RAG determination')"
+    file: "legacy-reference/projects/undesa_pd_2022_hh-size-composition.xlsx"
+    sha256: "fa10a72fe74b9db66fc56806bb7550b8ae1a7d04970b2fb07762987dc71d0f2b"
+    bytes: 342176
+    retrieval_date: "2026-07-21"
+    cited_by: ["calculators/data/household-size (M8 population-input toggle)"]
+    supersedes: null
+    superseded_by: null
+    notes: >
+      Primary source for the households<->people population-input toggle (M8 Vector
+      calculator). Sheet "HH size and composition 2022", column "Average household size
+      (number of members)"; the most-recent reference date per country is selected.
+      Source file held locally (gitignored, legacy-reference/projects/) — hash/manifest
+      in git, file not committed, per the M4 storage plan. All 186 countries resolvable to
+      ISO 3166-1 alpha-3 are extracted to calculators/data/household-size/ (full coverage,
+      M8 — the coverage rule; anchors unchanged). Values are DEFAULTS, replaceable by a
+      project's surveyed household size. Downloaded with a browser User-Agent (the UN CDN
+      403s an empty UA).
+
+  # cited by: calculators/data/age-shares/countries.json
+  - id: un-wpp-2024-pop-age1
+    title: "World Population Prospects 2024 — Total population by single age and sex (File POP/01-1), medium variant"
+    publisher: "United Nations, Department of Economic and Social Affairs, Population Division"
+    doc_ref: "UN WPP 2024, POP/01-1 (POP/DB/WPP/Rev.2024/POP/F01-1)"
+    version: "2024 revision"
+    published: "2024-07"
+    isbn: null
+    canonical_url: "https://population.un.org/wpp/downloads"
+    license: "Creative Commons Attribution 3.0 IGO (CC BY 3.0 IGO), per the licence line printed in the UN's own Summary of Results and Data Sources and Methodology reports for WPP 2024. Attribution required; no other restriction."
+    rights: open-licence
+    rights_basis: "RIGHTS-DETERMINATION_Carlisle_2026-09-27b.docx (sources/REGISTRY_VERIFICATION.md, 'Fourth RAG determination')"
+    file: "legacy-reference/projects/WPP2024_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx"
+    sha256: "78109efb998fee10bd0c501844e04cafd0922836239e00aa90d9f35fc828a94a"
+    bytes: 220318066
+    retrieval_date: "2026-09-21"
+    cited_by: ["CALCULATOR_SPEC §3.1.1 (Table 9 age-split default)", "calculators/data/age-shares (v2.0.0)"]
+    supersedes: un-wpp-2024-pop-age5
+    superseded_by: null
+    notes: >
+      Primary source for the age-split default from 2026-09-21 (calculator v0.5.0, [#24], Amy's
+      step-6 addition). The 220 MB file is held locally (gitignored, legacy-reference/projects/),
+      never committed; its hash lives here. All 237 Country/Area rows for 2024 (medium variant)
+      are extracted to calculators/data/age-shares/ with the EXACT 18/19 boundary: under-5 =
+      ages 0-4, 5-18 = ages 5-18, 19+ = ages 19-100+. Replaces the 4:1 split of the 15-19 band
+      that the 5-year file (un-wpp-2024-pop-age5) forced; the largest change to any country's
+      share was 0.002.
+
+  # cited by: calculators/data/regions/un-m49.json
+  - id: unsd-m49
+    title: "Standard country or area codes for statistical use (M49)"
+    publisher: "United Nations Statistics Division (UNSD)"
+    doc_ref: "UN M49 geoscheme — overview table (English)"
+    version: "live table, retrieved 2026-09-22"
+    published: "2026-09-22"          # retrieval of a continuously maintained table; UNSD publishes no edition number
+    isbn: null
+    canonical_url: "https://unstats.un.org/unsd/methodology/m49/overview/"
+    license: "© United Nations. Publicly available; redistribution unconfirmed — cite-and-link only, pending legal review."
+    rights: cite-and-link
+    rights_basis: "this row's own licence line: publicly available, redistribution unconfirmed, cite-and-link only pending legal review"
+    file: "legacy-reference/projects/unsd-m49-overview_2026-09-22.html"
+    sha256: "b9048114f6e7f2abda83bf03d4263c9d7cd1bd7230e3d0461025ee7839a7a1fb"
+    bytes: 1721575
+    retrieval_date: "2026-09-22"
+    cited_by: ["calculators/data/regions/un-m49.json (the fNRB multi-national fallback's region map; Amy's ruling (3)(a), 2026-09-21)"]
+    supersedes: null
+    superseded_by: null
+    notes: >
+      THE REGION MAP, NOT A METHODOLOGY PARAMETER. A6.4-AMT-009 v01.0 Table 2 publishes fNRB
+      values for three regions — Asia, Latin America, Sub-Saharan Africa — and names no country
+      list for any of them, so a cited geoscheme has to decide which region a country sits in.
+      This is that geoscheme, and the three tool regions are DERIVED from its codes rather than
+      hand-listed: Sub-Saharan Africa = sub-region 202, Latin America = sub-region 419 ("Latin
+      America and the Caribbean", M49's nearest published grouping to the tool's "Latin America"),
+      Asia = region 142. All 248 rows carrying an ISO 3166-1 alpha-3 code are extracted to
+      calculators/data/regions/un-m49.json (full coverage — the coverage rule; the calculator's
+      selector offers 186 of them). UNSD serves this table as an HTML page with a client-side
+      export button and no server-side CSV, so the HELD ARTIFACT IS THE RETRIEVED PAGE — hash in
+      git, file not committed (gitignored, legacy-reference/projects/), the same posture as the
+      MoFuSS adm0 CSV and the UN WPP workbooks. Downloaded with a browser User-Agent.

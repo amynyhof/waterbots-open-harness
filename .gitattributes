@@ -1,1 +1,6 @@
 * text=auto eol=lf
+
+# The carried engine bundle is stored byte for byte, so every checkout
+# reproduces carried/carry-hashes.sha256. Added 27 Sep 2026 on the
+# maintainer's word, after normalisation broke the hashes on first commit.
+carried/** -text

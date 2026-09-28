@@ -86,3 +86,8 @@ data-src/
 # 17 Sep 2026 only a global ignore on the maintainer's machine held it back;
 # written here so another machine does not publish it.
 .claude/settings.local.json
+
+# The carried engine bundle has a folder named legacy/ (V1.0 defaults)
+# that the rule above would swallow. It is part of the sealed bundle and
+# publishes with it. Added 27 Sep 2026 on the maintainer's word.
+!carried/calculators/data/legacy/
