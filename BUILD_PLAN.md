@@ -163,18 +163,29 @@ a note at the save door, the tools line there, and on a ticked save an email to 
 which waits on the mail key she sets in the host's settings. Items A18 and K7 are built; the proposal
 file is deleted. Her done line's 80% pass is not measured yet; that is the harness's to say.
 
-**Next: Calvin's brief (step 5), in a fresh session.** The paid engine's seal is carried: `carried/`
-at the root holds the engine bundle at `calculator-seal-2026-09-26` (gs4gg-carbon v0.16.0), placed
-by her hand, untracked and left exactly as it is. Its hashes were checked on 27 Sep 2026: all 32
-files match `carry-hashes.sha256` and the manifest, and `carried/sources/registry.yaml` holds the
-twelve registry rows the data files cite; checked again the same day after her refresh of the
-registry, hash list and manifest, and all still match. The household size, UN DESA *Household Size
-and Composition 2022*, is cleared for attribution only — CC BY 3.0 IGO, the Carlisle determination
-27b on the paid side, 27 Sep 2026. No source in the bundle's registry is pending: each is cleared,
-or cite-and-link for redistribution. The brief still meets the manifest's own flags, for her word
-before anything crosses into the build. Still to come after it, in the order above: the Commons check (step 4),
-Bridget's hello (step 6), the carry to the paid site (step 7). One item outside the numbered steps
-is part of v1's done line and still open: **the screening report export (item S21)**.
+**Next: Calvin's brief (step 5) — proposed 27 Sep 2026, awaiting her rulings.**
+`PROPOSAL_calvin-brief.md` sits at the root, untracked, and asks eleven rulings (its §13); nothing
+of it is built. Its first ruling blocks the rest: the strings the manifest flagged in `presets.ts`
+and `emissions-legacy.ts` publish as they are if the engine crosses byte-identical.
+
+**The engine bundle is merged on `main` at `carried/`, 27 Sep 2026, pull request #132, tagged
+`engine-carry-2026-09-27`** (commit b099ca1, on `main`'s history by a merge commit). It is the paid
+site's `calculator-seal-2026-09-26` (gs4gg-carbon v0.16.0), placed by her hand and committed as it
+stands: 32 files, plus the manifest, the hash list and `carried/HOW-TO-CALL.md`, a short note for
+an outside caller naming the entry point, the two pre-checks, the required inputs, what comes back
+and the two refusals. **The hashes were verified from a fresh clone of the tag: 32 of 32 match.**
+Two repository rules made that true: `carried/** -text` in `.gitattributes`, because git's
+line-ending normalisation had changed 27 of the 32 files on the first commit; and
+`!carried/calculators/data/legacy/` in `.gitignore`, because the root rule for the old prototype
+folder had swallowed the bundle's folder of the same name. The first commit, b13e73b, is on no
+branch and no tag. `carried/sources/registry.yaml` holds the twelve registry rows the data files
+cite; the household size, UN DESA *Household Size and Composition 2022*, is cleared for attribution
+only — CC BY 3.0 IGO, the Carlisle determination 27b on the paid side, 27 Sep 2026 — and no source
+in the bundle's registry is pending. **Deb has both tags, `v1-tools-2026-09-24` and
+`engine-carry-2026-09-27`, as of 28 Sep 2026.** Still to come after Calvin's brief, in the order
+above: the Commons check (step 4), Bridget's hello (step 6), the carry to the paid site (step 7).
+One item outside the numbered steps is part of v1's done line and still open: **the screening
+report export (item S21)**.
 
 **Wellington reading back what Phoebe found (item A17) is done, 26 Sep 2026: #128, merged on her
 word.** Each ask carries her worksheet as row ids and states only, read into a "What Phoebe found"
