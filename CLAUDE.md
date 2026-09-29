@@ -388,9 +388,11 @@ credit line does not meet any of these bars.
   project he asks how many people or households it serves, after the stage; it is kept as said,
   households never converted here, on the record, the rail and the seal as `record.served`. His
   prompt is 26,108 against the unchanged gate of 26,199.
-- **The engine bundle is at `carried/`, from 27 Sep 2026**, placed by the maintainer's hand at
-  `calculator-seal-2026-09-26`, untracked and left as it is; hashes checked the same day. Calvin's
-  brief reads it.
+- **The engine bundle is tracked at `carried/`, from 27 Sep 2026**, placed by the maintainer's
+  hand at `calculator-seal-2026-09-26` and merged on `main` as it stands (#132), tagged
+  `engine-carry-2026-09-27`; its 32 hashes verified from a fresh clone. `carried/** -text` keeps
+  its bytes; `carried/HOW-TO-CALL.md` names its entry point for an outside caller. Nothing edits
+  it here. Calvin's brief, proposed the same day, reads it.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material

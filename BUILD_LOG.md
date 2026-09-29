@@ -2491,3 +2491,52 @@ a fresh session. OPEN_ITEMS: A16 carries people served, A15's line 9 closed by A
 `record.served` carry. CLAUDE.md: two scope lines. Wellington's build-update fact refreshed to
 27 Sep and regenerated; his prompt 26,108 against 26,199. Five stale proposal files deleted from the
 root, all untracked: A17, people served, K7, guide-not-gate, phase-tags-by-nav. No migrations exist.
+
+## 27–29 September 2026 — Calvin's brief proposed, and the engine bundle merged on `main`
+
+**What was built.** No code. One proposal, one note, one merged pull request of carried files.
+
+- **The opening.** All 32 hashes in `carried/carry-hashes.sha256` matched disk after her refresh,
+  and nothing sat under `carried/` that the list did not name. Main equalled origin at 32bb8eb.
+- **`PROPOSAL_calvin-brief.md`**, untracked at the root, build-order step 5. It names the engine's
+  home as a tracked twin held by a hash gate in the build; the screen's two headlines and five
+  carbon blocks in her order; what is hidden and not deleted; the three sliders with their sources
+  — Table 9's caps by user group (V2.0 §7.3.11, p. 31), the 347-day sensor threshold (SDWS 32,
+  pp. 67–68), proportional crediting on the passing fraction (§7.4.3 b, p. 32); households to
+  people through the engine's own `derivePopulation`; the four tags; a `used` block on the seal;
+  Calvin's chat on the proven relay pattern, filling by fields; three checks; three pull requests
+  at three eyeball stops; eleven rulings, the first of which blocks the rest. Two facts were
+  checked before writing it: a scratch copy of the engine typechecks byte-identical under this
+  site's strict compiler settings with one stand-in file; and the manifest does not name the entry
+  point, so an outside caller had to read the code.
+- **`carried/HOW-TO-CALL.md`**, 58 lines, on her word: `computeScenario`, the two pre-checks, the
+  required inputs and their kinds, what comes back, the two refusals.
+- **The bundle merged on `main` as it stands, #132, tagged `engine-carry-2026-09-27`** at b099ca1,
+  by a merge commit so the tag stays on the history. `v1-tools-2026-09-24` was already on GitHub;
+  Deb has both as of 28 Sep 2026.
+
+**How it was proven.** A fresh clone of the tag from GitHub: 32 of 32 hashes match. `npm run
+build` green with the bundle tracked.
+
+**What was learned.**
+- **Her word to push `main` met the ruleset.** A repository rule requires a pull request on
+  `main` with no approvals; a direct push is refused. The tag push went through and carried the
+  commit up, so for a while a tag pointed at a commit on no branch. The pull request is the only
+  road, even on her word.
+- **"Byte-identical" and a normalising repository disagree.** `* text=auto eol=lf` rewrote 27 of
+  the 32 files to LF on the first commit, so the committed bytes no longer matched the hash list
+  that was made over her Windows-ended files. Found by hashing the committed blobs, not the
+  working tree. `carried/** -text` fixed it; the first commit, b13e73b, is on no branch and no tag.
+- **A root ignore rule reaches into a carried tree.** `legacy/`, written for the old prototype
+  folder, swallowed `carried/calculators/data/legacy/` on both commits; the re-commit came back
+  30 of 32 until `!carried/calculators/data/legacy/` was added. A hash check that counts the files
+  it expects, not only the files it finds, is what caught it.
+- **A pasted brief can be cut off mid-sentence.** The proposal was written to what the eleven
+  rulings plainly need, and the chat said which parts were inferred.
+
+**The close-out.** BUILD_PLAN: the bundle merged and tagged, the proposal awaiting rulings.
+CLAUDE.md: the scope line says the bundle is tracked. Wellington's build-update fact refreshed to
+29 Sep and regenerated; his prompt is 26,117 against the unchanged gate of 26,199, 82 characters
+of room; `check-wellington` 142 of 142 and the staleness gate current. No migrations
+exist. Four merged branches from earlier sittings were not deleted on merge and still exist on
+origin; noted, not touched.
