@@ -24,7 +24,7 @@
  * no way to click a row into looking Met.
  */
 
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   CONSIDERATIONS,
   CONSIDERATION_GROUPS,
@@ -253,10 +253,7 @@ function PathwaySection({
             ))}
           </ol>
 
-          <div style={{ marginTop: 22 }}>
-            <div className="eyebrow" style={{ marginBottom: 8 }}>
-              Done later, with the colleague who helps there
-            </div>
+          <LaterSection pack={part.pack}>
             <p className="t-caption" style={{ margin: '0 0 12px', lineHeight: 1.65, maxWidth: '66ch' }}>
               These are not asked here and are never counted against a project. They are listed so
               nothing on the pathway is a surprise later.
@@ -273,10 +270,48 @@ function PathwaySection({
                 </li>
               ))}
             </ul>
-          </div>
+          </LaterSection>
         </>
       )}
     </section>
+  );
+}
+
+/* -------------------------------------------------------------------------
+   The rows done later, with the colleague who helps there. Collapsed by
+   default — one line and a chevron — and opened on a click; each pack's
+   section holds its own open state. Nothing inside it changed.
+------------------------------------------------------------------------- */
+
+function LaterSection({ pack, children }: { pack: string; children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  const panelId = `wb-later-${pack}`;
+  return (
+    <div style={{ marginTop: 22 }}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls={panelId}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          width: '100%',
+          padding: 0,
+          marginBottom: open ? 8 : 0,
+          background: 'transparent',
+          border: 0,
+          cursor: 'pointer',
+          textAlign: 'left',
+          font: 'inherit',
+        }}
+      >
+        <Chevron open={open} />
+        <span className="eyebrow">Done later, with the colleague who helps there</span>
+      </button>
+      {open && <div id={panelId}>{children}</div>}
+    </div>
   );
 }
 
