@@ -605,6 +605,43 @@ expect(
   /resolveEvidence\(data\.cited\)/.test(clientSource) && /id: token,/.test(clientSource),
   'the marker and its evidence are built two different ways'
 );
+/* HER CLOSING QUESTION IS SET IN BOLD — display only, 30 Sep 2026. The function
+   is run on real text, and the relay, her prompt and the client are held to not
+   knowing about it. */
+const tsModule = (await import('typescript')).default;
+const emphasis = await import(
+  'data:text/javascript;base64,' +
+    Buffer.from(
+      tsModule.transpileModule(markerSource, { compilerOptions: { module: 'ESNext', target: 'ES2022' } }).outputText
+    ).toString('base64')
+);
+const closing = (text) => {
+  const last = emphasis.emphasiseClosingQuestion(emphasis.layoutAnswer(text, []).paragraphs).at(-1);
+  return last.filter((s) => s.kind === 'strong').map((s) => s.text);
+};
+expect(
+  'a reply that ends in a question has that last sentence, and only that sentence, in bold',
+  closing('That fits. Do you have a written agreement with the landowner?').join('|') ===
+    'Do you have a written agreement with the landowner?' &&
+    closing('Do you have a written agreement?').length === 1,
+  'the closing question is not picked out'
+);
+expect(
+  'a reply whose last sentence is not a question changes nothing',
+  closing('That fits. It is likely eligible.').length === 0 &&
+    closing('Who owns it? Thanks, that helps.').length === 0 &&
+    closing('What is it?\nThanks.').length === 0,
+  'a statement was set in bold'
+);
+expect(
+  'it is display only: the host flag is hers, and the relay, her prompt and the client never mention it',
+  /boldClosingQuestion: true/.test(readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8')) &&
+    !/emphasiseClosingQuestion|boldClosingQuestion/.test(clientSource) &&
+    !/emphasiseClosingQuestion|boldClosingQuestion/.test(readFileSync(join('api', 'phoebe.ts'), 'utf8')) &&
+    !/emphasiseClosingQuestion|boldClosingQuestion/.test(readFileSync(join('api', '_systemPrompt.ts'), 'utf8')) &&
+    !/boldClosingQuestion/.test(readFileSync(join('src', 'components', 'BridgetScreen.tsx'), 'utf8')),
+  'the bold reaches the relay or another agent'
+);
 expect(
   'the client checks the same things again before anything is drawn',
   /row\.routes\.includes\(r\)/.test(clientSource) && /ROW_STATE_IDS\.find/.test(clientSource),

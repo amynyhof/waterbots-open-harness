@@ -38,9 +38,7 @@
 
 import calvinPortrait from '../../brand/assets/bots/calvin.svg';
 import type { AgentHost } from '../chat/evidence';
-import { nextPhaseAfter, nextPhaseCompetes } from '../lib/journey';
 import { livePacks, type PackValues } from '../lib/methodPacks';
-import type { Surface } from '../lib/surfaces';
 import { toolVersion } from '../lib/toolReadmes';
 import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
@@ -67,25 +65,16 @@ export default function CalvinScreen({
   onSelect,
   allValues,
   onChange,
-  onNavigate,
-  inviteSurface,
 }: {
   activeKey: string;
   onSelect: (key: string) => void;
   allValues: Record<string, PackValues>;
   onChange: (key: string, values: PackValues) => void;
-  onNavigate: (surface: Surface) => void;
-  inviteSurface: Surface | null;
 }) {
-  const next = nextPhaseAfter('quantification');
-  const nextSurface = next?.surface ?? null;
-
   return (
     <AgentScreen
       host={CALVIN}
       opensOn="tool"
-      next={next && nextSurface ? { label: next.label, go: () => onNavigate(nextSurface) } : null}
-      nextQuiet={nextPhaseCompetes('quantification', inviteSurface)}
       tabs={{
         chat: <NotLiveChat host={CALVIN} line={CALVIN_NOT_LIVE_LINE} />,
         tool: (

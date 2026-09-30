@@ -49,9 +49,7 @@ import { useConversation } from '../chat/useConversation';
 import type { Citation } from '../lib/citation';
 import { worksheetCaption, contextFor, applyUpdates, type Sheet, type Verdicts } from '../lib/worksheetState';
 import { HER_PACKS } from '../lib/worksheet.generated';
-import { nextPhaseAfter, nextPhaseCompetes } from '../lib/journey';
 import { DESK_LABEL } from '../lib/surfaces';
-import { WELLINGTON } from '../lib/wellington';
 import {
   APPROVED_ON,
   CARBON_APPLIES,
@@ -94,6 +92,9 @@ export const PHOEBE: AgentHost = {
   composerNote: 'Nothing is kept between visits. Thirty messages a day.',
   /* A visitor's words for what she is doing — canon rule 4, 8 Sep 2026. */
   thinkingLine: 'Phoebe is reviewing the criteria…',
+  /* Her closing question is set in bold — display only, the maintainer's word,
+     30 Sep 2026. Nothing about her prompt, her relay or the record changes. */
+  boldClosingQuestion: true,
 };
 
 export default function PhoebeScreen({
@@ -103,9 +104,7 @@ export default function PhoebeScreen({
   onOpenMap,
   onNavigate,
   visible,
-  eligibilityInvite,
   eligibilityDone,
-  inviteSurface,
 }: {
   onVerdicts: (verdicts: Verdicts) => void;
   /** The visit's project record, carried to Phoebe with every ask. */
@@ -116,11 +115,8 @@ export default function PhoebeScreen({
   onNavigate: (surface: Surface) => void;
   /** True while Eligibility is the visible step — first-open runs then, not on mount. */
   visible: boolean;
-  /** Wellington's real Dispatches invite, copied onto this thread once. */
-  eligibilityInvite: string;
   /** Every criterion has a verdict — she should send them back to Wellington. */
   eligibilityDone: boolean;
-  inviteSurface: Surface | null;
 }) {
   const carried = carriedRecord(record);
 
@@ -196,35 +192,17 @@ export default function PhoebeScreen({
   const chat = useConversation(ask, PHOEBE.name);
 
   const opened = useRef(false);
-  const inviteRef = useRef(eligibilityInvite);
-  inviteRef.current = eligibilityInvite;
   const chatRef = useRef(chat);
   chatRef.current = chat;
   useEffect(() => {
     if (!visible || opened.current) return;
     opened.current = true;
-    const invite = inviteRef.current.trim();
-    if (invite) {
-      chatRef.current.seed([
-        {
-          role: 'agent',
-          text: invite,
-          evidence: [],
-          speaker: WELLINGTON,
-        },
-      ]);
-    }
     void chatRef.current.askOpened();
   }, [visible]);
-
-  const next = nextPhaseAfter('eligibility');
-  const nextSurface = next?.surface ?? null;
 
   return (
     <AgentScreen
       host={PHOEBE}
-      next={next && nextSurface ? { label: next.label, go: () => onNavigate(nextSurface) } : null}
-      nextQuiet={nextPhaseCompetes('eligibility', inviteSurface)}
       tabs={{
         chat: <ScreenChat host={PHOEBE} chat={chat} composerId="wb-phoebe-composer" />,
         tool: (

@@ -313,7 +313,6 @@ const {
   eligibilityDone,
   inviteSurface,
 } = createRequire(import.meta.url)(join(libOut, 'visit.js'));
-const { nextPhaseCompetes } = createRequire(import.meta.url)(join(libOut, 'journey.js'));
 
 const typed = typedContext(EMPTY_CONTEXT, 'name', 'Walk Borehole');
 expect('a typed name carries typed provenance', typed.name === 'Walk Borehole' && typed.provenance.name === 'typed', JSON.stringify(typed));
@@ -375,14 +374,9 @@ expect(
   JSON.stringify(nextStepRows(invited, NO_SHEET, []))
 );
 expect(
-  'the desk Next phase competes with an Eligibility invite, so the top chip must quiet',
-  nextPhaseCompetes('desk', inviteSurface(invited)) === true && nextPhaseCompetes('desk', null) === false,
-  'Next phase would still stand beside the rail primary'
-);
-expect(
-  'Phoebe\'s Next phase is Partners, so an Eligibility invite does not hide it as the same move',
-  nextPhaseCompetes('eligibility', inviteSurface(invited)) === false,
-  'Phoebe\'s chip was treated as the Eligibility primary'
+  'the Eligibility invite names the Eligibility step, so the shell can clear the row once the visitor is on it',
+  inviteSurface(invited) === 'eligibility' && inviteSurface(EMPTY_VISIT) === null,
+  'the invite does not name its step'
 );
 expect('a map route during Eligibility does not skip to Partners', applyWellingtonRoute(invited, 'map', 'Open the map.').stage === 'eligibility', 'the map route skipped Eligibility');
 const opened = openedEligibility(EMPTY_VISIT);
@@ -433,17 +427,34 @@ const navSource = readFileSync('src/components/NavRail.tsx', 'utf8');
 expect('empty record fields do not say Wellington asks this', !/Wellington asks this/.test(navSource), 'the caption is still there');
 const phoebeSource = readFileSync('src/components/PhoebeScreen.tsx', 'utf8');
 expect(
-  "Phoebe's first open copies his real invite, then asks without a visitor bubble",
-  /speaker: WELLINGTON/.test(phoebeSource) && /askOpened/.test(phoebeSource) && /eligibilityInvite/.test(phoebeSource),
-  'the copy or the first-open ask is missing'
+  "Phoebe's first open asks without a visitor bubble and does not show his routing message again; her greeting stands alone",
+  /askOpened/.test(phoebeSource) && !/speaker: WELLINGTON/.test(phoebeSource) && !/eligibilityInvite/.test(phoebeSource) && !/\.seed\(/.test(phoebeSource),
+  'his routing message is copied onto her desk, or the first-open ask is missing'
 );
 const screenSource = readFileSync('src/screen/AgentScreen.tsx', 'utf8');
 const railSource = readFileSync('src/components/CrewRail.tsx', 'utf8');
-const deskSourceForInvite = readFileSync('src/components/Desk.tsx', 'utf8');
+const appSource = readFileSync('src/App.tsx', 'utf8');
+const chatComposerSource = readFileSync('src/screen/ScreenChat.tsx', 'utf8');
+const screenFiles = ['Desk', 'PhoebeScreen', 'BridgetScreen', 'CalvinScreen', 'CommonsSeats'].map((f) =>
+  readFileSync(`src/components/${f}.tsx`, 'utf8')
+);
 expect(
-  'his desk never draws the top Next phase chip; the rail row is his only invitation',
-  /next && !nextQuiet/.test(screenSource) && /^\s*nextQuiet\s*$/m.test(deskSourceForInvite) && !/nextPhaseCompetes/.test(deskSourceForInvite),
-  'his desk can still draw the top chip'
+  'no desk draws a Next phase chip: next steps live in the right rail only (ruled 30 Sep 2026, replacing the 16 Sep rule on this site)',
+  !/Next phase:/.test(screenSource) &&
+    !/wb-next-phase/.test(screenSource) &&
+    !/wb-next-phase/.test(readFileSync('src/styles/base.css', 'utf8')) &&
+    screenFiles.every((s) => !/nextQuiet|nextPhaseAfter|nextPhaseCompetes|\bnext=/.test(s)),
+  'a desk can still draw the top chip'
+);
+expect(
+  'a rail row that invites the visitor to a step clears once they are on that step',
+  /row\.action\.kind === 'surface' && row\.action\.surface === surface/.test(appSource),
+  'a taken row stays in the rail'
+);
+expect(
+  'the chat box grows as the visitor types, to three lines, then scrolls — one component, every desk',
+  /scrollHeight/.test(chatComposerSource) && /line \* 3/.test(chatComposerSource) && /overflowY/.test(chatComposerSource),
+  'the composer does not grow'
 );
 expect(
   'the rail invite is the filled primary, and derived rows stay quiet links',
@@ -466,7 +477,6 @@ expect(
 
 console.log('\n  One conversation\n');
 
-const appSource = readFileSync('src/App.tsx', 'utf8');
 const deskSource = readFileSync('src/components/Desk.tsx', 'utf8');
 expect('the shell holds the one conversation', /useConversation\(/.test(appSource), 'the conversation is not in the shell');
 expect('the desk does not start a conversation of its own', !/useConversation\(/.test(deskSource) && !/askWellington/.test(deskSource), 'the desk has its own machine');

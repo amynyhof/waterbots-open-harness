@@ -112,7 +112,6 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
     <AgentScreen
       host={PHOEBE}
       idSlug="commons-phoebe"
-      next={null}
       tabs={{
         chat: <ScreenChat host={PHOEBE} chat={chat} composerId="wb-commons-phoebe-composer" />,
         tool: <EligibilityWorksheet sheet={sheet} gsClass="" herPacks={HER_PACKS} />,
@@ -136,7 +135,6 @@ export function CalvinCommonsSeat({ packKey }: { packKey: string | null }) {
       host={CALVIN}
       idSlug="commons-calvin"
       opensOn="tool"
-      next={null}
       tabs={{
         chat: <NotLiveChat host={CALVIN} line={CALVIN_NOT_LIVE_LINE} />,
         tool: (
@@ -166,7 +164,6 @@ export function BridgetCommonsSeat() {
       host={BRIDGET}
       idSlug="commons-bridget"
       opensOn="pack"
-      next={null}
       tabs={{
         chat: <NotLiveChat host={BRIDGET} line={BRIDGET_COMMONS_LINE} />,
         pack: <KnowledgePackTab view={BRIDGET_PACK} />,
