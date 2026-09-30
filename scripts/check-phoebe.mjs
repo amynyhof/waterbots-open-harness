@@ -615,9 +615,12 @@ const emphasis = await import(
       tsModule.transpileModule(markerSource, { compilerOptions: { module: 'ESNext', target: 'ES2022' } }).outputText
     ).toString('base64')
 );
+/* Two real-shaped cards to cite, so a chip can stand in a sentence. */
+const cards = ['a', 'b'].map((id) => ({ id, label: id, citation: {}, plainEnglish: '' }));
+const show = (part) => (part.kind === 'text' ? part.text : `[ref${part.ref}]`);
 const closing = (text) => {
-  const last = emphasis.emphasiseClosingQuestion(emphasis.layoutAnswer(text, []).paragraphs).at(-1);
-  return last.filter((s) => s.kind === 'strong').map((s) => s.text);
+  const last = emphasis.emphasiseClosingQuestion(emphasis.layoutAnswer(text, cards).paragraphs).at(-1);
+  return last.filter((s) => s.kind === 'strong').map((s) => s.parts.map(show).join(''));
 };
 expect(
   'a reply that ends in a question has that last sentence, and only that sentence, in bold',
@@ -625,6 +628,19 @@ expect(
     'Do you have a written agreement with the landowner?' &&
     closing('Do you have a written agreement?').length === 1,
   'the closing question is not picked out'
+);
+expect(
+  'a citation chip between the last word and the question mark does not hide the question, and the chip stays inside the bold',
+  closing('That fits. Can you buy it [[a]]?').join('|') === 'Can you buy it [ref1]?' &&
+    closing('Can you buy it? [[a]]').join('|') === 'Can you buy it? [ref1]' &&
+    closing('It counts. [[b]] Who owns it [[a]] [[b]]?').join('|') === 'Who owns it [ref2] [ref1]?',
+  'a chip before the question mark stops the bold'
+);
+expect(
+  'a chip before a full stop still ends a sentence, so only the last sentence is bold',
+  closing('It counts [[a]]. Is it built?').join('|') === 'Is it built?' &&
+    closing('It counts. [[a]] Is it built?').join('|') === 'Is it built?',
+  'the sentence before the question was swept into the bold'
 );
 expect(
   'a reply whose last sentence is not a question changes nothing',

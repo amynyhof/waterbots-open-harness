@@ -169,43 +169,73 @@ export type Segment =
   | { kind: 'text'; text: string }
   | { kind: 'marker'; ref: number; item: Evidence };
 
-/** A segment as drawn: the laid-out ones, plus a closing question set in bold. */
-export type DisplaySegment = Segment | { kind: 'strong'; text: string };
+/**
+ * A segment as drawn: the laid-out ones, plus a closing question set in bold. The
+ * bold one carries its own pieces, so a citation chip inside the sentence is drawn
+ * in place, inside the bold, and still opens its line.
+ */
+export type DisplaySegment = Segment | { kind: 'strong'; parts: Segment[] };
 
 /**
  * DISPLAY ONLY. When the answer's last sentence ends in a question mark, that
- * sentence comes back as a bold segment; in every other case the paragraphs come
- * back unchanged. The sentence starts after the last full stop, question mark or
- * exclamation mark followed by a space, or after a line break; a citation marker
- * after the question mark does not stop it counting. Nothing here touches what
- * was sent to the agent, what it said, or what the record holds.
+ * whole sentence comes back as one bold segment, chips included; in every other
+ * case the paragraphs come back unchanged. Citation chips are ignored when
+ * deciding whether the sentence ends in a question mark, so "buy it [ref5]?" and
+ * "buy it? [ref5]" both count. The sentence starts after the last full stop,
+ * question mark or exclamation mark followed by a space (a chip between the mark
+ * and the space is ignored the same way), or after a line break. Nothing here
+ * touches what was sent to the agent, what it said, or what the record holds.
  */
 export function emphasiseClosingQuestion(paragraphs: Segment[][]): DisplaySegment[][] {
   const out: DisplaySegment[][] = paragraphs.map((segments) => [...segments]);
-  const last = out[out.length - 1];
-  if (!last) return out;
+  const source = paragraphs[paragraphs.length - 1];
+  if (!source) return out;
 
-  let at = last.length - 1;
-  while (at >= 0 && last[at].kind === 'marker') at -= 1;
-  const tail = at >= 0 ? last[at] : undefined;
-  if (!tail || tail.kind !== 'text') return out;
+  /* The paragraph as one string, one placeholder character per chip, so a
+     position in the string maps back to a segment and an offset. */
+  const CHIP = '\u0001';
+  const flat = source.map((s) => (s.kind === 'text' ? s.text : CHIP)).join('');
 
-  const body = tail.text.trimEnd();
-  if (!body.endsWith('?')) return out;
-  const trailing = tail.text.slice(body.length);
+  /* Where the sentence ends: before trailing space and chips. It must end in "?". */
+  let end = flat.length;
+  while (end > 0 && (flat[end - 1] === CHIP || /\s/.test(flat[end - 1]))) end -= 1;
+  if (end === 0 || flat[end - 1] !== '?') return out;
 
+  /* Where it starts: after the last sentence end before the final "?". */
   let start = 0;
-  for (const match of body.slice(0, -1).matchAll(/[.!?]["')\]]*\s+|\n\s*/g)) {
+  for (const match of flat.slice(0, end - 1).matchAll(/[.!?]["')\]]*(?:\s*\u0001)*\s+|\n\s*/g)) {
     start = (match.index ?? 0) + match[0].length;
   }
-  const sentence = body.slice(start);
-  if (sentence.trim() === '?') return out;
+  while (start < end && /\s/.test(flat[start])) start += 1;
+  if (flat.slice(start, end).replace(/\u0001/g, '').trim() === '?') return out;
 
-  const replacement: DisplaySegment[] = [];
-  if (start > 0) replacement.push({ kind: 'text', text: body.slice(0, start) });
-  replacement.push({ kind: 'strong', text: sentence });
-  if (trailing) replacement.push({ kind: 'text', text: trailing });
-  last.splice(at, 1, ...replacement);
+  /* The bold range runs from `start` to the last chip or mark at the end, so a
+     chip after the "?" is inside it; trailing space stays outside. */
+  let boldEnd = flat.length;
+  while (boldEnd > end && /\s/.test(flat[boldEnd - 1])) boldEnd -= 1;
+
+  const before: Segment[] = [];
+  const bold: Segment[] = [];
+  const after: Segment[] = [];
+  let offset = 0;
+  for (const segment of source) {
+    const length = segment.kind === 'text' ? segment.text.length : 1;
+    const from = offset;
+    const to = offset + length;
+    offset = to;
+    if (segment.kind === 'marker') {
+      (from >= boldEnd ? after : from >= start ? bold : before).push(segment);
+      continue;
+    }
+    const cut = (a: number, b: number) => segment.text.slice(a - from, b - from);
+    const pieces: [Segment[], string][] = [
+      [before, cut(from, Math.min(to, Math.max(from, start)))],
+      [bold, cut(Math.max(from, start), Math.min(to, Math.max(from, boldEnd)))],
+      [after, cut(Math.max(from, boldEnd), to)],
+    ];
+    for (const [into, text] of pieces) if (text) into.push({ kind: 'text', text });
+  }
+  out[out.length - 1].splice(0, source.length, ...before, { kind: 'strong', parts: bold }, ...after);
   return out;
 }
 
