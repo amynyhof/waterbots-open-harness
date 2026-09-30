@@ -15,10 +15,20 @@
 
 import { useState } from 'react';
 import CiteLine, { DataTableNote } from './CiteLine';
-import { layoutAnswer, type Evidence } from './evidence';
+import { emphasiseClosingQuestion, layoutAnswer, type Evidence } from './evidence';
 
-export default function AnswerBody({ text, evidence }: { text: string; evidence: Evidence[] }) {
+export default function AnswerBody({
+  text,
+  evidence,
+  boldClosingQuestion = false,
+}: {
+  text: string;
+  evidence: Evidence[];
+  /** Set the closing question in bold. Display only; Phoebe's chat asks for it. */
+  boldClosingQuestion?: boolean;
+}) {
   const layout = layoutAnswer(text, evidence);
+  const paragraphs = boldClosingQuestion ? emphasiseClosingQuestion(layout.paragraphs) : layout.paragraphs;
   const [open, setOpen] = useState<Set<string>>(new Set());
 
   function toggle(id: string) {
@@ -32,7 +42,7 @@ export default function AnswerBody({ text, evidence }: { text: string; evidence:
 
   return (
     <>
-      {layout.paragraphs.map((segments, p) => {
+      {paragraphs.map((segments, p) => {
         /* The citations to show under this paragraph: markers in it, opened,
            each shown once however many times its marker appears. */
         const shown: { ref: number; item: Evidence }[] = [];
@@ -52,6 +62,10 @@ export default function AnswerBody({ text, evidence }: { text: string; evidence:
               {segments.map((segment, i) =>
                 segment.kind === 'text' ? (
                   segment.text
+                ) : segment.kind === 'strong' ? (
+                  <strong key={i} style={{ fontWeight: 600, color: 'var(--ink)' }}>
+                    {segment.text}
+                  </strong>
                 ) : (
                   <button
                     key={i}

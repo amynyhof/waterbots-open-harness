@@ -92,6 +92,9 @@ export const PHOEBE: AgentHost = {
   composerNote: 'Nothing is kept between visits. Thirty messages a day.',
   /* A visitor's words for what she is doing — canon rule 4, 8 Sep 2026. */
   thinkingLine: 'Phoebe is reviewing the criteria…',
+  /* Her closing question is set in bold — display only, the maintainer's word,
+     30 Sep 2026. Nothing about her prompt, her relay or the record changes. */
+  boldClosingQuestion: true,
 };
 
 export default function PhoebeScreen({

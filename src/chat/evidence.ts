@@ -126,6 +126,8 @@ export interface AgentHost {
   thinkingLine: string;
   /** The small label beside an abstained turn. Phoebe's is "no card for this". */
   abstainedLabel?: string;
+  /** Set the answer's closing question in bold — display only. Phoebe's chat. */
+  boldClosingQuestion?: boolean;
 }
 
 /**
@@ -166,6 +168,46 @@ export interface AskMeta {
 export type Segment =
   | { kind: 'text'; text: string }
   | { kind: 'marker'; ref: number; item: Evidence };
+
+/** A segment as drawn: the laid-out ones, plus a closing question set in bold. */
+export type DisplaySegment = Segment | { kind: 'strong'; text: string };
+
+/**
+ * DISPLAY ONLY. When the answer's last sentence ends in a question mark, that
+ * sentence comes back as a bold segment; in every other case the paragraphs come
+ * back unchanged. The sentence starts after the last full stop, question mark or
+ * exclamation mark followed by a space, or after a line break; a citation marker
+ * after the question mark does not stop it counting. Nothing here touches what
+ * was sent to the agent, what it said, or what the record holds.
+ */
+export function emphasiseClosingQuestion(paragraphs: Segment[][]): DisplaySegment[][] {
+  const out: DisplaySegment[][] = paragraphs.map((segments) => [...segments]);
+  const last = out[out.length - 1];
+  if (!last) return out;
+
+  let at = last.length - 1;
+  while (at >= 0 && last[at].kind === 'marker') at -= 1;
+  const tail = at >= 0 ? last[at] : undefined;
+  if (!tail || tail.kind !== 'text') return out;
+
+  const body = tail.text.trimEnd();
+  if (!body.endsWith('?')) return out;
+  const trailing = tail.text.slice(body.length);
+
+  let start = 0;
+  for (const match of body.slice(0, -1).matchAll(/[.!?]["')\]]*\s+|\n\s*/g)) {
+    start = (match.index ?? 0) + match[0].length;
+  }
+  const sentence = body.slice(start);
+  if (sentence.trim() === '?') return out;
+
+  const replacement: DisplaySegment[] = [];
+  if (start > 0) replacement.push({ kind: 'text', text: body.slice(0, start) });
+  replacement.push({ kind: 'strong', text: sentence });
+  if (trailing) replacement.push({ kind: 'text', text: trailing });
+  last.splice(at, 1, ...replacement);
+  return out;
+}
 
 export interface Layout {
   /** The answer, split into paragraphs, each split into segments. */

@@ -130,7 +130,11 @@ function HostBubble({ host, turn }: { host: AgentHost; turn: AgentTurn }) {
           )}
         </div>
         <div className="wb-bubble">
-          <AnswerBody text={turn.text} evidence={turn.evidence} />
+          <AnswerBody
+            text={turn.text}
+            evidence={turn.evidence}
+            boldClosingQuestion={who.boldClosingQuestion}
+          />
           {/* The shown line — the citation line's own class, so it is the
               same place, size and colour, and nothing new is invented. */}
           {turn.caption && <div className="wb-cite-line" style={{ marginTop: 6 }}>{turn.caption}</div>}
