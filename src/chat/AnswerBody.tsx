@@ -15,7 +15,7 @@
 
 import { useState } from 'react';
 import CiteLine, { DataTableNote } from './CiteLine';
-import { emphasiseClosingQuestion, layoutAnswer, type Evidence } from './evidence';
+import { emphasiseClosingQuestion, layoutAnswer, type Evidence, type Segment } from './evidence';
 
 export default function AnswerBody({
   text,
@@ -40,13 +40,32 @@ export default function AnswerBody({
     });
   }
 
+  /* One piece of prose: text as it is, a chip as its button. The bold closing
+     question draws its own pieces through here, so a chip inside it still opens. */
+  function drawSegment(segment: Segment, key: number) {
+    if (segment.kind === 'text') return segment.text;
+    return (
+      <button
+        key={key}
+        type="button"
+        className="tag wb-cite-marker"
+        onClick={() => toggle(segment.item.id)}
+        aria-expanded={open.has(segment.item.id)}
+        aria-controls={`cite-${segment.item.id}`}
+        aria-label={`Reference ${segment.ref}: ${segment.item.label}`}
+      >
+        ref{segment.ref}
+      </button>
+    );
+  }
+
   return (
     <>
       {paragraphs.map((segments, p) => {
         /* The citations to show under this paragraph: markers in it, opened,
            each shown once however many times its marker appears. */
         const shown: { ref: number; item: Evidence }[] = [];
-        for (const segment of segments) {
+        for (const segment of segments.flatMap((s) => (s.kind === 'strong' ? s.parts : [s]))) {
           if (segment.kind !== 'marker') continue;
           if (!open.has(segment.item.id)) continue;
           if (shown.some((s) => s.item.id === segment.item.id)) continue;
@@ -60,24 +79,12 @@ export default function AnswerBody({
               style={{ margin: 0, fontSize: 14, color: 'var(--ink-2)', whiteSpace: 'pre-wrap' }}
             >
               {segments.map((segment, i) =>
-                segment.kind === 'text' ? (
-                  segment.text
-                ) : segment.kind === 'strong' ? (
+                segment.kind === 'strong' ? (
                   <strong key={i} style={{ fontWeight: 600, color: 'var(--ink)' }}>
-                    {segment.text}
+                    {segment.parts.map((part, j) => drawSegment(part, j))}
                   </strong>
                 ) : (
-                  <button
-                    key={i}
-                    type="button"
-                    className="tag wb-cite-marker"
-                    onClick={() => toggle(segment.item.id)}
-                    aria-expanded={open.has(segment.item.id)}
-                    aria-controls={`cite-${segment.item.id}`}
-                    aria-label={`Reference ${segment.ref}: ${segment.item.label}`}
-                  >
-                    ref{segment.ref}
-                  </button>
+                  drawSegment(segment, i)
                 )
               )}
             </p>
