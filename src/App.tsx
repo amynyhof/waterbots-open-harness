@@ -110,6 +110,7 @@ import {
   learnedContext,
   nextStepRows,
   openedEligibility,
+  rowTaken,
   pinnedContext,
   typedContext,
   type Learned,
@@ -301,15 +302,13 @@ export default function App() {
   }, [surface, visit.stage, askReturned]);
 
   /* The current invite first, then derived rows that never outrank it. */
-  /* A row that invites the visitor to a step clears the moment they are on that
-     step, so the rail shows nothing until the next agent says they are ready.
-     The save row is a link, not a step, and stays. Maintainer's ruling,
-     30 Sep 2026. */
+  /* A row clears once it is taken: the visitor is on the step it invites them to,
+     or, for the map row, a basin is pinned (rowTaken, in src/lib/visit.ts). The
+     rail then shows nothing until the next agent says they are ready. The save
+     button is not a row and stays. Maintainer's ruling, 30 Sep 2026. */
   const rows = useMemo(
     () =>
-      nextStepRows(visit, sheet, LIVE_PACKS).filter(
-        (row) => !(row.action.kind === 'surface' && row.action.surface === surface)
-      ),
+      nextStepRows(visit, sheet, LIVE_PACKS).filter((row) => !rowTaken(row, surface, visit)),
     [visit, sheet, surface]
   );
   const progress = useMemo(() => journeyProgress(visit, sheet, LIVE_PACKS), [visit, sheet]);

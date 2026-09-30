@@ -309,6 +309,8 @@ const {
   openedEligibility,
   currentInvite,
   nextStepRows,
+  rowTaken,
+  pathwayAllowsQuantify,
   deskRows,
   eligibilityDone,
   inviteSurface,
@@ -415,6 +417,38 @@ expect(
     /not answering yet/.test(currentInvite(mapped).sentence),
   JSON.stringify(currentInvite(mapped))
 );
+/* ROWS CLEAR WHEN TAKEN — 30 Sep 2026. A pin takes the map row; what lands next is
+   his invite to Quantify, and only where a pathway read allows it. */
+const pinnedVisit = {
+  ...mapped,
+  pin: { hybasId: 1, pfafId: 1, level: 6, stressLabel: 'High', subAreaKm2: 100 },
+};
+const pinnedRows = nextStepRows(pinnedVisit, NO_SHEET, []).filter((row) => !rowTaken(row, 'desk', pinnedVisit));
+expect(
+  'once a basin is pinnedVisit, no row that sends the visitor to the map stays, and his invite to Quantify lands first',
+  pinnedRows.length > 0 &&
+    pinnedRows[0].key === 'invite-quantify' &&
+    pinnedRows.every((row) => !(row.action.kind === 'surface' && row.action.surface === 'map')),
+  JSON.stringify(pinnedRows.map((row) => row.key))
+);
+expect(
+  'when no pathway read allows Quantify, the pin clears the map row and nothing replaces it',
+  currentInvite(pinnedVisit, false) === null && currentInvite(pinnedVisit, true)?.key === 'invite-quantify',
+  'the rail still invites past a pathway that cannot be screened'
+);
+expect(
+  'before a pin the map row stays until the visitor is on the map, on any step',
+  rowTaken(currentInvite(mapped), 'desk', mapped) === false &&
+    rowTaken(currentInvite(mapped), 'map', mapped) === true &&
+    rowTaken(currentInvite(invited), 'eligibility', invited) === true &&
+    rowTaken(currentInvite(invited), 'desk', invited) === false,
+  'a row clears before it is taken, or stays after'
+);
+expect(
+  'the pathway rule is the one his route keeps: likely eligible or not enough known allows Quantify',
+  pathwayAllowsQuantify(mapped, NO_SHEET) === true,
+  'an unchecked pathway should read not enough known'
+);
 const quantified = applyWellingtonRoute(mapped, 'quantification', 'Open Quantify.');
 expect(
   'Quantify invite names the calculator and says Calvin is not live',
@@ -447,8 +481,8 @@ expect(
   'a desk can still draw the top chip'
 );
 expect(
-  'a rail row that invites the visitor to a step clears once they are on that step',
-  /row\.action\.kind === 'surface' && row\.action\.surface === surface/.test(appSource),
+  'the shell draws only the rows not yet taken, on every step',
+  /filter\(\(row\) => !rowTaken\(row, surface, visit\)\)/.test(appSource),
   'a taken row stays in the rail'
 );
 expect(

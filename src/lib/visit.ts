@@ -467,7 +467,7 @@ export function deskRows(visit: Visit, sheet: Sheet, packs: MethodPack[]): DeskR
  * Learn has none yet. After Eligibility is done, the invite is back to
  * Dispatches until he invites Partners.
  */
-export function currentInvite(visit: Visit): DeskRow | null {
+export function currentInvite(visit: Visit, canQuantify = false): DeskRow | null {
   if (visit.stage === 'eligibility') {
     return {
       key: 'invite-eligibility',
@@ -486,6 +486,14 @@ export function currentInvite(visit: Visit): DeskRow | null {
       primary: true,
     };
   }
+  /* THE MAP ROW IS TAKEN ONCE A BASIN IS PINNED. Pinning is the step's work, so
+     the row goes; what lands next is Wellington's invite to Quantify, and only
+     where a pathway read allows it (the rule his own route to Quantify keeps,
+     item A17). When none allows it the rail shows nothing until the next agent
+     says they are ready. Maintainer's ruling, 30 Sep 2026. */
+  if (visit.stage === 'partners' && visit.pin !== null) {
+    return canQuantify ? quantifyInvite() : null;
+  }
   if (visit.stage === 'partners') {
     return {
       key: 'invite-partners',
@@ -495,17 +503,44 @@ export function currentInvite(visit: Visit): DeskRow | null {
       primary: true,
     };
   }
-  if (visit.stage === 'quantify') {
-    return {
-      key: 'invite-quantify',
-      from: 'wellington',
-      sentence:
-        'The Quantify step can work out a screening figure. Calvin is not answering yet; the calculator works.',
-      action: { kind: 'surface', label: 'Open Quantify', surface: 'quantification' },
-      primary: true,
-    };
-  }
+  if (visit.stage === 'quantify') return quantifyInvite();
   return null;
+}
+
+function quantifyInvite(): DeskRow {
+  return {
+    key: 'invite-quantify',
+    from: 'wellington',
+    sentence:
+      'The Quantify step can work out a screening figure. Calvin is not answering yet; the calculator works.',
+    action: { kind: 'surface', label: 'Open Quantify', surface: 'quantification' },
+    primary: true,
+  };
+}
+
+/**
+ * Whether any pathway she reads is one Calvin can screen: likely eligible, or
+ * not enough known yet. Likely not, and a pathway that does not apply, are not.
+ * The same rule Wellington's route to Quantify keeps (item A17, ruling R4).
+ */
+export function pathwayAllowsQuantify(visit: Visit, sheet: Sheet): boolean {
+  return HER_PACKS.filter((pack) => section(pack) !== undefined).some((pack) => {
+    const context = contextFor(sheet, pack, visit.context.gsClass);
+    if (pathwayState(sheet, pack, context) === 'does-not-apply') return false;
+    const read = readiness(sheet, pack, context);
+    return read === 'likely-eligible' || read === 'not-enough-known';
+  });
+}
+
+/**
+ * A row is taken when the visitor is on the step it invites them to, or, for a
+ * row that sends them to the map, once a basin is pinned. A taken row leaves the
+ * rail. The shell draws what is left.
+ */
+export function rowTaken(row: DeskRow, surface: Surface, visit: Visit): boolean {
+  if (row.action.kind !== 'surface') return false;
+  if (row.action.surface === surface) return true;
+  return row.action.surface === 'map' && visit.pin !== null;
 }
 
 /**
@@ -514,7 +549,7 @@ export function currentInvite(visit: Visit): DeskRow | null {
  * Calvin's figures wait until Quantify.
  */
 export function nextStepRows(visit: Visit, sheet: Sheet, packs: MethodPack[]): DeskRow[] {
-  const invite = currentInvite(visit);
+  const invite = currentInvite(visit, pathwayAllowsQuantify(visit, sheet));
   const derived = deskRows(visit, sheet, packs).filter((row) => {
     if (row.from === 'bridget') return visit.stage === 'partners' || visit.stage === 'quantify';
     if (row.from === 'calvin') return visit.stage === 'quantify';
