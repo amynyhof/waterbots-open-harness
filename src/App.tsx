@@ -364,13 +364,19 @@ export default function App() {
           flex: 'none',
         }}
       >
-        {/* The wordmark is the way back to the console from the Commons; on
-            the console it goes nowhere, as a wordmark conventionally does. */}
+        {/* The wordmark starts over, from every page: a fresh visit at this
+            site's own landing, the record empty and Wellington at his greeting.
+            A full load of the console's address is the one move that clears
+            every screen's held state at once — the visit, the worksheet, each
+            agent's conversation — and it is the same as a reload, so the daily
+            caps, which live on the server, are not reset by it. The
+            "waterbots.ai" link in the rail is a different thing and is left
+            alone. */}
         <button
           type="button"
           className="wb-wordmark-link"
-          onClick={() => goTo('console')}
-          aria-label="WaterBots — the console"
+          onClick={() => window.location.assign(pathForPage('console'))}
+          aria-label="WaterBots — start over"
         >
           <Wordmark height={22} />
         </button>
@@ -446,7 +452,7 @@ export default function App() {
                 style={{ position: 'absolute', inset: 0, visibility: onDesk ? undefined : 'hidden' }}
                 aria-hidden={!onDesk}
               >
-                  <Desk chat={chat} onNavigate={setSurface} inviteSurface={invite} />
+                  <Desk chat={chat} onNavigate={setSurface} />
               </div>
 
               {/* BRIDGET'S SCREEN, kept mounted, hidden when off-surface — see

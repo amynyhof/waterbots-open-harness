@@ -42,7 +42,7 @@
 
 import type { ReactNode } from 'react';
 import type { Conversation } from '../chat/useConversation';
-import { nextPhaseAfter, nextPhaseCompetes } from '../lib/journey';
+import { nextPhaseAfter } from '../lib/journey';
 import type { Surface } from '../lib/surfaces';
 import { WELLINGTON } from '../lib/wellington';
 import AgentScreen from '../screen/AgentScreen';
@@ -52,12 +52,9 @@ import ScreenChat, { SCREEN_COLUMN } from '../screen/ScreenChat';
 export default function Desk({
   chat,
   onNavigate,
-  inviteSurface,
 }: {
   chat: Conversation;
   onNavigate: (surface: Surface) => void;
-  /** The rail invite's surface, or null. Hides "Next phase" when it is the same move. */
-  inviteSurface: Surface | null;
 }) {
   const next = nextPhaseAfter('desk');
   const nextSurface = next?.surface ?? null;
@@ -66,7 +63,11 @@ export default function Desk({
     <AgentScreen
       host={WELLINGTON}
       next={next && nextSurface ? { label: next.label, go: () => onNavigate(nextSurface) } : null}
-      nextQuiet={nextPhaseCompetes('desk', inviteSurface)}
+      /* No "Next phase" chip on Wellington's desk, ever: the rail's next-steps row
+         is the only invitation here. The maintainer's ruling, 30 Sep 2026. Every
+         other screen keeps the 16 Sep rule and hides its chip when it would
+         repeat the rail. */
+      nextQuiet
       tabs={{
         chat: (
           <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>

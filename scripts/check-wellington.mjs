@@ -441,9 +441,9 @@ const screenSource = readFileSync('src/screen/AgentScreen.tsx', 'utf8');
 const railSource = readFileSync('src/components/CrewRail.tsx', 'utf8');
 const deskSourceForInvite = readFileSync('src/components/Desk.tsx', 'utf8');
 expect(
-  'the top Next phase chip hides when it is the same move as the rail invite',
-  /next && !nextQuiet/.test(screenSource) && /nextPhaseCompetes\('desk', inviteSurface\)/.test(deskSourceForInvite),
-  'the top chip still stands beside the rail primary'
+  'his desk never draws the top Next phase chip; the rail row is his only invitation',
+  /next && !nextQuiet/.test(screenSource) && /^\s*nextQuiet\s*$/m.test(deskSourceForInvite) && !/nextPhaseCompetes/.test(deskSourceForInvite),
+  'his desk can still draw the top chip'
 );
 expect(
   'the rail invite is the filled primary, and derived rows stay quiet links',
