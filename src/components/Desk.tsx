@@ -56,7 +56,7 @@ export default function Desk({
 }: {
   chat: Conversation;
   onNavigate: (surface: Surface) => void;
-  /** The rail invite's surface, or null. Hides "Next phase" when it is the same move. */
+  /** The rail invite's surface, or null. "Next phase" shows on the desk only once it is the same move. */
   inviteSurface: Surface | null;
 }) {
   const next = nextPhaseAfter('desk');
@@ -66,7 +66,11 @@ export default function Desk({
     <AgentScreen
       host={WELLINGTON}
       next={next && nextSurface ? { label: next.label, go: () => onNavigate(nextSurface) } : null}
-      nextQuiet={nextPhaseCompetes('desk', inviteSurface)}
+      /* Wellington's chip stays away until he routes the visitor on: it shows
+         when the rail holds his invite to the same step, and not before. The
+         maintainer's word, 30 Sep 2026. Every other screen keeps the 16 Sep
+         rule and hides its chip when it would repeat the rail. */
+      nextQuiet={!nextPhaseCompetes('desk', inviteSurface)}
       tabs={{
         chat: (
           <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
