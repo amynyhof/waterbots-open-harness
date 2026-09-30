@@ -452,7 +452,7 @@ export default function App() {
                 style={{ position: 'absolute', inset: 0, visibility: onDesk ? undefined : 'hidden' }}
                 aria-hidden={!onDesk}
               >
-                  <Desk chat={chat} onNavigate={setSurface} inviteSurface={invite} />
+                  <Desk chat={chat} onNavigate={setSurface} />
               </div>
 
               {/* BRIDGET'S SCREEN, kept mounted, hidden when off-surface — see

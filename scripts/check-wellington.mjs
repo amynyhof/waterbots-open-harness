@@ -375,9 +375,9 @@ expect(
   JSON.stringify(nextStepRows(invited, NO_SHEET, []))
 );
 expect(
-  'the desk Next phase is the same move as an Eligibility invite, and only then does the top chip show',
+  'the desk Next phase competes with an Eligibility invite, so the top chip must quiet',
   nextPhaseCompetes('desk', inviteSurface(invited)) === true && nextPhaseCompetes('desk', null) === false,
-  'the desk chip is not tied to the rail invite'
+  'Next phase would still stand beside the rail primary'
 );
 expect(
   'Phoebe\'s Next phase is Partners, so an Eligibility invite does not hide it as the same move',
@@ -441,9 +441,9 @@ const screenSource = readFileSync('src/screen/AgentScreen.tsx', 'utf8');
 const railSource = readFileSync('src/components/CrewRail.tsx', 'utf8');
 const deskSourceForInvite = readFileSync('src/components/Desk.tsx', 'utf8');
 expect(
-  'his top Next phase chip shows only once he has routed the visitor on, the moment the rail invite lands',
-  /next && !nextQuiet/.test(screenSource) && /nextQuiet=\{!nextPhaseCompetes\('desk', inviteSurface\)\}/.test(deskSourceForInvite),
-  'the top chip shows before he has routed the visitor'
+  'his desk never draws the top Next phase chip; the rail row is his only invitation',
+  /next && !nextQuiet/.test(screenSource) && /^\s*nextQuiet\s*$/m.test(deskSourceForInvite) && !/nextPhaseCompetes/.test(deskSourceForInvite),
+  'his desk can still draw the top chip'
 );
 expect(
   'the rail invite is the filled primary, and derived rows stay quiet links',
