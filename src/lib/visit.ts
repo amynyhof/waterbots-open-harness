@@ -533,12 +533,23 @@ export function pathwayAllowsQuantify(visit: Visit, sheet: Sheet): boolean {
 }
 
 /**
- * A row is taken when the visitor is on the step it invites them to, or, for a
- * row that sends them to the map, once a basin is pinned. A taken row leaves the
- * rail. The shell draws what is left.
+ * Only a row that SENDS the visitor somewhere clears when taken. That is the
+ * stage's invite, and Bridget's ask for the pin. Every other row is a record
+ * fact — Phoebe's readings, the pinned basin's water-stress reading, Calvin's
+ * figures — and stays in the rail whether or not the visitor is on its step.
+ * Maintainer's ruling, 30 Sep 2026.
+ */
+function sendsSomewhere(row: DeskRow, visit: Visit): boolean {
+  return row.primary === true || (row.key === 'bridget' && visit.pin === null);
+}
+
+/**
+ * A row that sends the visitor somewhere is taken when they are on that step,
+ * or, for one that sends them to the map, once a basin is pinned. A taken row
+ * leaves the rail; the shell draws what is left.
  */
 export function rowTaken(row: DeskRow, surface: Surface, visit: Visit): boolean {
-  if (row.action.kind !== 'surface') return false;
+  if (row.action.kind !== 'surface' || !sendsSomewhere(row, visit)) return false;
   if (row.action.surface === surface) return true;
   return row.action.surface === 'map' && visit.pin !== null;
 }

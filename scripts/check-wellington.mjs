@@ -425,10 +425,11 @@ const pinnedVisit = {
 };
 const pinnedRows = nextStepRows(pinnedVisit, NO_SHEET, []).filter((row) => !rowTaken(row, 'desk', pinnedVisit));
 expect(
-  'once a basin is pinnedVisit, no row that sends the visitor to the map stays, and his invite to Quantify lands first',
+  'once a basin is pinned, the invite to the map clears, his invite to Quantify lands first, and the basin\'s water-stress reading stays as a record',
   pinnedRows.length > 0 &&
     pinnedRows[0].key === 'invite-quantify' &&
-    pinnedRows.every((row) => !(row.action.kind === 'surface' && row.action.surface === 'map')),
+    !pinnedRows.some((row) => row.key === 'invite-partners') &&
+    pinnedRows.some((row) => row.key === 'bridget'),
   JSON.stringify(pinnedRows.map((row) => row.key))
 );
 expect(
@@ -443,6 +444,20 @@ expect(
     rowTaken(currentInvite(invited), 'eligibility', invited) === true &&
     rowTaken(currentInvite(invited), 'desk', invited) === false,
   'a row clears before it is taken, or stays after'
+);
+expect(
+  'only a row that sends the visitor somewhere clears: the pinned basin\'s reading, Phoebe\'s readings and Calvin\'s figures are record facts and stay (ruled 30 Sep 2026)',
+  (() => {
+    const bridget = nextStepRows(pinnedVisit, NO_SHEET, []).find((row) => row.key === 'bridget');
+    return (
+      bridget !== undefined &&
+      rowTaken(bridget, 'map', pinnedVisit) === false &&
+      rowTaken(bridget, 'desk', pinnedVisit) === false &&
+      rowTaken({ key: 'phoebe-water', from: 'phoebe', sentence: 'x', action: { kind: 'surface', label: 'x', surface: 'eligibility' } }, 'eligibility', pinnedVisit) === false &&
+      rowTaken({ key: 'calvin-x', from: 'calvin', sentence: 'x', action: { kind: 'surface', label: 'x', surface: 'quantification' } }, 'quantification', pinnedVisit) === false
+    );
+  })(),
+  'a record row clears when taken'
 );
 expect(
   'the pathway rule is the one his route keeps: likely eligible or not enough known allows Quantify',
