@@ -1012,22 +1012,6 @@ button.wb-phase:hover span:last-child {
 
 /* "Next phase" at the right end of the row — §7's secondary button: a
    Tide-tinted border with Tide text. Navigation, so Tide, not the agent. */
-.wb-next-phase {
-  margin-left: auto;
-  font-family: var(--font-sans);
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--tide-text);
-  background: transparent;
-  border: 1px solid color-mix(in oklab, var(--tide) 40%, transparent);
-  border-radius: var(--r-md);
-  padding: 7px 12px;
-  cursor: pointer;
-  transition: background var(--dur) var(--ease);
-}
-.wb-next-phase:hover {
-  background: color-mix(in oklab, var(--tide) 6%, transparent);
-}
 
 /* Bubbles — shared chat language (src/chat/Transcript.tsx), carried 13 Sep 2026
    from paid docs/chat/SHARED_CHAT.md. Visitor right, hairline; host left, tint,

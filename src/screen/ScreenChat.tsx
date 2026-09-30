@@ -22,7 +22,7 @@
  * BETA IS STATED IN WORDS beside the name, where the host says it is true.
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import Transcript from '../chat/Transcript';
 import type { AgentHost } from '../chat/evidence';
 import type { Conversation } from '../chat/useConversation';
@@ -41,6 +41,23 @@ export default function ScreenChat({
   composerId: string;
 }) {
   const scroller = useRef<HTMLDivElement>(null);
+  const composer = useRef<HTMLTextAreaElement>(null);
+  /* THE BOX GROWS AS THE VISITOR TYPES, up to three lines, then scrolls. It is
+     measured, not guessed: one row's height is reset first so a shorter draft
+     (or a sent one, which empties it) shrinks the box back. */
+  useLayoutEffect(() => {
+    const box = composer.current;
+    if (!box) return;
+    const style = window.getComputedStyle(box);
+    const line = parseFloat(style.lineHeight) || 19.5;
+    const extra =
+      parseFloat(style.paddingTop) + parseFloat(style.paddingBottom) +
+      parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+    box.style.height = 'auto';
+    const most = line * 3 + extra;
+    box.style.height = `${Math.min(box.scrollHeight + (style.boxSizing === 'border-box' ? parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth) : 0), most)}px`;
+    box.style.overflowY = box.scrollHeight > most ? 'auto' : 'hidden';
+  }, [chat.draft]);
   useEffect(() => {
     if (chat.turns.length > 0 || chat.pending || chat.error) {
       scroller.current?.scrollTo({ top: scroller.current.scrollHeight, behavior: 'smooth' });
@@ -77,6 +94,7 @@ export default function ScreenChat({
         <div style={{ maxWidth: SCREEN_COLUMN, margin: '0 auto', padding: '0 16px' }}>
           <div style={{ display: 'flex', gap: 8, alignItems: 'flex-end' }}>
             <textarea
+              ref={composer}
               id={composerId}
               className="wb-composer wb-composer-desk"
               rows={1}

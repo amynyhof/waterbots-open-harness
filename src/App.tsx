@@ -106,7 +106,6 @@ import {
   EMPTY_VISIT,
   applyEligibilityProgress,
   applyWellingtonRoute,
-  inviteSurface,
   journeyProgress,
   learnedContext,
   nextStepRows,
@@ -302,8 +301,17 @@ export default function App() {
   }, [surface, visit.stage, askReturned]);
 
   /* The current invite first, then derived rows that never outrank it. */
-  const rows = useMemo(() => nextStepRows(visit, sheet, LIVE_PACKS), [visit, sheet]);
-  const invite = inviteSurface(visit);
+  /* A row that invites the visitor to a step clears the moment they are on that
+     step, so the rail shows nothing until the next agent says they are ready.
+     The save row is a link, not a step, and stays. Maintainer's ruling,
+     30 Sep 2026. */
+  const rows = useMemo(
+    () =>
+      nextStepRows(visit, sheet, LIVE_PACKS).filter(
+        (row) => !(row.action.kind === 'surface' && row.action.surface === surface)
+      ),
+    [visit, sheet, surface]
+  );
   const progress = useMemo(() => journeyProgress(visit, sheet, LIVE_PACKS), [visit, sheet]);
 
   /* THE BRIDGE (item S7, built 8 Sep 2026). The click seals the visit as it
@@ -452,7 +460,7 @@ export default function App() {
                 style={{ position: 'absolute', inset: 0, visibility: onDesk ? undefined : 'hidden' }}
                 aria-hidden={!onDesk}
               >
-                  <Desk chat={chat} onNavigate={setSurface} />
+                  <Desk chat={chat} />
               </div>
 
               {/* BRIDGET'S SCREEN, kept mounted, hidden when off-surface — see
@@ -467,8 +475,6 @@ export default function App() {
                   onStatus={onStatus}
                   pinnedHybas={visit.pin?.hybasId ?? null}
                   onPin={setPin}
-                  onNavigate={setSurface}
-                  inviteSurface={invite}
                 />
               </div>
 
@@ -490,9 +496,7 @@ export default function App() {
                   onOpenMap={openMap}
                   onNavigate={setSurface}
                   visible={onEligibility}
-                  eligibilityInvite={visit.eligibilityInvite}
                   eligibilityDone={sheetDone(visit, sheet)}
-                  inviteSurface={invite}
                 />
               </div>
 
@@ -508,8 +512,6 @@ export default function App() {
                   onSelect={setActivePack}
                   allValues={visit.packValues}
                   onChange={setPackValues}
-                  onNavigate={setSurface}
-                  inviteSurface={invite}
                 />
               </div>
             </main>

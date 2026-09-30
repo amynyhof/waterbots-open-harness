@@ -42,8 +42,6 @@
 
 import type { ReactNode } from 'react';
 import type { Conversation } from '../chat/useConversation';
-import { nextPhaseAfter } from '../lib/journey';
-import type { Surface } from '../lib/surfaces';
 import { WELLINGTON } from '../lib/wellington';
 import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
@@ -51,23 +49,12 @@ import ScreenChat, { SCREEN_COLUMN } from '../screen/ScreenChat';
 
 export default function Desk({
   chat,
-  onNavigate,
 }: {
   chat: Conversation;
-  onNavigate: (surface: Surface) => void;
 }) {
-  const next = nextPhaseAfter('desk');
-  const nextSurface = next?.surface ?? null;
-
   return (
     <AgentScreen
       host={WELLINGTON}
-      next={next && nextSurface ? { label: next.label, go: () => onNavigate(nextSurface) } : null}
-      /* No "Next phase" chip on Wellington's desk, ever: the rail's next-steps row
-         is the only invitation here. The maintainer's ruling, 30 Sep 2026. Every
-         other screen keeps the 16 Sep rule and hides its chip when it would
-         repeat the rail. */
-      nextQuiet
       tabs={{
         chat: (
           <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
