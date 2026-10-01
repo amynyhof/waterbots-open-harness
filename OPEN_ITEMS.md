@@ -125,7 +125,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | A16 | Wellington guides and leads — he never asks "water or carbon" — **and names the project type from a cited list** | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; **expanded and ruled 23 Sep 2026**: a cited list of twenty-four types, confirm then log; **the types file graded and moved into `product-shared/` the same day**, on the roster rule; **his runtime built 24 Sep 2026, #119 merged on her word**: the short-form list in his prompt, type and class and stage confirmed then logged, "what kind" retired from the record and the rail; the gate to 26,199 by the measured amount; **the save-door patch of 25 Sep 2026** puts the word back on the seal alone, derived from the type, until production's receiver is carried; **people served built 27 Sep 2026, #130 merged on her word** — asked after the stage for C-11 and C-19, households never converted |
 | A17 | The handoff goes both ways — forward and back | Agents | BONES | **logged 21 Sep 2026 from her walk of #97**; **built 26 Sep 2026, #128 merged on her word** — he reads each pathway's read and any Blocked or still-open row by id and tool-file title, never her sentences; greets the visitor back once; Quantify only where a pathway fits; built, sweep due |
 | A18 | A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person | Agents | BONES | **ruled 23 Sep 2026 from her review of Phoebe's cards** — the rule is in AGENT_RULES.md (#100, merged); **stop 3 passed the same day**: fixability lines on the six water cards and nine water routes in the pack; the "tools on the paid site" line ruled canon; **her addendum of 23 Sep 2026 ruled and its tags built**: a Phase line on every eligibility card, the stage question, framing from the stage, the door once; nothing runtime built **Built 25–26 Sep 2026 (#122, #124, #126)**: five row states, the readiness read per pathway, the cited routes, the tools line, and the door to a person — her offer once on a Blocked row, a box and note at the save door, an email to the WaterBots team on a ticked save; built, sweep due |
-| A19 | Wellington's prompt measures 26,117 on `main`; BUILD_PLAN says 26,108 — find the nine characters | Agents | BONES | **logged 30 Sep 2026 from the maintainer's word** — to be found at close-out |
+| A19 | Wellington's prompt measures 26,117 on `main`; BUILD_PLAN says 26,108 — find the nine characters | Agents | BONES | **logged 30 Sep 2026 from the maintainer's word; cause found at the 30 Sep close-out** — the 29 Sep build-update refresh added nine characters; the live docs now carry the measured number |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
 | S2 | The shared chat layer | Surfaces | closed | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | S3 | Level 3 citation pop-out | Surfaces | closed | out of scope — paid platform — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -1191,7 +1191,7 @@ still the interim one until her pixels, and the grade-6 figure is not built.
 
 ## A19. Wellington's prompt measures 26,117 on `main`; BUILD_PLAN says 26,108
 
-**Logged 30 Sep 2026, from the maintainer's word. Find it at close-out; nothing changes now.**
+**Logged 30 Sep 2026, from the maintainer's word. Cause found at the 30 Sep close-out; the item stays until the sweep.**
 
 Measured on `main` on 30 Sep 2026, before and after pull request #134: his system prompt is
 **26,117 characters**. BUILD_PLAN.md records **26,108** "after the build-update refresh at this
@@ -1200,13 +1200,19 @@ the prompt is under it either way and no check trips.
 
 The measurement was the length of `WELLINGTON_SYSTEM_PROMPT` as `scripts/check-wellington.mjs`
 loads it. Pull request #134 touched no file that feeds it, so the nine characters were already on
-`main`. Where they came from has not been looked into.
+`main`.
+
+**Found at the 30 Sep 2026 close-out.** The 26,108 was the 27 Sep figure. The 29 Sep close-out's
+build-update refresh (b69d4f5) lengthened the generated build-update module by exactly nine
+characters, 572 to 581, and BUILD_LOG's 29 Sep entry recorded the resulting 26,117 correctly. Two
+live lines, in BUILD_PLAN.md and CLAUDE.md, had kept the older figure and are corrected. The 30 Sep
+refresh shortened the region, and his prompt is now **26,043** against the unchanged gate of 26,199.
 
 **What "done" looks like:** at the next close-out, measure the prompt, say which change added the
 nine characters, and write the measured number into BUILD_PLAN.md and CLAUDE.md so the two agree.
 The gate does not move; report a trip and propose a number, as the rule says.
 
-Logged 30 Sep 2026. **Open, bucket BONES.**
+Logged 30 Sep 2026; found the same day. **Open until the sweep, bucket BONES.**
 
 
 # Family: Surfaces

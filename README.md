@@ -82,8 +82,8 @@ above it: Chat, always; Tool, when the agent has one; Knowledge pack, the cards,
 it works from; Credentials, its exam and scores, which say plainly that ~~no exam has been sat~~ the
 grade comes from one public exam run outside this site and that none has been run yet. The
 tab row wears the agent's colour, and the crew card on the right is underlined in the same colour, so
-a visitor can see whose screen it is. "Next phase" sits at the row's right end on every step but
-Quantify, where the save button is the way on. **Wellington's** desk is his screen. **Phoebe's** has
+a visitor can see whose screen it is. There is no "Next phase" chip: next steps live in the right rail only, and a row
+clears once it is taken. **Wellington's** desk is his screen. **Phoebe's** has
 her chat on her tint, the eligibility worksheet as its Tool, and a Knowledge pack assembled from the
 committed cards. **Bridget's and Calvin's** open on Tool — the map and the calculator — and their
 Chat tabs say in one plain line that they are not answering here yet. The right column is the crew
