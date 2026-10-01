@@ -2540,3 +2540,43 @@ CLAUDE.md: the scope line says the bundle is tracked. Wellington's build-update 
 of room; `check-wellington` 142 of 142 and the staleness gate current. No migrations
 exist. Four merged branches from earlier sittings were not deleted on merge and still exist on
 origin; noted, not touched.
+
+## 30 September 2026 — the free-site fixes before the demo
+
+A rehearsal sitting. The maintainer walked the free site and sent small fixes one at a time, each
+built on a branch, checked, and merged on her word; the demo then ran on `main` at #138 (her word).
+
+- **#134**, the wordmark starts over. A full load of the landing clears every screen's held state at
+  once; the server-side caps are not reset by it. The rail's `waterbots.ai` link untouched.
+- **#135**, item A19 logged: his prompt 26,117 against BUILD_PLAN's 26,108.
+- **#136**, six things. The chat box grows to three lines. No "Next phase" chip on any desk, her ruling,
+  replacing the 16 Sep rule on this site. A rail row that sends the visitor somewhere clears when taken.
+  Phoebe's desk opens on her own greeting (his routing message was a display-only copy). The Done-later
+  section of her Tool tab collapsed by default. Her closing question in bold, display only.
+- **#137**, a pin takes the map invite; his invite to Quantify lands next where a pathway read allows
+  it; only rows that send the visitor somewhere clear, record facts stay (her ruling).
+- **#138**, the bold question sees past citation chips.
+
+**What was learned.**
+- **Two rulings met an older one.** The first chip rule (show it once he routes) would have hidden the
+  chip at the moment it should show, under the 16 Sep rule; that was said in the pull request and she
+  ruled the chip out of every desk. The pinned basin's reading was cleared by the first clear-when-taken
+  rule and she ruled it a record fact; the rule was narrowed to rows that send the visitor somewhere.
+- **"Same branch" meant a merged one twice.** #136 and then #137 were already merged when the next
+  fix came; each went on a fresh branch off `main` and a new pull request, said plainly.
+- **A shell command strips backslashes.** Regexes and strings written inline in a command arrived
+  without them, and one edit silently matched the wrong block. Files with backslashes were written
+  with the file tools; a wrong match was caught by the type check and reverted.
+- **The daily cap has no outside setting.** It is a constant in `api/_cap.ts`, a check fails the build
+  if an environment variable can move it, and the count is one Upstash key per agent, visitor and day:
+  `<agent>:count:<UTC date>:<hash>`, the hash a SHA-256 of the secret salt and the address. Clearing
+  is a delete in the Upstash console, and the day turns over at 00:00 UTC. Nothing was built.
+- **A19 was a stale line, not a defect.** The nine characters were the 29 Sep build-update refresh,
+  and BUILD_LOG had recorded 26,117 correctly; two live docs kept 26,108.
+
+**The close-out.** BUILD_PLAN: the fixes live, Calvin's brief waiting on the re-sealed bundle, A19
+found. CLAUDE.md and README.md: no "Next phase" chip, the fixes, the corrected prompt figure; the old
+wording is in docs/archive/CORRECTIONS.md. OPEN_ITEMS: A19 notes its cause. Wellington's build-update
+fact refreshed to 30 Sep and regenerated; his prompt is 26,043 against the unchanged gate of 26,199,
+156 characters of room; `check-wellington` 148 of 148. No migrations exist. `main` equals `origin`, and
+no merged branch is left on origin.

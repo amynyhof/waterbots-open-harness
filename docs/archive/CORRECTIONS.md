@@ -230,3 +230,39 @@ untrue. Found at Stop 3 of step 3; corrected at its close-out. Current text:
 **Old wording, whole — the next-steps line, where any row was not met:**
 
 > {pathway} reads {read}: {n} met, {open rows}, each with what would change it on the worksheet.
+
+## 30 Sep 2026 — "Next phase" is gone, the prompt figure moved, and Calvin's brief waits on the bundle
+
+**Why it changed.** Four live lines stopped being true on 30 Sep 2026. The maintainer ruled that on
+this site next steps live in the right rail only, so no desk draws a "Next phase" chip (#136), which
+replaces the 16 Sep rule here. Wellington's prompt figure of 26,108 was the 27 Sep number; it measured
+26,117 from 29 Sep (item A19) and is 26,043 after the 30 Sep refresh. And Calvin's brief, which BUILD_PLAN
+said was awaiting her rulings, now waits on the re-sealed bundle, her word the same day. Current text:
+CLAUDE.md, README.md and BUILD_PLAN.md; the item is A19 in [OPEN_ITEMS.md](../../OPEN_ITEMS.md).
+
+**Old wording, whole — CLAUDE.md, the agent-screen bullet:**
+
+> underline. "Next phase" on every step but Quantify, where the save button is
+> the way on. Where the chat is not live
+
+**Old wording, whole — README.md:**
+
+> "Next phase" sits at the row's right end on every step but
+> Quantify, where the save button is the way on.
+
+**Old wording, whole — CLAUDE.md, the 26–27 Sep bullet:**
+
+> households never converted here, on the record, the rail and the seal as `record.served`. His
+> prompt is 26,108 against the unchanged gate of 26,199.
+
+**Old wording, whole — BUILD_PLAN.md, the figure under the 27 Sep fix:**
+
+> lines was cut to make room: 26,073, under the unchanged 26,199; 26,108 after the build-update
+> refresh at this close-out.
+
+**Old wording, whole — BUILD_PLAN.md, the next step:**
+
+> **Next: Calvin's brief (step 5) — proposed 27 Sep 2026, awaiting her rulings.**
+> `PROPOSAL_calvin-brief.md` sits at the root, untracked, and asks eleven rulings (its §13); nothing
+> of it is built. Its first ruling blocks the rest: the strings the manifest flagged in `presets.ts`
+> and `emissions-legacy.ts` publish as they are if the engine crosses byte-identical.

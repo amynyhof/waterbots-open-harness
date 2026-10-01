@@ -163,10 +163,47 @@ a note at the save door, the tools line there, and on a ticked save an email to 
 which waits on the mail key she sets in the host's settings. Items A18 and K7 are built; the proposal
 file is deleted. Her done line's 80% pass is not measured yet; that is the harness's to say.
 
-**Next: Calvin's brief (step 5) — proposed 27 Sep 2026, awaiting her rulings.**
-`PROPOSAL_calvin-brief.md` sits at the root, untracked, and asks eleven rulings (its §13); nothing
-of it is built. Its first ruling blocks the rest: the strings the manifest flagged in `presets.ts`
-and `emissions-legacy.ts` publish as they are if the engine crosses byte-identical.
+**Next: Calvin's brief (step 5) — proposed 27 Sep 2026; it waits on the re-sealed bundle, her word of
+30 Sep 2026.** `PROPOSAL_calvin-brief.md` sits at the root, untracked, and asks eleven rulings (its
+§13); nothing of it is built. The bundle is hers to re-seal by hand and carry, and the brief does not
+move until it arrives. Which of the eleven rulings she has answered is not recorded here; the first,
+R1, was whether the strings the manifest flagged in `presets.ts` and `emissions-legacy.ts` publish as
+they are.
+
+**The free-site fixes of 30 Sep 2026 are live — #134 to #138, each merged on her word — and the demo
+ran on `main` at #138** (her word).
+- **#134**, the wordmark starts over: a full load of the landing, so the record, the worksheet and
+  every conversation clear and Wellington is at his greeting. The `waterbots.ai` link in the rail is
+  untouched, and the server-side daily caps are not reset by it.
+- **#136**, four fixes and two more. Every chat box grows to three lines, then scrolls. **No desk has a
+  "Next phase" chip** — her ruling of 30 Sep 2026, replacing the 16 Sep rule on this site: next steps
+  live in the right rail only. A rail row that sends the visitor somewhere clears once taken. Phoebe's
+  desk opens on her own greeting: his routing message was a display-only copy on her thread, filtered
+  out of every ask to her relay, in no seal, so dropping it touched only what is drawn (the visit's
+  `eligibilityInvite` field stays, now written and not read). The Done-later section of her Tool tab
+  is collapsed by default. **The bold closing question**: when her reply ends in a question, that last
+  sentence is bold; display only, `emphasiseClosingQuestion` in `src/chat/evidence.ts`; the Commons
+  shows the same Phoebe, so it is bold there too.
+- **#137**, rows clear when taken, on every step: a pin takes the map invite, and his invite to
+  Quantify lands next where a pathway read allows it (likely eligible or not enough known). **Only
+  rows that send the visitor somewhere clear** — her ruling: the pinned basin's water-stress reading,
+  Phoebe's readings and Calvin's figures are record facts and stay. One rule, `rowTaken` in
+  `src/lib/visit.ts`.
+- **#138**, the bold question sees past citation chips: a chip between the last word and the
+  question mark no longer hides it, and the whole final sentence, chips included, is bold.
+- **#135** logged item A19, below.
+
+**Item A19, the nine characters, is found.** His prompt measured 26,117 on `main` against BUILD_PLAN's
+26,108. The 26,108 was the 27 Sep figure; the 29 Sep close-out's build-update refresh added exactly nine
+characters to the generated module (572 to 581), and BUILD_LOG's 29 Sep entry had already recorded
+26,117. Nothing was wrong in the prompt; two live lines had kept the older figure, and are corrected.
+After this close-out's refresh his prompt is **26,043** against the unchanged gate of 26,199, 156
+characters of room.
+
+**Not on the plan yet, said once:** the daily cap has no setting outside the code. It is a constant
+in `api/_cap.ts`, a check fails the build if an environment variable can move it, and a count can
+only be cleared by deleting its key in the Upstash database. The cap hit from the maintainer's IP in
+rehearsal showed that; no item is logged, because raising or clearing it is her call.
 
 **The engine bundle is merged on `main` at `carried/`, 27 Sep 2026, pull request #132, tagged
 `engine-carry-2026-09-27`** (commit b099ca1, on `main`'s history by a merge commit). It is the paid
@@ -203,8 +240,8 @@ It reaches him and Phoebe on the record, shows as a People served row on the rai
 seal as `record.served`. His primer's line that people counts and the technology wait for Quantify
 is replaced by the true rule: they come from the visitor's description and answers, and whatever is
 still missing when they reach Calvin, Calvin asks. His prompt's repeat of the visit block's own
-lines was cut to make room: 26,073, under the unchanged 26,199; 26,108 after the build-update
-refresh at this close-out.
+lines was cut to make room: 26,073, under the unchanged 26,199; 26,108 after the 27 Sep build-update
+refresh, 26,117 after the 29 Sep one, 26,043 after the 30 Sep one.
 
 **Step 1 is done, 24 Sep 2026.** Four pull requests,
 all merged on her word, and the proposal file deleted at the close-out.

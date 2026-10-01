@@ -269,8 +269,8 @@ credit line does not meet any of these bars.
   Chat, always; Tool, when the agent has one; Knowledge pack — cards, versions,
   sources; Credentials — exam and scores only, honest that none exists. **The
   tabs wear the agent's colour** and the active crew card takes the same
-  underline. "Next phase" on every step but Quantify, where the save button is
-  the way on. Where the chat is not live the screen opens on Tool and the Chat
+  underline. **There is no "Next phase" chip on this site from 30 Sep 2026**: next
+  steps live in the right rail only. Where the chat is not live the screen opens on Tool and the Chat
   tab carries one plain line. **Memory is never a tab**; it stays in the record
   on the left rail, its source behind the (i). The three host docks and the old
   dock frame are gone; the crew with the save button is the right column on
@@ -387,12 +387,27 @@ credit line does not meet any of these bars.
   Quantify only where a pathway is likely eligible or not enough is known. For a water supply
   project he asks how many people or households it serves, after the stage; it is kept as said,
   households never converted here, on the record, the rail and the seal as `record.served`. His
-  prompt is 26,108 against the unchanged gate of 26,199.
+  prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep and is 26,043 from 30 Sep 2026, against the
+  unchanged gate of 26,199.
 - **The engine bundle is tracked at `carried/`, from 27 Sep 2026**, placed by the maintainer's
   hand at `calculator-seal-2026-09-26` and merged on `main` as it stands (#132), tagged
   `engine-carry-2026-09-27`; its 32 hashes verified from a fresh clone. `carried/** -text` keeps
   its bytes; `carried/HOW-TO-CALL.md` names its entry point for an outside caller. Nothing edits
   it here. Calvin's brief, proposed the same day, reads it.
+- **The free-site fixes of 30 Sep 2026 are live, #134 to #138**, and the demo ran on `main` at
+  #138. The wordmark at the top left starts a fresh visit at the landing (a full load; the daily
+  caps, which live on the server, are not reset by it). Every chat box grows to three lines, then
+  scrolls. **No desk has a "Next phase" chip**, by the maintainer's ruling of 30 Sep 2026, which
+  replaces the 16 Sep rule on this site: next steps live in the right rail only. **A rail row that
+  sends the visitor somewhere clears when taken**: they are on its step, or, for the map row, a
+  basin is pinned. Then Wellington's invite to Quantify lands, only where a pathway read allows
+  it; otherwise the rail is empty until the next agent is ready. **Record facts never clear**: the
+  pinned basin's water-stress reading, Phoebe's readings and Calvin's figures stay. Phoebe's
+  desk opens on her own greeting, without a copy of his routing message (display only), and the
+  Done-later section of her Tool tab is collapsed by default. **When her reply ends in a question,
+  that last sentence is bold, chips included**: display only, no prompt or relay change; the
+  Commons shows the same Phoebe, so it is bold there too. **Calvin's brief waits on the
+  re-sealed bundle**, by the maintainer's hand.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material
