@@ -66,8 +66,8 @@ number for each fit; its basin; and save it.
 - **Phoebe** runs both packs: five row states, readiness per pathway, the tools line, the human
   door once. Done at an 80% pass.
 - **Calvin** talks; picks the pack from the record; asks only for what is missing; his carbon
-  number comes from the same engine as the paid site. Done when the Mali Demo Project's inputs, typed
-  by hand into both sites, give the same number.
+  number comes from the same engine as the paid site. Done when the Mali Demo Project (HWT) and the
+  maintainer's local CWS reference filing, each typed by hand into both sites, give the same number on both.
 - **Bridget**: map and pin as today. She introduces herself, says what the map shows, hands back.
 - **Commons**: Phoebe and Calvin work there too, no memory; Bridget introduces herself. Two Calvin
   cards on one engine: screening, transition.
@@ -118,8 +118,9 @@ How agents behave, what they may say, how they hand off. Governed by AGENT_RULES
 27 Sep 2026 as `PROPOSAL_calvin-brief.md`, untracked at the root; nothing is built. R2 to R11 ruled yes on
 1 Oct 2026, her notes in its §13. **R1 is open**: it waits on the engine scrub and the re-seal at v0.16.1,
 Shell A's and hers to carry; the re-sealed bundle is expected next, by her hand. What R1 turns on is
-listed in O16. Done when the Mali Demo Project's inputs, typed by hand into both sites, give the same
-number. Owes the teal baseline marker, a design value she carries from production.
+listed in O16. Done when the Mali Demo Project (HWT) and the maintainer's local CWS reference filing, each typed by hand
+into both sites, give the same number on both. Owes the teal baseline marker, a design value she carries
+from production.
 
 **A14 · Screen host role words — one home.** Step 6, before or with A22 · BONES. `BridgetScreen.tsx` says
 `role: 'Map'` where her crew card says "Partners"; `PhoebeScreen.tsx` carries its own too. The chat header
