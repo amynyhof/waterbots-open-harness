@@ -483,3 +483,18 @@ not scheduled; it is.
 
 **Current text:** the same places in OPEN_ITEMS.md; the new bucket is defined in the buckets table
 under *Families*.
+
+---
+
+## 3 Oct 2026 — OPEN_ITEMS.md, *Families*: the CLOSE bucket's definition
+
+**Why it changed.** Step 9 of the close-out ritual (the maintainer's ruling of 1 Oct 2026) moves closed
+items out of OPEN_ITEMS.md into BUILD_LOG.md and keeps no index row. The old definition said the
+opposite, that a closed item went to the archive file and kept its row, shown as closed. It was found
+on pull request #140 and corrected on her word.
+
+**Old wording, whole — the CLOSE row of the buckets table:**
+
+> | **CLOSE** | Done, duplicate, stale, or overtaken by a newer ruling — swept to the archive, index row kept, shown as *closed* |
+
+**Current text:** the same row in OPEN_ITEMS.md.

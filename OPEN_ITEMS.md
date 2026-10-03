@@ -82,7 +82,7 @@ item is; a bucket says what it is for now. Five buckets, one per row, ruled by h
 | **PARTNER** | Needed for the Agent Commons or a partner demo |
 | **PARK** | Real, but not now |
 | **v1 (step N)** | On the v1 build order in BUILD_PLAN.md, at step N. Added 3 Oct 2026 on the maintainer's word, for item S21 |
-| **CLOSE** | Done, duplicate, stale, or overtaken by a newer ruling — swept to the archive, index row kept, shown as *closed* |
+| **CLOSE** | Done, duplicate, stale, or overtaken by a newer ruling — leaves this file for BUILD_LOG.md at the close-out, and no index row is kept (step 9 of the close-out ritual) |
 
 A row keeps its bucket until she moves it. The triage of 18 Sep 2026 is recorded in BUILD_LOG.md under
 item O11; the full sort was a proposal file at the root, untracked, and deleted once the sweep merged.
