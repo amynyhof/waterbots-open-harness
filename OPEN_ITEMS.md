@@ -8,11 +8,12 @@ Every open thread in this repository, in one place. Moved out of
 handoff is in [docs/archive/](./docs/archive/README.md). Do not recreate a live root
 `SESSION_HANDOFF.md`.
 
-**Closed items live in [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md)**, in full, from
-30 Aug 2026, ~~at the repository root~~ **under `docs/` from 17 Sep 2026, every link followed**. This file is read at the start of every session and stays a briefing; the archive is
-not one of the ~~six~~ four opening documents and is read only when someone goes looking. **Every archived
-item keeps its row in the index table below**, so nothing is lost by being finished. The reasoning
-is item O11.
+**Closed items leave this file at every close-out and live in [BUILD_LOG.md](./BUILD_LOG.md)**, in
+full, from 3 Oct 2026 — the maintainer's ruling of 1 Oct 2026, step 9 of the close-out ritual.
+**No closed row stays in the index table below.** Items that closed before that date are in
+[OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md). **To find an item whose number is no longer
+here, search BUILD_LOG.md for its number.** This file is read at the start of every session and stays a
+briefing; neither the log nor the archive is one of the four opening documents.
 
 Read this with [CLAUDE.md](./CLAUDE.md), which is the rulebook and takes precedence, with
 [AGENT_RULES.md](./AGENT_RULES.md), which binds every agent, and with
@@ -82,8 +83,8 @@ item is; a bucket says what it is for now. Five buckets, one per row, ruled by h
 | **PARK** | Real, but not now |
 | **CLOSE** | Done, duplicate, stale, or overtaken by a newer ruling — swept to the archive, index row kept, shown as *closed* |
 
-A row keeps its bucket until she moves it. Item O11 records the triage; the full sort was a proposal
-file at the root, untracked, and deleted once the sweep merged.
+A row keeps its bucket until she moves it. The triage of 18 Sep 2026 is recorded in BUILD_LOG.md under
+item O11; the full sort was a proposal file at the root, untracked, and deleted once the sweep merged.
 
 **Shell A and Shell B.** Shell A is the paid site, production. Shell B is this repository, the free
 site. Recorded 3 Oct 2026 on the maintainer's word. A carry to Shell A is always her hand, never an
@@ -669,11 +670,12 @@ until she had evidence, then moved one criterion to met and one to not yet, and 
 her row. Pull request #54.
 
 **The three slices are done.** What remains of the desk plan is the two typeable controls owed
-for "what it does" and "kind", and whatever the hero page (item S12) asks of the desk.
+for "what it does" and the project type (the control for "kind" retired with "kind" on 24 Sep 2026,
+item A16), and whatever the hero page (item S12) asks of the desk.
 
 Built 2 Sep 2026. **Open as the home for the surface's story.**
 
-**Bucket WALKTHROUGH, 18 Sep 2026.** The open remainder is the two typeable controls for "what it does" and "kind"; a visitor who never chats cannot fill them today. Everything else here is built and is the story's record.
+**Bucket WALKTHROUGH, 18 Sep 2026.** The open remainder is the two typeable controls for "what it does" and the project type ("kind" retired 24 Sep 2026, item A16); a visitor who never chats cannot fill them today. Everything else here is built and is the story's record.
 
 ### The build note, 23 Sep 2026
 
@@ -1178,9 +1180,10 @@ Little of this is product, and several are not repository files at all — they 
 
 ## O1. Rate limit on public chat
 
-**A cap of 20 messages per day per visitor is live in production**, per the maintainer's ruling of
-21 Aug 2026, built on 25 Aug 2026, confirmed in a preview deployment and again against
-`map.waterbots.ai` after merge.
+**A cap of 30 messages a day per visitor is live in production.** It was 20, from the maintainer's
+ruling of 21 Aug 2026, built on 25 Aug 2026, until 23 Sep 2026 (the move is below); it was confirmed
+in a preview deployment and again against `map.waterbots.ai` after merge. The code says 30:
+`DAILY_CAP` in `api/_cap.ts`.
 
 **This row used to say the cap shipped in v1. It did not.** From 24 Aug, when Phoebe went live, until
 25 Aug, the public chat had no cap at all — the relay counted nothing and its own header said so.
@@ -1195,7 +1198,7 @@ side is given back. At the cap the visitor is told the limit, why it exists, and
 Anywhere the platform runs the relay, a missing store stops Phoebe answering rather than quietly
 serving an uncapped public endpoint.
 
-**This item stays open only to revisit the number.** Twenty is a starting point chosen before there
+**This item stays open only to revisit the number.** The number is a starting point chosen before there
 was any traffic to reason from, not a figure derived from usage. Once real usage exists, the number
 should be reconsidered against it — raised, lowered, or reshaped into something other than a flat
 daily count. **The abstention log and the daily counts are the first real evidence** that will exist
@@ -1333,7 +1336,7 @@ zero holds for every one: nothing here is fetched, written to, or guessed at on 
 | Production's sign-up address for the Commons door | This site, once she carries it | item S18 |
 | The three changes Deb's rig needs, and later the trigger | Deb | item S18, slice 4; item S19 |
 | The confirmed free and Commons columns of `roster.yaml`, carried again, and the roster's two "this repository" lines corrected at source | This site | item A13 (swept 3 Oct 2026) |
-| The specialist contract — the nine-line section of AGENT_RULES.md, her words | Production | item A15 |
+| The specialist contract — the ten-line section of AGENT_RULES.md, her words | Production | item A15 (swept 3 Oct 2026) |
 | `project-types.md` — drafted here, the paid repository becomes its source and this site is then held to it, the roster's rule; her word of 23 Sep 2026 | Production, then back to this site | item A16 |
 | The carbon "no" list to the reviewer as Q11; her word of 23 Sep 2026, named at the M1–M17 grade: the Blocked cases on M5 (nobody boils or goes without), M12 (the host country's list excludes the activity), M13 (viable without carbon finance, pricing will not change), M14 (common practice with no justified narrower area) | The paid side | items A18, K7 |
 | One contract change to the seal: `type`, `gsClass` and `stage` for `kind` (**this site's sender changed 24 Sep 2026**, item A16: `record.type` an id from `project-types.md` or NONE or blank, `record.gsClass` one of HWT, IWT, CWT, CWS only beside C-19, `record.stage` one of paper, building, running, each with its source tag). **Until this carry lands the seal also carries `kind` again**, her ruling of 25 Sep 2026 after a live save arrived on production as an empty record: derived from the type, one of water, carbon, both, neither, and refused when it disagrees with the type. The word retires from the seal on the day production's receiver reads the three new fields. The whole account is under item A16, *The save door broke, and the word came back*. Also owed: rows and a readiness read per pathway; the send-to-a-person field and a note. **Recorded 3 Oct 2026: production's receiver is not fixed; it is Shell A item #243** | Production | items K7, A16, A18 |
@@ -1342,8 +1345,8 @@ zero holds for every one: nothing here is fetched, written to, or guessed at on 
 | The transition-assistance module, overseen by trusted consultants, that card T4 tells a transitioning project is coming to the paid site; her word of 23 Sep 2026 | Production | items K7, A18 |
 | The engine scrub and the re-seal at v0.16.1: the strings flagged in `presets.ts`, `emissions-legacy.ts` and `quantity.ts` | This site, once she carries the bundle | item A21, ruling R1 |
 
-A carry is struck from this table when it lands, with the date. Nothing is built toward any of them
-from here.
+A carry leaves this table when it lands, and the date goes to BUILD_LOG.md at that close-out. Nothing is
+built toward any of them from here.
 
 Logged 18 Sep 2026. **Each waits on her hand. Bucket PARK.**
 

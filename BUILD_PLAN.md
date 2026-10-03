@@ -159,16 +159,15 @@ reads it; item O14 holds the carry, and the correction is in
 word: #121, the save-door patch (`kind` back on the seal); #122, the water pathway on its tool file,
 five row states, the readiness read; #124, the carbon pathway beside it, staged by pathway state and
 sorted by class and version; #126, the door to a person — her offer once on a Blocked row, a box and
-a note at the save door, the tools line there, and on a ticked save an email to the WaterBots team,
-which waits on the mail key she sets in the host's settings. Items A18 and K7 are built; the proposal
-file is deleted. Her done line's 80% pass is not measured yet; that is the harness's to say.
+a note at the save door, the tools line there, and on a ticked save an email to the WaterBots team.
+`RESEND_API_KEY` is set in Production and Preview (26 Sep 2026) and waterbots.ai is verified in Resend,
+recorded 3 Oct 2026 on her word. Items A18 and K7 are built; the proposal file is deleted. Her done line's 80% pass is not measured yet; that is the harness's to say.
 
-**Next: Calvin's brief (step 5) — proposed 27 Sep 2026; it waits on the re-sealed bundle, her word of
-30 Sep 2026.** `PROPOSAL_calvin-brief.md` sits at the root, untracked, and asks eleven rulings (its
-§13); nothing of it is built. The bundle is hers to re-seal by hand and carry, and the brief does not
-move until it arrives. Which of the eleven rulings she has answered is not recorded here; the first,
-R1, was whether the strings the manifest flagged in `presets.ts` and `emissions-legacy.ts` publish as
-they are.
+**Next: Calvin's brief (step 5), item A21 — proposed 27 Sep 2026; her rulings of 1 Oct 2026: R2 to
+R11 all yes, R1 still open.** `PROPOSAL_calvin-brief.md` sits at the root, untracked, and nothing of it
+is built. R1 — whether the strings the manifest flagged in `presets.ts`, `emissions-legacy.ts` and
+`quantity.ts` publish as they are — waits on the engine scrub and the re-seal at v0.16.1, which is
+Shell A's and hers to carry. The brief does not move until the bundle arrives.
 
 **The free-site fixes of 30 Sep 2026 are live — #134 to #138, each merged on her word — and the demo
 ran on `main` at #138** (her word).

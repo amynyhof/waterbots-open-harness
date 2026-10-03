@@ -19,8 +19,8 @@ working session, and what keeps her open to anyone. When someone reaches the cap
 and says when it comes back. If her relay is ever unconfigured she states that she is not connected
 rather than pretending to answer.
 
-Every open thread lives in [OPEN_ITEMS.md](./OPEN_ITEMS.md), grouped into five families:
-Knowledge, Agents, Surfaces, Data and Operations. What is being built next, and why, is in
+Every open thread lives in [OPEN_ITEMS.md](./OPEN_ITEMS.md), grouped into six families:
+Knowledge, Agents, Surfaces, Data, Operations and Cleanup. What is being built next, and why, is in
 [BUILD_PLAN.md](./BUILD_PLAN.md).
 
 The largest gap: **project points are not placed**, because nothing goes on the map until there is
@@ -455,7 +455,7 @@ should be checkable on how it works as well as on what it says.
 | [AGENT_RULES.md](./AGENT_RULES.md) | How an agent speaks, and when it must abstain |
 | [CITATIONS.md](./CITATIONS.md) | What a citation is and how it renders |
 | [OPEN_ITEMS.md](./OPEN_ITEMS.md) | Every open thread, grouped into five families |
-| [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) | Closed items, kept in full rather than deleted. Under `docs/` from 17 Sep 2026 |
+| [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) | Closed items swept before 3 Oct 2026, kept in full. Items closed after that live in BUILD_LOG.md |
 | [BUILD_PLAN.md](./BUILD_PLAN.md) | What is being built next, and why |
 | [BUILD_LOG.md](./BUILD_LOG.md) | How it came to stand there — append-only, one entry per session |
 | [docs/archive/](./docs/archive/README.md) | Retired documents, moved not deleted. Not current state. |
