@@ -7,11 +7,11 @@ This folder holds retired root documents. **Nothing here is deleted — it is mo
 1. **Moved, never deleted.** A file that leaves the repository root comes here with its full text.
 2. **Every entry opens with a superseded-by header and a date.** The header says what replaced it, and that this copy is not current state.
 3. **Nothing in this folder is read by the build.** History is not live direction. Do not import these files from site code, prompts, or checks.
-4. **Never read the archive for current state.** Live state is [OPEN_ITEMS.md](../../OPEN_ITEMS.md), [BUILD_PLAN.md](../../BUILD_PLAN.md), [BUILD_LOG.md](../../BUILD_LOG.md), and git.
+4. **Never read the archive for current state.** Live state is [BUILD_PLAN.md](../../BUILD_PLAN.md), [BUILD_LOG.md](../../BUILD_LOG.md), and git.
 
 ## What is not archive
 
-[`docs/OPEN_ITEMS_ARCHIVE.md`](../OPEN_ITEMS_ARCHIVE.md), one level up, is the closed-items file for [OPEN_ITEMS.md](../../OPEN_ITEMS.md). It is live history, not a retired document, so it sits beside this folder and not in it. It holds items closed before 3 Oct 2026; items closed after that go to [BUILD_LOG.md](../../BUILD_LOG.md). Moved there from the root on 17 Sep 2026.
+[`docs/OPEN_ITEMS_ARCHIVE.md`](../OPEN_ITEMS_ARCHIVE.md), one level up, is the closed-items file for the retired [OPEN_ITEMS.md](./OPEN_ITEMS_retired_2026-10-03.md). It is live history, not a retired document, so it sits beside this folder and not in it. It holds items closed before 3 Oct 2026; items closed after that go to [BUILD_LOG.md](../../BUILD_LOG.md). Moved there from the root on 17 Sep 2026.
 
 [`knowledge-packs/`](../../knowledge-packs/README.md) at the repository root is live product knowledge. It is not this folder and it does not belong here.
 
@@ -19,7 +19,8 @@ This folder holds retired root documents. **Nothing here is deleted — it is mo
 
 | File | Retired | Why |
 |---|---|---|
-| [SESSION_HANDOFF_retired_2026-09-17.md](./SESSION_HANDOFF_retired_2026-09-17.md) | 17 Sep 2026 | Live root handoff retired. Current state is OPEN_ITEMS, BUILD_PLAN, BUILD_LOG, and git. Do not recreate a live root `SESSION_HANDOFF.md`. |
+| [SESSION_HANDOFF_retired_2026-09-17.md](./SESSION_HANDOFF_retired_2026-09-17.md) | 17 Sep 2026 | Live root handoff retired. Current state is BUILD_PLAN, BUILD_LOG, and git. Do not recreate a live root `SESSION_HANDOFF.md`. |
+| [OPEN_ITEMS_retired_2026-10-03.md](./OPEN_ITEMS_retired_2026-10-03.md) | 3 Oct 2026 | Folded into BUILD_PLAN.md, the one plan file. Open items live there; their full write-ups are in BUILD_LOG.md. Do not recreate a live root `OPEN_ITEMS.md`. |
 | [DESIGN_CANON_for_ShellB.md](./DESIGN_CANON_for_ShellB.md) | 17 Sep 2026 (superseded 28 Aug 2026) | Brand book wins. Kept as history of three rulings the book later carried. Not an opening read. |
 | [CHAT_FORMAT_RULES_for_ShellB.md](./CHAT_FORMAT_RULES_for_ShellB.md) | 17 Sep 2026 (superseded 22 Aug 2026) | Extraction record. Language, citations, and agent speech live in CLAUDE.md, CITATIONS.md, and AGENT_RULES.md. Not a live rulebook. |
 | [CORRECTIONS.md](./CORRECTIONS.md) | started 23 Sep 2026 | The old wording of lines that live documents have replaced, with dates and reasons. Made by the no-strikes rule of 23 Sep 2026. Grows; never read for current state. |

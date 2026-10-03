@@ -19,9 +19,9 @@ working session, and what keeps her open to anyone. When someone reaches the cap
 and says when it comes back. If her relay is ever unconfigured she states that she is not connected
 rather than pretending to answer.
 
-Every open thread lives in [OPEN_ITEMS.md](./OPEN_ITEMS.md), grouped into six families:
-Knowledge, Agents, Surfaces, Data, Operations and Cleanup. What is being built next, and why, is in
-[BUILD_PLAN.md](./BUILD_PLAN.md).
+Every open thread lives in [BUILD_PLAN.md](./BUILD_PLAN.md), the one plan file, grouped into six
+families: Knowledge, Agents, Surfaces, Data, Operations and Cleanup. The same file says what is being
+built next, and why.
 
 The largest gap: **project points are not placed**, because nothing goes on the map until there is
 registry-verified source data with published coordinates.
@@ -394,7 +394,7 @@ book's own — each says so below:
   canvas belongs to content; the frame sits one step lighter and quieter*, carried in whole in the
   maintainer's own words. The active navigation item rises one plane to `--card` **with the 1px
   hairline §2.3 pairs with a white card** — a fill alone is 1.31 L\* against the frame and nearly
-  invisible; that is in §2.3 too. The full record is item S9 in [OPEN_ITEMS.md](./OPEN_ITEMS.md).
+  invisible; that is in §2.3 too. The full record is item S9 in [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md).
 - **Phoebe's identity colour** — **Anemone `#A04E7E`**, with **Anemone Light `#C36E9F`** on her
   antenna. Anemone was held in the book as an unclaimed spare, kept so a future role would not have
   to re-open the search; this is that use. **Version 4 §6 puts Phoebe on the roster by name**, under
@@ -426,7 +426,7 @@ book's own — each says so below:
   > 3.99:1 and 3.83:1 against the frame. Corrected values were accepted into the book at
   > **version 4.1**, and **verification was measured and left unchanged**. Nothing on this site
   > rendered wrongly: neither colour is used as type here. Item S9 in
-  > [OPEN_ITEMS.md](./OPEN_ITEMS.md) carries it.
+  > [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) carries it.
 
 - **The three shadow values** — `--shadow-sm`, `--shadow-md` and `--shadow-lg` are the book's own,
   published in §4 on 30 Aug 2026. Two of them replaced values this repository had derived and sent
@@ -454,9 +454,8 @@ should be checkable on how it works as well as on what it says.
 | [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) | How work moves: propose, approve, build, review, commit |
 | [AGENT_RULES.md](./AGENT_RULES.md) | How an agent speaks, and when it must abstain |
 | [CITATIONS.md](./CITATIONS.md) | What a citation is and how it renders |
-| [OPEN_ITEMS.md](./OPEN_ITEMS.md) | Every open thread, grouped into five families |
 | [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) | Closed items swept before 3 Oct 2026, kept in full. Items closed after that live in BUILD_LOG.md |
-| [BUILD_PLAN.md](./BUILD_PLAN.md) | What is being built next, and why |
+| [BUILD_PLAN.md](./BUILD_PLAN.md) | The one plan file: what is being built next, and every open item, by family |
 | [BUILD_LOG.md](./BUILD_LOG.md) | How it came to stand there — append-only, one entry per session |
 | [docs/archive/](./docs/archive/README.md) | Retired documents, moved not deleted. Not current state. |
 | [docs/archive/DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md) | Superseded by the brand book; kept as history |

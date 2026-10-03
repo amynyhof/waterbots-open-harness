@@ -11,36 +11,25 @@ work moves in — propose, approve, build, eyeball, commit word — how the
 engineer is expected to speak, how open items are grouped, and what has to
 be true before a session closes.
 
-**Read these ~~six~~ four before doing anything else, every new session:**
+**Read these three before doing anything else, every new session:**
 
 1. This file, CLAUDE.md
 2. [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) — how
    work is run
-3. [BUILD_PLAN.md](./BUILD_PLAN.md) — what is being built now, what
-   comes next, and the compatibility goal
-4. [OPEN_ITEMS.md](./OPEN_ITEMS.md) — every open item, grouped into
-   families, and the north star
+3. [BUILD_PLAN.md](./BUILD_PLAN.md) — the one plan file: what is being built
+   now, what comes next, every open item grouped into families, and the
+   compatibility goal
 
-~~3. [DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md) —
-   **superseded by the brand book on 28 Aug 2026 and still read**, because
-   it is history that explains why three things here are the way they are~~
-   **Removed 17 Sep 2026:** archived; not an opening read. The brand book wins.
-
-~~6. [SESSION_HANDOFF.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md) — where the last session
-   left things~~
-   **Removed 17 Sep 2026:** retired. Live state is OPEN_ITEMS, BUILD_PLAN, BUILD_LOG, and git.
-   Do not recreate a live root `SESSION_HANDOFF.md`.
-
-**The session has not started until all ~~six~~ four are read.** The opening
+**The session has not started until all three are read.** The opening
 ritual itself is owned by
 [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md); this list is
-the front door pointing at the same ~~six~~ four, not a second rule. **The count
-has moved twice in one day, both on the maintainer's ruling of
-27 Aug 2026.** It was five against the process rules' four, which had left
-themselves off their own list; then the design canon arrived and joined
-the reads. ~~Six is right.~~ **Corrected 17 Sep 2026: four is right.** The
-canon and the handoff left the opening list. [BUILD_LOG.md](./BUILD_LOG.md)
-stays not an opening read.
+the front door pointing at the same three, not a second rule. **Three from
+3 Oct 2026, the maintainer's ruling: one plan file.** OPEN_ITEMS.md is folded
+into BUILD_PLAN.md and retired to `docs/archive/`; the design canon and the
+session handoff were retired there on 17 Sep 2026. Do not recreate a live root
+`OPEN_ITEMS.md` or `SESSION_HANDOFF.md`. How the count moved before is in
+[docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md).
+[BUILD_LOG.md](./BUILD_LOG.md) stays not an opening read.
 
 Where this file and the process rules both speak to a point — proposal
 before code, one step at a time, honest states, no fabricated data — they
@@ -333,7 +322,7 @@ credit line does not meet any of these bars.
   or a face on the roster may be absent from this site; "unconfirmed" always
   passes. In that file "this repository" on the paid line means production.
 - **"V1 — the done line," ruled 23 Sep 2026.** What v1 means for the whole free site, per-seat
-  done conditions, what is parked until after v1, and a seven-step build order live in
+  done conditions, what is parked until after v1, and an eight-step build order (seven until 3 Oct 2026, when the report export joined it) live in
   [BUILD_PLAN.md](./BUILD_PLAN.md), which owns the order work is built in. Every card set on
   the free site is sealed at its version on that date; no card changes or is added until a real
   project fails on one. The seal is recorded in `knowledge-packs/CHANGELOG.md`.
@@ -500,7 +489,7 @@ Not an opening read.
 **What the book does not carry is raised, never invented** — §0 is
 explicit. ~~Four such rulings were made on 29–30 Aug 2026 and are owed to
 the master book by the maintainer's hand~~; **all four landed in version
-4 on 30 Aug 2026.** Item S9 in [OPEN_ITEMS.md](./OPEN_ITEMS.md) remains
+4 on 30 Aug 2026.** Item S9 in [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) remains
 the one home for them, and it now records where each one sits in the
 book. ~~Two fresh raises took their place and are open in the same
 item.~~ **Both are closed as of 30 Aug 2026** — the shadow values took the

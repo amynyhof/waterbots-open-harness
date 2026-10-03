@@ -140,7 +140,7 @@ side is a carry on item O14. A route is cited like any other claim, under
 [CITATIONS.md](./CITATIONS.md); a route with no source is not offered. The
 offer of a person is rung 3 of the abstention ladder below. **It is live on
 this site from 26 Sep 2026, for a project with a Blocked row** (item A18 in
-[OPEN_ITEMS.md](./OPEN_ITEMS.md)): the specialist offers it once in the visit,
+[BUILD_LOG.md](./BUILD_LOG.md)): the specialist offers it once in the visit,
 the visitor ticks a box at the save door and may add a note, and on the save an
 email goes to the WaterBots team. The five states, the sorting and the read are
 built for Phoebe, the first specialist to carry them.
@@ -346,7 +346,7 @@ never a sentence it reads.
 things: a rule in its prompt, a field the console checks and acts on, or a
 check script that runs without a model call. The only public grade is the
 grading rig's (the one-grader ruling, item S18 in
-[OPEN_ITEMS.md](./OPEN_ITEMS.md)); this site's checks are internal gates,
+[BUILD_PLAN.md](./BUILD_PLAN.md)); this site's checks are internal gates,
 never a score.
 
 **Where each agent stands.** Each pack README carries a section, "The

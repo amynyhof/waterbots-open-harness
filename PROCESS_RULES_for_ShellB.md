@@ -57,16 +57,15 @@ steps that were already agreed, not any of the gates inside them.
 
 ### The opening documents
 
-Read ~~six~~ **four** documents before doing anything else, every new session:
-[CLAUDE.md](./CLAUDE.md), **this file**,
-[BUILD_PLAN.md](./BUILD_PLAN.md), [OPEN_ITEMS.md](./OPEN_ITEMS.md).
-The session has not started until all ~~six~~ four are read.
+Read **three** documents before doing anything else, every new session:
+[CLAUDE.md](./CLAUDE.md), **this file**, and
+[BUILD_PLAN.md](./BUILD_PLAN.md), the one plan file.
+The session has not started until all three are read.
 
-~~[DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md)~~ and
-~~[SESSION_HANDOFF.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md)~~ **left
-the required open list on 17 Sep 2026.** The design canon is archived; the brand book
-wins. The session handoff is retired. **Do not recreate a live root `SESSION_HANDOFF.md`.**
-Live state is OPEN_ITEMS, BUILD_PLAN, BUILD_LOG, and git. Never read
+**OPEN_ITEMS.md was folded into BUILD_PLAN.md and retired on 3 Oct 2026**, the maintainer's
+ruling: one plan file. The design canon and the session handoff left this list on 17 Sep 2026. All
+three are in [docs/archive/](./docs/archive/README.md). **Do not recreate a live root
+`OPEN_ITEMS.md` or `SESSION_HANDOFF.md`.** Live state is BUILD_PLAN, BUILD_LOG, and git. Never read
 [docs/archive/](./docs/archive/README.md) for current state.
 
 **This list is the one home for the opening ritual**, and [CLAUDE.md](./CLAUDE.md) points here
@@ -76,11 +75,8 @@ rather than carrying a second copy of the count.
 history, written at the close and read only when someone goes looking. Adding it would undo the
 rule it exists to serve — see *the opening reads stay thin, forever*.
 
-**The count moved twice on 27 Aug 2026, both times on the maintainer's ruling.** This list said
-four for as long as it existed, leaving itself off its own list, while CLAUDE.md said five and
-named this file among them; five was ruled right. Then the design canon arrived and joined the
-opening reads, making six. **Corrected 17 Sep 2026: the count is four.** The canon and the
-handoff left the required open list. Four is the number this list first held, now on purpose.
+**The count is three from 3 Oct 2026.** How it moved before — four, five, six, four — is in
+[docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md).
 
 ## How work moves
 
@@ -166,7 +162,7 @@ image.**
 stress ramps were designed, machine-checked against `check-palette`, and thrown away — and the
 finding that ended the exploration was that the map read flat because of the *basemap*, not the
 ladder. **The eye found that in one sitting, and no amount of reasoning about the ladder would have
-found it.** Item S9 in [OPEN_ITEMS.md](./OPEN_ITEMS.md) carries the whole account.
+found it.** Item S9 in [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) carries the whole account.
 
 **It is the same lesson a gate already taught.** `check-palette` passed a warm fill on the arid
 basins that the maintainer refused on sight. **A gate measures separation; it cannot measure what a
@@ -335,7 +331,9 @@ grows back into a second account. If a pointer needs a third line to be useful, 
 the thing to improve.
 
 **It does not license thinness in the owning item.** The full record is still full — the
-measurements, the wrong turns, the dates. It is only told once.
+measurements, the wrong turns, the dates. It is only told once. **From 3 Oct 2026 an item in the plan
+file is six lines at most, so the full record's one home is the item's write-up in BUILD_LOG.md**, and
+the item points at it.
 
 - Every open item belongs to a family. A new item joins a family or
   starts one; starting one is a maintainer decision, recorded with
@@ -353,33 +351,30 @@ measurements, the wrong turns, the dates. It is only told once.
 
 > **A growing opening document is a defect, and it is flagged as one.**
 
-~~Six~~ **Four** documents are read before every session starts. If they grow without bound, the ritual that
+**Three** documents are read before every session starts. If they grow without bound, the ritual that
 exists to make a session start well becomes the reason it starts slowly, and the parts that matter
 get skimmed. **The reads are a briefing, not an archive.** Retired documents live in
 [docs/archive/](./docs/archive/README.md) and are never opening reads.
 
 **Three rules hold the line.**
 
-1. ~~**[SESSION_HANDOFF.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md) is current state only, and is rewritten from
-   scratch at every close.** Not amended, not appended to. Where we are, what is committed and what
-   is not, what waits on the maintainer, what comes next. **A sentence about how something came to
-   be is history and does not belong in it.**~~
-   **Corrected 17 Sep 2026:** there is no live root session handoff. Live state is
-   [OPEN_ITEMS.md](./OPEN_ITEMS.md) and [BUILD_PLAN.md](./BUILD_PLAN.md). History is
-   [BUILD_LOG.md](./BUILD_LOG.md). The retired handoff is in
-   [docs/archive/](./docs/archive/README.md). **Do not recreate a live root
-   `SESSION_HANDOFF.md`.** Never read the archive for current state.
+1. **There is no session handoff and no separate open-items file.** Live state is
+   [BUILD_PLAN.md](./BUILD_PLAN.md), the one plan file. History is [BUILD_LOG.md](./BUILD_LOG.md).
+   The retired handoff and the retired OPEN_ITEMS.md are in
+   [docs/archive/](./docs/archive/README.md). **Do not recreate either at the root.** Never read the
+   archive for current state.
 
 2. **History lives in [BUILD_LOG.md](./BUILD_LOG.md), which is append-only and is never read at the
-   opening.** It is not one of the ~~six~~ four. It is written to once per session, at the close, and read
+   opening.** It is not one of the three. It is written to once per session, at the close, and read
    only when someone goes looking for how a thing came to be. Nothing in it is ever edited — a
    correction is a new entry that says what it corrects, which is the visible-corrections rule
    applied to a log rather than to a claim.
 
-3. **An item's own row carries its own story**, in [OPEN_ITEMS.md](./OPEN_ITEMS.md), recorded once
-   per *record once, point everywhere else* above.
+3. **An item's own entry carries its own story**, in [BUILD_PLAN.md](./BUILD_PLAN.md), in six lines
+   at most. A longer write-up is recorded once, in BUILD_LOG.md, and the entry points at it, per
+   *record once, point everywhere else* above.
 
-**Closed items leave OPEN_ITEMS.md at every close-out, for BUILD_LOG.md.** Step 9 of *How a
+**Closed items leave BUILD_PLAN.md at every close-out, for BUILD_LOG.md.** Step 9 of *How a
 session closes* is the rule; the sweep is no longer a job that waits until the file gets heavy. A
 closed item is finished; it earns a home in the log, not a place in a document read at the start of
 every session, and **no closed row is left behind**. Deciding what a *family* is still needs the
@@ -388,21 +383,21 @@ maintainer's ruling.
 **Flagging is part of the job.** An engineer who notices an opening document growing says so in the
 Part 1 report, rather than reading it dutifully and saying nothing.
 
+**The plan file has a number: 400 lines.** [BUILD_PLAN.md](./BUILD_PLAN.md) is counted at every
+close-out, step 10, and a count past 400 is flagged in the report.
+
 ## How a session closes
 
 **The close-out is one complete act.** Maintainer's ruling, 26 Aug 2026: the ritual below
 includes every step, every time. **A ritual with a skipped step is an unfinished ritual.**
 
 1. Refresh the root docs so they tell the truth: BUILD_PLAN.md,
-   OPEN_ITEMS.md, CLAUDE.md, and any rulebook touched this session.
+   CLAUDE.md, and any rulebook touched this session.
 2. **Append this session to [BUILD_LOG.md](./BUILD_LOG.md)** — what was built, what was learned,
    what was decided. Append only; nothing already in it is edited.
-3. ~~SESSION_HANDOFF.md is **rewritten from scratch**, current state only, so a cold reader can
-   resume: where we are, what is committed vs. uncommitted, what is waiting on Amy, what comes
-   next. **It carries no history** — that is what BUILD_LOG is for.~~
-   **Corrected 17 Sep 2026: no handoff rewrite.** There is no live root
-   `SESSION_HANDOFF.md`. Close-out refreshes BUILD_PLAN, OPEN_ITEMS, and CLAUDE (if
-   touched), and appends BUILD_LOG only. Do not recreate a live root handoff.
+3. **No handoff rewrite.** There is no live root `SESSION_HANDOFF.md` and none is recreated. Live
+   state is BUILD_PLAN.md: step 1 refreshes it and step 2 appends BUILD_LOG.md. The number is kept so
+   older references to "step 3" still point at something.
 4. **Check for code reading an unpushed migration**, the same check Part 1 runs.
 5. Commit the checkpoint.
 6. ~~**Then** regenerate the export copies, where the repository keeps them.
@@ -423,27 +418,25 @@ includes every step, every time. **A ritual with a skipped step is an unfinished
 9. **The sweep, at EVERY close-out.** Maintainer's ruling, 1 Oct 2026. Run it before step 5's
    commit, so the checkpoint carries it; it has a high number only because the steps above are cited
    by number elsewhere.
-   - **Closed items leave [OPEN_ITEMS.md](./OPEN_ITEMS.md) for [BUILD_LOG.md](./BUILD_LOG.md).** Every
-     item closed or built this sitting moves in full, body and index row, into this sitting's
-     BUILD_LOG entry, appended. **No closed row is left behind** in the index table.
+   - **Closed items leave [BUILD_PLAN.md](./BUILD_PLAN.md) for [BUILD_LOG.md](./BUILD_LOG.md).** Every
+     item closed or built this sitting moves in full into this sitting's BUILD_LOG entry, appended.
+     **No closed item is left behind** in the plan file.
    - **Residues move first.** A closed item that still holds an open thread — a carry, a follow-up, a
-     measure not yet taken — gives that thread a row of its own in its family before the body moves, so
-     nothing open leaves with the closed text.
-   - **Every loose item gets a family.** A thread buried in another item's body, or a row with no
-     family, is given a row in one of the families. If it fits none, the families are wrong, and that
+     measure not yet taken — gives that thread an entry of its own in its family before the item moves,
+     so nothing open leaves with the closed text.
+   - **Every loose item gets a family.** A thread buried in another item's write-up, or an item with no
+     family, is given an entry in one of the families. If it fits none, the families are wrong, and that
      is raised with the maintainer, not worked around.
    - Bodies swept before 3 Oct 2026 stay in
      [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md); nothing is moved twice.
+10. **Count the plan file's lines.** Maintainer's ruling, 3 Oct 2026: [BUILD_PLAN.md](./BUILD_PLAN.md)
+    has a limit of **400 lines**. Count them at every close-out, after the sweep. **If the file is past
+    400, flag it in the close-out report, with the count.** An item there is six lines at most; a longer
+    write-up goes to BUILD_LOG.md and the item points at it. The limit is a threshold, and it changes
+    only on her word.
 
-~~**The copies are made after the final commit, not before it**, so they carry the close-out
-itself rather than the state just before it. Maintainer's ruling, 27 Aug 2026 — see item O8 in
-[OPEN_ITEMS.md](./OPEN_ITEMS.md) for why the order matters. Regenerating first was how the
-copies fell a session behind on 26 Aug.~~
-
-~~The library is never more than one session stale.~~
-
-**Struck 17 Sep 2026:** there are no copies to order. Item O8 in
-[OPEN_ITEMS.md](./OPEN_ITEMS.md) keeps the story of the step while it lived.
+**There is no export step and there are no copies to order**, from 17 Sep 2026. Item O8 in
+[docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) keeps the story of the step while it lived.
 
 ## Standing rules that govern everything above
 
