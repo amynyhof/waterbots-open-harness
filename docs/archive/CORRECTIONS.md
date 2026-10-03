@@ -302,7 +302,7 @@ BUILD_LOG.md (the first) and below (the second, under its own step).
 
 **Old wording, whole:**
 
-> **Closed items live in [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md)**, in full, from
+> **Closed items live in [OPEN_ITEMS_ARCHIVE.md](../OPEN_ITEMS_ARCHIVE.md)**, in full, from
 > 30 Aug 2026, ~~at the repository root~~ **under `docs/` from 17 Sep 2026, every link followed**. This file is read at the start of every session and stays a briefing; the archive is
 > not one of the ~~six~~ four opening documents and is read only when someone goes looking. **Every archived
 > item keeps its row in the index table below**, so nothing is lost by being finished. The reasoning
