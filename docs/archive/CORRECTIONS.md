@@ -731,3 +731,27 @@ it now reads only "scrub at the re-seal".
 **Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), "The v1 order" and item A21.
 Earlier entries of [BUILD_LOG.md](../../BUILD_LOG.md) still say "the Malawi test project"; the log is
 never edited, and they are the wording of their day.
+
+
+---
+
+## 3 Oct 2026, second correction — BUILD_PLAN.md: the done line for Calvin names two references
+
+**Why it changed.** The maintainer's word of 3 Oct 2026, after the first replacement of the same day:
+the proof is two references, not one. The Mali Demo Project (HWT) and the maintainer's local CWS reference
+filing, each typed by hand into both sites, give the same number on both. No project id is written in the
+plan. The reference filing is held on the maintainer's machine and is never copied into this repository.
+
+**Old wording, whole — the V1 order, the Calvin bullet** (as replaced earlier the same day):
+
+> - **Calvin** talks; picks the pack from the record; asks only for what is missing; his carbon
+>   number comes from the same engine as the paid site. Done when the Mali Demo Project's inputs, typed
+>   by hand into both sites, give the same number.
+
+**Old wording, whole — item A21, its closing sentences:**
+
+> … Done when the Mali Demo Project's inputs, typed by hand into both sites, give the same
+> number. Owes the teal baseline marker, a design value she carries from production.
+
+**Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), "The v1 order" and item A21.
+The wording before the first replacement is in the entry above this one.
