@@ -341,7 +341,7 @@ measurements, the wrong turns, the dates. It is only told once.
   starts one; starting one is a maintainer decision, recorded with
   its reason.
 - If an item seems to fit nowhere, the families are wrong — not the
-  item.
+  item. A loose item is given its family at the close-out (step 9), never left without one.
 - Global fixes over patchwork. Work is grouped and built by family,
   not picked off one row at a time.
 - Shortcuts are taken only under real pressure, named as shortcuts,
@@ -379,10 +379,11 @@ get skimmed. **The reads are a briefing, not an archive.** Retired documents liv
 3. **An item's own row carries its own story**, in [OPEN_ITEMS.md](./OPEN_ITEMS.md), recorded once
    per *record once, point everywhere else* above.
 
-**When OPEN_ITEMS.md gets heavy, sweep the closed items to an archive file.** A closed item is
-finished; it earns a pointer and a home elsewhere, not a place in a document read at the start of
-every session. Sweeping is ordinary tidying and needs no ruling — deciding what a *family* is still
-does.
+**Closed items leave OPEN_ITEMS.md at every close-out, for BUILD_LOG.md.** Step 9 of *How a
+session closes* is the rule; the sweep is no longer a job that waits until the file gets heavy. A
+closed item is finished; it earns a home in the log, not a place in a document read at the start of
+every session, and **no closed row is left behind**. Deciding what a *family* is still needs the
+maintainer's ruling.
 
 **Flagging is part of the job.** An engineer who notices an opening document growing says so in the
 Part 1 report, rather than reading it dutifully and saying nothing.
@@ -419,6 +420,20 @@ includes every step, every time. **A ritual with a skipped step is an unfinished
    facts he phrases; regenerate the prompt modules so the staleness gate passes. The desk's one
    line says a visitor can ask him for a build update, and this step is what makes that line
    true at every close.
+9. **The sweep, at EVERY close-out.** Maintainer's ruling, 1 Oct 2026. Run it before step 5's
+   commit, so the checkpoint carries it; it has a high number only because the steps above are cited
+   by number elsewhere.
+   - **Closed items leave [OPEN_ITEMS.md](./OPEN_ITEMS.md) for [BUILD_LOG.md](./BUILD_LOG.md).** Every
+     item closed or built this sitting moves in full, body and index row, into this sitting's
+     BUILD_LOG entry, appended. **No closed row is left behind** in the index table.
+   - **Residues move first.** A closed item that still holds an open thread — a carry, a follow-up, a
+     measure not yet taken — gives that thread a row of its own in its family before the body moves, so
+     nothing open leaves with the closed text.
+   - **Every loose item gets a family.** A thread buried in another item's body, or a row with no
+     family, is given a row in one of the families. If it fits none, the families are wrong, and that
+     is raised with the maintainer, not worked around.
+   - Bodies swept before 3 Oct 2026 stay in
+     [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md); nothing is moved twice.
 
 ~~**The copies are made after the final commit, not before it**, so they carry the close-out
 itself rather than the state just before it. Maintainer's ruling, 27 Aug 2026 — see item O8 in

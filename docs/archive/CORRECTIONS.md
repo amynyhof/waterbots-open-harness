@@ -266,3 +266,22 @@ CLAUDE.md, README.md and BUILD_PLAN.md; the item is A19 in [OPEN_ITEMS.md](../..
 > `PROPOSAL_calvin-brief.md` sits at the root, untracked, and asks eleven rulings (its §13); nothing
 > of it is built. Its first ruling blocks the rest: the strings the manifest flagged in `presets.ts`
 > and `emissions-legacy.ts` publish as they are if the engine crosses byte-identical.
+
+---
+
+## 3 Oct 2026 — PROCESS_RULES_for_ShellB.md, "The opening reads stay thin, forever": the sweep was a habit, not a step
+
+**Why it changed.** The maintainer's ruling of 1 Oct 2026, on the tidy-up of that day: closed items
+leave OPEN_ITEMS.md at every close-out, for BUILD_LOG.md, with no closed row left behind, and every
+loose item gets a family. It is now step 9 of the close-out ritual. The old paragraph said the
+sweep waited until the file got heavy and went to an archive file with a pointer row left in the
+index; OPEN_ITEMS.md reached 2,254 lines on that rule.
+
+**Old wording, whole:**
+
+> **When OPEN_ITEMS.md gets heavy, sweep the closed items to an archive file.** A closed item is
+> finished; it earns a pointer and a home elsewhere, not a place in a document read at the start of
+> every session. Sweeping is ordinary tidying and needs no ruling — deciding what a *family* is still
+> does.
+
+**Where the current text is:** the same section, and step 9 under *How a session closes*.
