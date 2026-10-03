@@ -87,7 +87,7 @@ number for each fit; its basin; and save it.
 | 1 | The Knowledge and Tool tab | Done 24 Sep 2026, #111 to #116 | in the log |
 | 2 | Wellington: type and stage | Done 24 Sep 2026, #119; reads back what Phoebe found #128; people served #130 | in the log |
 | 3 | Phoebe's carbon runtime | Done 26 Sep 2026, #121 to #126. Her 80% pass is not measured; that is the rig's to say | in the log |
-| 5 | Calvin's brief, with the carried engine | **Next.** Waits on the engine re-sealed at v0.16.1 and ruling R1 | A21 |
+| 5 | Calvin's brief, with the carried engine | **Next.** Waits on the re-sealed bundle at v0.16.1, expected next by her hand, and ruling R1 | A21 |
 | 4 | The Commons check | Not started | S23 |
 | 6 | Bridget's hello | Not started | A22, A14 |
 | 7 | The carry to the paid site, by her hand | Hers | O14 |
@@ -98,7 +98,7 @@ number for each fit; its basin; and save it.
   is hers to say.
 - **The engine bundle is at `carried/`**, tagged `engine-carry-2026-09-27` (#132): the paid site's
   `calculator-seal-2026-09-26`, gs4gg-carbon v0.16.0, 32 of 32 hashes verified. Nothing edits it here.
-- **Wellington's prompt is 26,043 characters against a gate of 26,199.** The gate moves only on her word.
+- **Wellington's prompt is 26,056 characters against a gate of 26,199.** The gate moves only on her word.
 - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull
   request; a measured run after any prompt change; the build-update fact refreshed at every close-out.
 
@@ -117,8 +117,9 @@ How agents behave, what they may say, how they hand off. Governed by AGENT_RULES
 **A21 · Calvin's brief — his chat, the carried engine, carbon beside water.** Step 5 · BONES. Proposed
 27 Sep 2026 as `PROPOSAL_calvin-brief.md`, untracked at the root; nothing is built. R2 to R11 ruled yes on
 1 Oct 2026, her notes in its §13. **R1 is open**: it waits on the engine scrub and the re-seal at v0.16.1,
-Shell A's and hers to carry. Done when the Malawi test project gives the same number on both sites. Owes
-the teal baseline marker, a design value she carries from production.
+Shell A's and hers to carry; the re-sealed bundle is expected next, by her hand. What R1 turns on is
+listed in O16. Done when the Malawi test project gives the same number on both sites. Owes the teal
+baseline marker, a design value she carries from production.
 
 **A14 · Screen host role words — one home.** Step 6, before or with A22 · BONES. `BridgetScreen.tsx` says
 `role: 'Map'` where her crew card says "Partners"; `PhoebeScreen.tsx` carries its own too. The chat header
@@ -178,8 +179,9 @@ stays: anything development tolerates that Node would not. Closing it means exer
 Vercel does before a push, or a named guard per known difference. Never a second copy of the handler.
 
 **S12 · The hero chat — a full page that is the conversation.** After v1 · PARK. Parked 9 Sep 2026. Waits
-on a demo reference in `Design refs/` by her hand. The landing never changes without her word; a landing
-built on 3 Sep was rejected whole.
+on a demo reference brought in by her hand: the `Design refs/` folder was deleted on her word on 3 Oct
+2026, so the hero-chat reference must be brought in again if S12 is picked up. The landing never changes
+without her word; a landing built on 3 Sep was rejected whole.
 
 **S14 · Typing dots — the book's third motion exception.** After v1 · PARK. Ruled 3 Sep 2026: three dots
 fading by opacity, stopped under reduced motion. Waits on her hand into brand book §5. No build until S12.
@@ -208,7 +210,8 @@ The deploy, the repository, settings and limits. Step 7 is the carry, by her han
 when its receiver reads them, and that receiver is not fixed, Shell A item #243); `project-types.md`; the
 ten-line contract; Q11; the paid-site tools line; the transition module; the one-row shape; the agent
 screen's file list. **To the brand book:** typing dots §5, the agent screen §7. **To this site:** the
-sign-up address, the confirmed roster columns, the engine re-sealed at v0.16.1. **To Deb:** three rig changes.
+sign-up address, the confirmed roster columns, the engine re-sealed at v0.16.1 (expected next). **To Deb:**
+three rig changes.
 
 **O1 · Revisit the daily cap against real usage.** After v1 · PARK. Thirty a day per visitor is live
 (`DAILY_CAP` in `api/_cap.ts`); it is a starting point, not a figure from usage. Looked at with A5, O9
@@ -230,6 +233,13 @@ callers, and "console" in Bridget's and Calvin's dock copy. One hygiene pass; no
 **O15 · Four storage keys show "Needs Attention" in Vercel.** After v1 · PARK. `KV_URL`, `REDIS_URL`,
 `KV_REST_API_TOKEN` and `KV_REST_API_READ_ONLY_TOKEN`. Not looked at; first read the platform's message
 for each. Check later, on her word.
+
+**O16 · Real-project figures in the carried bundle, public since #132.** Step 5, with R1 · BONES. The number
+sweep of 3 Oct 2026 found the India filing `anchor-cws-01` in `presets.ts` (shares, plus two energy fractions
+no list named), its credited total in `emissions-legacy.ts`, and, in `MANIFEST.md`, figures from two files left
+out. #244 is the paid site's item for real numbers left in this repository's public history. Her ruling of
+3 Oct 2026: the "Test Project" and "Malawi" figures were play numbers, not a real project, and the paid site
+is retiring them. Open: scrub at the re-seal; the done lines that name the Malawi test project. List: BUILD_LOG.
 
 ---
 
