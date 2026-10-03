@@ -466,3 +466,20 @@ S21 said it stood outside the numbered steps.
 
 **Current text:** `BUILD_PLAN.md`, the same place; the table is replaced by *Family work*.
 
+
+---
+
+## 3 Oct 2026 — OPEN_ITEMS.md, item S21: the bucket and the closing line
+
+**Why it changed.** The maintainer's word on pull request #140, 3 Oct 2026: S21 is on the v1 order as
+step 8 in BUILD_PLAN.md, so its bucket moves from PARK to "v1 (step 8)". The closing line said it was
+not scheduled; it is.
+
+**Old wording, whole — the index row's bucket cell:** `PARK`
+
+**Old wording, whole — the closing line of the item:**
+
+> **Not scheduled. Proposal first. Bucket PARK.**
+
+**Current text:** the same places in OPEN_ITEMS.md; the new bucket is defined in the buckets table
+under *Families*.

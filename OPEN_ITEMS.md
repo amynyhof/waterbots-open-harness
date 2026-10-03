@@ -81,6 +81,7 @@ item is; a bucket says what it is for now. Five buckets, one per row, ruled by h
 | **WALKTHROUGH** | Needed for a simple VWBA path from this site into the paid site |
 | **PARTNER** | Needed for the Agent Commons or a partner demo |
 | **PARK** | Real, but not now |
+| **v1 (step N)** | On the v1 build order in BUILD_PLAN.md, at step N. Added 3 Oct 2026 on the maintainer's word, for item S21 |
 | **CLOSE** | Done, duplicate, stale, or overtaken by a newer ruling — swept to the archive, index row kept, shown as *closed* |
 
 A row keeps its bucket until she moves it. The triage of 18 Sep 2026 is recorded in BUILD_LOG.md under
@@ -126,7 +127,7 @@ action here (rule zero), and item O14 lists them once.
 | S18 | Agent Commons — a public gallery of graded knowledge packs, each wearing an agent face | Surfaces | PARTNER | **v0 done — slices 1 to 3 built and merged by 11 Sep 2026 (#68 to #70)**; slice 4 waits on Deb's per-case file; slice 5, the flag button, later |
 | S19 | The Workshop — make your own agent on the Commons | Surfaces | PARTNER | **logged 11 Sep 2026, not built** — slice 3 has landed; the proposal is next, on the maintainer's word |
 | S20 | "Connect with a human expert" on every Commons agent | Surfaces | PARTNER | **logged 11 Sep 2026, not built** — two design questions open for the session |
-| S21 | Every tool exportable as an easy-to-read, properly cited document | Surfaces | PARK | **logged 23 Sep 2026 from the maintainer's word** — with or without answers; not started **Listed 26 Sep 2026 as open v1 work** — the done line says the screening report exports free |
+| S21 | Every tool exportable as an easy-to-read, properly cited document | Surfaces | v1 (step 8) | **logged 23 Sep 2026 from the maintainer's word** — with or without answers; not started **Listed 26 Sep 2026 as open v1 work** — the done line says the screening report exports free; **step 8 of the v1 order from 3 Oct 2026, bucket moved from PARK on her word** |
 | S22 | The Blocked row colour — the interim one, until the maintainer's pixels | Surfaces | PARK | **logged 3 Oct 2026** — a residue of A18; a raise for the brand book's §2.5 |
 | S23 | The Commons check — Phoebe, Calvin and Bridget on the Commons to the v1 done line | Surfaces | PARTNER | **logged 3 Oct 2026 from the v1 done line** — build-order step 4; no proposal yet |
 | D1 | Corporate water stewardship goals and target geographies | Data | PARK | open |
@@ -137,7 +138,7 @@ action here (rule zero), and item O14 lists them once.
 | O12 | The map page is heavy — the renderer stalls on a basin redraw | Operations | WALKTHROUGH | **logged 7 Sep 2026**, not this slice |
 | O13 | Phoebe's relay still says `validate()` — a banned word in old code | Operations | BONES | **logged 7 Sep 2026** — rename to "check" in a later hygiene pass, not now |
 | O14 | Carries owed by the maintainer's hand — listed once | Operations | PARK | **adopted 18 Sep 2026**; each waits on her hand |
-| O15 | Four storage keys show "Needs Attention" in Vercel | Operations | PARK | **logged 3 Oct 2026 from the maintainer's word** — check later; not looked at |
+| O15 | Four storage keys show "Needs Attention" in Vercel | Operations | PARK | **logged 3 Oct 2026 from the maintainer's word** — check later; not looked at; the four are `KV_URL`, `REDIS_URL`, `KV_REST_API_TOKEN` and `KV_REST_API_READ_ONLY_TOKEN` |
 | C1 | Sweep every existing struck line into the archive | Cleanup | BONES | **logged 23 Sep 2026 from the maintainer's ruling** — the batch of 22–23 Sep is clean; every older strike waits; not started |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
@@ -1111,7 +1112,7 @@ words, its tag, its seat and its four-part citation, Not yet checked as they hon
 paid-site tools line; the two licence lines where a pin is on the record; the consultant-review
 tag. Blank rows stay blank. Third in the next order, with the Knowledge tab.
 
-**Not scheduled. Proposal first. Bucket PARK.**
+**Step 8 of the v1 order, from 3 Oct 2026. Proposal first. Bucket v1 (step 8).**
 
 ## S22. The Blocked row colour — the interim one
 
@@ -1354,10 +1355,12 @@ Logged 18 Sep 2026. **Each waits on her hand. Bucket PARK.**
 ## O15. Four storage keys show "Needs Attention" in Vercel
 
 **Logged 3 Oct 2026, from the maintainer's word: check later.** Four storage keys show "Needs
-Attention" on the hosting platform. They have not been looked at, and their names and what they
-guard are not in the record. The first step is to read the four names and the platform's message off
-its storage page, by her hand or on her screen. The short-lived store the daily caps and the save
-door use is a possible neighbourhood, but that is a guess and not a finding.
+Attention" on the hosting platform. The four are **`KV_URL`, `REDIS_URL`,
+`KV_REST_API_TOKEN` and `KV_REST_API_READ_ONLY_TOKEN`** (her word, 3 Oct 2026). They have not been
+looked at, and the platform's message for each is not in the record. The first step is to read that
+message off the storage page, by her hand or on her screen. These look like the connection settings
+for the short-lived store the daily caps and the save door use, but that is a reading of the names and
+not a finding.
 
 Logged 3 Oct 2026. **Not looked at. Bucket PARK.**
 
