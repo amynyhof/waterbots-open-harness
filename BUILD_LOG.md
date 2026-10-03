@@ -5839,3 +5839,302 @@ and S17 are shapes to offer production, later, and sit after v1.
 
 **Not on any step, said once.** The daily cap has no setting outside the code (see "Not on the plan
 yet" under the V1 section); no item is logged, because raising or clearing it is her call.
+
+## 3 October 2026, third sitting — the close-out: three pull requests landed, the number sweep, `Design refs/` deleted
+
+**What landed on `main` this day, all merged on her word.**
+
+- **#140**, the tidy-up of 1 Oct: the sweep step added to the close-out, OPEN_ITEMS and BUILD_PLAN swept
+  into this log, the family work written down (the first entry of this day).
+- **#141**, one plan file: OPEN_ITEMS.md folded into BUILD_PLAN.md and retired to `docs/archive/`, a
+  400-line limit on the plan file counted at every close-out (the second entry of this day).
+- **#142**, code references: eleven files whose comments named the retired OPEN_ITEMS.md now point at
+  where each item is, in BUILD_PLAN.md or the archive. Comments only (two of them in stylesheets); no behaviour changed.
+  Merged 20:47 UTC; local `main` fast-forwarded to `f73dcf0` and confirmed equal to `origin/main`.
+
+**The number sweep, read only, at her request.** She asked for a search of everything that came from the
+paid site (`carried/`, data files, report wording, fixtures) and the rest of the repository for signs of a
+real project, by word and by value. Nothing was changed to make it. The finding that frames the rest:
+**`carried/` has been on `main` since #132 (27 Sep 2026) and GitHub reports this repository as public**, so
+what is listed below is already published, in the files and in history. **#244 is the paid site's item for
+real numbers left in this repository's public history**; this entry records what the sweep found and does
+not tell that story. Plan item O16 carries the open threads: the scrub at the re-seal, and the done lines
+that name the Malawi test project.
+
+**Her ruling, 3 Oct 2026, made after the sweep was written:** the "Test Project" and "Malawi" figures were
+play numbers, not a real project, and the paid site is retiring them. Read Part 1b and the Malawi note
+below with that: where the list says the Test Project's "real record", or asks whether it is the Malawi
+project, the ruling answers it. The India filing, 1a, is not covered by it.
+
+In short: the India filing the bundle calls `anchor-cws-01` is in `presets.ts` (the four stove shares and
+efficiencies, and two energy fractions, `0.8819` and `0.2165`, that neither the manifest nor Calvin's
+proposal named) and its credited total is in `emissions-legacy.ts:14-15`; `MANIFEST.md` itself quotes
+figures from the two test files it left out; the paid site's Test Project (Lesotho, 1,199 households,
+687.6 and 184.3) is in `version.ts` and `scenario.ts`; the word `GS12441` appears nowhere. The whole
+list, as it stood, follows. The search terms "golden" and "validation" are the words the language rules
+retire; they are quoted here as search terms and nothing more.
+
+(equal to `origin/main`), 3 Oct 2026.
+
+**What was searched.** Every tracked and untracked file, for the twelve words. Every file under
+`carried/` (35 files), for numbers. The gitignored folders were searched for the words too and
+are reported apart, at the foot, because they never publish.
+
+**The one fact that frames the rest.** `carried/` has been on `main` since commit `b099ca1`
+(pull request #132, 27 Sep 2026), and GitHub reports this repository as PUBLIC. Everything
+listed in Part 1 is already published, in the files and in the history.
+
+---
+
+### Part 1 — What looks like a real project
+
+Three groups. The first is a real filing by the bundle's own words. The second is the paid
+site's test project. The third cannot be told from here.
+
+#### 1a. The India filing the bundle calls `anchor-cws-01`
+
+| Where | What sits there | Does a cited rulebook value explain it? |
+|---|---|---|
+| `carried/calculators/gs4gg-carbon/presets.ts:77` | Label: "South Asia multi-fuel — CWS (from a real India GS filing)" | Words, not a number |
+| `presets.ts:79-80` | Comment: "Filed strata from anchor-cws-01 (a real India CWS filing…)" | Words |
+| `presets.ts:82` | Stove share `0.8346`, traditional wood, efficiency `0.1` | No. The file says it is filed |
+| `presets.ts:83` | Stove share `0.0472`, improved wood, efficiency `0.3` | No. Filed |
+| `presets.ts:84` | Stove share `0.2086`, charcoal, efficiency `0.25` | No. Filed |
+| `presets.ts:85` | Stove share `0.0118`, LPG, efficiency `0.5` | No. Filed |
+| `presets.ts:88` | Wood energy fraction `0.8819` | No. Filed. **Not named in the manifest or in Calvin's proposal** |
+| `presets.ts:91` | Charcoal energy fraction `0.2165` | No. Filed. **Not named in the manifest or in Calvin's proposal** |
+| `presets.ts:92` | LPG energy fraction `0.0118`, with `63.1` and `0.0013` | `0.0118` is filed. For `63.1` and `0.0013` see 1c |
+| `presets.ts:94` | Cite string: "Strata / fuel-mix / η from anchor-cws-01 (a real GS India CWS filing)." | Words |
+| `presets.ts:73` | Cite string: "Mirrors the E-African CWS/HWT anchors (anchor-hwt-ug/ke)." | Words. That preset's own numbers are rulebook values |
+| `presets.test.ts:18` | Test title: "filed η (preset C, real filing)" | Words |
+| `presets.test.ts:21-22` | The four filed efficiencies `0.1, 0.3, 0.25, 0.5` asserted | No. Filed |
+| `emissions-legacy.ts:14` | `eta_weighted 0.141236` | No. It is the filed shares times the filed efficiencies, worked out: I re-did the sum and it matches |
+| `emissions-legacy.ts:14` | `SE 2554.81` | Half. It is the rulebook's 360.83 divided by the filing's 0.141236 |
+| `emissions-legacy.ts:14` | `EF_b 0.000363867` | No. The filing's baseline emission factor |
+| `emissions-legacy.ts:15` | `BE = ER = 59,160` | No. **The filing's credited total** |
+| `carried/MANIFEST.md:120` | `Q_pop 173,500,000`, `ER 59,160.03`, `ER 57,119.01`/`57,119.99`, metered volume `23,823,982` | No. **The manifest quotes these while explaining why two test files were left out. The files stayed behind; the numbers came across in the manifest's own text** |
+| `MANIFEST.md:121` | `Q_pop 173,500,000`, filed `fNRB 0.9189`, `ER 59,160.03` | No. Same |
+| `MANIFEST.md:141` | The four shares, repeated | No |
+| `MANIFEST.md:148-149` | The docstring's four figures, repeated | No |
+| `PROPOSAL_calvin-brief.md:103` | The four shares, repeated | Untracked, so not published |
+
+The efficiencies have fewer than three digits, so the number rule would skip them. They are
+listed because the file itself calls them filed.
+
+#### 1b. The paid site's "Test Project"
+
+The manifest (`MANIFEST.md:161-164`) says this is the paid site's own seeded demo project
+(Lesotho, household treatment, id beginning `e2dcbfe8-`) and not a Gold Standard filing. The
+engine's comment calls it "the Test Project's real record". I cannot check either statement
+from this repository.
+
+| Where | What sits there | Does a cited rulebook value explain it? |
+|---|---|---|
+| `version.ts:45` | "the Test Project's real record: households 1,199 × household size 3.73 = 4,472 people" | `1,199`: no, a project input. `3.73`: yes, it is Lesotho's UN household size in `household-size/countries.json:567`. `4,472`: the product of the two |
+| `version.ts:46` | `N_p 1,199, HN_p 3.73` | As above |
+| `version.ts:47` | "The ER is unchanged at 687.6 tCO₂e/yr" | No. The project's result |
+| `version.ts:48` | "would credit 184.3" | No. The project's result, read the other way |
+| `version.ts:33`, `:163` | "the Test Project's figure is unchanged", "THE TEST PROJECT'S NUMBER DID MOVE: see the PR" | Words, no figure |
+| `scenario.ts:307` | "read as '1,199 people, one per house'" | No. The same input |
+| `scenario.ts:313-314` | "1,199 people ÷ 3.73 is 321.4 households… rounding it to 321" | `1,199`: no. `3.73`: the UN value. `321.4`: the quotient |
+| `MANIFEST.md:162` | "households 1,199, id `e2dcbfe8-…`" | No |
+
+**One thing to square.** BUILD_PLAN's done line names "the Malawi test project". The manifest
+says the Test Project is in Lesotho, and `3.73` is Lesotho's household size (Malawi's is 4.28).
+These may be two different projects. Nothing here says. *(Answered by her ruling of 3 Oct 2026, above:
+both were play numbers, now being retired by the paid site.)*
+
+#### 1c. Cannot be told from here
+
+| Where | What sits there | Why it is listed |
+|---|---|---|
+| `quantity.ts:38-39` | "hwt-ind-hi: 59.4M = 66M×0.9" | A case from the reference set that was left behind. Its id does not say real or made up. Calvin's proposal already notes it (§1.5) |
+| `quantity.ts:39` | "`synthetic-inst-01` leaves Q_pop at 4.0M" | Named synthetic. Listed for completeness |
+| `presets.ts:64, 92, 172, 190, 229`; `version.ts:158` | LPG `63.1` tCO₂/TJ | No cited rulebook value. The file says "source pending: IPCC 2006 Vol. 2 Ch. 2". It also sits inside the filing's preset under "V1 figures as filed" |
+| `presets.ts:92, 229` | LPG non-CO₂ `0.0013` | No citation anywhere in the bundle. Two digits, listed because it sits beside `63.1` in the filing's preset |
+| `data/fnrb/countries.json:38` | Kenya's note: "Real-portfolio low-mid anchor." | Words. A country figure, not a project's, but it points at a real portfolio |
+| `data/fnrb/countries.json:33` | India's note: "Large base of GS safe-water projects." | Words. Same |
+| `data/fnrb/countries.json:43` | Uganda's note: "Flagship transition case: documented pre-MoFuSS national default 0.82 (2012-2017)… filing-era" | A country default, by its own words. Listed for "filing" and "flagship case" |
+
+---
+
+### Part 2 — The word search
+
+Case ignored. Whole-word match for "filing", "filed", "Mali" and "PDD". Every hit is here.
+
+**`anchor-`** — 11 lines, all in `carried/`.
+- `MANIFEST.md:119, 120, 121, 140, 143, 147, 148`
+- `emissions-legacy.ts:14`
+- `presets.ts:73, 79, 94`
+- All are the reference-case ids `anchor-cws-01`, `anchor-cws-01-y2`, `anchor-hwt-ug/ke`. See Part 1a.
+
+**`filing`** — 29 lines.
+- Real-filing sense: `MANIFEST.md:120, 121, 140, 141, 148, 163`; `emissions-legacy.ts:14`;
+  `presets.ts:77, 79, 94`; `presets.test.ts:18`; `version.ts:188`; `PROPOSAL_calvin-brief.md:103`.
+- General sense ("the project's own filing", no project named): `scenario.ts:483, 484, 488, 513,
+  530, 825, 831`; `version.ts:71`; `data/fnrb/countries.json:5, 43, 481, 484`;
+  `PROPOSAL_calvin-brief.md:319, 438, 525`.
+
+**`filed`** — 69 lines.
+- Real-filing sense: `MANIFEST.md:120, 121, 141`; `presets.ts:79, 89, 95`; `presets.test.ts:18`;
+  `PROPOSAL_calvin-brief.md:102, 504`.
+- General sense (a field the engine asks for): `HOW-TO-CALL.md:23, 55`; `MANIFEST.md:93`;
+  `data/fnrb/countries.json:5, 16, 17, 43, 443, 481, 482, 486`; `data/legacy/defaults.json:93`;
+  `emissions-legacy.ts:20, 27`; `presets.ts:15, 36, 442`; `presets.test.ts:114`; `scenario.ts`
+  (30 lines between 157 and 868); `types.ts:54, 55`; `version.ts:21, 25, 27, 39, 60, 65, 75`;
+  `sources/registry.yaml:74`.
+- Unrelated: `LICENSE:87` (the licence's own text); `INVENTORY_knowledge-packs.md:95` ("Filed wrong").
+
+**`golden`** — 18 lines. No project data; this is the word the language rules retire.
+- The rule itself: `CLAUDE.md:97`; `docs/archive/CHAT_FORMAT_RULES_for_ShellB.md:102`;
+  `PROPOSAL_calvin-brief.md:108`.
+- In `carried/`: `MANIFEST.md:119` (a file name); `data/daf/countries.json:33`;
+  `data/fnrb/countries.json:28, 79, 483`; `data/fnrb/countries.test.ts:37`;
+  `data/legacy/defaults.json:98`; `emissions-legacy.ts:13`; `quantity.ts:38, 42`;
+  `sources/registry.yaml:209`.
+- **`scenario.ts:726` is not a comment.** It is a note the engine hands back with a result:
+  "…(matches the golden convention)". If a screen prints the engine's notes, a visitor reads it.
+
+**`GS12441`** — no hit anywhere, tracked, untracked or gitignored.
+
+**`Mali`** — 4 lines, each the country's row in a public table: `data/age-shares/countries.json:844`,
+`data/fnrb/countries.json:286`, `data/household-size/countries.json:644`,
+`data/regions/un-m49.json:2160`. No project.
+
+**`PDD`** — 2 lines, general sense: `scenario.ts:514` (a cite string a user would read: "the
+project's own PDD or monitoring report") and `version.ts:69`.
+
+**`Test Project`** — 12 lines.
+- The paid site's project, with figures: `version.ts:33, 45, 163`; `MANIFEST.md:161`. See Part 1b.
+- The seal's rule, no figures: `version.ts:182`.
+- "The Malawi test project", the done line, no figures: `BUILD_PLAN.md:69, 120`;
+  `BUILD_LOG.md:4584, 5669`; `PROPOSAL_calvin-brief.md:436, 524`;
+  `docs/archive/OPEN_ITEMS_retired_2026-10-03.md:421`.
+
+**`real India`** — 3 lines: `presets.ts:77, 79`; `PROPOSAL_calvin-brief.md:103`.
+
+**`real filing`** — 4 lines: `MANIFEST.md:120`; `presets.test.ts:18`; `version.ts:182, 188`.
+
+**`1,199`** — 7 lines.
+- The Test Project: `version.ts:45, 46`; `scenario.ts:307, 313`; `MANIFEST.md:162`.
+- Unrelated: `BUILD_LOG.md:2324` and `knowledge-packs/product-shared/CHANGELOG.md:48`, both
+  "21,199", a count of characters in Wellington's prompt.
+
+**`1199`** — basin ids only. `public/hydrobasins_lev04.json` (2), `public/hydrobasins_lev06.json`
+(22), `public/water_stress.json` (1 line, several keys): HydroBASINS id numbers such as
+`PFAF_ID 151199`. No project.
+
+**Outside `carried/` the words turn up nothing else.** No hit in `src/`, `api/`, `scripts/`, the
+agents' packs or the captures, beyond the lines above. I also looked for registry-style ids
+(`GS` or `VCS` followed by digits) and record ids outside `carried/`: none. And for the figures
+of Part 1 outside `carried/`: only `PROPOSAL_calvin-brief.md:103`.
+
+---
+
+### Part 3 — The value search in `carried/`
+
+**How a number was counted.** Three or more digits that carry meaning: `0.0472` counts, `0.35`
+does not, `1,000,000` does not. Dates and version numbers were left out. 242 lines of code,
+comments and documents held at least one; the data files held about 1,500 more.
+
+**A limit, said plainly.** "Explained" below means the bundle itself names a rulebook place for
+the value. I did not open the rulebooks to check the value against the page.
+
+#### 3a. No cited rulebook value explains it
+
+Everything in Part 1, plus these, which are not signs of a project:
+
+| Where | Number | What it is |
+|---|---|---|
+| `data/household-size/countries.json:1138-1140`, `:10`; `MANIFEST.md:186-196` | `2.77`, `3.75`, `4.79` | Quartiles the paid site worked out from the UN table. Cited as that. In use as the fallback |
+| `data/fnrb/countries.json:63, 65, 471` (two retired blocks) | `0.3125`, `0.505`, `0.1325` | Quartiles of the fNRB tables. The file itself says "our own statistic", retired, read by nothing |
+| `table9.test.ts:12` | `3.2029` | In a test's title only. The sum beside it comes to `3.19295`, so nothing explains this figure. It looks left over |
+| `table9.ts:93` | `0.999`, `1.001` | A rounding allowance in code |
+| `presets.test.ts:71-72` | `33.3`, `33.4`, `0.333`, `0.334` | Made-up test input |
+| `emissions-legacy.test.ts:71` | `999` | Made-up test input |
+| `HOW-TO-CALL.md:34`; `version.ts:124` | `365` | Days in a year |
+
+#### 3b. A cited rulebook value explains it
+
+| Number | The bundle's citation | Where it sits |
+|---|---|---|
+| `360.83` kJ/L | V1 §3.6.2; ER tool Parameters!E53 | `data/legacy/defaults.json:12`; `defaults.test.ts:19`; `scenario.ts:81`; `types.ts:47`; `baseline-ef.test.ts:11, 13, 17, 22, 24`; `presets.test.ts:43` |
+| `112` and `9.46`, wood | V1 SDWS 9.1 / 10.1; V2 SDWS 9 p.51 / SDWS 10 p.52 | `data/legacy/defaults.json:19, 27`; `defaults.test.ts:20, 22`; `data/paa/fuel-factors.json:10, 14, 15, 18, 22`; `fuel-factors.test.ts:13, 15`; `baseline-ef.test.ts:8, 20`; `presets.ts:60, 61, 72, 88, 102, 227` |
+| `165.22` and `44.83`, charcoal, V1 | V1 SDWS 9.2 / 10.2, p.24 | `data/legacy/defaults.json:20, 28`; `defaults.test.ts:21, 23`; `data/paa/fuel-factors.json:25`; `baseline-ef.ts:10, 18`; `baseline-ef.test.ts:4, 10, 16`; `presets.ts:60, 91, 228`; `presets.test.ts:91, 121, 123`; `types.ts:39`; `version.ts:20` |
+| `5.87`, `355.36`, `89.68`, `236.91`, `61.74`, charcoal, V2 | V2 SDWS 9 p.51; SDWS 10 p.52 | `data/paa/fuel-factors.json:10, 18-20, 22`; `fuel-factors.test.ts:15-17`; `baseline-ef.test.ts:17, 20`; `presets.ts:61, 62`; `presets.test.ts:94, 121, 126` |
+| `0.0204`, `0.0345` | Downward adjustment tool 457, Annex 01 | `data/daf/countries.json:24-29`; `daf/countries.test.ts:16-21` |
+| `0.0125`, `1.25`% | 457 §5.7b, the absolute floor | `data/daf/countries.json:8, 10, 13, 16`; `daf/countries.test.ts:24, 25`; `scenario.ts:539` |
+| `12.0` kg | V2 §9.2 Table 10, p.36 and p.58 | `data/embodied/factors.json:11` |
+
+#### 3c. A cited public dataset explains it
+
+| Number | The bundle's citation | Where it sits |
+|---|---|---|
+| `0.1445`, `0.3591`, `0.4964`, Malawi's age shares | UN World Population Prospects 2024 | `age-shares/countries.test.ts:28, 31`; `table9.test.ts:15, 17` |
+| `0.3575`, `0.498` | The same source, an older reading, kept in a comment | `age-shares/countries.test.ts:30` |
+| `0.13005`, `1.0773`, `1.9856`, `3.19295` | The shares above times V2 Table 9's tiers; the sum is shown in the comment | `table9.test.ts:17, 18, 25` |
+| About 694 age shares, 237 countries, and the world row | UN World Population Prospects 2024, file POP/01-1 | `data/age-shares/countries.json` |
+| About 166 household sizes, 186 countries | UN Household Size and Composition 2022 | `data/household-size/countries.json` |
+| National and regional fNRB, 90 countries (two digits each, so under the rule) | A6.4-AMT-009 Table 2 and Table 3; CDM TOOL33 v03.0 | `data/fnrb/countries.json` |
+
+The country tables were read as whole tables: each has one source named at its head and in
+`sources/registry.yaml`. I did not list their rows one by one.
+
+#### 3d. Worked by hand from round inputs, the sum shown beside it
+
+`1.08e-4`, `97.2`, `87.48`, `9.72`, `1.7496`, `85.7304`, `7.48`, `81.7496`:
+`emissions-legacy.test.ts:24-38`; `emissions-paa-v2.test.ts:26-106`. Made up for the tests.
+
+#### 3e. Numbers that are not values
+
+- **Years:** 2006, 2010, 2012, 2020 to 2031, wherever they stand alone.
+- **Document and parameter numbers:** 429, 429.1, 429.2, 457, EB 115, EB 125, SDWS 10.1 / 10.2 /
+  16.1 / 16.2 / 24.1 / 24.2, review comment 1.11, UN resolution 1244, ISO 3166.
+- **Region codes:** 142, 202, 419, and every `m49` and `code` row in `data/regions/un-m49.json`.
+- **Counts:** 248 rows, 237 rows, 186 countries, "the 127 deltas" (`MANIFEST.md:119`).
+  `version.ts:81` and `:180` say 120 for the same thing.
+- **Record numbers and web codes:** Zenodo 14291479, 14389323, 18865904; DOI prefix 10.5281; 403.
+- **File sizes** in `sources/registry.yaml` (the `bytes:` rows) and **hash fragments** in
+  `MANIFEST.md:28-72`.
+
+---
+
+### Part 4 — Gitignored folders (searched, never published)
+
+- **`Design refs/`**, the saved pages from the paid site. Their bundled scripts hold the same
+  engine strings as Part 1a (`anchor-cws-01`, "a real India GS filing", the docstring's four
+  figures). One saved page shows a project named "WaterBots & C4SW PAA Test Project", and
+  "1,199" appears in one file.
+- **`legacy/`**: hits for "Mali", "1,199" and "1199" are rows in the Aqueduct download. The
+  rest are in `GROK.md`, `Partners.tsx` and `UI_REFERENCE.md`. Not read line by line.
+- **`sources-local/`**: methodology notes and one file, `Projects/carbon/SYNTHETIC-MATRIX-RESULTS.md`.
+  No hit for an anchor id, "Test Project", "real filing" or "1,199".
+- **`brand/`**: "filing" and "filed" in the brand book and a design-system bundle. Not read line by line.
+- **`data-src/`**: "1199" in basin id numbers only.
+
+---
+
+### What this sweep did not do
+
+- It did not open a rulebook to check a value against its page.
+- It did not list the country tables row by row.
+- It did not read the gitignored folders beyond the word search.
+- It cannot say whether the Test Project or `hwt-ind-hi` is a real project. Only the paid side knows.
+
+### What else this sitting closed
+
+- **Wellington's build-update fact refreshed** (close-out step 8): dated 3 Oct 2026, the same live
+  list; Calvin's chat now reads "expected next" for the re-sealed copy. Prompt modules regenerated; his
+  prompt measures **26,056** characters against the unchanged gate of **26,199** (26,043 after the 30 Sep
+  refresh). His 148 checks and Phoebe's 76 pass.
+- **`Design refs/` deleted from the working tree, by her word.** 375 files, 96 MB, three subfolders
+  (a calculator reference, the landing and hero-chat reference, and saved production console pages).
+  Gitignored, nothing in it ever tracked, so git shows nothing changed. It held saved paid-site pages, which
+  never belong here. **Item S12's hero-chat reference lived there and must be brought in again if S12 is
+  picked up.**
+- **The paid site's re-sealed bundle, v0.16.1, is expected next, by her hand.** Calvin's brief (A21, step 5)
+  waits on it and on ruling R1.
+- **No item closed this sitting**, so the sweep step moved none out of BUILD_PLAN.md, and no closed item
+  left a residue. The one loose thread, the sweep's findings, was given a home: O16, in Operations.
+  BUILD_PLAN.md is **297 lines** against its 400 limit.
+- `SWEEP_2026-10-03.md` was deleted after this entry was written; the list above is its record.

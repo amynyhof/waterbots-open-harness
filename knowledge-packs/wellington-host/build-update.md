@@ -16,11 +16,11 @@ about three hundred characters is the budget today; the pull request that adds a
 larger region reports the room left under the gate, and the number is hers to move.
 
 <!-- AGENT-FACING: BEGIN -->
-# The build, as of 30 September 2026
+# The build, as of 3 October 2026
 
 Live: the basin map; Eligibility, where Phoebe checks both the water and carbon pathways and gives
 each a readiness read; Quantify, three screening calculators; this desk; saving to the paid site.
-New: the paid site's calculator engine is in this site's code, and Calvin's chat on it waits for a
-re-sealed copy from the maintainer. Not live: Bridget's and Calvin's chats; Plan, Monitor and
-Communicate, on the paid site.
+Next: the paid site's calculator engine is in this site's code, and Calvin's chat on it waits for a
+re-sealed copy, expected next from the maintainer. Not live: Bridget's and Calvin's chats; Plan,
+Monitor and Communicate, on the paid site.
 <!-- AGENT-FACING: END -->
