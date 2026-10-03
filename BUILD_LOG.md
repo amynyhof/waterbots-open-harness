@@ -2580,3 +2580,1721 @@ wording is in docs/archive/CORRECTIONS.md. OPEN_ITEMS: A19 notes its cause. Well
 fact refreshed to 30 Sep and regenerated; his prompt is 26,043 against the unchanged gate of 26,199,
 156 characters of room; `check-wellington` 148 of 148. No migrations exist. `main` equals `origin`, and
 no merged branch is left on origin.
+
+## 3 October 2026 — the tidy-up: OPEN_ITEMS swept, family work written down, BUILD_PLAN's history moved
+
+One docs-only pull request, on the maintainer's approval of `TIDY_2026-10-01.md` as a batch, 1 Oct
+2026. Five commits, one per step of her list. No code, no pack content, no live-site change.
+
+**What this entry holds.** The text moved out of OPEN_ITEMS.md, whole, so nothing is lost by the
+move: ten item bodies, thirty-eight index rows, and a table of where each item went. The same
+pull request moves BUILD_PLAN's "Previously" sections here; they follow at the foot of this entry
+as Part B. **Headings in moved text are demoted two levels so this file's own structure holds;
+the words are otherwise exactly as they stood.** Strikes inside moved text are the old wording of
+their day, kept as history; sweeping them is item C1's, not this entry's.
+
+**The ruling behind it.** Maintainer, 1 Oct 2026: closed items move out of OPEN_ITEMS into
+BUILD_LOG at every close-out, no closed row left behind, and every loose item gets a family. It is
+step 9 of the close-out ritual in PROCESS_RULES_for_ShellB.md. Bodies swept before this entry stay
+in `docs/OPEN_ITEMS_ARCHIVE.md`; nothing is moved twice. The twenty-eight rows below are those
+earlier sweeps' index rows, now moved here; their bodies are in that file.
+
+### Where each item went
+
+| # | Item | What it ended as, and what it left behind |
+|---|---|---|
+| K7 | A carbon card pass in Phoebe's card format — and her second pack, with a "does this apply" test | Built 22–26 Sep 2026: #99, #100, #111, #113, #114, #115, #116, #122, #124, #126. Residues: three route cards no card carries (now K12); the Q11 carry was already on O14. |
+| A1 | Phoebe abstention loop | Built 25 Aug 2026. The index row had no body section. |
+| A6 | Phoebe fails about one request in six, and every fault fails late | Fixed and guarded 28 Aug 2026; the diagnostic instrument left both relays in #97. Residue: the runaway call cut off at 120 seconds, not prevented (now A20). |
+| A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Built 18 Sep 2026, #91. Residue: the confirmed free and Commons columns of `roster.yaml`, carried again (now a row on O14). |
+| A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Built 22 Sep 2026: #93, #94, #95, #97. No residue; Calvin's and Bridget's briefs against the ten lines sit on A12, A21 and A22. |
+| A16 | Wellington guides and leads — he never asks "water or carbon" | Built 24 Sep 2026, #119; save-door patch 25 Sep, #121; people served 27 Sep, #130. Its carries are on O14, with production's receiver recorded as not fixed (Shell A item #243). |
+| A17 | The handoff goes both ways — forward and back | Built 26 Sep 2026, #128. No residue. |
+| A18 | A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person | Built 25–26 Sep 2026: #122, #124, #126. Residues: the interim Blocked colour (now S22) and the reading-grade figure (now K13). `RESEND_API_KEY` is set in Production and Preview (26 Sep), and waterbots.ai is verified in Resend: recorded 3 Oct 2026 on her word. |
+| A19 | Wellington's prompt measures 26,117 on `main`; BUILD_PLAN says 26,108 | Cause found at the 30 Sep 2026 close-out: the 29 Sep build-update refresh added nine characters. No residue. |
+| O11 | OPEN_ITEMS.md is heavy and wants an archive | Closed 3 Oct 2026. Its job — sweep when heavy — is now step 9 of the close-out ritual, at every close-out. |
+
+**To find a swept item.** Look for its number as a heading in this file. If it closed before
+3 Oct 2026, look in `docs/OPEN_ITEMS_ARCHIVE.md`.
+
+### Facts recorded in the same pull request, 3 Oct 2026, on the maintainer's word
+
+- **Shell A is the paid site.** Shell B is this repository. Stated once in OPEN_ITEMS.md, under *Families*.
+- **`RESEND_API_KEY` is set in Production and Preview, since 26 Sep 2026, and waterbots.ai is verified in Resend.**
+  The sentences that said the key waited on her are replaced; their old wording is in `docs/archive/CORRECTIONS.md`.
+- **Phoebe's VWBA cards are reviewed by the maintainer.** Recorded on item K10, part 1.
+- **The paid-site receiver is not fixed.** Shell A item #243. Recorded on the seal row of item O14.
+- **Four storage keys show "Needs Attention" in Vercel.** Logged as item O15, to check later; not looked at.
+
+### New rows, so no residue and no loose item left a family
+
+K12 and K13 (Knowledge), A20, A21 and A22 (Agents), S22 and S23 (Surfaces), O15 (Operations). A21, A22 and
+S23 are v1 build-order steps 5, 6 and 4, which were not items before. The Agents family regained its header.
+
+### Index rows of the twenty-eight closed items, as they stood
+
+Their bodies are in `docs/OPEN_ITEMS_ARCHIVE.md`.
+
+| # | Item | Family | Bucket | State |
+|---|---|---|---|---|
+| K4 | "Knowledge Pack" — the word for a packaged knowledge set | Knowledge | closed | canon, ruled 26 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| K5 | The VWBA 2.0 D-3 screening pack | Knowledge | closed | **built 1 Sep 2026** — the first pack in the slot — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| K6 | The Gold Standard safe-drinking-water carbon packs, Legacy V1 and PAA v2.0 | Knowledge | closed | **built 2 Sep 2026** — two packs, one module, the transition delta — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| K11 | A third phase tag, "Partners phase" — rows where Bridget helps on the paid site | Knowledge | closed | **logged 23 Sep 2026** — **overtaken the same day** by the phase-tags-by-nav ruling: every row carries its navigation phase, and thirteen carbon rows and two water rows are Partners; closed into item A18 — **swept 23 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| A2 | Final agent staffing | Agents | closed | settled 24 Aug 2026; Bridget's colour settled 29 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| A3 | Agent handoff primer | Agents | closed | shipped 28 Aug 2026 — rung 2 live — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| A4 | Phoebe returned an empty answer | Agents | closed | one cause fixed 25 Aug 2026 — **not the only one**, see A6 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| A7 | An abstention cited a card | Agents | closed | logged 28 Aug 2026; **recurred 3 Sep 2026, benign branch** — reading owed — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| A8 | Wellington's chat, live on the desk | Agents | closed | **built 3 Sep 2026** — on Phoebe's pattern, thirty a day — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| A9 | Agents phrase the roster's facts themselves | Agents | closed | **canon, ruled 3 Sep 2026** — no word-for-word lines anywhere — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| A11 | The phase names are canon, and agents point at the step, never a tab | Agents | closed | **ruled and resolved 5 Sep 2026**, amended 7 Sep, same pull request — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S2 | The shared chat layer | Surfaces | closed | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S3 | Level 3 citation pop-out | Surfaces | closed | out of scope — paid platform — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S4 | Chat docks were thrown away on a surface switch | Surfaces | closed | fixed 23 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S7 | The bridge — handing a finished screening to the paid platform | Surfaces | closed | ruled 26 Aug 2026; the contract ruled 7 Sep 2026; **built 8 Sep 2026, #56** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S8 | Brightness pull-up to the book's published Frost values | Surfaces | closed | closed 29 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S9 | The return to the brand book | Surfaces | closed | **closed 30 Aug 2026** — both raises shipped, book at v4.1 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S10 | The Quantification step | Surfaces | closed | **built 1 Sep 2026** — the third surface, pack-keyed; three packs from 2 Sep — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S13 | The handoff receiver — a question carried in from the production landing | Surfaces | closed | ~~logged 3 Sep 2026, not built~~ **built 9 Sep 2026** — the desk receives it; **optional does/name/place from 15 Sep 2026, #74**; **Wellington visit-aware from 16 Sep 2026, #76**; the sender's contract is recorded here for production to carry — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| S16 | The agent screen — every step is a screen, the agent's chat in the middle and its tool as a tab; a candidate for production | Surfaces | closed | **built 9 Sep 2026, #61 to #64** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md); the B→A raise into the book and the carry list wait on the maintainer's hand |
+| O2 | Restore branch protection on `main` | Operations | closed | closed 24 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| O3 | Reverse link from waterbots.ai | Operations | closed | closed 24 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| O5 | The engineer pushed without a commit word, twice | Operations | closed | logged 24 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| O6 | The card gate reports stale cards that are not stale | Operations | closed | closed 27 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| O7 | Merged branches pile up, and are now to be cleared | Operations | closed | closed 27 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| O8 | The export step in the close-out ritual | Operations | closed | ~~ruled 27 Aug 2026, open on the script question~~ **closed 17 Sep 2026** — the step and the folder are retired — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+| O10 | Line endings are pinned in git but not in the working folder | Operations | closed | closed 30 Aug 2026 — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
+
+### Index rows of the ten items moved with their bodies, as they stood
+
+| # | Item | Family | Bucket | State |
+|---|---|---|---|---|
+| K7 | A carbon card pass in Phoebe's card format — **and her second pack, `gs-paa-v2.0`, with a cited "does this apply" test per pack** | Knowledge | BONES | **logged 2 Sep 2026 as debt**; **expanded 21 Sep 2026; proposed and ruled 22 Sep 2026; steps 1 to 4 built by 23 Sep 2026** — both applies sets, all 32 carbon eligibility cards and the nineteen carbon routes approved and in their packs, then sealed at their versions ("V1 — the done line"). **Step 5 built 24 Sep 2026 (#111, #113)**, and the tool definition contract with it (#114 to #116): both packs carry a tool file, gated by `scripts/check-tool.mjs`, read by nothing yet. Her runtime — the worksheet, the record and her prompt — is what is left **Her runtime built 25–26 Sep 2026 (#122, #124, #126), step 3 under V1's done line; built, sweep due** |
+| A1 | Phoebe abstention loop | Agents | PARK | built 25 Aug 2026 |
+| A6 | Phoebe fails about one request in six, and every fault fails late | Agents | BONES | fixed and guarded 28 Aug 2026 — 12% to 2% |
+| A13 | One roster — roster.yaml from production, checked against the primer and crew.ts | Agents | BONES | ~~**logged 18 Sep 2026 from the maintainer's brief** — waits on her carry~~ **built 18 Sep 2026, #91 merged** — the free and Commons columns stay "unconfirmed" until she carries a confirmed file |
+| A15 | The specialist contract — ten lines every specialist keeps; Phoebe first | Agents | BONES | ~~**ruled 20 Sep 2026; the batch approved the same day** — steps 0 to 3 merged (#93, #94, #95) by 21 Sep; steps 4 to 6 open as pull request D, #97, at her eyeball~~ **built 22 Sep 2026, all four pull requests merged (#93, #94, #95, #97), eyeball stop 4 passed** — line 9, the one gap left, closed by item A17, #128, 26 Sep 2026 |
+| A16 | Wellington guides and leads — he never asks "water or carbon" — **and names the project type from a cited list** | Agents | BONES | **logged 21 Sep 2026 from her walk of #97** — which pathways apply is Phoebe's to find; **expanded and ruled 23 Sep 2026**: a cited list of twenty-four types, confirm then log; **the types file graded and moved into `product-shared/` the same day**, on the roster rule; **his runtime built 24 Sep 2026, #119 merged on her word**: the short-form list in his prompt, type and class and stage confirmed then logged, "what kind" retired from the record and the rail; the gate to 26,199 by the measured amount; **the save-door patch of 25 Sep 2026** puts the word back on the seal alone, derived from the type, until production's receiver is carried; **people served built 27 Sep 2026, #130 merged on her word** — asked after the stage for C-11 and C-19, households never converted |
+| A17 | The handoff goes both ways — forward and back | Agents | BONES | **logged 21 Sep 2026 from her walk of #97**; **built 26 Sep 2026, #128 merged on her word** — he reads each pathway's read and any Blocked or still-open row by id and tool-file title, never her sentences; greets the visitor back once; Quantify only where a pathway fits; built, sweep due |
+| A18 | A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person | Agents | BONES | **ruled 23 Sep 2026 from her review of Phoebe's cards** — the rule is in AGENT_RULES.md (#100, merged); **stop 3 passed the same day**: fixability lines on the six water cards and nine water routes in the pack; the "tools on the paid site" line ruled canon; **her addendum of 23 Sep 2026 ruled and its tags built**: a Phase line on every eligibility card, the stage question, framing from the stage, the door once; nothing runtime built **Built 25–26 Sep 2026 (#122, #124, #126)**: five row states, the readiness read per pathway, the cited routes, the tools line, and the door to a person — her offer once on a Blocked row, a box and note at the save door, an email to the WaterBots team on a ticked save; built, sweep due |
+| A19 | Wellington's prompt measures 26,117 on `main`; BUILD_PLAN says 26,108 — find the nine characters | Agents | BONES | **logged 30 Sep 2026 from the maintainer's word; cause found at the 30 Sep close-out** — the 29 Sep build-update refresh added nine characters; the live docs now carry the measured number |
+| O11 | OPEN_ITEMS.md is heavy and wants an archive | Operations | BONES | **two sweeps done** — 30 Aug and 2 Sep 2026; **the triage is the next brief, 17 Sep 2026** |
+
+### The item bodies, verbatim
+
+#### K7. A carbon card pass in Phoebe's card format — and her second pack, with a "does this apply" test
+
+**Debt, logged 2 Sep 2026 and not built.** After Thursday's C4SW walk: a card pass in Phoebe's
+card format, drafted from the two Gold Standard PDFs in `sources-local/methodology/`, graded by
+the maintainer, and carried through the same pipeline as the VWBA cards — committed source, a
+generated module, a staleness gate. Until it lands Phoebe has no carbon cards and abstains on
+carbon questions, which is the correct outcome.
+
+**Why it is a row and not a task.** The maintainer asked for one open-items row so it is not
+lost. It waits for Thursday and on her word.
+
+##### Expanded 21 Sep 2026, from the maintainer's walk of pull request #97
+
+Her ruling at eyeball stop 4, in her words:
+
+> Phoebe's second pack, gs-paa-v2.0, in the new shape, with a cited "does this apply" test per
+> pack so she knows which worksheets to fill and reports each pathway on its own.
+
+**Four things it now holds, beyond the card pass.**
+
+1. **A second pack of her own**, `knowledge-packs/phoebe-eligibility/gs-paa-v2.0/`, in the pack
+   shape ruled on 17 Sep 2026 — `cards/`, `tool/`, `evals/`, `README.md`, `CHANGELOG.md` — beside
+   `vwba-2.0/`, which is the first thing in this repository to make a seat hold two packs. **One
+   pack at a time** still holds; this is the brief that proves the shape carries a second.
+2. **A cited "does this apply" test on every pack, hers included.** A short test, drawn from the
+   standard's own words and cited like any other claim under [CITATIONS.md](./CITATIONS.md),
+   that says whether this pack's pathway is in play for the project in front of her. `vwba-2.0`
+   gains one too; a pack without one cannot be sorted.
+3. **She runs the tests to know which worksheets to fill.** Which pathways apply is hers to find
+   (item A16), and the tests are how she finds it. A pathway that does not apply is said and
+   dropped; a pathway that applies opens its worksheet.
+4. **Each pathway is reported on its own.** One verdict per pathway, never merged into a single
+   "eligible". A project may qualify on one and not the other, and a reader must be able to tell
+   which. Her prompt already carries that as a fact from 21 Sep 2026 (item A15); this row is the
+   machinery behind it — the worksheets, the record's eligibility section, and the rail.
+
+**What this does not settle.** Whether the second worksheet is a second tool or one tool with two
+sets of rows; how the record's eligibility section holds two pathways; and whether Calvin's carbon
+method packs (item K6, built) and this eligibility pack cite the same documents twice. All three
+are the proposal's to answer, with her ruling on the shape.
+
+**Ordering.** The card pass above comes first — there is no pack without cards. Items A16 and A17
+are the same work seen from Wellington's side.
+
+##### Proposed and ruled, 22 Sep 2026
+
+**The proposal** is `PROPOSAL_K7_gs-paa-v2.0.md`, untracked at the repository root until the work
+merges. It read `sources-local/Methodology/` at three layers — the rules for every Gold Standard
+project (101, 102, 103, 104, 107, 118), the Paris-alignment framework (119, 120, 447, 454, 456,
+201, 461, 503, 446) and the methodology itself in both versions with its product rules (429 V2.0
+and its SI, 429 V1.0, 501) — plus the WHO and JMP standards the methodology hands conditions to.
+It found **32 basic eligibility requirements**, each cited by document, version, section and page:
+seventeen from the methodology's own gate, two from the framework, thirteen from the general
+rules; and a further set read and deliberately not made rows, each with its reason. It proposed one
+card and one worksheet row per requirement; a cited "does this apply" test per pack, four cards for
+the carbon pack and two for the water pack; one tool with two sections and a pathway state above
+each; rows keyed by pack in the record, the relay and the seal; nine steps in four pull requests
+with five eyeball stops; and seven rulings.
+
+**The three questions this item left open, answered by the proposal and ruled:** one tool with two
+sections, not two tools (R3); the record's eligibility section and the seal hold rows per pathway
+plus each pathway's state, and production is told before the sender changes (R6); Calvin's carbon
+packs and this one cite the same methodology page for different sections and different jobs, each
+card standing alone, nothing shared (§9.4 of the proposal, under R1).
+
+**Her rulings, in her words:**
+
+> Rulings on PROPOSAL_K7_gs-paa-v2.0.md §11: R1, R2, R3, R6, R7 yes as proposed. R4 yes, with
+> this: questions are written to cover both pathways whenever one answer can, so the free site
+> screens well; a verdict covers every row the answer settles; when a pathway drops out, she says
+> so and continues with the other. R5: the cap stays at 20; revisit after the first real walk.
+> Build pull request A, steps 1 and 2 only: the pack scaffold, confirm the four unconfirmed pages,
+> and the six applies cards as -DRAFT files at the root. Stop at Stop 1 for my grade.
+
+**What the read found in the sources and raised, never fixed** (proposal §12, ruling R7 says the
+cards say so in a line): the methodology's ongoing water-quality bar cites a WHO table that says
+non-detect while the text says under 10 per 100 ml; SODIS is on the positive list but not among
+the eligible technologies; the methodology and its supplement disagree on the 5 m³ a day
+groundwater line; corresponding adjustments and host-country authorisation appear in none of the
+held documents, only a negative-list check; the suppressed-demand requirements are cited as not yet
+published; the methodology carries two publication dates two days apart.
+
+**Steps 1 and 2 built the same day, on `feat/k7-gs-paa-pack`, pull request A open.** The scaffold
+`knowledge-packs/phoebe-eligibility/gs-paa-v2.0/` in the ruled shape, not live, nothing reading it,
+with every Gold Standard canonical page confirmed (twelve pages, fourteen documents; the guessed
+slugs for 104, 107, 118, 119 and 120 were found through the publisher's own search); the seat, the
+tree and the water pack's README corrected and bumped. The six applies cards drafted at the root as
+`applies-cards-gs-DRAFT.md` and `applies-cards-vwba-DRAFT.md`, untracked, never read.
+
+**Stop 1 passed, 23 Sep 2026.** Both applies files graded "pass as redrafted" after their "If the
+answer is no" sections were redrafted under the guide-not-gate rule (item A18), with one addition
+on card T4 in her words: for a transitioning project, a fact Phoebe phrases, that a
+transition-assistance module, overseen by trusted consultants, is coming to the paid site and the
+visitor can save the project and sign up for access; logged beside the paid-site tools line in
+AGENT_RULES.md and on item O14. Both sets moved into their packs, `gs-paa-v2.0/cards/applies-cards-gs.md`
+and `vwba-2.0/cards/applies-cards-vwba.md`, approved, read by nothing until step 5's reader.
+
+**Step 3 drafted the same day, at stop 2.** `eligibility-cards-gs-DRAFT.md` at the root,
+untracked: the seventeen methodology cards M1 to M17, each with "Can it be fixed?" (ten *yes*,
+seven *depends*, no flat *no*; the flat *no* on the carbon pathway sits on applies card T2),
+"Applies to" and "External standard", citing the methodology's section and page and, where a
+framework document is also cited, its page as a second link. The carbon routes they name are the
+proposal's planned ids, not cards yet.
+
+**Stop 2 passed, 23 Sep 2026, later.** Her grade: "all 17 pass", two conditions. Both met before
+the move: the WHO and JMP pages cited on M3, M4, M5 and M7 confirmed on the publishers' sites (the
+scheme report's page dates it 18 March 2026; M3 corrected); the Blocked cases on M5, M12, M13 and
+M14 carried to the reviewer as Q11, on item O14. M1–M17 are in
+`gs-paa-v2.0/cards/eligibility-cards-gs.md`, each with the Phase line her addendum ruled the same
+day (item A18). **Step 4 drafted at once:** `eligibility-cards-gs-framework-DRAFT.md` at the root,
+untracked, the fifteen framework and general cards P1–P2 and G1–G13 with fixability lines and
+tags — three *depends* (P1, G6, G12), no flat *no*, all *To start*.
+
+**Stop 3 passed, 23 Sep 2026, later.** Her grade: "all pass as drafted". The fifteen appended to
+`gs-paa-v2.0/cards/eligibility-cards-gs.md` as part two, so all 32 rows of the carbon pathway sit
+in one file; notes to `grader-notes.md`. **Step 4, carbon half, drafted at once:**
+`routes-cards-gs-DRAFT.md` at the root, untracked, the nineteen routes R-1 to R-19 the eligibility
+cards already name, cited only from the methodology, the documents it names as binding, or a held
+published project (none is a carbon project, so none is cited); four rest on documents one link
+removed through the Principles & Requirements and say so, for her to strike. **Her grade of the
+nineteen is the next stop.** The tag rule of the addendum stands as written, her word the same day.
+A third tag, "Partners phase", is item K11, the next version, not built.
+
+**Step 5 built, 24 Sep 2026 — the pack-keyed reader, and the tool files with it.** Four pull
+requests merged on her word, build-order step 1 under "V1 — the done line". `src/lib/phoebeCards.ts`
+is pack-keyed and reads seven card files and both pack READMEs; every approved card in both packs
+shows on Phoebe's Knowledge tab, water then carbon, each set with its own approval date, the two
+untracked drafts saying Draft and nothing more, and one honest line saying she reads the water
+cards today (#111). Calvin's and Bridget's tabs took a version on every row and the same Evals
+section, and Bridget's rows moved onto the shared component so one component draws every agent's
+tab (#113).
+
+**And the tool definition contract landed with it, pulled forward on her word.** Both packs now
+carry `tool/eligibility-worksheet.yaml` — one tool, a section each, forty-four rows between them,
+every row citing its card by id and its routes by route card id (#114, #115). Ruling R9 as amended
+24 Sep 2026 gave a row one optional ninth key, `applies`: which rows exist for a project's
+technology class or version, read from the card's own "Applies to" line, absent meaning every
+project (#116). `scripts/check-tool.mjs` is the gate; it holds a row's title, its fixability, its
+phase and its `applies` to the card, and runs by hand with the other checks on her ruling.
+**Nothing reads either file yet**, and both `tool/README.md` files with their agent-facing regions
+stand as they are until her runtime step. **Three fixes a carbon card describes that no route card
+carries — T1's and M2's change of pump drive, M14's justified sub-national area — are logged on the
+carbon pack's own page as route cards to draft after v1.**
+
+Logged 2 Sep 2026. **Expanded 21 Sep 2026. Proposed and ruled 22 Sep 2026; stops 1 to 3 passed
+23 Sep 2026; the carbon routes approved and step 4 done the same day; step 5 built 24 Sep 2026.
+What is left is her runtime: the worksheet and the record (pull request C) and her prompt and the
+measured walk (D). Bucket BONES.**
+
+#### A6. Phoebe fails about one request in six, and every fault fails late
+
+**Top priority. Measured 28 Aug 2026, twenty requests, and it is live.**
+
+**This affects real visitors on `map.waterbots.ai` today.** It is not caused by the agent handoff
+primer, it predates it, and it was found only because the primer was being tested against a
+baseline.
+
+##### What was measured
+
+One question, asked twenty times through the real relay: *"We are planning to restore 40 hectares of
+wetland upstream of our bottling plant in a water-stressed basin. Would that be eligible to generate
+a countable benefit?"* Ten through `main`'s prompt, ten through the parked step-two prompt. Each
+attempt recorded its HTTP status, elapsed time, reply length and cited-card count.
+
+**`main`, no primer — the code that is deployed:**
+
+| # | Result | Time |
+|---|---|---|
+| 1 | Short — 569 characters, 6 cards | 21.6s |
+| 2 | Full — 1,247 characters | 15.4s |
+| 3 | **HTTP 502 — empty answer, refused** | 12.3s |
+| 4 | **HTTP 502 — API error 400, "Invalid request data"** | 25.2s |
+| 5 | Full — 1,503 characters | 22.0s |
+| 6 | Full — 1,503 characters | 21.5s |
+| 7 | Short — 640 characters, **0 cards** | 48.3s |
+| 8 | Full — 1,331 characters | 18.1s |
+| 9 | **HTTP 502 — empty answer, refused** | 11.7s |
+| 10 | Full — 1,424 characters | 18.6s |
+
+**With the parked primer, for comparison:**
+
+| # | Result | Time |
+|---|---|---|
+| 1 | **Timeout — no response** | 240s |
+| 2 | Full — 1,730 characters | 25.0s |
+| 3 | Full — 1,028 characters | 22.5s |
+| 4 | **Timeout — no response** | 240s |
+| 5 | Full — 1,207 characters | 23.2s |
+| 6 | Full — 1,494 characters | 21.0s |
+| 7 | Full — 1,685 characters | 12.2s |
+| 8 | **Degenerate — 7 characters, delivered** | 23.9s |
+| 9 | Full — 1,222 characters | 15.4s |
+| 10 | Full — 1,831 characters | 22.2s |
+
+**Three failures in ten on each side.** The rate is the same; the shape differs. The primer does not
+make Phoebe less reliable — it changes how she fails.
+
+##### Four faults, and they are not one fault
+
+1. **Empty answers far below the budget.** Logged at **945** and **733** of 16,000 output tokens.
+   Item A4 recorded this symptom as fixed, and its cause — hidden thinking exhausting the budget —
+   was real and was fixed. **This is a different cause with the same symptom.** A4 is corrected
+   rather than reopened.
+2. **`API error 400 — Invalid request data`**, request id `req_011CeV9mhFbtJtXQBh1E41qK`. **That is
+   our request being rejected**, not the model answering badly. It has never been seen before and
+   nothing in the repository explains it.
+3. **A seven-character reply was delivered to the caller.** Item A4 deliberately refused to put a
+   minimum length on the schema, arguing that forcing the model to emit something turns an honest
+   failure into a meaningless answer that looks real. **The guard tests for an empty reply, and
+   seven characters is not empty**, so it passed. The principle was right and the guard does not
+   implement it. **This is the same lie the guard exists to stop.**
+4. **Answers vary enormously on identical input** — 569 to 1,503 characters, one citing six cards
+   and another citing none, on the same question through the same prompt.
+
+##### One fault that belongs to the parked primer, not here
+
+**Two requests hung with no response at all**, and `main` did not hang once in twenty attempts today.
+The relay logs the line printed immediately before the model is called and then nothing — no error,
+no refusal, no token count. **It is waiting on a call that never returns, and it has no timeout of
+its own to end the wait.**
+
+Locally that is an infinite wait. On the deployment platform it would hit the platform's own function
+limit and return a gateway error, so a visitor would see a failure rather than a hung page.
+
+**It is recorded here because it may share a cause with the faults above** and re-measuring it is
+part of this item's work. It does not belong to the primer until that has been checked.
+
+##### The diagnosis, 28 Aug 2026 — seventy-five requests, instrumented
+
+**The relay was instrumented first** so that failures explain themselves: stop reason, content
+blocks, token usage, elapsed time, the parsed shape, and — for a reply of forty characters or fewer
+— the reply quoted in full. It is behind `PHOEBE_DIAGNOSE=1`, off by default, and is debt to remove
+when this item closes.
+
+**Seventy-five requests across three questions**, all against the deployed prompt.
+
+| Fault | Rate | State |
+|---|---|---|
+| Empty or near-empty reply | **9 in 75 — 12%** | **Explained** |
+| `API error 400 — Invalid request data` | 2 in 75 — 3% | **Explained, and its message is false** |
+| Budget exhausted at 16,000 | 2 in 75 — 3% | **Explained** |
+| Answers varying on identical input | — | **Mostly not a fault** |
+| Any failure | **13 in 75 — 17%** | |
+
+###### Fault 1 and 3 — she finishes on purpose and says nothing
+
+```
+stopReason: "end_turn"        output: 920 of 16000
+parsedKeys: [reply, citedCards, abstained]
+textPreview: {"reply": "","citedCards":[],"abstained": false}
+```
+
+**Not the budget** — 920 to 1,525 of 16,000, measured across five instances. **Not truncation** —
+`end_turn` with valid JSON. **Not a refusal** — no refusal stop reason in seventy-five requests.
+**Not a parsing fault** — it parses cleanly with the right keys.
+
+She spends 900 to 1,500 output tokens, most of it hidden thinking, then writes a well-formed answer
+whose reply is an empty string and whose `abstained` flag is **false**. She does not consider it a
+refusal. She simply produces nothing.
+
+**Fault 3 is the same event with a character in it.** Four replies of one to three characters were
+delivered to callers, same `end_turn`, same `abstained: false`, same zero cards. They are not empty,
+so the guard passed them. **What those characters were is still unknown** — the instrument that
+would quote them was added afterwards and has not caught one since. That gap is named rather than
+filled with a guess.
+
+###### Fault 2 — the "invalid request" is not our request
+
+Reproduced twice. The instrumentation recorded what was sent, and it is **identical to the thirteen
+requests that succeeded in the same run**:
+
+```
+model: claude-sonnet-5   maxTokens: 16000   effort: medium
+systemChars: 53810       messageCount: 1    messageChars: [163]
+```
+
+**And the timing settles it.** Both failures returned after **27.8 and 31.4 seconds**. A genuinely
+malformed request is rejected in milliseconds, because nothing has to be computed to know it is
+malformed. **A 400 arriving after half a minute of work is a failure during generation wearing the
+label of a client error.**
+
+That is why nothing in this repository explained it. There was nothing to explain.
+
+###### Fault 5 — the budget wall, which item A4 said did not exist
+
+Two requests spent **16,000 of 16,000** and stopped on `max_tokens`, taking **102.8 and
+109.5 seconds** against a normal call of about twenty. A4's headroom claim is corrected in place
+under the visible-corrections rule.
+
+**Five times slower, not slightly slower.** That is a runaway rather than a shortage of room, which
+is why raising the number is not the obvious answer.
+
+###### Fault 4 — mostly the measuring instrument, not Phoebe
+
+Answers do vary, and far less than first reported. **The first pass called anything under 800
+characters a failure**, which mislabelled twelve correct short answers to a simple question. The
+real variance is the empty-answer fault plus legitimate differences between questions.
+
+##### The shape all of it shares
+
+**Every fault fails late.** Nine hundred to 1,500 tokens of thinking and then nothing; 28 to
+31 seconds and then a false 400; 102 seconds and then a wall. **None of them is a bad request, a bad
+card, or a bad schema** — the inputs are identical to the successes in every case measured.
+
+They are one thing failing to finish, which is why a fix has to touch how she thinks rather than
+what she is given.
+
+##### What the difficulty of the question does
+
+| Question | Empty-answer rate |
+|---|---|
+| Wetland restoration — complex, six criteria | **7 in 30 — 23%** |
+| Community consultation — simple, one card | 1 in 15 |
+| Feasibility — the other card set | **0 in 15** |
+
+**The harder the question, the more often she says nothing.**
+
+##### What a fix has to move, and how it is proved
+
+**The empty-answer rate is the number: 12% overall, 23% on hard questions.** The proof is the same
+seventy-five requests, the same three questions, the same instrument.
+
+**Budget exhaustion and the false 400 are separate faults with separate answers**, and a fix
+proposal must say for each whether a model or effort change can reach it, or whether it is upstream
+weather that can only be guarded against. Maintainer's ruling, 28 Aug 2026: **if it is weather, the
+guard proposal — including the near-empty hole — rides next.**
+
+##### The fix, ruled and shipped 28 Aug 2026 — Opus 5
+
+**Four measured runs, sixty to seventy-five requests each, same three questions, same instrument.**
+
+| | Sonnet · medium<br>morning | Sonnet · low<br>Option A | Sonnet · medium<br>fresh | **Opus · medium**<br>**Option B** |
+|---|---|---|---|---|
+| Empty answers, 60 | 8 — 13% | 6 — 10% | 7 — 12% | **1 — 2%** |
+| Empty, hard question | 7 in 30 — 23% | 5 in 30 — 17% | 3 in 30 — 10% | **1 in 30 — 3%** |
+| Calls over 240 seconds | 0 | **8** | 0 | **0** |
+| Budget wall | 2 | 0 | 0 | 1 |
+| Median call | ~20s | 7.1s | 14.6s | **8.2s** |
+| Mean output tokens | ~2,000 | 558 | 1,086 | **705** |
+| Cards on hard answers | — | 5.0 | 4.1 | **4.8** |
+| Abstention discipline | — | 15 of 15 | — | **15 of 15** |
+
+**Option A was refused.** It barely moved the rate and produced eight calls over four minutes where
+a same-hour `medium` baseline produced none. Maintainer's ruling: *a four-minute wait is worse than
+the fault it barely dents.*
+
+**Option B was ruled and shipped.** It clears every condition set for it: the hard-question rate
+falls from 23% to 3%, discipline holds at fifteen of fifteen, citation improves rather than
+degrades, and it is faster than the baseline rather than slower.
+
+**The upgrade was the one line the code had named since 21 Aug 2026**, which said to raise the model
+if abstention discipline proved weak. **Discipline was never weak — the answer was.** The same line
+fixed it.
+
+**Cost:** Opus is dearer per token and produced fewer tokens, 705 against 1,086, and answered
+faster. The net is the maintainer's to weigh and is not guessed at here.
+
+##### A measurement caveat that outlives this item
+
+**The hard-question rate swung from 23% to 10% on the identical configuration four hours apart.**
+Same model, same effort, same question, same instrument.
+
+**A thirty-request sub-sample cannot carry a decision.** The sixty-request figure is the steady one
+— 13% and 12% on two separate `medium` runs — and the ruling rests on that. Framing 23% as a stable
+target was overconfident, and it is recorded here so the next comparison is sized properly.
+
+##### The budget wall is ours, and it is banked
+
+**Effort reaches it.** `low` produced none in seventy-five; `medium` produced two on Sonnet and one
+on Opus. That settles the question the fix proposal owed: **the wall is not upstream weather.**
+
+**It is not fixed and Opus does not remove it** — one request in seventy-five still spent 16,000 of
+16,000. **It belongs to the guard proposal's scope**, along with the near-empty hole and the false
+`API error 400`, which remains weather.
+
+##### The guards, shipped 28 Aug 2026 — what the model change does not reach
+
+**Two steps, run as one approved plan.**
+
+**A reply shorter than 40 characters is refused rather than delivered.** `api/_reply.ts` holds the
+floor as a named constant; `scripts/check-reply-guard.mjs` is the eleventh check and proves it in
+both directions. **This is not the schema minimum item A4 refused** — A4 declined to make the model
+say more, and this refuses to hand a non-answer to a visitor. Same principle, opposite direction.
+
+**The relay has a timeout of its own, 120 seconds, where it had none at all.** Locally that was an
+unbounded wait; on the platform the deployment's own limit ended the request and a visitor got a
+gateway error instead of the honest message this relay gives everywhere else. **A default nobody
+wrote down is a decision nobody made** — this item's own family lesson, unapplied until now.
+
+**One retry, only for a 400 arriving after five seconds**, because a malformed request is rejected
+in milliseconds and the two measured instances came back at 27.8 and 31.4 seconds. **A retry cannot
+cost a visitor two of their twenty**, and `check-cap` now proves it rather than the code merely
+asserting it.
+
+**The budget wall is not closed by any of this.** It is cut off at 120 seconds rather than run to
+completion, which limits its cost without removing its cause.
+
+##### What this item is, and is not
+
+**It is a diagnosis, not a fix.** Finding the faults comes first, and any fix is proposed separately
+once there is something to fix rather than something to guess at.
+
+**What "done" looks like for the diagnosis:** each of the four faults above either explained with
+evidence, or shown not to exist. Then, and only then, a proposal.
+
+##### Why this outranks everything else in this lane
+
+**A third of visitor questions failing is worse than any feature being missing.** The agent handoff
+primer is built and parked. Nothing published claims it is live, so nothing is dishonest while it
+waits.
+
+**And the honest note about how this was found.** Two earlier baseline runs came back nine-for-nine
+clean, and were reported as a clean baseline. They were small samples and luck. **The clean baseline
+was wrong, and reporting it as a baseline was wrong**, which is why this item carries the raw twenty
+rather than a summary.
+
+Opened 28 Aug 2026. **Diagnosed, fixed and shipped 28 Aug 2026 — Opus 5, 12% to 2%. Open on what
+the fix does not reach: the budget wall, the near-empty hole, and the false 400, all of which go to
+the guard proposal.**
+
+#### A13. One roster — roster.yaml from production, checked against the primer and crew.ts
+
+**Logged 18 Sep 2026 from the maintainer's brief. Waits on her carry. Not started.** Her words, kept whole:
+
+> One roster. I will carry roster.yaml from production. The primer's crew facts and
+> `src/lib/crew.ts` get checked against it, and the build fails if they disagree. Levels are Meet,
+> Screen, Work.
+
+**What holds the roster today, in four places.** The crew list in `src/lib/crew.ts` (four agents,
+their roles and steps); the crew facts in the primer's regions,
+`knowledge-packs/product-shared/agent-primer.md`; the roster table in that pack's README; and the
+brand book's §6, which is gitignored and governs. Four homes for one fact is the drift the one-home
+rule exists to stop.
+
+**The shape, as read from her words.** A `roster.yaml` arrives by her hand, from production, the way
+every shared rule arrives (rule zero — nothing is fetched). A check in `scripts/` reads it and
+compares what this site says against it — names, roles, steps, whatever the file carries — and the
+build fails on any disagreement, the way the card gate fails on a stale card. Whether the file then
+becomes the source that `crew.ts` and the primer are generated from, or only the thing they are
+checked against, is a question for the proposal.
+
+**"Levels are Meet, Screen, Work."** Her words, recorded as given. What a level is on this site is
+not known here and is not guessed; it is defined when the file arrives.
+
+~~Logged 18 Sep 2026. **Waits on the maintainer's carry of `roster.yaml`. Bucket BONES.**~~
+
+**Built 18 Sep 2026, pull request #91, merged the same day on her eyeball.** She carried `roster.yaml` by hand
+the same day, version 0.3.0, ruled 17 Sep; it sits in the shared pack and this site never edits it.
+The levels are the file's own — meet, screen, work, later, none — and the doors are free, commons
+and paid; both are read from the file, never typed into the check.
+
+- **Checked, not generated**, by her go on the proposal: `src/lib/crew.ts` holds only what the
+  roster does not (portrait, colour, whether the accent may carry text, which screen opens) and
+  the primer is her approved prose with its struck history. `scripts/check-roster.mjs` holds the
+  crew file, the Commons shelf, both primer regions and Wellington's people sentence to the roster,
+  and runs in front of `npm run build`, so a disagreement fails the deploy and names the line.
+  `npm run roster:check` runs it alone, under production's name for it.
+- **"unconfirmed" passes either way, always.** A new allowed word for `built` is one row in the
+  check (`BUILT_WORDS`); she said she may add "partly" at the source for a seat whose tool is open
+  and whose chat is not.
+- **What tripped:** Bridget's role in `crew.ts` read "Map" where the roster's seat is "Partners".
+  Her ruling: `crew.ts` changes. Her card reads "Partners" on the desk and on the Commons shelf.
+- **Allowed and printed:** Reggie, Goldie, Edgar, Monty, Melody and Audrey are on the roster and
+  not built here; Ally is a second face of the Partners seat and nowhere on this site. Nothing is
+  built for any of them; later briefs.
+- **Her four rulings of 18 Sep 2026:** the primer's "basin map" wording stays this brief;
+  Wellington's prompt sentence naming the four stays her wording, checked and never rendered;
+  Ally as above; the check in front of the build, with `yaml` as a dev dependency.
+- **The other homes point at the file.** The shared pack README's roster table is struck, dated;
+  it had already drifted on Bridget's label. Shared pack 0.3.0, tree 0.3.0.
+- **What she took to the source:** the table of what is truly built at the free door and on the
+  Commons, ten seats; and the two "this repository" lines in the roster that mean the paid site.
+  Both were in the proposal, which is deleted.
+- **Two finds left for her word, not changed:** the screen host records' own role words. Logged
+  as item A14 on her word the same day; the story lives there.
+
+**Open until:** she confirms the free and Commons columns at the source and carries the file
+again. **Bucket BONES.**
+
+#### A15. The specialist contract — ten lines every specialist keeps; Phoebe first
+
+**Ruled 20 Sep 2026 from the maintainer's brief; proposal approved as a batch the same day.**
+Her ten lines live once, in [AGENT_RULES.md](./AGENT_RULES.md) under "The specialist
+contract", in her words. This row is the work's home. Her reason, in her words:
+
+> Every specialist on this site must behave the same way, so I can review one agent at a
+> time against one standard, and Deb's rig can grade each line.
+
+**Line 10 was added the same day, by her word, before the rulebook section merged**: what
+knowledge and values the tool needs, the kind of value each input takes, where it usually comes
+from; check the project context first, ask only for what is missing, say where each value came
+from. With it she named where the project context is at each door; both are in AGENT_RULES.md.
+Each pack table is ten rows. Phoebe reads partly on line 10; what reaching yes adds to steps 2
+and 3 is reported to her and waits on her go.
+
+**Where each agent stood on 20 Sep 2026**, read from the code: Phoebe one yes, seven partly,
+one no on the first nine, partly on the tenth — she never saw her own worksheet, was never told her level, and read the grader
+notes at the foot of her card files as knowledge. Bridget and Calvin, with no chat, no on
+nearly every line; the tool posts to the record and the agent does not exist to. The full
+tables live on each pack README under "The contract".
+
+**Her four rulings of 20 Sep 2026, on the proposal:**
+
+1. **Rung 2 stays as written, and line 8 adds to it.** Out of her lane a specialist still
+   says the colleague's facts in her own words, and sets a hand-back field so the console
+   offers the way back to Wellington, because he routes. Recorded in AGENT_RULES.md.
+2. **The grader-notes split (item K10, part 2) goes first.** Her card review runs alongside
+   as her own job; any wording she changes lands as its own commit under her eyeball, never
+   inside the move.
+3. **The shown line proceeds on prose**, with a before-and-after capture in the pull request;
+   same place and size as the citation line, no new colour; she may strike it at the eyeball.
+4. **The measured bar: no worse than 1 in 60 empty answers over sixty requests.** If any
+   measured run is worse, the engineer stops and tells her before going on. And every For
+   Amy block carries the measured counts in one plain sentence, and roughly what the run cost
+   in API calls.
+
+**The plan, six steps, four pull requests, four eyeball stops.** Step 0, the contract into the
+rulebook and the pack tables (own pull request). Step 1, the notes split (own pull request).
+Steps 2 and 3, her tool, her level and her lead in her prompt, and the worksheet's rows sent
+to her with every ask and read back as the record's eligibility section (one pull request, one
+walk). Steps 4, 5 and 6, the hand-back field, the walk in order with the shown line, and the
+A6 instrument removed (one pull request, one full walk). Item A6's residual faults block no
+line; they set the proof method.
+
+**Named, not built:** Wellington's side — reading her verdicts from the record and greeting
+the visitor back knowing what she found. Its own brief, after Phoebe. Calvin's and Bridget's
+briefs come after, each on the same nine lines; the lists are on their pack READMEs' tables
+and in item A12.
+
+**Where it stands, 22 Sep 2026.** ~~Steps 0 to 3 merged on her eyeball: #93, #94, #95.~~ **All four
+pull requests merged on her eyeball: #93, #94, #95 and #97, eyeball stop 4 passed 22 Sep 2026.**
+Three measured runs, all zero empty in sixty, and one full walk: six verdicts in seven turns, the
+order kept in six of six moving turns, one question a turn, the hand-back set at the end. Lines 1,
+2, 3, 4, 5, 6, 7, 8 and 10 read yes for Phoebe; 9 is still partly, because no agent here reads her
+verdicts yet — that gap is item A17. ~~Steps 4, 5 and 6 are open as pull request D, #97, at her
+eyeball~~ **The batch is complete.** The full record of the six steps is in
+[BUILD_PLAN.md](./BUILD_PLAN.md) under *Previously*.
+
+**Her rulings at eyeball stop 4, 21 Sep 2026, made on her own walk.** Two were built into #97:
+Wellington's copy of the A6 instrument came out with the rest, so the switch is gone from both
+relays; and her scope reaches her as facts she phrases — she checks eligibility under VWBA 2.0
+today, carbon eligibility is coming and not live — recorded in one line of her pack's contract
+table. Three are logged and not started, each wanting its own proposal: items **A16** and **A17**
+in this family, and item **K7** expanded with her second pack and a cited "does this apply" test
+per pack. **This item's own work is complete**; those three carry on, and the next brief is K7 —
+Phoebe's carbon pack — on the maintainer's word.
+
+**Bucket BONES.** Batch complete 22 Sep 2026. A16, A17 and K7 (expanded) carry the open work on.
+
+#### A16. Wellington guides and leads — he never asks "water or carbon"
+
+**Logged 21 Sep 2026 from the maintainer's walk of pull request #97, at eyeball stop 4. Not
+started.** Her ruling, in her words:
+
+> Wellington guides and leads. He does not ask "water or carbon". Which pathways apply is
+> Phoebe's to find.
+
+**What she saw.** Walking the desk herself she was asked to choose a pathway before anyone had
+looked at the project. That is a question the visitor cannot answer and the site can: whether a
+project can earn a countable water benefit, a carbon credit, both or neither is a finding, not a
+preference, and finding it is the eligibility specialist's job.
+
+**What it means for him.** His part is to learn what the project is and route to the step that
+comes next; it is not to sort visitors into pathways at the door. What has to change in his
+prompt, his route list, and the desk's own words is the work of the brief, not of this row.
+
+**What it means for her.** Finding which pathways apply is Phoebe's, and she can only do it for
+the pathways she holds cards for — one today. This row and item A17 and item K7 are one piece of
+work seen from three sides, and the K7 row carries the pack side.
+
+##### Expanded and ruled 23 Sep 2026 — he names the project type from a cited list
+
+Her finding, from her review of the applies cards, in her words:
+
+> Wellington translates the visitor's words into a standard project type from the rulebooks
+> (e.g. "pipes and a borehole" -> Community Water Supply) and stores that type in the project
+> context, not the raw words. He confirms in plain words first: "That sounds like a Community
+> Water Supply - [simple definition] - does that sound right?" then logs it on yes. Needs a cited
+> list of the standard project types he matches to (GS four classes; VWBA activity table).
+
+**The proposal, `PROPOSAL_guide-not-gate.md`, untracked at the root, and her rulings R1 to R9 on
+it, all yes as proposed, 23 Sep 2026.** The list is twenty-four types in one shared file,
+`knowledge-packs/product-shared/project-types.md`: the twenty rows of the VWBA guidebook's
+activity table (Appendix C, Table C-1, pp. 37–39) and Gold Standard's four technology classes
+(GS4GG PAA M400-12 V2.0, Table 2, pp. 6–7; Table 3, p. 9), plus "none of these", each with a
+one-line plain definition and its citation. He matches in his own words, says the definition
+back, and logs `type` (and `gsClass` for a drinking-water project) only on the visitor's yes;
+the relay checks both against the file; the raw words stay in "What it does". **"What kind"
+retires** (R2). **The file follows the roster rule, her word of 23 Sep 2026: drafted here,
+carried by her hand, and the paid repository becomes its source** — after which it is never edited
+here, and a check holds this site to it, as `roster.yaml` is held. The carry is on item O14's list.
+
+**Where it stands, 23 Sep 2026.** The rule is in the record (#100, merged). The types file was
+drafted at the root, graded by her the same day — "ships", one edit, the "not ruled out" note cited
+as Appendix C, pp. 37–39, the note itself on p. 39 — and moved whole into
+`knowledge-packs/product-shared/project-types.md`, approved, on the roster rule; the carry to the
+paid repository is on item O14, and nothing reads the file yet. His prompt, his fields, the rail and
+the seal change at the proposal's step 5, not started. Item A18 carries Phoebe's side of the same
+brief.
+
+**The stage joins the type, 23 Sep 2026**, her addendum: Wellington asks whether the project is on
+paper, being built, or already running, and logs it beside the type, only on the visitor's
+confirmation, from a closed list; each standard's start-date definition is cited in the addendum
+(101 v2.1 §4.1.39–4.1.41, §5.1.29; V2.0 Table 1; VWBA Glossary p. 66 and Step 3 p. 21). Builds at
+the proposal's step 5 with the type.
+
+**Built 24 Sep 2026, on her word of the same day, one pull request, #119, merged on her word the
+same day.** The list reaches him in its short form — id, the standard's name, one plain sentence, no
+cites — parsed once from the shared file into a module for the relay and one for the browser,
+both under the staleness gate. He matches from what the project does, says the definition back
+in his own words and never the id, and `type` is returned only on the visitor's yes; NONE on a
+yes to none of these; no type when they are not sure. A drinking-water project (C-19) is asked
+its class the same way, and `gsClass` is kept only beside C-19, on the relay, in the client and
+on the seal. The stage — on paper, being built, already running — is asked and `stage` returned
+only on the visitor's yes. "What kind" is gone from his answer, the visit, the rail, both agents'
+record blocks and Phoebe's tool text; the rail shows a "What type" row with the
+standard's name and its sentence behind it, and a "Stage" row. The seal carries `type`,
+`gsClass` and `stage` for `kind`, told to production once on item O14. His prompt measured
+25,699 after the build; the gate is 26,199, her ruling, raised by the measured amount to leave
+500. One short run each for him and for Phoebe; one four-turn walk against the relay logged the
+type on the second turn, the class on the third, the stage on the fourth. Item A17, his reading
+of what Phoebe found, is untouched.
+
+##### The save door broke, and the word came back — 25 Sep 2026
+
+**Found by the maintainer's own live test**, the day after #119 merged: she held a full
+conversation with Wellington at the desk — the project's name, what it does, its type, its stage
+and its country — clicked save, and arrived on production to be told her screening had not made
+it across. The record reached production empty.
+
+**Why.** Production's receiver still reads `record.kind`, the field this site retired the day
+before. The three fields that replaced it — `type`, `gsClass`, `stage` — mean nothing to it yet,
+and without the word it knew, it read the record as empty. Nothing was lost on this side and no
+visitor's words were mishandled; the save simply did not arrive as a project.
+
+**Her ruling, 25 Sep 2026.** Until the carry updates production's receiver, this site's sender
+carries `kind` alongside the three new fields, derived from the type — water, carbon, both,
+neither — and this site's own check allows the pair. Built the same day as its own small pull
+request, ahead of build-order step 3.
+
+**How it is derived, and what it is not.** `pathwayKind` in the generated project-type module is
+the one home: no type gives a blank, the potable-water type C-19 gives *both* because it is the
+one type both standards' lists name, any other activity type gives *water*, and "none of these"
+gives *neither*. *Carbon* stays in the closed list because production reads the word and a
+carbon-only type could join the list later; no type on the list yields it today, because the four
+Gold Standard classes are classes and a class is never a type. **It is a hint about which
+standards name this kind of activity and never a verdict on a pathway** — which pathway a project
+fits is Phoebe's to find, and her verdicts cross in the worksheet, not here. The seal's reader
+refuses a `kind` that disagrees with the type, so the pair cannot drift apart.
+
+**What is still owed.** The carry on item O14 now has two parts: production's receiver reads
+`type`, `gsClass` and `stage`, and on that day the word retires from the seal here. The retirement
+everywhere a visitor or an agent can see it is unchanged and was never undone.
+
+**People served, 27 Sep 2026: #130, merged on her word, her five rulings on the proposal.** For a
+water supply project (C-11 or C-19) he asks how many people or households it serves, after the
+stage and before he routes, and logs a whole count and its unit as said. R1: households travel as
+households and are never converted on this site; the conversion lands in Calvin's brief, from the
+UN household size now in `carried/`. R2: the primer line "Rough people counts and the technology
+wait for the Quantify step" was wrong and is replaced by the true rule — type, technology and
+people served come from the visitor's description and answers; whatever is still missing when they
+reach Calvin, Calvin asks. R3: C-11 and C-19 only, after the stage. R4: a People served row on the
+rail, and `record.served` on the seal, which production ignores until its storage is carried (item
+O14). R5: Phoebe reads the same record line. His prompt's repeat of the visit block's own lines was
+cut to make room; 26,073 at merge, under the unchanged 26,199.
+
+**Ruled 23 Sep 2026; built 24 Sep 2026; the save-door patch 25 Sep 2026; people served 27 Sep 2026.
+Bucket BONES.**
+
+#### A17. The handoff goes both ways — forward and back
+
+**Logged 21 Sep 2026 from the maintainer's walk of pull request #97, at eyeball stop 4. Built
+26 Sep 2026, #128, merged on her word; the four rulings of its proposal approved as written.** Her
+ruling, in her words:
+
+> The handoff both ways, forward and back.
+
+**Where it stands today.** Forward is built: Wellington hands the visitor to a step, and from
+21 Sep 2026 Phoebe hands back by a field — `handBack`, drawn as the way back to him on Dispatches,
+or to the shelf on the Commons (item A15, step 4). What is not built is his side of the return:
+he does not read what she found, so a visitor who walks back arrives to a colleague who does not
+know where they have been. That gap is named under item A15 as "Wellington reading the record's
+eligibility section", and this row is the maintainer's word that the round trip — not the one
+field — is the thing to build.
+
+**What the round trip has to carry.** Her verdicts, as the record's eligibility section, which
+already travels; what is still open; and enough for him to greet the visitor knowing what she
+found, in his own words, never as a recital. Rule zero and the agent-phrasing ruling of 3 Sep
+2026 both apply.
+
+**What was built, #128.** Each ask to him carries her worksheet as row ids and states only, read
+into a "What Phoebe found" note after the cache breakpoint: each pathway's read, and any Blocked or
+still-open row by id and its title from the tool file. A pathway she has not looked at yet reads not
+enough known. The desk sends him one turn the first time the visitor comes back from her, so he
+greets them knowing it. A route to Quantify becomes "none" when every pathway reads likely not or
+does not apply. His prompt is 25,894, under the unchanged gate of 26,199. Bucket BONES.
+
+#### A18. A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person
+
+**Ruled 23 Sep 2026 from the maintainer's review of Phoebe's applies cards, before she graded
+them.** Her findings 2 to 5, in her words, are the fifth ruling under *Pace and posture* in
+[AGENT_RULES.md](./AGENT_RULES.md), which is the rule's one home. This row is the work's home.
+
+**What it replaces.** The hard gate of 20 Aug 2026 — six absolute criteria, no partial credit —
+is struck and corrected in place at the head of `eligibility-cards-vwba.md`. The guidebook's own
+Figure 3 loops a miss back to the implementer before it ends in "not eligible" (VWBA 2.0, Step 2.3,
+p. 19), so the source carries the change. The three row states of `criteriaState.ts` and the
+relay's worksheet reader become five when the build lands. Until then nothing runtime changes: a
+criterion not met is "Not yet" with a route forward, and Phoebe's prompt says so in the corrected
+paragraph she reads.
+
+**The proposal, `PROPOSAL_guide-not-gate.md`, untracked at the root, and her rulings on its §10,
+23 Sep 2026: R1 to R9 yes as proposed**, with three riders in her words:
+
+> R8: print a grade-6 target, not enforced. The Blocked colour is the interim one until my pixels.
+> The carbon "no" list also goes to the reviewer as Q11 (note it for the paid side).
+> project-types.md follows the roster rule: drafted here, carried by my hand, the paid repo
+> becomes its source.
+
+**What the build holds, in the proposal's order.**
+
+1. **Five row states**: Not yet checked, Met, Fixable with a cited route, Unknown with what to find
+   out, Blocked. Blocked only where the card's **Can it be fixed?** line says *no*, or *depends*
+   after the visitor declines the design change. The first "no" list is in the proposal's §4.1,
+   for her grade with the cards; **the carbon part of it also goes to the reviewer as Q11**, her
+   word, a paid-side note carried by her hand (item O14).
+2. **The readiness read per pathway**: likely eligible (every row that applies is Met), likely
+   not (any row Blocked), not enough known yet (anything else, with the list). Shown on the Tool
+   tab, the desk row and the seal. "Likely" because nothing here is verified.
+3. **Routes cards**, one cited fix per common gap: nine for the water pathway, nineteen for
+   carbon, resting on the guidebook, the methodology and the documents it names as binding, or one
+   real published project. One is held today — LimnoTech for Meta, *Volumetric Water Benefits: 2023
+   Report*, 25 June 2024, the Navajo Community Water Supply project, pp. 25–26. A gap with no source
+   gets no card. Item K3 is where more reports arrive, by her hand.
+4. **Unknown is not a fail.** For an unknown baseline or survey she names the cited route (the
+   methodology's Baseline Scenario Survey and Gold Standard's questionnaire workbooks; the
+   guidebook's Appendix E) and offers the save door.
+5. **The door to a person**: rung 3 of the abstention ladder, live for the free site through the
+   save door that already exists (item S7), with two fields on the seal, `wantsHuman` and a short
+   note in the visitor's words, and a consent line that says what happens. Production builds the
+   receiving side. Item S20's form stays the Commons door.
+6. **A reading-grade figure** printed by `check-cards` for every route card and plain-words line,
+   against a grade-6 target, not enforced. Her rider on R8.
+7. **The Blocked colour** reuses `--state-pending` with the word "Blocked" until her pixels; a
+   raise for the brand book's §2.5, which has no stopped state that is not an error.
+
+**Sequencing (R9).** The rulings into the record first, then the types file (item A16), then the
+fixability line on every eligibility card and the two routes files, each at her grade; then
+Wellington's runtime on its own; Phoebe's runtime inside item K7's pull requests C and D so the
+worksheet, the record, the seal and the prompts change once. One contract change for production,
+told once, covering K7's per-pathway rows and this item's fields; on item O14's list.
+
+**A third ruling under this item, 23 Sep 2026, canon for every agent**, recorded in her words
+under *Pace and posture* in AGENT_RULES.md: wherever Phoebe shows a Fixable or Unknown row, she
+also says, as a fact she phrases, that WaterBots is building tools and resources on the paid site
+to help implementers do exactly these fixes, and that they can save their project and sign up for
+updates and access; the same line goes on the save door's copy. A fact, never a sales line; said
+there and nowhere else. It reaches her prompt and the save door with this item's build, and
+production's side of the door is a carry on item O14. **A companion fact for one case, the same
+day:** on carbon applies card T4, for a transitioning project, that a transition-assistance module,
+overseen by trusted consultants, is coming to the paid site and the visitor can save the project
+and sign up for access; on the card, in the rulebook beside the tools line, and on item O14.
+
+**Her addendum, 23 Sep 2026, ruled "then build"**, recorded once in the guide-not-gate proposal's
+addendum and summarised here. (1) **Every eligibility row gets a phase tag**, *To start* or *To
+remain eligible*; a planned project's readiness read counts *To start* rows only; the *To remain*
+rows show together as one preview block, opened by a fact Phoebe phrases, in her words: "routine
+reporting is the critical part of impact funding, which means ongoing access to the project and
+its data, data systems, staff, and good relationships with stakeholders and legal owners;
+WaterBots supports this with tools and resources as each phase requires them." She may ask one
+feasibility question about that readiness, and one answer settles every *To remain* row it can;
+never a mark against a planned project; a running or transitioning project gets every row; where
+the water pack's ten considerations already cover it, they are cited — B-1, B-2, B-3, B-5 — one
+home. (2) **Wellington asks the stage** — on paper, being built, already running — and logs it
+with the type, each standard's start-date definition cited (item A16). (3) **Phoebe frames from
+the stage**: already running means carbon is hard to certify after the fact, the retroactive rule
+cited (101 v2.1 §4.1.42, §4.1.49, §5.1.37), look at VWBA, which is open to a running project
+(Step 3, p. 21; criterion 6, p. 33; Step 6, p. 27; Glossary, p. 66) subject to criterion 4.
+(4) **The human door fires once on any Blocked project**: save and send to the WaterBots team,
+yes or not now. **Built now:** the tags on all 23 approved cards and the fifteen drafted ones;
+an *engineer's rule* on what "to remain" means, which **stands as written, her word of 23 Sep 2026,
+later**. The rest builds at the steps the addendum names.
+
+**The tags moved to the navigation's phases, 23 Sep 2026, later still** — `PROPOSAL_phase-tags-by-nav.md`,
+graded her way on every ruling: *To start* retired; each row carries the phase where it is acted
+on; the Eligibility-phase rows are the free screen, asked on this site, both pathways, with the
+readiness read on them (3 water, 8 carbon, P2 settled by the test); every other row shown once,
+grouped by phase with the seat that helps there, never asked; the Monitor group takes the addendum's
+preview block and its fact; Communicate shows as an honest empty group; the cap to thirty; the
+prompt rule of that proposal's §6 for her runtime. Applied to all 38 cards the same day. Item K11's
+"Partners phase" is answered by the Partners group and is closed into it below.
+
+**Where it stands, 23 Sep 2026, later.** Stop 3 passed: both drafts graded "ships as written",
+criterion 4 stays *depends*, R-8 ships with the Meta line, its title confirmed by her. The six
+**Can it be fixed?** paragraphs are on the cards in `vwba-2.0/cards/eligibility-cards-vwba.md`,
+reaching Phoebe's prompt (measured run on the pull request); the nine routes are
+`vwba-2.0/cards/routes-cards-vwba.md`, read by nothing yet. Both drafts' notes are in
+`grader-notes.md`. The six applies cards' "If the answer is no" sections are redrafted under this
+rule at the root, untracked, for her grade with K7's stop 1. Nothing runtime is built.
+
+**Built 25–26 Sep 2026, step 3 under V1's done line.** #122 the water pathway on its tool file,
+the five states and the read; #124 the carbon pathway, staged by pathway state; #126 the door to a
+person. On #126, by her word the same day: a ticked save sends one email to hello@waterbots.ai —
+name, place, type, stage, each pathway's read worked out on the server, its Blocked rows with the
+card's reason, the note, and a line that the project reaches the paid site at sign-up and the team
+replies from there; no visitor contact. Resend over HTTPS; the key is the hosting secret
+`RESEND_API_KEY` and waterbots.ai is verified with Resend, both hers to set. Until both are set, a
+ticked save is refused and says so. If the email fails, the save is taken back. The seal carries
+`wantsHuman` and `humanNote` only on a tick; production's side is on item O14. The Blocked colour is
+still the interim one until her pixels, and the grade-6 figure is not built.
+
+**Ruled 23 Sep 2026; built 26 Sep 2026. Bucket BONES until swept.**
+
+#### A19. Wellington's prompt measures 26,117 on `main`; BUILD_PLAN says 26,108
+
+**Logged 30 Sep 2026, from the maintainer's word. Cause found at the 30 Sep close-out; the item stays until the sweep.**
+
+Measured on `main` on 30 Sep 2026, before and after pull request #134: his system prompt is
+**26,117 characters**. BUILD_PLAN.md records **26,108** "after the build-update refresh at this
+close-out" (27 Sep 2026). The difference is nine characters. The gate is unchanged at 26,199, so
+the prompt is under it either way and no check trips.
+
+The measurement was the length of `WELLINGTON_SYSTEM_PROMPT` as `scripts/check-wellington.mjs`
+loads it. Pull request #134 touched no file that feeds it, so the nine characters were already on
+`main`.
+
+**Found at the 30 Sep 2026 close-out.** The 26,108 was the 27 Sep figure. The 29 Sep close-out's
+build-update refresh (b69d4f5) lengthened the generated build-update module by exactly nine
+characters, 572 to 581, and BUILD_LOG's 29 Sep entry recorded the resulting 26,117 correctly. Two
+live lines, in BUILD_PLAN.md and CLAUDE.md, had kept the older figure and are corrected. The 30 Sep
+refresh shortened the region, and his prompt is now **26,043** against the unchanged gate of 26,199.
+
+**What "done" looks like:** at the next close-out, measure the prompt, say which change added the
+nine characters, and write the measured number into BUILD_PLAN.md and CLAUDE.md so the two agree.
+The gate does not move; report a trip and propose a number, as the rule says.
+
+Logged 30 Sep 2026; found the same day. **Open until the sweep, bucket BONES.**
+
+#### O11. OPEN_ITEMS.md is heavy and wants an archive
+
+**Flagged 30 Aug 2026, under the maintainer's ruling that the opening reads stay thin, forever.**
+That ruling says plainly that a growing opening document is a defect and that an engineer who
+notices one says so.
+
+**This file is 1,900-odd lines and grew by about 300 in one session.** It is read at the start of
+every session, and a good part of it is items that are closed and finished: O2, O3, O6, O7, S4, S8,
+and the settled halves of A2, A3 and A4.
+
+**What the ruling prescribes:** sweep closed items to an archive file. A closed item is finished; it
+earns a pointer and a home elsewhere, not a place in a document read at the start of every session.
+
+**Sweeping is ordinary tidying and needs no ruling.** It is logged rather than done because it was
+noticed at a close-out, and moving a third of this file is not a thing to do in the last ten minutes
+of a session. **What does need a decision is nothing** — the families stay as they are; only closed
+rows move.
+
+**What "done" looks like:** an archive file holding the closed items in full, each with its dates and
+its reasoning intact, and a one-line row left behind in the index table here pointing at it. Nothing
+is summarised away in the move.
+
+##### The first sweep — done 30 Aug 2026
+
+**Six items moved in full to [OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md):** S4, S8, O2, O3, O6
+and O7. Each keeps its dates, its measurements, its wrong turns and its corrections; **nothing was
+summarised away**, which was this item's own test for what "done" looks like.
+
+**Each leaves two things behind.** A one-line row in the index table above, pointing at the archive,
+and a short stub where the item stood, saying when it closed and where it went. An item cannot be
+lost by being finished.
+
+**What it bought:** this file fell from **2,173 lines to about 1,850** in the same session that
+added the version 4 raises, so it ends the day shorter than it started despite growing. The archive
+is **not** one of the ~~six~~ four opening documents and is never read at the opening.
+
+**The settled halves of A2, A3 and A4 stayed put**, and that is deliberate rather than an omission.
+This item named them as candidates, but each sits inside an item that is still live — A4 in
+particular says plainly that its cause was *not the only one* and points at A6. **Splitting a live
+item's insides is more than ordinary tidying**, and the ruling that licenses sweeping licenses
+moving *closed items*, not editing open ones. It is left for the maintainer to say whether those
+items should be split at all.
+
+**Item O10 closed the same day and was not swept.** A freshly closed item is worth leaving in place
+for a session, where the next reader will look for it. It is the obvious first candidate for the
+next sweep.
+
+**The families did not change**, exactly as this item predicted: only closed rows moved.
+
+##### The second sweep — 2 Sep 2026
+
+**Item O10 moved in full**, the obvious candidate the first sweep named. Three items joined the file
+the same day — K6, K7 and S11 — so the file did not get shorter, and it stays over 2,000 lines. The
+next candidates are the settled halves the first sweep declined to split, which still need the
+maintainer's word.
+
+##### The triage — logged as the next brief, 17 Sep 2026
+
+**Flagged again at the open of the root-tidy sitting of 17 Sep 2026:** this file stood at
+2,855 lines and 176 KB, read at the start of every session. The maintainer's word at the close of
+that sitting: *"Not in this batch: the OPEN_ITEMS sweep. Log it as the next brief. I want that list
+triaged, not just swept."*
+
+**What that asks for, as read here and hers to correct on the proposal.** A sweep moves closed rows
+to the archive and touches nothing open. A triage reads every open row and gives it a state: still
+open and why; closed and swept; folded into another item; or split, where an item carries a
+settled half and a live half — the settled halves of A2, A3 and A4 that the first sweep declined to
+split without her word. Families stay as they are unless the triage shows they are wrong, which is
+her decision under the families rule. The archive now lives at
+[docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md).
+
+**Proposal first; nothing is moved until she says go.**
+
+Logged 30 Aug 2026, **first sweep done 30 Aug 2026, second sweep done 2 Sep 2026.** Open as a
+standing habit — ~~the next sweep runs when this file gets heavy again~~ **the triage is the next
+brief, 17 Sep 2026**.
+
+##### The triage — done 18 Sep 2026
+
+**The maintainer's go, 18 Sep 2026, on the sort proposed the same day.** Every open row was put in one of five
+buckets — BONES, WALKTHROUGH, PARTNER, PARK, CLOSE — defined once under *Families* above and shown in
+a new column of the index table. Eighteen rows closed and were swept to
+[docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) in full, each with a dated line saying
+why: K4, K5, K6, K8, A2, A3, A4, A7, A8, A9, A11, S2, S3, S9, S10, S13, O5, O8. Two of them needed
+a ruling first — A7's benign reading was accepted, and O5's rule went into the process rules before
+its record left. Every moved item's text was checked verbatim against the archive.
+
+**Orphans adopted.** Eight threads had lived inside other items with no row of their own. Two became
+rows: item A12 (the two chats not built) and item O14 (carries by the maintainer's hand). Three
+folded into rows that already existed: the dock copy saying "console" into O13, the rail-width
+rider into S5, Route C into O9. Three stay where they were, named: the typeable controls under S11,
+the diagnostic switch under A6, a path per Commons pack under S18. Pairs named: A4/A6, A11/S15,
+S5/O4, K2/K7, S12/S14, and the three rows waiting on real usage.
+
+**Three rows added from her brief, all BONES:** A13 (one roster), K9 (Calvin's and Bridget's packs
+to the new shape), K10 (Phoebe ready for Deb's rig).
+
+**What it bought:** the opening read fell from 2,881 lines to the figure in the build log of
+18 Sep 2026, with nothing summarised away. The proposal file, `triage-2026-09-18.md`, was untracked
+and is deleted after the merge. The families did not change.
+
+Logged 30 Aug 2026; first sweep 30 Aug, second 2 Sep, **triage and third sweep 18 Sep 2026.** Open as a
+standing habit — the next triage runs when this file gets heavy again, on her word.
+
+### Part B — BUILD_PLAN's "Previously" sections, and the stale "next" section, as they stood on 3 Oct 2026
+
+Twenty-six sections moved out of BUILD_PLAN.md whole, in the order they stood: twenty-four whose headings
+begin "Previously" (one of them "Previously planned next — the hero chat, when its reference arrives", wholly
+stale), "The K7 brief as it was given", and, also wholly stale, "Building next — the hero chat, when its
+reference arrives". BUILD_PLAN.md now holds the compatibility goal, "V1 — the done line" and "Family
+work". Headings are demoted two levels; the words are exactly as they stood, strikes included, as the
+history of their day.
+
+#### Previously — the specialist contract, Phoebe first (item A15)
+
+**20–21 Sep 2026. Four pull requests merged on her eyeball: #93, #94, #95 and #97.** One brief, one
+batch approved 20 Sep 2026: steps 0 to 6, four pull requests, four eyeball stops, all four passed.
+Her ten lines, her words, live once in AGENT_RULES.md under "The specialist contract"; each pack
+README carries a ten-row table of where its agent stands. Item A15 in
+[OPEN_ITEMS.md](./OPEN_ITEMS.md) is the work's home and holds her rulings.
+
+- **Step 0 (#93):** the contract into the rulebook, line 10 added the same day, where the project
+  context is at each door, ten-row tables on Phoebe's, Calvin's and Bridget's pack READMEs.
+- **Step 1 (#94):** the grader notes left Phoebe's card files for `cards/grader-notes.md`, 155
+  lines carried whole; her prompt 10,811 characters shorter. Line 6 to yes.
+- **Steps 2 and 3 (#95):** her tool from her pack's `tool/README.md`, generated into her prompt;
+  her level, held to the roster; Wellington named as her lead; the six worksheet rows travel with
+  every ask and come back as "What the worksheet shows". Lines 2, 3, 7 and 10 to yes.
+- **Steps 4 to 6, and her rulings at eyeball stop 4 (#97):** her answer carries `handBack`, checked
+  against a closed list, drawing the way back to Wellington or the Commons shelf. Line 8 to yes.
+  Her prompt walks the six rows in the manual's order, one row, one question; a "Worksheet: 3 Met ·
+  0 Not yet" line draws under any turn that moved a row. Lines 4 and 5 to yes. The A6 diagnostic
+  instrument left both relays — `api/phoebe.ts` and, on her word at the walk, `api/wellington.ts`
+  too — with `check-wellington` holding it out of each. Her scope reached her as facts she phrases,
+  never a sentence to repeat: eligibility under VWBA 2.0 today, carbon coming and not live, one
+  pathway does not mean eligible everywhere. One capture, of her saying that scope in her own
+  words, in `captures/2026-09-21-phoebe-scope-water-only.png`.
+- **Three measured runs, all zero empty in sixty**, within her bar of 1 in 60 (ruling R4). One full
+  walk: six verdicts in seven turns, order kept six of six, one question a turn, hand-back set at
+  the end. `scripts/measure-phoebe.mjs` and `scripts/measure-phoebe-walk.mjs` are the instruments,
+  run by hand, never a gate; the method is written into the pack's `evals/README.md`.
+- **Where each contract line stands, 22 Sep 2026:** 1, 2, 3, 4, 5, 6, 7, 8 and 10 read yes; 9 is
+  partly — her verdicts reach the record, but no agent on this site reads them back yet.
+
+**Named, not built, and three logged as their own items from her walk at stop 4.** Wellington
+reading her verdicts and greeting the visitor back knowing what she found — **item A17**, the
+handoff both ways. Wellington never asking "water or carbon" at the door — **item A16**, which
+pathways apply is Phoebe's to find. Her second pack, `gs-paa-v2.0`, in the pack shape beside
+`vwba-2.0`, with a cited "does this apply" test on every pack — **item K7, expanded**. Calvin's and
+Bridget's briefs, on the same ten lines, come after Phoebe's carbon pack; their own item, moving their
+packs to the new shape, is item K9.
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+#### Previously — a guide, not a gate (items A18 and A16)
+
+**Built by 26 Sep 2026**: item A16 with step 2 (#119), item A18 with step 3 (#122 to #126). What
+follows is how it stood on 23 Sep 2026.
+
+**23 Sep 2026. Pull request #100 merged on her word, the types file moved into the shared pack on
+`feat/project-types-shared` (pull request open), and the two drafts for stop 3 at the root.** Her
+five findings from reviewing Phoebe's applies cards became `PROPOSAL_guide-not-gate.md`, untracked
+at the root, and her rulings on its §10 the same day were R1 to R9 yes as proposed, with three
+riders: a grade-6 target printed and not enforced; the Blocked colour interim until her pixels; the
+carbon "no" list to the reviewer as Q11, a paid-side note; and `project-types.md` on the roster's
+rule, drafted here, carried by her hand, the paid repository its source.
+
+- **Pull request 1 (#100), merged 23 Sep 2026:** the fifth rule under *Pace and posture* in
+  AGENT_RULES.md, her words; the hard-gate design decision of 20 Aug 2026 replaced at the head of
+  the eligibility cards, its old wording kept in the water pack's CHANGELOG; two measured runs, both
+  zero empty in sixty; items A16 and A18; three carries on item O14. **And her canon of the same
+  day: no crossed-out text in any live document** — PROCESS_RULES rewritten, the old rule's wording
+  opening `docs/archive/CORRECTIONS.md`, every strike this batch made replaced, a Cleanup family
+  started with item C1 for the older strikes, and item S21 logged.
+- **Step 2, graded "ships" with one citation edit:** `project-types.md` lives in
+  `knowledge-packs/product-shared/` from 23 Sep 2026, approved, on the roster rule; nothing reads
+  it yet. Shared pack 0.4.0, tree 0.7.0.
+- **Step 3 and the water half of step 4, graded "ships as written" and in the pack, 23 Sep 2026
+  (#101 merged; the move on `feat/water-routes-into-pack`, pull request open):** the six
+  **Can it be fixed?** paragraphs on the water cards, criterion 4 *depends*; the nine routes as
+  `routes-cards-vwba.md`, R-8 with the Meta line, its title confirmed by her. Water pack 0.5.0,
+  seat 0.6.0, tree 0.8.0. The paragraphs reach Phoebe's prompt; measured run on the pull request.
+- **A third ruling the same day, canon for every agent:** wherever a Fixable or Unknown row shows,
+  the visitor is told, as a fact phrased, that WaterBots is building tools and resources on the paid
+  site for exactly these fixes, and can save the project and sign up; the same line on the save
+  door. In AGENT_RULES.md under ruling 5; production's side on item O14.
+- **The six applies cards passed as redrafted, 23 Sep 2026 (#102 merged), and are in their packs**
+  with one addition on T4 in her words, the transition-assistance fact; carbon pack 0.2.0, water
+  pack 0.6.0, seat 0.7.0, tree 0.9.0. Read by nothing until K7's step 5.
+- **K7 stop 2 passed, 23 Sep 2026 (#103 merged, then this batch):** M1–M17 approved with her two
+  conditions met and moved into the carbon pack. **Her addendum the same day, "then build":** phase
+  tags on every eligibility row, the stage question for Wellington, Phoebe framing from the stage,
+  the human door once on a Blocked project — recorded in the proposal's addendum and under items
+  A18 and A16. **Built now:** the Phase line on all six water cards and all seventeen carbon cards
+  (measured run on the pull request); K7 step 4, the fifteen framework cards, drafted at the root
+  with tags (#105, merged). **K7 stop 3 passed the same day:** the fifteen appended to the carbon
+  pack, all 32 rows in one file; the tag rule stands as written, her word; item K11 logged for a
+  third tag, "Partners phase", not built. **K7 step 4, carbon half, drafted:** the nineteen carbon
+  routes at the root, untracked, for her grade. On `feat/carbon-routes`, pull request open.
+- **The phase-tags proposal graded the same day, all five rulings her way:** the tags as proposed
+  (R1), the free-screen count of 3 water and 8 carbon rows (R2), **the cap to thirty** (R3), the
+  Monitor group takes the preview block (R4), Communicate shows as an honest empty group (R5). The
+  tags applied to all 38 cards, the cap moved in code and in every document that stated it, the
+  desk's build note and Wellington's dated build-update fact built, the close-out ritual's step 8
+  added. On `feat/phase-tags-cap-build-note`, stacked on the carbon routes branch (#106), pull
+  request open.
+- **Next:** the order under *The next order* above, once #106 and this pull request land.
+
+#### Previously — Phoebe's carbon pack (item K7)
+
+**Built by 26 Sep 2026**: the cards and tool file by 24 Sep, her runtime with step 3. What follows
+is how it stood on 22–23 Sep 2026.
+
+**22 Sep 2026. Proposed, ruled, and steps 1 and 2 built on `feat/k7-gs-paa-pack`; merged as #99 on
+23 Sep 2026 on her word. Stop 1 passed the same day: both applies sets approved and in their
+packs. Stops 2 and 3 passed the same day: all 32 carbon eligibility cards approved and in one file.
+The nineteen carbon routes drafted at the root; her grade of them is the next stop.**
+**23 Sep 2026: the row model of its §4.1 and §9.2 is superseded by the guide proposal above; the
+cards, the tests and the steps stand.** The proposal, `PROPOSAL_K7_gs-paa-v2.0.md`,
+untracked at the root, read the sources at three layers and found 32 basic eligibility
+requirements, each cited; it proposed one card and one worksheet row per requirement, a cited
+"does this apply" test per pack, one tool with two sections, and nine steps in four pull requests.
+Her rulings the same day: R1, R2, R3, R6 and R7 yes as proposed; **R4 yes, with this: questions
+are written to cover both pathways whenever one answer can, a verdict covers every row the answer
+settles, and when a pathway drops out she says so and continues with the other; R5: the cap stays
+at 20, revisited after the first real walk.** Item K7 keeps her words.
+
+- **Step 1, built:** the pack scaffold `knowledge-packs/phoebe-eligibility/gs-paa-v2.0/` in the
+  ruled shape, not live, nothing reads it; every Gold Standard canonical page confirmed, twelve
+  pages for fourteen documents; seat and tree READMEs and changelogs bumped; the water pack's
+  README corrected to point at its sibling. Docs only.
+- **Step 2, built:** six applies cards, four for the carbon pack and two for the water pack, as
+  `applies-cards-gs-DRAFT.md` and `applies-cards-vwba-DRAFT.md` at the root, untracked, for her
+  grade. **Eyeball stop 1.**
+- **Next, on her grade:** steps 3 and 4, the 32 eligibility cards drafted in two sittings for her
+  grade (stops 2 and 3); then pull request B, the pack-keyed reader and gate; C, the worksheet and
+  the record; D, Phoebe's prompt and the measured walk. Nothing beyond step 2 is started.
+
+#### The K7 brief as it was given — proposed and ruled 22 Sep 2026; see above
+
+Her ruling at eyeball stop 4, 21 Sep
+2026: the carbon card pass drafted from the two Gold Standard PDFs, graded by her, becomes her
+second pack, `gs-paa-v2.0`, in the pack shape beside `vwba-2.0` — `cards/`, `tool/`, `evals/`,
+README, CHANGELOG — with a cited "does this apply" test on every pack, including `vwba-2.0`, so she
+knows which worksheets to fill and reports each pathway on its own, never merged into one verdict.
+The card pass comes first; there is no pack without cards. Items A16 (Wellington never asks "water
+or carbon") and A17 (the handoff both ways) are the same work seen from his side, and come after —
+his prompt and route list are not touched by this brief.
+
+#### Previously — one roster
+
+**18 Sep 2026, second sitting. Pull request #91, merged the same day on her eyeball.** One brief, item A13. A
+build-time check, one word changed on screen, and docs. No new chat, seat or Meet-level page. No
+primer change; both generated prompts byte-identical.
+
+- **`roster.yaml` is the one crew list**, carried by the maintainer's hand from production into
+  `knowledge-packs/product-shared/`, committed as carried, never edited here. Ten seats, three
+  doors, the levels each door allows, and whether each seat is built there.
+- **`check-roster` runs in front of every `npm run build`.** It holds `src/lib/crew.ts`, the
+  Commons shelf, the primer's crew facts and Wellington's people sentence to the roster, and fails
+  the deploy naming the file and line. Checked, not generated, by her go. "unconfirmed" passes.
+  Absent seats and Ally are printed, never silent. A new `built` word is one row.
+- **Bridget's card reads "Partners"**, the roster's seat label, on the desk and on the Commons.
+  It read "Map"; the check found it, she ruled the crew file changes.
+- **The other homes point at the file.** The shared pack README's table is struck. Pack 0.3.0.
+- **Waits on her:** the confirmed free and Commons columns, carried in a new file; the roster's two
+  "this repository" lines at the source. The two screen-host `role` lines are item A14, logged on
+  her word at the merge, not fixed now.
+- **Next brief, on her word.** Nothing is chosen here. The BONES bucket is the shortlist.
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+#### Previously — the OPEN_ITEMS triage
+
+**18 Sep 2026. Two pull requests, stacked: #89 (item O5's rule into the process rules) and the one
+that carries this close-out (the sweep, the buckets, the new rows); open as this is written.** Docs
+only. No pack content. No runtime wire. No live-site UI.
+
+- **Every open row has a bucket** — BONES, WALKTHROUGH, PARTNER, PARK or CLOSE, the maintainer's
+  five, defined once under *Families* in OPEN_ITEMS and shown in a new column of its index table.
+  Counts after the triage: BONES 10, WALKTHROUGH 2, PARTNER 3, PARK 17, closed 27 of 59 rows.
+- **Eighteen items closed and swept** to `docs/OPEN_ITEMS_ARCHIVE.md` in full, each with a dated
+  line saying why; verbatim checked. A7 closed on her accepted benign reading; O5 closed after its
+  rule moved into PROCESS_RULES under "How work moves". OPEN_ITEMS.md from 2,881 to 1,804 lines.
+- **Eight orphans adopted**: two new rows, A12 (the two chats not built) and O14 (carries by her
+  hand, listed once); three folds into O13, S5 and O9; three named where they already sat.
+- **Three new BONES rows in her words:** A13 (one roster, `roster.yaml` from production, checked at
+  build; waits on her carry), K9 (Calvin's and Bridget's packs to the new shape, one brief each),
+  K10 (Phoebe ready for Deb's rig: cards reviewed, engineer notes split out, exam questions signed).
+- **Housekeeping the same day:** 29 merged local branches deleted; the one unpushed branch, all of
+  it in main, deleted on her word; the triage proposal file deleted from the root after the merge.
+- **Next brief, on her word.** Nothing is chosen here. The BONES bucket is the shortlist.
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+#### Previously — the root tidy, and the export step retired
+
+**17 Sep 2026, second sitting. Three pull requests, stacked in order: #86, #87, and the one that
+carries this close-out; open as this is written.** Docs and two moves. No pack content changed. No
+live-site UI change. One real call to Wellington for the capture.
+
+- **The export step is retired.** The project library syncs from GitHub, so hand-carried copies
+  are no longer needed. Close-out step 6 is struck and dated in the process rules; item O8 is
+  closed; the `exports/` folder and its ignore rule are gone. The close-out ritual now ends at
+  the checkpoint commit and the `main` equals `origin` check.
+- **The agent primer lives in the shared pack**, `knowledge-packs/product-shared/agent-primer.md`,
+  on Phoebe's cards pattern: both generated strings byte-identical before and after, the
+  generator's `Sources:` header the only change to the relay, six links climbing two levels, the
+  checks green, one capture. Pack at 0.2.0.
+- **The closed-items archive lives under `docs/`**, at `docs/OPEN_ITEMS_ARCHIVE.md`, beside
+  `docs/archive/` and not in it; every link followed, 180 checked.
+- **UI_REFERENCE.md is retired to `legacy/`.** The brand book governs design alone; CLAUDE.md's
+  sentence is struck and dated.
+- **Two small finds fixed on the way:** the README table's duplicate OPEN_ITEMS row, and the
+  gitignore's dead "Calculator design ref" rule. Claude Code's per-machine settings file is now
+  ignored by this repository's own rule.
+- **Not touched:** the two untracked DRAFT card files; `captures/`, `Design refs/`, `legacy/`,
+  `data-src/`, all kept, each with a live reader.
+- ~~**Next brief, by the maintainer's word:** the OPEN_ITEMS triage, item O11. Not a sweep alone;
+  she wants the list triaged. Proposal first.~~ **Done 18 Sep 2026; see Just finished.**
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+#### Previously — Phoebe's VWBA pack is the cards' one home
+
+**17 Sep 2026. Pull request #84, merged on main.** A move, not an edit. Runtime paths changed;
+no card wording changed but one link; no primer rewrite; no live-site UI change.
+
+- **The pack is the home.** Both card sets live at
+  `knowledge-packs/phoebe-eligibility/vwba-2.0/cards/`, moved with their history kept. Every
+  reader followed: `src/lib/phoebeCards.ts`, `scripts/check-cards.mjs`,
+  `scripts/build-prompt-modules.mjs`. The relay's generated copy was rebuilt; its two exported
+  strings were byte-identical before the one link fix, and differ by that one line after it.
+- **The new pack shape is the rule going forward, one pack at a time:** `<standard>/` holding
+  `cards/`, `tool/`, `evals/`, `README.md`, `CHANGELOG.md`. Phoebe's pack is the first in
+  it. The other packs stay as they are until their own briefs. Written in the tree README with
+  the old lines struck.
+- **The two pointer tools are gone**; their citation tables live once, on the pack README.
+  Pack at 0.2.0, tree at 0.2.0.
+- **Not touched:** Phoebe's prompt, the primer, screen code, and the two untracked DRAFT card
+  files. The maintainer moves those by hand; their home is the cards folder once approved.
+- ~~**Next brief, on the maintainer's word:** roster work. Not started.~~ **Corrected 17 Sep 2026,
+  second sitting:** the root tidy came first, and the next brief after it is the OPEN_ITEMS
+  triage. Roster work waits on her word.
+
+Item K8 in [OPEN_ITEMS.md](./OPEN_ITEMS.md). The history of how it was done is in
+[BUILD_LOG.md](./BUILD_LOG.md).
+
+#### Previously — brand book §6: Calculator / Quantify is Calvin
+
+**17 Sep 2026. Pull request #83, ~~not merged.~~ merged on main.** Brand book (gitignored) plus
+the tracked note in CLAUDE.md. No pack content. No runtime wire. No live-site UI.
+
+- **§6 live text:** Calculator / Quantify seat is **Calvin**, not Vector. Struck and dated.
+  The book stays at version 4.2.
+- **`--bot-vector` is not deleted.** `vector.svg` is not renamed. `calvin.svg` is already live.
+- The brand book does not publish. This pull request records the ruling in CLAUDE.md;
+  Amy carries the book by hand.
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+#### Previously — Vector leftover scrape / Calvin parity
+
+**17 Sep 2026. Pull request #82, ~~not merged.~~ merged on main.** Docs only. No pack content. No
+runtime wire. No live-site UI. No primer rewrite.
+
+- **Live product copy already staffs Quantify as Calvin.** Primer, crew, `--bot-calvin`,
+  `calvin.svg`, and `knowledge-packs/calvin-quantify/` were already Calvin. No second
+  rename of map/GIS “vector” words. No paid `/api/agents` shim.
+- **One class A leftover:** `src/styles/tokens.css` still said Vector *holds* the paid
+  calculator seat. Struck and dated. Calvin is the only Quantify face here.
+- **Class C left for Amy:** unused `--bot-vector` token (sits with unused paid-roster
+  tokens); gitignored brand book still names Vector as the shared-crew Calculator.
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+#### Previously — leftover root debt: chat-format archive and live claims
+
+**17 Sep 2026. Pull request #81, ~~not merged.~~ merged on main.** Docs only. No pack content. No
+runtime wire. No live-site UI. No primer rewrite.
+
+- **`CHAT_FORMAT_RULES_for_ShellB.md` left the root.** It moved to
+  [docs/archive/CHAT_FORMAT_RULES_for_ShellB.md](./docs/archive/CHAT_FORMAT_RULES_for_ShellB.md).
+  Language, citations, and agent speech still live in CLAUDE.md, CITATIONS.md, and
+  AGENT_RULES.md. The file is the extraction record, not a live rulebook.
+- **OPEN_ITEMS north star** no longer says only step 1 and part of step 2 exist, or that
+  the Eligibility agent is in progress. Phoebe is live; Eligibility, Partners (the map),
+  and Quantify are live. Families and open rows were not swept.
+- **Eligibility grader note 4** no longer says Feasibility is not drafted. Those cards
+  are live.
+- **Brand book in the README** is version 4.2, matching CLAUDE.md.
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+#### Previously — stale session docs archived
+
+**17 Sep 2026. Pull request #80, ~~not merged.~~ merged on main.** Docs only. No pack content. No
+runtime wire. No live-site UI.
+
+- **Root `SESSION_HANDOFF.md` is retired.** It moved to
+  [docs/archive/SESSION_HANDOFF_retired_2026-09-17.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md).
+  There is no live root handoff. **Do not recreate one.** Live state is this file,
+  [OPEN_ITEMS.md](./OPEN_ITEMS.md), [BUILD_LOG.md](./BUILD_LOG.md), and git.
+- **The design canon is archived** at
+  [docs/archive/DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md).
+  The brand book still wins. It is not an opening read.
+- **Opening reads are four:** CLAUDE.md, PROCESS_RULES_for_ShellB.md, this file, OPEN_ITEMS.md.
+  Close-out no longer rewrites a handoff. BUILD_LOG stays not an opening read.
+- **`knowledge-packs/` is live product knowledge**, not archive.
+
+The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
+
+#### Previously — knowledge-packs tree scaffold
+
+**16 Sep 2026. Pull request #79, merged on main.** Scaffold only. The site is not wired to the
+pack tree. Copy is rewritten for the open rail. The word used for the road of phases is
+**pathway**.
+
+#### Previously — Wellington treats filled visit fields as known
+
+**16 Sep 2026. Pull request #76, and that close-out.** Item S13: Wellington now sees the visit
+record on every ask. The maintainer said stop this sitting; no follow-up until she pastes a brief.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
+is now true.
+
+- **Filled does, name, place and kind count as known.** Wellington receives the same record Phoebe
+  already got (`readRecord`), in his own block headed “What this visit already holds”. He may still
+  ask for anything missing. Kind is still never in the URL.
+- **The first carried turn is not blank.** A ref is written before that send, so URL facts reach
+  him on the same ask that seeds the first bubble. Today's receiver is unchanged: URL facts still
+  stamp the card; a question still seeds the first turn when present. Phoebe's block is unchanged.
+- **The gate holds it:** `check-wellington` ~~(77)~~ **(87 from 16 Sep 2026)**.
+
+#### Previously — landing facts into the visit card
+
+**15 Sep 2026. Pull request #74, and that close-out.** Item S13's receiver grew optional facts.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
+was true then.
+
+- **Optional `does`, `name` and `place` ride beside `?question=`.** On arrival the desk writes any
+  good facts into the visit as chat provenance, strips those keys from the address with the
+  question, and keeps today's first-turn path. Facts without a question fill the card only; no
+  question is invented. Bad, empty or over-long fields are ignored whole, never cut, never toasted.
+  Kind is not in the URL. ~~Wellington's chat was not rewritten: the card and Phoebe get the facts;
+  he may still ask in chat for facts that were only in the params.~~ **Visit-aware from 16 Sep 2026,
+  #76 — see Just finished.**
+- **The sender's contract, for production to carry:**
+  `https://map.waterbots.ai/?question=<≤500>[&does=<≤300>][&name=<≤80>][&place=<≤80>]`.
+  Percent-encoded UTF-8. Omit empty keys. No kind. No provenance in the URL — this site stamps
+  chat. Caps are the sender's job. The contract lives in `src/lib/carried.ts`.
+- **The gate holds it:** `check-wellington` ~~(77)~~ **(87 from 16 Sep 2026)**.
+
+#### Previously — the handoff receiver
+
+**9 Sep 2026, second sitting. Pull request #66.** Item S13 built; item S12 parked by the
+maintainer's word.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
+was true then; the contract line below was amended on 15 Sep 2026, #74.
+
+- **A question carried in from the production landing lands on the desk.** The shell reads
+  `?question=` from the address on arrival, cleans the address, opens Dispatches and hands the
+  question to Wellington as the visitor's first turn, in a bubble. Nothing is kept. Bad or empty
+  input is ignored with no error. The parser and the contract are `src/lib/carried.ts`.
+- ~~**The sender's contract, for production to carry:** `https://map.waterbots.ai/?question=<text>`,
+  percent-encoded UTF-8 the way `encodeURIComponent` writes it, at most 500 characters decoded, the
+  first occurrence only.~~ **Amended 15 Sep 2026, #74** — see Just finished.
+- **Ten a day per visitor**, under a counter of its own on Wellington's relay, on top of his thirty
+  and never instead of it. The shape is the maintainer's ruling of 9 Sep 2026. A refused eleventh is
+  told in plain words and the desk composer still works.
+- **The gates hold it**: `check-wellington` ~~(60)~~ ~~**(77 from 15 Sep 2026)**~~ **(87 from 16 Sep 2026)** for the parser and
+  the shell reading the address once, `check-cap` (36) for the counter.
+- **The hero chat (item S12) is parked**, a later item, not built. The same receiver feeds it when
+  it comes, because the shell holds the one conversation.
+
+#### Previously — the agent screen
+
+**9 Sep 2026. Pull requests #61 to #64, and that day's first close-out.** Item S16 built, closed and
+archived; item S17 logged and parked.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
+is now true.
+
+- **Every step is an agent screen**, built once in `src/screen/AgentScreen.tsx`: the agent's chat in
+  the middle in bubbles, and tabs above it — Chat, always; Tool, when the agent has one; Knowledge
+  pack; Credentials. The tab row wears the agent's colour, the active tab a step darker, bold and
+  underlined in it, and the active crew card takes the same underline. "Next phase" sits at the
+  row's right end on every step but Quantify, where the save button is the way on.
+- **The desk** is Wellington's screen, Chat · Knowledge pack · Credentials. **Phoebe's** has her
+  chat on her tint, the worksheet as Tool, her Knowledge pack assembled from the committed cards with
+  the approval date read from the files, and Credentials honest that no exam has been sat.
+  **Bridget's and Calvin's** open on Tool — the map and the calculator — with one plain line on the
+  Chat tab and no composer; Bridget's pack is the map's two datasets and Calvin's the live method
+  packs.
+- **The right column is the crew with the save button on every step.** The three host docks and the
+  old dock frame are gone.
+- **Memory is never a tab.** It stays in the record on the left rail. The record's source shows only
+  behind the (i), on hover, when a source is built into the rail; nothing does yet.
+- **The B→A raise** — the agent screen as a §7 component of the brand book — and **the carry list
+  for production**, every file with its path and what it needs on the other side, are recorded once
+  under item S16 in the archive and wait on the maintainer's hand.
+
+#### Previously — the canon and the look pass
+
+**Second sitting of 8 Sep 2026. Pull requests #58 and #59, merged.** Item S16 logged.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
+is now true.
+
+- **Four canon rules on pace and posture** bind every agent, in AGENT_RULES.md: short replies, one
+  question at a time, every reply ends with the next step; "I don't know" is a valid answer; a
+  planned project is normal and the criteria are things to do, not a quiz; status lines in a
+  visitor's words. Phoebe and Wellington hold them as rules.
+- **The desk after the look pass.** Wellington opens warmly and names the next step in words; the
+  project name shows once, in the card; the record has three rows and its explainer behind an (i);
+  the save button sits at the foot of the right rail, in view at laptop height; the phase names show
+  at laptop width; next steps live in the right rail only; the map's line is one plain sentence; no
+  intro paragraph above the conversation.
+- **Every capture for the maintainer's eyeball goes inside the For Amy block as an image**, by her
+  ruling; the rule is in PROCESS_RULES.md.
+
+#### Previously — the bridge sender
+
+**Session of 8 Sep 2026. Pull request #56, merged.** Item S7, closed and archived.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
+is now true.
+
+- **The save row is the bridge.** "Save this project and sign up" is a button with a consent line
+  under it in a first-time visitor's words. The click seals the visit — the four record fields with
+  their source tags, the pin as ids, each criterion's state and way forward, each pack's answers as
+  typed with the pack's own word and the worked-example flag — keeps it for one hour under a random
+  ticket in the short-lived store, and moves the page to production's welcome with only the ticket
+  in the address. Never a computed number, never the conversation. This site keeps no copy.
+- **Production claims it once**, server to server, behind `BRIDGE_KEY`: 200 with the seal, then
+  404; 401 for a wrong key. The key is checked first and in constant time.
+- **Ten seals a day per visitor**, under their own counter. Anything beyond the contract refuses
+  the whole seal. On a test copy the row says saving only works on the live site.
+- ~~**The claim's right-key round trip on the live site is the maintainer's to run.**~~ **Confirmed
+  by her own walk, 8 Sep 2026**: a screening saved from the live desk reached production.
+
+#### Previously — the desk plan's three slices, one row, and the bridge's contract
+
+**Sessions of 5–7 Sep 2026. Pull requests #50 to #54, all merged.** Items S11, S15, A11, S7.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).** This section says only what
+is now true.
+
+- **The desk is the conversation, and the rail is the record.** Wellington asks for four fields in
+  the order the seats need them — what it does, what kind, where it is, what it is called — and what
+  he hears fills the record on the left, each field saying where it came from. A typed entry is
+  never overwritten. The two typeable controls for "what it does" and "kind" are still owed.
+- **One row is the navigation.** Dispatches first with a hairline after it, then the six phases;
+  Eligibility, Partners and Quantify open this site's tools, the last three are named and quiet.
+  The tab row is gone. Collapsed, the phases are rings (1) to (6) and Dispatches keeps its own mark.
+  Item S15 offers the shape to production, later, by the maintainer's hand.
+- **Bridget's row asks for the pin** once a place is known, from typing, from Wellington, or from a
+  pin; a pinned basin fills it with the basin's published reading.
+- **Phoebe's row closes the loop.** The record goes to her with every ask, as a block after the
+  cache breakpoint, checked on the relay; her verdicts come back through the criteria to her row.
+- **Agents say the six phase names as written**, point people at the step and never at a tab, and
+  speak plain words — never "seat", "console", "dispatch", "rail" or "surface". Facts and rules,
+  no scripted lines. The desk's composer is production's to the pixel.
+- **The bridge's contract is ruled** (item S7), from production's proposal by the maintainer's
+  hand: a button and a consent line; the visit sealed under a random ticket in the short-lived
+  store for an hour — record fields with source tags, the pin as ids, the worksheet's states and
+  ways forward, each pack's answers flagged, a timestamp; never a computed number, never the
+  conversation; the visitor sent to sign-up with only the ticket in the address; a hand-over-once
+  endpoint behind a key kept in settings. ~~Not built.~~ **Built 8 Sep 2026; see above.**
+
+#### Previously — Wellington live on the desk
+
+**Session of 3 Sep 2026. One pull request, on `feat/wellington-live`, open as this is written.**
+Wellington's chat on Phoebe's proven pattern, the rule that agents phrase the roster's facts
+themselves, and one conversation held by the shell. Items A8, A9 and S11.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md)**, which is append-only and is
+never read at the opening. This section says only what is now true.
+
+- **Wellington answers on the desk.** His own endpoint, thirty a day under his own counter, the
+  reply floor, the retry rule and the timeout, all stated in code. Opus 5 at medium, for item A6's
+  measured reason.
+- **He routes; the console acts.** A route and what he learned come back as fields, checked against
+  closed lists twice. A route is one action under his turn; what he learned fills the visit without
+  ever overwriting a typed entry.
+- **Facts and rules, not lines.** Every agent phrases the roster's facts itself. No prompt says word
+  for word, and a check refuses one that does.
+- **One conversation.** The shell holds his thread; the desk is a frame around it, and the hero
+  chat, when it comes, will be another.
+- **The standard-of-interest chips are gone.** The kind of project lives in his plain question.
+- **A landing surface was built and rejected entirely.** Nothing of it shipped; item S12 records the
+  confirmed shape instead.
+
+#### Previously — the free desk, the production shape, and the carbon packs
+
+**Session of 2 Sep 2026. Pull request #48, merged.** The console's fourth surface and its new
+shape, the two carbon packs, and a look pass against the saved production pages. Items S11 and K6.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md)**, which is append-only and is
+never read at the opening. This section says only what is now true.
+
+- **Four surfaces, in the production shape.** One row across the top of the centre from
+  7 Sep 2026 — Dispatches first, then six phases; three open this site's surfaces, three are named
+  and quiet — and no tab row. The desk opens first.
+- **Wellington's desk.** Project context, rows derived from the visit and never invented, and the
+  save door to waterbots.ai as the last row, carrying nothing across. Wellington is Team Lead,
+  extended and never forked; ~~his chat is on the paid site and the composer says so~~ **his chat
+  is live on the desk from 3 Sep 2026**.
+- **The visit lives in the shell.** Context, pin, eligibility rows and every pack's answers, kept
+  for this visit only. A click on the map pins a basin.
+- **Three packs in the slot.** The water pack and two carbon packs from one module — Gold
+  Standard's safe-drinking-water methodology, legacy and Paris-aligned — differing in one cited
+  input, with the transition delta as one line under the tabs. A pack's result is now figures with
+  units and a headline; the surface knows no method.
+- **Thirteen checks now, not twelve.** `check-gs-sdws` reproduces every recorded reference figure
+  to four decimals and proves blank is never zero.
+- **Production is canon for the console's shape.** Journey bar, ~~tab row~~ (removed 7 Sep 2026, item S15), row anatomy and the
+  calculator's idiom were read from the saved pages and matched — the look only.
+
+#### Previously — the Quantification step and its first pack
+
+**Session of 1 Sep 2026. Three pull requests, #44 to #46.** The console's third surface, the first
+screening calculator inside it, and Calvin taking the primer's third post.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md)**, which is append-only and is
+never read at the opening. This section says only what is now true.
+
+- **Three surfaces.** Basin map, Eligibility, **Quantification**. The rail says three.
+- **The step is pack-keyed and knows no method.** Fields, gates, defaults, formula and arithmetic
+  all come from the pack. Item S10.
+- **One pack is fitted:** VWBA 2.0 · D-3 Volume Provided — household and community water supply,
+  ex-ante, Option 3. Item K5. **Carbon screening is named on the tab strip and marked planned**; it
+  carries nothing and is not clickable.
+- **Everything the step produces is a screening estimate**, anticipated and never verified, with a
+  consultant-review tag wherever it renders.
+- **A blank without-project volume is never read as zero**, and no example anywhere subtracts one.
+- **Calvin staffs it.** Plum `#5848A8`, a portrait in the house form, the primer's third post. His
+  chat is not built and the panel says so.
+- **The brand book is version 4.2**, §6 filled in with Calvin's row and two recorded exceptions.
+
+**Twelve checks now, not eleven.** `check-vwba-d3` is at 68 and guards the arithmetic, the gates,
+the formula, the tab strip and the primer's rendered pack list.
+
+#### Previously — the return to the brand book
+
+**Sessions of 29 and 30 Aug 2026. Eleven pull requests, #27 to #37, all merged.** The brand book
+arrived on 28 Aug and this is the work of bringing the shipped stylesheet to it.
+
+**The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md)**, which is append-only and is
+never read at the opening. This section says only what is now true.
+
+**What the site is, after it:**
+
+- **One light brand.** The dark theme and the theme switch are gone; there is one set of tokens.
+- **Two grounds.** `--paper` `#F6F5FA` is the content canvas — the map and the worksheet. `--frame`
+  `#FBFBFE` is the frame — top bar, rail, and both docks' ground. Content warm, frame lighter and
+  quieter.
+- **Three planes and no fourth.** The derived `--chrome` plane is retired.
+- **The book's names and values** — neutrals as `--ink*`, the book's hairline and radii, three
+  shadow tokens applied only to what genuinely floats.
+- **Accent-tinted host panels.** Both chat docks and the legend carry their host's accent at the
+  book's 5% fill and 25% border. Bridget is **Surf `#14C8D9`**, settled.
+- **A basemap wash**, Slate at 13%, which is where the map's richness came from.
+
+**The stress ramp is unchanged.** A ramp change was designed, machine-checked, walked and withdrawn
+— the finding was that the map read flat because of the basemap, not the data. Item S9 carries it.
+
+~~**Four rulings are owed to the master brand book by the maintainer's hand**, listed once in item
+S9: the two grounds, the active nav item, the three shadow values, and Slate as a basemap wash.~~
+**All four landed in version 4 on 30 Aug 2026** — §2.3, §2.3, §4 and §7. Item S9 records where each
+one sits. **Driftwood was proposed and refused on the merits** and is struck from that list; §2.1
+keeps the strike rather than erasing it.
+
+**What the reconciliation found, kept short because item S9 is its one home.** The shipped surfaces
+already matched the book in almost every value — the ten accents, both recorded spares, the four
+neutrals, the hairline, the seven radii, the five states, the seven crew hues, the two grounds, the
+active navigation item, the wash. **Two did not, and both are shipped:** the shadow values took the
+book's §4 (pull request #41), and coral gained a darkened text value at 4.5:1 (#42).
+
+**The second of those corrected the book rather than the site.** Measuring §2.5 showed that the
+published live and approved text values did not reach the contrast the same sentence promises.
+Corrected values were accepted and written into **version 4.1**, along with the new coral;
+verification was measured and left alone. **Nothing here rendered wrongly** — neither value is used
+as type on this site — so it was a proposal, not a fix.
+
+**Version 4.1 is the only amendment written into the book from inside this repository**, on the
+maintainer's explicit instruction, and it is the exception rather than a new practice.
+
+**The design exploration leaves no artefact here, and that is deliberate.** Its outcome — the cool
+end that was ruled, the hybrid that was built, and the finding that withdrew it — is recorded in
+full in item S9. Maintainer's ruling, 30 Aug 2026: **the screenshots are not coming, because there
+is nothing left for images to teach.** No folder waits for them.
+
+#### Building next — the hero chat, when its reference arrives
+
+**Building next, from 21 Sep 2026: pull request D of the specialist contract batch — ~~steps 4, 5 and 6~~
+~~steps 5 and 6~~ step 6, one full walk at eyeball stop 4.** Steps 4 and 5 are committed on the branch,
+21 Sep 2026, and wait there; the pull request opens with step 6. See *In progress* at the head of this file. The batch is approved;
+nothing else starts before it lands.
+
+~~**The OPEN_ITEMS triage is next, by the maintainer's word of 17 Sep 2026**~~ **Done 18 Sep 2026;
+the next brief is hers to name, and the BONES bucket in OPEN_ITEMS is the shortlist.** Her word of
+17 Sep at the close of the root tidy: *"Not in this batch: the OPEN_ITEMS sweep. Log it as the next brief. I want that list
+triaged, not just swept."* The file was 2,855 lines and 176 KB when that sitting opened, flagged
+in its Part 1 report under the thin-reads rule. What triage means beyond a sweep is hers to rule on
+the proposal; item O11 carries the log. Nothing is built toward it until she says go.
+
+~~**The bridge sender (item S7) is next**, by the maintainer's word of 7 Sep 2026, and it starts when
+she carries three facts from production.~~ **The three facts landed and the sender shipped on
+8 Sep 2026** (#56). Item S7 is closed.
+
+~~**The phase-screens proposal (item S16) is next**, by the maintainer's word of 8 Sep 2026.~~
+**Proposed, drawn, approved and built in four slices on 8–9 Sep 2026** (#61 to #64). Item S16 is
+closed; its raise into the brand book and its carry list for production wait on the maintainer's
+hand. **Item S17 is parked for a design session** and nothing is built toward it.
+
+~~**The hero chat follows**, as below, and it still waits on the maintainer's reference file. Nothing
+is built toward it until she says the file is in.~~ **The hero chat (item S12) is parked by the
+maintainer's word of 9 Sep 2026 — a later item, not built.** Its receiver (item S13) did not wait
+for it: it shipped the same day onto the desk (#66). ~~**What comes next is decided at the next
+session's open.**~~
+
+**Landing facts into the visit card shipped 15 Sep 2026 (#74).** Item S13's receiver now reads
+optional `does`, `name` and `place` beside `?question=`. **No follow-up from this sitting** —
+the maintainer's word of 15 Sep 2026: stop; do not open follow-up work unless she pastes a new
+brief.
+
+**The Agent Commons (item S18) is next, by the maintainer's word of 9 Sep 2026.** The proposal was
+approved as written the same day, and slices 1 to 3 are approved: the pictures, the address and the
+shelf, and open-one on the agent screen. ~~**Slice 1 is drawn** — three pictures at 1280 by 720, in
+the pull request for her eyeball — and slices 2 and 3 build on her approval of the pixels.~~ **Slice 1
+was approved on 10 Sep 2026 with one correction, dated 11 Sep by her: on the Commons an agent opens
+alone — no crew beside it, no next steps, only the way back to the shelf and the sign-up door. Slice 2
+is built, 11 Sep 2026: the address and the shelf. ~~Slice 3 is next, on the corrected shape.~~ Slice 3
+is built the same day, on her eyeball, and two rulings on the shelf landed with it: short lines and
+short document names on the cards, and no crew column — the shelf is the crew.** **Slice 3 merged
+the same day (#70), and Commons v0 — slices 1 to 3 — is done.** Slice 4, Credentials fed by Deb's
+rig, waits on his per-case file, the first of the three changes she takes to Deb herself; they are
+listed under the item. The flag button, slice 5, is later.
+
+**The Workshop (item S19) is logged for after slice 3, by the maintainer's word of 11 Sep 2026** — a
+visitor makes an agent on the Commons, names it, picks its colour, hands it a knowledge pack, and the
+same agent screen holds it. Free to try under a tight cap, then bring your own key, then a builder
+subscription later; private until published, and publishing is reviewed by her first; every pack
+saved in both shapes so it can sit the one public exam. **Not built. ~~The proposal follows slice 3.~~
+Slice 3 has landed; the proposal is next, on her word.**
+
+**"Connect with a human expert" (item S20) is logged the same day, at the close** — a button beside
+sign-up on every Commons agent that sends a short contact form to WaterBots consulting, or to a
+workshop agent's builder if the builder opted in. The conversation is never attached. **Not built;
+two design questions wait on a session: the form's fields, and whether a builder's contact is public
+or relayed through us.**
+
+#### Previously planned next — the hero chat, when its reference arrives
+
+**One family is queued and blocked.** The hero chat (item S12) is the next build and it waits on a
+demo reference arriving in `Design refs/` by the maintainer's hand. Nothing is built toward it
+until she says the file is in. Its receiver (item S13) waits on it in turn.
+
+**The confirmed shape, for the record:** the production landing's question box hands a visitor to
+this site with the question carried; this site opens the hero chat as its own full page, the whole
+viewport the conversation, built to the reference; the console carry stays as built. Each shell
+builds only its side.
+
+**The other candidates, none chosen:**
+
+1. **The carbon card pass** (item K7) — cards in Phoebe's format drafted from the two Gold Standard
+   PDFs, graded by the maintainer, through the same pipeline as the VWBA cards. Logged as debt.
+2. **Tightening Wellington's answers** (item A10) — logged as debt, not for now.
+3. **Calvin's chat**, which would move the step's gates into his conversation. The largest, and not
+   scheduled.
+4. **A further method pack** — item K2 names the remaining candidates.
+5. **Bridget's chat**, unchanged and still not scheduled.
+
+**What comes next is decided at the next session's open.**

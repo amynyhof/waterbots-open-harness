@@ -266,3 +266,235 @@ CLAUDE.md, README.md and BUILD_PLAN.md; the item is A19 in [OPEN_ITEMS.md](../..
 > `PROPOSAL_calvin-brief.md` sits at the root, untracked, and asks eleven rulings (its §13); nothing
 > of it is built. Its first ruling blocks the rest: the strings the manifest flagged in `presets.ts`
 > and `emissions-legacy.ts` publish as they are if the engine crosses byte-identical.
+
+---
+
+## 3 Oct 2026 — PROCESS_RULES_for_ShellB.md, "The opening reads stay thin, forever": the sweep was a habit, not a step
+
+**Why it changed.** The maintainer's ruling of 1 Oct 2026, on the tidy-up of that day: closed items
+leave OPEN_ITEMS.md at every close-out, for BUILD_LOG.md, with no closed row left behind, and every
+loose item gets a family. It is now step 9 of the close-out ritual. The old paragraph said the
+sweep waited until the file got heavy and went to an archive file with a pointer row left in the
+index; OPEN_ITEMS.md reached 2,254 lines on that rule.
+
+**Old wording, whole:**
+
+> **When OPEN_ITEMS.md gets heavy, sweep the closed items to an archive file.** A closed item is
+> finished; it earns a pointer and a home elsewhere, not a place in a document read at the start of
+> every session. Sweeping is ordinary tidying and needs no ruling — deciding what a *family* is still
+> does.
+
+**Where the current text is:** the same section, and step 9 under *How a session closes*.
+
+---
+
+## 3 Oct 2026 — the tidy-up: stale lines in OPEN_ITEMS.md, BUILD_PLAN.md, README.md and docs/archive/README.md
+
+**Why it changed.** The maintainer approved `TIDY_2026-10-01.md` as a batch on 1 Oct 2026, and its
+list of stale lines is replaced here. Most were overtaken by work that merged between 22 and 30 Sep
+(the cap to thirty, the ten-line contract, the retirement of "kind", the Resend key set on 26 Sep, the
+rulings of 1 Oct on Calvin's brief) and by the new rule that closed items leave OPEN_ITEMS.md for
+BUILD_LOG.md at every close-out. Two other items on the same list were wholly stale: the "Building next"
+hero-chat section and the "Not next, and why" table in BUILD_PLAN.md, whose old wording is in
+BUILD_LOG.md (the first) and below (the second, under its own step).
+
+**1. OPEN_ITEMS.md, the paragraph about where closed items live (head of the file).**
+
+**Old wording, whole:**
+
+> **Closed items live in [OPEN_ITEMS_ARCHIVE.md](../OPEN_ITEMS_ARCHIVE.md)**, in full, from
+> 30 Aug 2026, ~~at the repository root~~ **under `docs/` from 17 Sep 2026, every link followed**. This file is read at the start of every session and stays a briefing; the archive is
+> not one of the ~~six~~ four opening documents and is read only when someone goes looking. **Every archived
+> item keeps its row in the index table below**, so nothing is lost by being finished. The reasoning
+> is item O11.
+> 
+
+**Current text:** the same place.
+
+**2. OPEN_ITEMS.md, *Families*, under the buckets table.**
+
+**Old wording, whole:**
+
+> A row keeps its bucket until she moves it. Item O11 records the triage; the full sort was a proposal
+> file at the root, untracked, and deleted once the sweep merged.
+
+**Current text:** the same place.
+
+**3. OPEN_ITEMS.md, item O1, the lead paragraph.**
+
+**Old wording, whole:**
+
+> **A cap of 20 messages per day per visitor is live in production**, per the maintainer's ruling of
+> 21 Aug 2026, built on 25 Aug 2026, confirmed in a preview deployment and again against
+> `map.waterbots.ai` after merge.
+
+**Current text:** the same place.
+
+**4. OPEN_ITEMS.md, item O1, the paragraph on revisiting the number.**
+
+**Old wording, whole:**
+
+> **This item stays open only to revisit the number.** Twenty is a starting point chosen before there
+> was any traffic to reason from,
+
+**Current text:** the same place.
+
+**5. OPEN_ITEMS.md, item S11, the line after slice 3.**
+
+**Old wording, whole:**
+
+> **The three slices are done.** What remains of the desk plan is the two typeable controls owed
+> for "what it does" and "kind", and whatever the hero page (item S12) asks of the desk.
+
+**Current text:** the same place.
+
+**6. OPEN_ITEMS.md, item S11, the bucket paragraph.**
+
+**Old wording, whole:**
+
+> **Bucket WALKTHROUGH, 18 Sep 2026.** The open remainder is the two typeable controls for "what it does" and "kind"; a visitor who never chats cannot fill them today.
+
+**Current text:** the same place.
+
+**7. OPEN_ITEMS.md, item O14, the specialist contract row.**
+
+**Old wording, whole:**
+
+> | The specialist contract — the nine-line section of AGENT_RULES.md, her words | Production | item A15 |
+
+**Current text:** the same place.
+
+**8. OPEN_ITEMS.md, item O14, the line under the table.**
+
+**Old wording, whole:**
+
+> A carry is struck from this table when it lands, with the date. Nothing is built toward any of them
+> from here.
+
+**Current text:** the same place.
+
+**9. BUILD_PLAN.md, *V1 — the done line*, the Step 3 paragraph.**
+
+**Old wording, whole:**
+
+> and on a ticked save an email to the WaterBots team,
+> which waits on the mail key she sets in the host's settings. Items A18 and K7 are built; the proposal
+> file is deleted.
+
+**Current text:** the same place.
+
+**10. BUILD_PLAN.md, *V1 — the done line*, the "Next" paragraph.**
+
+**Old wording, whole:**
+
+> **Next: Calvin's brief (step 5) — proposed 27 Sep 2026; it waits on the re-sealed bundle, her word of
+> 30 Sep 2026.** `PROPOSAL_calvin-brief.md` sits at the root, untracked, and asks eleven rulings (its
+> §13); nothing of it is built. The bundle is hers to re-seal by hand and carry, and the brief does not
+> move until it arrives. Which of the eleven rulings she has answered is not recorded here; the first,
+> R1, was whether the strings the manifest flagged in `presets.ts` and `emissions-legacy.ts` publish as
+> they are.
+
+**Current text:** the same place.
+
+**11. README.md, the sentence introducing OPEN_ITEMS.md.**
+
+**Old wording, whole:**
+
+> grouped into five families:
+> Knowledge, Agents, Surfaces, Data and Operations.
+
+**Current text:** the same place.
+
+**12. README.md, the documents table row for the closed-items archive.**
+
+**Old wording, whole:**
+
+> | Closed items, kept in full rather than deleted. Under `docs/` from 17 Sep 2026 |
+
+**Current text:** the same place.
+
+**13. docs/archive/README.md, the paragraph on the closed-items file.**
+
+**Old wording, whole:**
+
+> It is live history that keeps growing, not a retired document, so it sits beside this folder and not in it.
+
+**Current text:** the same place.
+
+
+---
+
+## 3 Oct 2026 — BUILD_PLAN.md: "Not next, and why" replaced by "Family work"; the done line's order gains step 8
+
+**Why it changed.** The maintainer's batch approval of 1 Oct 2026 asked that each family be tied to a
+v1 step or to "after v1", and that the screening report export (item S21) join the v1 order. The old
+"Not next, and why" table pre-dated the v1 done line: it said the carbon card pass waited for a
+Thursday, that Operations had nothing due, and that the hero chat was next. The old sentence about
+S21 said it stood outside the numbered steps.
+
+**1. BUILD_PLAN.md, *V1 — the done line*, the build order after the seal.**
+
+**Old wording, whole:**
+
+> **Build order after the seal:** (1) the Knowledge and Tool tab; (2) Wellington type and stage;
+> (3) Phoebe's carbon runtime; (4) the Commons check; (5) Calvin's brief with the carried engine;
+> (6) Bridget's hello; (7) the carry to the paid site, by the maintainer's hand.
+
+**Current text:** `BUILD_PLAN.md`, the same place; the table is replaced by *Family work*.
+
+**2. BUILD_PLAN.md, *V1 — the done line*, the sentence about the screening report export.**
+
+**Old wording, whole:**
+
+> One item outside the numbered steps is part of v1's done line and still open: **the screening
+> report export (item S21)**.
+
+**Current text:** `BUILD_PLAN.md`, the same place; the table is replaced by *Family work*.
+
+**3. BUILD_PLAN.md, the table headed "Not next, and why", the whole section.**
+
+**Old wording, whole:**
+
+> ## Not next, and why
+>
+> | Family | Why it waits |
+> |---|---|
+> | **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. **The first method pack (item K5) landed 1 Sep 2026 and the two carbon packs (item K6) on 2 Sep, both outside that order, because the maintainer scoped them herself.** The carbon card pass (item K7) waits for Thursday. |
+> | **Surfaces** | ~~**The hero chat (item S12) is next and waits on the maintainer's reference file**; its receiver (item S13) waits on it;~~ **The hero chat (item S12) is parked, 9 Sep 2026, and its receiver (item S13) shipped without it the same day**; the typing-dots exception (item S14) waits on her hand into the book. The bridge (item S7) ~~has its contract ruled, 7 Sep 2026; its sender builds next~~ **shipped 8 Sep 2026 and is closed**. The brightness pull-up (item S8) and the return to the book (item S9) are both **closed**. The rest of the family is polish (item S5), the dev-relay gap (item S6), or waits on data that does not exist yet (item S1). |
+> | **Data** | Blocked on material the maintainer supplies — registry coordinates for the project points (item D2), public disclosures for corporate goals and target geographies (item D1). Not work that can start from inside the repository. |
+> | **Operations** | **Nothing is due.** What remains waits on real usage that does not exist yet: the number twenty (item O1), the basemap's five-million-request ceiling (item O9), and the primer review against the abstention log (item A5). ~~Two questions are open and unhurried — whether the export copies should be produced by a script (item O8), and~~ **One question is open and unhurried — item O8 closed 17 Sep 2026 when the exports folder was retired —** whether an abstention that cited a card is a fault at all (item A7 — it recurred on 3 Sep and reads as the benign branch; the maintainer's reading closes it). |
+
+**Current text:** `BUILD_PLAN.md`, the same place; the table is replaced by *Family work*.
+
+
+---
+
+## 3 Oct 2026 — OPEN_ITEMS.md, item S21: the bucket and the closing line
+
+**Why it changed.** The maintainer's word on pull request #140, 3 Oct 2026: S21 is on the v1 order as
+step 8 in BUILD_PLAN.md, so its bucket moves from PARK to "v1 (step 8)". The closing line said it was
+not scheduled; it is.
+
+**Old wording, whole — the index row's bucket cell:** `PARK`
+
+**Old wording, whole — the closing line of the item:**
+
+> **Not scheduled. Proposal first. Bucket PARK.**
+
+**Current text:** the same places in OPEN_ITEMS.md; the new bucket is defined in the buckets table
+under *Families*.
+
+---
+
+## 3 Oct 2026 — OPEN_ITEMS.md, *Families*: the CLOSE bucket's definition
+
+**Why it changed.** Step 9 of the close-out ritual (the maintainer's ruling of 1 Oct 2026) moves closed
+items out of OPEN_ITEMS.md into BUILD_LOG.md and keeps no index row. The old definition said the
+opposite, that a closed item went to the archive file and kept its row, shown as closed. It was found
+on pull request #140 and corrected on her word.
+
+**Old wording, whole — the CLOSE row of the buckets table:**
+
+> | **CLOSE** | Done, duplicate, stale, or overtaken by a newer ruling — swept to the archive, index row kept, shown as *closed* |
+
+**Current text:** the same row in OPEN_ITEMS.md.
