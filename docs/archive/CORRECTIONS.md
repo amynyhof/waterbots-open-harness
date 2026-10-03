@@ -11,8 +11,9 @@ what it said before, and when and why it changed. Maintainer's ruling, 23 Sep 20
 wording, whole; the reason, in a line; and where the current text is. Where a pack has its own
 CHANGELOG, the pack's old wording goes there instead and this file is not used.
 
-**Never read this file for current state.** Live state is [OPEN_ITEMS.md](../../OPEN_ITEMS.md),
-[BUILD_PLAN.md](../../BUILD_PLAN.md), [BUILD_LOG.md](../../BUILD_LOG.md), and git.
+**Never read this file for current state.** Live state is
+[BUILD_PLAN.md](../../BUILD_PLAN.md), [BUILD_LOG.md](../../BUILD_LOG.md), and git. Entries written
+before 3 Oct 2026 link to an OPEN_ITEMS.md that has since been retired to this folder.
 
 ---
 
@@ -498,3 +499,187 @@ on pull request #140 and corrected on her word.
 > | **CLOSE** | Done, duplicate, stale, or overtaken by a newer ruling — swept to the archive, index row kept, shown as *closed* |
 
 **Current text:** the same row in OPEN_ITEMS.md.
+
+---
+
+## 3 Oct 2026 — one plan file: OPEN_ITEMS.md folded into BUILD_PLAN.md, and the opening reads are three
+
+**Why it changed.** The maintainer's ruling of 3 Oct 2026: one plan file. OPEN_ITEMS.md is folded into
+BUILD_PLAN.md and retired to `docs/archive/OPEN_ITEMS_retired_2026-10-03.md`, whole. Every live line
+that named it as a live file, counted it among the opening reads, or told the close-out to refresh it
+is replaced. Where a line only pointed at an item, the pointer now names where that item is: BUILD_PLAN.md
+if it is open, BUILD_LOG.md or docs/OPEN_ITEMS_ARCHIVE.md if it is closed. Those pointer swaps are not
+listed one by one; the replaced statements are, below. Several of the replaced blocks carried strikes
+from before the no-strikes rule; they are kept here exactly as they stood.
+
+**1. BUILD_PLAN.md, the head: where the items live.**
+
+**Old wording, whole:**
+
+> Read it with [OPEN_ITEMS.md](./OPEN_ITEMS.md), which holds the items themselves
+> and the north star they lead toward, and with
+> [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md), which says how work
+> moves from a proposal to a commit.
+
+**2. BUILD_PLAN.md, *Family work*, the opening paragraph.**
+
+**Old wording, whole:**
+
+> **Recorded 3 Oct 2026 on the maintainer's approval of the tidy-up of 1 Oct.** Every open item in
+> [OPEN_ITEMS.md](./OPEN_ITEMS.md) belongs to one of its six families, and each family's open work is
+> tied here to a step of the v1 order above, or to **after v1**. The tie is the engineer's reading of
+> "V1 — the done line", for her to move. The items and their buckets live in OPEN_ITEMS.md and are not
+> copied here. A family with nothing on a step says so.
+
+**3. CLAUDE.md, *Start here*: the list of opening reads and the paragraph on the count.**
+
+**Old wording, whole:**
+
+> **Read these ~~six~~ four before doing anything else, every new session:**
+>
+> 1. This file, CLAUDE.md
+> 2. [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) — how
+>    work is run
+> 3. [BUILD_PLAN.md](./BUILD_PLAN.md) — what is being built now, what
+>    comes next, and the compatibility goal
+> 4. [OPEN_ITEMS.md](./OPEN_ITEMS.md) — every open item, grouped into
+>    families, and the north star
+>
+> ~~3. [DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md) —
+>    **superseded by the brand book on 28 Aug 2026 and still read**, because
+>    it is history that explains why three things here are the way they are~~
+>    **Removed 17 Sep 2026:** archived; not an opening read. The brand book wins.
+>
+> ~~6. [SESSION_HANDOFF.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md) — where the last session
+>    left things~~
+>    **Removed 17 Sep 2026:** retired. Live state is OPEN_ITEMS, BUILD_PLAN, BUILD_LOG, and git.
+>    Do not recreate a live root `SESSION_HANDOFF.md`.
+>
+> **The session has not started until all ~~six~~ four are read.** The opening
+> ritual itself is owned by
+> [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md); this list is
+> the front door pointing at the same ~~six~~ four, not a second rule. **The count
+> has moved twice in one day, both on the maintainer's ruling of
+> 27 Aug 2026.** It was five against the process rules' four, which had left
+> themselves off their own list; then the design canon arrived and joined
+> the reads. ~~Six is right.~~ **Corrected 17 Sep 2026: four is right.** The
+> canon and the handoff left the opening list. [BUILD_LOG.md](./BUILD_LOG.md)
+> stays not an opening read.
+
+**4. PROCESS_RULES_for_ShellB.md, *The opening documents*: the list.**
+
+**Old wording, whole:**
+
+> Read ~~six~~ **four** documents before doing anything else, every new session:
+> [CLAUDE.md](./CLAUDE.md), **this file**,
+> [BUILD_PLAN.md](./BUILD_PLAN.md), [OPEN_ITEMS.md](./OPEN_ITEMS.md).
+> The session has not started until all ~~six~~ four are read.
+
+**5. PROCESS_RULES_for_ShellB.md, *The opening documents*: what left the list.**
+
+**Old wording, whole:**
+
+> ~~[DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md)~~ and
+> ~~[SESSION_HANDOFF.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md)~~ **left
+> the required open list on 17 Sep 2026.** The design canon is archived; the brand book
+> wins. The session handoff is retired. **Do not recreate a live root `SESSION_HANDOFF.md`.**
+> Live state is OPEN_ITEMS, BUILD_PLAN, BUILD_LOG, and git. Never read
+> [docs/archive/](./docs/archive/README.md) for current state.
+
+**6. PROCESS_RULES_for_ShellB.md, *The opening documents*: the history of the count.**
+
+**Old wording, whole:**
+
+> **The count moved twice on 27 Aug 2026, both times on the maintainer's ruling.** This list said
+> four for as long as it existed, leaving itself off its own list, while CLAUDE.md said five and
+> named this file among them; five was ruled right. Then the design canon arrived and joined the
+> opening reads, making six. **Corrected 17 Sep 2026: the count is four.** The canon and the
+> handoff left the required open list. Four is the number this list first held, now on purpose.
+
+**7. PROCESS_RULES_for_ShellB.md, *The opening reads stay thin, forever*: the count.**
+
+**Old wording, whole:**
+
+> ~~Six~~ **Four** documents are read before every session starts.
+
+**8. PROCESS_RULES_for_ShellB.md, *The opening reads stay thin, forever*: rule 1.**
+
+**Old wording, whole:**
+
+> 1. ~~**[SESSION_HANDOFF.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md) is current state only, and is rewritten from
+>    scratch at every close.** Not amended, not appended to. Where we are, what is committed and what
+>    is not, what waits on the maintainer, what comes next. **A sentence about how something came to
+>    be is history and does not belong in it.**~~
+>    **Corrected 17 Sep 2026:** there is no live root session handoff. Live state is
+>    [OPEN_ITEMS.md](./OPEN_ITEMS.md) and [BUILD_PLAN.md](./BUILD_PLAN.md). History is
+>    [BUILD_LOG.md](./BUILD_LOG.md). The retired handoff is in
+>    [docs/archive/](./docs/archive/README.md). **Do not recreate a live root
+>    `SESSION_HANDOFF.md`.** Never read the archive for current state.
+
+**9. PROCESS_RULES_for_ShellB.md, *The opening reads stay thin, forever*: rule 3.**
+
+**Old wording, whole:**
+
+> 3. **An item's own row carries its own story**, in [OPEN_ITEMS.md](./OPEN_ITEMS.md), recorded once
+>    per *record once, point everywhere else* above.
+
+**10. PROCESS_RULES_for_ShellB.md, *How a session closes*: step 1.**
+
+**Old wording, whole:**
+
+> 1. Refresh the root docs so they tell the truth: BUILD_PLAN.md,
+>    OPEN_ITEMS.md, CLAUDE.md, and any rulebook touched this session.
+
+**11. PROCESS_RULES_for_ShellB.md, *How a session closes*: step 3.**
+
+**Old wording, whole:**
+
+> 3. ~~SESSION_HANDOFF.md is **rewritten from scratch**, current state only, so a cold reader can
+>    resume: where we are, what is committed vs. uncommitted, what is waiting on Amy, what comes
+>    next. **It carries no history** — that is what BUILD_LOG is for.~~
+>    **Corrected 17 Sep 2026: no handoff rewrite.** There is no live root
+>    `SESSION_HANDOFF.md`. Close-out refreshes BUILD_PLAN, OPEN_ITEMS, and CLAUDE (if
+>    touched), and appends BUILD_LOG only. Do not recreate a live root handoff.
+
+**12. PROCESS_RULES_for_ShellB.md, *How a session closes*: step 9, first bullet.**
+
+**Old wording, whole:**
+
+>    - **Closed items leave [OPEN_ITEMS.md](./OPEN_ITEMS.md) for [BUILD_LOG.md](./BUILD_LOG.md).** Every
+>      item closed or built this sitting moves in full, body and index row, into this sitting's
+>      BUILD_LOG entry, appended. **No closed row is left behind** in the index table.
+
+**13. PROCESS_RULES_for_ShellB.md, the foot of *How a session closes*: the export copies.**
+
+**Old wording, whole:**
+
+> ~~**The copies are made after the final commit, not before it**, so they carry the close-out
+> itself rather than the state just before it. Maintainer's ruling, 27 Aug 2026 — see item O8 in
+> [OPEN_ITEMS.md](./OPEN_ITEMS.md) for why the order matters. Regenerating first was how the
+> copies fell a session behind on 26 Aug.~~
+>
+> ~~The library is never more than one session stale.~~
+>
+> **Struck 17 Sep 2026:** there are no copies to order. Item O8 in
+> [OPEN_ITEMS.md](./OPEN_ITEMS.md) keeps the story of the step while it lived.
+
+**14. README.md, the sentence on where open threads live.**
+
+**Old wording, whole:**
+
+> Every open thread lives in [OPEN_ITEMS.md](./OPEN_ITEMS.md), grouped into six families:
+> Knowledge, Agents, Surfaces, Data, Operations and Cleanup. What is being built next, and why, is in
+> [BUILD_PLAN.md](./BUILD_PLAN.md).
+
+**15. README.md, the documents table: the OPEN_ITEMS.md row (removed).**
+
+**Old wording, whole:**
+
+> | [OPEN_ITEMS.md](./OPEN_ITEMS.md) | Every open thread, grouped into five families |
+
+**16. README.md, the documents table: the BUILD_PLAN.md row.**
+
+**Old wording, whole:**
+
+> | [BUILD_PLAN.md](./BUILD_PLAN.md) | What is being built next, and why |
+

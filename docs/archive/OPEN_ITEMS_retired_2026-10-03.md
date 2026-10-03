@@ -1,3 +1,10 @@
+> SUPERSEDED — 3 Oct 2026. Moved, not deleted.
+> Folded into [BUILD_PLAN.md](../../BUILD_PLAN.md), the one plan file, by the maintainer's ruling of 3 Oct 2026.
+> Open items live there now, six lines each; their full write-ups are in [BUILD_LOG.md](../../BUILD_LOG.md),
+> in the entry "one plan file" of 3 Oct 2026. Items closed before that are in [OPEN_ITEMS_ARCHIVE.md](../OPEN_ITEMS_ARCHIVE.md).
+> Do not recreate a live root `OPEN_ITEMS.md`. Never read this file for current state.
+> The text below is exactly as it stood; its relative links were written for the repository root.
+
 # Open items
 
 Every open thread in this repository, in one place. Moved out of

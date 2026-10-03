@@ -4,7 +4,7 @@
 about eligibility under Gold Standard's safe-drinking-water carbon methodology, the
 Paris-aligned version. **Nothing on the live site reads it yet**, no card is approved,
 and Phoebe still says that carbon eligibility is coming and not live. Item K7 in
-[OPEN_ITEMS.md](../../../OPEN_ITEMS.md); the maintainer's rulings of 22 Sep 2026 on the
+[BUILD_LOG.md](../../../BUILD_LOG.md); the maintainer's rulings of 22 Sep 2026 on the
 proposal.
 
 **Second pack in the new shape**, beside [`vwba-2.0/`](../vwba-2.0/). One seat now holds

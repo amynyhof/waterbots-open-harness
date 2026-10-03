@@ -4,7 +4,7 @@
 its own sources can point at the colleague who does cover it instead of only
 abstaining.**
 
-This is item A3 in [OPEN_ITEMS.md](../../OPEN_ITEMS.md), and it is the document
+This is item A3 in [OPEN_ITEMS_ARCHIVE.md](../../docs/OPEN_ITEMS_ARCHIVE.md), and it is the document
 [AGENT_RULES.md](../../AGENT_RULES.md) names as missing when it publishes rung 2 of
 the abstention ladder as *partly live*.
 
@@ -348,7 +348,7 @@ from the rules, and record that this is what happened.
 staffing ruling of 24 Aug 2026, and what the surfaces actually hold. **It has not
 been tested against a single real question**, and it is not waiting to be. When
 there is real visitor traffic the primer is read against the log and corrected if
-the log disagrees — that is item A5 in [OPEN_ITEMS.md](../../OPEN_ITEMS.md), and it
+the log disagrees — that is item A5 in [BUILD_PLAN.md](../../BUILD_PLAN.md), and it
 is a later review rather than a condition on this document.
 
 Written 27 Aug 2026. **Inherited by Phoebe since 28 Aug 2026.**

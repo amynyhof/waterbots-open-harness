@@ -1,6 +1,6 @@
 # Open items — archive
 
-**Closed items, moved out of [OPEN_ITEMS.md](../OPEN_ITEMS.md) so that the document read at the start
+**Closed items, moved out of [OPEN_ITEMS.md](./archive/OPEN_ITEMS_retired_2026-10-03.md) so that the document read at the start
 of every session stays a briefing rather than an archive.** Maintainer's ruling, 29 Aug 2026, *the
 opening reads stay thin, forever*: a closed item is finished, and it earns a pointer and a home
 elsewhere rather than a place in an opening read. The sweep itself was item O11.
@@ -15,7 +15,7 @@ intact. A closed item's value is entirely in its detail; an archive that abbrevi
 that loses the thing it was made to keep.
 
 **Every item still has a one-line row in the index table in
-[OPEN_ITEMS.md](../OPEN_ITEMS.md)**, pointing here, so no item can be lost by being finished.
+[OPEN_ITEMS.md](./archive/OPEN_ITEMS_retired_2026-10-03.md)**, pointing here, so no item can be lost by being finished.
 
 **This file lives at `docs/OPEN_ITEMS_ARCHIVE.md` from 17 Sep 2026**, moved from the repository
 root by the maintainer's ruling in the root tidy of that day, history kept. It is not part of
@@ -234,7 +234,7 @@ graded the same day) gave every row its navigation phase, so Partners is one of 
 third beside two; thirteen carbon rows and two water rows carry it. Nothing further to build under
 this item. **Closed; its row stays in the index; item A18 carries the tags.**
 
-Swept from [OPEN_ITEMS.md](../OPEN_ITEMS.md) on 23 Sep 2026, in full.
+Swept from [OPEN_ITEMS.md](./archive/OPEN_ITEMS_retired_2026-10-03.md) on 23 Sep 2026, in full.
 
 ---
 
