@@ -421,3 +421,48 @@ BUILD_LOG.md (the first) and below (the second, under its own step).
 
 **Current text:** the same place.
 
+
+---
+
+## 3 Oct 2026 — BUILD_PLAN.md: "Not next, and why" replaced by "Family work"; the done line's order gains step 8
+
+**Why it changed.** The maintainer's batch approval of 1 Oct 2026 asked that each family be tied to a
+v1 step or to "after v1", and that the screening report export (item S21) join the v1 order. The old
+"Not next, and why" table pre-dated the v1 done line: it said the carbon card pass waited for a
+Thursday, that Operations had nothing due, and that the hero chat was next. The old sentence about
+S21 said it stood outside the numbered steps.
+
+**1. BUILD_PLAN.md, *V1 — the done line*, the build order after the seal.**
+
+**Old wording, whole:**
+
+> **Build order after the seal:** (1) the Knowledge and Tool tab; (2) Wellington type and stage;
+> (3) Phoebe's carbon runtime; (4) the Commons check; (5) Calvin's brief with the carried engine;
+> (6) Bridget's hello; (7) the carry to the paid site, by the maintainer's hand.
+
+**Current text:** `BUILD_PLAN.md`, the same place; the table is replaced by *Family work*.
+
+**2. BUILD_PLAN.md, *V1 — the done line*, the sentence about the screening report export.**
+
+**Old wording, whole:**
+
+> One item outside the numbered steps is part of v1's done line and still open: **the screening
+> report export (item S21)**.
+
+**Current text:** `BUILD_PLAN.md`, the same place; the table is replaced by *Family work*.
+
+**3. BUILD_PLAN.md, the table headed "Not next, and why", the whole section.**
+
+**Old wording, whole:**
+
+> ## Not next, and why
+>
+> | Family | Why it waits |
+> |---|---|
+> | **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. **The first method pack (item K5) landed 1 Sep 2026 and the two carbon packs (item K6) on 2 Sep, both outside that order, because the maintainer scoped them herself.** The carbon card pass (item K7) waits for Thursday. |
+> | **Surfaces** | ~~**The hero chat (item S12) is next and waits on the maintainer's reference file**; its receiver (item S13) waits on it;~~ **The hero chat (item S12) is parked, 9 Sep 2026, and its receiver (item S13) shipped without it the same day**; the typing-dots exception (item S14) waits on her hand into the book. The bridge (item S7) ~~has its contract ruled, 7 Sep 2026; its sender builds next~~ **shipped 8 Sep 2026 and is closed**. The brightness pull-up (item S8) and the return to the book (item S9) are both **closed**. The rest of the family is polish (item S5), the dev-relay gap (item S6), or waits on data that does not exist yet (item S1). |
+> | **Data** | Blocked on material the maintainer supplies — registry coordinates for the project points (item D2), public disclosures for corporate goals and target geographies (item D1). Not work that can start from inside the repository. |
+> | **Operations** | **Nothing is due.** What remains waits on real usage that does not exist yet: the number twenty (item O1), the basemap's five-million-request ceiling (item O9), and the primer review against the abstention log (item A5). ~~Two questions are open and unhurried — whether the export copies should be produced by a script (item O8), and~~ **One question is open and unhurried — item O8 closed 17 Sep 2026 when the exports folder was retired —** whether an abstention that cited a card is a fault at all (item A7 — it recurred on 3 Sep and reads as the benign branch; the maintainer's reading closes it). |
+
+**Current text:** `BUILD_PLAN.md`, the same place; the table is replaced by *Family work*.
+

@@ -137,7 +137,10 @@ number for each fit; its basin; and save it.
 
 **Build order after the seal:** (1) the Knowledge and Tool tab; (2) Wellington type and stage;
 (3) Phoebe's carbon runtime; (4) the Commons check; (5) Calvin's brief with the carried engine;
-(6) Bridget's hello; (7) the carry to the paid site, by the maintainer's hand.
+(6) Bridget's hello; (7) the carry to the paid site, by the maintainer's hand; (8) the screening
+report export, free (item S21), added 3 Oct 2026 on her word. **Step 8 is numbered last so that no
+step before it renumbers.** It needs Calvin's figures, so in time it follows step 5; where it sits
+among steps 6, 7 and 8 is hers to say.
 
 **Amended 24 Sep 2026, her word:** Calvin's brief (step 5) moves ahead of Phoebe's carbon runtime (step 3) once the paid site's engine is sealed and carried by her hand; Wellington (step 2) proceeds now.
 
@@ -220,8 +223,8 @@ only — CC BY 3.0 IGO, the Carlisle determination 27b on the paid side, 27 Sep 
 in the bundle's registry is pending. **Deb has both tags, `v1-tools-2026-09-24` and
 `engine-carry-2026-09-27`, as of 28 Sep 2026.** Still to come after Calvin's brief, in the order
 above: the Commons check (step 4), Bridget's hello (step 6), the carry to the paid site (step 7).
-One item outside the numbered steps is part of v1's done line and still open: **the screening
-report export (item S21)**.
+**The screening report export (item S21) is step 8 of the order**, from 3 Oct 2026; the done line
+asks for it and it was on none of the first seven.
 
 **Wellington reading back what Phoebe found (item A17) is done, 26 Sep 2026: #128, merged on her
 word.** Each ask carries her worksheet as row ids and states only, read into a "What Phoebe found"
@@ -892,11 +895,26 @@ builds only its side.
 
 **What comes next is decided at the next session's open.**
 
-## Not next, and why
+## Family work — each family tied to a v1 step, or to "after v1"
 
-| Family | Why it waits |
-|---|---|
-| **Knowledge** | Large and unbounded until the full-docs card pass (item K1) reports what card sets are actually needed. Doing it in the wrong order means writing cards nobody asked for. **The first method pack (item K5) landed 1 Sep 2026 and the two carbon packs (item K6) on 2 Sep, both outside that order, because the maintainer scoped them herself.** The carbon card pass (item K7) waits for Thursday. |
-| **Surfaces** | ~~**The hero chat (item S12) is next and waits on the maintainer's reference file**; its receiver (item S13) waits on it;~~ **The hero chat (item S12) is parked, 9 Sep 2026, and its receiver (item S13) shipped without it the same day**; the typing-dots exception (item S14) waits on her hand into the book. The bridge (item S7) ~~has its contract ruled, 7 Sep 2026; its sender builds next~~ **shipped 8 Sep 2026 and is closed**. The brightness pull-up (item S8) and the return to the book (item S9) are both **closed**. The rest of the family is polish (item S5), the dev-relay gap (item S6), or waits on data that does not exist yet (item S1). |
-| **Data** | Blocked on material the maintainer supplies — registry coordinates for the project points (item D2), public disclosures for corporate goals and target geographies (item D1). Not work that can start from inside the repository. |
-| **Operations** | **Nothing is due.** What remains waits on real usage that does not exist yet: the number twenty (item O1), the basemap's five-million-request ceiling (item O9), and the primer review against the abstention log (item A5). ~~Two questions are open and unhurried — whether the export copies should be produced by a script (item O8), and~~ **One question is open and unhurried — item O8 closed 17 Sep 2026 when the exports folder was retired —** whether an abstention that cited a card is a fault at all (item A7 — it recurred on 3 Sep and reads as the benign branch; the maintainer's reading closes it). |
+**Recorded 3 Oct 2026 on the maintainer's approval of the tidy-up of 1 Oct.** Every open item in
+[OPEN_ITEMS.md](./OPEN_ITEMS.md) belongs to one of its six families, and each family's open work is
+tied here to a step of the v1 order above, or to **after v1**. The tie is the engineer's reading of
+"V1 — the done line", for her to move. The items and their buckets live in OPEN_ITEMS.md and are not
+copied here. A family with nothing on a step says so.
+
+| Family | On a v1 step | After v1 |
+|---|---|---|
+| **Knowledge** | None. The card sets are sealed at their versions (23 Sep 2026) and step 1, the Knowledge tabs, is done. | K1 full-docs card pass; K2 co-benefit module; K3 report corpus; K9 Calvin's and Bridget's packs to the new shape, after step 5; K10 part 3 and Phoebe's 80% pass, which wait on Deb's rig; K12 three carbon route cards; K13 the reading-grade figure |
+| **Agents** | **Step 5:** A21, Calvin's brief — his chat and the carried engine. **Step 6:** A22, Bridget's hello, with A14 (her role word) before or with it. | A5 primer review; A10 Wellington's answers run long; A12 Bridget's chat; A20 Phoebe's runaway call |
+| **Surfaces** | **Step 4:** S23, the Commons check. **Step 8:** S21, the screening report export. | S11's two typeable controls; S18 slice 4 (Deb's rig) and slice 5; S1, S5, S6, S12, S14, S15, S17, S19, S20, S22 |
+| **Data** | None. | D1 and D2; both wait on material only the maintainer can supply |
+| **Operations** | **Step 7:** O14, the carries owed by her hand — every row Shell A's or the brand book's, except the three changes to Deb's rig. | O1 revisit the number thirty; O4; O9; O12; O13; O15 |
+| **Cleanup** | None. | C1, the sweep of struck lines |
+
+**Shell A is the paid site.** What crosses to it is her hand, never an action in this repository, and
+item O14 lists each carry once. Production's receiver is not fixed (Shell A item #243). Items S14, S15
+and S17 are shapes to offer production, later, and sit after v1.
+
+**Not on any step, said once.** The daily cap has no setting outside the code (see "Not on the plan
+yet" under the V1 section); no item is logged, because raising or clearing it is her call.
