@@ -98,6 +98,7 @@ number for each fit; its basin; and save it.
   is hers to say.
 - **The engine bundle is at `carried/`**, tagged `engine-carry-2026-09-27` (#132): the paid site's
   `calculator-seal-2026-09-26`, gs4gg-carbon v0.16.0, 32 of 32 hashes verified. Nothing edits it here.
+  The re-sealed bundle, v0.16.1, is expected next, by the maintainer's hand.
 - **Wellington's prompt is 26,056 characters against a gate of 26,199.** The gate moves only on her word.
 - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull
   request; a measured run after any prompt change; the build-update fact refreshed at every close-out.
