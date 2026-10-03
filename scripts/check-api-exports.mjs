@@ -11,7 +11,7 @@
  * It cost three failed deploys on 24 Aug 2026 to find, because nothing local
  * could see it: the type check passes, the build passes, and the dev relay used
  * to reach for `module.default` and hand-build the Request the handler wanted.
- * Development was kinder than production, which is item S6 in OPEN_ITEMS.md.
+ * Development was kinder than production, which is item S6 in BUILD_PLAN.md.
  *
  * Vercel's own build log said it plainly in the end. This turns that warning
  * into a build failure, locally, in about a second.

@@ -1,7 +1,7 @@
 /**
  * Every time Phoebe declines, written down.
  *
- * Item A1 in OPEN_ITEMS.md. When Phoebe says she does not have a card for
+ * Item A1, recorded in BUILD_LOG.md. When Phoebe says she does not have a card for
  * something, that is the most useful thing she says all day: it is a real
  * question, asked by a real person, that the card sets do not cover. Each one is
  * kept so the maintainer can read it and decide — a legitimate limit of the card

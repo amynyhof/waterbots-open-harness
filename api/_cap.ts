@@ -2,7 +2,7 @@
  * A daily cap per visitor, per agent.
  *
  * Twenty for Phoebe — the maintainer's ruling of 21 Aug 2026, item O1 in
- * OPEN_ITEMS.md. Thirty for Wellington — her ruling of 2 Sep 2026: his prompt
+ * BUILD_PLAN.md. Thirty for Wellington — her ruling of 2 Sep 2026: his prompt
  * carries no card sets, so a message to him costs about a twentieth of one to
  * Phoebe, and a routing conversation runs longer in turns and shorter in words.
  * Each agent counts under its own key; the counters are not a pool. Every
