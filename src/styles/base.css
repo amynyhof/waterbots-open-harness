@@ -137,7 +137,7 @@ body {
    THIS COMMENT HAS BEEN WRONG TWICE AND IS ON ITS THIRD SUBJECT — it has
    described --chrome aliasing --paper, then a derived fourth plane, then the
    canvas, and now --frame. Every version was true when written. The record of
-   all of it lives once, in item S9 in OPEN_ITEMS.md. */
+   all of it lives once, in item S9 in docs/OPEN_ITEMS_ARCHIVE.md. */
 .chrome {
   border-bottom: 1px solid var(--line);
 }

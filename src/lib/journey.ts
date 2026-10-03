@@ -10,7 +10,7 @@
  * THIS IS THE ONE HOME FOR THE PHASE LIST. The bar reads it, and nothing else
  * types the six names again. Maintainer's ruling C, 2 Sep 2026.
  *
- * The north star in OPEN_ITEMS.md names four steps, the fourth being project
+ * The north star in BUILD_PLAN.md names four steps, the fourth being project
  * management on the paid platform. These six are that same road at the
  * production console's grain: Plan, Monitor and Communicate are what "running
  * the project after it starts" is made of.

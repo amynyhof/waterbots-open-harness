@@ -15,7 +15,7 @@ import tailwindcss from '@tailwindcss/vite';
  * drift from it.
  *
  * THIS BRIDGE IS THE WEAKEST PART OF THE ARRANGEMENT, and it has hidden two
- * production outages (item S6 in OPEN_ITEMS.md). Node's http objects are not
+ * production outages (item S6 in BUILD_PLAN.md). Node's http objects are not
  * web Requests, so something has to convert, and whatever converts is a place
  * where development can be kinder than production without anyone noticing.
  *

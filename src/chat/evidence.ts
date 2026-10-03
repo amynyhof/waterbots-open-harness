@@ -25,7 +25,7 @@
  * `plainEnglish` on the evidence), the citation is `document` + `version` +
  * `section`, and `href` is the publisher's canonical page. There is no field
  * for verbatim source text, deliberately — this repository holds none, and
- * Level 3 is not built on the free site (see OPEN_ITEMS.md S3).
+ * Level 3 is not built on the free site (see item S3, docs/OPEN_ITEMS_ARCHIVE.md).
  */
 export interface Citation {
   /** "VWBA 2.0" — the short document name. */

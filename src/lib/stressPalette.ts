@@ -47,7 +47,7 @@
  * as, and a reader taught two bands above that warm means worse will read a
  * warm fill as a warm value however far its chroma sits from the ramp.
  *
- * The whole record is item S9 in OPEN_ITEMS.md.
+ * The whole record is item S9 in docs/OPEN_ITEMS_ARCHIVE.md.
  */
 
 export type StressKey =

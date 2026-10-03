@@ -1,7 +1,7 @@
 /**
  * Reading the abstention log.
  *
- * Item A1 in OPEN_ITEMS.md describes grading as something the maintainer does
+ * Item A1, recorded in BUILD_LOG.md, describes grading as something the maintainer does
  * again and again: read what Phoebe declined, decide whether each gap is a
  * legitimate limit or a card that should be written. A routine built on an
  * awkward tool is a routine that stops happening, so this is one address that

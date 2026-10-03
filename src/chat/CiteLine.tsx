@@ -4,7 +4,7 @@
  * ONE LINE AND NOTHING MORE — source · version · section · page → canonical
  * link. CITATIONS.md fixes both the contents and the order. There is no Level 3
  * here: the pop-out with a verbatim source-text tab is a paid-platform feature
- * (OPEN_ITEMS.md S3), and this repository holds no verbatim source text to put
+ * (item S3, docs/OPEN_ITEMS_ARCHIVE.md), and this repository holds no verbatim source text to put
  * in one.
  *
  * EVERY VALUE COMES FROM A COMMITTED CARD FILE, by way of the agent's adapter.
