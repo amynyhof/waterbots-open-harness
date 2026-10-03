@@ -701,3 +701,33 @@ became step 8 the same day. **Old wording, the line as it stood:**
 
 >   done conditions, what is parked until after v1, and a seven-step build order live in
 
+
+
+---
+
+## 3 Oct 2026 — BUILD_PLAN.md: the done line for Calvin, in the V1 order and in item A21
+
+**Why it changed.** The maintainer's ruling of 3 Oct 2026: the "Test Project" and "Malawi" figures were
+play numbers, not a real project, and the paid site is retiring them. Her words for the replacement, the
+same day: the proof is the Mali Demo Project's inputs, typed by hand into both sites, giving the same
+number. Item O16 named the two old lines as open; it no longer does.
+
+**Old wording, whole — the V1 order, the Calvin bullet:**
+
+> - **Calvin** talks; picks the pack from the record; asks only for what is missing; his carbon
+>   number comes from the same engine as the paid site. Done when the Malawi test project gives the
+>   same number on both sites.
+
+**Old wording, whole — item A21:**
+
+> … **R1 is open**: it waits on the engine scrub and the re-seal at v0.16.1,
+> Shell A's and hers to carry; the re-sealed bundle is expected next, by her hand. What R1 turns on is
+> listed in O16. Done when the Malawi test project gives the same number on both sites. Owes the teal
+> baseline marker, a design value she carries from production.
+
+**Also changed, item O16:** its last open thread read "the done lines that name the Malawi test project";
+it now reads only "scrub at the re-seal".
+
+**Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), "The v1 order" and item A21.
+Earlier entries of [BUILD_LOG.md](../../BUILD_LOG.md) still say "the Malawi test project"; the log is
+never edited, and they are the wording of their day.
