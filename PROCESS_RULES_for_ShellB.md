@@ -331,7 +331,9 @@ grows back into a second account. If a pointer needs a third line to be useful, 
 the thing to improve.
 
 **It does not license thinness in the owning item.** The full record is still full — the
-measurements, the wrong turns, the dates. It is only told once.
+measurements, the wrong turns, the dates. It is only told once. **From 3 Oct 2026 an item in the plan
+file is six lines at most, so the full record's one home is the item's write-up in BUILD_LOG.md**, and
+the item points at it.
 
 - Every open item belongs to a family. A new item joins a family or
   starts one; starting one is a maintainer decision, recorded with
@@ -381,6 +383,9 @@ maintainer's ruling.
 **Flagging is part of the job.** An engineer who notices an opening document growing says so in the
 Part 1 report, rather than reading it dutifully and saying nothing.
 
+**The plan file has a number: 400 lines.** [BUILD_PLAN.md](./BUILD_PLAN.md) is counted at every
+close-out, step 10, and a count past 400 is flagged in the report.
+
 ## How a session closes
 
 **The close-out is one complete act.** Maintainer's ruling, 26 Aug 2026: the ritual below
@@ -424,6 +429,11 @@ includes every step, every time. **A ritual with a skipped step is an unfinished
      is raised with the maintainer, not worked around.
    - Bodies swept before 3 Oct 2026 stay in
      [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md); nothing is moved twice.
+10. **Count the plan file's lines.** Maintainer's ruling, 3 Oct 2026: [BUILD_PLAN.md](./BUILD_PLAN.md)
+    has a limit of **400 lines**. Count them at every close-out, after the sweep. **If the file is past
+    400, flag it in the close-out report, with the count.** An item there is six lines at most; a longer
+    write-up goes to BUILD_LOG.md and the item points at it. The limit is a threshold, and it changes
+    only on her word.
 
 **There is no export step and there are no copies to order**, from 17 Sep 2026. Item O8 in
 [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) keeps the story of the step while it lived.

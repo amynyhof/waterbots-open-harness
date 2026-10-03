@@ -8,6 +8,10 @@ moves from a proposal to a commit.
 **Three parts, in this order:** the v1 order; the sprints, one per family that has work on a v1 step; and
 the families whose work is all after v1.
 
+**Size limit: 400 lines.** The maintainer's ruling of 3 Oct 2026. An item is six lines at most; a longer
+write-up goes to BUILD_LOG.md and the item points at it. A close-out that finds this file past 400 lines
+says so in its report (step 10 of the close-out ritual).
+
 **How it is kept.** Rewritten when the plan changes and refreshed at every close-out. A closed item leaves
 at the close-out for [BUILD_LOG.md](./BUILD_LOG.md), with nothing left behind (step 9). Every item belongs
 to a family; starting a family is her decision.
