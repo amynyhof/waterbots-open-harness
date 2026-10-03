@@ -85,6 +85,10 @@ item is; a bucket says what it is for now. Five buckets, one per row, ruled by h
 A row keeps its bucket until she moves it. Item O11 records the triage; the full sort was a proposal
 file at the root, untracked, and deleted once the sweep merged.
 
+**Shell A and Shell B.** Shell A is the paid site, production. Shell B is this repository, the free
+site. Recorded 3 Oct 2026 on the maintainer's word. A carry to Shell A is always her hand, never an
+action here (rule zero), and item O14 lists them once.
+
 | Family | What it covers |
 |---|---|
 | **[Knowledge](#family-knowledge)** | What the agents are allowed to know — card sets, the source corpus, and the methods behind a number. |
@@ -106,6 +110,8 @@ file at the root, untracked, and deleted once the sweep merged.
 | K8 | Phoebe's VWBA pack is the cards' one home; the new pack shape, one pack at a time | Knowledge | closed | **built 17 Sep 2026, #84** — canon — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | K9 | Calvin's and Bridget's packs move to the new pack shape | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — one brief each, the way Phoebe's did; not started |
 | K10 | Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed | Knowledge | BONES | **logged 18 Sep 2026 from the maintainer's brief** — not started |
+| K12 | Three carbon route cards no card carries | Knowledge | PARK | **logged 3 Oct 2026** — a residue of K7; after v1, the sets being sealed |
+| K13 | A reading-grade figure printed for every route card and plain-words line | Knowledge | PARK | **logged 3 Oct 2026** — a residue of A18; a grade-6 target, printed and not enforced; not built |
 | K11 | A third phase tag, "Partners phase" — rows where Bridget helps on the paid site | Knowledge | closed | **logged 23 Sep 2026** — **overtaken the same day** by the phase-tags-by-nav ruling: every row carries its navigation phase, and thirteen carbon rows and two water rows are Partners; closed into item A18 — **swept 23 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | A1 | Phoebe abstention loop | Agents | PARK | built 25 Aug 2026 |
 | A2 | Final agent staffing | Agents | closed | settled 24 Aug 2026; Bridget's colour settled 29 Aug 2026 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -126,6 +132,9 @@ file at the root, untracked, and deleted once the sweep merged.
 | A17 | The handoff goes both ways — forward and back | Agents | BONES | **logged 21 Sep 2026 from her walk of #97**; **built 26 Sep 2026, #128 merged on her word** — he reads each pathway's read and any Blocked or still-open row by id and tool-file title, never her sentences; greets the visitor back once; Quantify only where a pathway fits; built, sweep due |
 | A18 | A specialist is a guide, not a gate — the readiness read, the cited routes, and the door to a person | Agents | BONES | **ruled 23 Sep 2026 from her review of Phoebe's cards** — the rule is in AGENT_RULES.md (#100, merged); **stop 3 passed the same day**: fixability lines on the six water cards and nine water routes in the pack; the "tools on the paid site" line ruled canon; **her addendum of 23 Sep 2026 ruled and its tags built**: a Phase line on every eligibility card, the stage question, framing from the stage, the door once; nothing runtime built **Built 25–26 Sep 2026 (#122, #124, #126)**: five row states, the readiness read per pathway, the cited routes, the tools line, and the door to a person — her offer once on a Blocked row, a box and note at the save door, an email to the WaterBots team on a ticked save; built, sweep due |
 | A19 | Wellington's prompt measures 26,117 on `main`; BUILD_PLAN says 26,108 — find the nine characters | Agents | BONES | **logged 30 Sep 2026 from the maintainer's word; cause found at the 30 Sep close-out** — the 29 Sep build-update refresh added nine characters; the live docs now carry the measured number |
+| A20 | Phoebe's runaway call is cut off at 120 seconds, not prevented | Agents | PARK | **logged 3 Oct 2026** — a residue of A6; revisit with real usage |
+| A21 | Calvin's brief — his chat, the carried engine, carbon beside water | Agents | BONES | **proposed 27 Sep 2026; R2 to R11 ruled yes 1 Oct 2026; R1 open** — waits on the engine scrub and the re-seal at v0.16.1; build-order step 5 |
+| A22 | Bridget's hello — she introduces herself, says what the map shows, hands back | Agents | BONES | **logged 3 Oct 2026 from the v1 done line** — build-order step 6; no proposal yet |
 | S1 | Collaboration and collective action as a partner-finding surface | Surfaces | PARK | open |
 | S2 | The shared chat layer | Surfaces | closed | built through Level 2 — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
 | S3 | Level 3 citation pop-out | Surfaces | closed | out of scope — paid platform — **swept 18 Sep 2026** — [archived](./docs/OPEN_ITEMS_ARCHIVE.md) |
@@ -147,6 +156,8 @@ file at the root, untracked, and deleted once the sweep merged.
 | S19 | The Workshop — make your own agent on the Commons | Surfaces | PARTNER | **logged 11 Sep 2026, not built** — slice 3 has landed; the proposal is next, on the maintainer's word |
 | S20 | "Connect with a human expert" on every Commons agent | Surfaces | PARTNER | **logged 11 Sep 2026, not built** — two design questions open for the session |
 | S21 | Every tool exportable as an easy-to-read, properly cited document | Surfaces | PARK | **logged 23 Sep 2026 from the maintainer's word** — with or without answers; not started **Listed 26 Sep 2026 as open v1 work** — the done line says the screening report exports free |
+| S22 | The Blocked row colour — the interim one, until the maintainer's pixels | Surfaces | PARK | **logged 3 Oct 2026** — a residue of A18; a raise for the brand book's §2.5 |
+| S23 | The Commons check — Phoebe, Calvin and Bridget on the Commons to the v1 done line | Surfaces | PARTNER | **logged 3 Oct 2026 from the v1 done line** — build-order step 4; no proposal yet |
 | D1 | Corporate water stewardship goals and target geographies | Data | PARK | open |
 | D2 | Project points | Data | PARK | blocked on data |
 | O1 | Rate limit on public chat | Operations | PARK | shipped 25 Aug 2026 at twenty; **thirty from 23 Sep 2026**, her ruling on the phase-tags proposal; still to revisit against real usage |
@@ -163,6 +174,7 @@ file at the root, untracked, and deleted once the sweep merged.
 | O12 | The map page is heavy — the renderer stalls on a basin redraw | Operations | WALKTHROUGH | **logged 7 Sep 2026**, not this slice |
 | O13 | Phoebe's relay still says `validate()` — a banned word in old code | Operations | BONES | **logged 7 Sep 2026** — rename to "check" in a later hygiene pass, not now |
 | O14 | Carries owed by the maintainer's hand — listed once | Operations | PARK | **adopted 18 Sep 2026**; each waits on her hand |
+| O15 | Four storage keys show "Needs Attention" in Vercel | Operations | PARK | **logged 3 Oct 2026 from the maintainer's word** — check later; not looked at |
 | C1 | Sweep every existing struck line into the archive | Cleanup | BONES | **logged 23 Sep 2026 from the maintainer's ruling** — the batch of 22–23 Sep is clean; every older strike waits; not started |
 
 > **Renumbered 23 Aug 2026.** The previous identifiers were V1–V4, B1–B3 and P1–P8. Every
@@ -398,6 +410,9 @@ markdown file, the proof is the built module's output before and after.
 
 **Two briefs, one pack at a time, in the order she chooses.** Nothing moves before its brief.
 
+**Calvin's brief (item A21) does not move his pack.** Its proposal leaves this item unchanged; the
+pack move is its own brief, after step 5.
+
 Logged 18 Sep 2026. **Not started. Bucket BONES.**
 
 ## K10. Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed
@@ -426,9 +441,44 @@ Logged 18 Sep 2026. **Not started. Bucket BONES.**
    holds: a case rests on a real project, never an invented one.
 
 **Dependencies.** Part 3 waits on the rig's case shape and on Deb's per-case file (item S18, slice
-4). Parts 1 and 2 can go first. Proposal before any of it.
+4). **Recorded 3 Oct 2026, on the maintainer's word.** Part 1 is done: she has reviewed Phoebe's VWBA
+cards. Part 2 was built as step 1 of the specialist contract (the grader notes now sit in
+`vwba-2.0/cards/grader-notes.md`, #94). What is left is part 3, and Phoebe's done line of an 80%
+pass, which is the rig's to say.
+
+Parts 1 and 2 can go first. Proposal before any of it.
 
 Logged 18 Sep 2026. **Not started. Bucket BONES.**
+
+## K12. Three carbon route cards no card carries
+
+**Logged 3 Oct 2026, a residue of item K7, moved out when K7 swept.** A carbon eligibility card
+describes three fixes that no route card carries: the change of pump drive that cards T1 and M2 name,
+and the justified sub-national area that card M14 names. Each would be a route card drafted from the
+methodology, the documents it names as binding, or a held published project, and graded by the
+maintainer like the other nineteen; a gap with no source gets no card. They are also listed on the
+carbon pack's own page.
+
+**Not started, and parked on purpose.** The v1 done line seals every card set at its version, and no
+card is added until a real project fails on one.
+
+Logged 3 Oct 2026. **Bucket PARK.**
+
+## K13. A reading-grade figure for every route card and plain-words line
+
+**Logged 3 Oct 2026, a residue of item A18, moved out when A18 swept.** The guide-not-gate proposal
+asked that `check-cards` print a reading-grade figure for every route card and plain-words line
+against a grade-6 target, printed and not enforced (her rider on R8, 23 Sep 2026). It was not built.
+It is not a threshold: it is a number on the page, and a threshold would change only on her word.
+
+Logged 3 Oct 2026. **Not built. Bucket PARK.**
+
+# Family: Agents
+
+How agents behave, what they may say, how they hand off, and who staffs which post.
+
+Governed by [AGENT_RULES.md](./AGENT_RULES.md). Every item here is read against it, and the
+specialist contract's ten lines are the standard each specialist is held to.
 
 ## A5. Primer review against the abstention log, once there is real traffic
 
@@ -769,6 +819,10 @@ one plain line and no composer.
 Both would run on Phoebe's proven pattern — an endpoint of their own, a daily cap of their own, the
 same guards, every setting stated in code — and both panels say plainly today that the chat is not
 built. Honest states hold.
+
+**Updated 3 Oct 2026.** Calvin's chat is now item A21, build-order step 5; this row holds Bridget's chat
+only. Her hello on the v1 done line is item A22, step 6, and is not a chat. Both are read against the
+specialist contract's ten lines; the table on each pack README says where they stand.
 
 Logged 18 Sep 2026. **Not scheduled. Bucket PARK.**
 
@@ -1214,6 +1268,51 @@ The gate does not move; report a trip and propose a number, as the rule says.
 
 Logged 30 Sep 2026; found the same day. **Open until the sweep, bucket BONES.**
 
+
+## A20. Phoebe's runaway call is cut off at 120 seconds, not prevented
+
+**Logged 3 Oct 2026, a residue of item A6, moved out when A6 swept.** One request in seventy-five
+spent all 16,000 output tokens on Phoebe and ran more than a hundred seconds against a normal twenty.
+Switching her to Opus 5 did not remove it, and a change of effort did reach it, so it is ours and not
+upstream weather. The relay's own 120-second timeout (`CALL_TIMEOUT_MS` in `api/phoebe.ts`, the same
+in `api/wellington.ts`) ends such a call; nothing prevents it. The false "Invalid request data" 400
+is upstream weather, guarded by one retry that costs a visitor nothing.
+
+**What "done" looks like:** a real count of runaway calls once there is real traffic, then either a
+smaller budget with a measured reason or a line saying the timeout is enough. Revisit with items O1,
+A5 and O9, which wait on the same usage.
+
+Logged 3 Oct 2026. **Bucket PARK.**
+
+## A21. Calvin's brief — his chat, the carried engine, carbon beside water
+
+**Proposed 27 Sep 2026 as `PROPOSAL_calvin-brief.md`, untracked at the repository root. Build-order
+step 5 under "V1 — the done line". Nothing is built.** Calvin talks; picks the pack from the record;
+asks only for what is missing; and his carbon number comes from the engine carried at `carried/`, the
+same engine as the paid site. His done line is that the Malawi test project gives the same number on
+both sites.
+
+**Her rulings of 1 Oct 2026 on its §13.** R2 to R11 are all yes, each recorded in the proposal as
+"Ruled 1 Oct 2026: YES.", with these notes: R5, days at 347 and water quality at 100% show as
+ASSUMED, each with a slider; R6, a country missing from the UN household file, Calvin asks; R7,
+"every value used" means inputs, never results; R8, carbon sits beside water when Phoebe reads likely
+or not enough known; R11, Calvin writes only the class and people served to the record. **R1 is
+still open:** whether the strings the manifest flagged in `presets.ts`, `emissions-legacy.ts` and
+`quantity.ts` publish as they are. It waits on the engine scrub and the re-seal at v0.16.1, which is
+Shell A's and hers to carry. Nothing is built until it arrives. Step 5 also carries the teal baseline
+marker (her ruling of 24 Sep 2026), a design value she carries from production.
+
+Logged 27 Sep 2026; rulings 1 Oct 2026. **Bucket BONES.**
+
+## A22. Bridget's hello — she introduces herself, says what the map shows, hands back
+
+**Logged 3 Oct 2026 from the v1 done line, which was not an item before. Build-order step 6. No
+proposal yet.** The done line for Bridget: the map and the pin as they are today; she introduces
+herself, says what the map shows, and hands back. It is not her chat (item A12 holds that, parked).
+Item A14, the role word on her screen host record, reads "Map" where her crew card reads "Partners",
+and is the first thing her hello would show; it goes before or with this.
+
+Logged 3 Oct 2026. **Not started. Bucket BONES.**
 
 # Family: Surfaces
 
@@ -1892,6 +1991,25 @@ tag. Blank rows stay blank. Third in the next order, with the Knowledge tab.
 
 **Not scheduled. Proposal first. Bucket PARK.**
 
+## S22. The Blocked row colour — the interim one
+
+**Logged 3 Oct 2026, a residue of item A18, moved out when A18 swept.** Blocked rows reuse
+`--state-pending` with the word "Blocked" until the maintainer's pixels. The brand book's §2.5 has no
+stopped state that is not an error, so a stopped-but-not-wrong colour is a raise for the book by her
+hand. Design work starts from an image: a captured reference comes before any proposal.
+
+Logged 3 Oct 2026. **Not started. Bucket PARK.**
+
+## S23. The Commons check — Phoebe, Calvin and Bridget on the Commons to the v1 done line
+
+**Logged 3 Oct 2026 from the v1 done line, which was not an item before. Build-order step 4. No
+proposal yet.** The done line for the Commons: Phoebe and Calvin work there too, with no memory;
+Bridget introduces herself; and Calvin has two cards on one engine, screening and transition.
+Commons v0, slices 1 to 3, is built (item S18); Credentials from Deb's rig (slice 4) is not part of v1.
+Calvin's work there waits on item A21.
+
+Logged 3 Oct 2026. **Not started. Bucket PARTNER.**
+
 # Family: Data
 
 Where real, verifiable data comes from, and whether it exists yet.
@@ -2198,20 +2316,31 @@ zero holds for every one: nothing here is fetched, written to, or guessed at on 
 | The agent screen as a §7 component, and the carry list of files for production | Brand book §7; production | item S16 (archived) |
 | Production's sign-up address for the Commons door | This site, once she carries it | item S18 |
 | The three changes Deb's rig needs, and later the trigger | Deb | item S18, slice 4; item S19 |
-| ~~`roster.yaml` from production~~ **Landed 18 Sep 2026**, version 0.3.0; the next carry is the confirmed one | This site | item A13 |
+| The confirmed free and Commons columns of `roster.yaml`, carried again, and the roster's two "this repository" lines corrected at source | This site | item A13 (swept 3 Oct 2026) |
 | The specialist contract — the nine-line section of AGENT_RULES.md, her words | Production | item A15 |
 | `project-types.md` — drafted here, the paid repository becomes its source and this site is then held to it, the roster's rule; her word of 23 Sep 2026 | Production, then back to this site | item A16 |
 | The carbon "no" list to the reviewer as Q11; her word of 23 Sep 2026, named at the M1–M17 grade: the Blocked cases on M5 (nobody boils or goes without), M12 (the host country's list excludes the activity), M13 (viable without carbon finance, pricing will not change), M14 (common practice with no justified narrower area) | The paid side | items A18, K7 |
-| One contract change to the seal: `type`, `gsClass` and `stage` for `kind` (**this site's sender changed 24 Sep 2026**, item A16: `record.type` an id from `project-types.md` or NONE or blank, `record.gsClass` one of HWT, IWT, CWT, CWS only beside C-19, `record.stage` one of paper, building, running, each with its source tag). **Until this carry lands the seal also carries `kind` again**, her ruling of 25 Sep 2026 after a live save arrived on production as an empty record: derived from the type, one of water, carbon, both, neither, and refused when it disagrees with the type. The word retires from the seal on the day production's receiver reads the three new fields. The whole account is under item A16, *The save door broke, and the word came back*. Also owed: rows and a readiness read per pathway; the send-to-a-person field and a note | Production | items K7, A16, A18 |
+| One contract change to the seal: `type`, `gsClass` and `stage` for `kind` (**this site's sender changed 24 Sep 2026**, item A16: `record.type` an id from `project-types.md` or NONE or blank, `record.gsClass` one of HWT, IWT, CWT, CWS only beside C-19, `record.stage` one of paper, building, running, each with its source tag). **Until this carry lands the seal also carries `kind` again**, her ruling of 25 Sep 2026 after a live save arrived on production as an empty record: derived from the type, one of water, carbon, both, neither, and refused when it disagrees with the type. The word retires from the seal on the day production's receiver reads the three new fields. The whole account is under item A16, *The save door broke, and the word came back*. Also owed: rows and a readiness read per pathway; the send-to-a-person field and a note. **Recorded 3 Oct 2026: production's receiver is not fixed; it is Shell A item #243** | Production | items K7, A16, A18 |
 | `record.served` on the seal from 27 Sep 2026: people served as the visitor said it, `value` a whole count as digits or blank, `unit` people or households or blank, and its source tag; production's receiver ignores it until its storage is carried | Production | item A16 |
 | The "tools and resources on the paid site" line, her canon of 23 Sep 2026: production's side of the save door and its sign-up should say the same thing this site's save door will say | Production | item A18 |
 | The transition-assistance module, overseen by trusted consultants, that card T4 tells a transitioning project is coming to the paid site; her word of 23 Sep 2026 | Production | items K7, A18 |
+| The engine scrub and the re-seal at v0.16.1: the strings flagged in `presets.ts`, `emissions-legacy.ts` and `quantity.ts` | This site, once she carries the bundle | item A21, ruling R1 |
 
 A carry is struck from this table when it lands, with the date. Nothing is built toward any of them
 from here.
 
 Logged 18 Sep 2026. **Each waits on her hand. Bucket PARK.**
 
+
+## O15. Four storage keys show "Needs Attention" in Vercel
+
+**Logged 3 Oct 2026, from the maintainer's word: check later.** Four storage keys show "Needs
+Attention" on the hosting platform. They have not been looked at, and their names and what they
+guard are not in the record. The first step is to read the four names and the platform's message off
+its storage page, by her hand or on her screen. The short-lived store the daily caps and the save
+door use is a possible neighbourhood, but that is a guess and not a finding.
+
+Logged 3 Oct 2026. **Not looked at. Bucket PARK.**
 
 # Family: Cleanup
 
