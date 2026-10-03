@@ -322,7 +322,7 @@ credit line does not meet any of these bars.
   or a face on the roster may be absent from this site; "unconfirmed" always
   passes. In that file "this repository" on the paid line means production.
 - **"V1 — the done line," ruled 23 Sep 2026.** What v1 means for the whole free site, per-seat
-  done conditions, what is parked until after v1, and a seven-step build order live in
+  done conditions, what is parked until after v1, and an eight-step build order (seven until 3 Oct 2026, when the report export joined it) live in
   [BUILD_PLAN.md](./BUILD_PLAN.md), which owns the order work is built in. Every card set on
   the free site is sealed at its version on that date; no card changes or is added until a real
   project fails on one. The seal is recorded in `knowledge-packs/CHANGELOG.md`.

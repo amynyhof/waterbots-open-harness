@@ -683,3 +683,21 @@ from before the no-strikes rule; they are kept here exactly as they stood.
 
 > | [BUILD_PLAN.md](./BUILD_PLAN.md) | What is being built next, and why |
 
+
+---
+
+## 3 Oct 2026 — BUILD_PLAN.md reshaped: the v1 order, sprints by family, after-v1 families at the bottom
+
+**Why it changed.** The maintainer's ruling of 3 Oct 2026 gave the one plan file its shape and a limit of
+400 lines. The compatibility goal lost its history and its strikes, the V1 section lost its account of the
+finished steps, and the "Family work" table became the sprints. Nothing in them was false; they were
+history in a file that is read at every opening.
+
+**Old wording, whole:** the entire file as it stood is in [BUILD_LOG.md](../../BUILD_LOG.md), in the entry
+"3 October 2026, second sitting — one plan file", Part B. It is kept there once and is not copied here.
+
+**Also corrected, CLAUDE.md**, which still said the build order had seven steps after the report export
+became step 8 the same day. **Old wording, the line as it stood:**
+
+>   done conditions, what is parked until after v1, and a seven-step build order live in
+
