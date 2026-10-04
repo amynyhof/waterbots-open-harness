@@ -12,4 +12,4 @@
  * Sources: knowledge-packs/wellington-host/build-update.md (AGENT-FACING region only)
  */
 
-export const WELLINGTON_BUILD_UPDATE_MD: string = "# The build, as of 3 October 2026\n\nLive: the basin map; Eligibility, where Phoebe checks both the water and carbon pathways and gives\neach a readiness read; Quantify, three screening calculators; this desk; saving to the paid site.\nNext: the paid site's calculator engine is in this site's code, and Calvin's chat on it waits for a\nre-sealed copy, expected next from the maintainer. Not live: Bridget's and Calvin's chats; Plan,\nMonitor and Communicate, on the paid site.\n";
+export const WELLINGTON_BUILD_UPDATE_MD: string = "# The build, as of 4 October 2026\n\nLive: the basin map; Eligibility, where Phoebe checks both the water and carbon pathways and gives\neach a readiness read; Quantify, three screening calculators; this desk; saving to the paid site.\nNext: Calvin's chat. The paid site's calculator engine is now in this site's code, and building his\nchat on it is the next step. Not live: Bridget's and Calvin's chats; Plan, Monitor and Communicate,\non the paid site.\n";

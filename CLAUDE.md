@@ -376,13 +376,12 @@ credit line does not meet any of these bars.
   Quantify only where a pathway is likely eligible or not enough is known. For a water supply
   project he asks how many people or households it serves, after the stage; it is kept as said,
   households never converted here, on the record, the rail and the seal as `record.served`. His
-  prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep and is 26,043 from 30 Sep 2026, against the
+  prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep and is 26,034 from 4 Oct 2026, against the
   unchanged gate of 26,199.
 - **The engine bundle is tracked at `carried/`, from 27 Sep 2026**, placed by the maintainer's
   hand and merged on `main` as it stands (#132), tagged `engine-carry-2026-09-27`. **It was replaced
   on 3 Oct 2026 by v0.16.1**, the paid site's `calculator-seal-2026-10-03`: 34 files, 34 hashes
-  verified, the filing's figures gone; its carry tag, `engine-carry-2026-10-04`, comes after the
-  merge. `carried/** -text` keeps its bytes. `HOW-TO-CALL.md` went with the old bundle; the
+  verified, the filing's figures gone (#147), tagged `engine-carry-2026-10-04`. `carried/** -text` keeps its bytes. `HOW-TO-CALL.md` went with the old bundle; the
   manifest at `carried/MANIFEST.md` says what is in it. Nothing edits it here. Calvin's brief reads it.
 - **The free-site fixes of 30 Sep 2026 are live, #134 to #138**, and the demo ran on `main` at
   #138. The wordmark at the top left starts a fresh visit at the landing (a full load; the daily

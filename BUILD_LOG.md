@@ -6192,3 +6192,39 @@ untracked `PROPOSAL_calvin-brief.md` reads CLOSED, bundle crossed 3 Oct 2026. Th
 copy, expected next"; once this merges that is no longer true, and the next close-out refreshes it. The
 engine is not wired to anything: nothing in `api/` or `src/` imports `carried/` yet, so no screen changed.
 The old bundle's figures remain in `main`'s history before this merge; #244 is the paid site's item.
+
+
+## 4 October 2026, close-out — the carry merged and tagged, the sitting's pull requests, the build update refreshed
+
+**What landed on `main` since the third sitting's close-out (#143), all merged on her word.**
+
+- **#144 and #145**, the done line for Calvin: first "the Mali Demo Project's inputs, typed by hand into both
+  sites", then the Mali Demo Project (HWT) and the maintainer's local CWS reference filing, each typed by hand
+  into both sites, giving the same number on both. No project id is written. Old wording in
+  `docs/archive/CORRECTIONS.md`.
+- **#146**, one line saying the v0.16.1 bundle was expected next, **closed unmerged**: #147 rewrote the same
+  bullet and made it true.
+- **#147**, the carry (see the entry above): the paid site's v0.16.1 bundle, seal `calculator-seal-2026-10-03`,
+  34 files, replacing the first. `main` is at `bacdd36`, the merge of #147. The 34 hashes were checked again
+  from a fresh export of `main`: 34 of 34.
+- **Tag `engine-carry-2026-10-04`** on `bacdd36`, lightweight like the first carry tag, pushed to `origin`.
+  The first, `engine-carry-2026-09-27`, stays at `b099ca1`.
+
+**The close-out.**
+- **Wellington's build-update fact refreshed** (step 8): dated 4 Oct 2026. It no longer says Calvin's chat waits
+  for a re-sealed copy; it says the paid site's calculator engine is in this site's code and that building his
+  chat on it is the next step. Prompt modules regenerated; his prompt measures **26,034** characters against the
+  unchanged gate of **26,199** (26,056 after the 3 Oct refresh). His 148 checks, Phoebe's 76 and the roster's
+  267 pass.
+- **Docs refreshed** (step 1): BUILD_PLAN says the bundle is tagged and that nothing in the site reads it yet;
+  CLAUDE.md says the same and its prompt-size line now ends at 26,034.
+- **The sweep (step 9):** no item closed this sitting, so none moved out of BUILD_PLAN.md. Item O16 stays open
+  for one thread: the earlier filing's figures remain in `main`'s history before #147, which the paid site's
+  #244 tracks. Rewriting that history is hers to decide and nothing here does it.
+- **Line count (step 10):** BUILD_PLAN.md is **297 lines**, under its 400 limit.
+- **Check for code reading an unpushed migration (steps 4 and Part 1):** none; the repository has no migrations.
+
+**Owed, not done.** The engine is carried, not used: no file in `api/` or `src/` imports `carried/`, and the
+repository still has no `vitest`, so the bundle's 84 tests ran only in a clean folder outside it (the
+proposal's R3, ruled yes on 1 Oct, is part of Calvin's brief). Building his chat waits on her word to start.
+The five untracked drafts at the root are untouched.
