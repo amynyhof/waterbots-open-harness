@@ -755,3 +755,25 @@ plan. The reference filing is held on the maintainer's machine and is never copi
 
 **Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), "The v1 order" and item A21.
 The wording before the first replacement is in the entry above this one.
+
+
+---
+
+## 3 Oct 2026, third correction — CLAUDE.md: the engine bundle, its how-to file and its wait
+
+**Why it changed.** The v0.16.1 bundle crossed on 3 Oct 2026 and replaced the first one. `HOW-TO-CALL.md`
+belonged to the first bundle and is gone, and Calvin's brief no longer waits on a re-sealed copy.
+
+**Old wording, whole — the engine bundle bullet:**
+
+> - **The engine bundle is tracked at `carried/`, from 27 Sep 2026**, placed by the maintainer's
+>   hand at `calculator-seal-2026-09-26` and merged on `main` as it stands (#132), tagged
+>   `engine-carry-2026-09-27`; its 32 hashes verified from a fresh clone. `carried/** -text` keeps
+>   its bytes; `carried/HOW-TO-CALL.md` names its entry point for an outside caller. Nothing edits
+>   it here. Calvin's brief, proposed the same day, reads it.
+
+**Old wording, whole — the free-site fixes bullet, its last sentence:**
+
+> **Calvin's brief waits on the re-sealed bundle**, by the maintainer's hand.
+
+**Where the current text is:** [CLAUDE.md](../../CLAUDE.md), the two bullets above.

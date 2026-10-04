@@ -87,7 +87,7 @@ number for each fit; its basin; and save it.
 | 1 | The Knowledge and Tool tab | Done 24 Sep 2026, #111 to #116 | in the log |
 | 2 | Wellington: type and stage | Done 24 Sep 2026, #119; reads back what Phoebe found #128; people served #130 | in the log |
 | 3 | Phoebe's carbon runtime | Done 26 Sep 2026, #121 to #126. Her 80% pass is not measured; that is the rig's to say | in the log |
-| 5 | Calvin's brief, with the carried engine | **Next.** Waits on the re-sealed bundle at v0.16.1, expected next by her hand, and ruling R1 | A21 |
+| 5 | Calvin's brief, with the carried engine | **Next.** Bundle crossed 3 Oct 2026 (v0.16.1); carry tag after the merge | A21 |
 | 4 | The Commons check | Not started | S23 |
 | 6 | Bridget's hello | Not started | A22, A14 |
 | 7 | The carry to the paid site, by her hand | Hers | O14 |
@@ -96,8 +96,9 @@ number for each fit; its basin; and save it.
 - **Step 5 moved ahead of the rest on her word of 24 Sep 2026**, once the engine was sealed and carried.
   Step 8 was added on 3 Oct 2026 and numbered last so no step renumbers; where it sits among 6, 7 and 8
   is hers to say.
-- **The engine bundle is at `carried/`**, tagged `engine-carry-2026-09-27` (#132): the paid site's
-  `calculator-seal-2026-09-26`, gs4gg-carbon v0.16.0, 32 of 32 hashes verified. Nothing edits it here.
+- **The engine bundle is at `carried/`**: gs4gg-carbon v0.16.1, the paid site's `calculator-seal-2026-10-03`,
+  34 files, 34 of 34 hashes verified, crossed 3 Oct 2026. Its carry tag, `engine-carry-2026-10-04`, comes after
+  the merge; the first bundle was tagged `engine-carry-2026-09-27` (#132). Nothing edits it here.
 - **Wellington's prompt is 26,056 characters against a gate of 26,199.** The gate moves only on her word.
 - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull
   request; a measured run after any prompt change; the build-update fact refreshed at every close-out.
@@ -116,11 +117,10 @@ How agents behave, what they may say, how they hand off. Governed by AGENT_RULES
 
 **A21 · Calvin's brief — his chat, the carried engine, carbon beside water.** Step 5 · BONES. Proposed
 27 Sep 2026 as `PROPOSAL_calvin-brief.md`, untracked at the root; nothing is built. R2 to R11 ruled yes on
-1 Oct 2026, her notes in its §13. **R1 is open**: it waits on the engine scrub and the re-seal at v0.16.1,
-Shell A's and hers to carry; the re-sealed bundle is expected next, by her hand. What R1 turns on is
-listed in O16. Done when the Mali Demo Project (HWT) and the maintainer's local CWS reference filing, each typed by hand
-into both sites, give the same number on both. Owes the teal baseline marker, a design value she carries
-from production.
+1 Oct 2026, her notes in its §13. **R1 is closed**: the v0.16.1 bundle crossed 3 Oct 2026, scrubbed of the
+filing's figures (O16). Done when the Mali Demo Project (HWT) and the maintainer's local CWS reference filing,
+each typed by hand into both sites, give the same number on both. Owes the teal baseline marker, a design
+value she carries from production.
 
 **A14 · Screen host role words — one home.** Step 6, before or with A22 · BONES. `BridgetScreen.tsx` says
 `role: 'Map'` where her crew card says "Partners"; `PhoebeScreen.tsx` carries its own too. The chat header
@@ -211,7 +211,7 @@ The deploy, the repository, settings and limits. Step 7 is the carry, by her han
 when its receiver reads them, and that receiver is not fixed, Shell A item #243); `project-types.md`; the
 ten-line contract; Q11; the paid-site tools line; the transition module; the one-row shape; the agent
 screen's file list. **To the brand book:** typing dots §5, the agent screen §7. **To this site:** the
-sign-up address, the confirmed roster columns, the engine re-sealed at v0.16.1 (expected next). **To Deb:**
+sign-up address, the confirmed roster columns. **To Deb:**
 three rig changes.
 
 **O1 · Revisit the daily cap against real usage.** After v1 · PARK. Thirty a day per visitor is live
@@ -235,12 +235,11 @@ callers, and "console" in Bridget's and Calvin's dock copy. One hygiene pass; no
 `KV_REST_API_TOKEN` and `KV_REST_API_READ_ONLY_TOKEN`. Not looked at; first read the platform's message
 for each. Check later, on her word.
 
-**O16 · Real-project figures in the carried bundle, public since #132.** Step 5, with R1 · BONES. The number
-sweep of 3 Oct 2026 found the India filing `anchor-cws-01` in `presets.ts` (shares, plus two energy fractions
-no list named), its credited total in `emissions-legacy.ts`, and, in `MANIFEST.md`, figures from two files left
-out. #244 is the paid site's item for real numbers left in this repository's public history. Her ruling of
-3 Oct 2026: the "Test Project" and "Malawi" figures were play numbers, not a real project, and the paid site
-is retiring them. Open: scrub at the re-seal. List: BUILD_LOG.
+**O16 · Real-project figures in the carried bundle, public since #132.** Step 5 · BONES. The sweep of 3 Oct 2026
+found the India filing's figures in `presets.ts`, `emissions-legacy.ts` and `MANIFEST.md`. #244 is the paid site's
+item for real numbers left in this repository's public history. Her ruling of 3 Oct 2026: the "Test Project" and
+"Malawi" figures were play numbers, retired by the paid site. The v0.16.1 bundle crossed 3 Oct 2026 without them.
+Open: the figures stay in `main`'s history before it. List: BUILD_LOG.
 
 ---
 

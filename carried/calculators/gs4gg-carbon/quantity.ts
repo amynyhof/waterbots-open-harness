@@ -34,10 +34,9 @@
  *       adjustment (Q_adj, §7.4.1). `computePaaEr` applies U_p in Q_adj;
  *       `computeLegacyEr` has no U_p field and expects it already folded in. So
  *       for Method 2 this helper folds U_p for `legacy` and OMITS it for `paa`.
- *       Getting this wrong double-counts usage (paa) or drops it (legacy).
- *       Golden-anchored: legacy HWT entries fold U_p into Q (e.g. hwt-ind-hi:
- *       59.4M = 66M×0.9); PAA `synthetic-inst-01` leaves Q_pop at 4.0M and the
- *       calc applies U_p 0.9 in Q_adj.
+ *       Getting this wrong double-counts usage (paa) or drops it (legacy). The
+ *       reference cases anchor this: legacy Method 2 entries carry U_p inside Q,
+ *       PAA entries leave Q_pop unadjusted and the calculator applies U_p in Q_adj.
  *
  * Pure function — no I/O, clock, or randomness (reproducible in tests / golden).
  */

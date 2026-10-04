@@ -379,10 +379,11 @@ credit line does not meet any of these bars.
   prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep and is 26,043 from 30 Sep 2026, against the
   unchanged gate of 26,199.
 - **The engine bundle is tracked at `carried/`, from 27 Sep 2026**, placed by the maintainer's
-  hand at `calculator-seal-2026-09-26` and merged on `main` as it stands (#132), tagged
-  `engine-carry-2026-09-27`; its 32 hashes verified from a fresh clone. `carried/** -text` keeps
-  its bytes; `carried/HOW-TO-CALL.md` names its entry point for an outside caller. Nothing edits
-  it here. Calvin's brief, proposed the same day, reads it.
+  hand and merged on `main` as it stands (#132), tagged `engine-carry-2026-09-27`. **It was replaced
+  on 3 Oct 2026 by v0.16.1**, the paid site's `calculator-seal-2026-10-03`: 34 files, 34 hashes
+  verified, the filing's figures gone; its carry tag, `engine-carry-2026-10-04`, comes after the
+  merge. `carried/** -text` keeps its bytes. `HOW-TO-CALL.md` went with the old bundle; the
+  manifest at `carried/MANIFEST.md` says what is in it. Nothing edits it here. Calvin's brief reads it.
 - **The free-site fixes of 30 Sep 2026 are live, #134 to #138**, and the demo ran on `main` at
   #138. The wordmark at the top left starts a fresh visit at the landing (a full load; the daily
   caps, which live on the server, are not reset by it). Every chat box grows to three lines, then
@@ -395,8 +396,8 @@ credit line does not meet any of these bars.
   desk opens on her own greeting, without a copy of his routing message (display only), and the
   Done-later section of her Tool tab is collapsed by default. **When her reply ends in a question,
   that last sentence is bold, chips included**: display only, no prompt or relay change; the
-  Commons shows the same Phoebe, so it is bold there too. **Calvin's brief waits on the
-  re-sealed bundle**, by the maintainer's hand.
+  Commons shows the same Phoebe, so it is bold there too. **Calvin's brief has its bundle**,
+  carried 3 Oct 2026.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material

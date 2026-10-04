@@ -14,12 +14,17 @@ import baselineMixJson from "../data/baseline-mix/countries.json";
  * EF_b → more credits), so the V2 values are the conservative direction. A stratum that
  * carries a *filed* η (project-documented) overrides the default and is version-independent.
  *
+ * ENGINE INPUTS ARE THE PROJECT'S OWN NUMBERS OR CITED DEFAULTS, NEVER ANOTHER PROJECT'S AND NEVER
+ * INVENTED (maintainer's ruling, 2026-10-01). A preset holds methodology defaults only (SDWS 9/10/11);
+ * a project's own baseline enters as typed shares or as a cited country default. A filing's strata
+ * and fuel mix belong to that filing's reference case, which stays on the platform side.
+ *
  * Preset B (generic regional wood/charcoal mix) is intentionally ABSENT — an uncited
  * estimate can't ship under the conservative-cited rule. Its purpose is now served per country,
  * cited, by `countryBaselineDefault` below (WHO household energy series + DHS; [#227], v0.16.0).
  */
 
-export type PresetId = "traditional-wood-cws" | "south-asia-multifuel-cws" | "institutional-wood-iwt";
+export type PresetId = "traditional-wood-cws" | "institutional-wood-iwt";
 export type StoveClass = "threeStone" | "otherConventional" | "ics";
 
 /** Methodology-default stove thermal efficiency (fraction), version-aware. */
@@ -70,29 +75,7 @@ export const PRESETS: Record<PresetId, PresetSpec> = {
     method: 1,
     strata: [{ share: 1, label: "traditional wood (three-stone)", stoveClass: "threeStone" }],
     fuelMix: [{ fuel: "wood", energyFraction: 1, ef_co2: 112, ef_nonco2: 9.46 }],
-    cite: "Stove η: SDWS 11 (version-aware). EF: SDWS 9.1/10.1. Mirrors the E-African CWS/HWT anchors (anchor-hwt-ug/ke).",
-  },
-  "south-asia-multifuel-cws": {
-    id: "south-asia-multifuel-cws",
-    label: "South Asia multi-fuel — CWS (from a real India GS filing)",
-    method: 1,
-    // Filed strata from anchor-cws-01 (a real India CWS filing; multi-fuel stacking). Filed η
-    // are project-documented → override the methodology defaults and do not vary by version.
-    strata: [
-      { share: 0.8346, label: "traditional wood", eta: 0.1 },
-      { share: 0.0472, label: "improved wood", eta: 0.3 },
-      { share: 0.2086, label: "charcoal", eta: 0.25 },
-      { share: 0.0118, label: "LPG", eta: 0.5 },
-    ],
-    fuelMix: [
-      { fuel: "wood", energyFraction: 0.8819, ef_co2: 112, ef_nonco2: 9.46 },
-      // V1 figures as filed; on a PAA run buildPreset swaps in V2's WCCF 4:1 factors (India is
-      // neither Sub-Saharan Africa nor an LDC — V2 SDWS 9 p.51 names 6:1 for SSA/LDCs, 4:1 elsewhere).
-      { fuel: "charcoal", energyFraction: 0.2165, ef_co2: 165.22, ef_nonco2: 44.83, v2Charcoal: "4:1" },
-      { fuel: "lpg", energyFraction: 0.0118, ef_co2: 63.1, ef_nonco2: 0.0013, fossil: true },
-    ],
-    cite: "Strata / fuel-mix / η from anchor-cws-01 (a real GS India CWS filing).",
-    note: "Filed efficiencies override methodology defaults, so this preset's η do not change with version. Edit to a specific project's filed values.",
+    cite: "Stove η: SDWS 11 (version-aware). EF: SDWS 9.1/10.1.",
   },
   "institutional-wood-iwt": {
     id: "institutional-wood-iwt",
@@ -100,7 +83,7 @@ export const PRESETS: Record<PresetId, PresetSpec> = {
     method: 2,
     strata: [{ share: 1, label: "traditional wood (three-stone)", stoveClass: "threeStone" }],
     fuelMix: [{ fuel: "wood", energyFraction: 1, ef_co2: 112, ef_nonco2: 9.46 }],
-    cite: "Stove η: SDWS 11 (version-aware). EF: SDWS 9.1/10.1. Mirrors the institutional synthetic scenario (synthetic-inst-01).",
+    cite: "Stove η: SDWS 11 (version-aware). EF: SDWS 9.1/10.1.",
   },
 };
 

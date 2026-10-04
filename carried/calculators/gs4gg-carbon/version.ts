@@ -42,10 +42,11 @@
  *          household size. Region map: calculators/data/regions/un-m49.json (registry unsd-m49)
  *   0.11.0 2026-09-24 — [#225](a)-(g), then REBUILT the same day after Amy rejected the first cut at
  *          the eyeball. THE DERIVATION WAS NEVER WRONG AND IS NOW VISIBLE. Traced end to end on the
- *          Test Project's real record: households 1,199 × household size 3.73 = 4,472 people, N_p
- *          1,199, HN_p 3.73 — HN_p and the size used are exactly equal, and Q_pop reconciles by both
- *          routes. The ER is unchanged at 687.6 tCO₂e/yr; the same inputs read as PEOPLE would credit
- *          184.3, which is the proof the seat was not doing that.
+ *          seeded demo project's own record: households × household size = people, N_p the household
+ *          count, HN_p the size — HN_p and the size used are exactly equal, and Q_pop reconciles by
+ *          both routes. The ER was unchanged, and the same inputs read as PEOPLE would have credited
+ *          less, which is the proof the seat was not doing that. (The demo project's figures are
+ *          archived in docs/archive/SUPERSEDED_TEXT.md, not carried.)
  *          WHAT CHANGED IS WHAT THE SURFACES SHOW. `derivePeopleServed` and `derivedPremisesCount`
  *          are exported from `scenario.ts` as the ONE place the households→people and
  *          household-count-is-N_p rules live; `computeScenario`, the seat's `effectivePremises` and
@@ -161,24 +162,35 @@
  *          still shows, with its year and a note. `countryDefaults: false` pins the preset.
  *          THE REFERENCE NUMBERS DID NOT MOVE — every entry passes its strata and fuel list, or its
  *          typed shares, straight to the calculators. THE TEST PROJECT'S NUMBER DID MOVE: see the PR.
+ *   0.16.1 2026-10-03 — THE ENGINE SCRUB (maintainer's ruling, 2026-10-01). NO ARITHMETIC CHANGED and
+ *          every reference case gives the same result, byte for byte. The engine now holds no project's
+ *          numbers. The one preset that carried an issued filing's strata, fuel mix and filed
+ *          efficiencies is REMOVED: engine inputs are the project's own numbers or cited
+ *          defaults, never another project's and never invented, so a filing's baseline lives with that
+ *          filing's reference case and a project's own baseline enters as typed shares or a cited
+ *          country default. Project figures are gone from four comments (the ER-tool note in
+ *          emissions-legacy.ts, the U_p note in quantity.ts, the household-derivation notes here and in
+ *          scenario.ts), and the two remaining presets' citations no longer name reference cases.
+ *          The old wording is kept in docs/archive/SUPERSEDED_TEXT.md.
  *
- * ⚠ THE CARRY TAKES THE NEWEST SEAL (Amy, answer (1), 2026-09-26). The earlier seal,
- *   `calculator-seal-2026-09-25` on v0.14.0, is kept as a tag and superseded as the one a carry reads.
+ * ⚠ THE CARRY TAKES THE NEWEST SEAL (Amy, answer (1), 2026-09-26). Every earlier seal tag is kept
+ *   and superseded as the one a carry reads. The newest `calculator-seal-*` tag is the seal.
  *
- * ══ THE SEAL — v0.16.0 IS THE VERSION THAT CARRIES TO THE OPEN SITE (Amy, 2026-09-26) ══
- * Tagged on `main` as **`calculator-seal-2026-09-26`**, on `1a0ff87` (the merge of PR #137). The tag
- * marks the engine as it stood when she sealed it; this note names what that means and, more
- * importantly, what does not go with it. One caution is new at this seal:
+ * ══ THE SEAL — THE ENGINE THAT CARRIES TO THE OPEN SITE (Amy, 2026-09-26; v0.16.1 from 2026-10-03) ══
+ * The tag marks the engine as it stood when she sealed it; its message names the commit and the
+ * reference-suite line, which a file cannot name about itself. This note names what the seal means
+ * and, more importantly, what does not go with it. One caution stands:
  * calculators/data/baseline-mix/countries.json is published WHO and DHS statistics — no project's
- * data — but both registry rows record redistribution as UNCONFIRMED; carrying the file publishes it.
+ * data — but the WHO registry row still records redistribution as UNCONFIRMED; carrying the file
+ * publishes it, so the carry holds a labelled stub there until that clears.
  *
  * ⚠ WHAT CARRIES: **the engine and synthetic fixtures. Nothing else.** The deterministic
  * calculator, its parameter data files with their citations, and test fixtures built from invented
  * numbers.
  *
  * ⚠ WHAT NEVER CARRIES, and this list is the point of the seal rather than a footnote to it:
- *   • **the reference cases** — the 120 deltas are anchored to Gold Standard's own tool output and
- *     to three ISSUED FILINGS. They are other people's project data and other people's numbers.
+ *   • **the reference cases** — the reference deltas are anchored to Gold Standard's own tool output
+ *     and to ISSUED FILINGS. They are other people's project data and other people's numbers.
  *   • **the test projects built on real filings** — a fixture that reproduces a real project's
  *     inputs is that project's data wearing a fixture's name. Being in a test file changes nothing
  *     about whose figures they are.
@@ -193,5 +205,9 @@
  * suite**, so it cannot prove the engine against the filings. That is not a gap to be closed by
  * carrying the anchors over. It is the reason the reference suite stays HERE and why a change to
  * the engine is proved on this side before it carries.
+ *
+ * ⚠ THE BUNDLE NUMBER GATE RUNS BEFORE ANY CARRY LEAVES (CLAUDE.md): every number in the reference
+ * cases, the demo project's figures and the question sets is searched for in the bundle, and a hit
+ * outside the rulebook values stops it.
  */
-export const GS4GG_CALCULATOR_VERSION = "0.16.0";
+export const GS4GG_CALCULATOR_VERSION = "0.16.1";

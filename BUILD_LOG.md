@@ -6138,3 +6138,57 @@ The country tables were read as whole tables: each has one source named at its h
   left a residue. The one loose thread, the sweep's findings, was given a home: O16, in Operations.
   BUILD_PLAN.md is **297 lines** against its 400 limit.
 - `SWEEP_2026-10-03.md` was deleted after this entry was written; the list above is its record.
+
+
+## 4 October 2026 — the v0.16.1 bundle crosses: the carry ritual run on `carried/`
+
+**What happened.** The maintainer carried the paid site's v0.16.1 bundle by hand into `carried/`, replacing
+the old files. Seal tag **`calculator-seal-2026-10-03`** (tag object `474fb52`, on `e9fd8b4`, the merge of
+the paid site's PR #148, as its manifest says). The paid site's build date is 3 Oct 2026; she dated the
+crossing 3 Oct 2026. The ritual ran in this order, and the carry commit is its own pull request.
+
+**1. Hashes.** All **34 of 34** files in `carry-hashes.sha256` match, checked on the working tree. The
+manifest holds no per-file hash table; it names that file as the list. Four files on disk are not in it:
+the manifest itself, the hash list and `_build-report.json` (the manifest names both records), and
+`HOW-TO-CALL.md`, a leftover from the old bundle. **Removed: `HOW-TO-CALL.md`, only.** Nothing else was
+removed. Two files new to the folder are in the hash list: `calculators/data/countries.ts`, and
+`calculators/data/baseline-mix/countries.json`, a stub the builder wrote with **no country data**, because
+the WHO half's redistribution is unconfirmed; every project falls back to the labelled screening preset.
+
+**2. The bundle standing alone.** A clean folder outside the repository, with only `vitest` 2.1.9,
+`typescript` 5.9.3 and `@types/node` 26.6.4: **13 test files, 84 tests passed** (the manifest's own
+count). Typecheck of every file, tests included: pass. Typecheck of the engine files alone: pass. The repo
+itself still has no `vitest`.
+
+**3. The number sweep on `carried/`.** The word list of the sweep of 3 Oct 2026, then every number of three
+or more significant digits (201 lines of code, tests, comments and the manifest; the data files by key).
+- **Words:** `anchor-`, `GS12441`, `real India`, `1,199`, `1199`, `e2dcbfe8` and `Lesotho`-as-a-project: no
+  hit. `Mali` and `Lesotho`: country rows in four public tables only. `PDD`: two general uses.
+  "filing" and "filed": the general sense (a field the engine asks for) and the seal's own rule text. "golden":
+  nine lines in data notes and comments, the retired word for the reference set, no project data. "Test
+  Project": three lines in `version.ts` (33, 164, 194), words with no figure. `real filing`: the seal's rule.
+- **Values:** none of the old figures is present (`0.8346`, `0.0472`, `0.2086`, `0.8819`, `0.2165`,
+  `0.141236`, `2554.81`, `0.000363867`, `59,160`, `173,500,000`, `57,119`, `23,823,982`, `0.9189`, `4,472`,
+  `687.6`, `184.3`, `321.4`, `66M`, `59.4`). The preset built from the filing is removed from the engine
+  (`PresetId` is two presets now); `version.ts` 0.16.1 records the scrub.
+- **Every other three-digit number** is a rulebook value the bundle cites, a UN or UNFCCC table figure, a
+  year, a document or region code, or a sum worked by hand in a test.
+- **Hits not explained by a cited rulebook value, reported and none a project's:** LPG `63.1` tCO₂/TJ
+  (`presets.ts`, `version.ts`), which the file itself marks "source pending: IPCC 2006 Vol. 2 Ch. 2", and its
+  non-CO₂ `0.0013`, uncited; the test title `3.2029` in `table9.test.ts:12`, which the sum under it
+  (`3.19295`) does not match; made-up test inputs `33.3 / 33.4`, `0.333 / 0.334`, `999`; the rounding
+  allowance `0.999 / 1.001`; the fNRB and household-size quartiles, which the data files call the paid site's
+  own statistic (retired, or the cited fallback). The manifest says its own gate,
+  `scripts/carry-number-gate.mjs`, passed; that script is not in this repository and was not rerun here.
+
+**4. The result.** The sweep passed: no sign of a real or play project, and none of the figures listed on 3
+Oct. The changes were moved onto the branch `carry/v0.16.1`, cut from `main`; the branch of pull request #146
+was left as it was. BUILD_PLAN says the bundle crossed (step 5, item A21 with R1 closed, O16, O14);
+CLAUDE.md no longer names `HOW-TO-CALL.md` (old wording in `docs/archive/CORRECTIONS.md`); R1 of the
+untracked `PROPOSAL_calvin-brief.md` reads CLOSED, bundle crossed 3 Oct 2026. The carry tag,
+**`engine-carry-2026-10-04`**, comes after the merge.
+
+**Not done here, owed.** Wellington's build-update fact still says Calvin's chat "waits for a re-sealed
+copy, expected next"; once this merges that is no longer true, and the next close-out refreshes it. The
+engine is not wired to anything: nothing in `api/` or `src/` imports `carried/` yet, so no screen changed.
+The old bundle's figures remain in `main`'s history before this merge; #244 is the paid site's item.

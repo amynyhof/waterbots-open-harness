@@ -2,7 +2,8 @@ import { describe, it, expect } from "vitest";
 
 import {
   buildPreset, PRESETS, DEFAULT_STOVE_ETA, STOVE_CLASS_LABEL,
-  resolveBaselineEdit, defaultCharcoalConvention, presetShares,
+  resolveBaselineEdit, resolveFuelForVersion, defaultCharcoalConvention, presetShares,
+  type PresetId, type PresetSpec,
 } from "./presets";
 import { assertV2Charcoal } from "./baseline-ef";
 import { computeLegacyEr } from "./emissions-legacy";
@@ -15,17 +16,36 @@ describe("presets — version-aware η, cited (A/C/D; no B)", () => {
     expect(DEFAULT_STOVE_ETA.paa.threeStone).toBe(0.15);
   });
 
-  it("filed η (preset C, real filing) override the defaults and don't change with version", () => {
-    const legacy = buildPreset("south-asia-multifuel-cws", "legacy");
-    const paa = buildPreset("south-asia-multifuel-cws", "paa");
-    expect(legacy.stoveStrata.map((s) => s.eta)).toEqual([0.1, 0.3, 0.25, 0.5]);
-    expect(paa.stoveStrata.map((s) => s.eta)).toEqual([0.1, 0.3, 0.25, 0.5]); // version-independent
+  it("a stratum carrying a filed η overrides the defaults and does not change with version", () => {
+    // An INVENTED preset, injected for this test only: the shipped presets hold methodology defaults,
+    // never a project's filed values, so the filed-η branch is exercised on made-up numbers.
+    const id = "test-filed-eta" as PresetId;
+    const spec: PresetSpec = {
+      id,
+      label: "invented, for the test",
+      method: 1,
+      strata: [
+        { share: 0.6, label: "stratum one", eta: 0.2 },
+        { share: 0.4, label: "stratum two", eta: 0.35 },
+      ],
+      fuelMix: [{ fuel: "wood", energyFraction: 1, ef_co2: 112, ef_nonco2: 9.46 }],
+      cite: "invented",
+    };
+    (PRESETS as Record<string, PresetSpec>)[id] = spec;
+    try {
+      const legacy = buildPreset(id, "legacy");
+      const paa = buildPreset(id, "paa");
+      expect(legacy.stoveStrata.map((s) => s.eta)).toEqual([0.2, 0.35]);
+      expect(paa.stoveStrata.map((s) => s.eta)).toEqual([0.2, 0.35]); // version-independent
+      expect(presetShares(id)).toBeNull(); // filed η, no SDWS 6 class to map to
+    } finally {
+      delete (PRESETS as Record<string, PresetSpec>)[id];
+    }
   });
 
-  it("only A/C/D exist — preset B stays dropped (OPEN #26)", () => {
+  it("only the two methodology-default presets exist — no preset carries a project's figures, and B stays dropped (OPEN #26)", () => {
     expect(Object.keys(PRESETS).sort()).toEqual([
       "institutional-wood-iwt",
-      "south-asia-multifuel-cws",
       "traditional-wood-cws",
     ]);
   });
@@ -111,19 +131,22 @@ describe("resolveBaselineEdit — typed shares, the 100% guard, [#213] charcoal"
       stove: { threeStone: 1, otherConventional: 0, ics: 0, fossil: 0 },
       fuel: { wood: 1, charcoal: 0, lpg: 0, kerosene: 0, coal: 0, electricity: 0 },
     });
-    expect(presetShares("south-asia-multifuel-cws")).toBeNull(); // filed η, no SDWS 6 class
   });
 });
 
-// [#213]: a preset's charcoal entry is resolved per version — V1's figures on legacy, the named V2
-// convention's on PAA — so the South Asia preset never feeds V1 charcoal to a v2.0 run.
-describe("buildPreset — charcoal resolved per version ([#213])", () => {
-  it("legacy keeps V1's 165.22 / 44.83; PAA swaps in WCCF 4:1 (India) 236.91 / 61.74 and says so", () => {
-    const legacy = buildPreset("south-asia-multifuel-cws", "legacy").fuelMix.find((f) => f.fuel === "charcoal")!;
+// [#213]: a charcoal entry's factors are resolved per version — V1's figures on legacy, the named V2
+// convention's on PAA — so a v2.0 run is never fed V1's charcoal.
+describe("resolveFuelForVersion — charcoal resolved per version ([#213])", () => {
+  it("legacy keeps V1's 165.22 / 44.83; PAA swaps in WCCF 4:1 236.91 / 61.74 and says so", () => {
+    // An invented fuel entry carrying only rulebook factors (SDWS 9/10); the share is made up.
+    const entry = { fuel: "charcoal", energyFraction: 0.3, ef_co2: 165.22, ef_nonco2: 44.83, v2Charcoal: "4:1" as const };
+    const legacyNotes: string[] = [];
+    const legacy = resolveFuelForVersion(entry, "legacy", legacyNotes);
     expect([legacy.ef_co2, legacy.ef_nonco2]).toEqual([165.22, 44.83]);
-    const paa = buildPreset("south-asia-multifuel-cws", "paa");
-    const ch = paa.fuelMix.find((f) => f.fuel === "charcoal")!;
-    expect([ch.ef_co2, ch.ef_nonco2, ch.v2Charcoal]).toEqual([236.91, 61.74, "4:1"]);
-    expect(paa.notes.some((n) => /Charcoal factors resolved to V2/.test(n))).toBe(true);
+    expect(legacyNotes).toEqual([]);
+    const paaNotes: string[] = [];
+    const paa = resolveFuelForVersion(entry, "paa", paaNotes);
+    expect([paa.ef_co2, paa.ef_nonco2, paa.v2Charcoal]).toEqual([236.91, 61.74, "4:1"]);
+    expect(paaNotes.some((n) => /Charcoal factors resolved to V2/.test(n))).toBe(true);
   });
 });

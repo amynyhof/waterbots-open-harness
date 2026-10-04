@@ -1,17 +1,7 @@
-# carried/sources/registry.yaml — a FILTERED SUBSET of sources/registry.yaml
-#
-# Carried alongside the calculator engine and its parameter data ([#227]'s data file is the one
-# named exclusion — see MANIFEST.md; nothing it cites is in this subset). Holds ONLY the twelve
-# rows the carried parameter data files under calculators/data/ actually cite — checked by reading
-# every registrySources field in every carried .json file, not assumed from a list.
-#
-# Each row is copied VERBATIM from the full registry: title, version, publisher, canonical link,
-# rights posture, and the source file's own SHA-256 (a hash of the primary-source PDF/XLSX, not of
-# anything in this bundle). NO SOURCE PDF CROSSES with this file — the `file:` field below names
-# where each source is held in the full repository, as documentation only; no binary is copied.
-#
-# Full registry, all other rows, and the rights-determination history: sources/registry.yaml and
-# sources/REGISTRY_VERIFICATION.md in the repository this bundle was carried from.
+# sources/registry.yaml (in this bundle) - a FILTERED SUBSET of the full registry.
+# Built from calculator-seal-2026-10-03 (e9fd8b4f6141e4794352b5ab51870bface712084). Holds only the 12 rows the carried parameter data files cite under
+# `registrySources`, each row copied whole from the full registry. NO SOURCE DOCUMENT CROSSES with this file:
+# a row's `file:` field names where the source is held in the full repository, as text only.
 
 sources:
   # cited by: calculators/data/fnrb/countries.json

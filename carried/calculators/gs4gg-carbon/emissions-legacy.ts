@@ -10,9 +10,8 @@ import { computeEfb } from "./baseline-ef";
  *   Q_y = MIN(Q_pop, Q_m)                                          [§2.2, Eq.4]
  *
  * Pure function — no I/O, clock, or randomness (reproducible in tests and against
- * the golden dataset). Confirmed against the official ER Excel tool: reproduces the
- * anchor-cws-01 filing (eta_weighted 0.141236, SE 2554.81, EF_b 0.000363867,
- * BE = ER = 59,160).
+ * the reference dataset). Confirmed against Gold Standard's official ER Excel tool on the
+ * reference cases (held with the platform, not carried).
  */
 export function computeLegacyEr(input: LegacyErInput): LegacyErOutput {
   const { SE_o, fNRB, stoveStrata, fuelMix, Q_pop } = input;
