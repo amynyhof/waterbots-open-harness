@@ -7,7 +7,7 @@
     "un-hh-size-2022"
   ],
   "source_year": 2022,
-  "coverage": "All 186 countries resolvable to ISO 3166-1 alpha-3 in the UN 2022 source. Countries absent from the source fall back to the 25th-percentile stop in `fallback` (2.77 people per household, the conservative default; output labeled 'fallback fired', with an adjustable Low/Median/High picker — not a fixed global default).",
+  "coverage": "All 186 countries resolvable to ISO 3166-1 alpha-3 in the UN 2022 source. Countries absent from the source fall back to the 25th-percentile stop in `fallback` (2.77 people per household, the conservative default; output labeled 'fallback fired', with an adjustable Low/Median/High picker - not a fixed global default).",
   "method": "From UN DESA 'Household Size and Composition 2022', sheet 'HH size and composition 2022', column 'Average household size (number of members)'. For each country the most-recent reference date across all listed survey sources (DHS/MICS/census/DYB) is selected. UN M49 code mapped to ISO3 via pycountry.",
   "countries": {
     "ABW": {

@@ -304,15 +304,16 @@ function resolveHouseholdSize(iso: string, stopSel?: FallbackStopKey, override?:
  *
  * ⚠ WHY BOTH DIRECTIONS, AND WHY IT IS EXPORTED. The first build derived only one way and the
  * screens showed only one number, so a household count sat beside an N_p of the same value and
- * read as "1,199 people, one per house". The second rejection went further: entering PEOPLE on a
+ * read as "that many people, one per house". The second rejection went further: entering PEOPLE on a
  * household project left the households unknown, so Eq.6 could not run at all. Amy withdrew the
  * earlier "nothing fires on People" instruction for exactly that reason — for HWT/IWT the
  * households are always knowable, and a number in force must be on screen. A second copy of this
  * rule in the UI would drift from the engine's, silently; one function, three readers.
  *
- * ⚠ THE DERIVED HOUSEHOLD COUNT IS NOT ROUNDED. 1,199 people ÷ 3.73 is 321.4 households, and
- * rounding it to 321 would quietly break the identity the screens now print — people ÷ households
- * would stop equalling the household size shown. The figure is displayed as it is used.
+ * ⚠ THE DERIVED HOUSEHOLD COUNT IS NOT ROUNDED. A people count divided by a household size is
+ * rarely a whole number, and rounding it would quietly break the identity the screens now print —
+ * people ÷ households would stop equalling the household size shown. The figure is displayed as
+ * it is used.
  *
  * Returns null when there is no count to work from, or (for `households`) on Method 1 (CWT/CWS),
  * which serves water points rather than treated households and decomposes into neither.
