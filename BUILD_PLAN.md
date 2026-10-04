@@ -87,7 +87,7 @@ number for each fit; its basin; and save it.
 | 1 | The Knowledge and Tool tab | Done 24 Sep 2026, #111 to #116 | in the log |
 | 2 | Wellington: type and stage | Done 24 Sep 2026, #119; reads back what Phoebe found #128; people served #130 | in the log |
 | 3 | Phoebe's carbon runtime | Done 26 Sep 2026, #121 to #126. Her 80% pass is not measured; that is the rig's to say | in the log |
-| 5 | Calvin's brief, with the carried engine | **Next.** Bundle crossed 3 Oct 2026 (v0.16.1); carry tag after the merge | A21 |
+| 5 | Calvin's brief, with the carried engine | **Next.** Bundle crossed 3 Oct 2026 (v0.16.1, #147), tagged `engine-carry-2026-10-04` | A21 |
 | 4 | The Commons check | Not started | S23 |
 | 6 | Bridget's hello | Not started | A22, A14 |
 | 7 | The carry to the paid site, by her hand | Hers | O14 |
@@ -97,9 +97,9 @@ number for each fit; its basin; and save it.
   Step 8 was added on 3 Oct 2026 and numbered last so no step renumbers; where it sits among 6, 7 and 8
   is hers to say.
 - **The engine bundle is at `carried/`**: gs4gg-carbon v0.16.1, the paid site's `calculator-seal-2026-10-03`,
-  34 files, 34 of 34 hashes verified, crossed 3 Oct 2026. Its carry tag, `engine-carry-2026-10-04`, comes after
-  the merge; the first bundle was tagged `engine-carry-2026-09-27` (#132). Nothing edits it here.
-- **Wellington's prompt is 26,056 characters against a gate of 26,199.** The gate moves only on her word.
+  34 files, 34 of 34 hashes verified, crossed 3 Oct 2026 (#147). Tagged `engine-carry-2026-10-04`; the first bundle
+  was tagged `engine-carry-2026-09-27` (#132). Nothing edits it here, and nothing in the site reads it yet.
+- **Wellington's prompt is 26,034 characters against a gate of 26,199.** The gate moves only on her word.
 - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull
   request; a measured run after any prompt change; the build-update fact refreshed at every close-out.
 
