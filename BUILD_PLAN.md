@@ -5,7 +5,7 @@ What is being built, in what order, and every open item. **This file commits to 
 retired. Read it with [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md), which says how work
 moves from a proposal to a commit.
 
-**Four parts, in this order:** the v1 fence; the v1 order; the sprints, one per family that has work on a v1
+**Four parts, in this order:** the v1 fence; the per-seat v1 order; the sprints, one per family that has work on a v1
 step; and the families whose work is all after v1, ending in the After v1 list.
 
 **Size limit: 400 lines.** The maintainer's ruling of 3 Oct 2026. An item is six lines at most; a longer
@@ -29,7 +29,7 @@ an action here (rule zero).
 
 ---
 
-## The v1 fence (the maintainer, 9 Oct 2026)
+## The v1 fence — the one finish line (the maintainer's word, 7 Oct 2026)
 
 **v1 is done when** a visitor screens in 30 questions or fewer (Wellington → Phoebe → Bridget →
 Calvin → report / sign up), the project saves to the paid site, and the paid site's carbon and VWBA
@@ -40,10 +40,10 @@ calculators, run on that saved project's inputs, give the same numbers as the sc
   screening also shows its transitional volume, still maps it, quantifies it, checks VWBA, and offers
   the report and the move to the paid site.
 - **VWBA covers water supply project types only.**
-- **Defaults rule.** Every default comes from a cited source. Where no source gives one, there is none
-  and the visitor enters the value.
+- **Defaults rule.** It is the one in [CLAUDE.md](./CLAUDE.md) (Scope, the quantification surface): a
+  default with no source asks the visitor instead. Not restated here.
 - **Build rule.** Each module (screening, transition, VWBA, report) has its own inputs, outputs and
-  card, so it can later stand alone in the Agent Commons. Commons use itself is v2.
+  card. Each module standing alone in the Agent Commons is v2.
 
 **New items go to v1 only if they block the finish line.** Anything else goes to After v1.
 
@@ -75,11 +75,10 @@ lives at `brand/BRAND.md`, gitignored. Two rules stand:
 
 ---
 
-## The v1 order — the done line (the maintainer, 23 Sep 2026)
+## The v1 order — per-seat conditions under the fence (ruled 23 Sep 2026)
 
-The free site is v1 when a stranger with a real project can, in thirty messages, learn: the
-project type and stage; which pathway it likely fits (water, carbon, both, neither); a screening
-number for each fit; its basin; and save it.
+The finish line is the fence above and nothing else. These are the conditions each seat meets on
+the way to it.
 
 - **Wellington** asks type, stage, place, name; sends to Phoebe, then Calvin; reads back what
   Phoebe found. Done when one real walk goes end to end with no wrong turn.
@@ -92,7 +91,7 @@ number for each fit; its basin; and save it.
 - **Commons**: Phoebe and Calvin work there too, no memory; Bridget introduces herself. Two Calvin
   cards on one engine: screening, transition.
 - **The screening report exports free.**
-- **Card sets are sealed at their versions on this date.** No new cards until a real project fails
+- **Card sets are sealed at their versions on 23 Sep 2026.** No new cards until a real project fails
   on one.
 - **Every card set shows as cards in its agent's Knowledge tab.** An unreviewed card says Draft.
   The Evals section says "no exams run yet" until the harness runs.
@@ -326,6 +325,8 @@ to pick up.
 **V2-1 · Watershed map — click a watershed, see its water facts.** After v1. A visitor clicks a basin
 and reads its water facts. Every fact traceable to its source; no invented values. No proposal yet.
 
-**V2-2 · WHO cooking-fuel data by fuel type — if WHO confirms CC BY 4.0 (ask householdenergy@who.int),
-replace the screening's conservative fuel-mix floor with WHO's full by-fuel-type mix for every
-country.** After v1. Waits on WHO's answer. No proposal yet.
+**V2-2 · WHO cooking-fuel data by fuel type — ask WHO (householdenergy@who.int) what terms apply; use it
+only if those terms allow. If so, replace the screening's conservative fuel-mix floor with WHO's
+by-fuel-type mix.** After v1. WHO's page:
+[Cooking fuel and technology database (by fuel category)](https://www.who.int/data/gho/data/themes/air-pollution/cooking-fuel-and-technology-database-by-fuel-category).
+No licence is assumed. Waits on WHO's answer. No proposal yet.

@@ -778,23 +778,133 @@ belonged to the first bundle and is gone, and Calvin's brief no longer waits on 
 
 **Where the current text is:** [CLAUDE.md](../../CLAUDE.md), the two bullets above.
 
-## 9 Oct 2026 — PROCESS_RULES_for_ShellB.md: the close-out ran once at the end of every sitting
+## 9 Oct 2026 — PROCESS_RULES_for_ShellB.md, CLAUDE.md and BUILD_PLAN.md: wording overwritten by #149
 
 **Why:** the maintainer's ruling of 9 Oct 2026 made two kinds of close — a light close after each
-task, the full ritual at the end of a family or sprint.
+task, the full ritual at the end of a family or sprint — and #149 added the v1 fence. Each passage
+below is whole, recovered from git at `6fb498e`, the commit before #149 merged.
 
-**Old wording, whole — "The close-out still runs once, at the end."** (the batch section)
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — the batch section:**
 
-**Old wording, whole — the sitting rule:**
+> **The close-out still runs once, at the end.**
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — A session batches steps:**
 
 > **The close-out ritual runs once, at the end of the sitting — never once per step.**
 > Mid-session, a step that has landed needs only its commit. The documents catch up at the
 > close.
 
-**Also reworded to say "full close-out":** the opening of *How a session closes* ("The close-out is
-one complete act"), step 9 ("at EVERY close-out"), step 10's count, the sweep sentence in *The opening
-reads stay thin*, CLAUDE.md's build-update line, and BUILD_PLAN's standing rules.
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — The opening reads stay thin:**
 
-**Where the current text is:** [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md),
-*Two kinds of close*.
+> **Closed items leave BUILD_PLAN.md at every close-out, for BUILD_LOG.md.** Step 9 of *How a
+> session closes* is the rule; the sweep is no longer a job that waits until the file gets heavy. A
+> closed item is finished; it earns a home in the log, not a place in a document read at the start of
+> every session, and **no closed row is left behind**. Deciding what a *family* is still needs the
+> maintainer's ruling.
 
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — How a session closes, opening:**
+
+> **The close-out is one complete act.** Maintainer's ruling, 26 Aug 2026: the ritual below
+> includes every step, every time. **A ritual with a skipped step is an unfinished ritual.**
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — step 9, first line:**
+
+> 9. **The sweep, at EVERY close-out.** Maintainer's ruling, 1 Oct 2026. Run it before step 5's
+>    commit, so the checkpoint carries it; it has a high number only because the steps above are cited
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — step 10:**
+
+> 10. **Count the plan file's lines.** Maintainer's ruling, 3 Oct 2026: [BUILD_PLAN.md](./BUILD_PLAN.md)
+>     has a limit of **400 lines**. Count them at every close-out, after the sweep. **If the file is past
+>     400, flag it in the close-out report, with the count.** An item there is six lines at most; a longer
+>     write-up goes to BUILD_LOG.md and the item points at it. The limit is a threshold, and it changes
+>     only on her word.
+
+**Old wording, whole — CLAUDE.md — the desk-says-under-build bullet:**
+
+> - **The desk says the site is under build, from 23 Sep 2026.** One line in the maintainer's words
+>   above Wellington's chat, and a dated build-update fact he phrases when asked, refreshed at every
+>   close-out (the ritual's step 8). Item S11.
+
+**Old wording, whole — BUILD_PLAN.md — the intro line:**
+
+> **Three parts, in this order:** the v1 order; the sprints, one per family that has work on a v1 step; and
+> the families whose work is all after v1.
+
+**Old wording, whole — BUILD_PLAN.md — standing rules bullet:**
+
+> - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull
+>   request; a measured run after any prompt change; the build-update fact refreshed at every close-out.
+
+**Where the current text is:** [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Two kinds of close*; [BUILD_PLAN.md](../../BUILD_PLAN.md), the v1 fence.
+
+## 9 Oct 2026 — wording overwritten by the fixes from review of #149
+
+**Why:** the review of #149 asked for one finish line, no restated defaults rule, no assumed
+licence, and the light close to check the two caps. Each passage below is whole, as #149 left it.
+
+**Old wording, whole — BUILD_PLAN.md — the v1 fence heading, defaults bullet and build rule:**
+
+> ## The v1 fence (the maintainer, 9 Oct 2026)
+>
+> **v1 is done when** a visitor screens in 30 questions or fewer (Wellington → Phoebe → Bridget →
+> Calvin → report / sign up), the project saves to the paid site, and the paid site's carbon and VWBA
+> calculators, run on that saved project's inputs, give the same numbers as the screening.
+>
+> **Also in v1:**
+> - **Transition screening.** If Wellington hears the project is already registered for carbon, the
+>   screening also shows its transitional volume, still maps it, quantifies it, checks VWBA, and offers
+>   the report and the move to the paid site.
+> - **VWBA covers water supply project types only.**
+> - **Defaults rule.** Every default comes from a cited source. Where no source gives one, there is none
+>   and the visitor enters the value.
+> - **Build rule.** Each module (screening, transition, VWBA, report) has its own inputs, outputs and
+>   card, so it can later stand alone in the Agent Commons. Commons use itself is v2.
+
+**Old wording, whole — BUILD_PLAN.md — the v1 order heading and its 23 Sep finish line:**
+
+> ## The v1 order — the done line (the maintainer, 23 Sep 2026)
+>
+> The free site is v1 when a stranger with a real project can, in thirty messages, learn: the
+> project type and stage; which pathway it likely fits (water, carbon, both, neither); a screening
+> number for each fit; its basin; and save it.
+
+**Old wording, whole — BUILD_PLAN.md — the card-sets-sealed bullet:**
+
+> - **Card sets are sealed at their versions on this date.** No new cards until a real project fails
+>   on one.
+
+**Old wording, whole — BUILD_PLAN.md — V2-2:**
+
+> **V2-2 · WHO cooking-fuel data by fuel type — if WHO confirms CC BY 4.0 (ask householdenergy@who.int),
+> replace the screening's conservative fuel-mix floor with WHO's full by-fuel-type mix for every
+> country.** After v1. Waits on WHO's answer. No proposal yet.
+
+**Old wording, whole — BUILD_PLAN.md — the intro line (as #149 left it):**
+
+> **Four parts, in this order:** the v1 fence; the v1 order; the sprints, one per family that has work on a v1
+> step; and the families whose work is all after v1, ending in the After v1 list.
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — Two kinds of close, item 1:**
+
+> 1. **A light close after each task.** Commit, open the pull request, write one plan line saying what landed,
+>    then `/clear`. **The plan line goes in [BUILD_PLAN.md](./BUILD_PLAN.md), under the family's own
+>    row** — the item or entry of the family the task belongs to — never at the top of the file or in a
+>    list of its own. Nothing more. A light close
+>    does not write BUILD_LOG.md, run the sweep, count the plan file, or refresh Wellington's
+>    build-update fact.
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — step 8, last sentence:**
+
+>    line says a visitor can ask him for a build update, and this step is what makes that line
+>    true at every close.
+
+**Old wording, whole — CLAUDE.md — the 'V1 — the done line' bullet:**
+
+> - **"V1 — the done line," ruled 23 Sep 2026.** What v1 means for the whole free site, per-seat
+>   done conditions, what is parked until after v1, and an eight-step build order (seven until 3 Oct 2026, when the report export joined it) live in
+>   [BUILD_PLAN.md](./BUILD_PLAN.md), which owns the order work is built in. Every card set on
+>   the free site is sealed at its version on that date; no card changes or is added until a real
+>   project fails on one. The seal is recorded in `knowledge-packs/CHANGELOG.md`.
+
+**Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), the v1 fence and the After v1 list; [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Two kinds of close* and step 8; [CLAUDE.md](../../CLAUDE.md), the v1 fence bullet.
