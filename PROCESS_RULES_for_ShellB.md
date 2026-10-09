@@ -51,7 +51,8 @@ step,~~ **a pull request per checkpoint**, and her eyeball wherever a step's own
 browser check. Nothing merges without the maintainer. What the batch removes is the pause between
 steps that were already agreed, not any of the gates inside them.
 
-**The close-out still runs once, at the end.**
+**There are two kinds of close** — a light close after each task and the full close-out at the end
+of a family or sprint. See *Two kinds of close* below.
 
 ---
 
@@ -187,9 +188,25 @@ several steps. **Nothing about a single step changes** — each one still moves 
 full sequence above on its own, sized by risk. What this ruling settles is how steps are
 grouped.
 
-**The close-out ritual runs once, at the end of the sitting — never once per step.**
-Mid-session, a step that has landed needs only its commit. The documents catch up at the
-close.
+**A step that has landed needs only its commit, and its task ends with a light close.** The
+full close-out ritual does not run once per step or once per sitting; see *Two kinds of close*
+below for when each kind runs.
+
+### Two kinds of close
+
+**Maintainer's ruling, 9 Oct 2026.** It replaces the rule that the close-out ritual ran once, at
+the end of every sitting. The old wording is in
+[docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md).
+
+1. **A light close after each task.** Commit, open the pull request, write one plan line in
+   [BUILD_PLAN.md](./BUILD_PLAN.md) saying what landed, then `/clear`. Nothing more. A light close
+   does not write BUILD_LOG.md, run the sweep, count the plan file, or refresh Wellington's
+   build-update fact.
+2. **The full close-out ritual, only at the end of a family or sprint.** The ten steps under *How a
+   session closes* run in full, as written. A family or sprint ends when the maintainer says so.
+
+**A full close-out is never run before `/clear` just because a task ended.** A task that is not
+the last of its family or sprint gets the light close.
 
 ### Pull requests — the engineer opens them
 
@@ -229,6 +246,14 @@ row for every mechanical change.
 one coherent, testable thing. This rule is about how steps are grouped for review, not about how
 big one may be.
 
+#### The merge ritual — a second reader, and only the maintainer merges
+
+**Maintainer's ruling, 9 Oct 2026.** Before any merge, the maintainer gives Grok the pull request's
+diff plus the rules files (CLAUDE.md, this file, CITATIONS.md, AGENT_RULES.md). **Grok flags
+problems; it never approves.** A clean read from Grok is not a merge word. **Only the maintainer
+merges**, as before, and the engineer never merges. The engineer does not call Grok and does not
+send it anything; the maintainer carries the diff by hand.
+
 #### Every description opens with a block for the maintainer
 
 **Maintainer's ruling, 27 Aug 2026.** Every pull request description begins with a block
@@ -241,6 +266,13 @@ jargon:
 3. **What to check** — what the "Files changed" tab should say, and anything to eyeball.
 
 **Any term a non-engineer would not know gets one plain-English line of explanation.**
+
+**Below the block, every pull request lists three things.** Maintainer's ruling, 9 Oct 2026:
+1. **Files touched** — every file, named.
+2. **Behavior changes** — what works differently when it is merged, or "none" for a docs-only pull
+   request.
+3. **Anything the agent was unsure of** — each doubt, stated plainly, or "nothing" if there is
+   none. An unsure point left out is a defect.
 
 **Every capture for the maintainer's eyeball is attached inside the For Amy block as an image,
 never printed as a local file path.** Maintainer's ruling, 8 Sep 2026: she reads pull requests from
@@ -374,7 +406,7 @@ get skimmed. **The reads are a briefing, not an archive.** Retired documents liv
    at most. A longer write-up is recorded once, in BUILD_LOG.md, and the entry points at it, per
    *record once, point everywhere else* above.
 
-**Closed items leave BUILD_PLAN.md at every close-out, for BUILD_LOG.md.** Step 9 of *How a
+**Closed items leave BUILD_PLAN.md at every full close-out, for BUILD_LOG.md.** Step 9 of *How a
 session closes* is the rule; the sweep is no longer a job that waits until the file gets heavy. A
 closed item is finished; it earns a home in the log, not a place in a document read at the start of
 every session, and **no closed row is left behind**. Deciding what a *family* is still needs the
@@ -388,8 +420,9 @@ close-out, step 10, and a count past 400 is flagged in the report.
 
 ## How a session closes
 
-**The close-out is one complete act.** Maintainer's ruling, 26 Aug 2026: the ritual below
-includes every step, every time. **A ritual with a skipped step is an unfinished ritual.**
+**The full close-out is one complete act.** Maintainer's ruling, 26 Aug 2026: the ritual below
+includes every step, every time it runs. It runs at the end of a family or sprint; a task between
+those gets the light close (*Two kinds of close*). **A ritual with a skipped step is an unfinished ritual.**
 
 1. Refresh the root docs so they tell the truth: BUILD_PLAN.md,
    CLAUDE.md, and any rulebook touched this session.
@@ -415,7 +448,7 @@ includes every step, every time. **A ritual with a skipped step is an unfinished
    facts he phrases; regenerate the prompt modules so the staleness gate passes. The desk's one
    line says a visitor can ask him for a build update, and this step is what makes that line
    true at every close.
-9. **The sweep, at EVERY close-out.** Maintainer's ruling, 1 Oct 2026. Run it before step 5's
+9. **The sweep, at EVERY full close-out.** Maintainer's ruling, 1 Oct 2026. Run it before step 5's
    commit, so the checkpoint carries it; it has a high number only because the steps above are cited
    by number elsewhere.
    - **Closed items leave [BUILD_PLAN.md](./BUILD_PLAN.md) for [BUILD_LOG.md](./BUILD_LOG.md).** Every
@@ -430,7 +463,7 @@ includes every step, every time. **A ritual with a skipped step is an unfinished
    - Bodies swept before 3 Oct 2026 stay in
      [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md); nothing is moved twice.
 10. **Count the plan file's lines.** Maintainer's ruling, 3 Oct 2026: [BUILD_PLAN.md](./BUILD_PLAN.md)
-    has a limit of **400 lines**. Count them at every close-out, after the sweep. **If the file is past
+    has a limit of **400 lines**. Count them at every full close-out, after the sweep. **If the file is past
     400, flag it in the close-out report, with the count.** An item there is six lines at most; a longer
     write-up goes to BUILD_LOG.md and the item points at it. The limit is a threshold, and it changes
     only on her word.

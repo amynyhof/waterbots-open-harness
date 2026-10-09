@@ -218,7 +218,7 @@ credit line does not meet any of these bars.
   saving.
 - **The desk says the site is under build, from 23 Sep 2026.** One line in the maintainer's words
   above Wellington's chat, and a dated build-update fact he phrases when asked, refreshed at every
-  close-out (the ritual's step 8). Item S11.
+  full close-out (the ritual's step 8). Item S11.
 - **Agents phrase the roster's facts themselves, from 3 Sep 2026.** An
   agent is given facts and rules and writes its own two or three plain
   sentences; the maintainer approves rules, not wording, and no prompt

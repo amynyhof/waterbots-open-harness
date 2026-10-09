@@ -777,3 +777,24 @@ belonged to the first bundle and is gone, and Calvin's brief no longer waits on 
 > **Calvin's brief waits on the re-sealed bundle**, by the maintainer's hand.
 
 **Where the current text is:** [CLAUDE.md](../../CLAUDE.md), the two bullets above.
+
+## 9 Oct 2026 — PROCESS_RULES_for_ShellB.md: the close-out ran once at the end of every sitting
+
+**Why:** the maintainer's ruling of 9 Oct 2026 made two kinds of close — a light close after each
+task, the full ritual at the end of a family or sprint.
+
+**Old wording, whole — "The close-out still runs once, at the end."** (the batch section)
+
+**Old wording, whole — the sitting rule:**
+
+> **The close-out ritual runs once, at the end of the sitting — never once per step.**
+> Mid-session, a step that has landed needs only its commit. The documents catch up at the
+> close.
+
+**Also reworded to say "full close-out":** the opening of *How a session closes* ("The close-out is
+one complete act"), step 9 ("at EVERY close-out"), step 10's count, the sweep sentence in *The opening
+reads stay thin*, CLAUDE.md's build-update line, and BUILD_PLAN's standing rules.
+
+**Where the current text is:** [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md),
+*Two kinds of close*.
+

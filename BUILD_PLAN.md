@@ -5,8 +5,8 @@ What is being built, in what order, and every open item. **This file commits to 
 retired. Read it with [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md), which says how work
 moves from a proposal to a commit.
 
-**Three parts, in this order:** the v1 order; the sprints, one per family that has work on a v1 step; and
-the families whose work is all after v1.
+**Four parts, in this order:** the v1 fence; the v1 order; the sprints, one per family that has work on a v1
+step; and the families whose work is all after v1, ending in the After v1 list.
 
 **Size limit: 400 lines.** The maintainer's ruling of 3 Oct 2026. An item is six lines at most; a longer
 write-up goes to BUILD_LOG.md and the item points at it. A close-out that finds this file past 400 lines
@@ -26,6 +26,26 @@ structure, packs, debt that trips agents or engineers), WALKTHROUGH (a simple VW
 site), PARTNER (the Commons or a partner demo), PARK (real, not now), and "v1" for an item moved onto the
 v1 order. **Shell A is the paid site; Shell B is this repository.** A carry to Shell A is her hand, never
 an action here (rule zero).
+
+---
+
+## The v1 fence (the maintainer, 9 Oct 2026)
+
+**v1 is done when** a visitor screens in 30 questions or fewer (Wellington → Phoebe → Bridget →
+Calvin → report / sign up), the project saves to the paid site, and the paid site's carbon and VWBA
+calculators, run on that saved project's inputs, give the same numbers as the screening.
+
+**Also in v1:**
+- **Transition screening.** If Wellington hears the project is already registered for carbon, the
+  screening also shows its transitional volume, still maps it, quantifies it, checks VWBA, and offers
+  the report and the move to the paid site.
+- **VWBA covers water supply project types only.**
+- **Defaults rule.** Every default comes from a cited source. Where no source gives one, there is none
+  and the visitor enters the value.
+- **Build rule.** Each module (screening, transition, VWBA, report) has its own inputs, outputs and
+  card, so it can later stand alone in the Agent Commons. Commons use itself is v2.
+
+**New items go to v1 only if they block the finish line.** Anything else goes to After v1.
 
 ---
 
@@ -101,7 +121,7 @@ number for each fit; its basin; and save it.
   was tagged `engine-carry-2026-09-27` (#132). Nothing edits it here, and nothing in the site reads it yet.
 - **Wellington's prompt is 26,034 characters against a gate of 26,199.** The gate moves only on her word.
 - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull
-  request; a measured run after any prompt change; the build-update fact refreshed at every close-out.
+  request; a measured run after any prompt change; the build-update fact refreshed at every full close-out.
 
 ---
 
@@ -295,3 +315,14 @@ Debt in the documents themselves.
 in any live document. Strikes from before it wait in CLAUDE.md, PROCESS_RULES, AGENT_RULES, CITATIONS, the
 READMEs and the card files. One document a commit; the rulebooks and card files each their own pull
 request. Proposal first, with a count of strikes per document.
+
+---
+
+## After v1
+
+Nothing here is started before v1 is done, except on her word. First in the list is the next thing
+to pick up.
+
+**V2-1 · Watershed map — click a watershed, see its water facts.** After v1 · PARTNER. The idea came
+from CarbonParcel. A visitor clicks a basin and reads its water facts. Every fact traceable to its
+source; no invented values. No proposal yet.
