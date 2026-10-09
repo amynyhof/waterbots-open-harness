@@ -321,11 +321,12 @@ credit line does not meet any of these bars.
   people sentence disagree with the roster. Checked, never generated. A seat
   or a face on the roster may be absent from this site; "unconfirmed" always
   passes. In that file "this repository" on the paid line means production.
-- **"V1 — the done line," ruled 23 Sep 2026.** What v1 means for the whole free site, per-seat
-  done conditions, what is parked until after v1, and an eight-step build order (seven until 3 Oct 2026, when the report export joined it) live in
-  [BUILD_PLAN.md](./BUILD_PLAN.md), which owns the order work is built in. Every card set on
-  the free site is sealed at its version on that date; no card changes or is added until a real
-  project fails on one. The seal is recorded in `knowledge-packs/CHANGELOG.md`.
+- **"V1 — the fence," the maintainer's word of 7 Oct 2026.** What v1 means for the whole free site is
+  the v1 fence at the top of [BUILD_PLAN.md](./BUILD_PLAN.md): the one finish line. The per-seat
+  conditions, what is parked until after v1, and an eight-step build order (seven until 3 Oct 2026,
+  when the report export joined it) live there too, and BUILD_PLAN owns the order work is built in.
+  Every card set on the free site was sealed at its version on 23 Sep 2026; no card changes or is
+  added until a real project fails on one. The seal is recorded in `knowledge-packs/CHANGELOG.md`.
 - **Every card set shows on its agent's Knowledge tab, and one component draws every tab,
   from 24 Sep 2026.** Build-order step 1. Phoebe's tab shows every approved card in both
   packs, water then carbon, each set with its own approval date; an ungraded set says

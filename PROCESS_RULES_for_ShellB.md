@@ -198,11 +198,14 @@ below for when each kind runs.
 the end of every sitting. The old wording is in
 [docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md).
 
-1. **A light close after each task.** Commit, open the pull request, write one plan line saying what landed,
-   then `/clear`. **The plan line goes in [BUILD_PLAN.md](./BUILD_PLAN.md), under the family's own
-   row** — the item or entry of the family the task belongs to — never at the top of the file or in a
-   list of its own. Nothing more. A light close
-   does not write BUILD_LOG.md, run the sweep, count the plan file, or refresh Wellington's
+1. **A light close after each task.** Commit, open the pull request, write one plan line saying what
+   landed, then check two caps, then `/clear` (which empties the session's working memory between
+   tasks). **The plan line goes in [BUILD_PLAN.md](./BUILD_PLAN.md), under the family's own row** —
+   the item or entry of the family the task belongs to — never at the top of the file or in a list of
+   its own. **The two caps:** the item the task touched is six lines at most, and the file is 400
+   lines at most. If either is over, trim the item (a longer write-up goes to BUILD_LOG.md and the
+   item points at it) or sweep closed items to BUILD_LOG.md before the commit. Nothing more: a light
+   close does not append the session to BUILD_LOG.md, run the full sweep, or refresh Wellington's
    build-update fact.
 2. **The full close-out ritual, only at the end of a family or sprint.** The ten steps under *How a
    session closes* run in full, as written. A family or sprint ends when the maintainer says so.
@@ -449,7 +452,7 @@ those gets the light close (*Two kinds of close*). **A ritual with a skipped ste
    `knowledge-packs/wellington-host/build-update.md`, dated, what is built and what is next, in
    facts he phrases; regenerate the prompt modules so the staleness gate passes. The desk's one
    line says a visitor can ask him for a build update, and this step is what makes that line
-   true at every close.
+   true at every full close-out. A light close does not run it.
 9. **The sweep, at EVERY full close-out.** Maintainer's ruling, 1 Oct 2026. Run it before step 5's
    commit, so the checkpoint carries it; it has a high number only because the steps above are cited
    by number elsewhere.
