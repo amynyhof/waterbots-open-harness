@@ -323,6 +323,9 @@ request. Proposal first, with a count of strikes per document.
 Nothing here is started before v1 is done, except on her word. First in the list is the next thing
 to pick up.
 
-**V2-1 · Watershed map — click a watershed, see its water facts.** After v1 · PARTNER. The idea came
-from CarbonParcel. A visitor clicks a basin and reads its water facts. Every fact traceable to its
-source; no invented values. No proposal yet.
+**V2-1 · Watershed map — click a watershed, see its water facts.** After v1. A visitor clicks a basin
+and reads its water facts. Every fact traceable to its source; no invented values. No proposal yet.
+
+**V2-2 · WHO cooking-fuel data by fuel type — if WHO confirms CC BY 4.0 (ask householdenergy@who.int),
+replace the screening's conservative fuel-mix floor with WHO's full by-fuel-type mix for every
+country.** After v1. Waits on WHO's answer. No proposal yet.

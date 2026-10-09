@@ -198,8 +198,10 @@ below for when each kind runs.
 the end of every sitting. The old wording is in
 [docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md).
 
-1. **A light close after each task.** Commit, open the pull request, write one plan line in
-   [BUILD_PLAN.md](./BUILD_PLAN.md) saying what landed, then `/clear`. Nothing more. A light close
+1. **A light close after each task.** Commit, open the pull request, write one plan line saying what landed,
+   then `/clear`. **The plan line goes in [BUILD_PLAN.md](./BUILD_PLAN.md), under the family's own
+   row** — the item or entry of the family the task belongs to — never at the top of the file or in a
+   list of its own. Nothing more. A light close
    does not write BUILD_LOG.md, run the sweep, count the plan file, or refresh Wellington's
    build-update fact.
 2. **The full close-out ritual, only at the end of a family or sprint.** The ten steps under *How a
