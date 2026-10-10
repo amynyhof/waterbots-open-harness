@@ -335,3 +335,6 @@ agreement (see [link](https://www.who.int/data/gho/data/themes/air-pollution/who
 Request it via householdenergy@who.int; use it only if the agreement allows use in this tool.** If so,
 replace the screening's conservative fuel-mix floor with WHO's by-fuel-type mix. After v1. No proposal
 yet.
+
+**V2-3 · Review the VWBA water litres ceiling (20 L, Table D3.3).** After v1. Calvin's water litres slider
+runs 0 to 20 L, her ruling of 10 Oct 2026; the table states no ceiling, and 20 is its highest figure.

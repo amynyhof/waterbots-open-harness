@@ -964,3 +964,161 @@ licence, and the light close to check the two caps. Each passage below is whole,
 > Owes the teal baseline marker, a design value she carries from production.
 
 **Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), the v1 fence and the After v1 list; [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Two kinds of close* and step 8; [CLAUDE.md](../../CLAUDE.md), the v1 fence bullet.
+
+---
+
+## 10 Oct 2026 — PROPOSAL_calvin-brief.md: the wording before her rulings of 10 Oct 2026
+
+**Why:** the maintainer's rulings of 10 Oct 2026 retired the fuel-mix preset, gave the sliders
+cited openings, made embodied carbon never zero, gave the water column its own litres slider,
+closed R1 with no detail kept, settled R12 to R14, and made the look reference a text list. The
+proposal was untracked until this date. Each passage below is whole, as it stood after the
+rulings of 1 Oct 2026, except where a note says it is not kept.
+
+**Not kept, by her ruling:** §1.5's passage on what the earlier bundle's manifest flagged, and the
+matching wording of R1. They named a real filing and its figures, and that wording is not copied
+here or anywhere else. R1 now reads only that the engine crossed scrubbed on 3 Oct 2026. For the
+same reason, §5's worked example of a derived people count, which named a country and its
+figures, and R9's closing clause naming that country are not copied.
+
+**Old wording, whole — the header and opening line:**
+
+> **Written 27 Sep 2026, untracked at the root. Build-order step 5 under "V1 — the done line".
+> Nothing is built. Nothing here is approved until the maintainer says so.**
+>
+> Calvin is the last missing piece for the 30 Sep demo.
+
+**Old wording, whole — §0, the bundle, the typecheck and the look reference:**
+
+> - **The bundle.** All 32 files under `carried/` match `carried/carry-hashes.sha256` today, after
+>   her refresh, and no file sits on disk that the list does not name. The twelve registry rows the
+>   data files cite are all present; `un-hh-size-2022` reads `rights: open-licence` (CC BY 3.0 IGO).
+> - **The engine typechecks here byte-identical.** A scratch copy of the fifteen engine files was
+>   compiled under this site's own compiler settings — strict, no unused locals or parameters,
+>   bundler resolution, JSON modules — with one stub standing in for the file that did not cross
+>   (§1.3). It passed with no errors. So nothing in the engine has to be edited to live here.
+>
+> - **The saved production calculator pages** in `Design refs/Calculator design ref/`, brought in
+>   by her hand on 1 Sep 2026, were read for the block names and the tag words. They carry the
+>   blocks her ruling 3 names, in that order, and the tag words DERIVED and DEFAULT. They are
+>   26 days old; §13 asks whether a fresh capture of the paid screening screen comes first.
+
+**Old wording, whole — §1.1, the tree and the line under it, and §1.2, the gate:**
+
+> ```
+>     gs4gg-carbon/             — the fifteen engine files, byte-identical
+>     data/                     — the eight data folders, sixteen files, byte-identical
+>     data/baseline-mix/countries.json   — THE ONE ADDITION: a stand-in, see §1.3
+>   sources/registry.yaml       — the twelve-row registry subset, byte-identical
+> ```
+>
+> `carried/` itself stays untracked and untouched, as she left it. `engine/` is its tracked
+> twin.
+>
+> that is not on the list fails too, except the one named stand-in.
+
+**Old wording, whole — §1.3:**
+
+> ### 1.3 The one stand-in, named where it shows (ruling 9)
+>
+> `presets.ts` imports `../data/baseline-mix/countries.json` by path. That file did not cross,
+> because its WHO half is unconfirmed for redistribution (manifest, *Held back*). The engine's
+> `countryBaselineDefault` reads it and, for a country with no row, returns nothing, so the
+> labelled screening preset stands. The stand-in is the smallest JSON that reads that way:
+>
+> ```json
+> { "_stand_in": "No per-country baseline mix crossed with the seal of 26 Sep 2026; the WHO half is unconfirmed for redistribution. Every country falls back to the labelled preset. Replace with the carried file when it clears.",
+>   "retrieval_date": "2026-09-26", "fuelSource": { "cite": "", "url": "" },
+>   "stoveSource": { "cite": "", "url": "" }, "countries": {} }
+> ```
+>
+> It is a test-stand-in-shaped file that never reaches a visitor as data — no country, no
+> figure — and it is named as a stand-in inside itself and in the manifest's own words. On the
+> screen, the preset's rows say so (§2.3).
+
+**Old wording, whole — §2.2, block 4, and §2.3:**
+
+> 4. **Leakage (LE)** — market leakage, Option 1 at 2% (Eq. 20), and embodied emissions
+>    (Eq. 17–19, Table 10) where a device class and unit count are known.
+>
+> ### 2.3 Where the preset shows (ruling 9)
+>
+> The stove and fuel rows in the Baseline block carry the preset the engine used:
+> "traditional-wood-cws" for Method 1 and "institutional-wood-iwt" for Method 2 — 100% wood on a
+> three-stone stove, efficiency from V2.0 SDWS 11 (0.15), factors from SDWS 9 and 10. Beside
+> them, one line in plain words: *Screening preset — all wood on a three-stone stove. No
+> per-country fuel and stove figures are on this site yet; a baseline survey replaces this.*
+> Tagged DEFAULT, cited to the methodology. No pencil.
+
+**Old wording, whole — §3, the DAF line:**
+
+> A country with no DAF row takes the 1.25%
+> absolute floor, tagged DEFAULT and cited to the 457 tool §5.7b.
+
+**Old wording, whole — §4, the heading and intro, and the openings of §4.2 and §4.3:**
+
+> ## 4. The sliders — three, and no others (ruling 5)
+>
+> Three rows carry a slider instead of a box. The engine is re-run on every move; nothing else
+> on the sheet is draggable. Each slider's opening position is a value with a source or an honest
+> assumption, and moving it changes the tag (§7).
+>
+> - **Opens at 347, tagged ASSUMED**, because the methodology gives no default and 347 is the
+>   most it allows without a sensor. Calvin asks the days (§8); an answer makes the row ENTERED
+>   and moves the slider. §13, R5.
+>
+> - **Opens at 100%, tagged ASSUMED**, with one line: *No water test exists before the project
+>   runs. Credits are proportional to the share of samples that pass (V2.0 §7.4.3 b, p. 32), and
+>   the first point-of-use test is due six months after the start (SDWS 22, p. 58).* Moving it
+>   keeps ASSUMED. §13, R5.
+
+**Old wording, whole — §6, two rows and the closing line:**
+
+> | Operational days | Q_pop | whole days, 1–365 | the plan; slider opens at 347 assumed |
+> | Device class and new units this year | embodied emissions, Table 10 | one of seven classes; whole count | the plan; absent, the engine deducts 0 and the row says so, ASSUMED |
+>
+> No other row takes a value on the free site. Q_m (planned production) and device capacity
+> (SDWS 13) stay hidden ASSUMED rows: the engine's own words for their absence show
+> ("No metered volume entered — population binds"; "device limit not evaluated").
+
+**Old wording, whole — §7.1, two rows of the tags table and the mapping:**
+
+> | **default** | a cited value from a data file or the methodology, used as published | fNRB national value, DAF, Table 9 litres, η, fuel factors, SE_o 360.83 (Eq. 2, p. 29), household size, the preset |
+> | **assumed** | a value with no source, standing in until one exists | a moved litres slider, 347 days, 100% passing, embodied 0, X_cleanboil 0 ex-ante |
+>
+> The engine's own provenance words map onto them once, in the wrapper: `country`, `default`,
+> `preset` → default; `override` → entered; `global-default` → default with its label (the DAF
+> floor, the fNRB multi-national value with footnote 5's condition printed beside it, as the engine
+> builds it).
+
+**Old wording, whole — §10, §11 and §12, the lines that changed:**
+
+> - **`npm run test:engine`** — the bundle's own fifteen test files, by hand (§1.4, R3).
+>
+> sliders clamp at their caps and the 347 note fires at 348; a moved slider is ASSUMED and an
+> answered day count is ENTERED; the fNRB refusal renders as its own sentence; blank without-
+> project volume leaves the water headline a dash; the preset's line shows; `usedValues()`
+> carries no result key.
+>
+> the engine version (0.16.0) and the seal it crossed under.
+>
+> - **Docs, at the close-out:**
+>
+> **Pull request A — the engine crosses and the screen shows it.** Steps: (1) `engine/`, the
+> stand-in, the two tsconfig lines,
+>
+> community-supply project, with captures of the top, the Baseline block with the preset line,
+> and a slider past 347.
+>
+> Docs of §11 ride here, and the close-out runs once at the end.
+
+**Old wording, whole — §13, R5 and R10:**
+
+> - **R5 — The two assumed openings:** operational days at 347, water quality at 100%, both
+>   ASSUMED with the lines in §4. Or Calvin asks days before any carbon number shows. **Ruled 1 Oct 2026: YES.** Days 347 and water quality 100% show as ASSUMED, each with a slider.
+>
+> - **R10 — A fresh capture of the paid screening screen** before pull request A, or the
+>   1 Sep 2026 saved pages stand as the look reference. **Ruled 1 Oct 2026: YES.**
+
+**Where the current text is:** [PROPOSAL_calvin-brief.md](../../PROPOSAL_calvin-brief.md), the same
+sections; §13 carries R12 to R14.
