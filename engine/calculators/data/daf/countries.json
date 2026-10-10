@@ -1,0 +1,36 @@
+{
+  "pathway": "gs4gg-carbon",
+  "dataset": "daf-by-country-vintage",
+  "version": "1.0.0",
+  "description": "Downward Adjustment Factor (DAF) lookup, keyed by (host country, vintage year -> 5-year application window). A fixed coefficient within a window. Values from the 457 DAF tool Annex 01 (Applicable DAF, 2026-2030 window). See CALCULATOR_SPEC §3.4.",
+  "registrySources": ["gs-457-daf"],
+  "absolute_floor": {
+    "value": 0.0125,
+    "cite": "457 §5.7b; Definitions 'Absolute DAF Floor'",
+    "desc": "1.25% global fallback — applied when no comparison group can be established."
+  },
+  "sector_carveout_floor": {
+    "value": 0.0125,
+    "sectors": ["Land Use & Forestry (removals)", "engineered removals", "agriculture", "blue carbon"],
+    "cite": "457 §5.7c / §6.1.4",
+    "desc": "These sectors take the 1.25% absolute floor by default. (SDWS is none of these — informational.)"
+  },
+  "windows": {
+    "2026-2030": { "start": "2026-01-01", "end": "2030-12-31", "cite": "457 §6.2.1a; values in Annex 01" },
+    "2031-2035": { "value": null, "note": "Next NDC-cycle update, not yet published (457 §6.3.1a)." }
+  },
+  "transitional_rule": "Projects registered before 2026 apply the 2026-2030 DAF from the 2026 vintage (457 §6.2.2).",
+  "countries": {
+    "IND": { "name": "India",    "daf_2026_2030": 0.0204, "basis": "Country DAF" },
+    "KEN": { "name": "Kenya",    "daf_2026_2030": 0.0345, "basis": "Country DAF" },
+    "UGA": { "name": "Uganda",   "daf_2026_2030": 0.0345, "basis": "Ambition Floor (Peer Group)" },
+    "MWI": { "name": "Malawi",   "daf_2026_2030": 0.0345, "basis": "Ambition Floor (Peer Group)" },
+    "TZA": { "name": "Tanzania", "daf_2026_2030": 0.0345, "basis": "Ambition Floor (Peer Group)" },
+    "NER": { "name": "Niger",    "daf_2026_2030": 0.0345, "basis": "Ambition Floor (Peer Group)" }
+  },
+  "notes": [
+    "Applicable DAF read from 457 Annex 01 — the value immediately preceding the basis label (= the country DAF, or the peer-group ambition floor, whichever the tool selected).",
+    "The full ~190-country table lives in 457 Annex 01; only the golden-matrix anchor countries are pinned here for M3. Expand as scenarios need.",
+    "DAF is a fixed coefficient applied to every vintage year within the window (457 §6.1.1, §6.3.1a); select the row by host country and the window containing the crediting vintage."
+  ]
+}

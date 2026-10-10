@@ -1,0 +1,197 @@
+{
+ "ref": "calculator-seal-2026-10-03",
+ "sha": "e9fd8b4f6141e4794352b5ab51870bface712084",
+ "carried": 32,
+ "excluded": [
+  "calculators/data/README.md",
+  "calculators/data/baseline-mix/countries.json",
+  "calculators/gs4gg-carbon/quantity.test.ts",
+  "calculators/gs4gg-carbon/scenario.test.ts"
+ ],
+ "registryIds": [
+  "a64-amt-009-fnrb",
+  "cdm-tool33",
+  "gs-429-1-ertool-cws",
+  "gs-429-v1-methodology",
+  "gs-429-v2-methodology",
+  "gs-429-v2-si",
+  "gs-457-daf",
+  "mofuss-adm0-zenodo-18865904",
+  "mofuss-fnrb-2024",
+  "un-hh-size-2022",
+  "un-wpp-2024-pop-age1",
+  "unsd-m49"
+ ],
+ "written": [
+  {
+   "rel": "calculators/data/age-shares/countries.json",
+   "sha256": "1c293f0c79269a77e139e8f4836e1877406af271bb5a423359015aa71e9014ac",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/age-shares/countries.test.ts",
+   "sha256": "db5071b2992a33d0ecf037db896befc74cd1b407cb7128245833726ba9197ae9",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/countries.ts",
+   "sha256": "573b5d24135e9888a079fef8fd801193c5d1514af5846e22fa8c892498064ddb",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/daf/countries.json",
+   "sha256": "e717d6fbf816ac5deeec0377a27a0af0043ca1f46cd29d54b722f9a951817331",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/daf/countries.test.ts",
+   "sha256": "f5a509199485a2eab4a9dd62a2ee5bd85a9c696c4a13f7e05f8b2c9488f7215b",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/embodied/factors.json",
+   "sha256": "70d42443b6909c6153c740ae43d939e540984c1796d1b24b4a91910addba862b",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/embodied/factors.test.ts",
+   "sha256": "58cf3fac9e52cfd73ebf2a2e7aa46ad82cd34cb379752b1dcf8de56a560e2f74",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/fnrb/countries.json",
+   "sha256": "258593a7162343e24bfbdc06c60a86b258f6234224da34dcbc68b4361003b8ce",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/fnrb/countries.test.ts",
+   "sha256": "18024ecec06efa9b9e5de28ca60d9e06d66404e3c10cf9f6173c1b9111c06eef",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/household-size/countries.json",
+   "sha256": "a88a0a3228ec60bcce1b87cdf8235b3d3ef20efc8481a378c7399898fdcbf0aa",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/household-size/countries.test.ts",
+   "sha256": "a4aa3ad72a1e016bda00611f6a8b2fdd419934362e7d4af07f9dfb7b0edafc66",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/legacy/defaults.json",
+   "sha256": "3837a8bf727b339e617e09109cebc17abff74a1aab67db029594843587d355d6",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/legacy/defaults.test.ts",
+   "sha256": "eefa6de9a0c6ccb6c444a0767e7899e62039a783b3f19e5752fcdc2ecbc50702",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/paa/fuel-factors.json",
+   "sha256": "b5a74b68ba448436149e728380439fe2cfccfe113ad0a5d5d4e9996a09ed545a",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/paa/fuel-factors.test.ts",
+   "sha256": "e3fe5b1a319757dbf73b5ec0cf372e91334438ff8cae4efe4f1db1d65de798a8",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/regions/un-m49.json",
+   "sha256": "7ecb44205732fdb20b415d8644235b7610553cf7d4fdcdceaea4e08afd4ff754",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/regions/un-m49.test.ts",
+   "sha256": "47e5781f0adbbc690956abc286677a9f47f8d68a119137ce3686b8b4c12ce600",
+   "note": ""
+  },
+  {
+   "rel": "calculators/gs4gg-carbon/baseline-ef.test.ts",
+   "sha256": "0dc62372d00e0cbd2935786adef3aee208c85b4a014cc796d64b6aacb51f134f",
+   "note": ""
+  },
+  {
+   "rel": "calculators/gs4gg-carbon/baseline-ef.ts",
+   "sha256": "ebc455356bae8b2c9669b2ae986376e8cc0653c62586f2acec04b325fb9baf3a",
+   "note": ""
+  },
+  {
+   "rel": "calculators/gs4gg-carbon/emissions-legacy.test.ts",
+   "sha256": "ce43225d380dfe59d432c815ac64a4732481608fac102cb0ab1032815cbf5162",
+   "note": ""
+  },
+  {
+   "rel": "calculators/gs4gg-carbon/emissions-legacy.ts",
+   "sha256": "424361d9103645dcf13e3711e9fca4d1dd51bb1fa76db63b894f42c3d2374ac9",
+   "note": ""
+  },
+  {
+   "rel": "calculators/gs4gg-carbon/emissions-paa-v2.test.ts",
+   "sha256": "c5a41f63e58e847a27fbf7357f9c0eea56f1786eaa21ea183a4f767b09c0ddb2",
+   "note": ""
+  },
+  {
+   "rel": "calculators/gs4gg-carbon/emissions-paa-v2.ts",
+   "sha256": "3b0539fea8d6e5972d9f3407d0c23f8fc9d25ad4b33da31d526f322736f68215",
+   "note": ""
+  },
+  {
+   "rel": "calculators/gs4gg-carbon/fallback.ts",
+   "sha256": "660ad5e3f66b894b8748728f88a513d3c3baca61b86357d063c0b78067a239d6",
+   "note": ""
+  },
+  {
+   "rel": "calculators/gs4gg-carbon/presets.test.ts",
+   "sha256": "d8a15801bc889f10aff0096c31042c3820fae18334988b70e0808975f1350003",
+   "note": ""
+  },
+  {
+   "rel": "calculators/gs4gg-carbon/presets.ts",
+   "sha256": "b9065c31aa89ecc934aa8ebb32c8435ccbd52521132498f61d5d2b97b00ba768",
+   "note": ""
+  },
+  {
+   "rel": "calculators/gs4gg-carbon/quantity.ts",
+   "sha256": "081863e4e55c87ac6638ae5a107756fa462fc6873044ae784f472c1191e1d8dc",
+   "note": ""
+  },
+  {
+   "rel": "calculators/gs4gg-carbon/scenario.ts",
+   "sha256": "8a34bd6110ff41a22d6022cc78cde73b5a88db0f576e5e28d01abf9440a4cc37",
+   "note": ""
+  },
+  {
+   "rel": "calculators/gs4gg-carbon/table9.test.ts",
+   "sha256": "7f8d0f67957ef6ba4193a680ded5d3fdf7f48e0202fd3729b559a28b84212c79",
+   "note": ""
+  },
+  {
+   "rel": "calculators/gs4gg-carbon/table9.ts",
+   "sha256": "09d4e433953453d3d440c42adb5687f2c6d83a89e3d79d00e2f5949efc3028e3",
+   "note": ""
+  },
+  {
+   "rel": "calculators/gs4gg-carbon/types.ts",
+   "sha256": "7213887609226efd834b0e9fecff49dfb3c3ddbadce2b05fd7af7628aaae4c70",
+   "note": ""
+  },
+  {
+   "rel": "calculators/gs4gg-carbon/version.ts",
+   "sha256": "85b4e9eadae31d112c57a549cfeebfaae6d9bb0f9318015115710ba2cbd44f28",
+   "note": ""
+  },
+  {
+   "rel": "calculators/data/baseline-mix/countries.json",
+   "sha256": "7d33384e622ed5a6f34386d90e7592087d446a7be16a32a46b82a0b09cc1aece",
+   "note": "STUB written by the bundle builder, not from the tag"
+  },
+  {
+   "rel": "sources/registry.yaml",
+   "sha256": "cbbe4488652ea8d02c66b44312e63475d12cabdc0e114a80f3918ed4a09b2c68",
+   "note": "SUBSET written by the bundle builder: 12 rows"
+  }
+ ]
+}

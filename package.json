@@ -6,8 +6,10 @@
   "license": "Apache-2.0",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/check-roster.mjs && tsc -b && vite build",
+    "build": "node scripts/check-roster.mjs && node scripts/check-engine.mjs && tsc -b && vite build",
     "roster:check": "node scripts/check-roster.mjs",
+    "engine:check": "node scripts/check-engine.mjs",
+    "test:engine": "vitest run --root engine",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -28,6 +30,7 @@
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.2",
     "vite": "^6.0.5",
+    "vitest": "2.1.9",
     "yaml": "^2.9.1"
   }
 }
