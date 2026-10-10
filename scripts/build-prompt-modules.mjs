@@ -34,6 +34,7 @@ import { readFileSync, writeFileSync, existsSync, mkdtempSync, rmSync } from 'no
 import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { parse as parseYaml } from 'yaml';
 
 /* ---------------------------------------------------------------------------
    The pack list the primer renders.
@@ -133,6 +134,78 @@ const PROJECT_STAGES = [
   { id: 'building', words: 'being built', plain: 'work has started and it is not running yet' },
   { id: 'running', words: 'already running', plain: 'it is in use today' },
 ];
+
+/* ---------------------------------------------------------------------------
+   The source registry — Calvin's brief, pull request A, step 2, 10 Oct 2026.
+
+   NO CITATION STRING IS TYPED IN src/. Every default Calvin's screen shows
+   cites its source through the registry the sealed engine carries,
+   engine/sources/registry.yaml, by the id its data file names (the brief's
+   §1.6, ruling 10). This parses that file once and writes the public part of
+   each row — the four-part shape's title, version and canonical link, with
+   the publisher, document reference, publication date and licence line — to
+   src/lib/registry.generated.ts. The rest of a row (where the paid site holds
+   the file, its hash, its notes) is the paid site's bookkeeping and does not
+   cross into the site's code.
+
+   A ROW WITHOUT A CANONICAL LINK THROWS. CITATIONS.md: no canonical link, no
+   citation, and the content does not ship.
+--------------------------------------------------------------------------- */
+
+const REGISTRY_FIELDS = [
+  ['id', 'id'],
+  ['title', 'title'],
+  ['publisher', 'publisher'],
+  ['docRef', 'doc_ref'],
+  ['version', 'version'],
+  ['published', 'published'],
+  ['canonicalUrl', 'canonical_url'],
+  ['license', 'license'],
+];
+
+function renderRegistry(text) {
+  const doc = parseYaml(text);
+  if (!doc || !Array.isArray(doc.sources) || doc.sources.length === 0) {
+    throw new Error('engine/sources/registry.yaml has no `sources:` list; the generated registry would be empty.');
+  }
+  const rows = doc.sources.map((row, i) => {
+    const out = {};
+    for (const [key, field] of REGISTRY_FIELDS) {
+      const value = row[field];
+      if ((field === 'doc_ref' || field === 'version') && value === null) {
+        out[key] = null;
+        continue;
+      }
+      if (typeof value !== 'string' || value.trim() === '') {
+        throw new Error(`engine/sources/registry.yaml row ${i + 1} (${row.id ?? 'no id'}) has no ${field}.`);
+      }
+      out[key] = value.trim();
+    }
+    if (!/^https:\/\//.test(out.canonicalUrl)) {
+      throw new Error(`engine/sources/registry.yaml row ${out.id} has no https canonical link; it cannot be cited.`);
+    }
+    return out;
+  });
+  const ids = new Set(rows.map((r) => r.id));
+  if (ids.size !== rows.length) throw new Error('engine/sources/registry.yaml carries a duplicate id.');
+  return [
+    `export interface RegistryRow {`,
+    `  id: string;`,
+    `  title: string;`,
+    `  publisher: string;`,
+    `  docRef: string | null;`,
+    `  /** Null where the source states none; the reader never fills it in. */`,
+    `  version: string | null;`,
+    `  published: string;`,
+    `  canonicalUrl: string;`,
+    `  license: string;`,
+    `}`,
+    '',
+    `/** Every row of the sealed engine's registry, in file order — the public part only. */`,
+    `export const REGISTRY_ROWS: readonly RegistryRow[] = ${JSON.stringify(rows, null, 2)};`,
+    '',
+  ].join('\n');
+}
 
 function renderProjectTypes(text) {
   const types = parseProjectTypes(text);
@@ -329,6 +402,15 @@ const BUNDLES = [
     sources: [{ name: 'WELLINGTON_BUILD_UPDATE_MD', file: 'knowledge-packs/wellington-host/build-update.md', region: 'AGENT-FACING' }],
     stale: 'Wellington would deploy telling visitors a build state that the close-out has moved past.',
   },
+  {
+    label: 'registry (browser)',
+    target: 'src/lib/registry.generated.ts',
+    /* The sealed engine's source registry, parsed rather than embedded —
+       Calvin's brief, step 2, 10 Oct 2026. When a new engine replaces
+       engine/, this is re-run and the gate holds the module to it. */
+    sources: [{ name: 'REGISTRY_ROWS', file: 'engine/sources/registry.yaml', render: renderRegistry }],
+    stale: "Calvin's screen would cite a source row the sealed engine no longer carries, or miss one it does.",
+  },
 ];
 
 const checkOnly = process.argv.includes('--check');
@@ -337,7 +419,7 @@ function render({ target, sources }) {
   const header = `/**
  * GENERATED FILE — DO NOT EDIT.
  *
- * Written by scripts/build-prompt-modules.mjs from committed markdown.
+ * Written by scripts/build-prompt-modules.mjs from committed ${sources.every(({ file }) => file.endsWith('.md')) ? 'markdown' : 'source files'}.
  * Edit the source, not this file, then re-run:
  *
  *   node scripts/build-prompt-modules.mjs
