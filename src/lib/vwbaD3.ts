@@ -41,9 +41,9 @@ import type { Figure, FormulaStep, MethodPack, PackResult, PackValues } from './
    -------------------------------------------------------------------------- */
 
 /** Litres per person per day at full access. */
-const LPCD_FULL = '20';
+export const LPCD_FULL = '20';
 /** Litres per person per day at limited access. */
-const LPCD_LIMITED = '2';
+export const LPCD_LIMITED = '2';
 /** Days a year at full access. Limited access has NO default — see below. */
 const DAYS_FULL = '365';
 
