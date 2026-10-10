@@ -85,8 +85,9 @@ the way to it.
 - **Phoebe** runs both packs: five row states, readiness per pathway, the tools line, the human
   door once. Done at an 80% pass.
 - **Calvin** talks; picks the pack from the record; asks only for what is missing; his carbon
-  number comes from the same engine as the paid site. Done when the Mali Demo Project (HWT) and the
-  maintainer's local CWS reference filing, each typed by hand into both sites, give the same number on both.
+  number comes from the same engine as the paid site. Done when his screening numbers match the paid
+  site's calculators run on the saved project's inputs (the v1 fence). Reproducing real filings is the
+  paid site's check, not Calvin's.
 - **Bridget**: map and pin as today. She introduces herself, says what the map shows, hands back.
 - **Commons**: Phoebe and Calvin work there too, no memory; Bridget introduces herself. Two Calvin
   cards on one engine: screening, transition.
@@ -137,9 +138,9 @@ How agents behave, what they may say, how they hand off. Governed by AGENT_RULES
 **A21 · Calvin's brief — his chat, the carried engine, carbon beside water.** Step 5 · BONES. Proposed
 27 Sep 2026 as `PROPOSAL_calvin-brief.md`, untracked at the root; nothing is built. R2 to R11 ruled yes on
 1 Oct 2026, her notes in its §13. **R1 is closed**: the v0.16.1 bundle crossed 3 Oct 2026, scrubbed of the
-filing's figures (O16). Done when the Mali Demo Project (HWT) and the maintainer's local CWS reference filing,
-each typed by hand into both sites, give the same number on both. Owes the teal baseline marker, a design
-value she carries from production.
+filing's figures (O16). Done when his screening numbers match the paid site's calculators run on the saved
+project's inputs (the v1 fence); reproducing real filings is the paid site's check. Owes the teal baseline
+marker, a design value she carries from production.
 
 **A14 · Screen host role words — one home.** Step 6, before or with A22 · BONES. `BridgetScreen.tsx` says
 `role: 'Map'` where her crew card says "Partners"; `PhoebeScreen.tsx` carries its own too. The chat header

@@ -907,4 +907,15 @@ licence, and the light close to check the two caps. Each passage below is whole,
 >   the free site is sealed at its version on that date; no card changes or is added until a real
 >   project fails on one. The seal is recorded in `knowledge-packs/CHANGELOG.md`.
 
+**Old wording, whole — BUILD_PLAN.md, Calvin's seat line:**
+
+> - **Calvin** talks; picks the pack from the record; asks only for what is missing; his carbon
+>   number comes from the same engine as the paid site. Done when the Mali Demo Project (HWT) and the
+>   maintainer's local CWS reference filing, each typed by hand into both sites, give the same number on both.
+
+**Old wording, whole — BUILD_PLAN.md, item A21 (its done sentence, as it stood before 10 Oct 2026):**
+
+> Done when the Mali Demo Project (HWT) and the maintainer's local CWS reference filing,
+> each typed by hand into both sites, give the same number on both.
+
 **Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), the v1 fence and the After v1 list; [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Two kinds of close* and step 8; [CLAUDE.md](../../CLAUDE.md), the v1 fence bullet.
