@@ -959,4 +959,8 @@ licence, and the light close to check the two caps. Each passage below is whole,
 >     write-up goes to BUILD_LOG.md and the item points at it. The limit is a threshold, and it changes
 >     only on her word.
 
+**Old wording, whole — BUILD_PLAN.md, item A21, its last sentence (replaced 10 Oct 2026, because the Calvin proposal dropped teal for `--tide-text` on 9 Oct 2026):**
+
+> Owes the teal baseline marker, a design value she carries from production.
+
 **Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), the v1 fence and the After v1 list; [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Two kinds of close* and step 8; [CLAUDE.md](../../CLAUDE.md), the v1 fence bullet.
