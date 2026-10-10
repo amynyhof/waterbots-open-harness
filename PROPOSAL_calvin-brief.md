@@ -8,7 +8,9 @@ time, and nothing reaches `main` without her word.**
 tags (§4, §6, §7); embodied carbon never zero (§2.2, §6); the water column's own litres slider
 (§2.5, §4.4); R1 closed with no detail kept (§1.5, §13); pull request A builds on the bundle on
 hand (R12); household treatment days (R13); the water litres ceiling (R14); the look reference is
-a text list carried by her hand (§0, R10). The pre-amendment wording is in
+a text list carried by her hand (§0, R10); and, in a second set the same day, R15 to R21 —
+embodied spread over five years, C_b and U_p without a source, the energy question, institutions
+held, the stove rule, the duplicate folder and the country aliases. The pre-amendment wording is in
 `docs/archive/CORRECTIONS.md`, except the deleted §1.5 passage, which is not kept anywhere.
 
 Calvin is build-order step 5, the next step toward the v1 fence. This proposal says what crosses from
@@ -73,6 +75,8 @@ folder and not `src/`: the bundle is one thing that crosses whole and is
 checked whole, and a folder of its own is what a hash gate can hold. `src/` imports it by a
 relative path, the way it already imports `brand/` and `knowledge-packs/`.
 
+**The same files sit in `carried/` and `engine/`.** Logged as a later tidy, no change now (R20).
+
 ### 1.2 The gate — a fork fails the build
 
 **`scripts/check-engine.mjs`** reads `engine/carry-hashes.sha256` and hashes every listed file
@@ -109,6 +113,10 @@ engine's `countryBaselineDefault` for the country first; with no row, it does no
 calculation at all, so the engine's own preset can never reach the screen. **Pull request A does
 not wait** (R12): it builds on v0.16.1. When the new engine lands, it replaces `engine/` whole, as
 one swap the hash gate checks (§1.2), and the dash lifts for every country its data covers.
+
+**Fuel without stove data stays a dash** (R19). The wrapper needs both halves — fuel shares and
+stove shares — before it runs, because a missing half would fall to the preset. The new engine must
+carry a stove rule for every country it gives a fuel figure for.
 
 ### 1.4 The tests cross too, and how they run
 
@@ -173,12 +181,18 @@ every value:
 2. **Adjustments to the crediting baseline** — Q_adj (Eq. 8: X_cleanboil, M_q, U_p), the
    uncertainty-adjusted baseline (Eq. 9), the downward adjustment factor (DAF), the crediting
    baseline (Eq. 10–12).
-3. **Activity emissions (AE)** — Eq. 14, zero by the methodology for a zero-emission
-   technology, a typed figure otherwise.
+3. **Activity emissions (AE)** — Eq. 14. **Calvin asks whether the system uses energy to run —
+   diesel, grid electricity, or none — and how much** (§6; her ruling of 10 Oct 2026, R17). None
+   is zero by the methodology for a technology that uses no energy. Until the question is
+   answered, and for any system that uses energy, the carbon headline is a dash. The engine
+   carries no diesel or grid emission factor, so an answered amount still leaves a dash, with one
+   line saying that factor is not on this site yet, until a sealed engine carries one.
 4. **Leakage (LE)** — market leakage, Option 1 at 2% (Eq. 20), and embodied emissions
-   (Eq. 17–19), the per-unit figure from **Table 10 (V2.0 p. 36) by device class**. **Embodied
-   is never 0.** If the class is not known, Calvin asks it (§6, §8), and until it is known the
-   carbon headline is a dash that says the device class is needed.
+   (Eq. 17–19), the per-unit figure from **Table 10 (V2.0 p. 36) by device class**, **spread over
+   the first crediting period of five years (Eq. 19), per V2.0 §9.2.2.1(b), p. 37** — the
+   methodology's rule (R15). **Embodied is never 0.** If the class is not known, Calvin asks it
+   (§6, §8), and until it is known the carbon headline is a dash that says the device class is
+   needed.
 5. **Emission reductions (credits)** — Eq. 22, and the total over the first crediting period
    (five years, V2.0 p. 5), in the registry's time words only: crediting period, monitoring
    period, vintage (ruling 11).
@@ -230,7 +244,8 @@ The wrapper, `src/lib/calvinEngine.ts`, decides from the record and never from p
 
 | Record | Carbon calculator | Water calculator |
 |---|---|---|
-| Type C-19, class HWT or IWT | PAA v2.0 Method 2 (Eq. 6–7); IWT takes the institutional caps | VWBA D-3 |
+| Type C-19, class HWT | PAA v2.0 Method 2 (Eq. 6–7) | VWBA D-3 |
+| Type C-19, class IWT | PAA v2.0 Method 2, **but the carbon headline is a dash** until the engine can take the institutional litres caps (R18) | VWBA D-3 |
 | Type C-19, class CWT or CWS | PAA v2.0 Method 1 (Eq. 4–5) | VWBA D-3 |
 | Type C-19, no class yet | none until the class is known — Calvin asks it (§8) | VWBA D-3 |
 | Type C-11 | none — the carbon pathway does not name this type | VWBA D-3 |
@@ -239,7 +254,10 @@ The wrapper, `src/lib/calvinEngine.ts`, decides from the record and never from p
 
 The carbon column is then shown or held by Phoebe's read (§8). The country comes from the
 record's place where a country name can be matched against the UN M49 table the engine already
-carries (`un-m49.json`, 248 rows); where it cannot, Calvin asks (§8). Country is what unlocks
+carries (`un-m49.json`, 248 rows), or against a short list of common names — "Tanzania", "Ivory
+Coast", "Vietnam" — that point at their UN M49 row (R21). The alias list is ours, labelled as
+ours in `src/lib/calvinFields.ts`; it only finds a row and is never shown as a value. Where
+neither finds exactly one country, Calvin asks (§8). Country is what unlocks
 fNRB, DAF, household size and the age shares, all from the engine's own lookups.
 
 **Where the engine refuses, the screen shows the refusal and Calvin asks.** A country outside
@@ -261,14 +279,16 @@ ASSUMED unless the visitor did something to put it there.
 
 ### 4.1 Litres per person per day (QPW_p, SDWS 29)
 
-- **Range:** 0 to the cap for the technology type, from Table 9 (V2.0 §7.3.11, p. 31):
-  household and community supply (HWT, CWT, CWS) 5.5 L, the adult residential cap; institutional
-  partial-day (IWT, day students, employees, patients) 3.0 L; an institution whose users are
-  present all day takes the residential caps. The engine's `peakVolumeCapLPerPersonPerDay`
-  carries the cap; the slider cannot pass it.
+- **Range:** 0 to 5.5 L, the engine's own cap (`QPW_PERSON_CAP_DEFAULT`, the adult residential
+  cap of Table 9, V2.0 §7.3.11, p. 31), for household and community supply (HWT, CWT, CWS). The
+  slider cannot pass it.
 - **Opens at** the engine's own default: the Table 9 age-tiered defaults (0.9 / 3.0 / 4.0)
   weighted by the country's UN WPP 2024 age shares — DEFAULT, cited to Table 9 and to
-  `un-wpp-2024-pop-age1`. Method 2 institutional opens at the 2.0 L day-student default.
+  `un-wpp-2024-pop-age1`.
+- **Institutions (IWT) have no slider and no carbon number yet** (R18). The engine's scenario
+  inputs cannot take Table 9's institutional caps, and a cap typed into `src/` would be a figure
+  with no engine source. Their carbon headline is a dash with one line until a sealed engine
+  takes those caps.
 - **Moved:** the run switches to `volumeBasis: "flat"` at the slider's value, tagged ASSUMED,
   with one line: *A Water Consumption Field Test (SDWS 29, Option 2, Annex 2) is what makes this
   a measured value.* The engine's own label for a flat value — "entered (design value or WCFT)"
@@ -358,6 +378,8 @@ row with a box (and Calvin's question):
 | Operational days | Q_pop | whole days, 1–365 | the plan; the slider opens at 347 (default); for HWT no row to type: 365, SDWS 36, pending the paid site's confirmation (§4.2) |
 | Premises with a unit (Method 2, SDWS 33) | Eq. 6 | whole count | sales or distribution records; a planned project's target |
 | Device class and new units this year | embodied emissions, Table 10 | one of seven classes; whole count | the plan; **never 0** — if the class is unknown Calvin asks it, and the carbon headline waits (§2.2) |
+| Energy the system uses | activity emissions, Eq. 14 | diesel, grid electricity, or none | the plan; unanswered, the carbon headline is a dash (R17) |
+| How much energy a year | activity emissions, Eq. 14 | litres of diesel, or kWh of grid electricity, a year | the plan or the supplier's figures; asked only where energy is used |
 | Access level (water) | the water column's litres slider and days | full or limited | the record or the baseline; else asked |
 | Without-project volume (water) | D-3 benefit | litres a year, blank allowed, never zero | the baseline; blank leaves the water headline a dash |
 | fNRB, only when the engine refuses | EF_b | a fraction with a source | the project's own filing or study |
@@ -383,6 +405,11 @@ Four words, the same on the screen, in the record and in the seal:
 
 **Nothing opens ASSUMED.** A value is ASSUMED only because a visitor moved it; no row carries the
 tag by default.
+
+**Two engine values have no source yet** (R16): C_b 0, the share already using safe water, and
+U_p 1, the usage rate on Method 2. Sources are to be found on the paid side for the new engine.
+Until then they are listed among the values used, tagged DEFAULT, with a source line that says
+"no source" in so many words. Every carbon headline is a dash on v0.16.1 anyway.
 
 The engine's own provenance words map onto them once, in the wrapper: `country`, `default` →
 default; `override` → entered; `global-default` → default with its label (the DAF global
@@ -600,3 +627,20 @@ committed" until her word, as the process rules say.
   (SDWS 36), pending the paid site's confirmation of that reading (§4.2).
 - **R14 — The water litres slider's range.** **Ruled 10 Oct 2026: YES**, 0 to 20 L (§4.4). An After
   v1 entry reviews the ceiling.
+
+**Ruled 10 Oct 2026, a second set**, on the open questions of pull request A's steps 1 to 3. An After v1
+entry reviews all of them together with R14.
+
+- **R15 — Embodied emissions route:** spread over five years (Eq. 19), per V2.0 §9.2.2.1(b) — the
+  methodology's rule (§2.2).
+- **R16 — C_b 0 and U_p 1 have no source:** sources to be found on the paid side for the new engine.
+  Until then they stay listed as "no source" (§7.1).
+- **R17 — Activity emissions:** a field Calvin asks — does the system use energy (diesel, grid, none)?
+  and how much? Until answered, a technology that uses energy shows a carbon dash (§2.2, §6).
+- **R18 — Institutions (IWT):** the carbon headline is a dash until the engine can take the
+  institutional litres caps (§3, §4.1).
+- **R19 — Fuel without stove data stays a dash;** the new engine must carry a stove rule per country
+  (§1.3).
+- **R20 — `engine/` beside `carried/`:** logged as a later tidy, no change now (§1.1).
+- **R21 — Country matching:** a short alias list of common country names, mapping to the UN M49
+  names; labelled as ours, never a value (§3).

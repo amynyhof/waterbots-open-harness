@@ -339,3 +339,7 @@ yet.
 
 **V2-3 · Review the VWBA water litres ceiling (20 L, Table D3.3).** After v1. Calvin's water litres slider
 runs 0 to 20 L, her ruling of 10 Oct 2026; the table states no ceiling, and 20 is its highest figure.
+
+**V2-4 · Review Calvin's rulings of 10 Oct 2026: embodied route, C_b, U_p, activity emissions, institutional
+litres, stove rule, engine/carried duplicate, country aliases, water litres ceiling.** After v1. R14 to R21 in
+`PROPOSAL_calvin-brief.md` §13. C_b, U_p and the stove rule wait on sources from the paid side's new engine.

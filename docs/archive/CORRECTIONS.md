@@ -1150,3 +1150,35 @@ being true. Each passage is whole, as it stood that morning.
 
 **Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), item A21, the build-order table and
 the bullet under it.
+
+---
+
+## 10 Oct 2026, third correction — PROPOSAL_calvin-brief.md: activity emissions, institutions, the litres cap
+
+**Why:** the maintainer's second set of rulings that day (R15 to R21) made activity emissions a
+question Calvin asks, held institutions (IWT) to a carbon dash until the engine can take their
+litres caps, and so removed the institutional cap and opening the proposal had promised. Each
+passage is whole, as it stood that morning.
+
+**Old wording, whole — §2.2, block 3:**
+
+> 3. **Activity emissions (AE)** — Eq. 14, zero by the methodology for a zero-emission
+>    technology, a typed figure otherwise.
+
+**Old wording, whole — §3, the table's first row:**
+
+> | Type C-19, class HWT or IWT | PAA v2.0 Method 2 (Eq. 6–7); IWT takes the institutional caps | VWBA D-3 |
+
+**Old wording, whole — §4.1, the range and the opening:**
+
+> - **Range:** 0 to the cap for the technology type, from Table 9 (V2.0 §7.3.11, p. 31):
+>   household and community supply (HWT, CWT, CWS) 5.5 L, the adult residential cap; institutional
+>   partial-day (IWT, day students, employees, patients) 3.0 L; an institution whose users are
+>   present all day takes the residential caps. The engine's `peakVolumeCapLPerPersonPerDay`
+>   carries the cap; the slider cannot pass it.
+> - **Opens at** the engine's own default: the Table 9 age-tiered defaults (0.9 / 3.0 / 4.0)
+>   weighted by the country's UN WPP 2024 age shares — DEFAULT, cited to Table 9 and to
+>   `un-wpp-2024-pop-age1`. Method 2 institutional opens at the 2.0 L day-student default.
+
+**Where the current text is:** [PROPOSAL_calvin-brief.md](../../PROPOSAL_calvin-brief.md), §2.2,
+§3 and §4.1; the rulings are R15 to R21 in §13.
