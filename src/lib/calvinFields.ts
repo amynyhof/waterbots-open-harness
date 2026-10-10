@@ -34,18 +34,73 @@ export function countryName(iso: string): string | undefined {
 }
 
 /**
- * The country a place names, when exactly one M49 country name appears in it as
- * whole words. "Near Lilongwe, Malawi" names Malawi. A place that names none, or
+ * The country a place names, when exactly one M49 country name — or one of our
+ * common names for one, below — appears in it as whole words. "Near Lilongwe,
+ * Malawi" names Malawi; "Arusha, Tanzania" names the United Republic of Tanzania. A place that names none, or
  * two that are not one inside the other, returns undefined and Calvin asks —
  * a guessed country would unlock the wrong fNRB, DAF and household size.
  * Where one matched name sits inside another ("Guinea" in "Equatorial
  * Guinea"), the longer one stands.
  */
+/**
+ * COMMON NAMES FOR UN M49 COUNTRIES — OURS, NOT THE UN'S. The maintainer's
+ * ruling of 10 Oct 2026 (R21). Many M49 names are formal ("United Republic of
+ * Tanzania", "Viet Nam", "Bolivia (Plurinational State of)"), so a visitor who
+ * says "Tanzania" would otherwise be asked again. Each alias only points at an
+ * M49 row; the country shown and used is always that row's own name. Never a
+ * value, never shown. A name that could mean two countries ("Congo", "Korea")
+ * is left out on purpose, so Calvin asks — and "Congo" alone, which is also the
+ * Republic of the Congo's own M49 name, is set aside in AMBIGUOUS_NAMES below.
+ */
+export const COUNTRY_ALIASES: Readonly<Record<string, string>> = {
+  tanzania: 'TZA',
+  drc: 'COD',
+  'dr congo': 'COD',
+  'democratic republic of congo': 'COD',
+  'congo brazzaville': 'COG',
+  'republic of the congo': 'COG',
+  'ivory coast': 'CIV',
+  "cote d'ivoire": 'CIV',
+  "côte d'ivoire": 'CIV',
+  bolivia: 'BOL',
+  venezuela: 'VEN',
+  iran: 'IRN',
+  laos: 'LAO',
+  vietnam: 'VNM',
+  syria: 'SYR',
+  russia: 'RUS',
+  'south korea': 'KOR',
+  'north korea': 'PRK',
+  moldova: 'MDA',
+  uk: 'GBR',
+  'united kingdom': 'GBR',
+  britain: 'GBR',
+  'great britain': 'GBR',
+  usa: 'USA',
+  'united states': 'USA',
+  micronesia: 'FSM',
+  swaziland: 'SWZ',
+  'cape verde': 'CPV',
+  turkey: 'TUR',
+  'czech republic': 'CZE',
+  palestine: 'PSE',
+  burma: 'MMR',
+  'east timor': 'TLS',
+  netherlands: 'NLD',
+  holland: 'NLD',
+  brunei: 'BRN',
+};
+
+/** Bare names that could mean two countries. Never matched on their own; Calvin asks. Ours. */
+const AMBIGUOUS_NAMES: ReadonlySet<string> = new Set(['congo']);
+
 export function matchCountry(place: string): string | undefined {
   let text = ` ${words(place)} `;
-  const names = Object.entries(M49)
-    .map(([iso, row]) => ({ iso, name: words(row.name) }))
-    .filter((n) => n.name !== '')
+  const names = [
+    ...Object.entries(M49).map(([iso, row]) => ({ iso, name: words(row.name) })),
+    ...Object.entries(COUNTRY_ALIASES).map(([alias, iso]) => ({ iso, name: words(alias) })),
+  ]
+    .filter((n) => n.name !== '' && !AMBIGUOUS_NAMES.has(n.name))
     .sort((a, b) => b.name.length - a.name.length);
   const found = new Set<string>();
   /* Longest names first, each match taken out of the text, so "Guinea" is not
@@ -77,7 +132,18 @@ export type CalvinFieldKey =
   | 'deviceClass'
   | 'deviceUnits'
   | 'householdSize'
-  | 'fnrb';
+  | 'fnrb'
+  | 'energySource'
+  | 'energyAmount';
+
+/** What the system runs on, for activity emissions (Eq. 14). R17, 10 Oct 2026. */
+export type EnergySource = 'none' | 'diesel' | 'grid';
+export const ENERGY_SOURCES: readonly EnergySource[] = ['none', 'diesel', 'grid'];
+/** The unit the amount is asked in, by source. */
+export const ENERGY_UNIT: Record<Exclude<EnergySource, 'none'>, string> = {
+  diesel: 'litres of diesel / year',
+  grid: 'kWh of grid electricity / year',
+};
 
 export interface CalvinField<T> {
   key: CalvinFieldKey;
@@ -194,6 +260,22 @@ export const CALVIN_FIELDS = {
         : undefined;
     },
   } satisfies CalvinField<SuppliedFnrb>,
+  energySource: {
+    key: 'energySource',
+    label: 'Energy the system uses to run',
+    neededBy: 'activity emissions, Eq. 14',
+    kind: 'diesel, grid electricity, or none',
+    whereFrom: 'the plan',
+    read: (value: unknown) => ((ENERGY_SOURCES as readonly string[]).includes(value as string) ? (value as EnergySource) : undefined),
+  } satisfies CalvinField<EnergySource>,
+  energyAmount: {
+    key: 'energyAmount',
+    label: 'How much energy a year',
+    neededBy: 'activity emissions, Eq. 14 — asked only where the system uses energy',
+    kind: 'litres of diesel, or kWh of grid electricity, a year',
+    whereFrom: "the plan or the supplier's figures",
+    read: positiveNumber,
+  } satisfies CalvinField<number>,
 } as const;
 
 /** The closed list a fill is checked against. A key not on it is dropped whole. */
@@ -229,8 +311,9 @@ export const LITRES_SLIDER: SliderSpec = {
   key: 'litres',
   label: 'Drinking water per person per day',
   min: 0,
-  /* The engine's cap. A partial-day institutional cap is not in the engine's
-     scenario inputs; see the pull request's open questions. */
+  /* The engine's cap, for household and community supply. Institutions (IWT)
+     have no slider and a carbon dash until the engine can take Table 9's
+     institutional caps — the maintainer's ruling of 10 Oct 2026 (R18). */
   max: QPW_PERSON_CAP_DEFAULT,
   step: 0.1,
   unit: 'L / person / day',

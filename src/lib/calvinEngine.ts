@@ -6,7 +6,7 @@
  *
  *   1. CHOOSES THE CALCULATOR from the record — the type and the class — never
  *      from prose (§3).
- *   2. SAYS WHAT IS MISSING, so the carbon headline is a dash with its line
+ *   2. SAYS WHAT IS MISSING OR NOT YET ON THIS SITE, so the carbon headline is a dash with its line
  *      instead of a number nobody can stand behind. Nothing is ever zero for
  *      want of an answer.
  *   3. RUNS THE ENGINE — `computeScenario`, unedited — on the record and the
@@ -57,6 +57,7 @@ import {
   clampSlider,
   countryName,
   type CalvinFieldKey,
+  type EnergySource,
   type SuppliedFnrb,
 } from './calvinFields';
 import { DRINKING_WATER_TYPE, type GsClassId } from './projectTypes.generated';
@@ -69,6 +70,22 @@ import type { ProjectClass, ProjectType, Served } from './visit';
 
 /** The carbon headline's line for a country with no cleared baseline fuel data. */
 export const BASELINE_FUEL_LINE = 'Baseline fuel data is not on this site yet.';
+
+/** The line for an institution (IWT), until the engine can take Table 9's institutional caps (R18). */
+export const INSTITUTION_LITRES_LINE = 'The daily water limits for schools, clinics and other institutions are not on this site yet.';
+
+/** The line for a system that runs on diesel or grid power once the amount is known (R17). */
+export function energyFactorLine(source: 'diesel' | 'grid'): string {
+  return `The emission factor for ${source === 'diesel' ? 'diesel' : 'grid electricity'} is not on this site yet.`;
+}
+
+/**
+ * Embodied emissions are spread over the first crediting period, five years
+ * (Eq. 19), per V2.0 §9.2.2.1(b) — the methodology's rule; the maintainer's
+ * ruling of 10 Oct 2026 (R15). The cite is the engine's data file's own.
+ */
+export const EMBODIED_ROUTE = 'amortised' as const;
+const EMBODIED_ROUTE_CITE: string = (embodiedJson as unknown as { amortisationYears: { cite: string } }).amortisationYears.cite;
 
 /* --------------------------------------------------------------------------
    1. Which calculator, from the record (§3).
@@ -141,12 +158,10 @@ export interface CarbonInputs {
   householdSize?: Answer<number>;
   /** Only where the engine refuses fNRB for the country. */
   fnrb?: Answer<SuppliedFnrb>;
-  /**
-   * Embodied emissions route: upfront (Eq. 18) or amortised over five years
-   * (Eq. 19). The engine never picks it; neither does this wrapper. The screen
-   * passes it, and it waits on the maintainer's word before step 4.
-   */
-  embodiedRoute: 'upfront' | 'amortised';
+  /** What the system runs on, for activity emissions (R17). Unanswered is a dash. */
+  energySource?: Answer<EnergySource>;
+  /** How much a year, in ENERGY_UNIT for the source; asked only where energy is used. */
+  energyAmount?: Answer<number>;
 }
 
 /* --------------------------------------------------------------------------
@@ -202,7 +217,11 @@ const REG = {
   m49: (m49Json as unknown as { registrySources: string[] }).registrySources[0],
 };
 
-/** True when the engine has cleared fuel AND stove shares for the country, so no half falls to the preset. */
+/**
+ * True when the engine has cleared fuel AND stove shares for the country, so no
+ * half falls to the preset. Fuel without stove data stays a dash; the new engine
+ * must carry a stove rule per country — the maintainer's ruling of 10 Oct 2026 (R19).
+ */
 export function hasClearedFuelData(iso: string): boolean {
   const d = countryBaselineDefault(iso);
   return d.fuel !== undefined && d.stove !== undefined;
@@ -220,6 +239,7 @@ export function carbonOutcome(input: CarbonInputs): CarbonOutcome {
   }
   const method = choice.method;
   const isHwt = choice.gsClass === 'HWT';
+  const isIwt = choice.gsClass === 'IWT';
 
   const needs: CalvinFieldKey[] = [];
   const iso = input.country && M49_ROWS[input.country] ? input.country : null;
@@ -235,6 +255,9 @@ export function carbonOutcome(input: CarbonInputs): CarbonOutcome {
   // Embodied is never 0: the class and the unit count are asked (her ruling of 10 Oct 2026).
   if (!input.deviceClass) needs.push('deviceClass');
   if (!input.deviceUnits) needs.push('deviceUnits');
+  // Activity emissions: does the system use energy, and how much (R17).
+  if (!input.energySource) needs.push('energySource');
+  else if (input.energySource.value !== 'none' && !input.energyAmount) needs.push('energyAmount');
 
   // The engine's own fNRB refusal is printed verbatim, and the visitor's own value with its source lifts it.
   if (iso) {
@@ -242,8 +265,13 @@ export function carbonOutcome(input: CarbonInputs): CarbonOutcome {
     if (!avail.ok) return { kind: 'dash', line: avail.refusal.message, needs: ['fnrb', ...needs] };
     if (!hasClearedFuelData(iso)) return { kind: 'dash', line: BASELINE_FUEL_LINE, needs };
   }
-  if (needs.length > 0 || !iso || !input.served || !input.deviceClass || !input.deviceUnits) {
+  if (isIwt) return { kind: 'dash', line: INSTITUTION_LITRES_LINE, needs };
+  if (needs.length > 0 || !iso || !input.served || !input.deviceClass || !input.deviceUnits || !input.energySource) {
     return { kind: 'dash', line: stillNeededLine(needs), needs };
+  }
+  // The engine carries no diesel or grid emission factor; an answered amount still leaves a dash.
+  if (input.energySource.value !== 'none') {
+    return { kind: 'dash', line: energyFactorLine(input.energySource.value), needs: [] };
   }
 
   const litres = input.litres ? clampSlider(LITRES_SLIDER, input.litres.value) : undefined;
@@ -276,7 +304,7 @@ export function carbonOutcome(input: CarbonInputs): CarbonOutcome {
     householdSizeOverride: input.householdSize?.value ?? null,
     fnrbOverride: input.fnrb?.value.value ?? null,
     M_qy: quality,
-    embodied: { unitsInYear: input.deviceUnits.value, category: input.deviceClass.value, route: input.embodiedRoute },
+    embodied: { unitsInYear: input.deviceUnits.value, category: input.deviceClass.value, route: EMBODIED_ROUTE },
   });
 
   // Second guard: a run that fell back to the preset for either half is never shown.
@@ -451,7 +479,7 @@ export function usedValues(
   const r = scenario.result as PaaErOutput;
   out.push({
     key: 'C_b', label: 'Share already using safe water (C_b)', value: 0, unit: 'fraction', tag: 'default',
-    source: { label: "the engine's value when none is entered; no source row in the engine" },
+    source: { label: 'no source — to be found on the paid side for the new engine' },
   });
   out.push({
     key: 'X_cleanboil', label: 'Share boiling water that is already clean (X_cleanboil)', value: 0, unit: 'fraction', tag: 'default',
@@ -460,12 +488,15 @@ export function usedValues(
   if (ctx.method === 2) {
     out.push({
       key: 'U_p', label: 'Usage rate (U_p)', value: 1, unit: 'fraction', tag: 'default',
-      source: { label: "the engine's value when none is entered; no source row in the engine" },
+      source: { label: 'no source — to be found on the paid side for the new engine' },
     });
   }
   out.push({
+    key: 'energySource', label: 'Energy the system uses to run', value: 'none', unit: '', tag: 'entered', source: {},
+  });
+  out.push({
     key: 'AE', label: 'Activity emissions (AE)', value: r.PE, unit: 'tCO₂e', tag: 'default',
-    source: { registryId: METHODOLOGY_V2_ID, section: 'Eq. 14', label: "the engine's value when none is entered" },
+    source: { registryId: METHODOLOGY_V2_ID, section: 'Eq. 14', label: 'zero for a technology that uses no energy' },
   });
 
   // Leakage and embodied emissions — the methodology's defaults, by the engine's labels.
@@ -481,6 +512,10 @@ export function usedValues(
   out.push({
     key: 'embodiedFactor', label: 'Embodied emissions per unit', value: cat.factor, unit: 'tCO₂e / unit', tag: 'default',
     source: { registryId: REG.embodied, label: cat.cite },
+  });
+  out.push({
+    key: 'embodiedRoute', label: 'Embodied emissions spread over', value: 'five years (Eq. 19)', unit: '', tag: 'default',
+    source: { registryId: METHODOLOGY_V2_ID, label: EMBODIED_ROUTE_CITE },
   });
   out.push({
     key: 'deviceUnits', label: 'New units this year', value: input.deviceUnits!.value, unit: 'units', tag: 'entered', source: {},
