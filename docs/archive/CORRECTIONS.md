@@ -1122,3 +1122,31 @@ figures, and R9's closing clause naming that country are not copied.
 
 **Where the current text is:** [PROPOSAL_calvin-brief.md](../../PROPOSAL_calvin-brief.md), the same
 sections; §13 carries R12 to R14.
+
+---
+
+## 10 Oct 2026, second correction — BUILD_PLAN.md: Calvin's item, his build-order row and the bundle bullet
+
+**Why:** the proposal was committed and pull request A's steps 1 to 3 were built the same day, so
+"untracked at the root; nothing is built", "Next" and "nothing in the site reads it yet" stopped
+being true. Each passage is whole, as it stood that morning.
+
+**Old wording, whole — item A21:**
+
+> **A21 · Calvin's brief — his chat, the carried engine, carbon beside water.** Step 5 · BONES. Proposed
+> 27 Sep 2026 as `PROPOSAL_calvin-brief.md`, untracked at the root; nothing is built. R2 to R11 ruled yes on
+> 1 Oct 2026, her notes in its §13. **R1 is closed**: the v0.16.1 bundle crossed 3 Oct 2026, scrubbed of the
+> filing's figures (O16). Done when his screening numbers match the paid site's calculators run on the saved
+> project's inputs (the v1 fence; the maintainer's ruling, 10 Oct 2026). Baseline marker: `--tide-text`
+> (chosen 9 Oct 2026; teal dropped).
+
+**Old wording, whole — the build-order row for step 5:**
+
+> | 5 | Calvin's brief, with the carried engine | **Next.** Bundle crossed 3 Oct 2026 (v0.16.1, #147), tagged `engine-carry-2026-10-04` | A21 |
+
+**Old wording, whole — the end of the engine bundle bullet:**
+
+> Nothing edits it here, and nothing in the site reads it yet.
+
+**Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), item A21, the build-order table and
+the bullet under it.
