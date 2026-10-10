@@ -141,11 +141,11 @@ order above, for her to move.
 How agents behave, what they may say, how they hand off. Governed by AGENT_RULES.md.
 
 **A21 · Calvin's brief — his chat, the carried engine, carbon beside water.** Step 5 · BONES. `PROPOSAL_calvin-brief.md`,
-committed 10 Oct 2026; R1 to R14 ruled, her notes in its §13. **Pull request A, steps 1 to 3 built 10 Oct 2026**:
-`engine/` from v0.16.1 behind a hash gate, the registry reader, the wrapper and field list; every carbon headline
-is a dash until a sealed engine carries cleared fuel data (R12). Step 4, the sheet, waits for her text list of
-block names and tag words (R10). Done when his screening numbers match the paid site's calculators run on the
-saved project's inputs (the v1 fence). Baseline marker: `--tide-text`.
+committed 10 Oct 2026; R1 to R21 ruled, her notes in its §13. **Pull request A, steps 1 to 3 built 10 Oct 2026** (#151):
+`engine/` from v0.16.1 behind a hash gate, the registry reader, the wrapper and field list, R15 to R21 built in;
+every carbon headline is a dash until a sealed engine carries cleared fuel and stove data (R12, R19). Step 4, the
+sheet, waits for her text list of block names and tag words (R10). Done when his screening numbers match the paid
+site's calculators run on the saved project's inputs (the v1 fence). Baseline marker: `--tide-text`.
 
 **A14 · Screen host role words — one home.** Step 6, before or with A22 · BONES. `BridgetScreen.tsx` says
 `role: 'Map'` where her crew card says "Partners"; `PhoebeScreen.tsx` carries its own too. The chat header
