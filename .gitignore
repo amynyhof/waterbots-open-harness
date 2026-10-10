@@ -91,3 +91,9 @@ data-src/
 # that the rule above would swallow. It is part of the sealed bundle and
 # publishes with it. Added 27 Sep 2026 on the maintainer's word.
 !carried/calculators/data/legacy/
+
+# engine/ is the site's copy of the same bundle and has the same folder.
+# Missed on 10 Oct 2026: its two files stayed on disk but out of the commit,
+# and check-engine failed the Vercel build on the first push. Calvin's brief,
+# pull request A.
+!engine/calculators/data/legacy/
