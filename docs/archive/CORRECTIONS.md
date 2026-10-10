@@ -807,10 +807,22 @@ below is whole, recovered from git at `6fb498e`, the commit before #149 merged.
 > **The close-out is one complete act.** Maintainer's ruling, 26 Aug 2026: the ritual below
 > includes every step, every time. **A ritual with a skipped step is an unfinished ritual.**
 
-**Old wording, whole — PROCESS_RULES_for_ShellB.md — step 9, first line:**
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — step 9:**
 
 > 9. **The sweep, at EVERY close-out.** Maintainer's ruling, 1 Oct 2026. Run it before step 5's
 >    commit, so the checkpoint carries it; it has a high number only because the steps above are cited
+>    by number elsewhere.
+>    - **Closed items leave [BUILD_PLAN.md](./BUILD_PLAN.md) for [BUILD_LOG.md](./BUILD_LOG.md).** Every
+>      item closed or built this sitting moves in full into this sitting's BUILD_LOG entry, appended.
+>      **No closed item is left behind** in the plan file.
+>    - **Residues move first.** A closed item that still holds an open thread — a carry, a follow-up, a
+>      measure not yet taken — gives that thread an entry of its own in its family before the item moves,
+>      so nothing open leaves with the closed text.
+>    - **Every loose item gets a family.** A thread buried in another item's write-up, or an item with no
+>      family, is given an entry in one of the families. If it fits none, the families are wrong, and that
+>      is raised with the maintainer, not worked around.
+>    - Bodies swept before 3 Oct 2026 stay in
+>      [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md); nothing is moved twice.
 
 **Old wording, whole — PROCESS_RULES_for_ShellB.md — step 10:**
 
@@ -917,5 +929,34 @@ licence, and the light close to check the two caps. Each passage below is whole,
 
 > Done when the Mali Demo Project (HWT) and the maintainer's local CWS reference filing,
 > each typed by hand into both sites, give the same number on both.
+
+**Old wording, whole — BUILD_PLAN.md — the size-limit paragraph:**
+
+> **Size limit: 400 lines.** The maintainer's ruling of 3 Oct 2026. An item is six lines at most; a longer
+> write-up goes to BUILD_LOG.md and the item points at it. A close-out that finds this file past 400 lines
+> says so in its report (step 10 of the close-out ritual).
+
+**Old wording, whole — BUILD_PLAN.md — How it is kept:**
+
+> **How it is kept.** Rewritten when the plan changes and refreshed at every close-out. A closed item leaves
+> at the close-out for [BUILD_LOG.md](./BUILD_LOG.md), with nothing left behind (step 9). Every item belongs
+> to a family; starting a family is her decision.
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — the loose-item line under Open items and families:**
+
+>   item. A loose item is given its family at the close-out (step 9), never left without one.
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — the plan file's number:**
+
+> **The plan file has a number: 400 lines.** [BUILD_PLAN.md](./BUILD_PLAN.md) is counted at every
+> close-out, step 10, and a count past 400 is flagged in the report.
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — step 10 (as on main; the words 'every full close-out' and 'full close-out report' replace 'every close-out' and 'close-out report'):**
+
+> 10. **Count the plan file's lines.** Maintainer's ruling, 3 Oct 2026: [BUILD_PLAN.md](./BUILD_PLAN.md)
+>     has a limit of **400 lines**. Count them at every full close-out, after the sweep. **If the file is past
+>     400, flag it in the close-out report, with the count.** An item there is six lines at most; a longer
+>     write-up goes to BUILD_LOG.md and the item points at it. The limit is a threshold, and it changes
+>     only on her word.
 
 **Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), the v1 fence and the After v1 list; [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Two kinds of close* and step 8; [CLAUDE.md](../../CLAUDE.md), the v1 fence bullet.

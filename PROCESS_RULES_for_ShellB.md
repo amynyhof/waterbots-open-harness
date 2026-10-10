@@ -198,15 +198,16 @@ below for when each kind runs.
 the end of every sitting. The old wording is in
 [docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md).
 
-1. **A light close after each task.** Commit, open the pull request, write one plan line saying what
-   landed, then check two caps, then `/clear` (which empties the session's working memory between
-   tasks). **The plan line goes in [BUILD_PLAN.md](./BUILD_PLAN.md), under the family's own row** —
-   the item or entry of the family the task belongs to — never at the top of the file or in a list of
-   its own. **The two caps:** the item the task touched is six lines at most, and the file is 400
-   lines at most. If either is over, trim the item (a longer write-up goes to BUILD_LOG.md and the
-   item points at it) or sweep closed items to BUILD_LOG.md before the commit. Nothing more: a light
-   close does not append the session to BUILD_LOG.md, run the full sweep, or refresh Wellington's
-   build-update fact.
+1. **A light close after each task, in this order:** (a) write one plan line saying what landed,
+   **in [BUILD_PLAN.md](./BUILD_PLAN.md), under the family's own row** — the item or entry of the
+   family the task belongs to, never at the top of the file or in a list of its own; (b) check the two
+   caps, which are six lines at most for the item the task touched and 400 lines at most for the
+   file; (c) if the item is over, trim it (a longer write-up goes to BUILD_LOG.md and the item points
+   at it); (d) commit; (e) open the pull request; (f) `/clear`, which empties the session's working
+   memory between tasks. **A light close never sweeps to BUILD_LOG.md.** If the file is still over 400
+   lines after the item is trimmed, the light close says a full close-out is needed, and the sweep
+   waits for it. A light close also does not append the session to BUILD_LOG.md or refresh
+   Wellington's build-update fact.
 2. **The full close-out ritual, only at the end of a family or sprint.** The ten steps under *How a
    session closes* run in full, as written. A family or sprint ends when the maintainer says so.
 
@@ -376,7 +377,7 @@ the item points at it.
   starts one; starting one is a maintainer decision, recorded with
   its reason.
 - If an item seems to fit nowhere, the families are wrong — not the
-  item. A loose item is given its family at the close-out (step 9), never left without one.
+  item. A loose item is given its family at the full close-out (step 9), never left without one.
 - Global fixes over patchwork. Work is grouped and built by family,
   not picked off one row at a time.
 - Shortcuts are taken only under real pressure, named as shortcuts,
@@ -421,7 +422,7 @@ maintainer's ruling.
 Part 1 report, rather than reading it dutifully and saying nothing.
 
 **The plan file has a number: 400 lines.** [BUILD_PLAN.md](./BUILD_PLAN.md) is counted at every
-close-out, step 10, and a count past 400 is flagged in the report.
+full close-out, step 10, and a count past 400 is flagged in the report.
 
 ## How a session closes
 
@@ -469,7 +470,7 @@ those gets the light close (*Two kinds of close*). **A ritual with a skipped ste
      [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md); nothing is moved twice.
 10. **Count the plan file's lines.** Maintainer's ruling, 3 Oct 2026: [BUILD_PLAN.md](./BUILD_PLAN.md)
     has a limit of **400 lines**. Count them at every full close-out, after the sweep. **If the file is past
-    400, flag it in the close-out report, with the count.** An item there is six lines at most; a longer
+    400, flag it in the full close-out report, with the count.** An item there is six lines at most; a longer
     write-up goes to BUILD_LOG.md and the item points at it. The limit is a threshold, and it changes
     only on her word.
 

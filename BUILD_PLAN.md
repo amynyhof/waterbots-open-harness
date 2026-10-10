@@ -9,11 +9,12 @@ moves from a proposal to a commit.
 step; and the families whose work is all after v1, ending in the After v1 list.
 
 **Size limit: 400 lines.** The maintainer's ruling of 3 Oct 2026. An item is six lines at most; a longer
-write-up goes to BUILD_LOG.md and the item points at it. A close-out that finds this file past 400 lines
-says so in its report (step 10 of the close-out ritual).
+write-up goes to BUILD_LOG.md and the item points at it. A full close-out that finds this file past 400 lines
+says so in its report (step 10 of the full close-out ritual). A light close that finds it still past
+400 after trimming says a full close is needed.
 
-**How it is kept.** Rewritten when the plan changes and refreshed at every close-out. A closed item leaves
-at the close-out for [BUILD_LOG.md](./BUILD_LOG.md), with nothing left behind (step 9). Every item belongs
+**How it is kept.** Rewritten when the plan changes and refreshed at every full close-out. A closed item leaves
+at the full close-out for [BUILD_LOG.md](./BUILD_LOG.md), with nothing left behind (step 9). Every item belongs
 to a family; starting a family is her decision.
 
 **Where the detail is.** Each item's full write-up, as it stood on 3 Oct 2026, is in BUILD_LOG.md, in the
@@ -31,7 +32,11 @@ an action here (rule zero).
 
 ## The v1 fence — the one finish line (the maintainer's word, 7 Oct 2026)
 
-**v1 is done when** a visitor screens in 30 questions or fewer (Wellington → Phoebe → Bridget →
+> "V1 is done when I can run a screening in 30 questions from Wellington -> Phoebe -> Bridget ->
+> Calvin -> Print Report / Sign up -> Project saved to Paid site AND the paid site Carbon and VWBA
+> calculators produce the same numbers despite the screening site using a simpler version."
+
+In working words: **v1 is done when** a visitor screens in 30 questions or fewer (Wellington → Phoebe → Bridget →
 Calvin → report / sign up), the project saves to the paid site, and the paid site's carbon and VWBA
 calculators, run on that saved project's inputs, give the same numbers as the screening.
 
@@ -40,8 +45,7 @@ calculators, run on that saved project's inputs, give the same numbers as the sc
   screening also shows its transitional volume, still maps it, quantifies it, checks VWBA, and offers
   the report and the move to the paid site.
 - **VWBA covers water supply project types only.**
-- **Defaults rule.** It is the one in [CLAUDE.md](./CLAUDE.md) (Scope, the quantification surface): a
-  default with no source asks the visitor instead. Not restated here.
+- **Defaults rule.** See CLAUDE.md, Scope.
 - **Build rule.** Each module (screening, transition, VWBA, report) has its own inputs, outputs and
   card. Each module standing alone in the Agent Commons is v2.
 
@@ -86,8 +90,8 @@ the way to it.
   door once. Done at an 80% pass.
 - **Calvin** talks; picks the pack from the record; asks only for what is missing; his carbon
   number comes from the same engine as the paid site. Done when his screening numbers match the paid
-  site's calculators run on the saved project's inputs (the v1 fence). Reproducing real filings is the
-  paid site's check, not Calvin's.
+  site's calculators run on the saved project's inputs (the v1 fence; the maintainer's ruling, 10 Oct
+  2026). Reproducing real filings is the paid site's check, not Calvin's.
 - **Bridget**: map and pin as today. She introduces herself, says what the map shows, hands back.
 - **Commons**: Phoebe and Calvin work there too, no memory; Bridget introduces herself. Two Calvin
   cards on one engine: screening, transition.
@@ -139,8 +143,8 @@ How agents behave, what they may say, how they hand off. Governed by AGENT_RULES
 27 Sep 2026 as `PROPOSAL_calvin-brief.md`, untracked at the root; nothing is built. R2 to R11 ruled yes on
 1 Oct 2026, her notes in its §13. **R1 is closed**: the v0.16.1 bundle crossed 3 Oct 2026, scrubbed of the
 filing's figures (O16). Done when his screening numbers match the paid site's calculators run on the saved
-project's inputs (the v1 fence); reproducing real filings is the paid site's check. Owes the teal baseline
-marker, a design value she carries from production.
+project's inputs (the v1 fence; the maintainer's ruling, 10 Oct 2026). Owes the teal baseline marker, a
+design value she carries from production.
 
 **A14 · Screen host role words — one home.** Step 6, before or with A22 · BONES. `BridgetScreen.tsx` says
 `role: 'Map'` where her crew card says "Partners"; `PhoebeScreen.tsx` carries its own too. The chat header
@@ -326,8 +330,8 @@ to pick up.
 **V2-1 · Watershed map — click a watershed, see its water facts.** After v1. A visitor clicks a basin
 and reads its water facts. Every fact traceable to its source; no invented values. No proposal yet.
 
-**V2-2 · WHO cooking-fuel data by fuel type — ask WHO (householdenergy@who.int) what terms apply; use it
-only if those terms allow. If so, replace the screening's conservative fuel-mix floor with WHO's
-by-fuel-type mix.** After v1. WHO's page:
-[Cooking fuel and technology database (by fuel category)](https://www.who.int/data/gho/data/themes/air-pollution/cooking-fuel-and-technology-database-by-fuel-category).
-No licence is assumed. Waits on WHO's answer. No proposal yet.
+**V2-2 · WHO cooking-fuel data by fuel type — WHO shares this database on request under a data-sharing
+agreement (see [link](https://www.who.int/data/gho/data/themes/air-pollution/who-household-energy-db)).
+Request it via householdenergy@who.int; use it only if the agreement allows use in this tool.** If so,
+replace the screening's conservative fuel-mix floor with WHO's by-fuel-type mix. After v1. No proposal
+yet.
