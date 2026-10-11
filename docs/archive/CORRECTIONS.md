@@ -1182,3 +1182,86 @@ passage is whole, as it stood that morning.
 
 **Where the current text is:** [PROPOSAL_calvin-brief.md](../../PROPOSAL_calvin-brief.md), §2.2,
 §3 and §4.1; the rulings are R15 to R21 in §13.
+
+---
+
+## 10 Oct 2026, fourth correction — PROPOSAL_calvin-brief.md: six sliders, a full year for HWT, schools and clinics to v2
+
+**Why:** the maintainer's third set of rulings that day (R22 to R26), given with the look reference
+before step 4 was built. Six sliders replaced four; household treatment's days became a full year
+with a slider, and the pending note went; schools and clinics moved to v2; the version tabs are
+built and switched off rather than gone; the look reference gained four captures. Each passage is
+whole, as it stood before.
+
+**Old wording, whole — §0, the last bullet:**
+
+> - **The look reference is a text list, not the old saved pages.** The `Design refs` folder of
+>   saved production calculator pages is deleted. The reference is a text list of the paid
+>   calculator's block names and tag words, carried by her hand (R10). Steps 1 to 3 of pull request
+>   A do not need it; step 4, the sheet, waits for it, and the block names and tag words in §2 and
+>   §7 are held to it when it arrives.
+
+**Old wording, whole — §2.1, the tab strip:**
+
+> **The tab strip goes** (ruling 2). There is no Legacy card and no transition delta line; the
+> water and carbon results are two columns of one sheet, not two tabs. The Legacy pack leaves the
+> registry (§11).
+
+**Old wording, whole — §3, the IWT row:**
+
+> | Type C-19, class IWT | PAA v2.0 Method 2, **but the carbon headline is a dash** until the engine can take the institutional litres caps (R18) | VWBA D-3 |
+
+**Old wording, whole — §4's heading and opening paragraph:**
+
+> ## 4. The sliders — three on carbon, one on water, and no others (ruling 5, amended 10 Oct 2026)
+>
+> Three carbon rows carry a slider instead of a box, and the water column carries one of its own
+> (§4.4). The engine is re-run on every move; nothing else on the sheet is draggable. **Each
+> slider opens at a value with a cited source.** A slider the visitor moves becomes a value the
+> visitor set, tagged ASSUMED; an answer given to Calvin makes it ENTERED (§7). No value is tagged
+> ASSUMED unless the visitor did something to put it there.
+
+**Old wording, whole — §4.1, institutions:**
+
+> - **Institutions (IWT) have no slider and no carbon number yet** (R18). The engine's scenario
+>   inputs cannot take Table 9's institutional caps, and a cap typed into `src/` would be a figure
+>   with no engine source. Their carbon headline is a dash with one line until a sealed engine
+>   takes those caps.
+
+**Old wording, whole — §4.2, household treatment:**
+
+> - **Household treatment (HWT) has no days slider** (her word). The engine still needs a days
+>   value on Method 2: `quantity.ts` multiplies by `operationalDays` on the Eq. 6 path (DP_p). **For
+>   HWT the wrapper passes 365, the calendar days in the period (SDWS 36)**, tagged DEFAULT and
+>   cited to SDWS 36, read-only, with no slider and no box. That reading waits on the paid site's
+>   confirmation (R13); the row says it is pending. Nothing in `engine/` changes.
+
+**Old wording, whole — §4.3, the closing line:**
+
+> No slider on X_cleanboil, U_p, fNRB, DAF, η or anything else; those are DEFAULT rows with no
+> control, as ruling 5 says.
+
+**Old wording, whole — §6, the days row:**
+
+> | Operational days | Q_pop | whole days, 1–365 | the plan; the slider opens at 347 (default); for HWT no row to type: 365, SDWS 36, pending the paid site's confirmation (§4.2) |
+
+**Old wording, whole — §7.1, the default and assumed rows:**
+
+> | **default** | a cited value from a data file or the methodology, used as published | fNRB national value, DAF, Table 9 litres, η, fuel shares and factors, X_cleanboil, SE_o 360.83 (Eq. 2, p. 29), household size, Table 10 embodied figures, the opening 347 days, 90% passing, 20 L or 2 L water litres |
+> | **assumed** | a value the visitor set that no source gives, standing in until one exists | a litres, days, water-quality or water-litres slider the visitor has moved |
+
+**Old wording, whole — R10, R13 and R18 in §13:**
+
+> - **R10 — The look reference.** **Ruled 1 Oct 2026: YES** to a fresh reference before the sheet
+>   is built. **Ruled 10 Oct 2026:** the reference is a text list of the paid calculator's block
+>   names and tag words, carried by her hand. Steps 1 to 3 of pull request A do not need it; step 4,
+>   the sheet, waits for it. The old saved pages are deleted.
+
+> - **R13 — HWT days.** **Ruled 10 Oct 2026:** 365, cited as the calendar days in the period
+>   (SDWS 36), pending the paid site's confirmation of that reading (§4.2).
+
+> - **R18 — Institutions (IWT):** the carbon headline is a dash until the engine can take the
+>   institutional litres caps (§3, §4.1).
+
+**Where the current text is:** [PROPOSAL_calvin-brief.md](../../PROPOSAL_calvin-brief.md), §0,
+§2.1, §3, §4, §6, §7.1, §10, §12 and §13; the rulings are R22 to R26.

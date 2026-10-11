@@ -10,12 +10,15 @@ tags (§4, §6, §7); embodied carbon never zero (§2.2, §6); the water column'
 hand (R12); household treatment days (R13); the water litres ceiling (R14); the look reference is
 a text list carried by her hand (§0, R10); and, in a second set the same day, R15 to R21 —
 embodied spread over five years, C_b and U_p without a source, the energy question, institutions
-held, the stove rule, the duplicate folder and the country aliases. The pre-amendment wording is in
-`docs/archive/CORRECTIONS.md`, except the deleted §1.5 passage, which is not kept anywhere.
+held, the stove rule, the duplicate folder and the country aliases; and, in a third set the same day,
+R22 to R26 — every SDWS reference shows its version, six sliders that teach, household treatment's
+days as a full year, no script for Calvin, and schools and clinics moved to v2. The pre-amendment
+wording is in `docs/archive/CORRECTIONS.md`, except the deleted §1.5 passage, which is not kept
+anywhere.
 
 Calvin is build-order step 5, the next step toward the v1 fence. This proposal says what crosses from
 `carried/` into the repository and where, what the Quantify screen shows and hides, how the
-three sliders work and what they cite, how households become people, what the four tags mean,
+six sliders work and what they cite, how households become people, what the four tags mean,
 what the save and the export carry, how Calvin's chat fills the tool, how it is proved, and the
 steps and eyeball stops. It ends with the rulings it needs.
 
@@ -39,11 +42,12 @@ section names the ruling it carries out. Where a ruling leaves a choice, the cho
   to live here. Step 1 of pull request A runs the same check in the build.
 - **The methodology text was read for the three slider sources** (§5), from the V2.0 PDF held
   locally in `sources-local/`, never committed. Every page number below comes from that read.
-- **The look reference is a text list, not the old saved pages.** The `Design refs` folder of
-  saved production calculator pages is deleted. The reference is a text list of the paid
-  calculator's block names and tag words, carried by her hand (R10). Steps 1 to 3 of pull request
-  A do not need it; step 4, the sheet, waits for it, and the block names and tag words in §2 and
-  §7 are held to it when it arrives.
+- **The look reference is a text list and four captures of the paid calculator.** The `Design
+  refs` folder of saved production calculator pages is deleted. The reference is a text list of
+  the paid calculator's block names and tag words, carried by her hand on 10 Oct 2026 (R10), and
+  four PDF captures of the paid calculator page she placed at the repository root the same day.
+  The captures carry a project's figures, so they stay untracked and are never committed; the
+  sheet takes their blocks, order, row style and tag words and none of their data.
 
 ---
 
@@ -164,9 +168,17 @@ this site yet* (§2.3); for a project whose device class is not known, that the 
 when she found both fit; one alone when the other reads likely not or does not apply; both,
 with a line saying eligibility has not been checked yet, when she has looked at nothing.
 
-**The tab strip goes** (ruling 2). There is no Legacy card and no transition delta line; the
-water and carbon results are two columns of one sheet, not two tabs. The Legacy pack leaves the
-registry (§11).
+**The pack tab strip goes** (ruling 2): the water and carbon results are two columns of one sheet,
+not two tabs, and the Legacy pack leaves the registry (§11). **The paid page's version tabs are
+built and switched off for a new project** (the look reference, R10): a "Carbon" chip on each,
+Legacy V1.0 and PAA v2.0 with their totals, and "Transition delta (PAA − Legacy)" beneath. They
+switch on only where Phoebe's carbon pack sorted the project as transitioning, and there the Legacy
+side shows the engine's own refusal, *Filed V1.0 fNRB needed*, until the filed value and its source
+are given (R25). Every total is a dash while the carbon headline is.
+
+**Every SDWS reference shows its version** (R22), as the paid site does: "V2.0 SDWS 36", never
+"SDWS 36" alone, on every chip, source line and note. Where an engine label says "SDWS n" bare or
+"V2 SDWS n", the wrapper shows it as "V2.0 SDWS n" for a PAA run; nothing in `engine/` changes.
 
 ### 2.2 The carbon blocks, in this order (ruling 3)
 
@@ -213,7 +225,10 @@ shows those rows as dashes, the carbon headline is a dash, and one line says, in
 ### 2.4 Hidden, not deleted (ruling 4)
 
 Each of these is built as a part of the screen with a `shown` switch, off on the free site, so
-the paid shape is intact and one flag turns any of them back on:
+the paid shape is intact and one flag turns any of them back on — and with them, from the look
+reference: the left rail's project-record card, analysis basis (Ex-ante / Ex-post) and save area
+(this site's record and save door stand where they stand), and the baseline profile's editable
+stove and fuel shares:
 
 - pencils on every row **except a row the visitor must type** — the rows Calvin asks for
   (§6, §8) carry their box; every other row is read-only;
@@ -245,7 +260,7 @@ The wrapper, `src/lib/calvinEngine.ts`, decides from the record and never from p
 | Record | Carbon calculator | Water calculator |
 |---|---|---|
 | Type C-19, class HWT | PAA v2.0 Method 2 (Eq. 6–7) | VWBA D-3 |
-| Type C-19, class IWT | PAA v2.0 Method 2, **but the carbon headline is a dash** until the engine can take the institutional litres caps (R18) | VWBA D-3 |
+| Type C-19, class IWT | none on this site: **schools and clinics are v2** (R26); the carbon headline is a dash that says so | VWBA D-3 |
 | Type C-19, class CWT or CWS | PAA v2.0 Method 1 (Eq. 4–5) | VWBA D-3 |
 | Type C-19, no class yet | none until the class is known — Calvin asks it (§8) | VWBA D-3 |
 | Type C-11 | none — the carbon pathway does not name this type | VWBA D-3 |
@@ -269,13 +284,16 @@ tagged DEFAULT, with the engine's label as its source; no figure is typed in `sr
 
 ---
 
-## 4. The sliders — three on carbon, one on water, and no others (ruling 5, amended 10 Oct 2026)
+## 4. The sliders — six, each a learning tool, and no others (ruling 5, amended 10 Oct 2026)
 
-Three carbon rows carry a slider instead of a box, and the water column carries one of its own
-(§4.4). The engine is re-run on every move; nothing else on the sheet is draggable. **Each
-slider opens at a value with a cited source.** A slider the visitor moves becomes a value the
-visitor set, tagged ASSUMED; an answer given to Calvin makes it ENTERED (§7). No value is tagged
-ASSUMED unless the visitor did something to put it there.
+**Six sliders** (R23): litres per person per day on carbon (§4.1), days (§4.2), water quality
+(§4.3), litres per person per day on water (§4.4), stove efficiency (§4.5) and usage rate (§4.6,
+household treatment only). **Each is a learning tool**: under it, one line says in a visitor's
+words how moving it changes the credits — or, on the water column, the water benefit. The engine is
+re-run on every move; nothing else on the sheet is draggable. **Each slider opens at the cautious
+value the engine carries, cited.** A slider the visitor moves becomes a value the visitor set,
+tagged ASSUMED; an answer given to Calvin makes it ENTERED (§7). No value is tagged ASSUMED unless
+the visitor did something to put it there.
 
 ### 4.1 Litres per person per day (QPW_p, SDWS 29)
 
@@ -285,10 +303,8 @@ ASSUMED unless the visitor did something to put it there.
 - **Opens at** the engine's own default: the Table 9 age-tiered defaults (0.9 / 3.0 / 4.0)
   weighted by the country's UN WPP 2024 age shares — DEFAULT, cited to Table 9 and to
   `un-wpp-2024-pop-age1`.
-- **Institutions (IWT) have no slider and no carbon number yet** (R18). The engine's scenario
-  inputs cannot take Table 9's institutional caps, and a cap typed into `src/` would be a figure
-  with no engine source. Their carbon headline is a dash with one line until a sealed engine
-  takes those caps.
+- **Institutions (IWT) have no slider and no carbon number: schools and clinics are v2** (R26,
+  which settles R18). Their carbon headline is a dash with one line saying so.
 - **Moved:** the run switches to `volumeBasis: "flat"` at the slider's value, tagged ASSUMED,
   with one line: *A Water Consumption Field Test (SDWS 29, Option 2, Annex 2) is what makes this
   a measured value.* The engine's own label for a flat value — "entered (design value or WCFT)"
@@ -305,11 +321,10 @@ ASSUMED unless the visitor did something to put it there.
 - **Opens at 347, labelled "the methodology's cap for paper logs" (SDWS 32, p. 68), tagged
   DEFAULT — not assumed.** Moved by the visitor, it is ASSUMED. Calvin asks the days (§8); an
   answer makes the row ENTERED and moves the slider. §13, R5.
-- **Household treatment (HWT) has no days slider** (her word). The engine still needs a days
-  value on Method 2: `quantity.ts` multiplies by `operationalDays` on the Eq. 6 path (DP_p). **For
-  HWT the wrapper passes 365, the calendar days in the period (SDWS 36)**, tagged DEFAULT and
-  cited to SDWS 36, read-only, with no slider and no box. That reading waits on the paid site's
-  confirmation (R13); the row says it is pending. Nothing in `engine/` changes.
+- **Household treatment (HWT): days are the days the device is in the home — a full year, 365**
+  (V2.0 SDWS 36, p. 71; R24). The row is DP_p, "days present", never "operational days". Its slider
+  opens at 365, tagged DEFAULT and cited to V2.0 SDWS 36, p. 71, and only moves down. The 347 note
+  is a rule for DO_p (V2.0 SDWS 32) and does not show on DP_p. Nothing in `engine/` changes.
 
 ### 4.3 Water quality passing rate (M_q,y, SDWS 22)
 
@@ -318,7 +333,7 @@ ASSUMED unless the visitor did something to put it there.
   year 3"** (V2.0 SDWS 22, pp. 58–59; §7.4.3), tagged DEFAULT and cited to the methodology.
   Moved by the visitor, it is ASSUMED. §13, R5.
 
-No slider on X_cleanboil, U_p, fNRB, DAF, η or anything else; those are DEFAULT rows with no
+No slider on X_cleanboil, C_b, fNRB, DAF or anything else; those are DEFAULT rows with no
 control, as ruling 5 says.
 
 ### 4.4 The water column's litres per person per day (VWBA 2.0 D-3, Table D3.3, p. 46)
@@ -334,6 +349,24 @@ control, as ruling 5 says.
 - **Moved:** ASSUMED, with the line *A figure you set, not the table's.* An answer given to
   Calvin makes it ENTERED. The pack's arithmetic (`src/lib/vwbaD3.ts`) already takes a typed
   litres figure over the default; the slider drives that existing field and adds no arithmetic.
+
+### 4.5 Stove efficiency (η, V2.0 SDWS 11)
+
+- **Range:** 0.15 to 0.30, shown as a percentage: the V2.0 SDWS 11 defaults from the three-stone
+  fire up to the improved cookstove, both read from the engine. The ends are cited; nothing between
+  them is a class of its own.
+- **Opens at 0.30, the most efficient class (improved cookstove), V2.0 SDWS 11, p. 52** (R23),
+  read from the engine's own `DEFAULT_STOVE_ETA` and never typed, tagged DEFAULT. It is the
+  cautious opening: a more efficient old stove burned less fuel, so the project avoids less.
+- **The engine takes it as `etaOverride`**, which sets every stove class to the slider's value;
+  nothing in `engine/` changes. Moved, it is ASSUMED.
+
+### 4.6 Usage rate (U_p, V2.0 SDWS 34) — household treatment only
+
+- **Range:** 0.01 to 1, shown as a percentage. **Never 0** (R23).
+- **Drawn only for HWT.** Method 1 has no usage rate (U_p = 1 by the methodology), and IWT is v2.
+- **Opens at 1**, the value the engine carries, tagged DEFAULT, its source line "no source yet"
+  (R16): SDWS 34 sets U_p by a usage survey and gives no default. Moved, it is ASSUMED.
 
 ---
 
@@ -375,7 +408,8 @@ row with a box (and Calvin's question):
 | Country | fNRB, DAF, household size, age shares | one of the UN M49 countries | the place on the record, matched; else asked |
 | Class of drinking-water project | Method 1 or 2 | HWT, IWT, CWT, CWS | Wellington; else asked, and posted to the record as Wellington's field |
 | People served | Q_pop | a whole count, people or households | Wellington; else asked |
-| Operational days | Q_pop | whole days, 1–365 | the plan; the slider opens at 347 (default); for HWT no row to type: 365, SDWS 36, pending the paid site's confirmation (§4.2) |
+| Operational days (DO_p) or days present (DP_p) | Q_pop | whole days, 1–365 | the plan; the slider opens at 347 (V2.0 SDWS 32); for HWT at 365, the days the device is in the home (V2.0 SDWS 36, p. 71) (§4.2) |
+| Filed V1.0 fNRB, a transitioning project only | the Legacy V1.0 side of the transition | a fraction with its source | the project's own V1.0 filing (PDD or monitoring report) — the engine's refusal names it |
 | Premises with a unit (Method 2, SDWS 33) | Eq. 6 | whole count | sales or distribution records; a planned project's target |
 | Device class and new units this year | embodied emissions, Table 10 | one of seven classes; whole count | the plan; **never 0** — if the class is unknown Calvin asks it, and the carbon headline waits (§2.2) |
 | Energy the system uses | activity emissions, Eq. 14 | diesel, grid electricity, or none | the plan; unanswered, the carbon headline is a dash (R17) |
@@ -399,9 +433,9 @@ Four words, the same on the screen, in the record and in the seal:
 | Tag | Means | Examples |
 |---|---|---|
 | **entered** | the visitor said it — on the record via Wellington, or to Calvin | people served, the country, operational days once answered |
-| **default** | a cited value from a data file or the methodology, used as published | fNRB national value, DAF, Table 9 litres, η, fuel shares and factors, X_cleanboil, SE_o 360.83 (Eq. 2, p. 29), household size, Table 10 embodied figures, the opening 347 days, 90% passing, 20 L or 2 L water litres |
+| **default** | a cited value from a data file or the methodology, used as published | fNRB national value, DAF, Table 9 litres, η 0.30, fuel shares and factors, X_cleanboil, SE_o 360.83 (Eq. 2, p. 29), household size, Table 10 embodied figures, the opening 347 or 365 days, 90% passing, 20 L or 2 L water litres, U_p 1 (no source yet) |
 | **derived** | worked out from other values | people from households, EF_b, Q_pop, Q_adj, BE, the crediting baseline, LE, ER, the five-year total |
-| **assumed** | a value the visitor set that no source gives, standing in until one exists | a litres, days, water-quality or water-litres slider the visitor has moved |
+| **assumed** | a value the visitor set that no source gives, standing in until one exists | any of the six sliders, once the visitor has moved it |
 
 **Nothing opens ASSUMED.** A value is ASSUMED only because a visitor moved it; no row carries the
 tag by default.
@@ -440,6 +474,12 @@ does not build the document. S21's proposal renders it. Nothing is computed twic
 ## 8. Calvin's chat (rulings 6, 7; the specialist contract)
 
 On Phoebe's and Wellington's proven pattern, nothing new in kind:
+
+- **No script for Calvin** (R25). He is given facts and rules, never lines to say: he follows
+  AGENT_RULES.md like every agent, and phrases what he says himself. **He reads the record to tell a
+  new project from one in transition** — the version Phoebe's carbon pack sorted it into — and asks
+  a transitioning project for its filed V1.0 fNRB and its source, the one value the transition
+  cannot run without (the engine's `filedFnrbRefusal`). A project not sorted is treated as new.
 
 - **`api/calvin.ts`**, his own relay: Claude Opus 5 at medium, 16,000 output tokens, the
   120-second timeout, the late-400 retry, the reply floor, named method exports, no default
@@ -495,11 +535,14 @@ Quantify does (§8), which is a runtime block, not his cached prompt.
 - **`npm run test:engine`** — the bundle's own test files, by hand (§1.4, R3).
 - **`scripts/check-calvin-engine.mjs`** — the wrapper against the engine on synthetic
   projects, invented for the purpose and labelled: households → people through
-  `derivePopulation` reconciles both ways; each calculator choice in §3's table; the three
-  carbon sliders clamp at their caps and the 347 note fires at 348; the water litres slider
-  clamps at 20 and shares nothing with the carbon litres slider; the sliders open at 347, 90%
-  and 20 or 2 L as DEFAULT, a moved slider is ASSUMED, an answered day count is ENTERED, and no
-  row opens ASSUMED; a country with no cleared fuel data leaves the carbon headline a dash with
+  `derivePopulation` reconciles both ways; each calculator choice in §3's table; the five
+  carbon sliders clamp at their ends and the 347 note fires at 348 on DO_p and never on DP_p; the
+  water litres slider clamps at 20 and shares nothing with the carbon litres slider; the sliders
+  open at 347 or 365, 90%, η 0.30, U_p 1 and 20 or 2 L as DEFAULT, U_p never reaches 0 and is drawn
+  for HWT only, every slider carries its credits line, a moved slider is ASSUMED, an answered day
+  count is ENTERED, and no row opens ASSUMED; every SDWS reference on the sheet carries its
+  version; a transitioning project shows the filed-fNRB refusal and a new one shows no version
+  tabs; a country with no cleared fuel data leaves the carbon headline a dash with
   the line of §2.3 and never runs a preset; an unknown device class leaves it a dash and
   embodied is never 0; the fNRB refusal renders as its own sentence; blank without-project
   volume leaves the water headline a dash; `usedValues()` carries no result key. The
@@ -557,10 +600,10 @@ Sized by risk, bundled by her eyeball stops, invisible groundwork riding with th
 it serves. Each pull request is stacked on the one before where they touch the same files.
 
 **Pull request A — the engine crosses and the screen shows it.** It builds on the bundle on hand,
-v0.16.1 (R12). Steps 1 to 3 start now; step 4 waits for the text list of block names and tag words
-(R10). Steps: (1) `engine/` from the bundle on hand, the two tsconfig lines, `check-engine` in the build, vitest and `test:engine`;
+v0.16.1 (R12). Steps 1 to 3 are built; step 4 builds from the look reference she carried on
+10 Oct 2026 (R10). Steps: (1) `engine/` from the bundle on hand, the two tsconfig lines, `check-engine` in the build, vitest and `test:engine`;
 (2) `registry.ts`; (3) the wrapper and `calvinFields.ts`; (4) the new sheet — two headlines, the
-five carbon blocks, the water column, the four sliders, the hidden parts built and switched off;
+five carbon blocks, the water column, the six sliders, the hidden parts built and switched off;
 (5) `check-calvin-engine`. No chat yet: the rows of §6 take typed values in their boxes, so the
 sheet is walkable. **Eyeball stop 1:** the Quantify screen in the browser on a synthetic
 community-supply project, with captures of the top, the Baseline block, a country with no
@@ -611,8 +654,9 @@ committed" until her word, as the process rules say.
   is her wording of 9 Oct 2026.
 - **R10 — The look reference.** **Ruled 1 Oct 2026: YES** to a fresh reference before the sheet
   is built. **Ruled 10 Oct 2026:** the reference is a text list of the paid calculator's block
-  names and tag words, carried by her hand. Steps 1 to 3 of pull request A do not need it; step 4,
-  the sheet, waits for it. The old saved pages are deleted.
+  names and tag words, carried by her hand, with four captures of the paid calculator page at the
+  repository root, untracked. Step 4, the sheet, builds from both: the same blocks, order, row
+  style and tag words. The old saved pages are deleted.
 - **R11 — The three rows Calvin may post to the record** are the class and people served only;
   the country he settles stays a calculator field on this site, not a record field, until the
   seal's carry names it. **Ruled 1 Oct 2026: YES.** Calvin writes only class and people served to the record.
@@ -623,8 +667,8 @@ committed" until her word, as the process rules say.
   `engine/` is edited. To check on the swap: that `countryBaselineDefault` still reports "no
   row" for a country without data, which is how the wrapper keeps the engine's own preset off
   the screen.
-- **R13 — HWT days.** **Ruled 10 Oct 2026:** 365, cited as the calendar days in the period
-  (SDWS 36), pending the paid site's confirmation of that reading (§4.2).
+- **R13 — HWT days.** **Ruled 10 Oct 2026:** 365, the days the device is in the home — a full
+  year (V2.0 SDWS 36, p. 71). Settled by R24; nothing is pending (§4.2).
 - **R14 — The water litres slider's range.** **Ruled 10 Oct 2026: YES**, 0 to 20 L (§4.4). An After
   v1 entry reviews the ceiling.
 
@@ -637,10 +681,25 @@ entry reviews all of them together with R14.
   Until then they stay listed as "no source" (§7.1).
 - **R17 — Activity emissions:** a field Calvin asks — does the system use energy (diesel, grid, none)?
   and how much? Until answered, a technology that uses energy shows a carbon dash (§2.2, §6).
-- **R18 — Institutions (IWT):** the carbon headline is a dash until the engine can take the
-  institutional litres caps (§3, §4.1).
+- **R18 — Institutions (IWT):** the carbon headline is a dash. Settled by R26: schools and clinics
+  are v2 (§3, §4.1).
 - **R19 — Fuel without stove data stays a dash;** the new engine must carry a stove rule per country
   (§1.3).
 - **R20 — `engine/` beside `carried/`:** logged as a later tidy, no change now (§1.1).
 - **R21 — Country matching:** a short alias list of common country names, mapping to the UN M49
   names; labelled as ours, never a value (§3).
+
+**Ruled 10 Oct 2026, a third set**, with the look reference, before step 4 was built.
+
+- **R22 — Every SDWS reference shows its version**, e.g. "V2.0 SDWS 36", as the paid site does
+  (§2.1).
+- **R23 — Six sliders, each a learning tool**, each with one line saying how moving it changes the
+  credits: litres (carbon), days, water quality, litres (water), stove efficiency, usage rate
+  (household treatment only, never 0). Each opens at the cautious value the engine carries, cited.
+  Stove opens at the most efficient class (0.30, V2.0 SDWS 11) (§4).
+- **R24 — HWT days are the days the device is in the home:** a full year, 365 (V2.0 SDWS 36,
+  p. 71) (§4.2).
+- **R25 — No script for Calvin.** He reads the record to tell a new project from one in
+  transition, follows the shared agent rules, and asks a transitioning project for its filed V1.0
+  fNRB (§8, §2.1).
+- **R26 — Schools and clinics (IWT): v2** (§3, §4.1).
