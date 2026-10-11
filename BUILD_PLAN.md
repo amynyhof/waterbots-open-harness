@@ -111,7 +111,7 @@ the way to it.
 | 1 | The Knowledge and Tool tab | Done 24 Sep 2026, #111 to #116 | in the log |
 | 2 | Wellington: type and stage | Done 24 Sep 2026, #119; reads back what Phoebe found #128; people served #130 | in the log |
 | 3 | Phoebe's carbon runtime | Done 26 Sep 2026, #121 to #126. Her 80% pass is not measured; that is the rig's to say | in the log |
-| 5 | Calvin's brief, with the carried engine | **In progress.** Pull request A, steps 1 to 3 built 10 Oct 2026; step 4 waits on her text list | A21 |
+| 5 | Calvin's brief, with the carried engine | **In progress.** Pull request A, steps 1 to 5 built 10 Oct 2026; waits on eyeball stop 1 | A21 |
 | 4 | The Commons check | Not started | S23 |
 | 6 | Bridget's hello | Not started | A22, A14 |
 | 7 | The carry to the paid site, by her hand | Hers | O14 |
@@ -141,10 +141,10 @@ order above, for her to move.
 How agents behave, what they may say, how they hand off. Governed by AGENT_RULES.md.
 
 **A21 · Calvin's brief — his chat, the carried engine, carbon beside water.** Step 5 · BONES. `PROPOSAL_calvin-brief.md`,
-committed 10 Oct 2026; R1 to R21 ruled, her notes in its §13. **Pull request A, steps 1 to 3 built 10 Oct 2026** (#151):
-`engine/` from v0.16.1 behind a hash gate, the registry reader, the wrapper and field list, R15 to R21 built in;
-every carbon headline is a dash until a sealed engine carries cleared fuel and stove data (R12, R19). Step 4, the
-sheet, waits for her text list of block names and tag words (R10). Done when his screening numbers match the paid
+committed 10 Oct 2026; R1 to R26 ruled, her notes in its §13. **Pull request A, steps 1 to 5 built 10 Oct 2026** (#151):
+`engine/` behind a hash gate, the registry reader, the wrapper, the one Quantify sheet in the paid calculator's look
+with six sliders, and `check-calvin-engine` (83 checks); every carbon headline is a dash until a sealed engine carries
+cleared fuel and stove data (R12, R19). **Waits on eyeball stop 1.** Done when his screening numbers match the paid
 site's calculators run on the saved project's inputs (the v1 fence). Baseline marker: `--tide-text`.
 
 **A14 · Screen host role words — one home.** Step 6, before or with A22 · BONES. `BridgetScreen.tsx` says
