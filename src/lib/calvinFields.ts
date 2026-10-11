@@ -1,9 +1,10 @@
 /**
  * Calvin's fields — the one closed list of what a visitor may type into his
- * sheet, or he may fill from chat, and the four sliders.
+ * sheet, or he may fill from chat, and the six sliders.
  *
  * Calvin's brief, §6 and §4 (PROPOSAL_calvin-brief.md), with the maintainer's
- * rulings of 10 Oct 2026. ONE HOME, read by the screen, the wrapper
+ * rulings of 10 Oct 2026. Every SDWS reference here carries its version, "V2.0
+ * SDWS 32", as the paid site's do (R22). ONE HOME, read by the screen, the wrapper
  * (lib/calvinEngine) and, from pull request C, the prompt generator, so what
  * each input is, why it matters, what kind of value it takes and where it
  * usually comes from is never typed twice.
@@ -17,6 +18,7 @@
 
 import { EMBODIED_CATEGORIES, type EmbodiedCategory } from '../../engine/calculators/gs4gg-carbon/scenario';
 import { QPW_PERSON_CAP_DEFAULT } from '../../engine/calculators/gs4gg-carbon/quantity';
+import { DEFAULT_STOVE_ETA } from '../../engine/calculators/gs4gg-carbon/presets';
 import m49Json from '../../engine/calculators/data/regions/un-m49.json';
 import { GS_CLASS_IDS, type GsClassId } from './projectTypes.generated';
 import type { Served } from './visit';
@@ -134,7 +136,8 @@ export type CalvinFieldKey =
   | 'householdSize'
   | 'fnrb'
   | 'energySource'
-  | 'energyAmount';
+  | 'energyAmount'
+  | 'fnrbFiledV1';
 
 /** What the system runs on, for activity emissions (Eq. 14). R17, 10 Oct 2026. */
 export type EnergySource = 'none' | 'diesel' | 'grid';
@@ -175,6 +178,16 @@ export interface SuppliedFnrb {
   source: string;
 }
 
+/** A fraction with its source — both fNRB rows read through this one check. */
+function readFnrb(value: unknown): SuppliedFnrb | undefined {
+  if (typeof value !== 'object' || value === null) return undefined;
+  const { value: raw, source } = value as { value?: unknown; source?: unknown };
+  const v = typeof raw === 'string' && raw.trim() !== '' ? Number(raw) : raw;
+  return typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= 1 && typeof source === 'string' && source.trim() !== ''
+    ? { value: v, source: source.trim() }
+    : undefined;
+}
+
 export const CALVIN_FIELDS = {
   country: {
     key: 'country',
@@ -210,13 +223,13 @@ export const CALVIN_FIELDS = {
     label: 'Days a year the water is available',
     neededBy: 'the water volume, Q_pop',
     kind: 'whole days, 1 to 365',
-    whereFrom: 'the plan; the slider opens at 347',
+    whereFrom: 'the plan; the slider opens at 347, or at 365 on household treatment',
     read: wholeNumber(1, 365),
   } satisfies CalvinField<number>,
   premises: {
     key: 'premises',
     label: 'Homes or premises with a unit',
-    neededBy: 'Eq. 6, on household and institutional treatment (SDWS 33)',
+    neededBy: 'Eq. 6, on household treatment (V2.0 SDWS 33)',
     kind: 'a whole count',
     whereFrom: "sales or distribution records; a planned project's target",
     read: wholeNumber(1),
@@ -252,13 +265,7 @@ export const CALVIN_FIELDS = {
     neededBy: 'the baseline emission factor, EF_b — only where no official default covers the country',
     kind: 'a fraction between 0 and 1, with where it came from',
     whereFrom: "the project's own filing or study",
-    read: (value: unknown): SuppliedFnrb | undefined => {
-      if (typeof value !== 'object' || value === null) return undefined;
-      const { value: v, source } = value as { value?: unknown; source?: unknown };
-      return typeof v === 'number' && v >= 0 && v <= 1 && typeof source === 'string' && source.trim() !== ''
-        ? { value: v, source: source.trim() }
-        : undefined;
-    },
+    read: (value: unknown): SuppliedFnrb | undefined => readFnrb(value),
   } satisfies CalvinField<SuppliedFnrb>,
   energySource: {
     key: 'energySource',
@@ -276,6 +283,14 @@ export const CALVIN_FIELDS = {
     whereFrom: "the plan or the supplier's figures",
     read: positiveNumber,
   } satisfies CalvinField<number>,
+  fnrbFiledV1: {
+    key: 'fnrbFiledV1',
+    label: 'Filed V1.0 fNRB, with its source',
+    neededBy: 'the Legacy V1.0 side of a transitioning project — the transition cannot run without it',
+    kind: 'a fraction between 0 and 1, with where it came from',
+    whereFrom: "the project's own V1.0 filing: its PDD or monitoring report",
+    read: (value: unknown): SuppliedFnrb | undefined => readFnrb(value),
+  } satisfies CalvinField<SuppliedFnrb>,
 } as const;
 
 /** The closed list a fill is checked against. A key not on it is dropped whole. */
@@ -290,36 +305,53 @@ export const CALVIN_FIELD_KEYS = Object.keys(CALVIN_FIELDS) as CalvinFieldKey[];
 export const WATER_FIELD_KEYS = ['access_level', 'lpcd', 'days', 'without_lpy'] as const;
 
 /* --------------------------------------------------------------------------
-   The four sliders (§4, the maintainer's rulings of 10 Oct 2026).
+   The six sliders (§4, the maintainer's rulings of 10 Oct 2026, R23).
 
-   Each opens at a value with a cited source, tagged default. A slider the
-   visitor moves becomes a value they set, tagged assumed; an answer given to
-   Calvin makes it entered. Nothing opens assumed.
+   Each is a learning tool: one line under it says, in a visitor's words, how
+   moving it changes the credits (on the water column, the water benefit).
+   Each opens at the cautious value the engine carries, cited, tagged default.
+   A slider the visitor moves becomes a value they set, tagged assumed; an
+   answer given to Calvin makes it entered. Nothing opens assumed.
    -------------------------------------------------------------------------- */
 
+export type SliderKey = 'litres' | 'operationalDays' | 'waterQuality' | 'waterLitres' | 'eta' | 'usageRate';
+
 export interface SliderSpec {
-  key: 'litres' | 'operationalDays' | 'waterQuality' | 'waterLitres';
+  key: SliderKey;
   label: string;
   min: number;
   max: number;
   step: number;
   unit: string;
+  /** Drawn as a percentage: the value is a fraction. */
+  percent?: boolean;
+  /** How moving it changes the credits — the learning line (R23). */
+  credits: string;
 }
 
-/** Litres per person per day, carbon (QPW_p, SDWS 29). Opens at the engine's Table 9 default. */
+/** Where a slider opens, what that value is called and where it is cited. */
+export interface SliderOpening {
+  value: number;
+  label: string;
+  section: string;
+  page: string;
+}
+
+/** Litres per person per day, carbon (QPW_p, V2.0 SDWS 29). Opens at the engine's Table 9 default. */
 export const LITRES_SLIDER: SliderSpec = {
   key: 'litres',
   label: 'Drinking water per person per day',
   min: 0,
   /* The engine's cap, for household and community supply. Institutions (IWT)
-     have no slider and a carbon dash until the engine can take Table 9's
-     institutional caps — the maintainer's ruling of 10 Oct 2026 (R18). */
+     have no slider: schools and clinics are v2 — the maintainer's ruling of
+     10 Oct 2026 (R26). */
   max: QPW_PERSON_CAP_DEFAULT,
   step: 0.1,
   unit: 'L / person / day',
+  credits: `More water per person means more water made safe, so more credits — up to the ${QPW_PERSON_CAP_DEFAULT} L the methodology allows.`,
 };
 
-/** Operational days (DO_p, SDWS 32; DP_p, SDWS 36). No slider on household treatment. */
+/** Days a year (DO_p, V2.0 SDWS 32; DP_p, V2.0 SDWS 36 on household treatment). */
 export const DAYS_SLIDER: SliderSpec = {
   key: 'operationalDays',
   label: 'Days a year the water is available',
@@ -327,17 +359,18 @@ export const DAYS_SLIDER: SliderSpec = {
   max: 365,
   step: 1,
   unit: 'days / year',
+  credits: 'More days a year means more water made safe, so more credits.',
 };
 
-/** The days the slider opens at, and its label and source. */
-export const DAYS_OPENING = {
+/** Where the days slider opens on community treatment and supply (DO_p). */
+export const DAYS_OPENING: SliderOpening = {
   value: 347,
   label: "the methodology's cap for paper logs",
-  section: 'SDWS 32',
+  section: 'V2.0 SDWS 32',
   page: 'p. 68',
-} as const;
+};
 
-/** Above this many days the methodology credits only the days a sensor records (SDWS 32, p. 68). */
+/** Above this many days the methodology credits only the days a sensor records (V2.0 SDWS 32, p. 68). DO_p only. */
 export const DAYS_SENSOR_THRESHOLD = 347;
 
 /** The line the days row carries above the threshold, in a visitor's words. */
@@ -345,19 +378,18 @@ export const DAYS_ABOVE_THRESHOLD_LINE =
   'Above 347 days the methodology only credits the days a sensor records. Below it, an operation and maintenance log is enough.';
 
 /**
- * Household treatment (HWT): no days slider. 365, the calendar days in the
- * period (SDWS 36) — the maintainer's ruling of 10 Oct 2026, pending the paid
- * site's confirmation of that reading.
+ * Household treatment (HWT): days present, DP_p — the days the device is in the
+ * home, a full year. The maintainer's ruling of 10 Oct 2026 (R24). The slider
+ * opens here and only moves down.
  */
-export const HWT_DAYS = {
+export const HWT_DAYS: SliderOpening = {
   value: 365,
-  label: 'the calendar days in the period',
-  section: 'SDWS 36',
-  page: '',
-  pending: "Pending the paid site's confirmation of this reading.",
-} as const;
+  label: 'the days the device is in the home: a full year',
+  section: 'V2.0 SDWS 36',
+  page: 'p. 71',
+};
 
-/** Water quality passing rate (M_q,y, SDWS 22), shown as a percentage. */
+/** Water quality passing rate (M_q,y, V2.0 SDWS 22), drawn as a percentage. */
 export const QUALITY_SLIDER: SliderSpec = {
   key: 'waterQuality',
   label: 'Share of water tests that pass',
@@ -365,14 +397,63 @@ export const QUALITY_SLIDER: SliderSpec = {
   max: 1,
   step: 0.01,
   unit: 'fraction passing',
+  percent: true,
+  credits: 'A lower pass rate counts less of the water as safe, so fewer credits.',
 };
 
-export const QUALITY_OPENING = {
+export const QUALITY_OPENING: SliderOpening = {
   value: 0.9,
   label: 'the lowest pass rate allowed without corrective action from year 3',
-  section: 'SDWS 22; §7.4.3',
+  section: 'V2.0 SDWS 22; §7.4.3',
   page: 'pp. 58–59',
-} as const;
+};
+
+/** Stove efficiency (η, V2.0 SDWS 11), drawn as a percentage. The ends are the engine's SDWS 11 defaults. */
+export const ETA_SLIDER: SliderSpec = {
+  key: 'eta',
+  label: 'Efficiency of the old stove',
+  min: DEFAULT_STOVE_ETA.paa.threeStone,
+  max: DEFAULT_STOVE_ETA.paa.ics,
+  step: 0.01,
+  unit: 'fraction',
+  percent: true,
+  credits: 'A more efficient old stove burned less fuel, so replacing it avoids less — fewer credits.',
+};
+
+/**
+ * Where the stove slider opens: the most efficient class, the improved
+ * cookstove — the cautious opening, read from the engine (R23).
+ */
+export const ETA_OPENING: SliderOpening = {
+  value: DEFAULT_STOVE_ETA.paa.ics,
+  label: 'the most efficient stove class, the improved cookstove',
+  section: 'V2.0 SDWS 11',
+  page: 'p. 52',
+};
+
+/** Usage rate (U_p, V2.0 SDWS 34). Household treatment only, and never 0 (R23). */
+export const USAGE_SLIDER: SliderSpec = {
+  key: 'usageRate',
+  label: 'Share of homes that really use the device',
+  min: 0.01,
+  max: 1,
+  step: 0.01,
+  unit: 'fraction of users',
+  percent: true,
+  credits: 'If fewer homes really use the device, less water is counted, so fewer credits.',
+};
+
+/**
+ * Where the usage slider opens: the value the engine carries. V2.0 SDWS 34 sets
+ * U_p by a usage survey and gives no default, so the source line says there is
+ * none yet (R16); a source is to be found on the paid side for the new engine.
+ */
+export const USAGE_OPENING: SliderOpening = {
+  value: 1,
+  label: 'no source yet — the methodology sets it by a usage survey',
+  section: 'V2.0 SDWS 34',
+  page: '',
+};
 
 /**
  * The water column's own litres slider (VWBA 2.0 D-3, Table D3.3, p. 46). It
@@ -386,6 +467,7 @@ export const WATER_LITRES_SLIDER: SliderSpec = {
   max: Number(LPCD_FULL),
   step: 1,
   unit: 'L / person / day',
+  credits: 'More water per person raises the water benefit. It does not change the carbon credits.',
 };
 
 /** Where the water slider opens, by access level; undefined until the access level is answered. */
@@ -394,6 +476,16 @@ export function waterLitresOpening(accessLevel: unknown): number | undefined {
   if (accessLevel === 'limited') return Number(LPCD_LIMITED);
   return undefined;
 }
+
+/** All six, by key — the screen and the check read the same list. */
+export const SLIDERS: Readonly<Record<SliderKey, SliderSpec>> = {
+  litres: LITRES_SLIDER,
+  operationalDays: DAYS_SLIDER,
+  waterQuality: QUALITY_SLIDER,
+  waterLitres: WATER_LITRES_SLIDER,
+  eta: ETA_SLIDER,
+  usageRate: USAGE_SLIDER,
+};
 
 /** Clamp a slider's value into its range; undefined for anything that is not a number. */
 export function clampSlider(spec: SliderSpec, value: unknown): number | undefined {

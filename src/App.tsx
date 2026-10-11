@@ -101,7 +101,7 @@ import {
   type Verdicts,
 } from './lib/worksheetState';
 import { eligibilityDone as sheetDone } from './lib/visit';
-import { fittedPack, livePacks, type PackValues } from './lib/methodPacks';
+import { livePacks, type PackValues } from './lib/methodPacks';
 import {
   EMPTY_VISIT,
   applyEligibilityProgress,
@@ -194,8 +194,6 @@ export default function App() {
     setVisit((v) => ({ ...v, pin, context: pinnedContext(v.context, pin) }));
   }, []);
 
-  /* Which pack's tab is open. Held here so a step away and back keeps it. */
-  const [activePack, setActivePack] = useState<string>(() => fittedPack()?.key ?? '');
   const setPackValues = useCallback((packKey: string, values: PackValues) => {
     setVisit((v) => ({ ...v, packValues: { ...v.packValues, [packKey]: values } }));
   }, []);
@@ -507,8 +505,8 @@ export default function App() {
                 aria-hidden={!onQuantification}
               >
                 <CalvinScreen
-                  activeKey={activePack}
-                  onSelect={setActivePack}
+                  record={visit.context}
+                  sheet={sheet}
                   allValues={visit.packValues}
                   onChange={setPackValues}
                 />

@@ -36,7 +36,7 @@
  * clicked.
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import type { AgentTurn } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
 import {
@@ -47,7 +47,8 @@ import {
   type Sheet,
 } from '../lib/worksheetState';
 import { HER_PACKS } from '../lib/worksheet.generated';
-import { fittedPack, type PackValues } from '../lib/methodPacks';
+import type { PackValues } from '../lib/methodPacks';
+import { EMPTY_CONTEXT } from '../lib/visit';
 import { askPhoebe, carriedSheet } from '../lib/phoebeClient';
 import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
@@ -122,12 +123,9 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
   );
 }
 
-export function CalvinCommonsSeat({ packKey }: { packKey: string | null }) {
-  const [activeKey, setActiveKey] = useState<string>(packKey ?? fittedPack()?.key ?? '');
-  /* A click on another of his cards moves the calculator to that pack. */
-  useEffect(() => {
-    if (packKey) setActiveKey(packKey);
-  }, [packKey]);
+/* Which of his shelf cards was opened no longer picks a tab: the sheet is one
+   sheet from 10 Oct 2026 (Calvin's brief, ruling 2), so the card's key is not read. */
+export function CalvinCommonsSeat(_props: { packKey: string | null }) {
   const [values, setValues] = useState<Record<string, PackValues>>({});
 
   return (
@@ -139,9 +137,10 @@ export function CalvinCommonsSeat({ packKey }: { packKey: string | null }) {
         chat: <NotLiveChat host={CALVIN} line={CALVIN_NOT_LIVE_LINE} />,
         tool: (
           <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
+            {/* On the Commons there is no record and no worksheet of Phoebe's (§8). */}
             <QuantificationWorksheet
-              activeKey={activeKey}
-              onSelect={setActiveKey}
+              record={EMPTY_CONTEXT}
+              sheet={EMPTY_SHEET}
               allValues={values}
               onChange={(key, next) => setValues((v) => ({ ...v, [key]: next }))}
             />

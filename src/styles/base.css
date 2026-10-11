@@ -92,6 +92,10 @@ body {
 .eyebrow.admin {
   color: var(--role-admin);
 }
+/* A label read inside a row, not a section head: the same type, no rule before it. */
+.eyebrow.solo::before {
+  display: none;
+}
 
 /* Repeated labels — table column heads above all. Normal tracking. */
 .label {

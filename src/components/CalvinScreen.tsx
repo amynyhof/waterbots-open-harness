@@ -39,6 +39,8 @@
 import calvinPortrait from '../../brand/assets/bots/calvin.svg';
 import type { AgentHost } from '../chat/evidence';
 import { livePacks, type PackValues } from '../lib/methodPacks';
+import type { VisitContext } from '../lib/visit';
+import type { Sheet } from '../lib/worksheetState';
 import { toolVersion } from '../lib/toolReadmes';
 import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
@@ -58,16 +60,16 @@ export const CALVIN: AgentHost = {
 
 /** The one plain line — ruling 1, 9 Sep 2026. A visitor's words. */
 export const CALVIN_NOT_LIVE_LINE =
-  'Calvin is not answering here yet. The calculator works: pick a method and type in what you know.';
+  'Calvin is not answering here yet. The calculator works: type in what you know on the Tool tab.';
 
 export default function CalvinScreen({
-  activeKey,
-  onSelect,
+  record,
+  sheet,
   allValues,
   onChange,
 }: {
-  activeKey: string;
-  onSelect: (key: string) => void;
+  record: VisitContext;
+  sheet: Sheet;
   allValues: Record<string, PackValues>;
   onChange: (key: string, values: PackValues) => void;
 }) {
@@ -79,12 +81,7 @@ export default function CalvinScreen({
         chat: <NotLiveChat host={CALVIN} line={CALVIN_NOT_LIVE_LINE} />,
         tool: (
           <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
-            <QuantificationWorksheet
-              activeKey={activeKey}
-              onSelect={onSelect}
-              allValues={allValues}
-              onChange={onChange}
-            />
+            <QuantificationWorksheet record={record} sheet={sheet} allValues={allValues} onChange={onChange} />
           </div>
         ),
         pack: <KnowledgePackTab view={CALVIN_PACK} />,
