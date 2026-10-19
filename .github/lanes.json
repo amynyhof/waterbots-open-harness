@@ -1,0 +1,40 @@
+{
+  "about": "The merge lanes' path lists. Read by scripts/lane-classify.mjs. A file is matched against lane 3 first, then lane 2, then lane 1; a file on no list is lane 3. A pull request takes its highest file's lane. This file is itself lane 3.",
+  "lane3": [
+    ".github/**",
+    "scripts/**",
+    "api/**",
+    "carried/**",
+    "knowledge-packs/**",
+    "public/**",
+    "src/lib/**",
+    "package.json",
+    "package-lock.json",
+    "CLAUDE.md",
+    "PROCESS_RULES_for_ShellB.md",
+    "AGENT_RULES.md",
+    "CITATIONS.md",
+    "LICENSE",
+    ".gitignore",
+    ".gitattributes",
+    "vercel.json",
+    "vite.config.ts",
+    "tsconfig*.json",
+    "**/*CARRY*",
+    "**/.env*"
+  ],
+  "lane2": [
+    "README.md",
+    "index.html",
+    "src/**",
+    "brand/**",
+    "captures/**"
+  ],
+  "lane1": [
+    "BUILD_PLAN.md",
+    "BUILD_LOG.md",
+    "docs/**",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ]
+}

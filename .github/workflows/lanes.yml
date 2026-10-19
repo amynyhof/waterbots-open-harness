@@ -1,0 +1,84 @@
+# Merge lanes — labels every pull request lane-1, lane-2 or lane-3 by which files it
+# changes, and merges lane 1 once every required check is green. Nothing else
+# decides a lane: not the session, not a person, not the description.
+#
+# Why pull_request_target: it runs THIS file and the scripts from main, never the pull
+# request's own copy, so a pull request cannot rewrite the rule that judges it. It
+# checks out main only and never runs a pull request's code. Do not add a step that does.
+name: Merge lanes
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  lane:
+    name: lane
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PR: ${{ github.event.pull_request.number }}
+      REPO: ${{ github.repository }}
+      CHANGED: ${{ github.event.pull_request.changed_files }}
+      IS_DRAFT: ${{ github.event.pull_request.draft }}
+      SAME_REPO: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Decide the lane
+        id: decide
+        run: |
+          set -e
+          if [ "$CHANGED" -ge 3000 ]; then
+            LANE=3   # GitHub lists at most 3000 files; more than that is never lane 1
+          else
+            gh api --paginate "repos/$REPO/pulls/$PR/files" \
+              --jq '.[] | {path: .filename, previous: .previous_filename}' > files.ndjson
+            LANE=$(node scripts/lane-classify.mjs < files.ndjson)
+          fi
+          echo "lane=$LANE" >> "$GITHUB_OUTPUT"
+          echo "This pull request is lane $LANE." >> "$GITHUB_STEP_SUMMARY"
+      - name: Label it
+        env:
+          LANE: ${{ steps.decide.outputs.lane }}
+        run: |
+          set -e
+          gh label create lane-1 --force --color 0E8A16 --description "Merges on its own once checks are green" --repo "$REPO"
+          gh label create lane-2 --force --color FBCA04 --description "Amy looks in the browser, then merges" --repo "$REPO"
+          gh label create lane-3 --force --color D93F0B --description "Amy and Grok" --repo "$REPO"
+          for n in 1 2 3; do
+            if [ "$n" = "$LANE" ]; then gh pr edit "$PR" --add-label "lane-$n" --repo "$REPO"
+            else gh pr edit "$PR" --remove-label "lane-$n" --repo "$REPO" || true
+            fi
+          done
+      - name: Lanes 2 and 3 are never merged by anything here
+        if: steps.decide.outputs.lane != '1'
+        run: gh pr merge "$PR" --disable-auto --repo "$REPO" || true
+      - name: Lane 1 — scan the added lines, then switch on auto-merge
+        if: steps.decide.outputs.lane == '1'
+        run: |
+          set +e
+          if [ "$IS_DRAFT" = "true" ] || [ "$SAME_REPO" != "true" ]; then
+            echo "Lane 1, but a draft or a fork: not merged automatically." | tee -a "$GITHUB_STEP_SUMMARY"
+            gh pr merge "$PR" --disable-auto --repo "$REPO"; exit 0
+          fi
+          gh pr diff "$PR" --repo "$REPO" > pr.diff || { echo "Could not read the diff: not merged automatically." | tee -a "$GITHUB_STEP_SUMMARY"; exit 0; }
+          node scripts/scan-diff.mjs --secrets < pr.diff; S=$?
+          node scripts/scan-diff.mjs --numbers < pr.diff; N=$?
+          if [ "$S" -ne 0 ] || [ "$N" -ne 0 ]; then
+            echo "Lane 1, but the secrets scan (exit $S) or the number gate (exit $N) did not come back clean, so it waits for a person." | tee -a "$GITHUB_STEP_SUMMARY"
+            gh pr merge "$PR" --disable-auto --repo "$REPO"; exit 0
+          fi
+          # Auto-merge waits for the required checks set in branch protection; it does not skip them.
+          gh pr merge "$PR" --auto --squash --repo "$REPO" \
+            && echo "Auto-merge (squash) switched on; GitHub merges when every required check is green." | tee -a "$GITHUB_STEP_SUMMARY"
+          exit 0

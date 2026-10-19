@@ -320,6 +320,18 @@ in any live document. Strikes from before it wait in CLAUDE.md, PROCESS_RULES, A
 READMEs and the card files. One document a commit; the rulebooks and card files each their own pull
 request. Proposal first, with a count of strikes per document.
 
+### Safety pass
+
+Known weaknesses in tools this machine runs, not in what visitors get. Not v1.
+
+**SP1 · The eight `npm audit` findings.** PARK. All are in build-time tools; none is in the live site's
+own dependencies. Seven come through `mapshaper` (`adm-zip`, `@xmldom/xmldom`, `fflate`, `file-type`,
+`image-size`, and two packages that depend on them); `source-map-js` comes through Vite and Tailwind. A ninth
+warning, `geographiclib` deprecated, is also mapshaper's. Plan:
+on a throwaway branch run `npm audit fix` without force; run every check and the build; rebuild the basins
+and confirm they are byte-identical; upgrade `mapshaper` if a release drops `geographiclib`, else leave it.
+Package files are lane 3. Proposal first; the paused install scripts for `better-sqlite3` and `esbuild` stay paused.
+
 ---
 
 ## After v1

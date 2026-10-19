@@ -48,7 +48,7 @@ step,~~ **a pull request per checkpoint**, and her eyeball wherever a step's own
 3. **A gate failure.**
 
 **This does not loosen anything else.** A step is still sized by risk. A browser check is still a
-browser check. Nothing merges without the maintainer. What the batch removes is the pause between
+browser check. Nothing merges outside the merge lanes (below). What the batch removes is the pause between
 steps that were already agreed, not any of the gates inside them.
 
 **There are two kinds of close** — a light close after each task and the full close-out at the end
@@ -107,8 +107,8 @@ and the commit word comes after that. Her words, as item O5 recorded them:
 **Read with the batch ruling of 28 Aug 2026 above, which came later and narrowed what "commit"
 means here.** Under an approved batch the engineer commits each step on its branch and opens the
 pull request, because that is how the work reaches her eyeball. What this rule forbids is anything
-reaching `main` on the strength of an approval: no push to `main`, no merge, ever, without her
-word. The two breaches that made the rule were two pushes straight to `main` during an outage.
+reaching `main` on the strength of an approval: no push to `main`, and no merge except as the merge
+lanes (below) allow. The two breaches that made the rule were two pushes straight to `main` during an outage.
 **Urgency is the condition this rule exists for.** Item O5 keeps the record and is archived.
 
 ### How big is a step
@@ -223,8 +223,8 @@ the title and the description filled in, and keeps GitHub's delete-branch-on-mer
 turned on so merged branches do not pile up.
 
 **The maintainer's part becomes reviewing and merging.** The commit word still comes first,
-and it is unchanged: opening a pull request is not permission to merge one, and nothing
-merges without her.
+and it is unchanged: opening a pull request is not permission to merge one, and a merge
+happens only as the merge lanes (below) allow.
 
 #### Pull requests bundle by the maintainer's checkpoints, not by step
 
@@ -245,20 +245,43 @@ stress ramp is the example given. A rulebook change is another: canon is exactly
 to be able to lift out without lifting anything else with it.
 
 **This does not loosen any gate.** Her eyeball still falls where the plan says it falls, the commit
-word is unchanged, and nothing merges without her. What it removes is a review queue that grew a
+word is unchanged, and a merge happens only as the merge lanes (below) allow. What it removes is a review queue that grew a
 row for every mechanical change.
 
 **It changes nothing about how a step is sized** — see *How big is a step* above. A step is still
 one coherent, testable thing. This rule is about how steps are grouped for review, not about how
 big one may be.
 
-#### The merge ritual — a second reader, and only the maintainer merges
+#### Merge lanes — the files decide who merges
 
-**Maintainer's ruling, 9 Oct 2026.** Before any merge, the maintainer gives Grok the pull request's
-diff plus the rules files (CLAUDE.md, this file, CITATIONS.md, AGENT_RULES.md). **Grok flags
-problems; it never approves.** A clean read from Grok is not a merge word. **Only the maintainer
-merges**, as before, and the engineer never merges. The engineer does not call Grok and does not
-send it anything; the maintainer carries the diff by hand.
+**Maintainer's ruling, 19 Oct 2026.** It replaces *The merge ritual — a second reader, and only the
+maintainer merges* of 9 Oct 2026; the old wording is in
+[docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md). Every pull request is in one of three
+lanes. **The lane is decided by a check on GitHub, from which files changed — never by the session,
+never by the description, never by a person's label.** The check is
+`.github/workflows/lanes.yml`; the path lists are `.github/lanes.json`; `scripts/check-lanes.mjs`
+holds the cases that prove them. It labels the pull request `lane-1`, `lane-2` or `lane-3`.
+
+1. **Lane 1 — merges on its own.** Only plan, notes and docs files (`BUILD_PLAN.md`,
+   `BUILD_LOG.md`, `docs/`), or test-only changes. It merges (squash) by itself once every required
+   check is green, the secrets scan finds nothing and the number gate is clean. **If the number gate has
+   no patterns, it reports inactive and nothing merges on its own.** It never touches the engine or
+   calculator files, package files, rules files (this file, CLAUDE.md, AGENT_RULES.md, CITATIONS.md,
+   anything CARRY-related, the lane rule itself), `.github/`, secrets or anything a visitor sees.
+2. **Lane 2 — Amy looks.** Anything that changes what a visitor sees or reads: screens, copy, the
+   README, captures, brand files. She checks in the browser, then merges.
+3. **Lane 3 — Amy and Grok.** Calculator and engine numbers, security, packages, data files, rules files,
+   CI, the lane rule itself, and anything that could leak real figures. Before she merges, she gives
+   Grok the pull request's diff plus the rules files (CLAUDE.md, this file, CITATIONS.md,
+   AGENT_RULES.md). **Grok flags problems; it never approves.** A clean read from Grok is not a merge
+   word. The engineer does not call Grok and does not send it anything; she carries the diff by hand.
+
+**Rules.** A file on no list is lane 3. A pull request takes its highest file's lane. A pull request
+that changes the lane rule is lane 3, and a file moved out of a lane 3 place still counts as lane 3.
+**Only lane 1 may auto-merge, and only after every required check is green. Sessions never merge
+lane 2 or lane 3**, and a session never merges lane 1 by hand either: it opens the pull request and
+GitHub does the rest. The settings that make the required checks bind (Allow auto-merge; branch
+protection) are Amy's to flip by hand in GitHub; a session never changes repository settings.
 
 #### Every description opens with a block for the maintainer
 
