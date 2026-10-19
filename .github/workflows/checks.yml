@@ -1,0 +1,43 @@
+# Every check the README lists, run on every pull request. The required check named
+# "checks" on main's branch protection is this job.
+#
+# Not run here: scripts/check-basemap-key.mjs. It reads the real basemap key, which
+# lives only on the hosting side and in .env.local, and this workflow holds no secrets.
+name: Checks
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Confirm outputs, one script at a time
+        run: |
+          set -e
+          for c in basins stress palette cards api-exports visitor-id cap reply-guard vwba-d3 gs-sdws wellington roster lanes; do
+            echo "::group::check-$c"
+            node "scripts/check-$c.mjs"
+            echo "::endgroup::"
+          done
+          node scripts/build-prompt-modules.mjs --check
+      - name: Build
+        run: npm run build
+      - name: Attribution
+        run: node scripts/check-attribution.mjs
+      - name: Secrets scan on the lines this pull request adds
+        if: github.event_name == 'pull_request'
+        run: git diff "origin/${{ github.base_ref }}...HEAD" | node scripts/scan-diff.mjs --secrets

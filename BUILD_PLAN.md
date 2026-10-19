@@ -320,6 +320,26 @@ in any live document. Strikes from before it wait in CLAUDE.md, PROCESS_RULES, A
 READMEs and the card files. One document a commit; the rulebooks and card files each their own pull
 request. Proposal first, with a count of strikes per document.
 
+### Safety pass
+
+Known weaknesses in tools this machine runs, not in what visitors get. Not v1.
+
+**SP1 · A separate GitHub account for sessions.** BONES. A second account that can open pull requests but
+cannot merge, enforced by branch protection (only Amy's account may merge). First on this list: the deny
+rules in session settings are a fence a session could edit away, branch protection is not. Needs her to
+create the account and set the rule; a proposal comes first.
+
+**SP2 · The eight `npm audit` findings.** PARK. All are in build-time tools, none in the live site's own
+dependencies: seven come through `mapshaper` (`adm-zip`, `@xmldom/xmldom`, `fflate`, `file-type`, `image-size`
+and two that depend on them), one through Vite (`source-map-js`); `geographiclib`, deprecated, is mapshaper's too.
+Plan: `npm audit fix` without force on a throwaway branch; all checks and the build; rebuild the basins,
+byte-identical; upgrade `mapshaper` if a release drops `geographiclib`. Lane 3; proposal first; the paused
+install scripts for `better-sqlite3` and `esbuild` stay paused.
+
+**SP3 · Switch lane 1 auto-merge on.** PARK. The job is built and off (`LANE1_AUTOMERGE` unset in the
+repository's variables, and guarded on the number gate having patterns). Switch it on only once the
+keyed-fingerprint number gate ships, in the open core work; then flip Allow auto-merge and branch protection by hand.
+
 ---
 
 ## After v1

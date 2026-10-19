@@ -249,6 +249,7 @@ node scripts/check-vwba-d3.mjs
 node scripts/check-gs-sdws.mjs
 node scripts/check-wellington.mjs
 node scripts/check-roster.mjs
+node scripts/check-lanes.mjs
 node scripts/build-prompt-modules.mjs --check
 npm run build && node scripts/check-attribution.mjs && node scripts/check-basemap-key.mjs
 ```

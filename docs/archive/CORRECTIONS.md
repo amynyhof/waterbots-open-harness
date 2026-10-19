@@ -17,6 +17,55 @@ before 3 Oct 2026 link to an OPEN_ITEMS.md that has since been retired to this f
 
 ---
 
+## 19 Oct 2026 — PROCESS_RULES_for_ShellB.md: "nothing merges without her" became the merge lanes
+
+**Why it changed.** The maintainer ruled three merge lanes on 19 Oct 2026. Only a pull request that
+touches nothing but plan, notes, docs or tests (lane 1) may merge on its own, once every required
+check is green. Lanes 2 and 3 are still hers. The five places that said no merge happens without her
+now point at the merge lanes section, and the 9 Oct ritual is folded into lane 3.
+
+**Old wording, whole — "Part 2" paragraph on batching:**
+
+> **This does not loosen anything else.** A step is still sized by risk. A browser check is still a
+> browser check. Nothing merges without the maintainer. What the batch removes is the pause between
+> steps that were already agreed, not any of the gates inside them.
+
+**Old wording, whole — the rule on urgency and `main`:**
+
+> What this rule forbids is anything
+> reaching `main` on the strength of an approval: no push to `main`, no merge, ever, without her
+> word.
+
+**Old wording, whole — "Pull requests — the engineer opens them":**
+
+> **The maintainer's part becomes reviewing and merging.** The commit word still comes first,
+> and it is unchanged: opening a pull request is not permission to merge one, and nothing
+> merges without her.
+
+**Old wording, whole — "Pull requests bundle by the maintainer's checkpoints":**
+
+> **This does not loosen any gate.** Her eyeball still falls where the plan says it falls, the commit
+> word is unchanged, and nothing merges without her.
+
+**Old wording, whole — the merge ritual (ruling of 9 Oct 2026):**
+
+> #### The merge ritual — a second reader, and only the maintainer merges
+>
+> **Maintainer's ruling, 9 Oct 2026.** Before any merge, the maintainer gives Grok the pull request's
+> diff plus the rules files (CLAUDE.md, this file, CITATIONS.md, AGENT_RULES.md). **Grok flags
+> problems; it never approves.** A clean read from Grok is not a merge word. **Only the maintainer
+> merges**, as before, and the engineer never merges. The engineer does not call Grok and does not
+> send it anything; the maintainer carries the diff by hand.
+
+**Old wording, whole — CLAUDE.md, "Proposal before code" (line 72):**
+
+> word. Her browser review is part of every gate.
+
+CLAUDE.md gained a *Merge lanes* bullet the same day, so it and PROCESS_RULES agree.
+
+**Where the current text is.** [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Merge
+lanes — the files decide who merges*. Lane 3 keeps the 9 Oct Grok read word for word in effect.
+
 ## 25 Sep 2026 — CLAUDE.md, BUILD_PLAN.md and OPEN_ITEMS.md: "what kind" was said to be gone from the seal
 
 **Why it changed.** It was true for one day. The maintainer's live test of 25 Sep 2026 found that a

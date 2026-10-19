@@ -1,0 +1,12 @@
+# The number gate's patterns — the maintainer's list. One regular expression per line,
+# matched without regard to case against every line a pull request ADDS.
+#
+# What belongs here: a real project's figure, a demo project's figure, or a word that
+# names a real project or organisation, anything that must never reach a public page
+# through a plain notes-or-docs pull request.
+#
+# THIS FILE HAS NO PATTERNS YET. The paid site's gate (carry-number-gate) is not in this
+# repository and its list is not the engineer's to write or guess. Until the maintainer
+# adds patterns, the number gate reports "inactive" and a pull request in lane 1 is NOT
+# merged automatically; it waits for a person. That is on purpose: a gate with nothing in
+# it must not say "clean".
