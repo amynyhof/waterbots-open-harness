@@ -37,7 +37,8 @@ expect('a carry-related note is lane 3 even under docs', lane('docs/CARRY_NOTES.
 expect('CI and the lane rule itself are lane 3', lane('.github/workflows/lanes.yml') === 3 && lane('.github/lanes.json') === 3 && lane('scripts/lane-classify.mjs') === 3, 'the lane rule is not lane 3');
 expect('a file on no list is lane 3', lane('some-new-folder/thing.txt') === 3, 'an unlisted file did not default to lane 3');
 expect('a secrets file is lane 3', lane('.env.production') === 3, 'an env file not lane 3');
-expect('a test-only change is lane 1', lane('src/lib/x.test.ts') === 3 && lane('docs/x.test.ts') === 1, 'test files misplaced (a test under src/lib stays lane 3, one under docs is lane 1)');
+expect('a test file is lane 3 wherever it sits', ['src/lib/x.test.ts', 'docs/x.test.ts', 'src/components/A.test.tsx', 'x.spec.ts', 'carried/a.test.ts'].every((p) => lane(p) === 3), 'a test file was not lane 3');
+expect('only markdown under docs is lane 1', lane('docs/a.md', 'docs/archive/b.md') === 1 && lane('docs/pic.png') === 3 && lane('docs/data.json') === 3 && lane('docs/archive/x.pdf') === 3, 'a non-markdown docs file escaped lane 3');
 expect('a mixed pull request takes its highest lane', lane('BUILD_PLAN.md', 'src/components/Rail.tsx') === 2 && lane('BUILD_PLAN.md', 'README.md', 'api/phoebe.ts') === 3, 'a mix did not take the highest lane');
 expect('no files is lane 3', laneOfPullRequest([], lists) === 3, 'an empty list was not lane 3');
 expect(

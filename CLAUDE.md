@@ -69,9 +69,17 @@ never an action here.
   beats a fabricated one.
 - **Proposal before code.** Nothing is built until the maintainer
   approves a written proposal. Nothing commits without her explicit
-  word. Her browser review is part of every gate.
+  word. Her browser review is part of every gate that changes what a visitor sees.
 - **One step at a time.** Build one thing → report → browser review →
   commit word. No multi-step anticipation.
+- **Merge lanes, from 19 Oct 2026 (the maintainer's ruling).** GitHub labels every pull
+  request `lane-1`, `lane-2` or `lane-3` from the files it changes, never by the session. **Lane 1**,
+  plain writing only (BUILD_PLAN.md, BUILD_LOG.md, `.md` under `docs/`); **lane 2**, anything a
+  visitor sees or reads, which she checks in the browser; **lane 3**, engine and calculator numbers,
+  security, packages, data, rules files, CI and the lane rule itself, which she reads with Grok. A file on
+  no list is lane 3. **Nothing merges without her**: lane 1's auto-merge is built but OFF until the
+  keyed-fingerprint number gate exists. A session opens the pull request and never merges it. The rule
+  is in PROCESS_RULES_for_ShellB.md, *Merge lanes*.
 - **Atomic commits.** Subjects lead with the action taken —
   `Built:`, `Fixed:`, `Docs amended:`, `Proposal written:` — never
   the topic alone.

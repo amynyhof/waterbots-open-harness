@@ -262,12 +262,14 @@ never by the description, never by a person's label.** The check is
 `.github/workflows/lanes.yml`; the path lists are `.github/lanes.json`; `scripts/check-lanes.mjs`
 holds the cases that prove them. It labels the pull request `lane-1`, `lane-2` or `lane-3`.
 
-1. **Lane 1 — merges on its own.** Only plan, notes and docs files (`BUILD_PLAN.md`,
-   `BUILD_LOG.md`, `docs/`), or test-only changes. It merges (squash) by itself once every required
-   check is green, the secrets scan finds nothing and the number gate is clean. **If the number gate has
-   no patterns, it reports inactive and nothing merges on its own.** It never touches the engine or
-   calculator files, package files, rules files (this file, CLAUDE.md, AGENT_RULES.md, CITATIONS.md,
-   anything CARRY-related, the lane rule itself), `.github/`, secrets or anything a visitor sees.
+1. **Lane 1 — plain writing only.** `BUILD_PLAN.md`, `BUILD_LOG.md` and markdown files (`.md`) under
+   `docs/`. Nothing else in `docs/` — a picture, a data file, a PDF — and no test file anywhere (test
+   files are lane 3). It never touches the engine or calculator files, package files, rules files (this
+   file, CLAUDE.md, AGENT_RULES.md, CITATIONS.md, anything CARRY-related, the lane rule itself),
+   `.github/`, secrets or anything a visitor sees. **Lane 1 is meant to merge on its own, but that is OFF
+   (ruling of 19 Oct 2026, after Grok's read).** It stays off until the keyed-fingerprint number gate
+   exists (BUILD_PLAN, Safety pass); until then Amy merges lane 1 too. The job that would do it is
+   guarded so it cannot run while the number gate has no patterns.
 2. **Lane 2 — Amy looks.** Anything that changes what a visitor sees or reads: screens, copy, the
    README, captures, brand files. She checks in the browser, then merges.
 3. **Lane 3 — Amy and Grok.** Calculator and engine numbers, security, packages, data files, rules files,
@@ -278,10 +280,12 @@ holds the cases that prove them. It labels the pull request `lane-1`, `lane-2` o
 
 **Rules.** A file on no list is lane 3. A pull request takes its highest file's lane. A pull request
 that changes the lane rule is lane 3, and a file moved out of a lane 3 place still counts as lane 3.
-**Only lane 1 may auto-merge, and only after every required check is green. Sessions never merge
-lane 2 or lane 3**, and a session never merges lane 1 by hand either: it opens the pull request and
-GitHub does the rest. The settings that make the required checks bind (Allow auto-merge; branch
-protection) are Amy's to flip by hand in GitHub; a session never changes repository settings.
+**Only lane 1 may ever auto-merge, only once the number gate exists, and only after every required
+check is green. Sessions never merge any lane** — `gh pr merge`, a push to `main`, a force push and
+`git reset --hard` are denied in the session's settings — and a session never changes repository
+settings. Every pull request also runs gitleaks, a second secrets scan, as a required check. The
+workflow asks GitHub for the least it needs: the lane job reads files and writes labels; only the
+auto-merge job, which is off, could ever write to the repository.
 
 #### Every description opens with a block for the maintainer
 

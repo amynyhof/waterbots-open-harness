@@ -1,32 +1,38 @@
 # Merge lanes — labels every pull request lane-1, lane-2 or lane-3 by which files it
-# changes, and merges lane 1 once every required check is green. Nothing else
-# decides a lane: not the session, not a person, not the description.
+# changes. Nothing else decides a lane: not the session, not a person, not the description.
+#
+# AUTO-MERGE IS OFF (Amy's ruling, 19 Oct 2026). The `automerge` job below is switched off
+# by default and, even when switched on, refuses to run while the number gate has no
+# patterns. It is to be switched on only after the keyed-fingerprint number gate ships
+# (BUILD_PLAN, Safety pass, SP3). Do not enable it before.
 #
 # Why pull_request_target: it runs THIS file and the scripts from main, never the pull
-# request's own copy, so a pull request cannot rewrite the rule that judges it. It
-# checks out main only and never runs a pull request's code. Do not add a step that does.
+# request's own copy, so a pull request cannot rewrite the rule that judges it. It checks
+# out main only and never runs a pull request's code. Do not add a step that does.
 name: Merge lanes
 
 on:
   pull_request_target:
     types: [opened, synchronize, reopened, ready_for_review]
 
-permissions:
-  contents: write
-  pull-requests: write
-  issues: write
+# Nothing by default; each job asks for exactly what it needs.
+permissions: {}
 
 jobs:
   lane:
     name: lane
     runs-on: ubuntu-latest
+    # Read the repository and write labels on the pull request. No contents: write, no issues: write.
+    permissions:
+      contents: read
+      pull-requests: write
+    outputs:
+      lane: ${{ steps.decide.outputs.lane }}
     env:
       GH_TOKEN: ${{ github.token }}
       PR: ${{ github.event.pull_request.number }}
       REPO: ${{ github.repository }}
       CHANGED: ${{ github.event.pull_request.changed_files }}
-      IS_DRAFT: ${{ github.event.pull_request.draft }}
-      SAME_REPO: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,38 +53,67 @@ jobs:
           fi
           echo "lane=$LANE" >> "$GITHUB_OUTPUT"
           echo "This pull request is lane $LANE." >> "$GITHUB_STEP_SUMMARY"
-      - name: Label it
+      - name: Label it (labels are created once, only if missing)
         env:
           LANE: ${{ steps.decide.outputs.lane }}
         run: |
           set -e
-          gh label create lane-1 --force --color 0E8A16 --description "Merges on its own once checks are green" --repo "$REPO"
-          gh label create lane-2 --force --color FBCA04 --description "Amy looks in the browser, then merges" --repo "$REPO"
-          gh label create lane-3 --force --color D93F0B --description "Amy and Grok" --repo "$REPO"
+          existing=$(gh label list --repo "$REPO" --limit 200 --json name --jq '.[].name')
+          make() { echo "$existing" | grep -qx "$1" || gh label create "$1" --color "$2" --description "$3" --repo "$REPO"; }
+          make lane-1 0E8A16 "Plain writing only. Auto-merge is off for now"
+          make lane-2 FBCA04 "Amy looks in the browser, then merges"
+          make lane-3 D93F0B "Amy and Grok"
           for n in 1 2 3; do
             if [ "$n" = "$LANE" ]; then gh pr edit "$PR" --add-label "lane-$n" --repo "$REPO"
             else gh pr edit "$PR" --remove-label "lane-$n" --repo "$REPO" || true
             fi
           done
-      - name: Lanes 2 and 3 are never merged by anything here
-        if: steps.decide.outputs.lane != '1'
-        run: gh pr merge "$PR" --disable-auto --repo "$REPO" || true
-      - name: Lane 1 — scan the added lines, then switch on auto-merge
-        if: steps.decide.outputs.lane == '1'
+      - name: Say where auto-merge stands
+        run: |
+          if [ "${{ vars.LANE1_AUTOMERGE }}" = "on" ]; then
+            echo "Auto-merge variable is ON; the automerge job still refuses while the number gate is inactive." | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Auto-merge is OFF. Nothing merges from here; a person merges every lane." | tee -a "$GITHUB_STEP_SUMMARY"
+          fi
+
+  # The only job that holds contents: write, and it does not run at all unless a repository
+  # variable named LANE1_AUTOMERGE is set to "on" AND the pull request is lane 1.
+  automerge:
+    name: automerge (off)
+    needs: lane
+    if: ${{ vars.LANE1_AUTOMERGE == 'on' && needs.lane.outputs.lane == '1' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PR: ${{ github.event.pull_request.number }}
+      REPO: ${{ github.repository }}
+      IS_DRAFT: ${{ github.event.pull_request.draft }}
+      SAME_REPO: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Guard — scan the added lines; refuse unless both come back clean and the gate is active
+        id: guard
         run: |
           set +e
+          echo "go=false" >> "$GITHUB_OUTPUT"
           if [ "$IS_DRAFT" = "true" ] || [ "$SAME_REPO" != "true" ]; then
-            echo "Lane 1, but a draft or a fork: not merged automatically." | tee -a "$GITHUB_STEP_SUMMARY"
-            gh pr merge "$PR" --disable-auto --repo "$REPO"; exit 0
+            echo "Draft or fork: not merged automatically." | tee -a "$GITHUB_STEP_SUMMARY"; exit 0
           fi
-          gh pr diff "$PR" --repo "$REPO" > pr.diff || { echo "Could not read the diff: not merged automatically." | tee -a "$GITHUB_STEP_SUMMARY"; exit 0; }
+          gh pr diff "$PR" --repo "$REPO" > pr.diff || { echo "Could not read the diff: not merged." | tee -a "$GITHUB_STEP_SUMMARY"; exit 0; }
           node scripts/scan-diff.mjs --secrets < pr.diff; S=$?
           node scripts/scan-diff.mjs --numbers < pr.diff; N=$?
           if [ "$S" -ne 0 ] || [ "$N" -ne 0 ]; then
-            echo "Lane 1, but the secrets scan (exit $S) or the number gate (exit $N) did not come back clean, so it waits for a person." | tee -a "$GITHUB_STEP_SUMMARY"
-            gh pr merge "$PR" --disable-auto --repo "$REPO"; exit 0
+            echo "Secrets scan exit $S, number gate exit $N (2 means the gate has no patterns). Not merged." | tee -a "$GITHUB_STEP_SUMMARY"; exit 0
           fi
-          # Auto-merge waits for the required checks set in branch protection; it does not skip them.
-          gh pr merge "$PR" --auto --squash --repo "$REPO" \
-            && echo "Auto-merge (squash) switched on; GitHub merges when every required check is green." | tee -a "$GITHUB_STEP_SUMMARY"
-          exit 0
+          echo "go=true" >> "$GITHUB_OUTPUT"
+      - name: Switch on auto-merge (squash); GitHub waits for the required checks
+        if: steps.guard.outputs.go == 'true'
+        run: gh pr merge "$PR" --auto --squash --repo "$REPO"

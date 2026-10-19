@@ -57,6 +57,12 @@ now point at the merge lanes section, and the 9 Oct ritual is folded into lane 3
 > merges**, as before, and the engineer never merges. The engineer does not call Grok and does not
 > send it anything; the maintainer carries the diff by hand.
 
+**Old wording, whole — CLAUDE.md, "Proposal before code" (line 72):**
+
+> word. Her browser review is part of every gate.
+
+CLAUDE.md gained a *Merge lanes* bullet the same day, so it and PROCESS_RULES agree.
+
 **Where the current text is.** [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Merge
 lanes — the files decide who merges*. Lane 3 keeps the 9 Oct Grok read word for word in effect.
 
