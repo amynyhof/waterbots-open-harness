@@ -340,6 +340,10 @@ install scripts for `better-sqlite3` and `esbuild` stay paused.
 repository's variables, and guarded on the number gate having patterns). Switch it on only once the
 keyed-fingerprint number gate ships, in the open core work; then flip Allow auto-merge and branch protection by hand.
 
+**SP4 · Pin every GitHub Action by full commit hash instead of tag.** BONES. `actions/checkout`, `actions/setup-node`,
+`gitleaks/gitleaks-action` and any others in `.github/workflows/`, per Grok's re-attack on #152. A tag can be moved to
+different code; a full commit hash cannot. Lane 3 (it edits CI); proposal first.
+
 ---
 
 ## After v1
