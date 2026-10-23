@@ -208,7 +208,7 @@ the end of every sitting. The old wording is in
    lines after the item is trimmed, the light close says a full close-out is needed, and the sweep
    waits for it. A light close also does not append the session to BUILD_LOG.md or refresh
    Wellington's build-update fact.
-2. **The full close-out ritual, only at the end of a family or sprint.** The ten steps under *How a
+2. **The full close-out ritual, only at the end of a family or sprint.** The eleven steps under *How a
    session closes* run in full, as written. A family or sprint ends when the maintainer says so.
 
 **A full close-out is never run before `/clear` just because a task ended.** A task that is not
@@ -500,6 +500,9 @@ those gets the light close (*Two kinds of close*). **A ritual with a skipped ste
     400, flag it in the full close-out report, with the count.** An item there is six lines at most; a longer
     write-up goes to BUILD_LOG.md and the item points at it. The limit is a threshold, and it changes
     only on her word.
+11. **Tidy what you touched.** Maintainer's ruling, 23 Oct 2026. At each family close, tidy what you
+    touched (dead code, stale notes, duplicate logic) as part of close-out. Only what the family's own
+    work touched; anything wider is an item for its family, not a sweep.
 
 **There is no export step and there are no copies to order**, from 17 Sep 2026. Item O8 in
 [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) keeps the story of the step while it lived.

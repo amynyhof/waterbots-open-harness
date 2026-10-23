@@ -17,6 +17,20 @@ before 3 Oct 2026 link to an OPEN_ITEMS.md that has since been retired to this f
 
 ---
 
+## 23 Oct 2026 — PROCESS_RULES_for_ShellB.md: the full close-out gained an eleventh step
+
+**Why it changed.** The maintainer ruled that each family close also tidies what the family touched. The
+ritual now has eleven steps; step 11 is new, and no step was reworded or renumbered.
+
+**Old wording, whole — Two kinds of close, item 2:**
+
+> 2. **The full close-out ritual, only at the end of a family or sprint.** The ten steps under *How a
+>    session closes* run in full, as written.
+
+**Where the current text is:** [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Two kinds of close* and step 11 of *How a session closes*.
+
+---
+
 ## 19 Oct 2026 — PROCESS_RULES_for_ShellB.md: "nothing merges without her" became the merge lanes
 
 **Why it changed.** The maintainer ruled three merge lanes on 19 Oct 2026. Only a pull request that
