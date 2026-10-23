@@ -344,6 +344,14 @@ keyed-fingerprint number gate ships, in the open core work; then flip Allow auto
 `gitleaks/gitleaks-action` and any others in `.github/workflows/`, per Grok's re-attack on #152. A tag can be moved to
 different code; a full commit hash cannot. Lane 3 (it edits CI); proposal first.
 
+**SP5 · Check linting, formatting and strict typing; switch on what is missing.** After v1 · BONES. Find out which
+of the three the repository already runs, and turn on the ones it does not. Proposal first, with what is on and
+what is off.
+
+**SP6 · A human engineer reviews the structure.** Now, not blocking v1 · BONES. One question put to a person:
+what would you keep, what would you fix first, what would you worry about. It covers all three repositories. The
+review itself is her hand's work, outside this repository (rule zero); only its findings come back here, as items.
+
 ---
 
 ## After v1
