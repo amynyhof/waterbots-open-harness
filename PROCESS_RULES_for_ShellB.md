@@ -267,16 +267,16 @@ holds the cases that prove them. It labels the pull request `lane-1`, `lane-2` o
    files are lane 3). It never touches the engine or calculator files, package files, rules files (this
    file, CLAUDE.md, AGENT_RULES.md, CITATIONS.md, anything CARRY-related, the lane rule itself),
    `.github/`, secrets or anything a visitor sees. **Lane 1 is meant to merge on its own, but that is OFF
-   (ruling of 19 Oct 2026, after Grok's read).** It stays off until the keyed-fingerprint number gate
+   (ruling of 19 Oct 2026, after the second reader's read).** It stays off until the keyed-fingerprint number gate
    exists (BUILD_PLAN, Safety pass); until then Amy merges lane 1 too. The job that would do it is
    guarded so it cannot run while the number gate has no patterns.
 2. **Lane 2 — Amy looks.** Anything that changes what a visitor sees or reads: screens, copy, the
    README, captures, brand files. She checks in the browser, then merges.
-3. **Lane 3 — Amy and Grok.** Calculator and engine numbers, security, packages, data files, rules files,
+3. **Lane 3 — Amy and the second reader.** Calculator and engine numbers, security, packages, data files, rules files,
    CI, the lane rule itself, and anything that could leak real figures. Before she merges, she gives
-   Grok the pull request's diff plus the rules files (CLAUDE.md, this file, CITATIONS.md,
-   AGENT_RULES.md). **Grok flags problems; it never approves.** A clean read from Grok is not a merge
-   word. The engineer does not call Grok and does not send it anything; she carries the diff by hand.
+   The second reader the pull request's diff plus the rules files (CLAUDE.md, this file, CITATIONS.md,
+   AGENT_RULES.md). **The second reader flags problems; it never approves.** A clean read from the second reader is not a merge
+   word. The engineer does not call the second reader and does not send it anything; she carries the diff by hand.
 
 **Rules.** A file on no list is lane 3. A pull request takes its highest file's lane. A pull request
 that changes the lane rule is lane 3, and a file moved out of a lane 3 place still counts as lane 3.
@@ -527,3 +527,8 @@ those gets the light close (*Two kinds of close*). **A ritual with a skipped ste
   until the design session happens. It was briefly restated here and
   is not any more — two copies of a rule are two rules that can
   disagree.
+- **No user folder path or Windows username in the repo, ever.** Write a path as
+  `%USERPROFILE%\GitHub\...` or by its role, never with a person's folder or account name in it.
+  **A pull request's title, commit messages and body never name what is being removed**: a
+  cleanup is titled for the tidying ("Tidy paths and comments"), and the list it was checked
+  against stays outside this repository. Maintainer's ruling, 25 Oct 2026.

@@ -294,7 +294,7 @@ gitignored, so either is safe to drop in later.
 ## 2 September 2026 — the free desk, the production shape, and the carbon packs
 
 **One sitting, one pull request on `feat/free-desk`, seven commits, three of the maintainer's
-checkpoints.** Items S11, K6 and K7. Thursday's C4SW walk is on waterbots.ai; this sitting's brief
+checkpoints.** Items S11, K6 and K7. Thursday's partner walk is on waterbots.ai; this sitting's brief
 was that if it slipped, the map site was not the demo, and the desk came before carbon.
 
 ### What was built
@@ -448,7 +448,7 @@ maintainer.
 **Slice 1 — the desk is the conversation, the rail is the record (#50).** The centre lost its
 context card and its rows; Wellington's turns and the one composer are what remains. The left rail
 holds the project card and four record rows — what it does, what kind, where it is, what it is
-called — in the order the seats need them, ruled from Bob; each row says where its value came from,
+called — in the order the seats need them, ruled from a colleague; each row says where its value came from,
 and name and place keep a quiet typing box. The journey bar lost its caption and never scrolls,
 collapsing to numbered rings.
 
@@ -881,11 +881,11 @@ and the disagreement is noted under item S18 rather than silently resolved eithe
   third consumer's; the same daily caps; Bridget's map stays the console's; the sign-up door goes to
   waterbots.ai's front door.
 - **Item S19 logged, the Workshop** — make your own agent on the Commons; the cost model in order;
-  publishing reviewed by her first; every pack saved in both shapes; grading manual until Deb's rig
+  publishing reviewed by her first; every pack saved in both shapes; grading manual until the grader's rig
   runs on a trigger. Not built; proposal next, on her word.
 - **Item S20 logged, "Connect with a human expert"** — a button beside sign-up on every Commons
   agent, a short contact form only, never the conversation. Not built; two design questions open.
-- **Slice 4 waits on Deb's per-case file; slice 5, the flag button, is later.**
+- **Slice 4 waits on the grader's per-case file; slice 5, the flag button, is later.**
 
 ### Housekeeping
 
@@ -1048,7 +1048,7 @@ entries below that header were not edited.
 - Paid shape: no live root SESSION_HANDOFF. Live state is OPEN_ITEMS, BUILD_PLAN,
   BUILD_LOG, and git. Never read the archive for current state.
 - Full OPEN_ITEMS wall rewrite / closed-item sweep parked. Packs content, runtime
-  wire, Deb export, and kind in the URL parked.
+  wire, the grader export, and kind in the URL parked.
 
 ### Housekeeping
 
@@ -2513,7 +2513,7 @@ root, all untracked: A17, people served, K7, guide-not-gate, phase-tags-by-nav. 
   required inputs and their kinds, what comes back, the two refusals.
 - **The bundle merged on `main` as it stands, #132, tagged `engine-carry-2026-09-27`** at b099ca1,
   by a merge commit so the tag stays on the history. `v1-tools-2026-09-24` was already on GitHub;
-  Deb has both as of 28 Sep 2026.
+  The grader has both as of 28 Sep 2026.
 
 **How it was proven.** A fresh clone of the tag from GitHub: 32 of 32 hashes match. `npm run
 build` green with the bundle tracked.
@@ -2685,7 +2685,7 @@ Their bodies are in `docs/OPEN_ITEMS_ARCHIVE.md`.
 
 #### K7. A carbon card pass in Phoebe's card format — and her second pack, with a "does this apply" test
 
-**Debt, logged 2 Sep 2026 and not built.** After Thursday's C4SW walk: a card pass in Phoebe's
+**Debt, logged 2 Sep 2026 and not built.** After Thursday's partner walk: a card pass in Phoebe's
 card format, drafted from the two Gold Standard PDFs in `sources-local/methodology/`, graded by
 the maintainer, and carried through the same pipeline as the VWBA cards — committed source, a
 generated module, a staleness gate. Until it lands Phoebe has no carbon cards and abstains on
@@ -3169,7 +3169,7 @@ Her ten lines live once, in [AGENT_RULES.md](./AGENT_RULES.md) under "The specia
 contract", in her words. This row is the work's home. Her reason, in her words:
 
 > Every specialist on this site must behave the same way, so I can review one agent at a
-> time against one standard, and Deb's rig can grade each line.
+> time against one standard, and the grader's rig can grade each line.
 
 **Line 10 was added the same day, by her word, before the rulebook section merged**: what
 knowledge and values the tool needs, the kind of value each input takes, where it usually comes
@@ -3616,7 +3616,7 @@ the diagnostic switch under A6, a path per Commons pack under S18. Pairs named: 
 S5/O4, K2/K7, S12/S14, and the three rows waiting on real usage.
 
 **Three rows added from her brief, all BONES:** A13 (one roster), K9 (Calvin's and Bridget's packs
-to the new shape), K10 (Phoebe ready for Deb's rig).
+to the new shape), K10 (Phoebe ready for the grader's rig).
 
 **What it bought:** the opening read fell from 2,881 lines to the figure in the build log of
 18 Sep 2026, with nothing summarised away. The proposal file, `triage-2026-09-18.md`, was untracked
@@ -3809,7 +3809,7 @@ only. No pack content. No runtime wire. No live-site UI.
   hand, listed once); three folds into O13, S5 and O9; three named where they already sat.
 - **Three new BONES rows in her words:** A13 (one roster, `roster.yaml` from production, checked at
   build; waits on her carry), K9 (Calvin's and Bridget's packs to the new shape, one brief each),
-  K10 (Phoebe ready for Deb's rig: cards reviewed, engineer notes split out, exam questions signed).
+  K10 (Phoebe ready for the grader's rig: cards reviewed, engineer notes split out, exam questions signed).
 - **Housekeeping the same day:** 29 merged local branches deleted; the one unpushed branch, all of
   it in main, deleted on her word; the triage proposal file deleted from the root after the merge.
 - **Next brief, on her word.** Nothing is chosen here. The BONES bucket is the shortlist.
@@ -4259,8 +4259,8 @@ alone — no crew beside it, no next steps, only the way back to the shelf and t
 is built, 11 Sep 2026: the address and the shelf. ~~Slice 3 is next, on the corrected shape.~~ Slice 3
 is built the same day, on her eyeball, and two rulings on the shelf landed with it: short lines and
 short document names on the cards, and no crew column — the shelf is the crew.** **Slice 3 merged
-the same day (#70), and Commons v0 — slices 1 to 3 — is done.** Slice 4, Credentials fed by Deb's
-rig, waits on his per-case file, the first of the three changes she takes to Deb herself; they are
+the same day (#70), and Commons v0 — slices 1 to 3 — is done.** Slice 4, Credentials fed by the grader's
+rig, waits on his per-case file, the first of the three changes she takes to the grader herself; they are
 listed under the item. The flag button, slice 5, is later.
 
 **The Workshop (item S19) is logged for after slice 3, by the maintainer's word of 11 Sep 2026** — a
@@ -4400,11 +4400,11 @@ pack move is its own brief, after step 5.
 
 Logged 18 Sep 2026. **Not started. Bucket BONES.**
 
-#### K10. Phoebe ready for Deb's rig — cards reviewed, engineer notes split out, exam questions signed
+#### K10. Phoebe ready for the grader's rig — cards reviewed, engineer notes split out, exam questions signed
 
 **Logged 18 Sep 2026 from the maintainer's brief. Not started.** Her words, kept whole:
 
-> Phoebe ready for Deb's rig. I review her cards. Engineer notes to me are split out of the card
+> Phoebe ready for the grader's rig. I review her cards. Engineer notes to me are split out of the card
 > files so she does not read them as knowledge. Her exam questions are drafted for my signature,
 > then exported.
 
@@ -4425,7 +4425,7 @@ Logged 18 Sep 2026. **Not started. Bucket BONES.**
    was read on 9 Sep 2026 and nothing of it is in this tree; see item S18, slice 4), and REAL ONLY
    holds: a case rests on a real project, never an invented one.
 
-**Dependencies.** Part 3 waits on the rig's case shape and on Deb's per-case file (item S18, slice
+**Dependencies.** Part 3 waits on the rig's case shape and on the grader's per-case file (item S18, slice
 4). **Recorded 3 Oct 2026, on the maintainer's word.** Part 1 is done: she has reviewed Phoebe's VWBA
 cards. Part 2 was built as step 1 of the specialist contract (the grader notes now sit in
 `vwba-2.0/cards/grader-notes.md`, #94). What is left is part 3, and Phoebe's done line of an 80%
@@ -4790,7 +4790,7 @@ record Wellington's interview populates; the dispatch rows left for the crew col
 his header, the desk divider, his turns, the one composer. Eyeballed on four captures at one
 viewport and given the commit word on 5 Sep.
 
-**The project-context fields — ruled 5 Sep 2026, from Bob, and logged here and in the primer.**
+**The project-context fields — ruled 5 Sep 2026, from a colleague, and logged here and in the primer.**
 Must-have at screening, asked in this order:
 
 | # | Field | Who needs it |
@@ -4985,15 +4985,15 @@ case later; free to explore; sign up to manage a project.*
 **Two rulings the same day, into canon.** Both are recorded in [CLAUDE.md](./CLAUDE.md)'s scope and
 pointed at from here.
 
-- **ONE GRADER.** In her words: *Deb's rig is the only public grade. The Commons shows Deb's rig's
+- **ONE GRADER.** In her words: *The grader's rig is the only public grade. The Commons shows the grader's rig's
   card and nothing else; this site's and production's own evals are internal gates, never a public
-  score. Credentials on the Commons reads "not yet graded" until a real card from Deb's rig exists.*
-  "Deb's rig" is the grading harness kept outside this repository, in Deb's own private one; it was
+  score. Credentials on the Commons reads "not yet graded" until a real card from the grader's rig exists.*
+  "the grader's rig" is the grading harness kept outside this repository, in the grader's own private one; it was
   read on 9 Sep 2026 through the GitHub API by the maintainer's word, nothing cloned and nothing
-  changed, and rule zero stands — anything it needs is a written note the maintainer carries to Deb
+  changed, and rule zero stands — anything it needs is a written note the maintainer carries to the grader
   herself.
 - **REAL ONLY.** In her words: *Grades on the Commons come from real projects and real knowledge
-  packs run through Deb's rig. No invented cases, ever.*
+  packs run through the grader's rig. No invented cases, ever.*
 
 **The proposal, approved as written on 9 Sep 2026.** *Where it lives:* its own address,
 `map.waterbots.ai/commons`, opened by one word, "Agent Commons", at the right of the top bar and
@@ -5015,7 +5015,7 @@ no "Next phase" because there is no journey here, a back row naming the pack onc
 2. **The address and the shelf.** Approved to build, on her approval of the pixels.
 3. **Open one** — the screen as the third consumer, the sign-up link in place of save. Approved to
    build.
-4. **Credentials fed by Deb's rig.** **Waits on Deb.** The three changes his rig needs, which the
+4. **Credentials fed by the grader's rig.** **Waits on the grader.** The three changes his rig needs, which the
    maintainer takes to him herself:
    - **Save the per-case answers and the judge's calls.** Today the rig keeps three things per case
      after grading — the case id, the verdict (pass, abstain or fail) and the failure lines — and
@@ -5139,11 +5139,11 @@ ids while both were mounted. The screen now takes an id slug from its consumer.
 
 **Real model calls in slice 3: one**, to Phoebe, intended, for the capture.
 
-Logged 9 Sep 2026. ~~**Slice 1 drawn; slices 2 and 3 approved to build; slice 4 waits on Deb.**~~
+Logged 9 Sep 2026. ~~**Slice 1 drawn; slices 2 and 3 approved to build; slice 4 waits on the grader.**~~
 ~~**Slice 1 approved with one correction and slice 2 built, 11 Sep 2026; slice 3 next, on the
-corrected shape; slice 4 waits on Deb.**~~ ~~**Slices 1 to 3 built by 11 Sep 2026; slice 3 waits on
-her eyeball; slice 4 waits on Deb.**~~ **#70 merged and slice 3 approved, 11 Sep 2026. Commons v0 —
-slices 1 to 3 — is done. Slice 4 waits on Deb's per-case file, the first of the three changes above;
+corrected shape; slice 4 waits on the grader.**~~ ~~**Slices 1 to 3 built by 11 Sep 2026; slice 3 waits on
+her eyeball; slice 4 waits on the grader.**~~ **#70 merged and slice 3 approved, 11 Sep 2026. Commons v0 —
+slices 1 to 3 — is done. Slice 4 waits on the grader's per-case file, the first of the three changes above;
 slice 5, the flag button, is later.** The three card lines and short names were approved with the
 merge.
 
@@ -5155,7 +5155,7 @@ merge.
 (item S18). Nothing is built toward it; the proposal follows slice 3.** Her words, kept whole:
 
 - *A visitor can make an agent on the Commons: name it, pick its colour, hand it a knowledge pack (a
-  paper, a dataset), later a tool. Same agent screen. Aquaya wants this; their first try is one
+  paper, a dataset), later a tool. Same agent screen. A colleague wants this; their first try is one
   research paper.*
 - *Cost model, in order: (1) free to try, tightly capped — one draft agent per visitor, one small
   pack, ten messages a day, gone when they leave; (2) bring your own key — the builder's agent runs
@@ -5163,7 +5163,7 @@ merge.
   kept, one-click publish.*
 - *Publishing: private until the builder publishes; publishing to the Commons is free but reviewed
   by Amy first.*
-- *Format: every workshop pack is saved in BOTH shapes from day one — this site's cards and Deb's
+- *Format: every workshop pack is saved in BOTH shapes from day one — this site's cards and the grader's
   cartridge YAML — so any agent can sit his exam without rework. Grading stays manual until his rig
   can run on a trigger; log that dependency.*
 
@@ -5176,7 +5176,7 @@ says "Knowledge Pack", per the language rules in [CLAUDE.md](./CLAUDE.md).
   pack and Credentials, Tool later — and it opens alone, as every agent on the Commons does from the
   ruling above.
 - **ONE GRADER and REAL ONLY hold.** A made agent's Credentials reads "not yet graded" until a real
-  card from Deb's rig exists for it. This site grades nothing in public, and a builder's own checks
+  card from the grader's rig exists for it. This site grades nothing in public, and a builder's own checks
   are not a score.
 - **BRAND.md §6 says nobody is minted here, and no accent points at a second agent.** A visitor's
   made agent is not crew, and its colour is the visitor's pick. That is a raise for the book, not a
@@ -5192,8 +5192,8 @@ says "Knowledge Pack", per the language rules in [CLAUDE.md](./CLAUDE.md).
 
 - **Slices 1 to 3 of the Commons come first** (item S18).
 - **The two-shape save** needs the rig's pack-file shape carried here by the maintainer's hand, as
-  everything of Deb's is (rule zero). It was read on 9 Sep 2026 and nothing of it is in this tree.
-- **Grading stays manual until Deb's rig can run on a trigger.** Until then a made agent sits its
+  everything of the grader's is (rule zero). It was read on 9 Sep 2026 and nothing of it is in this tree.
+- **Grading stays manual until the grader's rig can run on a trigger.** Until then a made agent sits its
   exam when the maintainer runs the rig by hand and carries the card back. The trigger is a fourth
   change to his rig, beside the three under item S18 slice 4, and she takes it to him.
 - **Review before publishing is hers, by hand**, until there is a queue worth building a tool for.
@@ -5298,7 +5298,7 @@ Logged 3 Oct 2026. **Not started. Bucket PARK.**
 **Logged 3 Oct 2026 from the v1 done line, which was not an item before. Build-order step 4. No
 proposal yet.** The done line for the Commons: Phoebe and Calvin work there too, with no memory;
 Bridget introduces herself; and Calvin has two cards on one engine, screening and transition.
-Commons v0, slices 1 to 3, is built (item S18); Credentials from Deb's rig (slice 4) is not part of v1.
+Commons v0, slices 1 to 3, is built (item S18); Credentials from the grader's rig (slice 4) is not part of v1.
 Calvin's work there waits on item A21.
 
 Logged 3 Oct 2026. **Not started. Bucket PARTNER.**
@@ -5495,7 +5495,7 @@ behaviour changes. Recorded here rather than done, by the maintainer's word.
 #### O14. Carries owed by the maintainer's hand — listed once
 
 **Adopted 18 Sep 2026 in the maintainer's triage.** Several items end with a thing that only she can
-carry — into the brand book, to production, or to Deb — and each was recorded inside the item that
+carry — into the brand book, to production, or to the grader — and each was recorded inside the item that
 owned it, where a later reader may not look. This row lists them once and points at the owner. Rule
 zero holds for every one: nothing here is fetched, written to, or guessed at on the other side.
 
@@ -5505,7 +5505,7 @@ zero holds for every one: nothing here is fetched, written to, or guessed at on 
 | One row — the journey bar as the navigation | Production, as a candidate shape | item S15 |
 | The agent screen as a §7 component, and the carry list of files for production | Brand book §7; production | item S16 (archived) |
 | Production's sign-up address for the Commons door | This site, once she carries it | item S18 |
-| The three changes Deb's rig needs, and later the trigger | Deb | item S18, slice 4; item S19 |
+| The three changes the grader's rig needs, and later the trigger | The grader | item S18, slice 4; item S19 |
 | The confirmed free and Commons columns of `roster.yaml`, carried again, and the roster's two "this repository" lines corrected at source | This site | item A13 (swept 3 Oct 2026) |
 | The specialist contract — the ten-line section of AGENT_RULES.md, her words | Production | item A15 (swept 3 Oct 2026) |
 | `project-types.md` — drafted here, the paid repository becomes its source and this site is then held to it, the roster's rule; her word of 23 Sep 2026 | Production, then back to this site | item A16 |
@@ -5764,8 +5764,8 @@ line-ending normalisation had changed 27 of the 32 files on the first commit; an
 folder had swallowed the bundle's folder of the same name. The first commit, b13e73b, is on no
 branch and no tag. `carried/sources/registry.yaml` holds the twelve registry rows the data files
 cite; the household size, UN DESA *Household Size and Composition 2022*, is cleared for attribution
-only — CC BY 3.0 IGO, the Carlisle determination 27b on the paid side, 27 Sep 2026 — and no source
-in the bundle's registry is pending. **Deb has both tags, `v1-tools-2026-09-24` and
+only — CC BY 3.0 IGO, the rights determination 27b on the paid side, 27 Sep 2026 — and no source
+in the bundle's registry is pending. **The grader has both tags, `v1-tools-2026-09-24` and
 `engine-carry-2026-09-27`, as of 28 Sep 2026.** Still to come after Calvin's brief, in the order
 above: the Commons check (step 4), Bridget's hello (step 6), the carry to the paid site (step 7).
 **The screening report export (item S21) is step 8 of the order**, from 3 Oct 2026; the done line
@@ -5826,11 +5826,11 @@ copied here. A family with nothing on a step says so.
 
 | Family | On a v1 step | After v1 |
 |---|---|---|
-| **Knowledge** | None. The card sets are sealed at their versions (23 Sep 2026) and step 1, the Knowledge tabs, is done. | K1 full-docs card pass; K2 co-benefit module; K3 report corpus; K9 Calvin's and Bridget's packs to the new shape, after step 5; K10 part 3 and Phoebe's 80% pass, which wait on Deb's rig; K12 three carbon route cards; K13 the reading-grade figure |
+| **Knowledge** | None. The card sets are sealed at their versions (23 Sep 2026) and step 1, the Knowledge tabs, is done. | K1 full-docs card pass; K2 co-benefit module; K3 report corpus; K9 Calvin's and Bridget's packs to the new shape, after step 5; K10 part 3 and Phoebe's 80% pass, which wait on the grader's rig; K12 three carbon route cards; K13 the reading-grade figure |
 | **Agents** | **Step 5:** A21, Calvin's brief — his chat and the carried engine. **Step 6:** A22, Bridget's hello, with A14 (her role word) before or with it. | A5 primer review; A10 Wellington's answers run long; A12 Bridget's chat; A20 Phoebe's runaway call |
-| **Surfaces** | **Step 4:** S23, the Commons check. **Step 8:** S21, the screening report export. | S11's two typeable controls; S18 slice 4 (Deb's rig) and slice 5; S1, S5, S6, S12, S14, S15, S17, S19, S20, S22 |
+| **Surfaces** | **Step 4:** S23, the Commons check. **Step 8:** S21, the screening report export. | S11's two typeable controls; S18 slice 4 (the grader's rig) and slice 5; S1, S5, S6, S12, S14, S15, S17, S19, S20, S22 |
 | **Data** | None. | D1 and D2; both wait on material only the maintainer can supply |
-| **Operations** | **Step 7:** O14, the carries owed by her hand — every row Shell A's or the brand book's, except the three changes to Deb's rig. | O1 revisit the number thirty; O4; O9; O12; O13; O15 |
+| **Operations** | **Step 7:** O14, the carries owed by her hand — every row Shell A's or the brand book's, except the three changes to the grader's rig. | O1 revisit the number thirty; O4; O9; O12; O13; O15 |
 | **Cleanup** | None. | C1, the sweep of struck lines |
 
 **Shell A is the paid site.** What crosses to it is her hand, never an action in this repository, and
@@ -5870,7 +5870,7 @@ In short: the India filing the bundle calls `anchor-cws-01` is in `presets.ts` (
 efficiencies, and two energy fractions, `0.8819` and `0.2165`, that neither the manifest nor Calvin's
 proposal named) and its credited total is in `emissions-legacy.ts:14-15`; `MANIFEST.md` itself quotes
 figures from the two test files it left out; the paid site's Test Project (Lesotho, 1,199 households,
-687.6 and 184.3) is in `version.ts` and `scenario.ts`; the word `GS12441` appears nowhere. The whole
+687.6 and 184.3) is in `version.ts` and `scenario.ts`; the word `<retired term>` appears nowhere. The whole
 list, as it stood, follows. The search terms "golden" and "validation" are the words the language rules
 retire; they are quoted here as search terms and nothing more.
 
@@ -5995,7 +5995,7 @@ Case ignored. Whole-word match for "filing", "filed", "Mali" and "PDD". Every hi
 - **`scenario.ts:726` is not a comment.** It is a note the engine hands back with a result:
   "…(matches the golden convention)". If a screen prints the engine's notes, a visitor reads it.
 
-**`GS12441`** — no hit anywhere, tracked, untracked or gitignored.
+**`<retired term>`** — no hit anywhere, tracked, untracked or gitignored.
 
 **`Mali`** — 4 lines, each the country's row in a public table: `data/age-shares/countries.json:844`,
 `data/fnrb/countries.json:286`, `data/household-size/countries.json:644`,
@@ -6103,10 +6103,10 @@ The country tables were read as whole tables: each has one source named at its h
 
 - **`Design refs/`**, the saved pages from the paid site. Their bundled scripts hold the same
   engine strings as Part 1a (`anchor-cws-01`, "a real India GS filing", the docstring's four
-  figures). One saved page shows a project named "WaterBots & C4SW PAA Test Project", and
+  figures). One saved page shows a project named "WaterBots & partner PAA Test Project", and
   "1,199" appears in one file.
 - **`legacy/`**: hits for "Mali", "1,199" and "1199" are rows in the Aqueduct download. The
-  rest are in `GROK.md`, `Partners.tsx` and `UI_REFERENCE.md`. Not read line by line.
+  rest are in a notes file, `Partners.tsx` and `UI_REFERENCE.md`. Not read line by line.
 - **`sources-local/`**: methodology notes and one file, `Projects/carbon/SYNTHETIC-MATRIX-RESULTS.md`.
   No hit for an anchor id, "Test Project", "real filing" or "1,199".
 - **`brand/`**: "filing" and "filed" in the brand book and a design-system bundle. Not read line by line.
@@ -6162,7 +6162,7 @@ itself still has no `vitest`.
 
 **3. The number sweep on `carried/`.** The word list of the sweep of 3 Oct 2026, then every number of three
 or more significant digits (201 lines of code, tests, comments and the manifest; the data files by key).
-- **Words:** `anchor-`, `GS12441`, `real India`, `1,199`, `1199`, `e2dcbfe8` and `Lesotho`-as-a-project: no
+- **Words:** `anchor-`, `<retired term>`, `real India`, `1,199`, `1199`, `e2dcbfe8` and `Lesotho`-as-a-project: no
   hit. `Mali` and `Lesotho`: country rows in four public tables only. `PDD`: two general uses.
   "filing" and "filed": the general sense (a field the engine asks for) and the seal's own rule text. "golden":
   nine lines in data notes and comments, the retired word for the reference set, no project data. "Test
@@ -6198,8 +6198,8 @@ The old bundle's figures remain in `main`'s history before this merge; #244 is t
 
 **What landed on `main` since the third sitting's close-out (#143), all merged on her word.**
 
-- **#144 and #145**, the done line for Calvin: first "the Mali Demo Project's inputs, typed by hand into both
-  sites", then the Mali Demo Project (HWT) and the maintainer's local CWS reference filing, each typed by hand
+- **#144 and #145**, the done line for Calvin: first "the partner demo Project's inputs, typed by hand into both
+  sites", then the partner demo Project (HWT) and the maintainer's local CWS reference filing, each typed by hand
   into both sites, giving the same number on both. No project id is written. Old wording in
   `docs/archive/CORRECTIONS.md`.
 - **#146**, one line saying the v0.16.1 bundle was expected next, **closed unmerged**: #147 rewrote the same

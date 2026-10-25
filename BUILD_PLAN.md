@@ -186,7 +186,7 @@ export, in the phase-tags shape. It needs Calvin's figures. Proposal first, from
 project type are heard in chat only; a visitor who never chats cannot fill them. Everything else is built.
 
 **S18 · Agent Commons — slices 4 and 5.** After v1 · PARTNER. v0, slices 1 to 3, is built (#68 to #70).
-Slice 4, Credentials fed by Deb's rig, waits on his per-case file and the three rig changes she takes to
+Slice 4, Credentials fed by the grader's rig, waits on his per-case file and the three rig changes she takes to
 him; it reads "not yet graded" until a real card exists. Slice 5, the flag button, is later. One grader,
 real only, and an agent opens alone: canon in CLAUDE.md.
 
@@ -235,7 +235,7 @@ The deploy, the repository, settings and limits. Step 7 is the carry, by her han
 when its receiver reads them, and that receiver is not fixed, Shell A item #243); `project-types.md`; the
 ten-line contract; Q11; the paid-site tools line; the transition module; the one-row shape; the agent
 screen's file list. **To the brand book:** typing dots §5, the agent screen §7. **To this site:** the
-sign-up address, the confirmed roster columns. **To Deb:**
+sign-up address, the confirmed roster columns. **To the grader:**
 three rig changes.
 
 **O1 · Revisit the daily cap against real usage.** After v1 · PARK. Thirty a day per visitor is live
@@ -289,7 +289,7 @@ common must-haves. One is held, by her hand. No action yet.
 Phoebe's did: `git mv`, every reader follows, the move proved byte for byte. Calvin's comes after A21,
 which leaves his pack where it is.
 
-**K10 · Phoebe ready for Deb's rig.** BONES. Her cards are reviewed by the maintainer and the engineer
+**K10 · Phoebe ready for the grader's rig.** BONES. Her cards are reviewed by the maintainer and the engineer
 notes are split out (#94). Left: exam questions drafted for her signature, then exported in the rig's
 case shape, which arrives by her hand. Her done line of an 80% pass is the rig's to say.
 
@@ -341,7 +341,7 @@ repository's variables, and guarded on the number gate having patterns). Switch 
 keyed-fingerprint number gate ships, in the open core work; then flip Allow auto-merge and branch protection by hand.
 
 **SP4 · Pin every GitHub Action by full commit hash instead of tag.** BONES. `actions/checkout`, `actions/setup-node`,
-`gitleaks/gitleaks-action` and any others in `.github/workflows/`, per Grok's re-attack on #152. A tag can be moved to
+`gitleaks/gitleaks-action` and any others in `.github/workflows/`, per the second reader's re-attack on #152. A tag can be moved to
 different code; a full commit hash cannot. Lane 3 (it edits CI); proposal first.
 
 **SP5 · Check linting, formatting and strict typing; switch on what is missing.** After v1 · BONES. Find out which
