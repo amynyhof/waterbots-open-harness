@@ -65,10 +65,10 @@ now point at the merge lanes section, and the 9 Oct ritual is folded into lane 3
 
 > #### The merge ritual — a second reader, and only the maintainer merges
 >
-> **Maintainer's ruling, 9 Oct 2026.** Before any merge, the maintainer gives Grok the pull request's
-> diff plus the rules files (CLAUDE.md, this file, CITATIONS.md, AGENT_RULES.md). **Grok flags
-> problems; it never approves.** A clean read from Grok is not a merge word. **Only the maintainer
-> merges**, as before, and the engineer never merges. The engineer does not call Grok and does not
+> **Maintainer's ruling, 9 Oct 2026.** Before any merge, the maintainer gives the second reader the pull request's
+> diff plus the rules files (CLAUDE.md, this file, CITATIONS.md, AGENT_RULES.md). **The second reader flags
+> problems; it never approves.** A clean read from the second reader is not a merge word. **Only the maintainer
+> merges**, as before, and the engineer never merges. The engineer does not call the second reader and does not
 > send it anything; the maintainer carries the diff by hand.
 
 **Old wording, whole — CLAUDE.md, "Proposal before code" (line 72):**
@@ -78,7 +78,7 @@ now point at the merge lanes section, and the 9 Oct ritual is folded into lane 3
 CLAUDE.md gained a *Merge lanes* bullet the same day, so it and PROCESS_RULES agree.
 
 **Where the current text is.** [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Merge
-lanes — the files decide who merges*. Lane 3 keeps the 9 Oct Grok read word for word in effect.
+lanes — the files decide who merges*. Lane 3 keeps the 9 Oct the second reader read word for word in effect.
 
 ## 25 Sep 2026 — CLAUDE.md, BUILD_PLAN.md and OPEN_ITEMS.md: "what kind" was said to be gone from the seal
 
@@ -772,7 +772,7 @@ became step 8 the same day. **Old wording, the line as it stood:**
 
 **Why it changed.** The maintainer's ruling of 3 Oct 2026: the "Test Project" and "Malawi" figures were
 play numbers, not a real project, and the paid site is retiring them. Her words for the replacement, the
-same day: the proof is the Mali Demo Project's inputs, typed by hand into both sites, giving the same
+same day: the proof is the partner demo Project's inputs, typed by hand into both sites, giving the same
 number. Item O16 named the two old lines as open; it no longer does.
 
 **Old wording, whole — the V1 order, the Calvin bullet:**
@@ -801,19 +801,19 @@ never edited, and they are the wording of their day.
 ## 3 Oct 2026, second correction — BUILD_PLAN.md: the done line for Calvin names two references
 
 **Why it changed.** The maintainer's word of 3 Oct 2026, after the first replacement of the same day:
-the proof is two references, not one. The Mali Demo Project (HWT) and the maintainer's local CWS reference
+the proof is two references, not one. The partner demo Project (HWT) and the maintainer's local CWS reference
 filing, each typed by hand into both sites, give the same number on both. No project id is written in the
 plan. The reference filing is held on the maintainer's machine and is never copied into this repository.
 
 **Old wording, whole — the V1 order, the Calvin bullet** (as replaced earlier the same day):
 
 > - **Calvin** talks; picks the pack from the record; asks only for what is missing; his carbon
->   number comes from the same engine as the paid site. Done when the Mali Demo Project's inputs, typed
+>   number comes from the same engine as the paid site. Done when the partner demo Project's inputs, typed
 >   by hand into both sites, give the same number.
 
 **Old wording, whole — item A21, its closing sentences:**
 
-> … Done when the Mali Demo Project's inputs, typed by hand into both sites, give the same
+> … Done when the partner demo Project's inputs, typed by hand into both sites, give the same
 > number. Owes the teal baseline marker, a design value she carries from production.
 
 **Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), "The v1 order" and item A21.
@@ -985,12 +985,12 @@ licence, and the light close to check the two caps. Each passage below is whole,
 **Old wording, whole — BUILD_PLAN.md, Calvin's seat line:**
 
 > - **Calvin** talks; picks the pack from the record; asks only for what is missing; his carbon
->   number comes from the same engine as the paid site. Done when the Mali Demo Project (HWT) and the
+>   number comes from the same engine as the paid site. Done when the partner demo Project (HWT) and the
 >   maintainer's local CWS reference filing, each typed by hand into both sites, give the same number on both.
 
 **Old wording, whole — BUILD_PLAN.md, item A21 (its done sentence, as it stood before 10 Oct 2026):**
 
-> Done when the Mali Demo Project (HWT) and the maintainer's local CWS reference filing,
+> Done when the partner demo Project (HWT) and the maintainer's local CWS reference filing,
 > each typed by hand into both sites, give the same number on both.
 
 **Old wording, whole — BUILD_PLAN.md — the size-limit paragraph:**

@@ -62,7 +62,7 @@ jobs:
           make() { echo "$existing" | grep -qx "$1" || gh label create "$1" --color "$2" --description "$3" --repo "$REPO"; }
           make lane-1 0E8A16 "Plain writing only. Auto-merge is off for now"
           make lane-2 FBCA04 "Amy looks in the browser, then merges"
-          make lane-3 D93F0B "Amy and Grok"
+          make lane-3 D93F0B "Amy and the second reader"
           for n in 1 2 3; do
             if [ "$n" = "$LANE" ]; then gh pr edit "$PR" --add-label "lane-$n" --repo "$REPO"
             else gh pr edit "$PR" --remove-label "lane-$n" --repo "$REPO" || true

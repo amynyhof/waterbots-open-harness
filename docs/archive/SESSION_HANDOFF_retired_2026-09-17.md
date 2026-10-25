@@ -22,7 +22,7 @@ Standing, not this sitting:
 
 1. **Workshop proposal (S19)** — on Amy’s word.
 2. **S20** “Connect with a human expert” — design session before any build.
-3. Commons **slice 4** — waits on Deb’s per-case file; slice 5 (flag) later.
+3. Commons **slice 4** — waits on the grader’s per-case file; slice 5 (flag) later.
 4. Production carries the sender; prove landing → desk end-to-end when she says.
 
 ## Don’t-touch
