@@ -24,7 +24,7 @@
  */
 
 import type { ReactNode } from 'react';
-import { PLANNED, SHELF, shelfCountLine, type PlannedModule, type ShelfCard } from '../lib/commonsShelf';
+import { PLANNED, SEEKING, SHELF, shelfCountLine, type PlannedModule, type ShelfCard } from '../lib/commonsShelf';
 import { CONSULTING_URL, SITE_LABEL } from '../lib/site';
 import { DESK_LABEL } from '../lib/surfaces';
 
@@ -55,8 +55,12 @@ const EYEBROW = {
 
 export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => void }) {
   return (
-    <div style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
-      <div style={{ padding: '22px var(--gutter) 24px', maxWidth: 1180 }}>
+    /* The scrollbar's room is kept on both edges, so the centred page sits
+       exactly under the menu, which has no scrollbar beside it. */
+    <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', scrollbarGutter: 'stable both-edges' }}>
+      {/* Centred on the menu's own band — 1240px, 24px each side — so the page
+          lines up with the menu above it; the maintainer's word of 28 Oct 2026. */}
+      <div style={{ padding: '22px 24px 32px', maxWidth: 1240, margin: '0 auto' }}>
         <h1 style={{ fontSize: 21, margin: '0 0 8px', letterSpacing: '-0.015em', lineHeight: 1.25 }}>
           Agent Commons
         </h1>
@@ -80,10 +84,6 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
             </li>
           ))}
         </ul>
-        <a className="btn" href={CONSULTING_URL} style={{ display: 'inline-block', marginTop: 14, textDecoration: 'none' }}>
-          Build a module with us
-        </a>
-
         <div className="t-mono" style={{ ...EYEBROW, margin: '28px 0 4px' }}>
           {shelfCountLine()}
         </div>
@@ -92,15 +92,7 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
           every module says so.
         </p>
 
-        <div className="wb-module-head t-mono" aria-hidden>
-          <span>Agent</span>
-          <span>What it does</span>
-          <span>Method</span>
-          <span>Status</span>
-          <span>Owner</span>
-          <span>Grade</span>
-          <span />
-        </div>
+        <ModuleHead />
         <ul className="wb-module-list">
           {SHELF.map((card) => (
             <ModuleRow key={card.key} card={card} onOpen={() => onOpen(card)} />
@@ -118,6 +110,38 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
           Free to explore, and nothing is kept between visits. Signing up opens a project on{' '}
           {SITE_LABEL}, where the crew keeps what you tell them.
         </p>
+
+        {/* SEEKING PARTNERS — the maintainer's second ruling of 28 Oct 2026:
+            modules with no agent yet, and the one button that asks a partner
+            in, which moved here from the top of the page. */}
+        <section aria-labelledby="wb-seeking-title" style={{ marginTop: 40 }}>
+          <h2
+            id="wb-seeking-title"
+            style={{ fontSize: 17, margin: '0 0 6px', letterSpacing: '-0.01em', lineHeight: 1.3 }}
+          >
+            Seeking a build partner and a domain consultant
+          </h2>
+          <p
+            className="t-body"
+            style={{ margin: 0, maxWidth: 760, fontSize: 13.5, lineHeight: 1.55, color: 'var(--ink-2)' }}
+          >
+            We&rsquo;re looking for partners to build these modules with us.
+          </p>
+          <a
+            className="btn"
+            href={CONSULTING_URL}
+            style={{ display: 'inline-block', margin: '14px 0 18px', textDecoration: 'none' }}
+          >
+            Build a module with us
+          </a>
+
+          <ModuleHead />
+          <ul className="wb-module-list">
+            {SEEKING.map((planned) => (
+              <PlannedRow key={planned.key} planned={planned} />
+            ))}
+          </ul>
+        </section>
       </div>
     </div>
   );
@@ -172,18 +196,43 @@ function ModuleRow({ card, onOpen }: { card: ShelfCard; onOpen: () => void }) {
   );
 }
 
+/** The list's header row; below 900px it hides and each cell carries its label. */
+function ModuleHead() {
+  return (
+    <div className="wb-module-head t-mono" aria-hidden>
+      <span>Agent</span>
+      <span>What it does</span>
+      <span>Method</span>
+      <span>Status</span>
+      <span>Owner</span>
+      <span>Grade</span>
+      <span />
+    </div>
+  );
+}
+
+/* A module with nothing to open: a named agent shows its name with an empty
+   square, as no portrait exists for it; with none, the row says so. */
 function PlannedRow({ planned }: { planned: PlannedModule }) {
   return (
     <li className="wb-module-row" aria-label={planned.title}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
         <Portrait />
-        <span style={{ fontSize: 13, color: 'var(--ink-3)' }}>No agent yet</span>
+        {planned.agent ? (
+          <span style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.2, color: 'var(--ink)' }}>
+            {planned.agent}
+          </span>
+        ) : (
+          <span style={{ fontSize: 13, color: 'var(--ink-3)' }}>No agent yet</span>
+        )}
       </div>
 
       <Module title={planned.title} line={planned.line} />
 
       <Cell label="Method">
-        <span style={{ color: 'var(--ink-3)' }}>Not chosen yet</span>
+        <span className="tag" style={{ maxWidth: '100%', whiteSpace: 'normal', lineHeight: 1.35 }}>
+          {planned.method}
+        </span>
       </Cell>
       <Cell label="Status">
         <Status>{planned.status}</Status>
@@ -261,10 +310,11 @@ function Cell({ label, children }: { label: string; children: ReactNode }) {
 /* States, so chips: outlined, no fill, the text in ink. The status takes the
    chip's own neutral, so no status reads as live or approved; the grade keeps
    the pending colour it carried on the cards — amber may not carry type (§2.5). */
-function Status({ children }: { children: ReactNode }) {
+function Status({ children }: { children: string }) {
+  /* A two-part status breaks after its dot, never before it. */
   return (
-    <span className="chip" style={{ whiteSpace: 'nowrap' }}>
-      {children}
+    <span className="chip" style={{ whiteSpace: 'normal', lineHeight: 1.35 }}>
+      {children.replace(' · ', ' · ')}
     </span>
   );
 }
