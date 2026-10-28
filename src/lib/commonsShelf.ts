@@ -40,7 +40,8 @@ import { CRITERIA } from './phoebeCards';
  * A MODULE'S STATUS AND OWNER — maintainer's rulings, 28 Oct 2026. The owner
  * is never a partner's name, until a partner owns a module and she says so.
  *
- * THE MODULES READ "In development", the two carbon modules "In development ·
+ * PHOEBE'S MODULE READS "Beta" (her word, 28 Oct 2026); THE OTHERS READ
+ * "In development", the two carbon modules "In development ·
  * partner review", the health guide "Proposed", and the modules seeking
  * partners say so. "Shared module" says the same agent and calculator run here
  * and on waterbots.ai, and nothing in this repository shows that yet: the open
@@ -49,6 +50,7 @@ import { CRITERIA } from './phoebeCards';
  */
 export type ModuleStatus =
   | 'Shared module'
+  | 'Beta'
   | 'In development'
   | 'In development · partner review'
   | 'Proposed'
@@ -109,7 +111,7 @@ const PHOEBE_CARD: ShelfCard = {
     'case stronger.',
   /* "VWBA 2.0" — read from the first card's citation, as her pack tab reads it. */
   tag: CRITERIA[0].citation.document,
-  status: 'In development',
+  status: 'Beta',
   owner: 'WaterBots',
   grade: null,
 };
@@ -162,8 +164,9 @@ export const PLANNED: PlannedModule[] = [
 /**
  * Modules seeking a build partner and a domain consultant — the maintainer's
  * ruling of 28 Oct 2026. No agent yet. The method is the document each would
- * be built from, as she named it; the line on what each does is plain words,
- * the engineer's draft for her eye.
+ * be built from, as she named it; the line on what each does is plain words —
+ * the engineer's draft for water quality, hers for the other three, 28 Oct 2026.
+ * Their grade shows a dash, not "not yet graded": nothing exists to grade.
  */
 export const SEEKING: PlannedModule[] = [
   {
@@ -180,7 +183,9 @@ export const SEEKING: PlannedModule[] = [
     key: 'wash-multiple-benefits',
     agent: null,
     title: 'WASH multiple benefits',
-    line: 'Counts the many kinds of good a water, sanitation and hygiene (WASH) project brings.',
+    line:
+      'Estimates and values the benefits of water, sanitation and hygiene access, like better ' +
+      'health, time saved and income.',
     method: 'WASH Benefits Accounting Framework (WASH4Work, LimnoTech, CEO Water Mandate, 2024)',
     status: 'Seeking partners',
     owner: 'Open to partners',
@@ -190,7 +195,9 @@ export const SEEKING: PlannedModule[] = [
     key: 'sanitation-impact',
     agent: null,
     title: 'Sanitation impact',
-    line: 'Measures what a safe sanitation service achieves for the people it serves.',
+    line:
+      'Counts the greenhouse gas a safe sanitation service avoids, mostly methane from untreated ' +
+      'waste.',
     method: 'Gold Standard Safe Sanitation Services (SASS), draft',
     status: 'Seeking partners',
     owner: 'Open to partners',
@@ -200,7 +207,9 @@ export const SEEKING: PlannedModule[] = [
     key: 'solar-energy-credits',
     agent: null,
     title: 'Solar energy credits',
-    line: 'Counts the clean electricity a solar system makes, so it can earn credits.',
+    line:
+      'Counts the clean electricity a renewable system (often solar) makes, so it can earn ' +
+      'renewable energy credits.',
     method: 'Peace Renewable Energy Credits (P-RECs), issued under the I-REC standard',
     status: 'Seeking partners',
     owner: 'Open to partners',

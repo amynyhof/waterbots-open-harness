@@ -138,7 +138,7 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
           <ModuleHead />
           <ul className="wb-module-list">
             {SEEKING.map((planned) => (
-              <PlannedRow key={planned.key} planned={planned} />
+              <PlannedRow key={planned.key} planned={planned} seeking />
             ))}
           </ul>
         </section>
@@ -213,7 +213,7 @@ function ModuleHead() {
 
 /* A module with nothing to open: a named agent shows its name with an empty
    square, as no portrait exists for it; with none, the row says so. */
-function PlannedRow({ planned }: { planned: PlannedModule }) {
+function PlannedRow({ planned, seeking = false }: { planned: PlannedModule; seeking?: boolean }) {
   return (
     <li className="wb-module-row" aria-label={planned.title}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
@@ -239,7 +239,8 @@ function PlannedRow({ planned }: { planned: PlannedModule }) {
       </Cell>
       <Cell label="Owner">{planned.owner}</Cell>
       <Cell label="Grade">
-        <Grade />
+        {/* A module seeking partners has nothing to grade yet: a dash, her word of 28 Oct 2026. */}
+        {seeking ? <span style={{ color: 'var(--ink-3)' }}>—</span> : <Grade />}
       </Cell>
       <div style={{ fontSize: 12, color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>Not open yet</div>
     </li>
