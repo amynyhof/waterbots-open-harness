@@ -2,8 +2,7 @@
 
 **Written 27 Oct 2026 for Amy. Proposal only: nothing is built, installed or deleted.** It answers her brief of
 26 Oct 2026: the open site installs Calvin from the open core instead of keeping its own sealed engine copy.
-**Ruled twice the same day.** Her first twelve answers and her second round are in section 7; what is still open is
-in section 8. **This proposal replaces Calvin's old brief**, `PROPOSAL_calvin-brief.md`, which stays on the closed
+**Ruled in three rounds the same day,** all in section 7; what is still open is in section 8. **This proposal replaces Calvin's old brief**, `PROPOSAL_calvin-brief.md`, which stays on the closed
 #151's branch as history (ruling 12). Nothing is built yet.
 
 ## What I read, and what I found
@@ -149,7 +148,7 @@ Four steps, each its own commit, in four pull requests, all lane 3. Section 9 is
 
 **Step 3 — delete `carried/` (section 3).**
 
-**Step 4 — Wellington asks Calvin's missing facts (section 11).** Own pull request: it changes a prompt, so it carries
+**Step 4 — Wellington asks the core facts first (section 11).** Own pull request: it changes a prompt, so it carries
 a measured run.
 
 **Screens.** Calvin's Tool tab, on the desk and on the Commons (the same screen), and his Knowledge tab, which names
@@ -166,7 +165,8 @@ change. Wellington's build-update fact mentions the switch at the next full clos
   America and sub-Saharan Africa. A country in none of them gets a plain "no figure" instead of a number.
 - The Paris-aligned version applies the downward adjustment factor (DAF), so its figure is lower than today's.
 - A transition figure needs the project's filed V1.0 fNRB (section 5).
-- Wellington may ask the country, or people or households, before Quantify (section 11).
+- Calvin's colour turns from Plum to Mint everywhere he appears (ruled in the third round).
+- Wellington asks the country, and how many people or households a project serves, near the start (section 11).
 - The water figure and the map do not change.
 
 ## 3. Deleting the old sealed engine copy
@@ -228,13 +228,13 @@ the step 2 pull request's For Amy block.
 
 Wellington → Phoebe → Bridget → Calvin → report / sign up.
 
-- **Wellington.** Asks Calvin's missing facts before Quantify (section 11). His prompt grows, against a gate with 165
-  characters of room.
+- **Wellington.** Asks the core facts first: type, country, how many served, people or households (section 11). His
+  prompt grows by about 413 characters, against a gate with 164 of room.
 - **Phoebe.** No change.
 - **Bridget.** No change to what she does. Her map moves to React 19 underneath (section 9) and must look the same.
 - **Calvin.** **This is the v1 condition met:** his carbon number comes from the same engine as the paid site, on the
-  same calculator. With Wellington's questions asked, he opens with his facts filled. He still asks two things only
-  he needs, by ruling 9 and ruling R25:
+  same calculator. With Wellington's core facts asked, he opens with his facts filled. He asks only what is still
+  missing, using his own missing-facts list, and two things only he needs, by ruling 9 and ruling R25:
   - the project's filed V1.0 fNRB, for a transition figure only. With no filing he gives a plain "no transition
     figure" instead of a borrowed one;
   - household size, only for a country with no UN figure.
@@ -244,8 +244,8 @@ Wellington → Phoebe → Bridget → Calvin → report / sign up.
 - **The fence's check gets simpler:** when the paid site installs the same version, the same inputs give the same
   numbers by construction. What is left to show is that the screening's inputs reach the paid site whole.
 
-**Nothing in the journey breaks.** It changes in three places: the carbon calculator and its figure, Wellington's
-questions, and up to two questions from Calvin.
+**Nothing in the journey breaks.** It changes in three places: the carbon calculator and its figure, the order of
+Wellington's questions, and what Calvin asks.
 
 ## 6. The fresh public repository
 
@@ -256,7 +256,7 @@ first, proven on the live site, and the fresh repository copies it afterward.
   behind.
 - **What carries over as it is:** React 19 and react-leaflet 5, the two exact package versions, the lockfile (so the
   fingerprints travel), the adapter file, the colour-name stylesheet, `scripts/check-calvin-package.mjs`, Wellington's
-  missing-facts block, and this proposal under `docs/`.
+  core-facts questions, and this proposal under `docs/`.
 - **What does not:** the two `engine-carry-*` tags, and the `carried/` lines in `.gitattributes` and `.gitignore`.
 - **The update rule travels too:** a new open core version comes in only on Amy's word, in a lane 3 pull request,
   with P1 to P5 run again and the table in the pull request. No automatic update tool.
@@ -313,6 +313,26 @@ first, proven on the live site, and the fresh repository copies it afterward.
   patched onto this site.** Section 10 lists what this site needs from each.
 - **e. Wellington's screening questions**: section 11. The whole screening stays within 30 questions.
 
+### Third round
+
+1. **No slider for stove efficiency.** It is a baseline value, not an anticipated-performance value.
+2. **The screening order.** Wellington asks the core project facts first, because every agent needs them: the type
+   of project, the country, how many it serves, and whether that is people or households. Calvin asks only what is
+   still missing, using his missing-facts list. Section 11 is rewritten to match.
+3. **Wellington's size limit is not changed.** His current instructions are in a plain-text file for Amy to read and
+   rewrite: [wellington-instructions-2026-10-28.txt](./wellington-instructions-2026-10-28.txt). The new questions need
+   about 413 more characters (section 11 and section 12).
+4. **Calvin's colour is Mint everywhere.** The brand book, version 4.2, §6, gives him Plum, and records that choice
+   as a knowing exception of 31 Aug 2026; it then refused Mint because Mint also means success or approved. **The
+   brand book needs updating to match**, by Amy's hand: it is gitignored and is never edited from here. CLAUDE.md's
+   brand section says Plum and changes when the book does. The site's colour for Calvin changes in step 2.
+5. **Agreed, as proposed:**
+   - React 19 upgrade in place, as its own pull request with before-and-after pictures of the map (section 9);
+   - the four slider rows (section 10);
+   - the simple view by default, with a "show full working" link (section 10);
+   - if a walk goes over 30 questions, the project-name question is dropped (section 11);
+   - a slider value with no methodology floor gets one found by Session C, or asked of Amy.
+
 ## 8. Still open
 
 Each needs Amy's word before the build steps they touch.
@@ -322,20 +342,16 @@ Each needs Amy's word before the build steps they touch.
 - **B. Two looks on one Quantify step.** The carbon calculator will look like the paid site's; the water worksheet
   stays in this site's look until the core's water step (its M8). Accept that until then, or restyle the water
   worksheet to match?
-- **C. Calvin's colour.** The brand book gives Calvin Plum on this site; the paid calculator's look uses Mint for him
-  (#151's open point 7). With the paid look here, which wins? The brand book governs, so this is a raise for the book.
-- **D. The core's `prompt.md`** has not been read against AGENT_RULES.md or this site's language rules. The build step
+- **C. The core's `prompt.md`** has not been read against AGENT_RULES.md or this site's language rules. The build step
   reads it and puts any conflict in the add-on or in front of Amy. Ruling R25, no script for Calvin, still stands.
-- **E. Wellington's prompt gate.** 26,034 of 26,199 characters. Section 11 adds text; the gate moves only on her word.
-  I will measure after the build and propose a number.
-- **F. #151's open points that still apply** with the core's screens: the usage rate has no source yet; the version
+- **D. Wellington's words.** The limit stays. The new questions need about 413 more characters and there are 164 of
+  room, so 249 must come out somewhere. Amy has his instructions as a plain-text file to rewrite (third round, 3).
+- **E. #151's open points that still apply** with the core's screens: the usage rate has no source yet; the version
   tabs need an "already registered" fact the record does not hold; with no type on the record there are no figures,
   which is every Commons visit; fNRB's citation says V2.0 SDWS 25 where Eq. 1 names SDWS 24; the page script grows
   with the engine's country tables.
-- **G. The stove-efficiency slider** (section 10) is a baseline value, not an anticipated-performance value. Under the
-  slider rule as written it gets no slider. Keep it out, or name it as an exception?
-- **H. CLAUDE.md's Scope section** still describes the two carbon packs as differing in one cited input (rulings D, E
-  and F). It changes when step 2 is built, not now.
+- **F. CLAUDE.md's Scope section** still describes the two carbon packs as differing in one cited input (rulings D, E
+  and F). It changes when step 2 is built, not now. Its brand section changes when the brand book gives Calvin Mint.
 
 ## 9. The move to React 19
 
@@ -352,7 +368,7 @@ is the first thing step 1 does.
 `createRoot`; there is no `ReactDOM.render`, no `defaultProps` or `propTypes`, no `forwardRef`, and no `useRef()`
 without a starting value. The Vite plugin already supports React 19. The server endpoints use no React.
 
-### Option A — upgrade in place (my pick)
+### Option A — upgrade in place (agreed, third round)
 
 React and React DOM to exactly 19.3.1, the React type packages to 19, react-leaflet to 5.0.0. The map code stays.
 
@@ -391,8 +407,8 @@ For anticipated-performance values, the third kind of value. A learning, "what i
 **Every slider, as this site needs it:**
 
 1. Shows only in ex-ante mode (before the project runs), and only when the host turns sliders on.
-2. Is bounded by that value's methodology floor and ceiling, each cited. Where a methodology names no floor, the
-   core says what bounds it and cites it, or asks Amy.
+2. Is bounded by that value's methodology floor and ceiling, each cited. Where a methodology names no floor, Session C
+   finds one and cites it, or asks Amy (agreed, third round).
 3. Opens at the cautious value the engine carries, with that value's name and citation (ruling R23).
 4. Has a pencil to type an exact value.
 5. A typed value outside the bounds stays as typed, and the row says plainly that the credit is capped at the bound.
@@ -410,18 +426,18 @@ For anticipated-performance values, the third kind of value. A learning, "what i
 | 2b | Days the device is in the home | DP_p, V2.0 SDWS 36 | up to 365 | 365, a full year (R24) | Household treatment only; moves down only |
 | 3 | Share of water tests that pass | M_q,y, V2.0 SDWS 22 | 0% to 100% | **100%**, by Amy's later ruling (#151 had 90%) | |
 | 4 | Share of homes that really use the device | U_p, V2.0 SDWS 34 | 1% to 100%, never 0 | 100%, "no source yet" | Household treatment only; the methodology sets it by a usage survey |
-| 5 | Efficiency of the old stove | η, V2.0 SDWS 11 | three-stone fire to improved cookstove | 0.30, improved cookstove | **A baseline value, not anticipated performance** (section 8, point G) |
+| 5 | Efficiency of the old stove | η, V2.0 SDWS 11 | — | — | **No slider, ruled:** a baseline value, not anticipated performance |
 | 6 | Water per person per day (water benefit) | VWBA D-3, Table D3.3 | 0 to 20 L | 20 L full, 2 L limited | **Not Calvin's carbon calculator**: water stays on this site's code until the core's water step |
 
-So the carbon calculator's slider setting covers rows 1 to 4 for certain. Row 5 waits on Amy's word, and row 6
-belongs to the water method.
+**Agreed, third round: the slider setting covers rows 1 to 4.** Row 5 has no slider, and row 6 belongs to the water
+method.
 
 ### (b) A simple view
 
 Hides advanced material. **What this site needs:**
 
-- **A host setting** that opens the calculator in the simple view, and one plain link to show the full working. My
-  pick: simple by default on this site and the Commons.
+- **A host setting** that opens the calculator in the simple view, and one link, "show full working", to the full
+  view. **Agreed, third round:** simple by default on this site and the Commons.
 - **Always shown, even in the simple view:**
   - the credited figure, and both versions with the delta line for a transitioning project;
   - the screening tag and the consultant-review tag;
@@ -433,28 +449,46 @@ Hides advanced material. **What this site needs:**
 - **Hidden in the simple view:** the equation stack, symbols and equation numbers, the "where" lists, charcoal
   convention, embodied emissions, leakage options, the fallback dial, the tag legend and the provenance strip.
 
-## 11. Wellington asks Calvin's missing facts
 
-**Goal:** Calvin opens with his facts filled, and no question is asked twice.
+## 11. Wellington asks the core facts first
 
-1. **The list comes from Calvin's own package.** The core's `missingProjectFacts` names what Calvin still needs, in
-   its order: technology, country, people served, people or households, and household size (only for a country with
-   no UN figure). It runs in the browser, on this visit's record, through the adapter file of step 2.
-2. **It travels with each ask, as keys only**, the way "What Phoebe found" travels today. Wellington's endpoint accepts
-   only those five keys and turns them into a short block headed "What Calvin still needs".
-3. **Wellington asks exactly those**, one at a time, in that order, only what is still missing, in his own words. He
-   asks them after Phoebe and before he invites Quantify. Technology comes from the class he already asks a
-   drinking-water project; people served and its unit he already asks a water supply project.
-4. **What he hears fills the record**, returned on the visitor's yes, like type and stage:
-   - **country**: a new record field, an ISO country code from a closed list, beside the place as the visitor said it;
-   - **household size**: a new record field, rare, a number as said.
-5. **Calvin reads the record.** The core's screens take their facts from the project, so the calculator opens filled.
-6. **Not Wellington's:** the filed V1.0 fNRB. Calvin asks it, for a transition only (ruling 9, ruling R25).
+**Ruled, third round:** Wellington asks the core project facts first, because every agent needs them. Calvin asks
+only what is still missing, using his missing-facts list.
 
-**Files (lane 3):** `api/_wellingtonPrompt.ts`, `api/_record.ts` (the closed key list),
-`src/lib/visit.ts` (country, household size), Wellington's region in
-`knowledge-packs/product-shared/agent-primer.md`, where "whatever is still missing when they reach Calvin, Calvin
-asks" changes, `scripts/check-wellington.mjs`, and the regenerated prompt modules. One measured run after the change.
+1. **The four core facts, first, for every project:** the type of project (and, for a drinking-water project, its
+   class), the country, how many it serves, and whether that means people or households. Then the stage, the place
+   and the name. Today he asks people served of water supply projects only, after the stage; that changes.
+2. **What he hears fills the record**, returned only on the visitor's yes, like type and stage. The country is a new
+   record field: a three-letter country code from a closed list, beside the place as the visitor said it.
+3. **Calvin reads the record.** The core's screens take their facts from the project, through the adapter file of
+   step 2, so the calculator opens filled.
+4. **Calvin asks only what is still missing**, from the core's `missingProjectFacts`: technology, country, people
+   served, people or households, and household size (only for a country with no UN figure). After Wellington, that
+   is usually nothing, or household size. Calvin's chat is not built yet (item A21); until it is, his screen shows
+   the core's own sentence for a missing fact and asks for it there.
+5. **Not Wellington's:** the filed V1.0 fNRB. Calvin asks it, for a transition only (ruling 9, ruling R25).
+
+**Files (lane 3):** `api/_wellingtonPrompt.ts`, `api/_record.ts` (the closed list of fields), `src/lib/visit.ts` (the
+country field), Wellington's region in `knowledge-packs/product-shared/agent-primer.md`, `scripts/check-wellington.mjs`,
+and the regenerated prompt modules. One measured run after the change.
+
+### What the new questions cost in characters
+
+His current instructions are 26,034 characters. The gate allows anything under 26,199, so there are **164 characters
+of room**. The gate is not changed (third round, 3).
+
+A first draft of the change, measured on a copy (wording in section 12):
+
+| Where | Change in characters |
+|---|---|
+| His prompt, section 4: the core facts first, the country, people served for every project | +344 |
+| His prompt, section 4: what he returns (the country) | +46 |
+| His prompt, *Your output*: the context field (the country) | +46 |
+| His region in the primer: the list of fields, reordered | −23 |
+| **Total** | **+413** |
+
+**The new questions need about 413 more characters: 249 more than the room there is.** Either Amy's rewrite of the
+plain-text file frees at least 249 characters elsewhere, or the wording is cut; the limit stays where it is.
 
 ### The 30-question budget
 
@@ -462,12 +496,57 @@ A ceiling from the files, not a measured count:
 
 | Who | Questions | Ceiling |
 |---|---|---|
-| Wellington | what it does, type, class, stage, people served with its unit, place, name | 7 |
-| Wellington, for Calvin | country (when the place named none), household size (rare) | 2 |
+| Wellington, core facts | what it does and its type, class (drinking water only), country, how many served, people or households | 5 |
+| Wellington, then | stage, place, name | 3 |
 | Phoebe | the Eligibility rows: 13 carbon, 5 water, fewer once the record and the class filter them | 18 |
 | Bridget | the pin | 1 |
-| Calvin | the filed V1.0 fNRB, transition only | 1 |
+| Calvin | household size (rare), the filed V1.0 fNRB (transition only) | 2 |
 | **Total, worst case** | | **29** |
 
-**A real walk counts it** before step 4's pull request asks for a merge. If a walk goes past 30, my pick is to drop
-the name question, which only the desk uses. That is Amy's call.
+**A real walk counts it** before step 4's pull request asks for a merge. **Agreed, third round:** if a walk goes past
+30, the project-name question is dropped.
+
+## 12. The draft wording behind the count
+
+A first draft, written only to measure. Amy approves rules, not wording, and her rewrite of the plain-text file comes
+first. Each change shows the words today, then the draft.
+
+**1. His prompt, section 4 — today:**
+
+> **People served.** For C-11 or C-19, ask how many people or households it serves, after the stage and before you
+> route.
+
+**Draft:**
+
+> **The core facts come first.** Every colleague needs four: the type, the country, how many it serves, and whether
+> that count is people or households. Ask those four first, in that order, then the stage, then the place and the
+> name. **The country.** Ask which country the project is in, and return country as its three-letter code only on the
+> visitor's yes. **People served.** Ask how many it serves, and whether that means people or households, for every
+> project.
+
+**2. His prompt, section 4, what he returns — added after "only on the visitor's yes;":**
+
+> country as a three-letter code, on their yes;
+
+**3. His prompt, *Your output*, the context field — added after "type, gsClass and stage as ids, on their yes;":**
+
+> country as a three-letter code, on their yes;
+
+**4. His region in the primer, the list of fields — draft:**
+
+> The project record has seven fields at screening. The core facts come first, because every colleague needs them:
+>
+> 1. **What type** — from what the project does, the one standard type it matches, said back in plain words and
+>    logged only on the visitor's yes; a drinking-water project also has a class.
+> 2. **The country** — logged only on the visitor's yes. Bridget needs it before any basin is pinned.
+> 3. **People served** — how many, and whether that means people or households, as the visitor says it.
+>
+> Then:
+>
+> 4. **The stage** — on paper, being built, or already running, logged only on the visitor's yes. Phoebe needs it.
+> 5. **Where it is** — a named place, if the visitor has one.
+> 6. **What it does** — a short line, often heard while finding the type.
+> 7. **What it is called** — the desk only.
+
+The count above was measured with the line breaks as they sit in the primer file, which differ slightly from this
+page's.
