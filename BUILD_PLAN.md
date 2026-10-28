@@ -188,7 +188,8 @@ project type are heard in chat only; a visitor who never chats cannot fill them.
 **S18 · Agent Commons — slices 4 and 5.** After v1 · PARTNER. v0, slices 1 to 3, is built (#68 to #70).
 Slice 4, Credentials fed by the grader's rig, waits on his per-case file and the three rig changes she takes to
 him; it reads "not yet graded" until a real card exists. Slice 5, the flag button, is later. One grader,
-real only, and an agent opens alone: canon in CLAUDE.md.
+real only, and an agent opens alone: canon in CLAUDE.md. **28 Oct 2026:** the site moves to open.waterbots.ai,
+every page takes the main site's menu, and the Commons is rewritten as a list of modules, her words.
 
 **S19 · The Workshop — make your own agent on the Commons.** After v1 · PARTNER. Not built; the proposal
 is next on her word. Her cost model, review before publishing and the two-shape save are in the write-up.
@@ -234,7 +235,7 @@ The deploy, the repository, settings and limits. Step 7 is the carry, by her han
 (`type`, `gsClass`, `stage`, rows and a read per pathway, `wantsHuman`, `record.served`; `kind` retires
 when its receiver reads them, and that receiver is not fixed, Shell A item #243); `project-types.md`; the
 ten-line contract; Q11; the paid-site tools line; the transition module; the one-row shape; the agent
-screen's file list. **To the brand book:** typing dots §5, the agent screen §7. **To this site:** the
+screen's file list; open.waterbots.ai for the landing box, the claim and the menu (28 Oct 2026). **To the brand book:** typing dots §5, the agent screen §7. **To this site:** the
 sign-up address, the confirmed roster columns. **To the grader:**
 three rig changes.
 

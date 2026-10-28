@@ -16,7 +16,7 @@
  *
  * THE CONTRACT, in one line, for production's sender (same as Shell A):
  *
- *   https://map.waterbots.ai/?question=<≤500>[&does=<≤300>][&name=<≤80>][&place=<≤80>]
+ *   https://open.waterbots.ai/?question=<≤500>[&does=<≤300>][&name=<≤80>][&place=<≤80>]
  *
  * Percent-encoded as UTF-8 the way encodeURIComponent does it. Caps are
  * counted after decoding. Omit empty keys. No type, class or stage. No provenance in the

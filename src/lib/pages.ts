@@ -2,9 +2,9 @@
  * The site's two pages, and the address each one answers to.
  *
  * THE CONSOLE AT "/", THE AGENT COMMONS AT "/commons". Item S18, slice 2,
- * approved 9 Sep 2026: the Commons lives at its own address, opened by one
- * word at the right of the top bar and never on the journey bar, which stays
- * the journey. This module is the one home for that address; the shell reads
+ * approved 9 Sep 2026: the Commons lives at its own address, opened from the
+ * site menu (from 28 Oct 2026, the main site's menu) and never on the journey
+ * bar, which stays the journey. This module is the one home for that address; the shell reads
  * it on arrival and writes it when the visitor moves, and vercel.json's one
  * rewrite rule sends the address to the same page the console loads from.
  *
@@ -26,7 +26,7 @@ export type Page = 'console' | 'commons';
 /** The Commons' address, without a host. */
 export const COMMONS_PATH = '/commons';
 
-/** The one word that opens the Commons, at the right of the top bar. */
+/** The Commons' name, as the site menu and the Commons' way back say it. */
 export const COMMONS_LABEL = 'Agent Commons';
 
 /**

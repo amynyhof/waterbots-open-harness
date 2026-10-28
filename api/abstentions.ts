@@ -11,7 +11,7 @@
  * repository and always will be. What keeps it closed is PHOEBE_LOG_KEY, set in
  * the project's settings and supplied on the address:
  *
- *     https://map.waterbots.ai/api/abstentions?key=THE-SECRET
+ *     https://open.waterbots.ai/api/abstentions?key=THE-SECRET
  *
  * The comparison is done in a way that takes the same time whether the first
  * character is wrong or the last one is, so the secret cannot be worked out a

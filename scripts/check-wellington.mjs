@@ -553,7 +553,7 @@ const {
 } = createRequire(import.meta.url)(join(libOut, 'carried.js'));
 expect('the parameter is "question" and the cap is 500 decoded characters', CARRIED_PARAM === 'question' && CARRIED_MAX_CHARS === 500, `got ${CARRIED_PARAM}, ${CARRIED_MAX_CHARS}`);
 expect('a real question comes through, decoded and trimmed', readCarriedQuestion('?question=%20We%20want%20a%20borehole%20in%20Turkana.%20Where%20do%20we%20start%3F%20') === 'We want a borehole in Turkana. Where do we start?', `got "${readCarriedQuestion('?question=%20We%20want%20a%20borehole%20in%20Turkana.%20Where%20do%20we%20start%3F%20')}"`);
-expect('a whole address works as well as a query string', readCarriedQuestion('https://map.waterbots.ai/?question=hello%20there#x') === 'hello there', 'a whole address was not read');
+expect('a whole address works as well as a query string', readCarriedQuestion('https://open.waterbots.ai/?question=hello%20there#x') === 'hello there', 'a whole address was not read');
 expect('non-ASCII comes through as typed — UTF-8, the way encodeURIComponent writes it', readCarriedQuestion('?question=' + encodeURIComponent('¿Un pozo en Oaxaca — por dónde empezamos?')) === '¿Un pozo en Oaxaca — por dónde empezamos?', 'UTF-8 was mangled');
 expect('a missing parameter is nothing', readCarriedQuestion('') === null && readCarriedQuestion('?handoff=abc') === null, 'something was read from nothing');
 expect('a blank question is nothing, never an empty bubble', readCarriedQuestion('?question=') === null && readCarriedQuestion('?question=%20%20%09') === null, 'a blank was kept');
@@ -561,8 +561,8 @@ expect(`a question over ${CARRIED_MAX_CHARS} characters is ignored whole, never 
 expect('a sequence that does not decode is a broken link, ignored whole', readCarriedQuestion('?question=hello%E0%A4%A') === null && readCarriedQuestion('?question=%FF%FE') === null, 'a broken encoding was shown with holes');
 expect('runs of whitespace and newlines fold to one space', readCarriedQuestion('?question=a%0A%0Ab%20%20c') === 'a b c', `got "${readCarriedQuestion('?question=a%0A%0Ab%20%20c')}"`);
 expect('only the first question= is read', readCarriedQuestion('?question=first&question=second') === 'first', 'the second one won');
-expect('the address is cleaned of the question and keeps everything else', withoutCarried('https://map.waterbots.ai/?a=1&question=hi%20there&b=2#frag') === 'https://map.waterbots.ai/?a=1&b=2#frag', `got ${withoutCarried('https://map.waterbots.ai/?a=1&question=hi%20there&b=2#frag')}`);
-expect('an address with no carried keys is returned untouched', withoutCarried('https://map.waterbots.ai/?handoff=t1') === 'https://map.waterbots.ai/?handoff=t1', 'a clean address was rewritten');
+expect('the address is cleaned of the question and keeps everything else', withoutCarried('https://open.waterbots.ai/?a=1&question=hi%20there&b=2#frag') === 'https://open.waterbots.ai/?a=1&b=2#frag', `got ${withoutCarried('https://open.waterbots.ai/?a=1&question=hi%20there&b=2#frag')}`);
+expect('an address with no carried keys is returned untouched', withoutCarried('https://open.waterbots.ai/?handoff=t1') === 'https://open.waterbots.ai/?handoff=t1', 'a clean address was rewritten');
 
 expect('the shell reads the address once, cleans it, and hands the question to the one conversation', /readCarriedQuestion\(window\.location\.search\)/.test(appSource) && /history\.replaceState/.test(appSource) && /sendCarried\(question, \{ carried: true \}\)/.test(appSource) && /setSurface\('desk'\)/.test(appSource), 'the receiver is not in the shell, or does not clean the address');
 const clientSource = readFileSync('src/lib/wellingtonClient.ts', 'utf8');
@@ -616,7 +616,7 @@ expect(
     !('kind' in fullFacts),
   JSON.stringify(fullFacts)
 );
-expect('a whole address works for facts as well as a query string', readCarriedFacts('https://map.waterbots.ai/?name=Walk#x').name === 'Walk', JSON.stringify(readCarriedFacts('https://map.waterbots.ai/?name=Walk#x')));
+expect('a whole address works for facts as well as a query string', readCarriedFacts('https://open.waterbots.ai/?name=Walk#x').name === 'Walk', JSON.stringify(readCarriedFacts('https://open.waterbots.ai/?name=Walk#x')));
 expect(
   'non-ASCII facts come through as typed',
   readCarriedFacts('?place=' + encodeURIComponent('Oaxaca — el valle')).place === 'Oaxaca — el valle',
@@ -649,14 +649,14 @@ expect('only the first of each fact key is read', readCarriedFacts('?name=first&
 expect('a type, class or stage in the address is never read', readCarriedFacts('?type=C-19&gsClass=CWS&stage=paper&does=wells').type === undefined && readCarriedFacts('?type=C-19&stage=paper&does=wells').stage === undefined && readCarriedFacts('?type=C-19&does=wells').does === 'wells', JSON.stringify(readCarriedFacts('?type=C-19&does=wells')));
 expect(
   'the address is cleaned of question and facts, and keeps unknown keys and the fragment',
-  withoutCarried('https://map.waterbots.ai/?a=1&does=wells&question=hi&name=Walk&place=Turkana&kind=water#frag') ===
-    'https://map.waterbots.ai/?a=1&kind=water#frag',
-  withoutCarried('https://map.waterbots.ai/?a=1&does=wells&question=hi&name=Walk&place=Turkana&kind=water#frag')
+  withoutCarried('https://open.waterbots.ai/?a=1&does=wells&question=hi&name=Walk&place=Turkana&kind=water#frag') ===
+    'https://open.waterbots.ai/?a=1&kind=water#frag',
+  withoutCarried('https://open.waterbots.ai/?a=1&does=wells&question=hi&name=Walk&place=Turkana&kind=water#frag')
 );
 expect(
   'facts without a question are still stripped',
-  withoutCarried('https://map.waterbots.ai/?does=wells&name=Walk') === 'https://map.waterbots.ai/',
-  withoutCarried('https://map.waterbots.ai/?does=wells&name=Walk')
+  withoutCarried('https://open.waterbots.ai/?does=wells&name=Walk') === 'https://open.waterbots.ai/',
+  withoutCarried('https://open.waterbots.ai/?does=wells&name=Walk')
 );
 
 const stamped = learnedContext(EMPTY_CONTEXT, readCarriedFacts('?does=wells&name=Walk&place=Turkana'));

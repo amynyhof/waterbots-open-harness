@@ -422,28 +422,6 @@ body {
   color: var(--tide-text);
 }
 
-/* The inlined wordmark SVG. brand/assets/logo/wordmark.svg defines no styling
-   of its own — it references .wm, .ink and .tide and expects the host to
-   supply them. These are those rules, resolved from the design tokens so the
-   mark follows the theme rather than carrying baked-in colour. */
-.wb-wordmark svg {
-  height: 100%;
-  width: auto;
-  display: block;
-}
-.wb-wordmark .wm {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 56px;
-  letter-spacing: -0.02em;
-}
-.wb-wordmark .ink {
-  fill: var(--ink);
-}
-.wb-wordmark .tide {
-  fill: var(--tide-text);
-}
-
 /* Page transitions are fades, never slides. No overshoot, no spring. */
 
 /* ---------------------------------------------------------------------------
@@ -1229,45 +1207,117 @@ button.wb-phase:hover span:last-child {
 }
 
 /* ---------------------------------------------------------------------------
-   The Agent Commons — item S18, slice 2, 11 Sep 2026.
+   The site menu — the main site's, on every page. Maintainer's ruling,
+   28 Oct 2026; src/components/SiteMenu.tsx says why.
 
-   ONE WORD AT THE RIGHT OF THE TOP BAR opens it, and never the journey bar,
-   which stays the journey. A quiet text link in the top bar's own measure;
-   on the Commons it is the current page and reads in ink, bold, with no hand.
-   The wordmark at the left is the way back to the console, as a wordmark
-   conventionally is; it carries no styling of its own beyond the cursor.
-
-   ~~A CREW ROW MAY BE A LISTING.~~ The Commons' right column, and the static
-   row it listed the crew with, are gone — maintainer's ruling, 11 Sep 2026:
-   on the Commons the shelf is the crew, and an open agent stands alone. The
-   Commons' own row under the top bar (src/components/Commons.tsx) carries the
-   way back and the sign-up door, in classes that already exist.
+   Measured from the live waterbots.ai menu on 28 Oct 2026: a centred band
+   1240px wide, 12px by 24px of padding; the wordmark as type at 18px, weight
+   700, tracked -0.04em; links at 13px, weight 500, 20px apart and 24px after
+   the wordmark, in ink; Sign in at the right in the second ink. The current
+   page is marked for a screen reader only, as the live menu draws none.
 --------------------------------------------------------------------------- */
-.wb-topbar-link {
+.wb-site-menu {
+  flex: none;
+}
+.wb-site-menu-band {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 8px;
+}
+.wb-site-menu-wordmark {
+  font-size: 18px;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  display: inline-flex;
+  align-items: baseline;
+}
+.wb-site-menu-links,
+.wb-site-menu-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 20px;
+  row-gap: 8px;
+}
+.wb-site-menu-links {
+  margin-left: 24px;
+}
+.wb-site-menu-end {
+  margin-left: auto;
+  justify-content: flex-end;
+}
+.wb-site-menu-link {
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
-  color: var(--ink-2);
-  background: transparent;
-  border: 0;
-  padding: 4px 0;
-  cursor: pointer;
+  line-height: 1.5;
+  color: var(--ink);
+  text-decoration: none;
   white-space: nowrap;
-  transition: color var(--dur) var(--ease);
 }
-.wb-topbar-link:hover {
+.wb-site-menu-quiet {
+  color: var(--ink-2);
+}
+.wb-site-menu-quiet:hover {
   color: var(--ink);
 }
-.wb-topbar-link[aria-current='page'] {
-  color: var(--ink);
-  font-weight: 600;
-  cursor: default;
-}
-.wb-wordmark-link {
-  display: inline-flex;
+
+/* ---------------------------------------------------------------------------
+   The Agent Commons' module list — maintainer's ruling, 28 Oct 2026. A
+   vertical list, one row per module: the agent, what the module does, its
+   method, status, owner, grade and Open. Below 900px a row stacks and each
+   cell carries its own small label in place of the header row.
+--------------------------------------------------------------------------- */
+.wb-module-head,
+.wb-module-row {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) 150px 120px 104px 124px 84px;
+  column-gap: 16px;
   align-items: center;
-  background: transparent;
-  border: 0;
+}
+.wb-module-head {
+  padding: 0 0 8px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.wb-module-list {
+  list-style: none;
+  margin: 0;
   padding: 0;
-  cursor: pointer;
+}
+.wb-module-row {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.wb-module-label {
+  display: none;
+}
+@media (max-width: 900px) {
+  .wb-module-head {
+    display: none;
+  }
+  .wb-module-list {
+    border-top: 1px solid var(--line);
+  }
+  .wb-module-row {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 8px;
+  }
+  .wb-module-label {
+    display: inline;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-right: 8px;
+  }
 }

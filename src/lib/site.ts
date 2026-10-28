@@ -30,6 +30,44 @@ export const SITE_URL = 'https://waterbots.ai';
 export const SITE_LABEL = 'waterbots.ai';
 
 /**
+ * This site's own address, from 28 Oct 2026: open.waterbots.ai, the
+ * maintainer's word. The old map.waterbots.ai forwards here; the forward is
+ * set in Vercel by her hand, never from this repository.
+ */
+export const OPEN_SITE_URL = 'https://open.waterbots.ai';
+
+/**
+ * THE ONE MENU, the same as the main site's — maintainer's ruling, 28 Oct
+ * 2026. Words and order are the live waterbots.ai menu's, read from the live
+ * page only: the wordmark, Consulting, Open Source, Agent Commons, and Sign in
+ * at the right. The main site's "Sign up" is a button with no address of its
+ * own and is not in her list, so it is not drawn here. Links open in the same
+ * tab with no arrows, so the two sites read as one.
+ *
+ * `page` marks the two links that are this site's own pages: the shell opens
+ * them in place, so a visit is not lost, and the address stays the full one
+ * for a copied link or a new tab.
+ */
+export interface MenuLink {
+  label: string;
+  href: string;
+  page?: 'console' | 'commons';
+}
+
+export const MENU_HOME: MenuLink = { label: 'WaterBots.AI', href: SITE_URL };
+
+export const MENU_LINKS: MenuLink[] = [
+  { label: 'Consulting', href: 'https://www.waterbots.ai/services' },
+  { label: 'Open Source', href: OPEN_SITE_URL, page: 'console' },
+  { label: 'Agent Commons', href: `${OPEN_SITE_URL}/commons`, page: 'commons' },
+];
+
+export const MENU_SIGN_IN: MenuLink = { label: 'Sign in', href: 'https://www.waterbots.ai/login' };
+
+/** Where "Build a module with us" on the Commons goes: the main site's Consulting page. */
+export const CONSULTING_URL = MENU_LINKS[0].href;
+
+/**
  * Where the bridge sends a visitor after sealing (item S7). Production's
  * address, carried by the maintainer's hand on 8 Sep 2026: the visitor goes
  * through sign-in first, and the ticket in the address survives it.
