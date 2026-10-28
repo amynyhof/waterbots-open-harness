@@ -17,6 +17,21 @@ before 3 Oct 2026 link to an OPEN_ITEMS.md that has since been retired to this f
 
 ---
 
+## 27 Oct 2026 — PROCESS_RULES_for_ShellB.md: rule zero matches CLAUDE.md's open core exception
+
+**Why it changed.** The maintainer ruled on 27 Oct 2026, on pull request #156, that the process rules' rule zero
+match CLAUDE.md's, which had gained the open core exception the same day. AGENT_RULES.md's *The wall* is left as it
+is, by her ruling: it covers what agents see at runtime, and installing a package does not change that.
+
+**Old wording, whole — Standing rules that govern everything above, the rule zero line:**
+
+> - **Rule zero:** this repo sees only this repo. The engineer never
+>   fetches, guesses at, or imitates the private platform. Rules
+>   arrive as extracted rule files like this one, brought by Amy.
+
+**Where the current text is:** [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Standing rules that
+govern everything above*.
+
 ## 27 Oct 2026 — BUILD_PLAN.md: Calvin's item said his brief was untracked and nothing was built
 
 **Why it changed.** Found on 27 Oct 2026 while recording the maintainer's rulings on pull request #156. The brief has
