@@ -2,12 +2,14 @@
 
 **Written 27 Oct 2026 for Amy. Proposal only: nothing is built, installed or deleted.** It answers her brief of
 26 Oct 2026: the open site installs Calvin from the open core instead of keeping its own sealed engine copy.
+**Ruled the same day:** Amy's twelve answers are in section 7, and what is still open is in section 8. Nothing is
+built yet.
 
 ## What I read, and what I found
 
 **Read on GitHub only, by Amy's word in the brief:** `amynyhof/waterbots-open-core-modules` at `50fe2f6`, the merge
-of its pull request #5 ("Add calculator module", 26 Oct 2026). Nothing was cloned. Rule zero still says this site
-never reads another repository, so that line needs her word before any build (question 1).
+of its pull request #5 ("Add calculator module", 26 Oct 2026). Nothing was cloned. Rule zero said this site never
+reads another repository. Amy ruled yes on 27 Oct 2026 (ruling 1), and CLAUDE.md's rule zero now says so.
 
 **The open core, as it stands:**
 
@@ -23,13 +25,28 @@ never reads another repository, so that line needs her word before any build (qu
 
 **The open site, as it stands:**
 
-- `carried/` holds the paid site's engine **v0.16.1** (37 tracked files). **Nothing in the site reads it.** No file
+- `carried/` holds the paid site's engine **v0.16.1** (37 tracked files). **Nothing on `main` reads it.** No file
   in `src/`, `api/` or `scripts/` imports it, and no build setting includes it.
 - What visitors see today comes from the site's own screening code: `src/lib/gsSdws.ts` (carbon, two versions) and
   `src/lib/vwbaD3.ts` (water), listed in `src/lib/methodPacks.ts`. The carbon code uses a fixed fuel profile, six
   countries and the MoFuSS fraction of non-renewable biomass (fNRB) figures.
 - `src/lib/carried.ts` is a different thing: the receiver for a question carried in from the paid site's landing. It
   stays.
+
+**Found after the first draft: the closed pull request #151.** I missed it in the first draft, and I should have
+found it. #151 built Calvin on the old copy, on the branch `calvin/engine-crosses`. Amy closed it without merging on
+15 Oct 2026, by her ruling: the free site installs the shared package instead of a hand-built copy of the engine.
+**That ruling came first, and this proposal carries it out.** Her closing note on #151 lists what to reuse:
+
+- her rulings R22 to R26: every SDWS reference shows its version; six sliders that teach; household treatment
+  days are 365; no script for Calvin, who asks a transitioning project for its filed V1.0 fNRB; schools and clinics
+  are v2;
+- `scripts/check-calvin-engine.mjs`, 83 checks on made-up projects;
+- the Quantify sheet, restyled to match the paid look but built in this site's own code;
+- the six-slider layout in `src/lib/calvinFields.ts`, with water quality opening at 100%, not the branch's 90%;
+- ten open points, still standing.
+
+`PROPOSAL_calvin-brief.md` is tracked on that branch only. It is not on `main`, and it is not on disk here.
 
 **Three facts that block a plain install today**, all on the core's side:
 
@@ -83,19 +100,28 @@ GitHub release. The site installs that file by its web address.
 - **When to use it:** only as a stop-gap if she wants Calvin on the open site before the npm steps are done. Moving
   to A later is a one-line change in `package.json`.
 
+**Ruled 27 Oct 2026 (rulings 2 and 3):** the route is decided after Amy talks with Harrison Kerr. **Until then, Option
+C: a release file pinned by its fingerprint.** No npm publish until after the fresh public repository and the full
+number gate.
+
 ### In every option: own the name first
 
 `@waterbots/calvin` asks for `@waterbots/core` by name. Until Amy owns the `@waterbots` scope on npm, a stranger
 could publish a package with that name, and an install could pick it up. **Claiming the scope now closes that,**
-even if publishing waits.
+even if publishing waits. **Ruled (ruling 4):** Amy claims it.
 
-### What the core needs first (carried by Amy's hand, never done from here)
+### What the core needs first (made by Session C in its own repository)
+
+**Ruled (ruling 5):** Session C makes these changes in the open core. Nothing is carried by hand, and nothing is done
+from here.
 
 1. An engine door: `@waterbots/calvin/engine`, exporting what `engine.ts` exports today, with no React in it.
 2. React marked optional for anyone who uses the engine door only, so a React 18 site can install it.
 3. A real version (`0.1.0`) and `private` turned off at release, which is its step M2.2.
 4. Optional: built files that also run in plain Node, if Calvin's chat ever runs the engine on the server. My
    proposal keeps the engine in the browser, so this can wait.
+5. **For the interim route:** a job that builds each package into one release file at a tag and attaches it to a
+   GitHub release. This is not one of the three changes in ruling 5 (section 8, point C).
 
 ## 2. What changes on the open site
 
@@ -112,6 +138,8 @@ Three steps, each its own commit, in two pull requests.
   answers into the engine's input, calls the engine, and shows the result. The fixed fuel profile, the straight
   line and the six-country MoFuSS table go; the engine's cited data takes over.
 - `scripts/check-gs-sdws.mjs` is rewritten to prove step 2 (proofs P2 and P3, below).
+- Where #151 already built this on the old copy (the sheet, the six sliders, `check-calvin-engine.mjs`), step 2
+  reuses it, with the import paths moved to the package. Which screen that means is section 8, point A.
 - `knowledge-packs/calvin-quantify/`: its README and CHANGELOG name the engine and its version.
 - `src/lib/vwbaD3.ts` and `scripts/check-vwba-d3.mjs`: **no change.** Water stays on the site's own code until the
   core's water step.
@@ -120,7 +148,8 @@ Three steps, each its own commit, in two pull requests.
 and its version. The core's own screens are not used: they need React 19, and the brand book governs here.
 
 **Agents.** Calvin's chat is not built yet (item A21). Its proposal planned to read `carried/`; it would read the
-engine door instead. Wellington, Phoebe and Bridget: no change. Wellington's build-update fact mentions the switch at
+engine door instead. **Ruled (ruling 8):** his chat uses the open core's `prompt.md`, plus a small open-site add-on
+only if needed, the same way the paid site does. Wellington, Phoebe and Bridget: no change. Wellington's build-update fact mentions the switch at
 the next full close-out.
 
 **What a visitor would notice:**
@@ -132,6 +161,8 @@ the next full close-out.
 - The water figure does not change.
 
 ## 3. Deleting the old sealed engine copy
+
+**Ruled (ruling 10):** yes, `carried/` is deleted in its own pull request once the carbon tab runs on the engine.
 
 **What goes, in its own pull request after step 2 is merged (lane 3):**
 - `carried/`, all 37 tracked files.
@@ -182,6 +213,9 @@ proofs show is that every difference has a named cause, and that the site's engi
 **Amy approves on the table and on pixels:** a before-and-after capture of Calvin's Tool tab, same case, same width,
 in the pull request's For Amy block.
 
+**Ruled (ruling 6):** the new carbon figures are accepted once Amy has seen the before-and-after table on test cases.
+This replaces her rulings D, E and F of 2 Sep 2026.
+
 ## 5. The v1 journey
 
 Wellington → Phoebe → Bridget → Calvin → report / sign up.
@@ -204,6 +238,8 @@ Wellington → Phoebe → Bridget → Calvin → report / sign up.
   numbers by construction. What is left to show is that the screening's inputs reach the paid site whole.
 
 **Nothing in the journey breaks.** Two things change: the carbon figure, and up to two questions from Calvin.
+**Ruled (ruling 9):** Calvin may ask "people or households?" and for the filed fNRB when needed. The second matches
+her ruling R25 of 10 Oct 2026.
 
 ## 6. The fresh public repository
 
@@ -219,26 +255,62 @@ Amy plans a fresh public repository with clean history, guided by Harrison Kerr.
 - **For Harrison Kerr's review:** the whole change is one dependency, one file that turns answers into engine
   input, and one check. It should move to any structure he proposes without rework.
 
-**My suggested order:** this work here first, so it is proven on the live site, then the fresh repository's snapshot.
+**Ruled (ruling 11):** this work goes first, proven on the live site, and the fresh repository copies it afterward.
 
-## 7. What needs Amy's word
+## 7. What needed Amy's word — ruled 27 Oct 2026
 
-1. **Rule zero.** May this site install the open core packages, and may the engineer read the core repository's
-   published files on GitHub? Today's CLAUDE.md says no to both.
+Each question as it was asked, then her ruling.
+
+1. **Rule zero.** May this site install the open core packages, and may the engineer read the core repository on
+   GitHub?
+   **Ruled: yes,** on GitHub only. CLAUDE.md's rule zero now says so; the old wording is in
+   `docs/archive/CORRECTIONS.md`.
 2. **The route.** npm with provenance (my pick), GitHub Packages, or the release-file stop-gap?
-3. **The first npm publish.** Does it wait for the core's real number gate (its step M1.2)? A publish is permanent.
+   **Ruled: decided after Amy talks with Harrison Kerr.** Until then, a release file pinned by its fingerprint
+   (Option C).
+3. **The first npm publish.** Does it wait for the core's real number gate (its step M1.2)?
+   **Ruled: no npm publish until after the fresh public repository and the full number gate.**
 4. **Claim the `@waterbots` npm scope now**, even if publishing waits?
-5. **Carry to the core**, by your hand: the engine door with no React, React optional for engine-only users, and
-   version `0.1.0` at release.
-6. **New carbon numbers.** Do you accept that the carbon figure moves to the engine's cited data (official fNRB
-   figures, DAF, age tiers), on the before-and-after table and capture? This replaces your rulings D, E and F of
-   2 Sep 2026, which made the two carbon tabs differ in fNRB alone.
-7. **Engine only.** The site keeps its own screens and uses the engine alone (my pick), or moves to the core's screens,
-   which needs React 19 first?
-8. **Calvin's chat prompt.** The site's own, written to AGENT_RULES.md (my pick), or the core's `prompt.md`?
-9. **Calvin's two questions.** He asks for people or households when the record lacks it, and for the filed V1.0
-   fNRB before a transition figure. Yes?
-10. **Delete `carried/`** in its own pull request after step 2, with the byte-for-byte build proof?
-11. **Order with the fresh repository.** This work first, then the snapshot? Or fold it into the fresh repository?
-12. **Calvin's brief (item A21).** Should this proposal replace the parts of `PROPOSAL_calvin-brief.md` that read
-    `carried/`?
+   **Ruled: Amy will claim it.**
+5. **Carry to the core** the engine door with no React, React optional for engine-only users, and version `0.1.0`?
+   **Ruled: Session C makes the three changes in its own repository.** Nothing is carried by hand.
+6. **New carbon numbers.** Does the carbon figure move to the engine's cited data (official fNRB figures, DAF, age
+   tiers)?
+   **Ruled: accepted, after Amy sees a before-and-after table on test cases.** This replaces rulings D, E and F of
+   2 Sep 2026.
+7. **Engine only, or the core's screens?**
+   **Ruled: keep this site's own screens; use the engine only.**
+8. **Calvin's chat prompt.** The site's own (my pick), or the core's `prompt.md`?
+   **Ruled: the open core's `prompt.md`,** plus a small open-site add-on only if needed, the same way the paid site
+   does.
+9. **Calvin's two questions:** people or households, and the filed V1.0 fNRB before a transition figure?
+   **Ruled: yes,** when needed.
+10. **Delete `carried/`** in its own pull request after step 2?
+    **Ruled: yes,** once the carbon tab runs on the engine.
+11. **Order with the fresh repository.**
+    **Ruled: this work goes first; the fresh repository copies it afterward.**
+12. **Calvin's brief (item A21).** Update `PROPOSAL_calvin-brief.md` to match?
+    **Ruled: yes.** Not done yet: the brief is not where the plan file said it was (section 8, point B).
+
+## 8. Still open after the rulings
+
+Each needs Amy's word before the build proposal.
+
+- **A. Which screen is "this site's own"?** Today's Quantify tab on `main`, or #151's sheet, restyled to match the
+  paid look but built in this site's own code? My reading is #151's, because her closing note lists it for reuse.
+- **B. Where Calvin's brief is updated.** It is tracked only on `calvin/engine-crosses`, the closed #151's branch, and
+  is 705 lines. Three ways: update it on that branch; bring it into this pull request under `docs/proposals/`, checked
+  first for figures that must not publish; or fold its standing rulings (R1 to R26) into this proposal and retire it.
+- **C. The release file needs a release job in the core.** That is a fourth change for Session C, beyond ruling 5's
+  three.
+- **D. Rule zero is now written two ways.** CLAUDE.md has the open core exception. PROCESS_RULES_for_ShellB.md's
+  standing rules still say "this repo sees only this repo", and AGENT_RULES.md's *The wall* restates rule zero for
+  agents. CLAUDE.md calls a difference between them a defect to raise, so I raise it. Fixing it is one line in
+  PROCESS_RULES, on her word. *The wall* needs a look at the same time: it is about the private platform, and the
+  open core is not that, but ruling 8 brings its prompt here.
+- **E. The core's `prompt.md` has not been read against AGENT_RULES.md** or this site's language rules. The build
+  step reads it and puts any conflict in the add-on or in front of Amy. Her ruling R25, no script for Calvin, still
+  stands.
+- **F. #151's ten open points** still stand, as her closing note lists them. They go into the build proposal.
+- **G. CLAUDE.md's Scope section** still describes the two carbon packs as differing in one cited input (rulings D, E
+  and F). It changes when step 2 is built, not now.

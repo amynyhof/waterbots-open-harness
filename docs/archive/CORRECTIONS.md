@@ -17,6 +17,36 @@ before 3 Oct 2026 link to an OPEN_ITEMS.md that has since been retired to this f
 
 ---
 
+## 27 Oct 2026 — BUILD_PLAN.md: Calvin's item said his brief was untracked and nothing was built
+
+**Why it changed.** Found on 27 Oct 2026 while recording the maintainer's rulings on pull request #156. The brief has
+been tracked on the branch `calvin/engine-crosses` since 10 Oct 2026, and its build, #151, was built there and then
+closed without merging on 15 Oct 2026, by her ruling, for the shared package. The item said neither.
+
+**Old wording, whole — A21, its opening lines as they stood on `main`:**
+
+> **A21 · Calvin's brief — his chat, the carried engine, carbon beside water.** Step 5 · BONES. Proposed
+> 27 Sep 2026 as `PROPOSAL_calvin-brief.md`, untracked at the root; nothing is built. R2 to R11 ruled yes on
+> 1 Oct 2026, her notes in its §13. **R1 is closed**: the v0.16.1 bundle crossed 3 Oct 2026, scrubbed of the
+> filing's figures (O16).
+
+**Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), item A21.
+
+## 27 Oct 2026 — CLAUDE.md: rule zero gained the open core exception
+
+**Why it changed.** The maintainer ruled on 27 Oct 2026, on pull request #156, that this site may install the open
+core packages and that the engineer may read that repository on GitHub only. Rule zero said no other repository, ever.
+
+**Old wording, whole — Rule zero — this repo only:**
+
+> You work in this repository and nowhere else. You never read, write,
+> or reference any other repository, working tree, or dev server. If a
+> task appears to require something outside this repo, stop and say so.
+> It becomes a written proposal for the maintainer to carry elsewhere —
+> never an action here.
+
+**Where the current text is:** [CLAUDE.md](../../CLAUDE.md), *Rule zero — this repo only*.
+
 ## 23 Oct 2026 — PROCESS_RULES_for_ShellB.md: the full close-out gained an eleventh step
 
 **Why it changed.** The maintainer ruled that each family close also tidies what the family touched. The

@@ -55,10 +55,19 @@ from `main` on push.
 ## Rule zero — this repo only
 
 You work in this repository and nowhere else. You never read, write,
-or reference any other repository, working tree, or dev server. If a
-task appears to require something outside this repo, stop and say so.
-It becomes a written proposal for the maintainer to carry elsewhere —
-never an action here.
+or reference any other repository, working tree, or dev server, except
+the open core below. If a task appears to require something outside
+this repo, stop and say so. It becomes a written proposal for the
+maintainer to carry elsewhere — never an action here.
+
+**The open core is the one exception, from 27 Oct 2026, by the
+maintainer's ruling.** This site may install the open core packages
+from `amynyhof/waterbots-open-core-modules`, and the engineer may read
+that repository on GitHub only: never a clone, never a write, never a
+pull request there. What the open core needs is made by its own
+session in its own repository. The paid site's repository stays
+outside, as before. The proposal is
+[docs/proposals/calvin-from-open-core.md](./docs/proposals/calvin-from-open-core.md).
 
 ## Non-negotiables
 

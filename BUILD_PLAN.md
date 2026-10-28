@@ -139,10 +139,10 @@ order above, for her to move.
 
 How agents behave, what they may say, how they hand off. Governed by AGENT_RULES.md.
 
-**A21 · Calvin's brief — his chat, the carried engine, carbon beside water.** Step 5 · BONES. Proposed
-27 Sep 2026 as `PROPOSAL_calvin-brief.md`, untracked; R1 to R11 ruled or closed by 3 Oct 2026. Nothing built.
-**27 Oct 2026: proposed to install Calvin's engine from the open core instead of `carried/`**
-([docs/proposals/calvin-from-open-core.md](./docs/proposals/calvin-from-open-core.md)); twelve questions for her.
+**A21 · Calvin's brief — his chat, the engine, carbon beside water.** Step 5 · BONES. The brief,
+`PROPOSAL_calvin-brief.md`, rulings R1 to R26, is tracked only on `calvin/engine-crosses`; its build, #151, closed
+unmerged 15 Oct 2026 for the shared package. **27 Oct 2026: install Calvin's engine from the open core** (proposal
+[docs/proposals/calvin-from-open-core.md](./docs/proposals/calvin-from-open-core.md)); ruled 27 Oct, seven points open.
 Done when his screening numbers match the paid site's calculators run on the saved project's inputs (the v1
 fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 2026; teal dropped).
 
