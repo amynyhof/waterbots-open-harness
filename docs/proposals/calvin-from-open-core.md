@@ -2,7 +2,7 @@
 
 **Written 27 Oct 2026 for Amy. Proposal only: nothing is built, installed or deleted.** It answers her brief of
 26 Oct 2026: the open site installs Calvin from the open core instead of keeping its own sealed engine copy.
-**Ruled in three rounds the same day,** all in section 7; what is still open is in section 8. **This proposal replaces Calvin's old brief**, `PROPOSAL_calvin-brief.md`, which stays on the closed
+**Ruled in three rounds the same day, and corrected on 28 Oct 2026,** all in section 7; what is still open is in section 8. **This proposal replaces Calvin's old brief**, `PROPOSAL_calvin-brief.md`, which stays on the closed
 #151's branch as history (ruling 12). Nothing is built yet.
 
 ## What I read, and what I found
@@ -165,7 +165,8 @@ change. Wellington's build-update fact mentions the switch at the next full clos
   America and sub-Saharan Africa. A country in none of them gets a plain "no figure" instead of a number.
 - The Paris-aligned version applies the downward adjustment factor (DAF), so its figure is lower than today's.
 - A transition figure needs the project's filed V1.0 fNRB (section 5).
-- Calvin's colour turns from Plum to Mint everywhere he appears (ruled in the third round).
+- ~~Calvin's colour turns from Plum to Mint everywhere he appears (ruled in the third round).~~ **Corrected 28 Oct
+  2026:** Calvin stays Plum everywhere he appears. Nothing on this site changes colour.
 - Wellington asks the country, and how many people or households a project serves, near the start (section 11).
 - The water figure and the map do not change.
 
@@ -322,10 +323,14 @@ first, proven on the live site, and the fresh repository copies it afterward.
 3. **Wellington's size limit is not changed.** His current instructions are in a plain-text file for Amy to read and
    rewrite: [wellington-instructions-2026-10-28.txt](./wellington-instructions-2026-10-28.txt). The new questions need
    about 413 more characters (section 11 and section 12).
-4. **Calvin's colour is Mint everywhere.** The brand book, version 4.2, §6, gives him Plum, and records that choice
+4. ~~**Calvin's colour is Mint everywhere.** The brand book, version 4.2, §6, gives him Plum, and records that choice
    as a knowing exception of 31 Aug 2026; it then refused Mint because Mint also means success or approved. **The
    brand book needs updating to match**, by Amy's hand: it is gitignored and is never edited from here. CLAUDE.md's
-   brand section says Plum and changes when the book does. The site's colour for Calvin changes in step 2.
+   brand section says Plum and changes when the book does. The site's colour for Calvin changes in step 2.~~
+   **Corrected 28 Oct 2026, Amy's word: Calvin's colour is Plum everywhere, not Mint.** The brand book, version 4.2,
+   §6, already says Plum, and CLAUDE.md's brand section already agrees, so neither changes. This site's colour for
+   Calvin does not change in step 2. The paid site's and the open core's Calvin screens change to Plum later, in
+   their own repositories; when step 2 installs the core's screens, Calvin's colour there is mapped to Plum.
 5. **Agreed, as proposed:**
    - React 19 upgrade in place, as its own pull request with before-and-after pictures of the map (section 9);
    - the four slider rows (section 10);
@@ -351,7 +356,8 @@ Each needs Amy's word before the build steps they touch.
   which is every Commons visit; fNRB's citation says V2.0 SDWS 25 where Eq. 1 names SDWS 24; the page script grows
   with the engine's country tables.
 - **F. CLAUDE.md's Scope section** still describes the two carbon packs as differing in one cited input (rulings D, E
-  and F). It changes when step 2 is built, not now. Its brand section changes when the brand book gives Calvin Mint.
+  and F). It changes when step 2 is built, not now. ~~Its brand section changes when the brand book gives Calvin Mint.~~
+  Its brand section stands: Calvin is Plum (corrected 28 Oct 2026).
 
 ## 9. The move to React 19
 
