@@ -8,7 +8,8 @@ It deploys standalone and is linked from [waterbots.ai](https://waterbots.ai).
 
 ## Status
 
-**The basin map is live at [map.waterbots.ai](https://map.waterbots.ai).** It renders real
+**The site is live at [open.waterbots.ai](https://open.waterbots.ai)**, its address from 28 Oct 2026;
+the old map.waterbots.ai forwards there. The basin map renders real
 HydroSHEDS basin geometry coloured by real WRI Aqueduct values, with no fabricated data anywhere in
 it.
 
@@ -91,12 +92,18 @@ with the save button on every step; the old host panels are gone. Memory is neve
 visit knows stays in the record on the left. The screen is built once and offered to production and
 the Agent Commons, which differ from this site only in memory and in how deep the tool goes.
 
-**From 11 Sep 2026 the Agent Commons is live at `/commons`**, opened by one word at the right of
-the top bar. It is a shelf of knowledge packs, one card per pack wearing the face of the agent who
-holds it: Phoebe's eligibility and feasibility cards, Calvin's three method packs, Bridget's two
-datasets. Every card's chip reads "not yet graded", because a grade on the Commons comes only from
-one public exam, run outside this site on real projects and real packs, and none has been run yet.
-Open a card and the agent's screen appears alone — its chat, its tool where it has one, its
+**Every page carries the main site's menu, from 28 Oct 2026**: the WaterBots.AI wordmark to
+waterbots.ai, Consulting, Open Source (this site's screening), Agent Commons, and Sign in — the same
+words, order and look as the live waterbots.ai menu, so the two sites read as one.
+
+**The Agent Commons is live at [open.waterbots.ai/commons](https://open.waterbots.ai/commons)**,
+from 11 Sep 2026, rewritten on 28 Oct 2026: a free, open library of AI agents for water projects,
+how it works in three points, a "Build a module with us" button to the main site's Consulting page,
+and the modules as a list, one row each — the agent, what the module does, its method, its status,
+its owner and its grade. Phoebe's eligibility and feasibility cards, Calvin's three method packs and
+Bridget's two datasets are listed, with a health impact guide in development, partner pending. Every
+grade reads "not yet graded", because a grade on the Commons comes only from one exam, run outside
+this site on real projects, and none has run yet. Open a module and the agent's screen appears alone — its chat, its tool where it has one, its
 knowledge pack and its credentials — with no crew beside it and no next phase; the only other
 things on the screen are the way back to the shelf and "Sign up to manage a project". The Commons
 carries no project record and keeps nothing; Phoebe answers there from what a visitor types, under

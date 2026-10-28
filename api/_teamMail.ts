@@ -152,7 +152,7 @@ export function composeTeamMail(seal: SealBody, forTeam: TeamPathway[]): TeamMai
   const stage = PROJECT_STAGES.find((s) => s.id === record.stage.value)?.words ?? 'not known yet';
 
   const lines: string[] = [
-    'A visitor to map.waterbots.ai saved their project and asked for a person at WaterBots to look at it.',
+    'A visitor to open.waterbots.ai saved their project and asked for a person at WaterBots to look at it.',
     '',
     `Project: ${name}`,
     `Where: ${oneLine(record.place.value) || 'not known yet'}`,

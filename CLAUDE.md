@@ -49,8 +49,11 @@ WaterBots branding, agent design, and agent knowledge with the main
 platform, but shares no repository with it. The maintainer carries
 any shared material across by hand; the engineer never fetches it.
 
-**v1 is deployed and live at https://map.waterbots.ai.** Vercel builds
-from `main` on push.
+**The site is deployed and live at https://open.waterbots.ai**, its address
+from 28 Oct 2026 by the maintainer's word; the old map.waterbots.ai forwards
+there, set in Vercel by her hand. Vercel builds from `main` on push. Every
+page carries the main site's menu, the same words, order and look as the live
+waterbots.ai menu; the links live once, in `src/lib/site.ts`.
 
 ## Rule zero — this repo only
 
@@ -301,8 +304,8 @@ credit line does not meet any of these bars.
   slices 1 to 3 — built and merged by 11 Sep 2026, #68 to #70; slice 4 waits on
   The grader's per-case file, the flag button is later.** A public
   gallery of graded knowledge packs, each wearing the face of the agent who holds
-  it, at its own address, `/commons`, opened by one word at the right of the top
-  bar and never from the journey bar; open one and the agent screen appears as
+  it, at its own address, `/commons`, opened from the site menu (the main site's
+  menu from 28 Oct 2026) and never from the journey bar; open one and the agent screen appears as
   its third consumer, without memory, its chat capped; free to explore, sign up
   to manage a project. **Two rulings the same day, canon.** *One grader:* the
   grading rig kept outside this repository, the grader's, is the only public grade; the
@@ -393,8 +396,8 @@ credit line does not meet any of these bars.
   verified, the filing's figures gone (#147), tagged `engine-carry-2026-10-04`. `carried/** -text` keeps its bytes. `HOW-TO-CALL.md` went with the old bundle; the
   manifest at `carried/MANIFEST.md` says what is in it. Nothing edits it here. Calvin's brief reads it.
 - **The free-site fixes of 30 Sep 2026 are live, #134 to #138**, and the demo ran on `main` at
-  #138. The wordmark at the top left starts a fresh visit at the landing (a full load; the daily
-  caps, which live on the server, are not reset by it). Every chat box grows to three lines, then
+  #138. The wordmark at the top left goes to waterbots.ai from 28 Oct 2026, as the main site's
+  menu does; until then it started a fresh visit at the landing. Every chat box grows to three lines, then
   scrolls. **No desk has a "Next phase" chip**, by the maintainer's ruling of 30 Sep 2026, which
   replaces the 16 Sep rule on this site: next steps live in the right rail only. **A rail row that
   sends the visitor somewhere clears when taken**: they are on its step, or, for the map row, a
