@@ -98,14 +98,16 @@ words, order and look as the live waterbots.ai menu, so the two sites read as on
 
 **The Agent Commons is live at [open.waterbots.ai/commons](https://open.waterbots.ai/commons)**,
 from 11 Sep 2026, rewritten on 28 Oct 2026: a free, open library of AI agents for water projects,
-how it works in three points, a "Build a module with us" button to the main site's Consulting page,
-and the modules as a list, one row each — the agent, what the module does, its method, its status,
-its owner and its grade. Phoebe's eligibility and feasibility cards, Calvin's three method packs and
-Bridget's two datasets are listed, with a health impact guide in development, partner pending. Every
+how it works in three points, and the modules as a list, one row each — the agent, what the module
+does, its method, its status, its owner and its grade. Phoebe's eligibility and feasibility cards,
+Calvin's three method packs (the two carbon packs in partner review) and Bridget's two datasets are
+listed, with Heather's health impact guide proposed, partner pending. Below them, four modules are
+seeking a build partner and a domain consultant, with a "Build a module with us" button to the
+main site's Consulting page. Every
 grade reads "not yet graded", because a grade on the Commons comes only from one exam, run outside
 this site on real projects, and none has run yet. Open a module and the agent's screen appears alone — its chat, its tool where it has one, its
 knowledge pack and its credentials — with no crew beside it and no next phase; the only other
-things on the screen are the way back to the shelf and "Sign up to manage a project". The Commons
+thing on the screen is the way back to the shelf; the site menu's Sign in leads to the main site. The Commons
 carries no project record and keeps nothing; Phoebe answers there from what a visitor types, under
 the same thirty messages a day.
 
