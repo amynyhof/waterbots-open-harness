@@ -140,11 +140,11 @@ order above, for her to move.
 How agents behave, what they may say, how they hand off. Governed by AGENT_RULES.md.
 
 **A21 · Calvin's brief — his chat, the carried engine, carbon beside water.** Step 5 · BONES. Proposed
-27 Sep 2026 as `PROPOSAL_calvin-brief.md`, untracked at the root; nothing is built. R2 to R11 ruled yes on
-1 Oct 2026, her notes in its §13. **R1 is closed**: the v0.16.1 bundle crossed 3 Oct 2026, scrubbed of the
-filing's figures (O16). Done when his screening numbers match the paid site's calculators run on the saved
-project's inputs (the v1 fence; the maintainer's ruling, 10 Oct 2026). Baseline marker: `--tide-text`
-(chosen 9 Oct 2026; teal dropped).
+27 Sep 2026 as `PROPOSAL_calvin-brief.md`, untracked; R1 to R11 ruled or closed by 3 Oct 2026. Nothing built.
+**27 Oct 2026: proposed to install Calvin's engine from the open core instead of `carried/`**
+([docs/proposals/calvin-from-open-core.md](./docs/proposals/calvin-from-open-core.md)); twelve questions for her.
+Done when his screening numbers match the paid site's calculators run on the saved project's inputs (the v1
+fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 2026; teal dropped).
 
 **A14 · Screen host role words — one home.** Step 6, before or with A22 · BONES. `BridgetScreen.tsx` says
 `role: 'Map'` where her crew card says "Partners"; `PhoebeScreen.tsx` carries its own too. The chat header
