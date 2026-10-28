@@ -58,10 +58,10 @@
  * conversation, a drawn map and a chosen tab all survive a step away.
  *
  * TWO PAGES FROM 11 Sep 2026 (item S18, slice 2): the console at "/", and the
- * Agent Commons at "/commons" — a shelf of knowledge packs with the crew in
- * the right column and the sign-up door where the save button sits. One word
- * at the right of the top bar opens it, the wordmark is the way back, and the
- * browser's back button works. The console is HIDDEN under the Commons, not
+ * Agent Commons at "/commons" — a list of modules and the sign-up door. From
+ * 28 Oct 2026 the main site's menu sits over both (src/components/SiteMenu.tsx):
+ * Open Source and Agent Commons move between them, the wordmark goes to
+ * waterbots.ai, and the browser's back button works. The console is HIDDEN under the Commons, not
  * unmounted, for the reason every surface above is: stepping out to the
  * Commons and back must not empty a conversation or redraw the map. The
  * address is the one home in src/lib/pages.ts.
@@ -69,7 +69,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { readCarriedFacts, readCarriedQuestion, withoutCarried } from './lib/carried';
-import { COMMONS_LABEL, pageFromPath, pathForPage, type Page } from './lib/pages';
+import { pageFromPath, pathForPage, type Page } from './lib/pages';
 import { type MapStatus } from './components/BasinMap';
 import NavRail from './components/NavRail';
 import JourneyBar from './components/JourneyBar';
@@ -89,7 +89,7 @@ import {
 import BridgetScreen from './components/BridgetScreen';
 import PhoebeScreen from './components/PhoebeScreen';
 import CalvinScreen from './components/CalvinScreen';
-import Wordmark from './components/Wordmark';
+import SiteMenu from './components/SiteMenu';
 import { DEFAULT_SURFACE, type Surface } from './lib/surfaces';
 import { useConversation } from './chat/useConversation';
 import { WELLINGTON, wellingtonAsk } from './lib/wellington';
@@ -358,39 +358,15 @@ export default function App() {
         color: 'var(--ink)',
       }}
     >
-      {/* One hairline row. The wordmark anchors flush top-left on every surface. */}
-      <header
-        className="chrome"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 16,
-          padding: '12px var(--gutter)',
-          borderBottom: '1px solid var(--line)',
-          flex: 'none',
-        }}
-      >
-        {/* The wordmark starts over, from every page: a fresh visit at this
-            site's own landing, the record empty and Wellington at his greeting.
-            A full load of the console's address is the one move that clears
-            every screen's held state at once — the visit, the worksheet, each
-            agent's conversation — and it is the same as a reload, so the daily
-            caps, which live on the server, are not reset by it. The
-            "waterbots.ai" link in the rail is a different thing and is left
-            alone. */}
-        <button
-          type="button"
-          className="wb-wordmark-link"
-          onClick={() => window.location.assign(pathForPage('console'))}
-          aria-label="WaterBots — start over"
-        >
-          <Wordmark height={22} />
-        </button>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20, minWidth: 0 }}>
-          {/* The layer readout describes the map, so it only shows on the map. */}
-          {onConsole && onMap && status && (
+      {/* THE MAIN SITE'S MENU, on both pages — maintainer's ruling, 28 Oct
+          2026; src/components/SiteMenu.tsx. Open Source and Agent Commons
+          move between this site's two pages in place. */}
+      <SiteMenu
+        page={page}
+        onPage={goTo}
+        readout={
+          /* The layer readout describes the map, so it only shows on the map. */
+          onConsole && onMap && status && (
             <span className="t-mono" style={{ fontSize: 11, color: 'var(--ink-3)' }}>
               {status.stressError ? (
                 <span style={{ color: 'var(--state-warn-text)' }}>
@@ -408,20 +384,9 @@ export default function App() {
                 <>{visit.pin ? 'Click the pinned basin to unpin it, or another basin to pin that one.' : 'Click a basin to pin it.'}</>
               )}
             </span>
-          )}
-
-          {/* ONE WORD OPENS THE COMMONS, at the right of the top bar and never
-              on the journey bar — item S18, approved 9 Sep 2026. */}
-          <button
-            type="button"
-            className="wb-topbar-link"
-            onClick={() => goTo('commons')}
-            aria-current={onCommons ? 'page' : undefined}
-          >
-            {COMMONS_LABEL}
-          </button>
-        </div>
-      </header>
+          )
+        }
+      />
 
       {/* THE TWO PAGES STACK, and the one you are not on is hidden, not
           unmounted — see the note at the head of this file. */}
