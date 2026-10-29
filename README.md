@@ -98,7 +98,7 @@ words, order and look as the live waterbots.ai menu, so the two sites read as on
 
 **The Agent Commons is live at [open.waterbots.ai/commons](https://open.waterbots.ai/commons)**,
 from 11 Sep 2026, rewritten on 28 Oct 2026: a free, open library of AI agents for water projects,
-how it works in three points, a "Build a module with us" button to the main site's Consulting page,
+how it works in four points, a "Build a module with us" button to the main site's Consulting page,
 and the modules as one list, one row each — the agent, what the module does, its method, status,
 owner, grade and community rating (display only, "No ratings yet"). Phoebe's eligibility and
 feasibility cards (Beta) open; Calvin's three method packs (the two carbon packs in partner review)
