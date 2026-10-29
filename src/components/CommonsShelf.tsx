@@ -46,6 +46,7 @@ import {
   type ShelfCard,
 } from '../lib/commonsShelf';
 import { CONSULTING_URL, partnerMailto } from '../lib/site';
+import WellingtonLeaning from './WellingtonLeaning';
 
 /**
  * How It Works — the maintainer's four points, her words exactly, 28 Oct 2026.
@@ -95,7 +96,15 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
     <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', scrollbarGutter: 'stable both-edges' }}>
       {/* Centred on the menu's own band — 1240px, 24px each side — so the page
           lines up with the menu above it; the maintainer's word of 28 Oct 2026. */}
-      <div style={{ padding: '22px 24px 32px', maxWidth: 1240, margin: '0 auto' }}>
+      <div style={{ padding: '22px 24px 32px', maxWidth: 1240, margin: '0 auto', position: 'relative' }}>
+        {/* WELLINGTON, LEANING — the maintainer's word of 28 Oct 2026: in the
+            blank space right of the opening, soft and faded as in her concept
+            note, under the button and above the list. Hidden where the page is
+            too narrow to keep him clear of the words (base.css). */}
+        <WellingtonLeaning
+          className="wb-commons-wellington"
+          style={{ position: 'absolute', top: 108, right: 38, opacity: 0.13 }}
+        />
         {/* THE HEADER: the title and opening on the left, the one button that
             asks a partner in on the right; it drops below on a narrow screen. */}
         <div

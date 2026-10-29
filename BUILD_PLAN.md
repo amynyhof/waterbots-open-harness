@@ -200,7 +200,8 @@ module that opens, /commons/phoebe first. A fourth word the same day: status bec
 partners to graduated, each a name and a bar in one Tide shade, pale to solid, with an (i) legend; "Beta" is
 a tag on Phoebe, open to try, not a stage; the count line goes; a new opening, grading note and carbon
 method links in her words; Phoebe's Tool tab reads "Eligibility quiz" on the Commons; and the menu marks the
-page you are on. The leaning Wellington figure waits on its file.
+page you are on. Her leaning Wellington, from the concept note, sits faded right of the opening, hidden below
+1240px.
 
 **S19 · The Workshop — make your own agent on the Commons.** After v1 · PARTNER. Not built; the proposal
 is next on her word. Her cost model, review before publishing and the two-shape save are in the write-up.

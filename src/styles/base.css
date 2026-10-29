@@ -1456,3 +1456,12 @@ button.wb-info {
     max-height: none;
   }
 }
+
+/* Wellington, leaning, beside the Commons opening (src/components/CommonsShelf.tsx).
+   He needs the space right of the opening's 760px column; below 1240px that
+   space closes, so he goes rather than sit behind the words. */
+@media (max-width: 1239px) {
+  .wb-commons-wellington {
+    display: none;
+  }
+}
