@@ -192,7 +192,11 @@ real only, and an agent opens alone: canon in CLAUDE.md. **28 Oct 2026:** the si
 every page takes the main site's menu, and the Commons is rewritten as a list of modules, her words. The
 same day, a second word: the page is centred under the menu and the sign-up bar is gone; the carbon packs
 read "In development · partner review", the health guide is Heather's and "Proposed", Phoebe's reads "Beta"; and four modules
-seeking a build partner and a domain consultant are listed below, with the button that asks a partner in.
+seeking a build partner and a domain consultant are listed below, with the button that asks a partner in. A
+third word the same day: one list, the foot text gone, the button at the header's right, plain-text cells, a
+display-only community rating, "Coming soon" for Calvin and Bridget, Heather "Proposal pending", "Work
+with us" emails for the seeking rows, the module page centred with "About this module", and an address per
+module that opens, /commons/phoebe first.
 
 **S19 · The Workshop — make your own agent on the Commons.** After v1 · PARTNER. Not built; the proposal
 is next on her word. Her cost model, review before publishing and the two-shape save are in the write-up.

@@ -42,7 +42,7 @@ import { CRITERIA } from './phoebeCards';
  *
  * PHOEBE'S MODULE READS "Beta" (her word, 28 Oct 2026); THE OTHERS READ
  * "In development", the two carbon modules "In development ·
- * partner review", the health guide "Proposed", and the modules seeking
+ * partner review", the health guide "Proposal pending", and the modules seeking
  * partners say so. "Shared module" says the same agent and calculator run here
  * and on waterbots.ai, and nothing in this repository shows that yet: the open
  * core is not installed here (item A21). Each status is one phrase below, for
@@ -53,7 +53,7 @@ export type ModuleStatus =
   | 'Beta'
   | 'In development'
   | 'In development · partner review'
-  | 'Proposed'
+  | 'Proposal pending'
   | 'Seeking partners'
   | 'Partner pending';
 export type ModuleOwner =
@@ -65,6 +65,11 @@ export type ModuleOwner =
 export interface ShelfCard {
   /** Stable key. The registry's own where it has one. */
   key: string;
+  /**
+   * The module's address on the Commons, /commons/<slug> — the maintainer's
+   * word of 28 Oct 2026. Only a module that opens answers to it.
+   */
+  slug: string;
   /** The agent whose face the card wears, and whose screen opens. */
   holder: CrewMember;
   /** The pack's name as the card's title. */
@@ -75,6 +80,11 @@ export interface ShelfCard {
   tag: string;
   /** For a method pack, its registry key, so the calculator opens on it. */
   packKey?: string;
+  /**
+   * Whether its Open button works on the Commons. Only Phoebe's does, from
+   * 28 Oct 2026: Calvin's and Bridget's rows say "Coming soon", her word.
+   */
+  opens: boolean;
   status: ModuleStatus;
   owner: ModuleOwner;
   /**
@@ -104,6 +114,7 @@ export interface PlannedModule {
 
 const PHOEBE_CARD: ShelfCard = {
   key: 'phoebe-vwba-cards',
+  slug: 'phoebe',
   holder: crewMember('Phoebe'),
   title: 'Eligibility and feasibility cards',
   line:
@@ -111,6 +122,7 @@ const PHOEBE_CARD: ShelfCard = {
     'case stronger.',
   /* "VWBA 2.0" — read from the first card's citation, as her pack tab reads it. */
   tag: CRITERIA[0].citation.document,
+  opens: true,
   status: 'Beta',
   owner: 'WaterBots',
   grade: null,
@@ -122,11 +134,13 @@ const CALVIN_CARDS: ShelfCard[] = livePacks().map((pack) => {
   const carbon = pack.category === 'Carbon';
   return {
     key: `pack-${pack.key}`,
+    slug: `calvin-${pack.key}`,
     holder: crewMember('Calvin'),
     title: pack.name,
     line: pack.shelf.line,
     tag: pack.shelf.document,
     packKey: pack.key,
+    opens: false,
     status: carbon ? 'In development · partner review' : 'In development',
     owner: carbon ? 'WaterBots + partner (to be named)' : 'WaterBots',
     grade: null,
@@ -135,10 +149,12 @@ const CALVIN_CARDS: ShelfCard[] = livePacks().map((pack) => {
 
 const BRIDGET_CARD: ShelfCard = {
   key: 'bridget-map-datasets',
+  slug: 'bridget',
   holder: crewMember('Bridget'),
   title: 'The map’s two datasets',
   line: 'Where the world’s river basins are, and how stressed each one’s water is.',
   tag: 'HydroSHEDS · WRI Aqueduct 4.0',
+  opens: false,
   status: 'In development',
   owner: 'WaterBots',
   grade: null,
@@ -155,7 +171,7 @@ export const PLANNED: PlannedModule[] = [
     title: 'Health impact guide',
     line: 'Estimates the health benefits of water and sanitation projects.',
     method: 'Evidence review (in development)',
-    status: 'Proposed',
+    status: 'Proposal pending',
     owner: 'Partner pending',
     grade: null,
   },

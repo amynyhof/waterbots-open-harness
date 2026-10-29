@@ -29,33 +29,56 @@
  * screen in this shell stays mounted: stepping away and back must not empty
  * a conversation. Nothing is kept past the page.
  *
- * NO ADDRESS PER PACK in v0. Opening is state, not a path; a reload returns
- * to the shelf, which keeps nothing anyway. A path per pack is one line in
- * src/lib/pages.ts and one rewrite rule if the maintainer wants links to
- * packs.
+ * ~~NO ADDRESS PER PACK in v0. Opening is state, not a path; a reload returns
+ * to the shelf, which keeps nothing anyway.~~ A MODULE HAS ITS OWN ADDRESS from
+ * 28 Oct 2026, the maintainer's word: /commons/<slug>, read and written through
+ * src/lib/pages.ts, with one rewrite rule in vercel.json. A reload on a
+ * module's address opens that module, fresh; nothing is kept.
  */
 
-import { useState } from 'react';
-import type { ShelfCard } from '../lib/commonsShelf';
-import { COMMONS_LABEL } from '../lib/pages';
+import { useEffect, useState } from 'react';
+import { SHELF, type ShelfCard } from '../lib/commonsShelf';
+import { COMMONS_LABEL, COMMONS_PATH, moduleFromPath, pageFromPath, pathForModule } from '../lib/pages';
 import { BridgetCommonsSeat, CalvinCommonsSeat, PhoebeCommonsSeat } from './CommonsSeats';
-import CommonsShelf from './CommonsShelf';
+import { partnerMailto } from '../lib/site';
+import CommonsShelf, { Rating, Status } from './CommonsShelf';
 
 /** The holders with a seat here. Wellington has no pack and no card. */
 type Holder = 'Phoebe' | 'Calvin' | 'Bridget';
 
-export default function Commons() {
-  const [open, setOpen] = useState<ShelfCard | null>(null);
+export default function Commons({
+  path,
+  navigate,
+}: {
+  /** The address, held by the shell; a module's own is /commons/<slug>. */
+  path: string;
+  navigate: (path: string, options?: { replace?: boolean }) => void;
+}) {
+  /* THE OPEN MODULE IS THE ADDRESS — the maintainer's word of 28 Oct 2026.
+     Opening one writes /commons/<slug>; the list, the breadcrumb and the
+     menu's "Agent Commons" write /commons; the back button and a shared link
+     are read the same way. Only a module that opens answers to its slug. */
+  const slug = moduleFromPath(path);
+  const open = slug === null ? null : (SHELF.find((c) => c.opens && c.slug === slug) ?? null);
+  /* An address no open module answers to opens the list, and the address
+     says so: /commons/bridget, /commons/anything/else, /commons/ all become
+     /commons. */
+  useEffect(() => {
+    if (pageFromPath(path) === 'commons' && open === null && path !== COMMONS_PATH) {
+      navigate(COMMONS_PATH, { replace: true });
+    }
+  }, [path, slug, open, navigate]);
+
   /* Which seats have ever been opened this visit, so they stay mounted, and
      the last card each was opened on, so Calvin's calculator stays on the
      pack whose card was clicked. */
   const [seats, setSeats] = useState<Partial<Record<Holder, ShelfCard>>>({});
+  useEffect(() => {
+    if (open) setSeats((s) => (s[open.holder.name as Holder] === open ? s : { ...s, [open.holder.name as Holder]: open }));
+  }, [open]);
 
-  const openCard = (card: ShelfCard) => {
-    setOpen(card);
-    setSeats((s) => ({ ...s, [card.holder.name as Holder]: card }));
-  };
-  const back = () => setOpen(null);
+  const openCard = (card: ShelfCard) => navigate(pathForModule(card.slug));
+  const back = () => navigate(COMMONS_PATH);
 
   const onShelf = open === null;
   const openHolder = open?.holder.name as Holder | undefined;
@@ -66,28 +89,31 @@ export default function Commons() {
           Production's measure, as the journey bar's: 8px of vertical padding
           on the frame with a hairline beneath. */}
       {open && (
-        <div
-          className="chrome"
-          style={{
-            flex: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 12,
-            minHeight: 46,
-            padding: '6px var(--gutter)',
-            borderBottom: '1px solid var(--line)',
-          }}
-        >
-          <button type="button" className="wb-row-action" onClick={back} style={{ fontSize: 13 }}>
-            <span aria-hidden>‹ </span>
-            {COMMONS_LABEL}
-          </button>
-          <span aria-hidden style={{ color: 'var(--ink-4)', fontSize: 13 }}>
-            /
-          </span>
-          <span style={{ fontSize: 13, color: 'var(--ink-2)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            {open.holder.name}&rsquo;s knowledge pack · {open.title}
-          </span>
+        <div className="chrome" style={{ flex: 'none', borderBottom: '1px solid var(--line)' }}>
+          {/* The breadcrumb sits in the menu's own column, 1240px and 24px
+              each side, so it lines up with the tabs and chat below. */}
+          <div
+            style={{
+              maxWidth: 1240,
+              margin: '0 auto',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              minHeight: 46,
+              padding: '6px 24px',
+            }}
+          >
+            <button type="button" className="wb-row-action" onClick={back} style={{ fontSize: 13 }}>
+              <span aria-hidden>‹ </span>
+              {COMMONS_LABEL}
+            </button>
+            <span aria-hidden style={{ color: 'var(--ink-4)', fontSize: 13 }}>
+              /
+            </span>
+            <span style={{ fontSize: 13, color: 'var(--ink-2)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {open.holder.name}&rsquo;s knowledge pack · {open.title}
+            </span>
+          </div>
         </div>
       )}
 
@@ -98,23 +124,81 @@ export default function Commons() {
           <CommonsShelf onOpen={openCard} />
         </Pane>
 
-        {seats.Phoebe && (
-          <Pane shown={openHolder === 'Phoebe'}>
-            <PhoebeCommonsSeat onBack={back} />
-          </Pane>
-        )}
-        {seats.Calvin && (
-          <Pane shown={openHolder === 'Calvin'}>
-            <CalvinCommonsSeat packKey={seats.Calvin.packKey ?? null} />
-          </Pane>
-        )}
-        {seats.Bridget && (
-          <Pane shown={openHolder === 'Bridget'}>
-            <BridgetCommonsSeat />
-          </Pane>
-        )}
+        {/* THE MODULE PAGE — the maintainer's word of 28 Oct 2026: the tabs
+            and chat in the menu's centred column, and "About this module"
+            beside them; on a phone the panel moves below the chat. */}
+        <div
+          className="wb-module-page"
+          style={{ visibility: onShelf ? 'hidden' : undefined }}
+          aria-hidden={onShelf}
+        >
+          <div className="wb-module-page-main">
+            {seats.Phoebe && (
+              <Pane shown={openHolder === 'Phoebe'}>
+                <PhoebeCommonsSeat onBack={back} />
+              </Pane>
+            )}
+            {seats.Calvin && (
+              <Pane shown={openHolder === 'Calvin'}>
+                <CalvinCommonsSeat packKey={seats.Calvin.packKey ?? null} />
+              </Pane>
+            )}
+            {seats.Bridget && (
+              <Pane shown={openHolder === 'Bridget'}>
+                <BridgetCommonsSeat />
+              </Pane>
+            )}
+          </div>
+          {open && <AboutModule card={open} />}
+        </div>
       </div>
     </div>
+  );
+}
+
+const ABOUT_LABEL = {
+  fontFamily: 'var(--font-mono)',
+  fontSize: 10.5,
+  letterSpacing: '0.13em',
+  textTransform: 'uppercase',
+  color: 'var(--ink-3)',
+  margin: '0 0 3px',
+} as const;
+
+/* ABOUT THIS MODULE — method, owner, status and the community rating, as the
+   module's row on the list shows them; "Work with us" only where the module
+   seeks a partner, opening an email with its name in the subject. */
+function AboutModule({ card }: { card: ShelfCard }) {
+  const seeking = card.status === 'Seeking partners';
+  const facts: { label: string; value: React.ReactNode }[] = [
+    { label: 'Method', value: card.tag },
+    { label: 'Owner', value: card.owner },
+    { label: 'Status', value: <Status text={card.status} /> },
+    { label: 'Community rating', value: <Rating /> },
+  ];
+  return (
+    <aside className="wb-module-about" aria-labelledby="wb-module-about-title">
+      <h2 id="wb-module-about-title" style={{ fontSize: 15, margin: '0 0 12px', lineHeight: 1.3 }}>
+        About this module
+      </h2>
+      <dl style={{ margin: 0, display: 'grid', gap: 12 }}>
+        {facts.map((fact) => (
+          <div key={fact.label}>
+            <dt style={ABOUT_LABEL}>{fact.label}</dt>
+            <dd style={{ margin: 0, fontSize: 13, lineHeight: 1.45, color: 'var(--ink-2)' }}>{fact.value}</dd>
+          </div>
+        ))}
+      </dl>
+      {seeking && (
+        <a
+          className="btn"
+          href={partnerMailto(card.title)}
+          style={{ display: 'inline-block', marginTop: 16, textDecoration: 'none' }}
+        >
+          Work with us
+        </a>
+      )}
+    </aside>
   );
 }
 

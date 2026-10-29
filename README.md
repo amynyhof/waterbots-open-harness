@@ -98,16 +98,19 @@ words, order and look as the live waterbots.ai menu, so the two sites read as on
 
 **The Agent Commons is live at [open.waterbots.ai/commons](https://open.waterbots.ai/commons)**,
 from 11 Sep 2026, rewritten on 28 Oct 2026: a free, open library of AI agents for water projects,
-how it works in three points, and the modules as a list, one row each — the agent, what the module
-does, its method, its status, its owner and its grade. Phoebe's eligibility and feasibility cards,
-Calvin's three method packs (the two carbon packs in partner review) and Bridget's two datasets are
-listed, with Heather's health impact guide proposed, partner pending. Below them, four modules are
-seeking a build partner and a domain consultant, with a "Build a module with us" button to the
-main site's Consulting page. Every
+how it works in three points, a "Build a module with us" button to the main site's Consulting page,
+and the modules as one list, one row each — the agent, what the module does, its method, status,
+owner, grade and community rating (display only, "No ratings yet"). Phoebe's eligibility and
+feasibility cards (Beta) open; Calvin's three method packs (the two carbon packs in partner review)
+and Bridget's two datasets are coming soon; Heather's health impact guide is a pending proposal; and
+four modules seeking partners end the list, each with "Work with us", an email to the team. Every
 grade reads "not yet graded", because a grade on the Commons comes only from one exam, run outside
-this site on real projects, and none has run yet. Open a module and the agent's screen appears alone — its chat, its tool where it has one, its
-knowledge pack and its credentials — with no crew beside it and no next phase; the only other
-thing on the screen is the way back to the shelf; the site menu's Sign in leads to the main site. The Commons
+this site on real projects, and none has run yet. **Each module that opens has its own address**,
+such as [open.waterbots.ai/commons/phoebe](https://open.waterbots.ai/commons/phoebe), which can be
+shared and opened directly. Open a module and the agent's screen appears alone — its chat, its tool
+where it has one, its knowledge pack and its credentials — in the menu's centred column, with
+"About this module" beside it (below it on a phone) and no crew and no next phase; the way back
+returns to the list, and the site menu's Sign in leads to the main site. The Commons
 carries no project record and keeps nothing; Phoebe answers there from what a visitor types, under
 the same thirty messages a day.
 

@@ -131,21 +131,26 @@ export default function App() {
      arrival and written back to it on every move, so a reload, a shared link
      and the browser's back button all land where the visitor was. Item S18,
      slice 2. */
-  const [page, setPage] = useState<Page>(() => pageFromPath(window.location.pathname));
+  /* From 28 Oct 2026 the shell holds the whole PATH, not only the page, so a
+     Commons module's own address (/commons/phoebe) is read and written in the
+     same one place; the page is derived from it. */
+  const [path, setPath] = useState(() => window.location.pathname);
+  const page: Page = pageFromPath(path);
   /* The push happens OUTSIDE the state updater. Inside it, React's
      development mode ran the updater twice and pushed two entries per move,
      so the back button landed on the same page — found in slice 2's first
-     browser walk. */
-  const goTo = useCallback(
-    (next: Page) => {
-      if (next === page) return;
-      window.history.pushState(null, '', pathForPage(next));
-      setPage(next);
-    },
-    [page]
-  );
+     browser walk. A move to the address already shown does nothing. */
+  const navigate = useCallback((next: string, options?: { replace?: boolean }) => {
+    if (next === window.location.pathname) return;
+    if (options?.replace) window.history.replaceState(null, '', next);
+    else window.history.pushState(null, '', next);
+    setPath(next);
+  }, []);
+  /* The menu's links: "Agent Commons" on a module's page returns to the list,
+     because the list's address differs from the module's. */
+  const goTo = useCallback((next: Page) => navigate(pathForPage(next)), [navigate]);
   useEffect(() => {
-    const onPop = () => setPage(pageFromPath(window.location.pathname));
+    const onPop = () => setPath(window.location.pathname);
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
   }, []);
@@ -268,9 +273,8 @@ export default function App() {
          Commons' address is out of contract but not ignored: Dispatches is
          where it lands, so the page moves there and the address follows. */
       if (pageFromPath(window.location.pathname) !== 'console') {
-        window.history.replaceState(null, '', pathForPage('console'));
+        navigate(pathForPage('console'), { replace: true });
       }
-      setPage('console');
       setSurface('desk');
       void sendCarried(question, { carried: true });
     }, 0);
@@ -510,7 +514,7 @@ export default function App() {
         style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden', visibility: onCommons ? 'visible' : 'hidden' }}
         aria-hidden={!onCommons}
       >
-        <Commons />
+        <Commons path={path} navigate={navigate} />
       </main>
       </div>
     </div>
