@@ -1,3 +1,6 @@
 {
-  "rewrites": [{ "source": "/commons", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/commons", "destination": "/index.html" },
+    { "source": "/commons/:path*", "destination": "/index.html" }
+  ]
 }

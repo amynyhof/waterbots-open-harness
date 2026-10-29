@@ -30,6 +30,17 @@ export const SITE_URL = 'https://waterbots.ai';
 export const SITE_LABEL = 'waterbots.ai';
 
 /**
+ * Where a would-be partner writes from the Commons — the maintainer's word of
+ * 28 Oct 2026. The same inbox the team email goes to (api/_teamMail.ts).
+ */
+export const PARTNER_EMAIL = 'hello@waterbots.ai';
+
+/** A mail link to that inbox, its subject "Partnering on: <module name>". */
+export function partnerMailto(module: string): string {
+  return `mailto:${PARTNER_EMAIL}?subject=${encodeURIComponent(`Partnering on: ${module}`)}`;
+}
+
+/**
  * This site's own address, from 28 Oct 2026: open.waterbots.ai, the
  * maintainer's word. The old map.waterbots.ai forwards here; the forward is
  * set in Vercel by her hand, never from this repository.

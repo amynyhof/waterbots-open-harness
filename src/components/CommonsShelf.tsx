@@ -3,30 +3,39 @@
  * of modules. Item S18, slice 2, built 11 Sep 2026 as a shelf of cards;
  * rewritten on 28 Oct 2026 to the maintainer's words of that day: an
  * opening paragraph, three short points on how it works, a "Build a module
- * with us" button to the main site's Consulting page, and the modules as a
- * vertical list, one row each.
+ * with us" button to the main site's Consulting page at the right of the
+ * header, and the modules as one vertical list, one row each.
  *
  * ONE ROW PER MODULE: the agent's picture, name and role; one line on what
- * it does; its method; its status; its owner; its grade; and Open. The rows
- * come from src/lib/commonsShelf.ts, which reads the registries; nothing here
- * names a pack. Open hands the entry up to the Commons page, which opens the
- * holder's screen alone (slice 3). A planned module has no agent and nothing
- * to open, and its row says so rather than drawing a button that goes nowhere.
+ * it does; its method; its status; its owner; its grade; its community
+ * rating; and the row's action. The rows come from src/lib/commonsShelf.ts,
+ * which reads the registries; nothing here names a pack. ONE LIST, the
+ * maintainer's word of 28 Oct 2026: the built modules, then the planned one,
+ * then the modules seeking partners, after them, in the same list.
+ *
+ * THE ACTION. Open hands the entry up to the Commons page, which opens the
+ * holder's screen alone (slice 3); only a module marked `opens` has it, and
+ * the others say "Coming soon", not clickable. A planned module says "Not
+ * open yet". A module seeking partners has "Work with us", and its status
+ * chip does the same: both open an email to the team, its subject
+ * "Partnering on: <module name>".
+ *
+ * PLAIN TEXT, NOT CHIPS: status, method and grade are plain text from 28 Oct
+ * 2026, her word. The one chip left is "Seeking partners", because it is a
+ * link.
  *
  * EVERY GRADE READS "NOT YET GRADED", and will until a real card from the one
  * public exam exists — the maintainer's ONE GRADER and REAL ONLY rulings of
- * 9 Sep 2026. The grading note says where a grade would come from and that
- * none has run, so the column is explained before it is read.
+ * 9 Sep 2026. A module seeking partners shows a dash: nothing exists to grade.
+ * The grading note says where a grade would come from and that none has run.
  *
- * WELLINGTON HAS NO ROW, and the foot says so rather than leaving a visitor
- * to wonder where the Team Lead went. The line under it says what signing up
- * does and that nothing is kept.
+ * THE COMMUNITY RATING IS DISPLAY ONLY: five empty stars and "No ratings yet"
+ * on every row, and no way to rate. Nothing is counted or stored.
  */
 
 import type { ReactNode } from 'react';
 import { PLANNED, SEEKING, SHELF, shelfCountLine, type PlannedModule, type ShelfCard } from '../lib/commonsShelf';
-import { CONSULTING_URL, SITE_LABEL } from '../lib/site';
-import { DESK_LABEL } from '../lib/surfaces';
+import { CONSULTING_URL, partnerMailto } from '../lib/site';
 
 /** How it works — the maintainer's three points of 28 Oct 2026, as she wrote them. */
 const HOW_IT_WORKS: { lead: string; body: string }[] = [
@@ -61,18 +70,40 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
       {/* Centred on the menu's own band — 1240px, 24px each side — so the page
           lines up with the menu above it; the maintainer's word of 28 Oct 2026. */}
       <div style={{ padding: '22px 24px 32px', maxWidth: 1240, margin: '0 auto' }}>
-        <h1 style={{ fontSize: 21, margin: '0 0 8px', letterSpacing: '-0.015em', lineHeight: 1.25 }}>
-          Agent Commons
-        </h1>
-        <p
-          className="t-body"
-          style={{ margin: 0, maxWidth: 760, fontSize: 13.5, lineHeight: 1.55, color: 'var(--ink-2)' }}
+        {/* THE HEADER: the title and opening on the left, the one button that
+            asks a partner in on the right; it drops below on a narrow screen. */}
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            columnGap: 32,
+            rowGap: 14,
+          }}
         >
-          A free, open library of AI agents for water projects of every kind, from safe drinking
-          water to watershed protection, each built for a specific task. Every agent works from a
-          reviewed knowledge pack and an exact calculator, built with human experts. Read it, try it,
-          and see how it was tested.
-        </p>
+          <div style={{ flex: '1 1 480px', maxWidth: 760 }}>
+            <h1 style={{ fontSize: 21, margin: '0 0 8px', letterSpacing: '-0.015em', lineHeight: 1.25 }}>
+              Agent Commons
+            </h1>
+            <p
+              className="t-body"
+              style={{ margin: 0, fontSize: 13.5, lineHeight: 1.55, color: 'var(--ink-2)' }}
+            >
+              A free, open library of AI agents for water projects of every kind, from safe drinking
+              water to watershed protection, each built for a specific task. Every agent works from a
+              reviewed knowledge pack and an exact calculator, built with human experts. Read it, try
+              it, and see how it was tested.
+            </p>
+          </div>
+          <a
+            className="btn"
+            href={CONSULTING_URL}
+            style={{ display: 'inline-block', flex: 'none', textDecoration: 'none', marginTop: 2 }}
+          >
+            Build a module with us
+          </a>
+        </div>
 
         <h2 className="t-mono" style={{ ...EYEBROW, fontWeight: 400, margin: '22px 0 10px' }}>
           How it works
@@ -100,48 +131,10 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
           {PLANNED.map((planned) => (
             <PlannedRow key={planned.key} planned={planned} />
           ))}
+          {SEEKING.map((planned) => (
+            <PlannedRow key={planned.key} planned={planned} seeking />
+          ))}
         </ul>
-
-        <p className="t-caption" style={{ margin: '16px 0 0', fontSize: 12, lineHeight: 1.55 }}>
-          Wellington, the Team Lead, carries no knowledge pack. He works from what the crew can do,
-          and on this site he answers at {DESK_LABEL}.
-        </p>
-        <p className="t-caption" style={{ margin: '6px 0 0', fontSize: 12, lineHeight: 1.55 }}>
-          Free to explore, and nothing is kept between visits. Signing up opens a project on{' '}
-          {SITE_LABEL}, where the crew keeps what you tell them.
-        </p>
-
-        {/* SEEKING PARTNERS — the maintainer's second ruling of 28 Oct 2026:
-            modules with no agent yet, and the one button that asks a partner
-            in, which moved here from the top of the page. */}
-        <section aria-labelledby="wb-seeking-title" style={{ marginTop: 40 }}>
-          <h2
-            id="wb-seeking-title"
-            style={{ fontSize: 17, margin: '0 0 6px', letterSpacing: '-0.01em', lineHeight: 1.3 }}
-          >
-            Seeking a build partner and a domain consultant
-          </h2>
-          <p
-            className="t-body"
-            style={{ margin: 0, maxWidth: 760, fontSize: 13.5, lineHeight: 1.55, color: 'var(--ink-2)' }}
-          >
-            We&rsquo;re looking for partners to build these modules with us.
-          </p>
-          <a
-            className="btn"
-            href={CONSULTING_URL}
-            style={{ display: 'inline-block', margin: '14px 0 18px', textDecoration: 'none' }}
-          >
-            Build a module with us
-          </a>
-
-          <ModuleHead />
-          <ul className="wb-module-list">
-            {SEEKING.map((planned) => (
-              <PlannedRow key={planned.key} planned={planned} seeking />
-            ))}
-          </ul>
-        </section>
       </div>
     </div>
   );
@@ -175,22 +168,23 @@ function ModuleRow({ card, onOpen }: { card: ShelfCard; onOpen: () => void }) {
 
       <Module title={card.title} line={card.line} />
 
-      <Cell label="Method">
-        <span className="tag" style={{ maxWidth: '100%', whiteSpace: 'normal', lineHeight: 1.35 }}>
-          {card.tag}
-        </span>
-      </Cell>
+      <Cell label="Method">{card.tag}</Cell>
       <Cell label="Status">
-        <Status>{card.status}</Status>
+        <Status text={card.status} />
       </Cell>
       <Cell label="Owner">{card.owner}</Cell>
-      <Cell label="Grade">
-        <Grade />
+      <Cell label="Grade">not yet graded</Cell>
+      <Cell label="Community rating">
+        <Rating />
       </Cell>
       <div>
-        <button type="button" className="wb-row-action" onClick={onOpen}>
-          Open
-        </button>
+        {card.opens ? (
+          <button type="button" className="wb-row-action" onClick={onOpen}>
+            Open
+          </button>
+        ) : (
+          <Quiet>Coming soon</Quiet>
+        )}
       </div>
     </li>
   );
@@ -206,14 +200,17 @@ function ModuleHead() {
       <span>Status</span>
       <span>Owner</span>
       <span>Grade</span>
+      <span>Rating</span>
       <span />
     </div>
   );
 }
 
 /* A module with nothing to open: a named agent shows its name with an empty
-   square, as no portrait exists for it; with none, the row says so. */
+   square, as no portrait exists for it; with none, the row says so. A module
+   seeking partners links its status chip and its action to the team's inbox. */
 function PlannedRow({ planned, seeking = false }: { planned: PlannedModule; seeking?: boolean }) {
+  const mail = partnerMailto(planned.title);
   return (
     <li className="wb-module-row" aria-label={planned.title}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
@@ -229,20 +226,38 @@ function PlannedRow({ planned, seeking = false }: { planned: PlannedModule; seek
 
       <Module title={planned.title} line={planned.line} />
 
-      <Cell label="Method">
-        <span className="tag" style={{ maxWidth: '100%', whiteSpace: 'normal', lineHeight: 1.35 }}>
-          {planned.method}
-        </span>
-      </Cell>
+      <Cell label="Method">{planned.method}</Cell>
       <Cell label="Status">
-        <Status>{planned.status}</Status>
+        {seeking ? (
+          <a
+            className="chip"
+            href={mail}
+            aria-label={`${planned.status}: email us about partnering on ${planned.title}`}
+            style={{ whiteSpace: 'nowrap', textDecoration: 'none', cursor: 'pointer' }}
+          >
+            {planned.status}
+          </a>
+        ) : (
+          <Status text={planned.status} />
+        )}
       </Cell>
       <Cell label="Owner">{planned.owner}</Cell>
       <Cell label="Grade">
         {/* A module seeking partners has nothing to grade yet: a dash, her word of 28 Oct 2026. */}
-        {seeking ? <span style={{ color: 'var(--ink-3)' }}>—</span> : <Grade />}
+        {seeking ? <span style={{ color: 'var(--ink-3)' }}>—</span> : 'not yet graded'}
       </Cell>
-      <div style={{ fontSize: 12, color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>Not open yet</div>
+      <Cell label="Community rating">
+        <Rating />
+      </Cell>
+      <div>
+        {seeking ? (
+          <a className="wb-row-action" href={mail} style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}>
+            Work with us
+          </a>
+        ) : (
+          <Quiet>Not open yet</Quiet>
+        )}
+      </div>
     </li>
   );
 }
@@ -301,29 +316,34 @@ function Module({ title, line }: { title: string; line: string }) {
 /** One cell; below 900px it carries its own small label, as the header row is hidden. */
 function Cell({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div style={{ minWidth: 0, fontSize: 13, color: 'var(--ink-2)' }}>
+    <div style={{ minWidth: 0, fontSize: 13, lineHeight: 1.4, color: 'var(--ink-2)' }}>
       <span className="wb-module-label">{label}</span>
       {children}
     </div>
   );
 }
 
-/* States, so chips: outlined, no fill, the text in ink. The status takes the
-   chip's own neutral, so no status reads as live or approved; the grade keeps
-   the pending colour it carried on the cards — amber may not carry type (§2.5). */
-function Status({ children }: { children: string }) {
-  /* A two-part status breaks after its dot, never before it. */
-  return (
-    <span className="chip" style={{ whiteSpace: 'normal', lineHeight: 1.35 }}>
-      {children.replace(' · ', ' · ')}
-    </span>
-  );
+/** A status as plain text. A two-part status breaks after its dot, never before it. */
+export function Status({ text }: { text: string }) {
+  return <>{text.replace(' · ', ' · ')}</>;
 }
 
-function Grade() {
+/** An action that is not one yet: quiet text, not clickable. */
+function Quiet({ children }: { children: ReactNode }) {
+  return <span style={{ fontSize: 12, color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>{children}</span>;
+}
+
+/* THE COMMUNITY RATING — display only, her word of 28 Oct 2026: five empty
+   stars and "No ratings yet". No way to rate, and nothing counted. */
+export function Rating() {
   return (
-    <span className="chip" style={{ ['--chip-role' as string]: 'var(--state-pending)', whiteSpace: 'nowrap' }}>
-      not yet graded
+    <span role="img" aria-label="No ratings yet" style={{ display: 'inline-block' }}>
+      <span aria-hidden style={{ display: 'block', letterSpacing: '0.08em', color: 'var(--ink-4)', fontSize: 13 }}>
+        ☆☆☆☆☆
+      </span>
+      <span aria-hidden style={{ display: 'block', fontSize: 11.5, color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>
+        No ratings yet
+      </span>
     </span>
   );
 }

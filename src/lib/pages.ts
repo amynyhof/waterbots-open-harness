@@ -13,6 +13,12 @@
  * is neither is the console, because a wrong address should open the site,
  * not a blank page.
  *
+ * A MODULE HAS AN ADDRESS OF ITS OWN, from 28 Oct 2026 by the maintainer's
+ * word: `/commons/<slug>`, e.g. /commons/phoebe. Opening a module writes it,
+ * the list's address returns to the list, and the address can be shared and
+ * opened directly. The slugs live on the Commons shelf (src/lib/commonsShelf.ts);
+ * a slug no open module answers to opens the list.
+ *
  * A PAGE IS NOT A SURFACE. The console's four surfaces (src/lib/surfaces.ts)
  * live inside the console page and are chosen by the journey bar; the Commons
  * has no journey bar and no surfaces. Stepping to the Commons hides the
@@ -34,7 +40,18 @@ export const COMMONS_LABEL = 'Agent Commons';
  * address often carries one; anything else is the console.
  */
 export function pageFromPath(pathname: string): Page {
-  return pathname === COMMONS_PATH || pathname === `${COMMONS_PATH}/` ? 'commons' : 'console';
+  return pathname === COMMONS_PATH || pathname.startsWith(`${COMMONS_PATH}/`) ? 'commons' : 'console';
+}
+
+/** The module a Commons path names, or null on the list. One segment only. */
+export function moduleFromPath(pathname: string): string | null {
+  const match = /^\/commons\/([a-z0-9-]+)\/?$/.exec(pathname);
+  return match ? match[1] : null;
+}
+
+/** The address of one module on the Commons. */
+export function pathForModule(slug: string): string {
+  return `${COMMONS_PATH}/${slug}`;
 }
 
 /** The path the shell writes into the address when a visitor moves. */
