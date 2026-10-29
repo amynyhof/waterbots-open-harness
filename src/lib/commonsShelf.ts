@@ -2,7 +2,7 @@
  * The Agent Commons shelf — one entry per knowledge pack, assembled from the
  * registries that already exist. Item S18, slice 2, built 11 Sep 2026. From
  * 28 Oct 2026 the page draws them as a list of modules, one row each, with a
- * status and an owner, and a planned module after them; and from a second
+ * stage and an owner, and a planned module after them; and from a second
  * ruling the same day, a section of modules that are seeking partners.
  *
  * NOTHING IS TYPED TWICE. Phoebe's card reads her committed card sets
@@ -37,25 +37,32 @@ import { livePacks } from './methodPacks';
 import { CRITERIA } from './phoebeCards';
 
 /**
- * A MODULE'S STATUS AND OWNER — maintainer's rulings, 28 Oct 2026. The owner
+ * A MODULE'S STAGE AND OWNER — maintainer's rulings, 28 Oct 2026. The owner
  * is never a partner's name, until a partner owns a module and she says so.
  *
- * PHOEBE'S MODULE READS "Beta" (her word, 28 Oct 2026); THE OTHERS READ
- * "In development", the two carbon modules "In development ·
- * partner review", the health guide "Proposal pending", and the modules seeking
- * partners say so. "Shared module" says the same agent and calculator run here
- * and on waterbots.ai, and nothing in this repository shows that yet: the open
- * core is not installed here (item A21). Each status is one phrase below, for
- * her to move.
+ * SIX STAGES, IN ORDER, from a later ruling the same day, replacing the status
+ * phrases of earlier that day: a module moves from seeking partners to
+ * graduated, and the list draws each stage as its name and a small bar of six
+ * steps. "Beta" is not a stage: it is a tag on a module open to try. The one
+ * line on what each stage means is the engineer's draft for her approval,
+ * shown behind the (i) beside the column.
  */
-export type ModuleStatus =
-  | 'Shared module'
-  | 'Beta'
-  | 'In development'
-  | 'In development · partner review'
-  | 'Proposal pending'
-  | 'Seeking partners'
-  | 'Partner pending';
+export const STAGES = [
+  { name: 'Seeking partners', line: 'Looking for a partner to build it and an expert to shape it.' },
+  { name: 'Proposed', line: 'Scoped and written up; building has not started.' },
+  { name: 'In development', line: 'Being built: its knowledge pack, and a calculator or tool where it needs one.' },
+  { name: 'Expert review', line: 'Built, and being checked by experts in its method.' },
+  { name: 'Exam', line: 'Sitting its independent exam on real, completed projects.' },
+  { name: 'Graduated', line: 'Passed its exam; its grade shows here.' },
+] as const;
+
+export type ModuleStage = (typeof STAGES)[number]['name'];
+
+/** A stage's place in the six, counted from 1. */
+export function stageNumber(stage: ModuleStage): number {
+  return STAGES.findIndex((s) => s.name === stage) + 1;
+}
+
 export type ModuleOwner =
   | 'WaterBots'
   | 'WaterBots + partner (to be named)'
@@ -78,6 +85,8 @@ export interface ShelfCard {
   line: string;
   /** The document the pack is drawn from, by its short name. */
   tag: string;
+  /** Where that document can be read, where the maintainer has given one. */
+  tagHref?: string;
   /** For a method pack, its registry key, so the calculator opens on it. */
   packKey?: string;
   /**
@@ -85,7 +94,9 @@ export interface ShelfCard {
    * 28 Oct 2026: Calvin's and Bridget's rows say "Coming soon", her word.
    */
   opens: boolean;
-  status: ModuleStatus;
+  stage: ModuleStage;
+  /** "Beta": a tag on a module open to try, never a stage. */
+  beta?: boolean;
   owner: ModuleOwner;
   /**
    * The public grade. Null until a real card from the one public exam
@@ -107,7 +118,7 @@ export interface PlannedModule {
   title: string;
   line: string;
   method: string;
-  status: ModuleStatus;
+  stage: ModuleStage;
   owner: ModuleOwner;
   grade: null;
 }
@@ -123,13 +134,15 @@ const PHOEBE_CARD: ShelfCard = {
   /* "VWBA 2.0" — read from the first card's citation, as her pack tab reads it. */
   tag: CRITERIA[0].citation.document,
   opens: true,
-  status: 'Beta',
+  stage: 'In development',
+  beta: true,
   owner: 'WaterBots',
   grade: null,
 };
 
-/* The carbon packs are in partner review, the maintainer's word of 28 Oct
-   2026; the registry's own category says which they are. */
+/* The carbon packs are in expert review and the water pack is proposed, the
+   maintainer's word of 28 Oct 2026; the registry's own category says which
+   they are. */
 const CALVIN_CARDS: ShelfCard[] = livePacks().map((pack) => {
   const carbon = pack.category === 'Carbon';
   return {
@@ -139,9 +152,10 @@ const CALVIN_CARDS: ShelfCard[] = livePacks().map((pack) => {
     title: pack.name,
     line: pack.shelf.line,
     tag: pack.shelf.document,
+    tagHref: pack.shelf.href,
     packKey: pack.key,
     opens: false,
-    status: carbon ? 'In development · partner review' : 'In development',
+    stage: carbon ? 'Expert review' : 'Proposed',
     owner: carbon ? 'WaterBots + partner (to be named)' : 'WaterBots',
     grade: null,
   };
@@ -155,7 +169,7 @@ const BRIDGET_CARD: ShelfCard = {
   line: 'Where the world’s river basins are, and how stressed each one’s water is.',
   tag: 'HydroSHEDS · WRI Aqueduct 4.0',
   opens: false,
-  status: 'In development',
+  stage: 'In development',
   owner: 'WaterBots',
   grade: null,
 };
@@ -171,7 +185,7 @@ export const PLANNED: PlannedModule[] = [
     title: 'Health impact guide',
     line: 'Estimates the health benefits of water and sanitation projects.',
     method: 'Evidence review (in development)',
-    status: 'Proposal pending',
+    stage: 'Proposed',
     owner: 'Partner pending',
     grade: null,
   },
@@ -181,7 +195,7 @@ export const PLANNED: PlannedModule[] = [
  * Modules seeking a build partner and a domain consultant — the maintainer's
  * ruling of 28 Oct 2026. No agent yet. The method is the document each would
  * be built from, as she named it; the line on what each does is plain words —
- * the engineer's draft for water quality, hers for the other three, 28 Oct 2026.
+ * all four hers, 28 Oct 2026.
  * Their grade shows a dash, not "not yet graded": nothing exists to grade.
  */
 export const SEEKING: PlannedModule[] = [
@@ -189,9 +203,11 @@ export const SEEKING: PlannedModule[] = [
     key: 'water-quality-benefits',
     agent: null,
     title: 'Water quality benefits',
-    line: 'Works out how much pollution a project keeps out of rivers, lakes and groundwater.',
+    line:
+      'Measures how much a project improves water quality (sediment, nutrients, bacteria, ' +
+      'temperature and metals) and how that benefit can be credibly claimed.',
     method: 'Water Quality Benefit Accounting guidebook (WRI, LimnoTech, TNC, 2025)',
-    status: 'Seeking partners',
+    stage: 'Seeking partners',
     owner: 'Open to partners',
     grade: null,
   },
@@ -203,7 +219,7 @@ export const SEEKING: PlannedModule[] = [
       'Estimates and values the benefits of water, sanitation and hygiene access, like better ' +
       'health, time saved and income.',
     method: 'WASH Benefits Accounting Framework (WASH4Work, LimnoTech, CEO Water Mandate, 2024)',
-    status: 'Seeking partners',
+    stage: 'Seeking partners',
     owner: 'Open to partners',
     grade: null,
   },
@@ -215,7 +231,7 @@ export const SEEKING: PlannedModule[] = [
       'Counts the greenhouse gas a safe sanitation service avoids, mostly methane from untreated ' +
       'waste.',
     method: 'Gold Standard Safe Sanitation Services (SASS), draft',
-    status: 'Seeking partners',
+    stage: 'Seeking partners',
     owner: 'Open to partners',
     grade: null,
   },
@@ -227,30 +243,8 @@ export const SEEKING: PlannedModule[] = [
       'Counts the clean electricity a renewable system (often solar) makes, so it can earn ' +
       'renewable energy credits.',
     method: 'Peace Renewable Energy Credits (P-RECs), issued under the I-REC standard',
-    status: 'Seeking partners',
+    stage: 'Seeking partners',
     owner: 'Open to partners',
     grade: null,
   },
 ];
-
-/**
- * The count line above the list, derived and never typed: how many modules,
- * how many are seeking partners, and how many are graded. With every grade
- * null it reads "none graded yet".
- */
-export function shelfCountLine(
-  rows: { grade: null }[] = [...SHELF, ...PLANNED],
-  seeking: { grade: null }[] = SEEKING,
-): string {
-  const graded = [...rows, ...seeking].filter((c) => c.grade !== null).length;
-  const modules = `${inWords(rows.length)} module${rows.length === 1 ? '' : 's'}`;
-  const partners = seeking.length > 0 ? ` · ${inWords(seeking.length)} seeking partners` : '';
-  const grades = graded === 0 ? 'none graded yet' : `${inWords(graded)} graded`;
-  return `${modules}${partners} · ${grades}`;
-}
-
-const WORDS = ['none', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
-
-function inWords(n: number): string {
-  return WORDS[n] ?? String(n);
-}

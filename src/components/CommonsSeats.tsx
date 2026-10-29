@@ -112,6 +112,7 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
     <AgentScreen
       host={PHOEBE}
       idSlug="commons-phoebe"
+      toolLabel="Eligibility quiz"
       tabs={{
         chat: <ScreenChat host={PHOEBE} chat={chat} composerId="wb-commons-phoebe-composer" />,
         tool: <EligibilityWorksheet sheet={sheet} gsClass="" herPacks={HER_PACKS} />,

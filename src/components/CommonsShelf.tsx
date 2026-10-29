@@ -7,8 +7,8 @@
  * header, and the modules as one vertical list, one row each.
  *
  * ONE ROW PER MODULE: the agent's picture, name and role; one line on what
- * it does; its method; its status; its owner; its grade; its community
- * rating; and the row's action. The rows come from src/lib/commonsShelf.ts,
+ * it does; its method; its stage, one of six, as a name and a bar; its
+ * owner; its grade; its community rating; and the row's action. The rows come from src/lib/commonsShelf.ts,
  * which reads the registries; nothing here names a pack. ONE LIST, the
  * maintainer's word of 28 Oct 2026: the built modules, then the planned one,
  * then the modules seeking partners, after them, in the same list.
@@ -16,13 +16,14 @@
  * THE ACTION. Open hands the entry up to the Commons page, which opens the
  * holder's screen alone (slice 3); only a module marked `opens` has it, and
  * the others say "Coming soon", not clickable. A planned module says "Not
- * open yet". A module seeking partners has "Work with us", and its status
- * chip does the same: both open an email to the team, its subject
+ * open yet". A module seeking partners has "Work with us", and its stage's
+ * name does the same: both open an email to the team, its subject
  * "Partnering on: <module name>".
  *
- * PLAIN TEXT, NOT CHIPS: status, method and grade are plain text from 28 Oct
- * 2026, her word. The one chip left is "Seeking partners", because it is a
- * link.
+ * PLAIN TEXT, NOT CHIPS: method and grade are plain text from 28 Oct 2026,
+ * her word; a method is a link where she has given one. The stage is its
+ * name and a small bar, from her later word the same day, with "Beta" a tag
+ * beside it on a module open to try.
  *
  * EVERY GRADE READS "NOT YET GRADED", and will until a real card from the one
  * public exam exists — the maintainer's ONE GRADER and REAL ONLY rulings of
@@ -33,17 +34,32 @@
  * on every row, and no way to rate. Nothing is counted or stored.
  */
 
-import type { ReactNode } from 'react';
-import { PLANNED, SEEKING, SHELF, shelfCountLine, type PlannedModule, type ShelfCard } from '../lib/commonsShelf';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import {
+  PLANNED,
+  SEEKING,
+  SHELF,
+  STAGES,
+  stageNumber,
+  type ModuleStage,
+  type PlannedModule,
+  type ShelfCard,
+} from '../lib/commonsShelf';
 import { CONSULTING_URL, partnerMailto } from '../lib/site';
+import WellingtonLeaning from './WellingtonLeaning';
 
-/** How It Works — the maintainer's four points, her words exactly, 28 Oct 2026. */
+/**
+ * How It Works — the maintainer's four points, her words exactly, 28 Oct 2026.
+ * The first no longer gives every agent a calculation engine: her later word
+ * the same day, that the page follows the opening, where an agent uses a
+ * calculator or tool only where its task needs one.
+ */
 const HOW_IT_WORKS: { lead: string; body: string }[] = [
   {
     lead: 'One module, everywhere:',
     body:
-      'The same agent, knowledge pack, and calculation engine are built to power both Agent ' +
-      'Commons and WaterBots, so results match wherever they’re used.',
+      'The same agent, knowledge pack, and any calculator or tool it uses are built to power both ' +
+      'Agent Commons and WaterBots, so results match wherever they’re used.',
   },
   {
     lead: 'Open by default:',
@@ -80,7 +96,15 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
     <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', scrollbarGutter: 'stable both-edges' }}>
       {/* Centred on the menu's own band — 1240px, 24px each side — so the page
           lines up with the menu above it; the maintainer's word of 28 Oct 2026. */}
-      <div style={{ padding: '22px 24px 32px', maxWidth: 1240, margin: '0 auto' }}>
+      <div style={{ padding: '22px 24px 32px', maxWidth: 1240, margin: '0 auto', position: 'relative' }}>
+        {/* WELLINGTON, LEANING — the maintainer's word of 28 Oct 2026: in the
+            blank space right of the opening, soft and faded as in her concept
+            note, under the button and above the list. Hidden where the page is
+            too narrow to keep him clear of the words (base.css). */}
+        <WellingtonLeaning
+          className="wb-commons-wellington"
+          style={{ position: 'absolute', top: 108, right: 38, opacity: 0.13 }}
+        />
         {/* THE HEADER: the title and opening on the left, the one button that
             asks a partner in on the right; it drops below on a narrow screen. */}
         <div
@@ -97,23 +121,24 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
             <h1 style={{ fontSize: 21, margin: '0 0 8px', letterSpacing: '-0.015em', lineHeight: 1.25 }}>
               Agent Commons
             </h1>
-            {/* The opening — her words exactly, 28 Oct 2026. */}
+            {/* The opening — her words exactly, from her second wording of 28 Oct 2026. */}
             <p
               className="t-body"
               style={{ margin: 0, fontSize: 13.5, lineHeight: 1.55, color: 'var(--ink-2)' }}
             >
               A free, open library of AI agents designed for water projects of every kind, from safe
               drinking water and wastewater management to watershed protection and resilience
-              planning. Each agent is purpose-built for a specific task. It works from a curated
-              knowledge pack, so it can cite sources for every answer, and from a transparent
-              calculation engine developed alongside subject matter experts.
+              planning. Each agent is purpose-built for one task on the journey to impact funding,
+              from checking eligibility to estimating results. Agents work from a knowledge pack
+              curated by domain experts, so they can cite sources for every answer. Where a task needs
+              one, they also use a transparent calculator or tool.
             </p>
             <p
               className="t-body"
               style={{ margin: '10px 0 0', fontSize: 13.5, lineHeight: 1.55, color: 'var(--ink-2)' }}
             >
               Explore the agents, review their methods, test their outputs, and see exactly where every
-              answer comes from.
+              answer comes from. Community ratings coming soon.
             </p>
           </div>
           <a
@@ -135,13 +160,26 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
             </li>
           ))}
         </ul>
-        <div className="t-mono" style={{ ...EYEBROW, margin: '28px 0 4px' }}>
-          {shelfCountLine()}
-        </div>
-        <p className="t-caption" style={{ margin: '0 0 14px', fontSize: 12, lineHeight: 1.55 }}>
-          Grades come from one exam, run outside this site on real projects. None has run yet, so
-          every module says so.
+        {/* The grading note — her words exactly, 28 Oct 2026. The count line
+            above it is gone, her word the same day. */}
+        <p
+          className="t-caption"
+          style={{ margin: '28px 0 14px', maxWidth: 760, fontSize: 12, lineHeight: 1.55 }}
+        >
+          Grades come from an independent exam. Each agent is tested outside this site against real,
+          completed projects, and scored on whether it gets the answers right. No agent has sat its
+          exam yet.
         </p>
+        {/* Below 900px the header row is hidden, and its two (i)s with it, so
+            they stand here instead. */}
+        <div className="wb-module-tips-phone">
+          <span>
+            Stages <InfoTip label="The six stages">{STAGE_LEGEND}</InfoTip>
+          </span>
+          <span>
+            Grades and ratings <InfoTip label="Grades and ratings">{GRADE_AND_RATING}</InfoTip>
+          </span>
+        </div>
 
         <ModuleHead />
         <ul className="wb-module-list">
@@ -188,9 +226,11 @@ function ModuleRow({ card, onOpen }: { card: ShelfCard; onOpen: () => void }) {
 
       <Module title={card.title} line={card.line} />
 
-      <Cell label="Method">{card.tag}</Cell>
-      <Cell label="Status">
-        <Status text={card.status} />
+      <Cell label="Method">
+        <Method text={card.tag} href={card.tagHref} />
+      </Cell>
+      <Cell label="Stage">
+        <Stage stage={card.stage} beta={card.beta} />
       </Cell>
       <Cell label="Owner">{card.owner}</Cell>
       <Cell label="Grade">not yet graded</Cell>
@@ -210,21 +250,58 @@ function ModuleRow({ card, onOpen }: { card: ShelfCard; onOpen: () => void }) {
   );
 }
 
-/** The list's header row; below 900px it hides and each cell carries its label. */
+/**
+ * The list's header row; below 900px it hides and each cell carries its label.
+ * The words are hidden from a screen reader, which hears each cell's own; the
+ * (i)s are not, so the stages and the grade-and-rating line can be reached.
+ */
 function ModuleHead() {
   return (
-    <div className="wb-module-head t-mono" aria-hidden>
-      <span>Agent</span>
-      <span>What it does</span>
-      <span>Method</span>
-      <span>Status</span>
-      <span>Owner</span>
-      <span>Grade</span>
-      <span>Rating</span>
+    <div className="wb-module-head t-mono">
+      <span aria-hidden>Agent</span>
+      <span aria-hidden>What it does</span>
+      <span aria-hidden>Method</span>
+      <span className="wb-module-head-tip">
+        <span aria-hidden>Stage</span>
+        <InfoTip label="The six stages">{STAGE_LEGEND}</InfoTip>
+      </span>
+      <span aria-hidden>Owner</span>
+      <span className="wb-module-head-tip">
+        <span aria-hidden>Grade</span>
+        <InfoTip label="Grades and ratings" align="right">
+          {GRADE_AND_RATING}
+        </InfoTip>
+      </span>
+      <span className="wb-module-head-tip">
+        <span aria-hidden>Rating</span>
+        <InfoTip label="Grades and ratings" align="right">
+          {GRADE_AND_RATING}
+        </InfoTip>
+      </span>
       <span />
     </div>
   );
 }
+
+/** Beside the Grade and Rating headings — her words exactly, 28 Oct 2026. */
+const GRADE_AND_RATING =
+  'Grades come from an independent exam on real projects. Ratings come from people who’ve used ' +
+  'the agent on their own projects.';
+
+/** The six stages, one line each, each with its own bar. */
+const STAGE_LEGEND = (
+  <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 9 }}>
+    {STAGES.map((stage) => (
+      <li key={stage.name}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <StageBar stage={stage.name} />
+          <strong style={{ fontWeight: 600, color: 'var(--ink)' }}>{stage.name}</strong>
+        </span>
+        <span style={{ display: 'block', marginTop: 2 }}>{stage.line}</span>
+      </li>
+    ))}
+  </ol>
+);
 
 /* A module with nothing to open: a named agent shows its name with an empty
    square, as no portrait exists for it; with none, the row says so. A module
@@ -247,19 +324,12 @@ function PlannedRow({ planned, seeking = false }: { planned: PlannedModule; seek
       <Module title={planned.title} line={planned.line} />
 
       <Cell label="Method">{planned.method}</Cell>
-      <Cell label="Status">
-        {seeking ? (
-          <a
-            className="chip"
-            href={mail}
-            aria-label={`${planned.status}: email us about partnering on ${planned.title}`}
-            style={{ whiteSpace: 'nowrap', textDecoration: 'none', cursor: 'pointer' }}
-          >
-            {planned.status}
-          </a>
-        ) : (
-          <Status text={planned.status} />
-        )}
+      <Cell label="Stage">
+        <Stage
+          stage={planned.stage}
+          href={seeking ? mail : undefined}
+          hrefLabel={`${planned.stage}: email us about partnering on ${planned.title}`}
+        />
       </Cell>
       <Cell label="Owner">{planned.owner}</Cell>
       <Cell label="Grade">
@@ -343,9 +413,125 @@ function Cell({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
-/** A status as plain text. A two-part status breaks after its dot, never before it. */
-export function Status({ text }: { text: string }) {
-  return <>{text.replace(' · ', ' · ')}</>;
+/**
+ * A method, by name; a link where the maintainer has given one. A two-part
+ * name breaks after its dot, never before it.
+ */
+export function Method({ text, href }: { text: string; href?: string }) {
+  const words = text.replace(' · ', ' · ');
+  if (!href) return <>{words}</>;
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--tide-text)' }}>
+      {words}
+    </a>
+  );
+}
+
+/**
+ * THE STAGE — the maintainer's word of 28 Oct 2026: its name, and a small bar
+ * of six steps beneath it. "Beta" rides beside the name as a tag on a module
+ * open to try; it is not a stage. A module seeking partners links its stage to
+ * the team's inbox, as its chip did before.
+ */
+export function Stage({
+  stage,
+  beta = false,
+  href,
+  hrefLabel,
+}: {
+  stage: ModuleStage;
+  beta?: boolean;
+  href?: string;
+  hrefLabel?: string;
+}) {
+  return (
+    <span style={{ display: 'inline-grid', gap: 5, justifyItems: 'start' }}>
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+        {href ? (
+          <a href={href} aria-label={hrefLabel} style={{ color: 'var(--tide-text)', whiteSpace: 'nowrap' }}>
+            {stage}
+          </a>
+        ) : (
+          <span style={{ whiteSpace: 'nowrap' }}>{stage}</span>
+        )}
+        {beta && (
+          <span className="tag" style={{ fontSize: 10, padding: '1px 6px' }}>
+            Beta
+          </span>
+        )}
+      </span>
+      <StageBar stage={stage} />
+    </span>
+  );
+}
+
+/* ONE COLOUR, PALE TO SOLID — her word of 28 Oct 2026, and no green: Tide,
+   the brand's primary, mixed into the card at a rising share, so stage six is
+   Tide itself. Every filled step takes its stage's shade, so the bar darkens
+   as a module moves on. */
+const STAGE_SHARE = [32, 46, 60, 74, 87, 100];
+
+function StageBar({ stage }: { stage: ModuleStage }) {
+  const n = stageNumber(stage);
+  const shade = `color-mix(in oklab, var(--tide) ${STAGE_SHARE[n - 1]}%, var(--card))`;
+  return (
+    <span className="wb-stage-bar" role="img" aria-label={`Stage ${n} of ${STAGES.length}`}>
+      {STAGES.map((s, i) => (
+        <span key={s.name} style={i < n ? { background: shade } : undefined} />
+      ))}
+    </span>
+  );
+}
+
+/**
+ * THE (i) — a small button that opens a note beside a heading, and closes on
+ * a second press, Escape, or a press anywhere else. The house (i), drawn as on
+ * the project record; a button here because the note is longer than a title.
+ */
+function InfoTip({
+  label,
+  align = 'left',
+  children,
+}: {
+  label: string;
+  align?: 'left' | 'right';
+  children: ReactNode;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: PointerEvent) => {
+      if (!ref.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('pointerdown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('pointerdown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+  return (
+    <span ref={ref} className="wb-tip">
+      <button
+        type="button"
+        className="wb-info"
+        aria-label={label}
+        aria-expanded={open}
+        onClick={() => setOpen((o) => !o)}
+      >
+        i
+      </button>
+      {open && (
+        <span role="note" className={align === 'right' ? 'wb-tip-panel is-right' : 'wb-tip-panel'}>
+          {children}
+        </span>
+      )}
+    </span>
+  );
 }
 
 /** An action that is not one yet: quiet text, not clickable. */

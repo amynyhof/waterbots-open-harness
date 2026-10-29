@@ -99,13 +99,16 @@ words, order and look as the live waterbots.ai menu, so the two sites read as on
 **The Agent Commons is live at [open.waterbots.ai/commons](https://open.waterbots.ai/commons)**,
 from 11 Sep 2026, rewritten on 28 Oct 2026: a free, open library of AI agents for water projects,
 how it works in four points, a "Build a module with us" button to the main site's Consulting page,
-and the modules as one list, one row each — the agent, what the module does, its method, status,
-owner, grade and community rating (display only, "No ratings yet"). Phoebe's eligibility and
-feasibility cards (Beta) open; Calvin's three method packs (the two carbon packs in partner review)
-and Bridget's two datasets are coming soon; Heather's health impact guide is a pending proposal; and
-four modules seeking partners end the list, each with "Work with us", an email to the team. Every
-grade reads "not yet graded", because a grade on the Commons comes only from one exam, run outside
-this site on real projects, and none has run yet. **Each module that opens has its own address**,
+and the modules as one list, one row each — the agent, what the module does, its method, its stage,
+owner, grade and community rating (display only, "No ratings yet"). **A module moves through six
+stages** — seeking partners, proposed, in development, expert review, exam, graduated — each shown
+as its name and a small bar, explained behind an (i) beside the column. Phoebe's eligibility and
+feasibility cards are in development and open to try, tagged Beta; Bridget's two datasets are in
+development and Calvin's water pack and Heather's health impact guide are proposed; the two carbon
+packs are in expert review, their Gold Standard methods linked; and four modules seeking partners end
+the list, each with "Work with us", an email to the team. Every grade reads "not yet graded",
+because a grade on the Commons comes only from an independent exam, run outside this site on real,
+completed projects, and no agent has sat it yet. **Each module that opens has its own address**,
 such as [open.waterbots.ai/commons/phoebe](https://open.waterbots.ai/commons/phoebe), which can be
 shared and opened directly. Open a module and the agent's screen appears alone — its chat, its tool
 where it has one, its knowledge pack and its credentials — in the menu's centred column, with

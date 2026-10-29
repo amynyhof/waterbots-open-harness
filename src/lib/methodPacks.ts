@@ -236,6 +236,8 @@ export interface MethodPack extends PackListing {
     line: string;
     /** The document's short name, e.g. "VWBA 2.0". */
     document: string;
+    /** Where the document can be read, where the maintainer has given a link. */
+    href?: string;
   };
   /**
    * One clause naming what this pack does, for the agent primer's roster.

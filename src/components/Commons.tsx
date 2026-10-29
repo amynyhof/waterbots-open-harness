@@ -41,7 +41,7 @@ import { SHELF, type ShelfCard } from '../lib/commonsShelf';
 import { COMMONS_LABEL, COMMONS_PATH, moduleFromPath, pageFromPath, pathForModule } from '../lib/pages';
 import { BridgetCommonsSeat, CalvinCommonsSeat, PhoebeCommonsSeat } from './CommonsSeats';
 import { partnerMailto } from '../lib/site';
-import CommonsShelf, { Rating, Status } from './CommonsShelf';
+import CommonsShelf, { Method, Rating, Stage } from './CommonsShelf';
 
 /** The holders with a seat here. Wellington has no pack and no card. */
 type Holder = 'Phoebe' | 'Calvin' | 'Bridget';
@@ -165,15 +165,15 @@ const ABOUT_LABEL = {
   margin: '0 0 3px',
 } as const;
 
-/* ABOUT THIS MODULE — method, owner, status and the community rating, as the
+/* ABOUT THIS MODULE — method, owner, stage and the community rating, as the
    module's row on the list shows them; "Work with us" only where the module
    seeks a partner, opening an email with its name in the subject. */
 function AboutModule({ card }: { card: ShelfCard }) {
-  const seeking = card.status === 'Seeking partners';
+  const seeking = card.stage === 'Seeking partners';
   const facts: { label: string; value: React.ReactNode }[] = [
-    { label: 'Method', value: card.tag },
+    { label: 'Method', value: <Method text={card.tag} href={card.tagHref} /> },
     { label: 'Owner', value: card.owner },
-    { label: 'Status', value: <Status text={card.status} /> },
+    { label: 'Stage', value: <Stage stage={card.stage} beta={card.beta} /> },
     { label: 'Community rating', value: <Rating /> },
   ];
   return (

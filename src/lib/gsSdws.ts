@@ -926,16 +926,25 @@ function pack(variant: Variant): MethodPack {
       : 'The tonnes of CO₂-equivalent a year a safe-water project screens at under the Paris-aligned ' +
         'version of the Gold Standard methodology, before its further adjustments.',
     headlineLabel: legacy ? 'Emission reductions' : 'Net emission reductions',
-    /* The Commons shelf's line and short name — drafted 11 Sep 2026 for the
-       maintainer's approval on pixels. */
+    /* The Commons shelf's line, the method's name and its link — the
+       maintainer's words of 28 Oct 2026, replacing the drafts of 11 Sep 2026.
+       Words on the Commons only: no figure and no citation changes here. */
     shelf: legacy
       ? {
-          line: "Emission reductions from safe drinking water, under Gold Standard's first method.",
-          document: 'Gold Standard EE-SWS V1.0',
+          line:
+            'Emission reductions from safe drinking water, under the first version of Gold ' +
+            'Standard’s methodology (2021).',
+          document:
+            'Gold Standard 429 EE-SWS V1.0 · Emission Reductions from Safe Drinking Water Supply (2021)',
+          href: 'https://globalgoals.goldstandard.org/standards/429_V1.0_EE_SWS_Emission-reductions-from-Safe-Drinking-Water-Supply.pdf',
         }
       : {
-          line: 'The same method aligned to the Paris Agreement, with one cited input changed.',
-          document: 'Gold Standard PAA-M400-12 V2.0',
+          line:
+            'Emission reductions from safe drinking water, under version 2.0 of the same ' +
+            'methodology, updated to align with the Paris Agreement. Required for credits issued ' +
+            'from 2026.',
+          document: 'Gold Standard 429 PAA-M400-12 V2.0 · Paris Agreement-aligned (2026)',
+          href: 'https://globalgoals.goldstandard.org/429-ee-sws-emission-reductions-from-safe-drinking-water-supply/',
         },
     /* The maintainer's own clauses, signed as drafted on 2 Sep 2026. The
        primer renders them; nothing retypes them. */
