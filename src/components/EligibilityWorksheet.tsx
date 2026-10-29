@@ -327,7 +327,9 @@ function Row({ pack, row, status }: { pack: string; row: ToolRow; status: RowSta
 
   return (
     <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+      {/* On a phone the state sits under the criterion, not beside it (base.css). */}
       <button
+        className="wb-sheet-row"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls={panelId}

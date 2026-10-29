@@ -432,7 +432,9 @@ function Header({
 
   return (
     <div style={{ borderBottom: '1px solid var(--line)', paddingBottom: 16 }}>
+      {/* On a phone the result drops under the name (base.css). */}
       <div
+        className="wb-calc-head"
         style={{
           display: 'flex',
           justifyContent: 'space-between',

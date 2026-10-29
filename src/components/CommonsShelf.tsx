@@ -93,7 +93,7 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
   return (
     /* The scrollbar's room is kept on both edges, so the centred page sits
        exactly under the menu, which has no scrollbar beside it. */
-    <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', scrollbarGutter: 'stable both-edges' }}>
+    <div className="wb-shelf-scroll" style={{ flex: 1, minHeight: 0, overflowY: 'auto', scrollbarGutter: 'stable both-edges' }}>
       {/* Centred on the menu's own band — 1240px, 24px each side — so the page
           lines up with the menu above it; the maintainer's word of 28 Oct 2026. */}
       <div style={{ padding: '22px 24px 32px', maxWidth: 1240, margin: '0 auto', position: 'relative' }}>
@@ -142,7 +142,7 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
             </p>
           </div>
           <a
-            className="btn"
+            className="btn wb-hit"
             href={CONSULTING_URL}
             style={{ display: 'inline-block', flex: 'none', textDecoration: 'none', marginTop: 2 }}
           >
@@ -239,7 +239,7 @@ function ModuleRow({ card, onOpen }: { card: ShelfCard; onOpen: () => void }) {
       </Cell>
       <div>
         {card.opens ? (
-          <button type="button" className="wb-row-action" onClick={onOpen}>
+          <button type="button" className="wb-row-action wb-hit" onClick={onOpen}>
             Open
           </button>
         ) : (
@@ -341,7 +341,7 @@ function PlannedRow({ planned, seeking = false }: { planned: PlannedModule; seek
       </Cell>
       <div>
         {seeking ? (
-          <a className="wb-row-action" href={mail} style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}>
+          <a className="wb-row-action wb-hit" href={mail} style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}>
             Work with us
           </a>
         ) : (
@@ -421,7 +421,7 @@ export function Method({ text, href }: { text: string; href?: string }) {
   const words = text.replace(' · ', ' · ');
   if (!href) return <>{words}</>;
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--tide-text)' }}>
+    <a className="wb-hit" href={href} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--tide-text)' }}>
       {words}
     </a>
   );
@@ -448,7 +448,7 @@ export function Stage({
     <span style={{ display: 'inline-grid', gap: 5, justifyItems: 'start' }}>
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
         {href ? (
-          <a href={href} aria-label={hrefLabel} style={{ color: 'var(--tide-text)', whiteSpace: 'nowrap' }}>
+          <a className="wb-hit" href={href} aria-label={hrefLabel} style={{ color: 'var(--tide-text)', whiteSpace: 'nowrap' }}>
             {stage}
           </a>
         ) : (
@@ -487,6 +487,8 @@ function StageBar({ stage }: { stage: ModuleStage }) {
  * THE (i) — a small button that opens a note beside a heading, and closes on
  * a second press, Escape, or a press anywhere else. The house (i), drawn as on
  * the project record; a button here because the note is longer than a title.
+ * On a phone the note rises from the foot of the screen as a sheet, with a
+ * Close button of its own (base.css, the maintainer's word of 29 Oct 2026).
  */
 function InfoTip({
   label,
@@ -518,7 +520,7 @@ function InfoTip({
     <span ref={ref} className="wb-tip">
       <button
         type="button"
-        className="wb-info"
+        className="wb-info wb-hit"
         aria-label={label}
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
@@ -528,6 +530,9 @@ function InfoTip({
       {open && (
         <span role="note" className={align === 'right' ? 'wb-tip-panel is-right' : 'wb-tip-panel'}>
           {children}
+          <button type="button" className="wb-tip-close" onClick={() => setOpen(false)}>
+            Close
+          </button>
         </span>
       )}
     </span>
@@ -543,7 +548,7 @@ function Quiet({ children }: { children: ReactNode }) {
    stars and "No ratings yet". No way to rate, and nothing counted. */
 export function Rating() {
   return (
-    <span role="img" aria-label="No ratings yet" style={{ display: 'inline-block' }}>
+    <span role="img" aria-label="No ratings yet" className="wb-rating" style={{ display: 'inline-block' }}>
       <span aria-hidden style={{ display: 'block', letterSpacing: '0.08em', color: 'var(--ink-4)', fontSize: 13 }}>
         ☆☆☆☆☆
       </span>

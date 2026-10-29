@@ -203,6 +203,12 @@ method links in her words; Phoebe's Tool tab reads "Eligibility quiz" on the Com
 page you are on. Her leaning Wellington, from the concept note, sits faded right of the opening, hidden below
 1240px.
 
+**S24 · The site on a phone.** After v1 · WALKTHROUGH. Her word of 29 Oct 2026, from that day's mobile check:
+every finding fixed in one pull request. At 900px and below the screening fills the screen, the rail and the crew
+slide over it, the step's name sits under the rings; the Commons and a module's tabs scroll with the page; the
+menu takes the live page's three rows. Desktop unchanged. Waits on her check on a real phone; a 44px tap area
+for the main site's menu is hers to carry.
+
 **S19 · The Workshop — make your own agent on the Commons.** After v1 · PARTNER. Not built; the proposal
 is next on her word. Her cost model, review before publishing and the two-shape save are in the write-up.
 Waits on the rig's pack-file shape, by her hand.

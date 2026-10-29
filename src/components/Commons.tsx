@@ -84,12 +84,12 @@ export default function Commons({
   const openHolder = open?.holder.name as Holder | undefined;
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+    <div className="wb-commons" style={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
       {/* THE ONE ROW, on an open pack only: the way back and the pack's name.
           Production's measure, as the journey bar's: 8px of vertical padding
           on the frame with a hairline beneath. */}
       {open && (
-        <div className="chrome" style={{ flex: 'none', borderBottom: '1px solid var(--line)' }}>
+        <div className="chrome wb-crumb" style={{ flex: 'none', borderBottom: '1px solid var(--line)' }}>
           {/* The breadcrumb sits in the menu's own column, 1240px and 24px
               each side, so it lines up with the tabs and chat below. */}
           <div
@@ -103,14 +103,15 @@ export default function Commons({
               padding: '6px 24px',
             }}
           >
-            <button type="button" className="wb-row-action" onClick={back} style={{ fontSize: 13 }}>
+            <button type="button" className="wb-row-action wb-hit" onClick={back} style={{ fontSize: 13 }}>
               <span aria-hidden>‹ </span>
               {COMMONS_LABEL}
             </button>
-            <span aria-hidden style={{ color: 'var(--ink-4)', fontSize: 13 }}>
+            {/* On a phone the way back stands alone, on one line (base.css). */}
+            <span aria-hidden className="wb-crumb-rest" style={{ color: 'var(--ink-4)', fontSize: 13 }}>
               /
             </span>
-            <span style={{ fontSize: 13, color: 'var(--ink-2)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <span className="wb-crumb-rest" style={{ fontSize: 13, color: 'var(--ink-2)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {open.holder.name}&rsquo;s knowledge pack · {open.title}
             </span>
           </div>
@@ -119,7 +120,7 @@ export default function Commons({
 
       {/* THE PANES STACK; the one not in view inherits nothing and sets
           hidden, as everywhere in this shell. */}
-      <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
+      <div className="wb-commons-panes" style={{ flex: 1, minHeight: 0, position: 'relative' }}>
         <Pane shown={onShelf}>
           <CommonsShelf onOpen={openCard} />
         </Pane>
@@ -128,7 +129,7 @@ export default function Commons({
             and chat in the menu's centred column, and "About this module"
             beside them; on a phone the panel moves below the chat. */}
         <div
-          className="wb-module-page"
+          className={onShelf ? 'wb-module-page is-off' : 'wb-module-page'}
           style={{ visibility: onShelf ? 'hidden' : undefined }}
           aria-hidden={onShelf}
         >
@@ -191,7 +192,7 @@ function AboutModule({ card }: { card: ShelfCard }) {
       </dl>
       {seeking && (
         <a
-          className="btn"
+          className="btn wb-hit"
           href={partnerMailto(card.title)}
           style={{ display: 'inline-block', marginTop: 16, textDecoration: 'none' }}
         >
@@ -205,6 +206,7 @@ function AboutModule({ card }: { card: ShelfCard }) {
 function Pane({ shown, children }: { shown: boolean; children: React.ReactNode }) {
   return (
     <div
+      className={shown ? 'wb-pane is-shown' : 'wb-pane'}
       style={{
         position: 'absolute',
         inset: 0,

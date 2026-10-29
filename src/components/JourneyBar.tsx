@@ -30,6 +30,12 @@
  * fit, each phase collapses to its number in a ring, (1) to (6), and the label
  * moves to the title. Dispatches keeps its own mark: a ring holding a dot, not
  * a number, because the desk has no number on the road.
+ *
+ * ON A PHONE, A SECOND ROW — the maintainer's word of 29 Oct 2026. A phone
+ * shows no title on hover, so the rings alone said nothing: the current
+ * step's name sits under them, between "Project", which opens the record,
+ * and "Crew", which opens the crew with the next steps and the save button.
+ * Every ring is a 44px place to tap, and all seven fit at 375px (base.css).
  */
 
 import { useEffect, useRef, useState } from 'react';
@@ -55,11 +61,14 @@ export default function JourneyBar({
   active,
   progress,
   onNavigate,
+  phone,
 }: {
   active: Surface;
   /** Which open phases have something from this visit, keyed by phase key. */
   progress: Record<string, boolean>;
   onNavigate: (surface: Surface) => void;
+  /** On a phone: the row under the rings, and what its two buttons open. */
+  phone?: { onProject: () => void; onCrew: () => void; steps: number };
 }) {
   const bar = useRef<HTMLElement>(null);
   const [compact, setCompact] = useState(false);
@@ -74,6 +83,8 @@ export default function JourneyBar({
   }, []);
 
   const onDesk = active === 'desk';
+  const step = JOURNEY.findIndex((phase) => phase.surface === active);
+  const stepName = step < 0 ? DESK_LABEL : `${step + 1} · ${JOURNEY[step].label}`;
 
   return (
     <div className="chrome" style={{ flex: 'none' }}>
@@ -82,6 +93,7 @@ export default function JourneyBar({
           hairline under the row. Look pass, 2 Sep 2026. */}
       <nav
         ref={bar}
+        className="wb-journey"
         aria-label="Journey"
         style={{
           display: 'flex',
@@ -138,6 +150,7 @@ export default function JourneyBar({
         </button>
         <span
           aria-hidden
+          className="wb-journey-sep"
           style={{ width: 1, height: 14, background: 'var(--line)', flex: 'none', margin: '0 14px 0 8px' }}
         />
 
@@ -228,6 +241,7 @@ export default function JourneyBar({
               {i < JOURNEY.length - 1 && (
                 <span
                   aria-hidden
+                  className="wb-journey-join"
                   style={{
                     flex: '1 1 8px',
                     minWidth: 8,
@@ -241,6 +255,26 @@ export default function JourneyBar({
           );
         })}
       </nav>
+
+      {phone && (
+        <div className="wb-phone-bar">
+          <button type="button" className="wb-phone-bar-button" onClick={phone.onProject}>
+            <span aria-hidden>‹ </span>Project
+          </button>
+          <span className="wb-phone-bar-name" aria-live="polite">
+            {stepName}
+          </span>
+          <button type="button" className="wb-phone-bar-button" onClick={phone.onCrew}>
+            Crew
+            {phone.steps > 0 && (
+              <span className="wb-phone-bar-count" aria-label={`, ${phone.steps} next ${phone.steps === 1 ? 'step' : 'steps'}`}>
+                {phone.steps}
+              </span>
+            )}
+            <span aria-hidden> ›</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

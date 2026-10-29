@@ -50,7 +50,7 @@ const LAYERS = [
 export default function CredentialsTab({ host }: { host: AgentHost }) {
   return (
     <div style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
-      <div style={{ maxWidth: SCREEN_COLUMN, margin: '0 auto', padding: '22px var(--gutter) 24px' }}>
+      <div className="wb-credentials" style={{ maxWidth: SCREEN_COLUMN, margin: '0 auto', padding: '22px var(--gutter) 24px' }}>
         <h2 style={{ fontSize: 20, margin: '0 0 8px', letterSpacing: '-0.015em', lineHeight: 1.25 }}>
           {host.name}&rsquo;s credentials
         </h2>

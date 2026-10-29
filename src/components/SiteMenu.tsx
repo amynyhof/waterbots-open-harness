@@ -19,9 +19,16 @@
  *
  * The map's one plain line rides at the right, before Sign in, on the map
  * only; it is the map's readout, not a menu item.
+ *
+ * ON A PHONE, THE LIVE PAGE'S THREE ROWS — the maintainer's word of 29 Oct
+ * 2026, read from waterbots.ai at 375px and 414px that day: it has no
+ * collapsed menu; the wordmark, then the three links, then Sign in at the
+ * right, each on its own row. At 430px and narrower this menu takes the same
+ * three rows (base.css). Its height is told to the page as --menu-h, so a
+ * phone's screening fills the screen below it (src/lib/phone.ts).
  */
 
-import type { MouseEvent, ReactNode } from 'react';
+import { useLayoutEffect, useRef, type MouseEvent, type ReactNode } from 'react';
 import type { Page } from '../lib/pages';
 import { MENU_HOME, MENU_LINKS, MENU_SIGN_IN, type MenuLink } from '../lib/site';
 
@@ -42,8 +49,19 @@ export default function SiteMenu({
     onPage(link.page);
   };
 
+  const header = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    const el = header.current;
+    if (!el) return;
+    const tell = () => document.documentElement.style.setProperty('--menu-h', `${el.offsetHeight}px`);
+    tell();
+    const ro = new ResizeObserver(tell);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   return (
-    <header className="chrome wb-site-menu">
+    <header ref={header} className="chrome wb-site-menu">
       <div className="wb-site-menu-band">
         <a className="wordmark wb-site-menu-wordmark" href={MENU_HOME.href} title="WaterBots.AI — home">
           WaterBots<span className="dot-ai">.AI</span>
