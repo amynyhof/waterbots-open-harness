@@ -318,6 +318,9 @@ credit line does not meet any of these bars.
   steps; the only other things on the screen are the way back to the shelf and
   the sign-up door. Open, chat, leave. **And the shelf is the crew** — no crew
   column on the Commons at all, the shelf and the sign-up door only; same day.
+  **From 28 Oct 2026 the sign-up bar is gone**, the maintainer's word: the page
+  is centred under the site menu, whose Sign in is the way to the main site,
+  and an open agent keeps only the way back.
   **The Workshop (item S19) is logged the
   same day** — a visitor makes an agent on the Commons; not built, its proposal
   is next on the maintainer's word. **"Connect with a human expert" (item S20)

@@ -7,9 +7,12 @@
  * rail, no other agents beside it, no next steps. It is a contained unit —
  * open, chat, leave. The only other thing on the screen is the way out: back
  * to the shelf, and "Sign up to manage a project".* So the Commons has one
- * row under the top bar and nothing beside the centre. On the shelf the row
+ * row under the top bar and nothing beside the centre. ~~On the shelf the row
  * carries the sign-up door alone; on an open pack it carries the way back,
- * the pack's name once, and the door. ~~The crew stood in a right column~~ —
+ * the pack's name once, and the door.~~ From 28 Oct 2026, the maintainer's
+ * word, the grey bar with the sign-up door is gone: the site menu's Sign in
+ * is the way to the main site. The shelf has no row of its own; an open pack
+ * keeps one, with the way back and the pack's name once. ~~The crew stood in a right column~~ —
  * gone the same day: the shelf is the crew.
  *
  * THE SCREEN IS THE THIRD CONSUMER of the one agent screen (item S16), and
@@ -35,7 +38,6 @@
 import { useState } from 'react';
 import type { ShelfCard } from '../lib/commonsShelf';
 import { COMMONS_LABEL } from '../lib/pages';
-import { SITE_URL } from '../lib/site';
 import { BridgetCommonsSeat, CalvinCommonsSeat, PhoebeCommonsSeat } from './CommonsSeats';
 import CommonsShelf from './CommonsShelf';
 
@@ -60,44 +62,34 @@ export default function Commons() {
 
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-      {/* THE ONE ROW: the way back and the pack's name when one is open, and
-          the sign-up door always. Production's measure, as the journey bar's:
-          8px of vertical padding on the frame with a hairline beneath. The
-          door is the book's §7 primary, the one primary action on the page. */}
-      <div
-        className="chrome"
-        style={{
-          flex: 'none',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 12,
-          minHeight: 46,
-          padding: '6px var(--gutter)',
-          borderBottom: '1px solid var(--line)',
-        }}
-      >
-        {open && (
-          <>
-            <button type="button" className="wb-row-action" onClick={back} style={{ fontSize: 13 }}>
-              <span aria-hidden>‹ </span>
-              {COMMONS_LABEL}
-            </button>
-            <span aria-hidden style={{ color: 'var(--ink-4)', fontSize: 13 }}>
-              /
-            </span>
-            <span style={{ fontSize: 13, color: 'var(--ink-2)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {open.holder.name}&rsquo;s knowledge pack · {open.title}
-            </span>
-          </>
-        )}
-        <a
-          className="wb-save-button"
-          href={SITE_URL}
-          style={{ marginLeft: 'auto', textDecoration: 'none', flex: 'none' }}
+      {/* THE ONE ROW, on an open pack only: the way back and the pack's name.
+          Production's measure, as the journey bar's: 8px of vertical padding
+          on the frame with a hairline beneath. */}
+      {open && (
+        <div
+          className="chrome"
+          style={{
+            flex: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 12,
+            minHeight: 46,
+            padding: '6px var(--gutter)',
+            borderBottom: '1px solid var(--line)',
+          }}
         >
-          Sign up to manage a project
-        </a>
-      </div>
+          <button type="button" className="wb-row-action" onClick={back} style={{ fontSize: 13 }}>
+            <span aria-hidden>‹ </span>
+            {COMMONS_LABEL}
+          </button>
+          <span aria-hidden style={{ color: 'var(--ink-4)', fontSize: 13 }}>
+            /
+          </span>
+          <span style={{ fontSize: 13, color: 'var(--ink-2)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {open.holder.name}&rsquo;s knowledge pack · {open.title}
+          </span>
+        </div>
+      )}
 
       {/* THE PANES STACK; the one not in view inherits nothing and sets
           hidden, as everywhere in this shell. */}

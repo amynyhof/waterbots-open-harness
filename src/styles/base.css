@@ -1275,7 +1275,7 @@ button.wb-phase:hover span:last-child {
 .wb-module-head,
 .wb-module-row {
   display: grid;
-  grid-template-columns: 150px minmax(0, 1fr) 150px 120px 104px 124px 84px;
+  grid-template-columns: 150px minmax(0, 1fr) 170px 140px 124px 124px 84px;
   column-gap: 16px;
   align-items: center;
 }

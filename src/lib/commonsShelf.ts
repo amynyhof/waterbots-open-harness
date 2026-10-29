@@ -2,7 +2,8 @@
  * The Agent Commons shelf — one entry per knowledge pack, assembled from the
  * registries that already exist. Item S18, slice 2, built 11 Sep 2026. From
  * 28 Oct 2026 the page draws them as a list of modules, one row each, with a
- * status and an owner, and a planned module after them.
+ * status and an owner, and a planned module after them; and from a second
+ * ruling the same day, a section of modules that are seeking partners.
  *
  * NOTHING IS TYPED TWICE. Phoebe's card reads her committed card sets
  * (src/lib/phoebeCards.ts); Calvin's three read the method pack registry
@@ -36,17 +37,30 @@ import { livePacks } from './methodPacks';
 import { CRITERIA } from './phoebeCards';
 
 /**
- * A MODULE'S STATUS AND OWNER — maintainer's ruling, 28 Oct 2026. Three
- * statuses only. The owner is WaterBots or "Partner pending", and never a
- * partner's name, until a partner owns a module and she says so.
+ * A MODULE'S STATUS AND OWNER — maintainer's rulings, 28 Oct 2026. The owner
+ * is never a partner's name, until a partner owns a module and she says so.
  *
- * EVERY MODULE READS "In development" FOR NOW. "Shared module" says the same
- * agent and calculator run here and on waterbots.ai, and nothing in this
- * repository shows that yet: the open core is not installed here (item A21).
- * Each module's status is one word below, for her to move.
+ * PHOEBE'S MODULE READS "Beta" (her word, 28 Oct 2026); THE OTHERS READ
+ * "In development", the two carbon modules "In development ·
+ * partner review", the health guide "Proposed", and the modules seeking
+ * partners say so. "Shared module" says the same agent and calculator run here
+ * and on waterbots.ai, and nothing in this repository shows that yet: the open
+ * core is not installed here (item A21). Each status is one phrase below, for
+ * her to move.
  */
-export type ModuleStatus = 'Shared module' | 'In development' | 'Partner pending';
-export type ModuleOwner = 'WaterBots' | 'Partner pending';
+export type ModuleStatus =
+  | 'Shared module'
+  | 'Beta'
+  | 'In development'
+  | 'In development · partner review'
+  | 'Proposed'
+  | 'Seeking partners'
+  | 'Partner pending';
+export type ModuleOwner =
+  | 'WaterBots'
+  | 'WaterBots + partner (to be named)'
+  | 'Partner pending'
+  | 'Open to partners';
 
 export interface ShelfCard {
   /** Stable key. The registry's own where it has one. */
@@ -71,14 +85,18 @@ export interface ShelfCard {
 }
 
 /**
- * A module that is named on the Commons but has no agent and nothing to open
- * yet — maintainer's ruling, 28 Oct 2026. It carries no agent name and no
- * partner name, and no method until one is chosen.
+ * A module that is named on the Commons but has nothing to open yet —
+ * maintainer's rulings, 28 Oct 2026. It never carries a partner's name. Its
+ * agent is a name only, or none; its method is what she wrote, or the
+ * document it would be built from.
  */
 export interface PlannedModule {
   key: string;
+  /** The agent's name where she has given one; no portrait is drawn for it. */
+  agent: string | null;
   title: string;
   line: string;
+  method: string;
   status: ModuleStatus;
   owner: ModuleOwner;
   grade: null;
@@ -93,22 +111,27 @@ const PHOEBE_CARD: ShelfCard = {
     'case stronger.',
   /* "VWBA 2.0" — read from the first card's citation, as her pack tab reads it. */
   tag: CRITERIA[0].citation.document,
-  status: 'In development',
+  status: 'Beta',
   owner: 'WaterBots',
   grade: null,
 };
 
-const CALVIN_CARDS: ShelfCard[] = livePacks().map((pack) => ({
-  key: `pack-${pack.key}`,
-  holder: crewMember('Calvin'),
-  title: pack.name,
-  line: pack.shelf.line,
-  tag: pack.shelf.document,
-  packKey: pack.key,
-  status: 'In development',
-  owner: 'WaterBots',
-  grade: null,
-}));
+/* The carbon packs are in partner review, the maintainer's word of 28 Oct
+   2026; the registry's own category says which they are. */
+const CALVIN_CARDS: ShelfCard[] = livePacks().map((pack) => {
+  const carbon = pack.category === 'Carbon';
+  return {
+    key: `pack-${pack.key}`,
+    holder: crewMember('Calvin'),
+    title: pack.name,
+    line: pack.shelf.line,
+    tag: pack.shelf.document,
+    packKey: pack.key,
+    status: carbon ? 'In development · partner review' : 'In development',
+    owner: carbon ? 'WaterBots + partner (to be named)' : 'WaterBots',
+    grade: null,
+  };
+});
 
 const BRIDGET_CARD: ShelfCard = {
   key: 'bridget-map-datasets',
@@ -128,23 +151,86 @@ export const SHELF: ShelfCard[] = [PHOEBE_CARD, ...CALVIN_CARDS, BRIDGET_CARD];
 export const PLANNED: PlannedModule[] = [
   {
     key: 'health-impact-guide',
+    agent: 'Heather',
     title: 'Health impact guide',
     line: 'Estimates the health benefits of water and sanitation projects.',
-    status: 'In development',
+    method: 'Evidence review (in development)',
+    status: 'Proposed',
     owner: 'Partner pending',
     grade: null,
   },
 ];
 
 /**
- * The count line above the list, derived and never typed: how many modules,
- * and how many are graded. With every grade null it reads "none graded yet".
+ * Modules seeking a build partner and a domain consultant — the maintainer's
+ * ruling of 28 Oct 2026. No agent yet. The method is the document each would
+ * be built from, as she named it; the line on what each does is plain words —
+ * the engineer's draft for water quality, hers for the other three, 28 Oct 2026.
+ * Their grade shows a dash, not "not yet graded": nothing exists to grade.
  */
-export function shelfCountLine(rows: { grade: null }[] = [...SHELF, ...PLANNED]): string {
-  const graded = rows.filter((c) => c.grade !== null).length;
+export const SEEKING: PlannedModule[] = [
+  {
+    key: 'water-quality-benefits',
+    agent: null,
+    title: 'Water quality benefits',
+    line: 'Works out how much pollution a project keeps out of rivers, lakes and groundwater.',
+    method: 'Water Quality Benefit Accounting guidebook (WRI, LimnoTech, TNC, 2025)',
+    status: 'Seeking partners',
+    owner: 'Open to partners',
+    grade: null,
+  },
+  {
+    key: 'wash-multiple-benefits',
+    agent: null,
+    title: 'WASH multiple benefits',
+    line:
+      'Estimates and values the benefits of water, sanitation and hygiene access, like better ' +
+      'health, time saved and income.',
+    method: 'WASH Benefits Accounting Framework (WASH4Work, LimnoTech, CEO Water Mandate, 2024)',
+    status: 'Seeking partners',
+    owner: 'Open to partners',
+    grade: null,
+  },
+  {
+    key: 'sanitation-impact',
+    agent: null,
+    title: 'Sanitation impact',
+    line:
+      'Counts the greenhouse gas a safe sanitation service avoids, mostly methane from untreated ' +
+      'waste.',
+    method: 'Gold Standard Safe Sanitation Services (SASS), draft',
+    status: 'Seeking partners',
+    owner: 'Open to partners',
+    grade: null,
+  },
+  {
+    key: 'solar-energy-credits',
+    agent: null,
+    title: 'Solar energy credits',
+    line:
+      'Counts the clean electricity a renewable system (often solar) makes, so it can earn ' +
+      'renewable energy credits.',
+    method: 'Peace Renewable Energy Credits (P-RECs), issued under the I-REC standard',
+    status: 'Seeking partners',
+    owner: 'Open to partners',
+    grade: null,
+  },
+];
+
+/**
+ * The count line above the list, derived and never typed: how many modules,
+ * how many are seeking partners, and how many are graded. With every grade
+ * null it reads "none graded yet".
+ */
+export function shelfCountLine(
+  rows: { grade: null }[] = [...SHELF, ...PLANNED],
+  seeking: { grade: null }[] = SEEKING,
+): string {
+  const graded = [...rows, ...seeking].filter((c) => c.grade !== null).length;
   const modules = `${inWords(rows.length)} module${rows.length === 1 ? '' : 's'}`;
+  const partners = seeking.length > 0 ? ` · ${inWords(seeking.length)} seeking partners` : '';
   const grades = graded === 0 ? 'none graded yet' : `${inWords(graded)} graded`;
-  return `${modules} · ${grades}`;
+  return `${modules}${partners} · ${grades}`;
 }
 
 const WORDS = ['none', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
