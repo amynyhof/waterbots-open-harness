@@ -2,8 +2,8 @@
  * The Agent Commons page's centre — the opening, how it works, and the list
  * of modules. Item S18, slice 2, built 11 Sep 2026 as a shelf of cards;
  * rewritten on 28 Oct 2026 to the maintainer's words of that day: an
- * opening paragraph, three short points on how it works, a "Build a module
- * with us" button to the main site's Consulting page at the right of the
+ * opening in two paragraphs and four points on how it works (her words
+ * exactly, from a later ruling the same day), a "Build a module with us" button to the main site's Consulting page at the right of the
  * header, and the modules as one vertical list, one row each.
  *
  * ONE ROW PER MODULE: the agent's picture, name and role; one line on what
@@ -37,21 +37,32 @@ import type { ReactNode } from 'react';
 import { PLANNED, SEEKING, SHELF, shelfCountLine, type PlannedModule, type ShelfCard } from '../lib/commonsShelf';
 import { CONSULTING_URL, partnerMailto } from '../lib/site';
 
-/** How it works — the maintainer's three points of 28 Oct 2026, as she wrote them. */
+/** How It Works — the maintainer's four points, her words exactly, 28 Oct 2026. */
 const HOW_IT_WORKS: { lead: string; body: string }[] = [
   {
-    lead: 'One module, every site:',
-    body: 'the same agent and calculator runs here and on waterbots.ai.',
+    lead: 'One module, everywhere:',
+    body:
+      'The same agent, knowledge pack, and calculation engine are built to power both Agent ' +
+      'Commons and WaterBots, so results match wherever they’re used.',
   },
   {
     lead: 'Open by default:',
-    body: 'code under Apache 2.0; methods and guides under CC BY 4.0; anyone can use them with credit.',
+    body:
+      'Agent code is released under the Apache 2.0 license. Methodologies, documentation, and ' +
+      'guidance are shared under CC BY 4.0, making them freely available with attribution.',
   },
   {
-    lead: 'Built with partners:',
+    lead: 'Built with experts and partners:',
     body:
-      'we build modules with developers, experts and funders; a partner can own its module, and ' +
-      'the Commons lists it with credit.',
+      'We co-develop modules with utility leaders, researchers, consultants, funders, and ' +
+      'technical experts. Organizations can sponsor or steward individual modules, with full ' +
+      'credit and ownership clearly recognized in the Commons.',
+  },
+  {
+    lead: 'Transparent and verifiable:',
+    body:
+      'Every agent includes its underlying methodology, reference materials, assumptions, and ' +
+      'testing approach, so users can understand exactly how results are generated.',
   },
 ];
 
@@ -86,14 +97,23 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
             <h1 style={{ fontSize: 21, margin: '0 0 8px', letterSpacing: '-0.015em', lineHeight: 1.25 }}>
               Agent Commons
             </h1>
+            {/* The opening — her words exactly, 28 Oct 2026. */}
             <p
               className="t-body"
               style={{ margin: 0, fontSize: 13.5, lineHeight: 1.55, color: 'var(--ink-2)' }}
             >
-              A free, open library of AI agents for water projects of every kind, from safe drinking
-              water to watershed protection, each built for a specific task. Every agent works from a
-              reviewed knowledge pack and an exact calculator, built with human experts. Read it, try
-              it, and see how it was tested.
+              A free, open library of AI agents designed for water projects of every kind, from safe
+              drinking water and wastewater management to watershed protection and resilience
+              planning. Each agent is purpose-built for a specific task. It works from a curated
+              knowledge pack, so it can cite sources for every answer, and from a transparent
+              calculation engine developed alongside subject matter experts.
+            </p>
+            <p
+              className="t-body"
+              style={{ margin: '10px 0 0', fontSize: 13.5, lineHeight: 1.55, color: 'var(--ink-2)' }}
+            >
+              Explore the agents, review their methods, test their outputs, and see exactly where every
+              answer comes from.
             </p>
           </div>
           <a
@@ -106,7 +126,7 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
         </div>
 
         <h2 className="t-mono" style={{ ...EYEBROW, fontWeight: 400, margin: '22px 0 10px' }}>
-          How it works
+          How It Works
         </h2>
         <ul style={{ margin: 0, paddingLeft: 18, maxWidth: 760, display: 'grid', gap: 6 }}>
           {HOW_IT_WORKS.map((point) => (
