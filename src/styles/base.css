@@ -1445,12 +1445,23 @@ button.wb-info {
   border-radius: var(--r-md);
   background: var(--card);
 }
+/* On a phone the module page is part of the page itself, from 29 Oct 2026:
+   it scrolls with the menu, the tab's content flows at its own height, and
+   the chat is sized to the screen with no 560px floor ("The phone layout",
+   below). Off the page, it takes no room. */
 @media (max-width: 900px) {
   .wb-module-page {
+    position: relative;
+    inset: auto;
+    display: block;
     padding: 0 16px 16px;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(560px, 100%) auto;
-    overflow-y: auto;
+  }
+  .wb-module-page.is-off {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
   }
   .wb-module-about {
     max-height: none;
@@ -1463,5 +1474,372 @@ button.wb-info {
 @media (max-width: 1239px) {
   .wb-commons-wellington {
     display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   The phone layout — the maintainer's word of 29 Oct 2026, from the mobile
+   check the same day. Every rule here sits inside a phone-width query and
+   moves nothing on a laptop. The shell sets many sizes inline, so a rule that
+   replaces one carries !important. src/lib/phone.ts sets --app-h (the screen
+   left above the keyboard), --menu-h (the menu's height) and html.wb-typing.
+--------------------------------------------------------------------------- */
+.wb-drawer-close,
+.wb-tip-close {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  /* THE PAGE SCROLLS, and the menu goes with it. A screen that holds a chat
+     fills exactly what is left below the menu, so its box is in view. */
+  html,
+  body,
+  #root {
+    height: auto;
+  }
+  .wb-app {
+    height: auto !important;
+    min-height: var(--app-h, 100dvh);
+  }
+  .wb-pages {
+    flex: none !important;
+  }
+  .wb-page-console {
+    position: relative !important;
+    height: calc(var(--app-h, 100dvh) - var(--menu-h, 0px));
+  }
+  .wb-page-commons {
+    position: relative !important;
+    inset: auto !important;
+    overflow: visible !important;
+    min-height: calc(var(--app-h, 100dvh) - var(--menu-h, 0px));
+  }
+  .wb-page.is-off {
+    position: absolute !important;
+    inset: 0 0 auto 0 !important;
+    height: calc(var(--app-h, 100dvh) - var(--menu-h, 0px)) !important;
+    min-height: 0;
+    overflow: hidden !important;
+  }
+
+  /* WHILE A BOX IS TYPED IN, the menu and the Commons' way back step aside,
+     and the chat takes the whole screen above the keyboard. */
+  html.wb-typing .wb-site-menu,
+  html.wb-typing .wb-crumb {
+    display: none;
+  }
+  html.wb-typing .wb-page-console {
+    height: var(--app-h, 100dvh);
+  }
+
+  /* TEXT IN EVERY BOX IS 16px, so a phone does not zoom the page in when one
+     is tapped. */
+  input:not([type='checkbox']):not([type='radio']):not([type='range']),
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+
+  /* THE LEFT RAIL AND THE CREW SLIDE OVER THE PAGE, one at a time, above the
+     map's own layers; the shade behind closes them. */
+  .wb-drawer {
+    position: fixed !important;
+    top: 0;
+    bottom: 0;
+    z-index: 1100;
+    box-shadow: var(--shadow-lg);
+    visibility: hidden;
+    transition:
+      transform var(--dur) var(--ease),
+      visibility 0s linear var(--dur) !important;
+  }
+  .wb-drawer.is-open {
+    visibility: inherit;
+    transform: none;
+    transition: transform var(--dur) var(--ease) !important;
+  }
+  .wb-drawer-left {
+    left: 0;
+    width: min(300px, 86vw) !important;
+    transform: translateX(-100%);
+  }
+  .wb-drawer-right {
+    right: 0;
+    width: min(372px, 92vw) !important;
+    transform: translateX(100%);
+  }
+  .wb-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 1090;
+    background: rgba(11, 20, 40, 0.28);
+  }
+  .wb-drawer-close {
+    display: inline-flex;
+    align-items: center;
+    margin: -14px -6px -14px auto;
+    min-height: 44px;
+    padding: 0 6px 0 12px;
+    background: transparent;
+    border: 0;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--tide-text);
+    cursor: pointer;
+  }
+
+  /* THE JOURNEY BAR: every ring a 44px place to tap, all seven across. */
+  .wb-journey {
+    padding: 0 8px !important;
+  }
+  .wb-journey .wb-phase {
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+    padding: 0;
+  }
+  .wb-journey-sep {
+    margin: 0 4px !important;
+  }
+  .wb-journey-join {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* The row under it: the step's name between "Project" and "Crew". */
+  .wb-phone-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 4px;
+    border-bottom: 1px solid var(--line);
+  }
+  .wb-phone-bar-button {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 10px;
+    background: transparent;
+    border: 0;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--tide-text);
+    white-space: pre;
+    cursor: pointer;
+  }
+  .wb-phone-bar-name {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .wb-phone-bar-count {
+    margin-left: 6px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+
+  /* An agent's tabs stay on one line: tighter, and the row slides sideways
+     on the narrowest phones rather than wrapping. */
+  .wb-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .wb-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .wb-tab {
+    flex: none;
+    white-space: nowrap;
+    font-size: 12.5px;
+    padding: 0 7px;
+    margin-right: 0;
+  }
+
+  /* Phoebe's criteria: the state goes under the criterion. */
+  .wb-sheet-row {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: 12px !important;
+    row-gap: 6px;
+    align-items: start !important;
+  }
+  .wb-sheet-row > :nth-child(1) {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    padding-top: 3px;
+  }
+  .wb-sheet-row > :nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .wb-sheet-row > :nth-child(3) {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
+  }
+  .wb-sheet-row > :nth-child(4) {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+
+  /* Calvin's calculator: the result drops under the pack's name. */
+  .wb-calc-head {
+    flex-wrap: wrap !important;
+  }
+  .wb-calc-head > :last-child {
+    flex: 1 1 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Credentials: room on the right, clear of the edge. */
+  .wb-credentials {
+    padding-right: max(var(--gutter), 12px) !important;
+  }
+
+  /* THE COMMONS FLOWS WITH THE PAGE: the list and a module's tabs scroll
+     with the menu, not in boxes of their own. */
+  .wb-commons {
+    height: auto !important;
+  }
+  .wb-commons-panes {
+    flex: none !important;
+  }
+  .wb-commons .wb-pane.is-shown {
+    position: relative !important;
+    inset: auto !important;
+  }
+  .wb-commons .wb-pane:not(.is-shown) {
+    overflow: hidden;
+  }
+  .wb-shelf-scroll {
+    flex: none !important;
+    overflow: visible !important;
+  }
+  .wb-module-page .wb-screen {
+    height: auto !important;
+  }
+  .wb-module-page .wb-panels {
+    flex: none !important;
+  }
+  .wb-module-page .wb-tabpanel.is-active {
+    position: relative !important;
+    inset: auto !important;
+  }
+  .wb-module-page .wb-tabpanel:not(.is-active) {
+    overflow: hidden;
+  }
+  .wb-module-page .wb-tabpanel.is-active:not(.wb-tabpanel-chat) > * {
+    flex: none !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  /* The chat fills the screen under the menu, the way back (46px and its
+     hairline) and the tabs (44px); with the keyboard up, all but the tabs. */
+  .wb-module-page .wb-tabpanel-chat.is-active {
+    height: calc(var(--app-h, 100dvh) - var(--menu-h, 0px) - 47px - 44px);
+  }
+  html.wb-typing .wb-module-page .wb-tabpanel-chat.is-active {
+    height: calc(var(--app-h, 100dvh) - 44px);
+  }
+
+  /* The way back stands alone, on one line. */
+  .wb-crumb-rest {
+    display: none;
+  }
+
+  /* Every button and link on the Commons is a 44px place to tap; the look
+     is unchanged, the extra room is invisible. */
+  .wb-hit {
+    position: relative;
+  }
+  .wb-hit::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+
+  /* The rating's stars sit on the line with their label. */
+  .wb-rating,
+  .wb-rating > span {
+    display: inline !important;
+  }
+  .wb-rating > span + span {
+    margin-left: 8px;
+  }
+
+  /* An (i)'s note rises from the foot of the screen, with its own Close. */
+  .wb-tip-panel,
+  .wb-tip-panel.is-right {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    z-index: 1200;
+    width: auto;
+    max-width: none;
+    max-height: 75vh;
+    overflow-y: auto;
+    padding: 18px 16px calc(16px + env(safe-area-inset-bottom));
+    border-radius: var(--r-md) var(--r-md) 0 0;
+    box-shadow: var(--shadow-lg);
+    font-size: 14px;
+  }
+  .wb-tip-close {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    margin-top: 14px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--ink);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    cursor: pointer;
+  }
+}
+
+/* THE MENU ON A PHONE takes the live waterbots.ai page's three rows, as read
+   on 29 Oct 2026: the wordmark, the three links, then Sign in at the right.
+   Its links are 44px places to tap; the look is the live page's. 430px, not
+   414: the live page keeps its three rows up to the largest phones (430px),
+   where Sign up beside Sign in pushes them to a row of their own. */
+@media (max-width: 430px) {
+  .wb-site-menu-end {
+    flex-basis: 100%;
+  }
+  .wb-site-menu-link {
+    position: relative;
+  }
+  .wb-site-menu-link::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: 44px;
+    transform: translate(-50%, -50%);
   }
 }

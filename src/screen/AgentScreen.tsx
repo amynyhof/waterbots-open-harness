@@ -95,7 +95,7 @@ export default function AgentScreen({
   const accent = { '--screen-accent': `var(${host.colourToken})` } as CSSProperties;
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+    <div className="wb-screen" style={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
       <div role="tablist" aria-label={`${host.name}'s screen`} className="wb-tabs" style={accent}>
         {order.map((tab) => (
           <button
@@ -122,11 +122,12 @@ export default function AgentScreen({
           same treatment the shell gives its surfaces, for the same reason.
           visibility:hidden also takes a hidden panel out of the tab order, so
           nobody can type into a composer they cannot see. */}
-      <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
+      <div className="wb-panels" style={{ flex: 1, minHeight: 0, position: 'relative' }}>
         {order.map((tab) => (
           <div
             key={tab}
             role="tabpanel"
+            className={`wb-tabpanel wb-tabpanel-${tab}${tab === active ? ' is-active' : ''}`}
             id={`wb-panel-${slug}-${tab}`}
             aria-labelledby={`wb-tab-${slug}-${tab}`}
             aria-hidden={tab !== active}

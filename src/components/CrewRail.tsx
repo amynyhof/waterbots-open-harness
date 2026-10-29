@@ -21,6 +21,11 @@
  * ~~The roster lives in this file.~~ It moved to src/lib/crew.ts on
  * 11 Sep 2026 (item S18, slice 2), and the row to CrewRow.tsx, when the Agent
  * Commons' right column came to list the same four; this rail reads both.
+ *
+ * ON A PHONE THE COLUMN IS A PANEL — the maintainer's word of 29 Oct 2026. It
+ * left no room for the agent's screen at 375px, so below 900px it slides over
+ * the page from the right, opened from "Crew" under the journey bar, with the
+ * next steps and the save button inside it as on a laptop.
  */
 
 import { CREW } from '../lib/crew';
@@ -68,6 +73,7 @@ export default function CrewRail({
   showPerson,
   person,
   onPerson,
+  drawer,
 }: {
   active: Surface;
   /** Open next steps on Wellington's desk. Null hides the count. */
@@ -89,6 +95,8 @@ export default function CrewRail({
   /** The box and the note, held by the shell so the save reads them. */
   person: PersonAsk;
   onPerson: (next: PersonAsk) => void;
+  /** On a phone: the column is a sliding panel, open or shut by the shell. */
+  drawer?: { open: boolean; onClose: () => void };
 }) {
   /* Only a box the visitor can see can be ticked. If the Blocked row goes
      (Phoebe moves it), an old tick does not travel unseen. */
@@ -96,8 +104,9 @@ export default function CrewRail({
   const busy = sealing.kind === 'sealing' || sealing.kind === 'sealed';
   return (
     <aside
-      className="chrome"
+      className={drawer ? `chrome wb-drawer wb-drawer-right${drawer.open ? ' is-open' : ''}` : 'chrome'}
       aria-label="The crew"
+      aria-hidden={drawer ? !drawer.open : undefined}
       style={{
         width: 'var(--chat-rail)',
         flex: 'none',
@@ -123,6 +132,11 @@ export default function CrewRail({
       >
         <span aria-hidden style={{ width: 22, height: 1, background: 'var(--ink-4)' }} />
         The crew
+        {drawer && (
+          <button type="button" className="wb-drawer-close" onClick={drawer.onClose} aria-label="Close the crew panel">
+            Close
+          </button>
+        )}
       </div>
 
       <div style={{ padding: '0 12px', display: 'flex', flexDirection: 'column', gap: 4 }}>

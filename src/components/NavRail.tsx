@@ -22,6 +22,11 @@
  * Chrome recedes, content rises (BRAND.md §2.3): the rail sits ON the frame,
  * flush and square, never as a card. The project card inside it rises one
  * plane to --card with the hairline §2.3 pairs with a white card.
+ *
+ * ON A PHONE IT IS A PANEL THAT SLIDES OVER THE PAGE from the left — the
+ * maintainer's word of 29 Oct 2026 — opened from "Project" under the journey
+ * bar, always at full width inside, and closed from its own top button or a
+ * tap beside it. It no longer pushes the crew off the screen.
  */
 
 import { useEffect, useState } from 'react';
@@ -58,13 +63,18 @@ const RECORD_EXPLAINER =
 export default function NavRail({
   context,
   onTyped,
+  drawer,
 }: {
   context: VisitContext;
   onTyped: (field: 'name' | 'place', value: string) => void;
+  /** On a phone: the rail is a sliding panel, open or shut by the shell. */
+  drawer?: { open: boolean; onClose: () => void };
 }) {
-  const [open, setOpen] = useState(
+  const [railOpen, setOpen] = useState(
     () => typeof window === 'undefined' || window.innerWidth >= AUTO_COLLAPSE_BELOW
   );
+  /* A phone's panel always shows the whole record; shut, it is off the screen. */
+  const open = drawer ? true : railOpen;
 
   /* Only follows the viewport until the reader expresses a preference. */
   const [touched, setTouched] = useState(false);
@@ -79,8 +89,9 @@ export default function NavRail({
 
   return (
     <nav
-      className="chrome"
+      className={drawer ? `chrome wb-drawer wb-drawer-left${drawer.open ? ' is-open' : ''}` : 'chrome'}
       aria-label="This visit"
+      aria-hidden={drawer ? !drawer.open : undefined}
       style={{
         width: open ? EXPANDED : COLLAPSED,
         flex: 'none',
@@ -92,19 +103,26 @@ export default function NavRail({
         overflow: 'hidden',
       }}
     >
-      <button
-        className="wb-rail-toggle"
-        onClick={() => {
-          setTouched(true);
-          setOpen((v) => !v);
-        }}
-        aria-expanded={open}
-        aria-label={open ? 'Collapse the project rail' : 'Expand the project rail'}
-        title={open ? 'Collapse' : 'Expand'}
-      >
-        <Chevron open={open} />
-        {open && <span className="t-caption">Collapse</span>}
-      </button>
+      {drawer ? (
+        <button className="wb-rail-toggle" onClick={drawer.onClose} aria-label="Close the project panel">
+          <Chevron open />
+          <span className="t-caption">Close</span>
+        </button>
+      ) : (
+        <button
+          className="wb-rail-toggle"
+          onClick={() => {
+            setTouched(true);
+            setOpen((v) => !v);
+          }}
+          aria-expanded={open}
+          aria-label={open ? 'Collapse the project rail' : 'Expand the project rail'}
+          title={open ? 'Collapse' : 'Expand'}
+        >
+          <Chevron open={open} />
+          {open && <span className="t-caption">Collapse</span>}
+        </button>
+      )}
 
       {open ? (
         <div style={{ padding: '14px 12px 0', overflowY: 'auto', minHeight: 0 }}>

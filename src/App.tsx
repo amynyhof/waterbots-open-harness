@@ -90,6 +90,7 @@ import BridgetScreen from './components/BridgetScreen';
 import PhoebeScreen from './components/PhoebeScreen';
 import CalvinScreen from './components/CalvinScreen';
 import SiteMenu from './components/SiteMenu';
+import { usePhone } from './lib/phone';
 import { DEFAULT_SURFACE, type Surface } from './lib/surfaces';
 import { useConversation } from './chat/useConversation';
 import { WELLINGTON, wellingtonAsk } from './lib/wellington';
@@ -156,6 +157,17 @@ export default function App() {
   }, []);
   const onConsole = page === 'console';
   const onCommons = page === 'commons';
+
+  /* ON A PHONE the left rail and the crew are panels that slide over the
+     page, one at a time, opened from the row under the journey bar — the
+     maintainer's word of 29 Oct 2026 (src/lib/phone.ts). A step change, a
+     page change or a wider window closes whichever is open. */
+  const phone = usePhone();
+  const [drawer, setDrawer] = useState<'project' | 'crew' | null>(null);
+  const closeDrawer = useCallback(() => setDrawer(null), []);
+  useEffect(() => {
+    setDrawer(null);
+  }, [surface, page, phone]);
 
   /* The worksheet lives here so Phoebe's answers and the rows she is filling
      in cannot disagree. It is plain component state and nothing writes it to
@@ -354,6 +366,7 @@ export default function App() {
 
   return (
     <div
+      className="wb-app"
       style={{
         height: '100%',
         display: 'flex',
@@ -394,7 +407,7 @@ export default function App() {
 
       {/* THE TWO PAGES STACK, and the one you are not on is hidden, not
           unmounted — see the note at the head of this file. */}
-      <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
+      <div className="wb-pages" style={{ flex: 1, minHeight: 0, position: 'relative' }}>
       {/* The rail is fixed; the column beside it carries the journey bar, the
           tabs, and then the centre and the right column. The centre takes no
           minimum width — a full-viewport working shell must never scroll
@@ -402,13 +415,27 @@ export default function App() {
           map. The rail collapses instead, and the map holds a zoom floor so it
           stays readable rather than shrinking to a postage stamp. */}
       <div
+        className={onConsole ? 'wb-page wb-page-console' : 'wb-page wb-page-console is-off'}
         style={{ position: 'absolute', inset: 0, display: 'flex', overflow: 'hidden', visibility: onConsole ? 'visible' : 'hidden' }}
         aria-hidden={!onConsole}
       >
-        <NavRail context={visit.context} onTyped={onTyped} />
+        <NavRail
+          context={visit.context}
+          onTyped={onTyped}
+          drawer={phone ? { open: drawer === 'project', onClose: closeDrawer } : undefined}
+        />
 
         <div style={{ flex: 1, minWidth: 0, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-          <JourneyBar active={surface} progress={progress} onNavigate={setSurface} />
+          <JourneyBar
+            active={surface}
+            progress={progress}
+            onNavigate={setSurface}
+            phone={
+              phone
+                ? { onProject: () => setDrawer('project'), onCrew: () => setDrawer('crew'), steps: rows.length }
+                : undefined
+            }
+          />
 
           <div style={{ flex: 1, minHeight: 0, display: 'flex', overflow: 'hidden' }}>
             <main style={{ flex: 1, minWidth: 0, minHeight: 0, position: 'relative' }}>
@@ -500,9 +527,13 @@ export default function App() {
               showPerson={showPerson}
               person={person}
               onPerson={setPerson}
+              drawer={phone ? { open: drawer === 'crew', onClose: closeDrawer } : undefined}
             />
           </div>
         </div>
+
+        {/* The shade behind an open panel on a phone; a tap on it closes the panel. */}
+        {phone && drawer !== null && <div className="wb-scrim" aria-hidden onClick={closeDrawer} />}
       </div>
 
       {/* THE AGENT COMMONS (item S18, slices 2 and 3): the shelf, and a pack
@@ -511,6 +542,7 @@ export default function App() {
           holds no visit and an agent there stands on its own — maintainer's
           ruling, 11 Sep 2026. */}
       <main
+        className={onCommons ? 'wb-page wb-page-commons' : 'wb-page wb-page-commons is-off'}
         style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden', visibility: onCommons ? 'visible' : 'hidden' }}
         aria-hidden={!onCommons}
       >
