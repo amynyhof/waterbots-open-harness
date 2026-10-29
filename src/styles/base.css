@@ -1262,6 +1262,22 @@ button.wb-phase:hover span:last-child {
 .wb-site-menu-quiet {
   color: var(--ink-2);
 }
+/* THE PAGE YOU ARE ON — the maintainer’s word of 28 Oct 2026: its menu item
+   is clearly marked. The book’s one lift for the frame (§2.2): the active
+   navigation item rises to --card, with a hairline, and takes Tide text. The
+   padding is paid back in margin, so the links keep their places. */
+.wb-site-menu-links .wb-site-menu-link {
+  padding: 3px 10px;
+  margin: -3px -10px;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+}
+.wb-site-menu-links .wb-site-menu-link[aria-current="page"] {
+  background: var(--card);
+  border-color: var(--line);
+  color: var(--tide-text);
+  box-shadow: var(--shadow-sm);
+}
 .wb-site-menu-quiet:hover {
   color: var(--ink);
 }
@@ -1288,6 +1304,16 @@ button.wb-phase:hover span:last-child {
   text-transform: uppercase;
   color: var(--ink-3);
 }
+/* A heading with its (i) beside it. */
+.wb-module-head-tip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+/* The (i)s for a phone, where the header row is hidden. */
+.wb-module-tips-phone {
+  display: none;
+}
 .wb-module-list {
   list-style: none;
   margin: 0;
@@ -1303,6 +1329,22 @@ button.wb-phase:hover span:last-child {
 @media (max-width: 900px) {
   .wb-module-head {
     display: none;
+  }
+  .wb-module-tips-phone {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin: 0 0 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .wb-module-tips-phone > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
   .wb-module-list {
     border-top: 1px solid var(--line);
@@ -1320,6 +1362,55 @@ button.wb-phase:hover span:last-child {
     color: var(--ink-3);
     margin-right: 8px;
   }
+}
+
+/* A module’s stage: six short steps, the filled ones in the stage’s shade
+   (src/components/CommonsShelf.tsx), the rest a hairline grey. */
+.wb-stage-bar {
+  display: inline-flex;
+  gap: 2px;
+}
+.wb-stage-bar > span {
+  width: 11px;
+  height: 4px;
+  border-radius: 1px;
+  background: var(--line);
+}
+
+/* The (i) as a button, and the note it opens: a floating card, so it takes the
+   book’s hairline and a shadow (§4). */
+.wb-tip {
+  position: relative;
+  display: inline-flex;
+}
+button.wb-info {
+  padding: 0;
+  background: transparent;
+}
+.wb-tip-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: -10px;
+  z-index: 30;
+  width: 300px;
+  max-width: calc(100vw - 48px);
+  padding: 12px 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--ink-2);
+  white-space: normal;
+  text-align: left;
+}
+.wb-tip-panel.is-right {
+  left: auto;
+  right: -10px;
 }
 
 /* ---------------------------------------------------------------------------

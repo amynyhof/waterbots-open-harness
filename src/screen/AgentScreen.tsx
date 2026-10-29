@@ -63,11 +63,18 @@ export default function AgentScreen({
   tabs,
   opensOn = 'chat',
   idSlug,
+  toolLabel,
 }: {
   host: AgentHost;
   tabs: ScreenTabs;
   /** The tab shown first. Chat, unless the chat is not live. */
   opensOn?: ScreenTab;
+  /**
+   * The Tool tab's name where the tool has one of its own — Phoebe's
+   * "Eligibility quiz" on the Commons, the maintainer's word of 28 Oct 2026.
+   * "Tool" otherwise.
+   */
+  toolLabel?: string;
   /**
    * What the tab and panel ids are built from. Defaults to the host's name;
    * a second consumer of the same agent on one page — the Agent Commons
@@ -101,7 +108,7 @@ export default function AgentScreen({
             className={tab === active ? 'wb-tab is-active' : 'wb-tab'}
             onClick={() => setActive(tab)}
           >
-            {LABELS[tab]}
+            {tab === 'tool' && toolLabel ? toolLabel : LABELS[tab]}
           </button>
         ))}
 

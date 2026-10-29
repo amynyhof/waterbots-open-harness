@@ -196,7 +196,11 @@ seeking a build partner and a domain consultant are listed below, with the butto
 third word the same day: one list, the foot text gone, the button at the header's right, plain-text cells, a
 display-only community rating, "Coming soon" for Calvin and Bridget, Heather "Proposal pending", "Work
 with us" emails for the seeking rows, the module page centred with "About this module", and an address per
-module that opens, /commons/phoebe first.
+module that opens, /commons/phoebe first. A fourth word the same day: status becomes six stages, from seeking
+partners to graduated, each a name and a bar in one Tide shade, pale to solid, with an (i) legend; "Beta" is
+a tag on Phoebe, open to try, not a stage; the count line goes; a new opening, grading note and carbon
+method links in her words; Phoebe's Tool tab reads "Eligibility quiz" on the Commons; and the menu marks the
+page you are on. The leaning Wellington figure waits on its file.
 
 **S19 · The Workshop — make your own agent on the Commons.** After v1 · PARTNER. Not built; the proposal
 is next on her word. Her cost model, review before publishing and the two-shape save are in the write-up.
