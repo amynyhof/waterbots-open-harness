@@ -509,9 +509,12 @@ those gets the light close (*Two kinds of close*). **A ritual with a skipped ste
 
 ## Standing rules that govern everything above
 
-- **Rule zero:** this repo sees only this repo. The engineer never
-  fetches, guesses at, or imitates the private platform. Rules
-  arrive as extracted rule files like this one, brought by Amy.
+- **Rule zero:** this repo sees only this repo, except the open core:
+  this site may install its packages, and the engineer may read
+  `amynyhof/waterbots-open-core-modules` on GitHub only, never clone or
+  write to it (CLAUDE.md, *Rule zero*; Amy's ruling, 27 Oct 2026). The
+  engineer never fetches, guesses at, or imitates the private platform.
+  Rules arrive as extracted rule files like this one, brought by Amy.
 - **No fabricated data, ever.** Not in tests, not in demos, not as
   placeholders that look real.
 - **A test stand-in for infrastructure is not fabricated data.** The rule

@@ -17,6 +17,157 @@ before 3 Oct 2026 link to an OPEN_ITEMS.md that has since been retired to this f
 
 ---
 
+## 30 Oct 2026, second correction — docs/proposals/calvin-from-open-core.md: Violet's screen, and questions counted
+
+**Why it changed.** The maintainer ruled on 30 Oct 2026, on pull request #156: Violet's module brings both her D-3
+math and her screen, like Calvin's, and this site uses her screen, not its own water display. The proposal had left
+open whether the module brought a screen. The same day, the 30-question limits gave way to her rule of 30 Oct 2026:
+count the questions on each walk and report the average.
+
+**Old wording, whole — section 1, What the core needs, item 8:**
+
+> 8. **Violet's VWBA D-3 module** (its step M8), with its test cases worked by hand and every step cited, in a release
+>    this site can pin. An outside expert checks it once the prototype is up (fourth round, 30 Oct 2026).
+
+**Old wording, whole — section 2, step 5:**
+
+> **Step 5 — Violet's D-3 math on the calculator step (fourth round, 30 Oct 2026).** Once Session C releases Violet's
+> VWBA D-3 module:
+> - `package.json` and `package-lock.json`: the module at an exact version, from its release file, like Calvin's.
+> - **The screening's calculator step runs Violet's D-3 math alongside carbon V1 and V2**, fed from the same record.
+> - `src/lib/vwbaD3.ts` and `scripts/check-vwba-d3.mjs` retire, and `src/lib/methodPacks.ts` lists no water pack of
+>   its own. **This site keeps no water code.** Proof P4's table is in the pull request first.
+> - **Violet as her own chat agent in the screening, and on the crew list, is after v1.** Until then the step shows
+>   her math and no Violet chat; the roster is not edited here.
+
+**Old wording, whole — section 5, Violet's line, its first sentence:**
+
+> - **Violet.** The calculator step runs her VWBA D-3 math alongside carbon V1 and V2 (step 5).
+
+**Old wording, whole — section 7, second round, e:**
+
+> - **e. Wellington's screening questions**: section 11. The whole screening stays within 30 questions.
+
+**Old wording, whole — section 7, third round, 5, its fourth agreed call:**
+
+>    - if a walk goes over 30 questions, the project-name question is dropped (section 11);
+
+**Old wording, whole — section 8, open point B:**
+
+> - **B. Two looks on one Quantify step, until step 5.** The carbon calculator will look like the paid site's; the water
+>   figure stays in this site's look until Violet's D-3 module arrives. Whether the module brings its own screen, or
+>   only the math this site draws, is not yet known. Accept two looks until then, or restyle the water worksheet?
+
+**Old wording, whole — section 11, The 30-question budget, its heading, first line and last paragraph:**
+
+> ### The 30-question budget
+>
+> A ceiling from the files, not a measured count:
+
+> **A real walk counts it** before step 4's pull request asks for a merge. **Agreed, third round:** if a walk goes past
+> 30, the project-name question is dropped.
+
+**Where the current text is:** [docs/proposals/calvin-from-open-core.md](../proposals/calvin-from-open-core.md),
+sections 1, 2, 5, 7 (second, third and fourth rounds), 8 and 11.
+
+## 30 Oct 2026 — docs/proposals/calvin-from-open-core.md: the water figure comes from Violet's D-3 module
+
+**Why it changed.** The maintainer ruled on 30 Oct 2026, on pull request #156: the water figure comes from the open
+core's VWBA D-3 module, Violet's, built by Session C with test cases worked by hand and every step cited, and this
+site keeps no water code of its own. In v1 the calculator step runs Violet's D-3 math beside carbon V1 and V2; Violet
+as her own chat agent and on the crew list is after v1. The proposal had kept water on this site's code.
+
+**Old wording, whole — the opening, its rulings line:**
+
+> **Ruled in three rounds the same day, and corrected on 28 Oct 2026,** all in section 7; what is still open is in section 8.
+
+**Old wording, whole — What I read, and what I found, the open core's water line:**
+
+> - **Calvin holds carbon only.** The water method (Volumetric Water Benefit Accounting, VWBA, method D-3) is the
+>   core's step M8, which will bring this site's water file in. Until then the water figure stays on this site's code.
+
+**Old wording, whole — section 2, its first line and two lines of step 2:**
+
+> Four steps, each its own commit, in four pull requests, all lane 3. Section 9 is step 1; section 11 is step 4.
+
+>   `src/lib/methodPacks.ts` keeps the water pack only.
+
+> - `src/lib/vwbaD3.ts` and `scripts/check-vwba-d3.mjs`: **no change.** Water stays on the site's own code until the
+>   core's water step.
+
+**Old wording, whole — section 2, What a visitor would notice, its last line:**
+
+> - The water figure and the map do not change.
+
+**Old wording, whole — section 4, proof P4:**
+
+> - **P4 — water is unchanged.** `scripts/check-vwba-d3.mjs` passes with no edits.
+
+**Old wording, whole — section 5, its last paragraph:**
+
+> **Nothing in the journey breaks.** It changes in three places: the carbon calculator and its figure, the order of
+> Wellington's questions, and what Calvin asks.
+
+**Old wording, whole — section 8, open points A and B:**
+
+> - **A. The list for Session C.** Ruling 5 named three changes; section 1 now lists eight, and section 10 adds the
+>   two settings. Will she pass the whole list to Session C?
+> - **B. Two looks on one Quantify step.** The carbon calculator will look like the paid site's; the water worksheet
+>   stays in this site's look until the core's water step (its M8). Accept that until then, or restyle the water
+>   worksheet to match?
+
+**Old wording, whole — section 10, the slider table, row 6's note:**
+
+> **Not Calvin's carbon calculator**: water stays on this site's code until the core's water step
+
+**Where the current text is:** [docs/proposals/calvin-from-open-core.md](../proposals/calvin-from-open-core.md), the
+opening, What I read, sections 1, 2, 4, 5, 7 (fourth round), 8 and 10.
+
+## 27 Oct 2026 — PROCESS_RULES_for_ShellB.md: rule zero matches CLAUDE.md's open core exception
+
+**Why it changed.** The maintainer ruled on 27 Oct 2026, on pull request #156, that the process rules' rule zero
+match CLAUDE.md's, which had gained the open core exception the same day. AGENT_RULES.md's *The wall* is left as it
+is, by her ruling: it covers what agents see at runtime, and installing a package does not change that.
+
+**Old wording, whole — Standing rules that govern everything above, the rule zero line:**
+
+> - **Rule zero:** this repo sees only this repo. The engineer never
+>   fetches, guesses at, or imitates the private platform. Rules
+>   arrive as extracted rule files like this one, brought by Amy.
+
+**Where the current text is:** [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Standing rules that
+govern everything above*.
+
+## 27 Oct 2026 — BUILD_PLAN.md: Calvin's item said his brief was untracked and nothing was built
+
+**Why it changed.** Found on 27 Oct 2026 while recording the maintainer's rulings on pull request #156. The brief has
+been tracked on the branch `calvin/engine-crosses` since 10 Oct 2026, and its build, #151, was built there and then
+closed without merging on 15 Oct 2026, by her ruling, for the shared package. The item said neither.
+
+**Old wording, whole — A21, its opening lines as they stood on `main`:**
+
+> **A21 · Calvin's brief — his chat, the carried engine, carbon beside water.** Step 5 · BONES. Proposed
+> 27 Sep 2026 as `PROPOSAL_calvin-brief.md`, untracked at the root; nothing is built. R2 to R11 ruled yes on
+> 1 Oct 2026, her notes in its §13. **R1 is closed**: the v0.16.1 bundle crossed 3 Oct 2026, scrubbed of the
+> filing's figures (O16).
+
+**Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), item A21.
+
+## 27 Oct 2026 — CLAUDE.md: rule zero gained the open core exception
+
+**Why it changed.** The maintainer ruled on 27 Oct 2026, on pull request #156, that this site may install the open
+core packages and that the engineer may read that repository on GitHub only. Rule zero said no other repository, ever.
+
+**Old wording, whole — Rule zero — this repo only:**
+
+> You work in this repository and nowhere else. You never read, write,
+> or reference any other repository, working tree, or dev server. If a
+> task appears to require something outside this repo, stop and say so.
+> It becomes a written proposal for the maintainer to carry elsewhere —
+> never an action here.
+
+**Where the current text is:** [CLAUDE.md](../../CLAUDE.md), *Rule zero — this repo only*.
+
 ## 23 Oct 2026 — PROCESS_RULES_for_ShellB.md: the full close-out gained an eleventh step
 
 **Why it changed.** The maintainer ruled that each family close also tidies what the family touched. The
