@@ -3,18 +3,34 @@
  * 9 Sep 2026. It replaces ChatPanel, her dock on the right, which is retired;
  * the crew rail with the save button stands where it stood.
  *
- * HER CHAT IS NOT LIVE, so the screen opens on Tool, which is the map, and
- * the Chat tab carries the one plain line saying she is not answering here
- * yet — maintainer's ruling 1 of 9 Sep 2026. No composer. No scripted
- * greeting. Her roadmap line, the statement of intent that sat in her dock,
- * follows the line at caption size.
+ * HER CHAT IS LIVE FROM 31 OCT 2026, the maintainer's ruling on #167 (item
+ * A22, step 6 of the Road to v1), and her map stands beside it on the Chat
+ * tab — side by side on a computer, the map above the chat on a phone. The
+ * strip of fixed lines above the map that #167 first built is gone, and so is
+ * the separate Tool tab: the map is not somewhere else to go, it is what she
+ * is talking about. The screen opens on her chat, as Phoebe's does.
  *
- * THE MAP IS THE TOOL, and it is the same BasinMap the shell drew in the
- * centre until this slice — moved inside her screen, still mounted for the
- * whole visit, and kept at full size under visibility:hidden when another tab
- * is up, so nothing is redrawn on a tab switch. The pin still writes the
- * visit's place through the shell; the map's status line still reaches the
- * header. Nothing about the map's data, licences or attribution moves.
+ * HOW A VISIT GOES — the maintainer's second ruling of 31 Oct 2026 on #167.
+ * The first time her step shows, the console sends `opened`, the pattern of
+ * Phoebe's first open, and she answers in her own words: who she is, what she
+ * does, why the basin matters to partners and funders, that she is still being
+ * built, and her one question, the pin, in the place's own words. Nothing is
+ * shown before it but her thinking line; the fixed greeting #167 first carried
+ * is gone. Each new pin sends `pinned`, and she thanks the visitor, reports
+ * the basin and its reading, and says when it is derived. Where the right rail
+ * offers Quantify she says Calvin is next, by the rail's button; where it does
+ * not she hands back to Wellington by the field. No button of her own, except
+ * the 'Back to Wellington' link when no pathway goes on to Quantify, the same
+ * hand-back Phoebe uses, drawn from the field as Phoebe's is. No next step is
+ * drawn here: next steps live in the right rail only (ruled 30 Sep 2026), and
+ * the pin has already moved the visit on there (pinnedVisit, src/lib/visit.ts).
+ *
+ * THE MAP IS THE SAME BasinMap the shell drew in the centre until slice 4,
+ * still mounted for the whole visit, and kept at full size under
+ * visibility:hidden when another tab is up, so nothing is redrawn on a tab
+ * switch. The pin still writes the visit's place through the shell; the map's
+ * status line still reaches the header. Nothing about the map's data, licences
+ * or attribution moves.
  *
  * HER KNOWLEDGE PACK IS THE MAP'S TWO DATASETS. Bridget carries no rule
  * cards; what she works from is HydroSHEDS HydroBASINS for the basins and WRI
@@ -37,8 +53,11 @@
  * never text, so her name is set in ink, as everywhere else.
  */
 
+import { useEffect, useRef } from 'react';
 import bridgetPortrait from '../../brand/assets/bots/bridget.svg';
-import type { AgentHost } from '../chat/evidence';
+import type { AgentHost, AgentTurn } from '../chat/evidence';
+import { useConversation } from '../chat/useConversation';
+import { askBridget } from '../lib/bridgetClient';
 import {
   AQUEDUCT_CITATION,
   AQUEDUCT_HREF,
@@ -49,13 +68,13 @@ import {
   HYDROSHEDS_HREF,
   HYDROSHEDS_PUBLISHER,
 } from '../lib/licences';
-import { PROJECT_MAPPING_NOTE } from '../lib/site';
+import { DESK_LABEL, type Surface } from '../lib/surfaces';
 import { citedDocument, toolSummary, toolVersion } from '../lib/toolReadmes';
 import type { MapPin } from '../lib/visit';
 import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, { type PackRow, type PackView } from '../screen/KnowledgePackTab';
-import NotLiveChat from '../screen/NotLiveChat';
+import ScreenChat from '../screen/ScreenChat';
 import BasinMap, { type MapStatus } from './BasinMap';
 
 export const BRIDGET: AgentHost = {
@@ -63,34 +82,94 @@ export const BRIDGET: AgentHost = {
   role: 'Map',
   portrait: bridgetPortrait,
   colourToken: '--bot-bridget',
-  /* Neither is shown while her chat is not live; both are stated so the host
-     is complete on the day it is. */
   composerPlaceholder: 'Reply to Bridget',
-  composerNote: 'Nothing is kept between visits.',
+  composerNote: 'Nothing is kept between visits. Thirty messages a day.',
   thinkingLine: 'Bridget is looking at the map…',
 };
 
-/** The one plain line — ruling 1, 9 Sep 2026. A visitor's words. */
-const NOT_LIVE_LINE = 'Bridget is not answering here yet. The map works: click a basin to pin it.';
-
 export default function BridgetScreen({
   onStatus,
-  pinnedHybas,
+  pin,
   onPin,
+  place,
+  onNavigate,
+  phone,
+  quantifyNext,
+  visible,
 }: {
   onStatus: (status: MapStatus) => void;
-  pinnedHybas: number | null;
+  pin: MapPin | null;
   onPin: (pin: MapPin | null) => void;
+  /** Where the project is, in the visitor's words, or blank. Never the pin's own line. */
+  place: string;
+  onNavigate: (surface: Surface) => void;
+  phone: boolean;
+  /** True when the right rail offers Quantify: then Calvin is next after the pin, not Wellington. */
+  quantifyNext: boolean;
+  /** True while Partners is the visible step — her first answer runs then, not on mount. */
+  visible: boolean;
 }) {
+  async function ask(
+    history: { role: 'user' | 'agent'; text: string }[],
+    signal: AbortSignal,
+    meta?: { opened?: boolean; pinned?: boolean }
+  ): Promise<AgentTurn> {
+    const answer = await askBridget(
+      history.map(({ role, text }) => ({
+        role: role === 'agent' ? ('assistant' as const) : ('user' as const),
+        content: text,
+      })),
+      { place, phone, pin, quantifyNext },
+      signal,
+      { opened: meta?.opened === true, pinned: meta?.pinned === true }
+    );
+    return {
+      role: 'agent',
+      text: answer.reply,
+      evidence: [],
+      abstained: answer.abstained,
+      /* The way back to him, from the field alone — Phoebe's hand-back. The
+         relay sets it to "none" after a pin when Calvin is next. */
+      ...(answer.handBack === 'wellington'
+        ? { action: { label: `Back to Wellington on ${DESK_LABEL}`, go: () => onNavigate('desk') } }
+        : {}),
+    };
+  }
+
+  const chat = useConversation(ask, BRIDGET.name);
+  const chatRef = useRef(chat);
+  chatRef.current = chat;
+
+  /* The first time her step shows, she introduces herself and asks her one question. */
+  const opened = useRef(false);
+  useEffect(() => {
+    if (!visible || opened.current) return;
+    opened.current = true;
+    void chatRef.current.askOpened({ opened: true });
+  }, [visible]);
+
+  /* Each new basin is reported once, after anything in flight has landed. An
+     unpin says nothing; pinning the same basin again is not a new one. */
+  const reported = useRef<number | null>(null);
+  useEffect(() => {
+    if (!pin || chat.pending || !opened.current) return;
+    if (reported.current === pin.hybasId) return;
+    reported.current = pin.hybasId;
+    void chatRef.current.askOpened({ pinned: true });
+  }, [pin, chat.pending]);
+
   return (
     <AgentScreen
       host={BRIDGET}
-      opensOn="tool"
       tabs={{
-        chat: <NotLiveChat host={BRIDGET} line={NOT_LIVE_LINE} note={PROJECT_MAPPING_NOTE} />,
-        tool: (
-          <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
-            <BasinMap onStatus={onStatus} pinnedHybas={pinnedHybas} onPin={onPin} />
+        chat: (
+          <div className="wb-bridget-split">
+            <div className="wb-bridget-chat">
+              <ScreenChat host={BRIDGET} chat={chat} composerId="wb-bridget-composer" />
+            </div>
+            <div className="wb-bridget-map" aria-label="The basin map">
+              <BasinMap onStatus={onStatus} pinnedHybas={pin?.hybasId ?? null} onPin={onPin} />
+            </div>
           </div>
         ),
         pack: <KnowledgePackTab view={BRIDGET_PACK} />,

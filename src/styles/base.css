@@ -988,6 +988,47 @@ button.wb-phase:hover span:last-child {
   outline-offset: -2px;
 }
 
+/* Bridget's chat with her map beside it — A22, the maintainer's ruling of
+   31 Oct 2026 (src/components/BridgetScreen.tsx). Side by side on a computer,
+   the chat a fixed column and the map the rest; on a phone the map stands
+   above the chat. The keyline between them is the page's own line, not the
+   accent: the accent is identity, and the tab row already carries it. */
+.wb-bridget-split {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+.wb-bridget-chat {
+  flex: none;
+  width: min(420px, 45%);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--line);
+}
+.wb-bridget-map {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+}
+@media (max-width: 900px) {
+  .wb-bridget-split {
+    flex-direction: column;
+  }
+  .wb-bridget-map {
+    order: -1;
+    flex: none;
+    height: 42%;
+    border-bottom: 1px solid var(--line);
+  }
+  .wb-bridget-chat {
+    flex: 1;
+    width: auto;
+    border-right: 0;
+  }
+}
+
 /* "Next phase" at the right end of the row — §7's secondary button: a
    Tide-tinted border with Tide text. Navigation, so Tide, not the agent. */
 

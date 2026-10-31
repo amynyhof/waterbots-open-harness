@@ -46,9 +46,10 @@ export interface Conversation {
   seed: (turns: Turn[]) => void;
   /**
    * Ask without adding a visitor bubble. Phoebe's first open this visit:
-   * greet after the copied invite. Does nothing while a turn is in flight.
+   * greet after the copied invite. Bridget's pin passes `{ pinned: true }`
+   * instead. Does nothing while a turn is in flight.
    */
-  askOpened: () => Promise<void>;
+  askOpened: (meta?: AskMeta) => Promise<void>;
 }
 
 export function useConversation(ask: Ask, hostName: string): Conversation {
@@ -103,7 +104,7 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
     setTurns(next);
   }, []);
 
-  const askOpened = useCallback(async () => {
+  const askOpened = useCallback(async (meta: AskMeta = { opened: true }) => {
     if (pending) return;
     setError(null);
     setPending(true);
@@ -111,7 +112,7 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
     inFlight.current = controller;
     const history = turnsRef.current;
     try {
-      const answer: AgentTurn = await ask(forAsk(history), controller.signal, { opened: true });
+      const answer: AgentTurn = await ask(forAsk(history), controller.signal, meta);
       const next = [...turnsRef.current, answer];
       turnsRef.current = next;
       setTurns(next);

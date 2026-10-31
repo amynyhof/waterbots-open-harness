@@ -1,12 +1,12 @@
 # Knowledge packs — open tree
 
-**Version 0.17.0 (open); the history is in [CHANGELOG.md](./CHANGELOG.md).** ~~Scaffold only. Nothing in this folder is wired into the live
+**Version 0.17.1 (open); the history is in [CHANGELOG.md](./CHANGELOG.md).** ~~Scaffold only. Nothing in this folder is wired into the live
 site.~~ **Corrected 17 Sep 2026:** Phoebe's pack is wired. The live site reads her two
 card sets from [`phoebe-eligibility/vwba-2.0/cards/`](./phoebe-eligibility/vwba-2.0/cards/).
 The other packs are still scaffold; the console reads their method packs and map data
 from the paths named below. **From 17 Sep 2026 the agent primer lives in
-[`product-shared/`](./product-shared/agent-primer.md)** and Phoebe's and Wellington's prompts
-are generated from it there.
+[`product-shared/`](./product-shared/agent-primer.md)** and Phoebe's, Wellington's and, from 31 Oct 2026, Bridget's
+prompts are generated from it there.
 
 This tree is the public-safe folder shape for what each agent works from. Folder
 **names** and stub **shapes** match the standing pack contract. The copy here is

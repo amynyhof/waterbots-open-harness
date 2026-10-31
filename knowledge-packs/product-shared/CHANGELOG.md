@@ -1,4 +1,37 @@
 # Changelog — product-shared
+## 0.6.2 — 31 Oct 2026
+
+- `agent-primer.md`: **Bridget's chat is live**, the maintainer's ruling of 31 Oct 2026
+  (item A22). Her entry, the journey table, Wellington's crew fact and his screening loop
+  said it was not, so both agents were told to point at the map because she could not
+  answer. Corrected, and Bridget now inherits the roster region as the primer said each
+  console would. Calvin's entry loses "As with Bridget". Old wording, whole, under the
+  no-strikes rule:
+
+  > **Bridget and Calvin do not, because neither console is built.** Bridget is the
+  > map's agent and Calvin is the Quantification step's; both consoles are still
+  > being written. When they are, each inherits this same file unchanged.
+
+  > **Her chat is not live yet.** She is the map's agent and her console is still
+  > being built. This is the part another agent must not get wrong: **pointing
+  > someone at Bridget cannot mean "go and ask her", because she cannot answer.** It
+  > means the map is the surface that holds it.
+  >
+  > **Where she is:** the Partners step, which holds the basin map. Point people at
+  > the map itself, since she cannot answer yet.
+
+  > being built. As with Bridget, **pointing someone at Calvin cannot mean "go and
+  > ask him"**
+
+  > | 2 | **Partners** — the basin map | Where is the water stress, and what is plotted on the map? | Built. Bridget's post; her chat is coming. |
+
+  > - **The Partners step** is the basin map: where the water stress is, and where a
+  >   project sits. It is Bridget's; her chat is not live yet, and the map itself
+  >   shows a visitor.
+
+  > Then invite Partners — the map; Bridget is not
+  > answering yet, so point at the map.
+
 ## 0.6.1 — 25 Sep 2026
 
 - `agent-primer.md`: Phoebe's line said each visitor may send twenty messages a
