@@ -1027,3 +1027,25 @@ licence, and the light close to check the two caps. Each passage below is whole,
 > Owes the teal baseline marker, a design value she carries from production.
 
 **Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), the v1 fence and the After v1 list; [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Two kinds of close* and step 8; [CLAUDE.md](../../CLAUDE.md), the v1 fence bullet.
+
+## 30 Oct 2026 — BUILD_PLAN.md: the v1 fence takes her finish line of 30 Oct 2026
+
+**Why.** Her word of 30 Oct 2026 replaced the finish line of 7 Oct 2026. It adds a first part, Reliable (the
+carbon calculators reproduce the Mali and Tanzania filings, and the VWBA D-3 module reproduces the VWBA 2.0
+guidebook's worked example). The question count is now counted on each walk and reported as an average, not
+capped at 30. A difference from more precise data on the paid site may be explained or shown in the report.
+Benchmarks and pass rates are v2.
+
+**Old wording, whole — BUILD_PLAN.md — the v1 fence, its heading, quotation and working words:**
+
+> ## The v1 fence — the one finish line (the maintainer's word, 7 Oct 2026)
+>
+> > "V1 is done when I can run a screening in 30 questions from Wellington -> Phoebe -> Bridget ->
+> > Calvin -> Print Report / Sign up -> Project saved to Paid site AND the paid site Carbon and VWBA
+> > calculators produce the same numbers despite the screening site using a simpler version."
+>
+> In working words: **v1 is done when** a visitor screens in 30 questions or fewer (Wellington → Phoebe → Bridget →
+> Calvin → report / sign up), the project saves to the paid site, and the paid site's carbon and VWBA
+> calculators, run on that saved project's inputs, give the same numbers as the screening.
+
+**Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), the v1 fence.
