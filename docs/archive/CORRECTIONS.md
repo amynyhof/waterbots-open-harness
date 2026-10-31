@@ -1027,3 +1027,44 @@ licence, and the light close to check the two caps. Each passage below is whole,
 > Owes the teal baseline marker, a design value she carries from production.
 
 **Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), the v1 fence and the After v1 list; [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Two kinds of close* and step 8; [CLAUDE.md](../../CLAUDE.md), the v1 fence bullet.
+
+## 30 Oct 2026 — BUILD_PLAN.md: the v1 fence takes her finish line of 30 Oct 2026
+
+**Why.** Her word of 30 Oct 2026 replaced the finish line of 7 Oct 2026. It adds a first part, Reliable: the
+carbon calculators reproduce the Mali and Tanzania filings, and the VWBA D-3 module follows the VWBA 2.0
+guidebook's method on test cases worked by hand, every step cited. The question count is now counted on each walk
+and reported as an average, not capped at 30. A difference from more precise data on the paid site may be
+explained or shown in the paid site's report. Benchmarks and pass rates are v2, and so is the Commons, so
+Phoebe's 80% pass and the Commons leave the per-seat v1 conditions; Calvin's done line takes the fence's words.
+
+**Old wording, whole — BUILD_PLAN.md — the v1 fence, its heading, quotation and working words:**
+
+> ## The v1 fence — the one finish line (the maintainer's word, 7 Oct 2026)
+>
+> > "V1 is done when I can run a screening in 30 questions from Wellington -> Phoebe -> Bridget ->
+> > Calvin -> Print Report / Sign up -> Project saved to Paid site AND the paid site Carbon and VWBA
+> > calculators produce the same numbers despite the screening site using a simpler version."
+>
+> In working words: **v1 is done when** a visitor screens in 30 questions or fewer (Wellington → Phoebe → Bridget →
+> Calvin → report / sign up), the project saves to the paid site, and the paid site's carbon and VWBA
+> calculators, run on that saved project's inputs, give the same numbers as the screening.
+
+**Old wording, whole — BUILD_PLAN.md — three per-seat bullets under The v1 order (Phoebe's, Calvin's, the Commons'):**
+
+> - **Phoebe** runs both packs: five row states, readiness per pathway, the tools line, the human
+>   door once. Done at an 80% pass.
+> - **Calvin** talks; picks the pack from the record; asks only for what is missing; his carbon
+>   number comes from the same engine as the paid site. Done when his screening numbers match the paid
+>   site's calculators run on the saved project's inputs (the v1 fence; the maintainer's ruling, 10 Oct
+>   2026). Reproducing real filings is the paid site's check, not Calvin's.
+> - **Commons**: Phoebe and Calvin work there too, no memory; Bridget introduces herself. Two Calvin
+>   cards on one engine: screening, transition.
+
+**Old wording, whole — BUILD_PLAN.md — item S23, as a v1 step:**
+
+> **S23 · The Commons check.** Step 4 · PARTNER. From the v1 done line: Phoebe and Calvin work on the
+> Commons too, with no memory; Bridget introduces herself; Calvin has two cards on one engine, screening
+> and transition. His part waits on A21. No proposal yet.
+
+**Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md), the v1 fence, the v1 order, and item S23
+under Sprint 2.
