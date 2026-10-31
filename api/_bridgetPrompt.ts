@@ -15,9 +15,11 @@
  * herself, as every agent phrases the facts it is given (ruling 1, 3 Sep 2026).
  *
  * AFTER THE PIN, Calvin or Wellington. Where the right rail offers Quantify she
- * says Calvin is next, by its button, and draws no link of her own; where it
- * does not she hands back to Wellington, as before. Which one is in the visit
- * block, and the relay holds the field to it (settleHandBack, _bridgetPin.ts).
+ * says Calvin is next, by its button; where it does not she hands back to
+ * Wellington, as before. No button of her own, except the 'Back to Wellington'
+ * link when no pathway goes on to Quantify, the same hand-back Phoebe uses.
+ * Which one is in the visit block, and the relay holds the field to it
+ * (settleHandBack, _bridgetPin.ts).
  *
  * SHE ASKS ONE QUESTION, the pin. She never asks where the project is: that is
  * Wellington's, and the place he heard rides in a block below. She never

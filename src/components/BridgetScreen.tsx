@@ -18,9 +18,10 @@
  * shown before it but her thinking line; the fixed greeting #167 first carried
  * is gone. Each new pin sends `pinned`, and she thanks the visitor, reports
  * the basin and its reading, and says when it is derived. Where the right rail
- * offers Quantify she says Calvin is next, by the rail's button, and draws no
- * link; where it does not she hands back to Wellington by the field, and the
- * way back to Dispatches is drawn from it, as Phoebe's is. No next step is
+ * offers Quantify she says Calvin is next, by the rail's button; where it does
+ * not she hands back to Wellington by the field. No button of her own, except
+ * the 'Back to Wellington' link when no pathway goes on to Quantify, the same
+ * hand-back Phoebe uses, drawn from the field as Phoebe's is. No next step is
  * drawn here: next steps live in the right rail only (ruled 30 Sep 2026), and
  * the pin has already moved the visit on there (pinnedVisit, src/lib/visit.ts).
  *

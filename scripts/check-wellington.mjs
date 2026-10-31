@@ -514,7 +514,7 @@ expect(
   'the strip or the not-live chat is still on her screen'
 );
 expect(
-  'she hands back the way Phoebe does — from the field, to Dispatches — and draws no next step of her own',
+  "No button of her own, except the 'Back to Wellington' link when no pathway goes on to Quantify, the same hand-back Phoebe uses",
   /answer\.handBack === 'wellington'/.test(bridgetSource) &&
     /Back to Wellington on \$\{DESK_LABEL\}/.test(bridgetSource) &&
     !/Open Quantify|surface: 'quantification'|onNavigate\('quantification'\)/.test(bridgetSource),

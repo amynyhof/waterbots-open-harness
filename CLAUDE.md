@@ -432,8 +432,9 @@ credit line does not meet any of these bars.
   funders and partners, that she is still being built, and her one question, the pin, in the place
   the visitor gave Wellington. After the pin she thanks them, gives the basin and its water-stress
   reading, says when it is derived, and says Calvin is next, by the Quantify button in the right
-  rail; where no pathway goes on to Quantify she hands back to Wellington. She draws no button of
-  her own. Thirty messages a day, under her own counter. She never guesses, never names a project,
+  rail; where no pathway goes on to Quantify she hands back to Wellington. No button of her own,
+  except the 'Back to Wellington' link when no pathway goes on to Quantify, the same hand-back Phoebe
+  uses. Thirty messages a day, under her own counter. She never guesses, never names a project,
   partner, funder or place the visitor did not type, and never says she checks anything.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 

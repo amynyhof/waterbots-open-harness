@@ -92,8 +92,10 @@ export function visitBlock(place: string, phone: boolean, pin: PinnedBasin | nul
 
 /**
  * The hand-back as the console will act on it. When Calvin is next after a pin,
- * the rail's button is the way on and she draws no link of her own, whatever the
- * model set; an abstention still goes back to Wellington. Ruled 31 Oct 2026.
+ * the rail's button is the way on and no link is drawn, whatever the model set;
+ * an abstention still goes back to Wellington. No button of her own, except the
+ * 'Back to Wellington' link when no pathway goes on to Quantify, the same
+ * hand-back Phoebe uses. Ruled 31 Oct 2026.
  */
 export function settleHandBack(
   handBack: 'none' | 'wellington',
