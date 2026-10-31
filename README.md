@@ -104,7 +104,7 @@ owner, grade and community rating (display only, "No ratings yet"). **A module m
 stages** — seeking partners, proposed, in development, expert review, exam, graduated — each shown
 as its name and a small bar, explained behind an (i) beside the column. Phoebe's eligibility and
 feasibility cards are in development and open to try, tagged Beta; Bridget's two datasets are in
-development and Calvin's water pack and Heather's health impact guide are proposed; the two carbon
+development and Calvin's water pack and the health agent's health impact guide are proposed; the two carbon
 packs are in expert review, their Gold Standard methods linked; and four modules seeking partners end
 the list, each with "Work with us", an email to the team. Every grade reads "not yet graded",
 because a grade on the Commons comes only from an independent exam, run outside this site on real,

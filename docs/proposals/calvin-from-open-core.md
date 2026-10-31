@@ -91,7 +91,7 @@ GitHub release. The site installs that file by its web address.
 - **Pinning.** The release file's address plus the lockfile fingerprint.
 - **What Amy does.** Approve a release in the core, which first needs a release job there.
 
-**Ruled 27 Oct 2026 (rulings 2 and 3):** the route is decided after Amy talks with Harrison Kerr. **Until then, Option
+**Ruled 27 Oct 2026 (rulings 2 and 3):** the route is decided after Amy talks with an outside engineer. **Until then, Option
 C: a release file pinned by its fingerprint.** No npm publish until after the fresh public repository and the full
 number gate. Moving from C to A later is a one-line change in `package.json`.
 
@@ -272,7 +272,7 @@ source, the order of Wellington's questions, and what Calvin asks.
 
 ## 6. The fresh public repository
 
-Amy plans a fresh public repository with clean history, guided by Harrison Kerr. **Ruled (ruling 11):** this work goes
+Amy plans a fresh public repository with clean history, guided by an outside engineer. **Ruled (ruling 11):** this work goes
 first, proven on the live site, and the fresh repository copies it afterward.
 
 - **It never holds `carried/`.** The copy is taken after step 3, so the old copy and its history (item O16) stay
@@ -283,7 +283,7 @@ first, proven on the live site, and the fresh repository copies it afterward.
 - **What does not:** the two `engine-carry-*` tags, and the `carried/` lines in `.gitattributes` and `.gitignore`.
 - **The update rule travels too:** a new open core version comes in only on Amy's word, in a lane 3 pull request,
   with P1 to P5 run again and the table in the pull request. No automatic update tool.
-- **For Harrison Kerr's review:** the whole change is one dependency, one adapter file, one stylesheet and one check.
+- **For the outside engineer's review:** the whole change is one dependency, one adapter file, one stylesheet and one check.
   It should move to any structure he proposes without rework.
 
 ## 7. Amy's rulings, 27 Oct 2026
@@ -295,7 +295,7 @@ first, proven on the live site, and the fresh repository copies it afterward.
    **Ruled: yes,** on GitHub only. CLAUDE.md's rule zero says so, and PROCESS_RULES_for_ShellB.md matches it (second
    round, a). The old wording of both is in `docs/archive/CORRECTIONS.md`.
 2. **The route.** npm with provenance, GitHub Packages, or the release-file stop-gap?
-   **Ruled: decided after Amy talks with Harrison Kerr.** Until then, a release file pinned by its fingerprint.
+   **Ruled: decided after Amy talks with an outside engineer.** Until then, a release file pinned by its fingerprint.
 3. **The first npm publish.** Does it wait for the core's real number gate (its step M1.2)?
    **Ruled: no npm publish until after the fresh public repository and the full number gate.**
 4. **Claim the `@waterbots` npm scope now**, even if publishing waits?

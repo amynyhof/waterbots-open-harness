@@ -181,7 +181,7 @@ export const SHELF: ShelfCard[] = [PHOEBE_CARD, ...CALVIN_CARDS, BRIDGET_CARD];
 export const PLANNED: PlannedModule[] = [
   {
     key: 'health-impact-guide',
-    agent: 'Heather',
+    agent: 'Health agent',
     title: 'Health impact guide',
     line: 'Estimates the health benefits of water and sanitation projects.',
     method: 'Evidence review (in development)',
