@@ -2,7 +2,8 @@
 
 **Written 27 Oct 2026 for Amy. Proposal only: nothing is built, installed or deleted.** It answers her brief of
 26 Oct 2026: the open site installs Calvin from the open core instead of keeping its own sealed engine copy.
-**Ruled in three rounds the same day, and corrected on 28 Oct 2026,** all in section 7; what is still open is in section 8. **This proposal replaces Calvin's old brief**, `PROPOSAL_calvin-brief.md`, which stays on the closed
+**Ruled in three rounds the same day, corrected on 28 Oct 2026, and a fourth round on 30 Oct 2026 (water and
+Violet),** all in section 7; what is still open is in section 8. **This proposal replaces Calvin's old brief**, `PROPOSAL_calvin-brief.md`, which stays on the closed
 #151's branch as history (ruling 12). Nothing is built yet.
 
 ## What I read, and what I found
@@ -18,8 +19,9 @@ request #5 ("Add calculator module", 26 Oct 2026). Nothing was cloned. Rule zero
   fingerprints, 48 of 48 number checks passing on made-up cases.
 - Its own plan already chooses npm: a publish job with provenance (a signed record of which commit built the
   package), Amy's approval on every release, and a first release `0.1.0` (its step M2.2).
-- **Calvin holds carbon only.** The water method (Volumetric Water Benefit Accounting, VWBA, method D-3) is the
-  core's step M8, which will bring this site's water file in. Until then the water figure stays on this site's code.
+- **Calvin holds carbon only.** The water method (Volumetric Water Benefit Accounting, VWBA, method D-3) is
+  Violet's, the VWBA agent's: the core's D-3 module, its step M8, built by Session C with test cases worked by hand
+  and every step cited. **This site keeps no water code of its own** once it arrives (fourth round, 30 Oct 2026).
 - **Calvin's package holds the paid site's calculator screens**: the work area, the project-facts panel, the version
   tabs, the equation stack and a print report. They compute nothing; every number comes from the engine. They are
   written for React 19 and styled with Tailwind utility classes and the paid site's colour names.
@@ -116,7 +118,9 @@ asks her to pass the whole list on.
    keeps Gold Standard's four classes: CWS, CWT, HWT, IWT. Which method community treatment (CWT) takes, and that
    institutions (IWT) are v2 (ruling R26), belongs in the core's own mapping, which says Calvin owns it.
 7. **The two settings in section 10**, arriving as a new open core version.
-8. Optional: built files that also run in plain Node. Not needed for this plan (section 11 keeps the engine in the
+8. **Violet's VWBA D-3 module** (its step M8), with its test cases worked by hand and every step cited, in a release
+   this site can pin. An outside expert checks it once the prototype is up (fourth round, 30 Oct 2026).
+9. Optional: built files that also run in plain Node. Not needed for this plan (section 11 keeps the engine in the
    browser).
 
 The React change in ruling 5 (React optional for engine-only users) **is no longer needed**: the site moves to
@@ -124,7 +128,8 @@ React 19 instead (section 9).
 
 ## 2. What changes on the open site
 
-Four steps, each its own commit, in four pull requests, all lane 3. Section 9 is step 1; section 11 is step 4.
+Five steps, each its own commit, in five pull requests, all lane 3. Section 9 is step 1; section 11 is step 4; step 5
+is the water figure from Violet's D-3 module.
 
 **Step 1 — React 19 (section 9).** Own pull request, with a before-and-after capture of the map.
 
@@ -141,15 +146,23 @@ Four steps, each its own commit, in four pull requests, all lane 3. Section 9 is
   - the print stylesheet;
   - no save button: the screens show Save only when a host passes one, and the save door stays this site's.
 - `src/lib/gsSdws.ts` and `scripts/check-gs-sdws.mjs` retire once proof P3's table is in the pull request.
-  `src/lib/methodPacks.ts` keeps the water pack only.
+  `src/lib/methodPacks.ts` keeps the water pack only, until step 5.
 - `knowledge-packs/calvin-quantify/`: its README and CHANGELOG name the package and its version.
-- `src/lib/vwbaD3.ts` and `scripts/check-vwba-d3.mjs`: **no change.** Water stays on the site's own code until the
-  core's water step.
+- `src/lib/vwbaD3.ts` and `scripts/check-vwba-d3.mjs`: no change in this step. They retire in step 5.
 
 **Step 3 — delete `carried/` (section 3).**
 
 **Step 4 — Wellington asks the core facts first (section 11).** Own pull request: it changes a prompt, so it carries
 a measured run.
+
+**Step 5 — Violet's D-3 math on the calculator step (fourth round, 30 Oct 2026).** Once Session C releases Violet's
+VWBA D-3 module:
+- `package.json` and `package-lock.json`: the module at an exact version, from its release file, like Calvin's.
+- **The screening's calculator step runs Violet's D-3 math alongside carbon V1 and V2**, fed from the same record.
+- `src/lib/vwbaD3.ts` and `scripts/check-vwba-d3.mjs` retire, and `src/lib/methodPacks.ts` lists no water pack of
+  its own. **This site keeps no water code.** Proof P4's table is in the pull request first.
+- **Violet as her own chat agent in the screening, and on the crew list, is after v1.** Until then the step shows
+  her math and no Violet chat; the roster is not edited here.
 
 **Screens.** Calvin's Tool tab, on the desk and on the Commons (the same screen), and his Knowledge tab, which names
 the package and its version. #151's sheet is not used, and neither is today's carbon tab.
@@ -168,7 +181,8 @@ change. Wellington's build-update fact mentions the switch at the next full clos
 - ~~Calvin's colour turns from Plum to Mint everywhere he appears (ruled in the third round).~~ **Corrected 28 Oct
   2026:** Calvin stays Plum everywhere he appears. Nothing on this site changes colour.
 - Wellington asks the country, and how many people or households a project serves, near the start (section 11).
-- The water figure and the map do not change.
+- The map does not change. The water figure does not change in steps 1 to 4; from step 5 it comes from Violet's D-3
+  module, and any difference has a named cause (P4).
 
 ## 3. Deleting the old sealed engine copy
 
@@ -217,7 +231,10 @@ site's calculator.
   - Age tiers on household runs (the engine's Table 9 step), which today's code leaves out.
   - Where the same fNRB and the same fuel profile are typed into both, the two should agree to four decimal places.
     **That is a target to measure, not a promise.**
-- **P4 — water is unchanged.** `scripts/check-vwba-d3.mjs` passes with no edits.
+- **P4 — water, before against after.** In steps 1 to 4, `scripts/check-vwba-d3.mjs` passes with no edits. In step 5,
+  the D-3 module's own hand-worked, cited test cases run through the installed module and must match; then every
+  made-up case in `check-vwba-d3` runs through today's code and through the module, in one table: old figure, new
+  figure, difference, cause. Only then does today's water code retire.
 - **P5 — the screen shows the engine's number.** On the same made-up cases, the figure drawn on Calvin's screen equals
   the engine's own result for the same inputs.
 
@@ -239,14 +256,16 @@ Wellington → Phoebe → Bridget → Calvin → report / sign up.
   - the project's filed V1.0 fNRB, for a transition figure only. With no filing he gives a plain "no transition
     figure" instead of a borrowed one;
   - household size, only for a country with no UN figure.
+- **Violet.** The calculator step runs her VWBA D-3 math alongside carbon V1 and V2 (step 5). Her own chat in the
+  screening, and her place on the crew list, are after v1.
 - **Report.** Not built yet (item S21). The core's screens carry a print report; whether the screening report uses it
   is for that report's own proposal.
 - **Sign up and save.** No change. The save never carries a computed number.
 - **The fence's check gets simpler:** when the paid site installs the same version, the same inputs give the same
   numbers by construction. What is left to show is that the screening's inputs reach the paid site whole.
 
-**Nothing in the journey breaks.** It changes in three places: the carbon calculator and its figure, the order of
-Wellington's questions, and what Calvin asks.
+**Nothing in the journey breaks.** It changes in four places: the carbon calculator and its figure, the water figure's
+source, the order of Wellington's questions, and what Calvin asks.
 
 ## 6. The fresh public repository
 
@@ -338,15 +357,23 @@ first, proven on the live site, and the fresh repository copies it afterward.
    - if a walk goes over 30 questions, the project-name question is dropped (section 11);
    - a slider value with no methodology floor gets one found by Session C, or asked of Amy.
 
+### Fourth round, 30 Oct 2026
+
+1. **Water.** The water figure comes from the open core's VWBA D-3 module, Violet's, built by Session C with test
+   cases worked by hand and every step cited. **This site does not keep its own water code** (step 5, proof P4). The
+   old wording is in `docs/archive/CORRECTIONS.md`.
+2. **Violet.** In v1, the screening's calculator step runs Violet's D-3 math alongside carbon V1 and V2. Violet as her
+   own chat agent in the screening, and on the crew list, is after v1.
+
 ## 8. Still open
 
 Each needs Amy's word before the build steps they touch.
 
-- **A. The list for Session C.** Ruling 5 named three changes; section 1 now lists eight, and section 10 adds the
-  two settings. Will she pass the whole list to Session C?
-- **B. Two looks on one Quantify step.** The carbon calculator will look like the paid site's; the water worksheet
-  stays in this site's look until the core's water step (its M8). Accept that until then, or restyle the water
-  worksheet to match?
+- **A. The list for Session C.** Ruling 5 named three changes; section 1 now lists nine, Violet's D-3 module among
+  them, and section 10 adds the two settings. Will she pass the whole list to Session C?
+- **B. Two looks on one Quantify step, until step 5.** The carbon calculator will look like the paid site's; the water
+  figure stays in this site's look until Violet's D-3 module arrives. Whether the module brings its own screen, or
+  only the math this site draws, is not yet known. Accept two looks until then, or restyle the water worksheet?
 - **C. The core's `prompt.md`** has not been read against AGENT_RULES.md or this site's language rules. The build step
   reads it and puts any conflict in the add-on or in front of Amy. Ruling R25, no script for Calvin, still stands.
 - **D. Wellington's words.** The limit stays. The new questions need about 413 more characters and there are 164 of
@@ -433,7 +460,7 @@ For anticipated-performance values, the third kind of value. A learning, "what i
 | 3 | Share of water tests that pass | M_q,y, V2.0 SDWS 22 | 0% to 100% | **100%**, by Amy's later ruling (#151 had 90%) | |
 | 4 | Share of homes that really use the device | U_p, V2.0 SDWS 34 | 1% to 100%, never 0 | 100%, "no source yet" | Household treatment only; the methodology sets it by a usage survey |
 | 5 | Efficiency of the old stove | η, V2.0 SDWS 11 | — | — | **No slider, ruled:** a baseline value, not anticipated performance |
-| 6 | Water per person per day (water benefit) | VWBA D-3, Table D3.3 | 0 to 20 L | 20 L full, 2 L limited | **Not Calvin's carbon calculator**: water stays on this site's code until the core's water step |
+| 6 | Water per person per day (water benefit) | VWBA D-3, Table D3.3 | 0 to 20 L | 20 L full, 2 L limited | **Not Calvin's carbon calculator**: Violet's D-3 module, from the open core (fourth round) |
 
 **Agreed, third round: the slider setting covers rows 1 to 4.** Row 5 has no slider, and row 6 belongs to the water
 method.

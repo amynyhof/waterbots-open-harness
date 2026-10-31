@@ -17,6 +17,59 @@ before 3 Oct 2026 link to an OPEN_ITEMS.md that has since been retired to this f
 
 ---
 
+## 30 Oct 2026 — docs/proposals/calvin-from-open-core.md: the water figure comes from Violet's D-3 module
+
+**Why it changed.** The maintainer ruled on 30 Oct 2026, on pull request #156: the water figure comes from the open
+core's VWBA D-3 module, Violet's, built by Session C with test cases worked by hand and every step cited, and this
+site keeps no water code of its own. In v1 the calculator step runs Violet's D-3 math beside carbon V1 and V2; Violet
+as her own chat agent and on the crew list is after v1. The proposal had kept water on this site's code.
+
+**Old wording, whole — the opening, its rulings line:**
+
+> **Ruled in three rounds the same day, and corrected on 28 Oct 2026,** all in section 7; what is still open is in section 8.
+
+**Old wording, whole — What I read, and what I found, the open core's water line:**
+
+> - **Calvin holds carbon only.** The water method (Volumetric Water Benefit Accounting, VWBA, method D-3) is the
+>   core's step M8, which will bring this site's water file in. Until then the water figure stays on this site's code.
+
+**Old wording, whole — section 2, its first line and two lines of step 2:**
+
+> Four steps, each its own commit, in four pull requests, all lane 3. Section 9 is step 1; section 11 is step 4.
+
+>   `src/lib/methodPacks.ts` keeps the water pack only.
+
+> - `src/lib/vwbaD3.ts` and `scripts/check-vwba-d3.mjs`: **no change.** Water stays on the site's own code until the
+>   core's water step.
+
+**Old wording, whole — section 2, What a visitor would notice, its last line:**
+
+> - The water figure and the map do not change.
+
+**Old wording, whole — section 4, proof P4:**
+
+> - **P4 — water is unchanged.** `scripts/check-vwba-d3.mjs` passes with no edits.
+
+**Old wording, whole — section 5, its last paragraph:**
+
+> **Nothing in the journey breaks.** It changes in three places: the carbon calculator and its figure, the order of
+> Wellington's questions, and what Calvin asks.
+
+**Old wording, whole — section 8, open points A and B:**
+
+> - **A. The list for Session C.** Ruling 5 named three changes; section 1 now lists eight, and section 10 adds the
+>   two settings. Will she pass the whole list to Session C?
+> - **B. Two looks on one Quantify step.** The carbon calculator will look like the paid site's; the water worksheet
+>   stays in this site's look until the core's water step (its M8). Accept that until then, or restyle the water
+>   worksheet to match?
+
+**Old wording, whole — section 10, the slider table, row 6's note:**
+
+> **Not Calvin's carbon calculator**: water stays on this site's code until the core's water step
+
+**Where the current text is:** [docs/proposals/calvin-from-open-core.md](../proposals/calvin-from-open-core.md), the
+opening, What I read, sections 1, 2, 4, 5, 7 (fourth round), 8 and 10.
+
 ## 27 Oct 2026 — PROCESS_RULES_for_ShellB.md: rule zero matches CLAUDE.md's open core exception
 
 **Why it changed.** The maintainer ruled on 27 Oct 2026, on pull request #156, that the process rules' rule zero
