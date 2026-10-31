@@ -988,58 +988,45 @@ button.wb-phase:hover span:last-child {
   outline-offset: -2px;
 }
 
-/* An agent's hello above its tool — Bridget's on the map first, A22, 30 Oct
-   2026 (src/components/BridgetScreen.tsx). A band on the canvas with the
-   agent's face in a tinted square and a keyline in the accent, the identity
-   rule above; the words are ink, never the accent. --hello-accent is set from
-   the host's token. */
-.wb-hello {
-  flex: none;
+/* Bridget's chat with her map beside it — A22, the maintainer's ruling of
+   31 Oct 2026 (src/components/BridgetScreen.tsx). Side by side on a computer,
+   the chat a fixed column and the map the rest; on a phone the map stands
+   above the chat. The keyline between them is the page's own line, not the
+   accent: the accent is identity, and the tab row already carries it. */
+.wb-bridget-split {
+  flex: 1;
+  min-height: 0;
   display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  padding: 12px var(--gutter);
-  background: var(--paper);
-  border-bottom: 1px solid color-mix(in oklab, var(--hello-accent) 25%, transparent);
 }
-.wb-hello-face {
-  width: 36px;
-  height: 36px;
+.wb-bridget-chat {
   flex: none;
-  display: grid;
-  place-items: center;
-  border-radius: 8px;
-  background: color-mix(in oklab, var(--hello-accent) 12%, var(--card));
-  border: 1px solid color-mix(in oklab, var(--hello-accent) 30%, transparent);
+  width: min(420px, 45%);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--line);
 }
-.wb-hello-face img {
-  display: block;
-}
-.wb-hello-words {
+.wb-bridget-map {
+  flex: 1;
   min-width: 0;
-  max-width: 760px;
+  min-height: 0;
+  position: relative;
 }
-.wb-hello-words p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--ink-2);
-}
-.wb-hello-words p strong {
-  color: var(--ink);
-  font-weight: 600;
-}
-.wb-hello-words p + p {
-  margin-top: 4px;
-  font-size: 12.5px;
-  color: var(--ink-3);
-}
-.wb-hello-next {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 16px;
-  margin-top: 10px;
+@media (max-width: 900px) {
+  .wb-bridget-split {
+    flex-direction: column;
+  }
+  .wb-bridget-map {
+    order: -1;
+    flex: none;
+    height: 42%;
+    border-bottom: 1px solid var(--line);
+  }
+  .wb-bridget-chat {
+    flex: 1;
+    width: auto;
+    border-right: 0;
+  }
 }
 
 /* "Next phase" at the right end of the row — §7's secondary button: a

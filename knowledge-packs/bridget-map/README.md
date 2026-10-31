@@ -8,7 +8,8 @@ is the two datasets already on this site.
 | [hydrosheds-hydrobasins](./tools/hydrosheds-hydrobasins/) | Basin boundaries, Levels 4 and 6 | [`public/hydrobasins_lev04.json`](../../public/hydrobasins_lev04.json), [`public/hydrobasins_lev06.json`](../../public/hydrobasins_lev06.json), [`src/lib/licences.ts`](../../src/lib/licences.ts) |
 | [wri-aqueduct-4.0](./tools/wri-aqueduct-4.0/) | Water stress | [`public/water_stress.json`](../../public/water_stress.json), [`src/lib/licences.ts`](../../src/lib/licences.ts) |
 
-Chat is not live. The map is. Project points are planned and not yet placed.
+Her chat is live beside the map from 31 Oct 2026: she asks for the pin and says the
+water stress where it landed. Project points are planned and not yet placed.
 
 Two datasets, two attributions. One combined line satisfies neither. Leaflet’s
 attribution control stays on. Text only for WWF — no WWF logo.
@@ -21,19 +22,18 @@ renders.
 
 Every specialist keeps the ten lines of **the specialist contract** in
 [AGENT_RULES.md](../../AGENT_RULES.md), the maintainer's ruling of 20 Sep 2026.
-This table is where Bridget stands against it. Her chat is not built (item A12), so
-the table is honest about that. Read as of 20 Sep 2026; lines 1 and 8 as of
-30 Oct 2026, when her hello was built (item A22).
+This table is where Bridget stands against it. Her chat went live on the maintainer's
+ruling of 31 Oct 2026 (item A22), doing one thing: the pin. Read as of 31 Oct 2026.
 
 | # | Line | Today | Where it is met |
 |---|---|---|---|
-| 1 | Introduces itself | **Partly, by fixed lines** | Her hello above the map (`src/components/BridgetScreen.tsx`): her name, what the map shows, the one ask, and that her chat is not open. Not a chat |
-| 2 | Knows its own tools | **No** | No prompt. This README names the map and its two datasets |
-| 3 | Sees its tool's state | **No** | The pin is in the visit; no agent reads it |
-| 4 | Walks the user through the tool by talking | **No** | No chat |
-| 5 | Fills the tool from answers, and shows what it filled | **No** | The visitor pins by hand |
-| 6 | Answers only from its own cards, with a citation | **No** | No rule cards; two cited datasets. What her cards are is a question for her brief |
-| 7 | Knows its limits and its level here | **No** | No prompt. The console says honestly that she is not answering |
-| 8 | Knows Wellington leads. Hands back | **Partly, by the console** | Once a basin is pinned her hello hands back, "Back to Wellington on Dispatches"; the pin moves the visit on so his stage line points past the map (`pinnedVisit`, `src/lib/visit.ts`) |
+| 1 | Introduces itself | **Yes** | Her first message, the maintainer's words, shown when her chat opens (`BRIDGET_GREETING`, `api/_bridgetPrompt.ts` and `src/components/BridgetScreen.tsx`, held identical by `check-wellington`) |
+| 2 | Knows its own tools | **Partly** | Her prompt knows the map and what it shows, and each pin says whether its reading is WRI's or derived. It does not carry the two dataset folders named here |
+| 3 | Sees its tool's state | **Yes** | The place the visitor told Wellington, phone or computer, and the pin as the map read it ride with every ask, checked in `api/_bridgetPin.ts` |
+| 4 | Walks the user through the tool by talking | **Yes, one question** | She asks for the pin, in the place's own words, and nothing else |
+| 5 | Fills the tool from answers, and shows what it filled | **No** | The visitor pins by hand; she says back what the pin holds |
+| 6 | Answers only from its own cards, with a citation | **No** | No rule cards. She answers only from the pin and her prompt, and cites nothing. What her cards are is a question for her brief |
+| 7 | Knows its limits and its level here | **Yes** | Her prompt says what she does today and what is coming, and carries the level sentence `check-roster` holds to the roster |
+| 8 | Knows Wellington leads. Hands back | **Yes** | The `handBack` field; the console draws "Back to Wellington on Dispatches" from it, as it does for Phoebe. The pin moves the visit on, so his stage line points past the map (`pinnedVisit`, `src/lib/visit.ts`) |
 | 9 | Posts official results to the project record | **Partly, by the tool** | The pin writes the place, source "pin", and the basin reading into her desk row and the seal |
-| 10 | Knows what its tool needs, the kind of value each input takes and where it comes from; checks the project context first; says where each value came from | **No** | The map takes one input, a click on a basin; the place it reads comes from the record with its source tag. No agent reads either |
+| 10 | Knows what its tool needs, the kind of value each input takes and where it comes from; checks the project context first; says where each value came from | **Partly** | The map takes one input, a click or a tap on a basin. She reads the place Wellington heard before she asks, and says whether a reading is published or derived |

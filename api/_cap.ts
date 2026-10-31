@@ -55,6 +55,14 @@ export const DAILY_CAP = 30;
 /** Wellington's cap. The maintainer's ruling of 2 Sep 2026, on the reasoning above. */
 export const WELLINGTON_DAILY_CAP = 30;
 
+/**
+ * Bridget's cap. Her chat went live on the maintainer's ruling of 31 Oct 2026
+ * (item A22); the number is the other two agents' thirty, under her own key, and
+ * waits on the maintainer's word like every cap before it. A visit asks her one
+ * thing, the pin, so a visitor who means it spends two or three.
+ */
+export const BRIDGET_DAILY_CAP = 30;
+
 /** Which agent is counting, and how many a visitor gets. */
 export interface CapAgent {
   /** The key prefix and the name in log lines, e.g. "phoebe". */
@@ -82,6 +90,7 @@ export const CARRIED_DAILY_CAP = 10;
 
 export const PHOEBE: CapAgent = { name: 'phoebe', cap: DAILY_CAP };
 export const WELLINGTON: CapAgent = { name: 'wellington', cap: WELLINGTON_DAILY_CAP };
+export const BRIDGET: CapAgent = { name: 'bridget', cap: BRIDGET_DAILY_CAP };
 /** Not an agent, but it counts the same way. The key prefix is "handoff". */
 export const HANDOFF: CapAgent = { name: 'handoff', cap: HANDOFF_DAILY_CAP };
 /** Not an agent either. The key prefix is "carried". */

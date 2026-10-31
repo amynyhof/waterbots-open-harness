@@ -121,7 +121,7 @@ The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done,
 | 3 | **Wellington asks the core facts first**: type and class, country, how many served, people or households, and whether it is already registered for carbon (the transition). | Her rewrite of his instructions, freeing at least 249 characters plus the new question's; the gate stays at 26,199. Step 2. | The record holds the new fields; one measured run; his prompt under the gate. |
 | 4 | **Calvin's chat**, on the open core's prompt, asking only what is missing (A21). | The core's `prompt.md` read against AGENT_RULES.md (#156, open point C). Steps 2 and 3. | One measured run; on a walk he opens with his facts filled and asks at most household size and, for a transition, the filed V1.0 fraction of non-renewable biomass (fNRB). |
 | 5 | **The water figure from the open core's VWBA D-3 module**, in place of this site's `vwbaD3.ts`. | Session C builds the module, with the test cases worked by hand and every step cited, in a pinned open core release. Step 2. | The hand-worked cases pass here; she has passed the water figure in the browser. |
-| 6 | **Bridget's hello** (A22, old step 6): who she is, what the map shows, then back. | Nothing outside this repository. | A walk passes through her and back with no wrong turn; her eyeball. |
+| 6 | **Bridget's chat** (A22, old step 6): her greeting, the pin, the reading, then back. | Nothing outside this repository. | A walk passes through her and back with no wrong turn; her eyeball. |
 | 7 | **The screening report, free** (S21, old step 8): printed or saved, every figure cited. | Steps 2, 4 and 5. Whether it uses the core's print report is its own proposal. | She prints one from a walk; every figure matches the screen and carries its citation. |
 | 8 | **The save carries every input the figures rest on**, never a computed number (old step 7). | Steps 2 to 5. The paid site's receiver reads them: her carry (O14), its item #243. | A test visit saved here opens on the paid site with every input filled. |
 | 9 | **The v1 walks**: whole screenings, counted and compared. | Everything above; the paid site runs the same open core release. | Questions counted on each walk and the average reported; the paid site's carbon and VWBA figures on each saved project equal the screening's, or each difference is explained or shown in the paid site's report after the save; written in BUILD_LOG; she has watched one. |
@@ -160,9 +160,9 @@ fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 20
 draws them and `check-roster` does not read them. Her ruling is owed: the field goes and the header reads
 the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 2026.
 
-**A22 · Bridget's hello.** Step 6 · BONES. Built 30–31 Oct 2026 on her word, waiting on her eyeball: fixed lines above
-the map (who she is, what it shows, one ask: the pin), then the reading and "Back to Wellington on Dispatches". A pin
-at Partners moves the visit to Quantify where a pathway read allows it; the rail asks for the map once. Not her chat (A12).
+**A22 · Bridget's chat.** Step 6 · BONES. Built 31 Oct 2026 on her ruling, waiting on her eyeball and live walk: her chat
+with the map beside it, her greeting word for word, one ask (the pin), the reading said derived where it is, then back to
+Wellington by the field. A pin at Partners moves the visit to Quantify where a pathway allows it; the rail asks once. Closes A12.
 
 **A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet,
 who hosts the D-n modules in the Commons. Violet is not on the roster yet; it arrives by her hand. No proposal yet.
@@ -175,9 +175,9 @@ gaps that are another agent's subject, and anything no agent covers. Waits on us
 replies ran four or five. Done is a measured pass on the length rule, counts and not impressions, and a
 check that reads sentence counts off a walk. On her word.
 
-**A12 · Bridget's chat.** After v1 · PARK. Not built; her Chat tab carries one plain line and no composer.
-It would run on Phoebe's pattern: an endpoint and a daily cap of her own, the same guards, read against
-the specialist contract's ten lines. Calvin's chat left this row for A21.
+**A24 · A pin where no pathway goes on to Quantify.** After v1 · BONES. The visit stays at Partners after the pin,
+and Wellington may point the visitor back to the map. Left as it is by her ruling of 31 Oct 2026. Done is a line he
+reads after a pin there, and a measured walk.
 
 **A20 · Phoebe's runaway call is cut off, not prevented.** After v1 · PARK. One request in seventy-five
 spent all 16,000 output tokens; `CALL_TIMEOUT_MS`, 120 seconds, ends it. Done is a real count once there

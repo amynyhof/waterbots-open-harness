@@ -302,7 +302,7 @@ export function applyWellingtonRoute(
 
 /**
  * A pin is the Partners step's work, so a pin while the visit is at Partners
- * finishes it — Bridget's hello, A22, 30 Oct 2026. Where a pathway read allows
+ * finishes it — Bridget's step, A22, 30–31 Oct 2026. Where a pathway read allows
  * Quantify the visit moves there, so Wellington's next answer points on to
  * Quantify and never back to the map; that is the invite the rail already
  * showed after a pin (ruled 30 Sep 2026), now written into the stage he reads.
@@ -514,7 +514,7 @@ export function currentInvite(visit: Visit, canQuantify = false): DeskRow | null
     return {
       key: 'invite-partners',
       from: 'wellington',
-      sentence: 'Pin the basin on the Partners step. Bridget is not answering yet; the map works.',
+      sentence: 'Pin the basin on the Partners step, with Bridget.',
       action: { kind: 'surface', label: 'Open the map', surface: 'map' },
       primary: true,
     };

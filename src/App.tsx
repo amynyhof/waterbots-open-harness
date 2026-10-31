@@ -464,8 +464,8 @@ export default function App() {
               </div>
 
               {/* BRIDGET'S SCREEN, kept mounted, hidden when off-surface — see
-                  the note above. The map is its Tool tab (item S16, slice 4,
-                  9 Sep 2026) and is mounted for the whole visit, as it was
+                  the note above. The map stands beside her chat (item A22,
+                  31 Oct 2026) and is mounted for the whole visit, as it was
                   when the shell drew it here. */}
               <div
                 style={{ position: 'absolute', inset: 0, visibility: onMap ? undefined : 'hidden' }}
@@ -478,6 +478,7 @@ export default function App() {
                   place={visit.context.provenance.place === 'pin' ? '' : visit.context.place}
                   onNavigate={setSurface}
                   phone={phone}
+                  visible={onMap}
                 />
               </div>
 

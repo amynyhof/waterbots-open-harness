@@ -412,10 +412,11 @@ expect(
 );
 const mapped = applyWellingtonRoute(handed, 'map', 'Pin the basin on the Partners step.');
 expect(
-  'after he invites Partners, Next Steps names the map and says Bridget is not live',
+  'after he invites Partners, Next Steps names the map and Bridget, whose chat is live there (31 Oct 2026)',
   mapped.invitedPartners === true &&
     currentInvite(mapped)?.action.surface === 'map' &&
-    /not answering yet/.test(currentInvite(mapped).sentence),
+    /Bridget/.test(currentInvite(mapped).sentence) &&
+    !/not answering/.test(currentInvite(mapped).sentence),
   JSON.stringify(currentInvite(mapped))
 );
 /* ROWS CLEAR WHEN TAKEN — 30 Sep 2026. A pin takes the map row; what lands next is
@@ -505,15 +506,27 @@ expect(
 );
 const bridgetSource = readFileSync('src/components/BridgetScreen.tsx', 'utf8');
 expect(
-  "Bridget's hello: who she is and what the map shows, one ask (the pin), honest that her chat is not open, the derived reading said as derived, and the hand-back to Wellington",
-  /Hi, I&rsquo;m Bridget\./.test(bridgetSource) &&
-    /map of river basins/.test(bridgetSource) &&
-    /its basin to pin it/.test(bridgetSource) &&
-    /chat isn&rsquo;t open yet/.test(bridgetSource) &&
-    /pin\.level === 4/.test(bridgetSource) && /derived/.test(bridgetSource) &&
-    /Back to Wellington on \{DESK_LABEL\}/.test(bridgetSource) &&
-    !/where is (your|the) project\?/i.test(bridgetSource),
-  'her hello is missing a part'
+  'her chat is on her screen with the map beside it, and the strip above the map is gone (31 Oct 2026)',
+  /<ScreenChat host=\{BRIDGET\}/.test(bridgetSource) &&
+    /wb-bridget-split/.test(bridgetSource) && /<BasinMap /.test(bridgetSource) &&
+    !/NotLiveChat|BridgetHello|wb-hello|opensOn="tool"/.test(bridgetSource) &&
+    !/wb-hello/.test(readFileSync('src/styles/base.css', 'utf8')),
+  'the strip or the not-live chat is still on her screen'
+);
+expect(
+  'she hands back the way Phoebe does — from the field, to Dispatches — and draws no next step',
+  /answer\.handBack === 'wellington'/.test(bridgetSource) &&
+    /Back to Wellington on \$\{DESK_LABEL\}/.test(bridgetSource) &&
+    !/Open Quantify|surface: 'quantification'|onNavigate\('quantification'\)/.test(bridgetSource),
+  'her hand-back is missing, or she draws a next step'
+);
+expect(
+  'her first ask follows the greeting when her step first shows, and each new basin is reported once',
+  /askOpened\(\{ opened: true \}\)/.test(bridgetSource) &&
+    /askOpened\(\{ pinned: true \}\)/.test(bridgetSource) &&
+    /reported\.current === pin\.hybasId/.test(bridgetSource) &&
+    /visible=\{onMap\}/.test(readFileSync('src/App.tsx', 'utf8')),
+  'the opening or the pin report is not wired'
 );
 expect(
   'the pathway rule is the one his route keeps: likely eligible or not enough known allows Quantify',
@@ -571,7 +584,8 @@ expect(
   'his prompt names the screening loop and forbids a fake live chat',
   /* Rule 2 carries it: the line in rule 4 that said it again was cut on
      26 Sep 2026, item A17, ruling R3. */
-  /Eligibility with Phoebe/.test(WELLINGTON_SYSTEM_PROMPT) && /Bridget's and Calvin's chats are not live/.test(WELLINGTON_SYSTEM_PROMPT),
+  /Eligibility with Phoebe/.test(WELLINGTON_SYSTEM_PROMPT) && /Calvin's chat is not live/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Bridget's is live, on Partners/.test(WELLINGTON_SYSTEM_PROMPT) && !/Bridget is not answering|Bridget's and Calvin's chats/.test(WELLINGTON_SYSTEM_PROMPT),
   'the loop rule is missing from his prompt'
 );
 
@@ -835,6 +849,113 @@ console.log('\n  People served\n');
   const seal = readFileSync('src/lib/handoff.ts', 'utf8');
   expect('it travels to him, to Phoebe, to the rail and on the seal', /served: visit\.context\.served/.test(client) && /served: context\.served/.test(phoebe) && /label="People served"/.test(rail) && /value: String\(context\.served\.count\), unit: context\.served\.unit/.test(seal), 'a carrier is missing');
   expect('the rail row sits after the stage and before the place', rail.indexOf('label="Stage"') < rail.indexOf('label="People served"') && rail.indexOf('label="People served"') < rail.indexOf('label="Where it is"'), 'the row is out of order');
+}
+
+/* ---------------------------------------------------------------------------
+   Bridget's chat — item A22, the maintainer's ruling of 31 Oct 2026. Her first
+   message is hers word for word; she asks one question, the pin; she reports
+   the basin from what the map read, says when it is derived, and hands back.
+   She never guesses, never names what the visitor did not type, never says
+   she validates. Checked here without a model call; her measured walk is the
+   maintainer's, on the preview.
+--------------------------------------------------------------------------- */
+
+console.log('\n  Bridget\n');
+
+{
+  const { BRIDGET_GREETING, BRIDGET_SYSTEM_PROMPT: BP, BRIDGET_RESPONSE_SCHEMA: BS } = await loadApi('_bridgetPrompt.js');
+  const { STRESS_LABELS, readPin, readPlace, visitBlock: bridgetBlock } = await loadApi('_bridgetPin.js');
+  const { BRIDGET: BRIDGET_CAP, BRIDGET_DAILY_CAP } = await loadApi('_cap.js');
+  const screen = readFileSync('src/components/BridgetScreen.tsx', 'utf8');
+  const relay = readFileSync('api/bridget.ts', 'utf8');
+  const ruled =
+    "Hi, I'm Bridget. I'm still being built, so today I can only help you pin your project and tell you about the water stress in that area. Soon I'll also help you find other projects and funders where you work.";
+  const shown = screen.match(/export const BRIDGET_GREETING =\s*\n?\s*"([^"]+)";/)?.[1];
+
+  expect("her first message is the maintainer's, word for word, in the relay and on the screen", BRIDGET_GREETING === ruled && shown === ruled, JSON.stringify({ relay: BRIDGET_GREETING, screen: shown }));
+  expect('her prompt tells her the greeting is already shown and never to say it again', BP.includes(`"${ruled}"`) && /Never say it again/.test(BP), 'the greeting is not in her prompt as already said');
+  expect(
+    "she asks one question, the pin, and never where the project is or anything else of Wellington's",
+    /You ask exactly one thing in a whole visit/.test(BP) && /not where the project is/.test(BP) && /On a phone they tap instead of click/.test(BP),
+    'her one-question rule is missing'
+  );
+  expect(
+    'she uses the place the visitor told Wellington, in their words, and never says where on the map it is',
+    /use their words for it, exactly as written/.test(BP) && /Do not say where on the map that is, which basin it is, or which river/.test(BP),
+    'the place rule is missing'
+  );
+  expect(
+    'she never guesses, never names a real project, partner or place beyond what the visitor typed, and never says she validates',
+    /\*\*Never guess a fact\.\*\*/.test(BP) &&
+      /\*\*Never name a real project, partner, organisation, funder, river, basin or place\*\* beyond what the visitor typed/.test(BP) &&
+      /\*\*Never say you validate, verify, confirm, approve or check anything\.\*\*/.test(BP),
+    "one of the maintainer's five rules is missing"
+  );
+  expect(
+    "after a pin she says when the reading is derived, never presents it as WRI's, and hands back by the field with no next step of her own",
+    /Say that whenever the reading is derived; never present a derived reading as WRI's/.test(BP) &&
+      /Set handBack to "wellington"/.test(BP) &&
+      /Do not name the next step yourself/.test(BP),
+    'the pin report rules are missing'
+  );
+  expect('her answer carries the hand-back as a closed field', BS.properties.handBack.enum.join(',') === 'none,wellington' && BS.required.includes('handBack'), JSON.stringify(BS.properties.handBack));
+  expect('her prompt says "validate" only to forbid it', (BP.match(/validat/gi) ?? []).length === 1, `${(BP.match(/validat/gi) ?? []).length} uses`);
+
+  const categories = Object.values(JSON.parse(readFileSync('public/water_stress.json', 'utf8')).categories);
+  const fallback = readFileSync('src/lib/stressPalette.ts', 'utf8').match(/UNKNOWN_STYLE: StressStyle = \{\s*label: '([^']+)'/)?.[1];
+  expect(
+    "her labels are WRI's published categories and the map's own fallback, and nothing else",
+    STRESS_LABELS.length === categories.length + 1 && categories.every((c) => STRESS_LABELS.includes(c)) && STRESS_LABELS.includes(fallback),
+    JSON.stringify({ STRESS_LABELS, categories, fallback })
+  );
+  const good = { hybasId: 1060000010, level: 6, subAreaKm2: 1234.4, stressLabel: 'High (40-80%)' };
+  expect(
+    'a pin the map could not have produced is dropped whole',
+    readPin(good) !== null && readPin({ ...good, stressLabel: 'Very high' }) === null && readPin({ ...good, level: 5 }) === null &&
+      readPin({ ...good, subAreaKm2: -1 }) === null && readPin({ ...good, hybasId: 'x' }) === null && readPin(null) === null,
+    'a bad pin got through'
+  );
+  expect(
+    "a place is the visitor's words, trimmed, and nothing past 80 characters",
+    readPlace('  Lilongwe,   Malawi ') === 'Lilongwe, Malawi' && readPlace('x'.repeat(81)) === '' && readPlace(3) === '',
+    readPlace('  Lilongwe,   Malawi ')
+  );
+  const six = bridgetBlock('Malawi', false, good);
+  const four = bridgetBlock('', true, { ...good, level: 4 });
+  expect(
+    'her block gives the size and the label as written, published at Level 6 and derived at Level 4',
+    /1,234 km²/.test(six) && /"High \(40-80%\)"/.test(six) && /The reading is published/.test(six) && /"Malawi"/.test(six) && /click/.test(six) &&
+      /The reading is derived/.test(four) && /area-weighted majority/.test(four) && /has not heard where/.test(four) && /tap/.test(four),
+    `${six}\n${four}`
+  );
+  const empty = bridgetBlock('Malawi', false, null);
+  expect('with no pin she is told so, and handed no reading', /No basin is pinned yet\./.test(empty) && !/reading/.test(empty), empty);
+
+  expect(
+    `her cap is ${BRIDGET_DAILY_CAP} a day under her own key`,
+    BRIDGET_CAP.name === 'bridget' && BRIDGET_CAP.cap === BRIDGET_DAILY_CAP && /countOneMessage\(req, new Date\(\), BRIDGET\)/.test(relay),
+    JSON.stringify(BRIDGET_CAP)
+  );
+  expect(
+    "the relay reads its two console turns strictly, refuses a pinned turn with no pin that holds, and keeps her colleagues' guards",
+    /body\.opened === true/.test(relay) && /body\.pinned === true/.test(relay) && /if \(pinned && !pin\)/.test(relay) &&
+      /isDegenerateReply\(answer\.reply\)/.test(relay) && /readHandBack\(v\.handBack\)/.test(relay) &&
+      /recordAbstention\(lastQuestion, answer\.abstentionTopic, new Date\(\), 'bridget'\)/.test(relay) &&
+      /'Bridget is not connected in this environment/.test(relay),
+    'a guard is missing from her relay'
+  );
+  expect(
+    'her composer note states her cap in words',
+    /composerNote: 'Nothing is kept between visits\. Thirty messages a day\.'/.test(screen) && BRIDGET_DAILY_CAP === 30,
+    'the note and the cap disagree'
+  );
+  expect(
+    'the primer and his facts say her chat is live, and nothing on the desk says she is not answering',
+    /Her chat is live, beside the map/.test(AGENT_PRIMER_MD) && /her chat is live there/.test(WELLINGTON_PRIMER_MD) &&
+      !/Bridget is not\s+answering|Bridget cannot answer/.test(AGENT_PRIMER_MD + WELLINGTON_PRIMER_MD) &&
+      !/Bridget is not answering/.test(readFileSync('api/_record.ts', 'utf8') + readFileSync('src/lib/visit.ts', 'utf8')),
+    'a stale "not live" line about her remains'
+  );
 }
 
 /* ------------------------------------------------------------------------- */
