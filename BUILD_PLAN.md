@@ -5,8 +5,8 @@ What is being built, in what order, and every open item. **This file commits to 
 retired. Read it with [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md), which says how work
 moves from a proposal to a commit.
 
-**Four parts, in this order:** the v1 fence; the per-seat v1 order; the sprints, one per family that has work on a v1
-step; and the families whose work is all after v1, ending in the After v1 list.
+**Five parts, in this order:** the v1 fence; the per-seat v1 order; the Road to v1; the sprints, one per family that
+has work on a v1 step; and the families whose work is all after v1, ending in the After v1 list.
 
 **Size limit: 400 lines.** The maintainer's ruling of 3 Oct 2026. An item is six lines at most; a longer
 write-up goes to BUILD_LOG.md and the item points at it. A full close-out that finds this file past 400 lines
@@ -41,6 +41,9 @@ Calvin → report / sign up), the project saves to the paid site, and the paid s
 calculators, run on that saved project's inputs, give the same numbers as the screening.
 
 **Also in v1:**
+- **Reliable, first (her word, 30 Oct 2026).** The paid site's carbon and VWBA calculators reproduce one real
+  household water treatment (HWT) filing, Mali, and one real community water supply (CWS) filing, Tanzania. That
+  is the paid site's work; no figure from either filing comes into this repository.
 - **Transition screening.** If Wellington hears the project is already registered for carbon, the
   screening also shows its transitional volume, still maps it, quantifies it, checks VWBA, and offers
   the report and the move to the paid site.
@@ -104,22 +107,29 @@ the way to it.
 - **Parked until after v1**: Water Wide Web, the Reggie, Monty and Audrey packs, D-4, D-6, the
   cleanup sweep, harness grades, fees, the two draft water card sets.
 
-**The build order, and where each step stands.** Steps keep their numbers; the rows are in working order.
+---
 
-| Step | What | State | Item |
+## Road to v1 — this repository's work, in order (30 Oct 2026)
+
+Only the work here that the finish line needs, in the engineer's order, for her to move. Nothing on it is built
+yet. It rests on #156, the proposal to install Calvin from the open core, merged with her word on its open points.
+The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done, 24–26 Sep 2026, in the log.
+
+| # | Step, in one line | Depends on | Done when |
 |---|---|---|---|
-| 1 | The Knowledge and Tool tab | Done 24 Sep 2026, #111 to #116 | in the log |
-| 2 | Wellington: type and stage | Done 24 Sep 2026, #119; reads back what Phoebe found #128; people served #130 | in the log |
-| 3 | Phoebe's carbon runtime | Done 26 Sep 2026, #121 to #126. Her 80% pass is not measured; that is the rig's to say | in the log |
-| 5 | Calvin's brief, with the carried engine | **Next.** Bundle crossed 3 Oct 2026 (v0.16.1, #147), tagged `engine-carry-2026-10-04` | A21 |
-| 4 | The Commons check | Not started | S23 |
-| 6 | Bridget's hello | Not started | A22, A14 |
-| 7 | The carry to the paid site, by her hand | Hers | O14 |
-| 8 | The screening report export, free | Not started; needs Calvin's figures | S21 |
+| 1 | **React 19 under the map**, so the open core's calculator screens can run here (#156, §9). | Nothing outside this repository. | Before-and-after map pictures she has passed; every check and the build pass. |
+| 2 | **Calvin's carbon calculator from the open core** on his Tool tab, simple view and sliders on (A21). | The open core (Session C): the release file and the eight changes in #156 §1, plus sliders and the simple view. The version pinned is the one the paid site shows reproducing Mali and Tanzania. | Proofs P1 to P5 of #156 pass; she has passed the before-and-after table and the tab in the browser. |
+| 3 | **Wellington asks the core facts first**: type and class, country, how many served, people or households, and whether it is already registered for carbon (the transition). | Her rewrite of his instructions, freeing at least 249 characters plus the new question's; the gate stays at 26,199. Step 2. | The record holds the new fields; one measured run; his prompt under the gate. |
+| 4 | **Calvin's chat**, on the open core's prompt, asking only what is missing (A21). | The core's `prompt.md` read against AGENT_RULES.md (#156, open point C). Steps 2 and 3. | One measured run; on a walk he opens with his facts filled and asks at most household size and, for a transition, the filed V1.0 fraction of non-renewable biomass (fNRB). |
+| 5 | **The water figure matches the paid site's VWBA calculator**: from the open core once it holds the water method, or this site's D-3 shown equal. | The open core's water step (its M8), or the paid site's figures on made-up cases, by her hand. | Same numbers on made-up cases, in a table in the pull request she has passed. |
+| 6 | **Bridget's hello** (A22, old step 6): who she is, what the map shows, then back. | Nothing outside this repository. | A walk passes through her and back with no wrong turn; her eyeball. |
+| 7 | **The screening report, free** (S21, old step 8): printed or saved, every figure cited. | Steps 2, 4 and 5. Whether it uses the core's print report is its own proposal. | She prints one from a walk; every figure matches the screen and carries its citation. |
+| 8 | **The save carries every input the figures rest on**, never a computed number (old step 7). | Steps 2 to 5. The paid site's receiver reads them: her carry (O14), its item #243. | A test visit saved here opens on the paid site with every input filled. |
+| 9 | **The v1 walk**: one whole screening, counted and compared. | Everything above; the paid site runs the same open core version. | 30 questions or fewer, counted off the walk; the paid site's carbon and VWBA figures on the saved project equal the screening's; written in BUILD_LOG; she has watched it. |
 
-- **Step 5 moved ahead of the rest on her word of 24 Sep 2026**, once the engine was sealed and carried.
-  Step 8 was added on 3 Oct 2026 and numbered last so no step renumbers; where it sits among 6, 7 and 8
-  is hers to say.
+**After v1, not needed for the finish line:** deleting `carried/` (ruled, #156 step 3); the Commons check (S23,
+old step 4); A14; Phoebe's 80% pass, the rig's to say; the fresh public repository; everything in the After v1 list.
+
 - **The engine bundle is at `carried/`**: gs4gg-carbon v0.16.1, the paid site's `calculator-seal-2026-10-03`,
   34 files, 34 of 34 hashes verified, crossed 3 Oct 2026 (#147). Tagged `engine-carry-2026-10-04`; the first bundle
   was tagged `engine-carry-2026-09-27` (#132). Nothing edits it here, and nothing in the site reads it yet.
