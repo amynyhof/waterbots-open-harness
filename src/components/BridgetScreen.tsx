@@ -5,9 +5,10 @@
  *
  * HER CHAT IS NOT LIVE, so the screen opens on Tool, which is the map, and
  * the Chat tab carries the one plain line saying she is not answering here
- * yet — maintainer's ruling 1 of 9 Sep 2026. No composer. No scripted
- * greeting. Her roadmap line, the statement of intent that sat in her dock,
- * follows the line at caption size.
+ * yet — maintainer's ruling 1 of 9 Sep 2026. No composer. Her hello stands
+ * on the map, above it, and not in the chat (A22, 30 Oct 2026; see below).
+ * Her roadmap line, the statement of intent that sat in her dock, follows the
+ * line at caption size.
  *
  * THE MAP IS THE TOOL, and it is the same BasinMap the shell drew in the
  * centre until this slice — moved inside her screen, still mounted for the
@@ -37,6 +38,7 @@
  * never text, so her name is set in ink, as everywhere else.
  */
 
+import type { CSSProperties } from 'react';
 import bridgetPortrait from '../../brand/assets/bots/bridget.svg';
 import type { AgentHost } from '../chat/evidence';
 import {
@@ -50,6 +52,7 @@ import {
   HYDROSHEDS_PUBLISHER,
 } from '../lib/licences';
 import { PROJECT_MAPPING_NOTE } from '../lib/site';
+import { DESK_LABEL, type Surface } from '../lib/surfaces';
 import { citedDocument, toolSummary, toolVersion } from '../lib/toolReadmes';
 import type { MapPin } from '../lib/visit';
 import AgentScreen from '../screen/AgentScreen';
@@ -75,12 +78,19 @@ const NOT_LIVE_LINE = 'Bridget is not answering here yet. The map works: click a
 
 export default function BridgetScreen({
   onStatus,
-  pinnedHybas,
+  pin,
   onPin,
+  place,
+  onNavigate,
+  phone,
 }: {
   onStatus: (status: MapStatus) => void;
-  pinnedHybas: number | null;
+  pin: MapPin | null;
   onPin: (pin: MapPin | null) => void;
+  /** Where the project is, in the visitor's words, or blank. Never the pin's own line. */
+  place: string;
+  onNavigate: (surface: Surface) => void;
+  phone: boolean;
 }) {
   return (
     <AgentScreen
@@ -89,14 +99,90 @@ export default function BridgetScreen({
       tabs={{
         chat: <NotLiveChat host={BRIDGET} line={NOT_LIVE_LINE} note={PROJECT_MAPPING_NOTE} />,
         tool: (
-          <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
-            <BasinMap onStatus={onStatus} pinnedHybas={pinnedHybas} onPin={onPin} />
+          <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+            <BridgetHello pin={pin} place={place} onNavigate={onNavigate} phone={phone} />
+            <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
+              <BasinMap onStatus={onStatus} pinnedHybas={pin?.hybasId ?? null} onPin={onPin} />
+            </div>
           </div>
         ),
         pack: <KnowledgePackTab view={BRIDGET_PACK} />,
         credentials: <CredentialsTab host={BRIDGET} />,
       }}
     />
+  );
+}
+
+/* --------------------------------------------------------------------------
+   Her hello — A22, step 6 of the Road to v1, the maintainer's word of
+   30 Oct 2026: she greets the visitor, says in plain words what she does,
+   takes the pin, and hands back to the journey.
+
+   IT IS NOT HER CHAT (A12). Fixed lines on the map, in her name, saying her
+   chat is not open; no composer and no bubbles, so nothing looks like a
+   conversation that is not happening. It asks one thing — the pin — and never
+   asks where the project is: that is Wellington's question, and the place he
+   heard is said back instead.
+
+   ONCE A BASIN IS PINNED it says the reading, says so when the reading is
+   derived (CLAUDE.md, data licensing), and hands back to Wellington, the way
+   Phoebe's hand-back does (contract line 8). It names no next step itself:
+   next steps live in the right rail only (ruled 30 Sep 2026), and the pin has
+   already moved the visit on there (pinnedVisit, src/lib/visit.ts). Never a
+   filled primary — the rail keeps its one (ruled 16 Sep 2026).
+   -------------------------------------------------------------------------- */
+
+const group = (n: number) => n.toLocaleString('en-GB');
+
+function BridgetHello({
+  pin,
+  place,
+  onNavigate,
+  phone,
+}: {
+  pin: MapPin | null;
+  place: string;
+  onNavigate: (surface: Surface) => void;
+  phone: boolean;
+}) {
+  const click = phone ? 'tap' : 'click';
+  const where = place.trim();
+
+  return (
+    <section className="wb-hello" aria-label="Bridget" style={{ '--hello-accent': `var(${BRIDGET.colourToken})` } as CSSProperties}>
+      <span className="wb-hello-face" aria-hidden>
+        <img src={BRIDGET.portrait} alt="" width={26} height={26} />
+      </span>
+      <div className="wb-hello-words">
+        {pin === null ? (
+          <>
+            <p className="t-body">
+              <strong>Hi, I&rsquo;m Bridget.</strong> I look after this map of river basins &mdash; the land
+              that drains into one river &mdash; coloured by how much pressure there is on their water.{' '}
+              {where
+                ? `Find your project (${where}) and ${click} its basin to pin it.`
+                : `Find where your project is and ${click} its basin to pin it.`}
+            </p>
+            <p className="t-caption">My chat isn&rsquo;t open yet, so the map does the work.</p>
+          </>
+        ) : (
+          <>
+            <p className="t-body">
+              <strong>Pinned.</strong> This basin covers {group(Math.round(pin.subAreaKm2))} km&sup2; and reads{' '}
+              {pin.stressLabel} for water stress.
+              {pin.level === 4 &&
+                ' That reading is derived: the area-weighted majority of the smaller basins inside it. Zoom in and pin one of those to see the published figure.'}{' '}
+              That&rsquo;s all I need here.
+            </p>
+            <div className="wb-hello-next">
+              <button type="button" className="btn" onClick={() => onNavigate('desk')}>
+                Back to Wellington on {DESK_LABEL}
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </section>
   );
 }
 

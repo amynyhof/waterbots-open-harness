@@ -1,6 +1,6 @@
 # bridget-map — map datasets (open)
 
-**Version 0.1.1.** Bridget staffs Partners. Her tool is the map. Her knowledge
+**Version 0.1.2.** Bridget staffs Partners. Her tool is the map. Her knowledge
 is the two datasets already on this site.
 
 | Tool | What it is | Live homes |
@@ -22,17 +22,18 @@ renders.
 Every specialist keeps the ten lines of **the specialist contract** in
 [AGENT_RULES.md](../../AGENT_RULES.md), the maintainer's ruling of 20 Sep 2026.
 This table is where Bridget stands against it. Her chat is not built (item A12), so
-the table is honest about that. Read as of 20 Sep 2026.
+the table is honest about that. Read as of 20 Sep 2026; lines 1 and 8 as of
+30 Oct 2026, when her hello was built (item A22).
 
 | # | Line | Today | Where it is met |
 |---|---|---|---|
-| 1 | Introduces itself | **No** | The "not answering here yet" line is the console's (`src/components/BridgetScreen.tsx`) |
+| 1 | Introduces itself | **Partly, by fixed lines** | Her hello above the map (`src/components/BridgetScreen.tsx`): her name, what the map shows, the one ask, and that her chat is not open. Not a chat |
 | 2 | Knows its own tools | **No** | No prompt. This README names the map and its two datasets |
 | 3 | Sees its tool's state | **No** | The pin is in the visit; no agent reads it |
 | 4 | Walks the user through the tool by talking | **No** | No chat |
 | 5 | Fills the tool from answers, and shows what it filled | **No** | The visitor pins by hand |
 | 6 | Answers only from its own cards, with a citation | **No** | No rule cards; two cited datasets. What her cards are is a question for her brief |
 | 7 | Knows its limits and its level here | **No** | No prompt. The console says honestly that she is not answering |
-| 8 | Knows Wellington leads. Hands back | **No** | No chat. Wellington's stage line already points at the map |
+| 8 | Knows Wellington leads. Hands back | **Partly, by the console** | Once a basin is pinned her hello hands back, "Back to Wellington on Dispatches"; the pin moves the visit on so his stage line points past the map (`pinnedVisit`, `src/lib/visit.ts`) |
 | 9 | Posts official results to the project record | **Partly, by the tool** | The pin writes the place, source "pin", and the basin reading into her desk row and the seal |
 | 10 | Knows what its tool needs, the kind of value each input takes and where it comes from; checks the project context first; says where each value came from | **No** | The map takes one input, a click on a basin; the place it reads comes from the record with its source tag. No agent reads either |

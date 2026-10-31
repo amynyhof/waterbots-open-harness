@@ -111,8 +111,9 @@ import {
   learnedContext,
   nextStepRows,
   openedEligibility,
+  pathwayAllowsQuantify,
+  pinnedVisit,
   rowTaken,
-  pinnedContext,
   typedContext,
   type Learned,
   type MapPin,
@@ -206,9 +207,11 @@ export default function App() {
 
   /* A pin fills the place if the visitor left it blank — ruling A, 2 Sep
      2026 — and never overwrites a place they typed or told Wellington.
-     Unpinning clears only a place the pin wrote. */
+     Unpinning clears only a place the pin wrote. From 30 Oct 2026 (A22) a pin
+     at Partners also finishes that step, where a pathway read allows Quantify
+     (pinnedVisit, in src/lib/visit.ts). */
   const setPin = useCallback((pin: MapPin | null) => {
-    setVisit((v) => ({ ...v, pin, context: pinnedContext(v.context, pin) }));
+    setVisit((v) => pinnedVisit(v, pin, pathwayAllowsQuantify(v, sheetRef.current)));
   }, []);
 
   /* Which pack's tab is open. Held here so a step away and back keeps it. */
@@ -308,11 +311,13 @@ export default function App() {
      time Dispatches shows after Phoebe's worksheet is done, the desk sends him
      one turn, once, the way her screen greets on opening: no bubble for the
      visitor, and his answer knows what she found. It counts as one of his
-     thirty, like any answer. */
+     thirty, like any answer. A visitor who went from her straight to the map
+     and pinned there reaches him at Quantify, and is greeted the same way. */
   const greetedBack = useRef(false);
   const askReturned = chat.askOpened;
   useEffect(() => {
-    if (greetedBack.current || surface !== 'desk' || visit.stage !== 'partners') return;
+    if (greetedBack.current || surface !== 'desk') return;
+    if (visit.stage !== 'partners' && visit.stage !== 'quantify') return;
     greetedBack.current = true;
     void askReturned();
   }, [surface, visit.stage, askReturned]);
@@ -468,8 +473,11 @@ export default function App() {
               >
                 <BridgetScreen
                   onStatus={onStatus}
-                  pinnedHybas={visit.pin?.hybasId ?? null}
+                  pin={visit.pin}
                   onPin={setPin}
+                  place={visit.context.provenance.place === 'pin' ? '' : visit.context.place}
+                  onNavigate={setSurface}
+                  phone={phone}
                 />
               </div>
 

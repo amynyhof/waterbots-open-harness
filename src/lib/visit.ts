@@ -300,6 +300,22 @@ export function applyWellingtonRoute(
   return visit;
 }
 
+/**
+ * A pin is the Partners step's work, so a pin while the visit is at Partners
+ * finishes it — Bridget's hello, A22, 30 Oct 2026. Where a pathway read allows
+ * Quantify the visit moves there, so Wellington's next answer points on to
+ * Quantify and never back to the map; that is the invite the rail already
+ * showed after a pin (ruled 30 Sep 2026), now written into the stage he reads.
+ * Where none allows it the stage stays, and nothing is invited past it.
+ */
+export function pinnedVisit(visit: Visit, pin: MapPin | null, canQuantify: boolean): Visit {
+  const next = { ...visit, pin, context: pinnedContext(visit.context, pin) };
+  if (pin !== null && visit.stage === 'partners' && canQuantify) {
+    return { ...next, stage: 'quantify', invitedQuantify: true };
+  }
+  return next;
+}
+
 /** When every criterion has a verdict, Eligibility is done and the loop returns to Wellington. */
 export function applyEligibilityProgress(visit: Visit, sheet: Sheet): Visit {
   if ((visit.stage === 'learn' || visit.stage === 'eligibility') && eligibilityDone(visit, sheet)) {
@@ -556,13 +572,15 @@ export function rowTaken(row: DeskRow, surface: Surface, visit: Visit): boolean 
 
 /**
  * What the right rail shows. The current invite is first. Derived rows may
- * follow and never outrank it. Bridget's place-row waits until Partners;
- * Calvin's figures wait until Quantify.
+ * follow and never outrank it. Bridget's pinned basin shows from Partners;
+ * her ask for the pin only from Quantify, because at Partners the stage's own
+ * invite asks for it, and two rows asking one thing is a repeated question
+ * (A22, 30 Oct 2026). Calvin's figures wait until Quantify.
  */
 export function nextStepRows(visit: Visit, sheet: Sheet, packs: MethodPack[]): DeskRow[] {
   const invite = currentInvite(visit, pathwayAllowsQuantify(visit, sheet));
   const derived = deskRows(visit, sheet, packs).filter((row) => {
-    if (row.from === 'bridget') return visit.stage === 'partners' || visit.stage === 'quantify';
+    if (row.from === 'bridget') return visit.pin !== null ? visit.stage === 'partners' || visit.stage === 'quantify' : visit.stage === 'quantify';
     if (row.from === 'calvin') return visit.stage === 'quantify';
     if (row.from === 'phoebe') return visit.stage !== 'learn';
     return true;

@@ -160,8 +160,9 @@ fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 20
 draws them and `check-roster` does not read them. Her ruling is owed: the field goes and the header reads
 the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 2026.
 
-**A22 · Bridget's hello.** Step 6 · BONES. From the v1 done line: the map and the pin as today; she
-introduces herself, says what the map shows, and hands back. It is not her chat (A12). No proposal yet.
+**A22 · Bridget's hello.** Step 6 · BONES. Built 30–31 Oct 2026 on her word, waiting on her eyeball: fixed lines above
+the map (who she is, what it shows, one ask: the pin), then the reading and "Back to Wellington on Dispatches". A pin
+at Partners moves the visit to Quantify where a pathway read allows it; the rail asks for the map once. Not her chat (A12).
 
 **A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet,
 who hosts the D-n modules in the Commons. Violet is not on the roster yet; it arrives by her hand. No proposal yet.

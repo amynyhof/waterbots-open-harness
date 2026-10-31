@@ -311,6 +311,7 @@ const {
   nextStepRows,
   rowTaken,
   pathwayAllowsQuantify,
+  pinnedVisit: pinVisit,
   deskRows,
   eligibilityDone,
   inviteSurface,
@@ -458,6 +459,61 @@ expect(
     );
   })(),
   'a record row clears when taken'
+);
+/* BRIDGET'S HELLO — A22, 30 Oct 2026. Her ask for the pin is the stage
+   invite's at Partners, never a second row; a pin there finishes Partners. */
+expect(
+  'at Partners the map is asked for once: the invite asks, and her own ask for the pin waits until Quantify',
+  (() => {
+    const keys = nextStepRows(mapped, NO_SHEET, []).map((row) => row.key);
+    const before = nextStepRows(handed, NO_SHEET, []).map((row) => row.key);
+    const later = nextStepRows({ ...mapped, stage: 'quantify' }, NO_SHEET, []).map((row) => row.key);
+    return keys.includes('invite-partners') && !keys.includes('bridget') && !before.includes('bridget') && later.includes('bridget');
+  })(),
+  JSON.stringify(nextStepRows(mapped, NO_SHEET, []).map((row) => row.key))
+);
+const pinHere = { hybasId: 2, pfafId: 2, level: 6, stressLabel: 'Low (<10%)', subAreaKm2: 50 };
+const pinnedOn = pinVisit(mapped, pinHere, true);
+expect(
+  'a pin at Partners, where a pathway read allows it, moves the visit to Quantify, so he never sends them back to the map',
+  pinnedOn.stage === 'quantify' && pinnedOn.invitedQuantify === true && pinnedOn.pin === pinHere &&
+    nextStepRows(pinnedOn, NO_SHEET, [])[0]?.key === 'invite-quantify' &&
+    nextStepRows(pinnedOn, NO_SHEET, []).some((row) => row.key === 'bridget' && /Low/.test(row.sentence)),
+  JSON.stringify({ stage: pinnedOn.stage, rows: nextStepRows(pinnedOn, NO_SHEET, []).map((row) => row.key) })
+);
+expect(
+  'where no pathway read allows Quantify the pin is kept and the stage stays, so nothing is invited past it',
+  (() => {
+    const held = pinVisit(mapped, pinHere, false);
+    return held.stage === 'partners' && held.pin === pinHere && currentInvite(held, false) === null;
+  })(),
+  'the pin skipped past a pathway that cannot be screened'
+);
+expect(
+  'a pin before Partners, or an unpin, moves no stage; the pin still fills a blank place',
+  pinVisit(invited, pinHere, true).stage === 'eligibility' &&
+    pinVisit(pinnedOn, null, true).stage === 'quantify' &&
+    pinVisit(pinnedOn, null, true).pin === null &&
+    /HYBAS 2/.test(pinVisit({ ...EMPTY_VISIT, stage: 'partners' }, pinHere, true).context.place),
+  'a pin moved a stage it should not'
+);
+expect(
+  'the shell writes a pin through pinnedVisit, with the pathway rule, and his greeting back also runs at Quantify',
+  /pinnedVisit\(v, pin, pathwayAllowsQuantify\(v, sheetRef\.current\)\)/.test(readFileSync('src/App.tsx', 'utf8')) &&
+    /visit\.stage !== 'partners' && visit\.stage !== 'quantify'/.test(readFileSync('src/App.tsx', 'utf8')),
+  'the shell does not use the pin rule'
+);
+const bridgetSource = readFileSync('src/components/BridgetScreen.tsx', 'utf8');
+expect(
+  "Bridget's hello: who she is and what the map shows, one ask (the pin), honest that her chat is not open, the derived reading said as derived, and the hand-back to Wellington",
+  /Hi, I&rsquo;m Bridget\./.test(bridgetSource) &&
+    /map of river basins/.test(bridgetSource) &&
+    /its basin to pin it/.test(bridgetSource) &&
+    /chat isn&rsquo;t open yet/.test(bridgetSource) &&
+    /pin\.level === 4/.test(bridgetSource) && /derived/.test(bridgetSource) &&
+    /Back to Wellington on \{DESK_LABEL\}/.test(bridgetSource) &&
+    !/where is (your|the) project\?/i.test(bridgetSource),
+  'her hello is missing a part'
 );
 expect(
   'the pathway rule is the one his route keeps: likely eligible or not enough known allows Quantify',
