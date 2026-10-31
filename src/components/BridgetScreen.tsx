@@ -10,17 +10,19 @@
  * the separate Tool tab: the map is not somewhere else to go, it is what she
  * is talking about. The screen opens on her chat, as Phoebe's does.
  *
- * HOW A VISIT GOES. Her first message is the maintainer's, word for word,
- * shown the moment the chat mounts (BRIDGET_GREETING, api/_bridgetPrompt.ts,
- * held byte-identical to the copy here by scripts/check-wellington.mjs). The
- * first time her step shows, the console asks her to follow it — `opened`,
- * the pattern of Phoebe's first open — and she asks her one question, the pin,
- * in the place's own words. Each new pin sends `pinned`, and she reports the
- * basin and its reading, says when it is derived, and hands back to Wellington
- * by the field. The way back to Dispatches is drawn from that field, as
- * Phoebe's is; no next step is drawn here, because next steps live in the
- * right rail only (ruled 30 Sep 2026) and the pin has already moved the visit
- * on there (pinnedVisit, src/lib/visit.ts).
+ * HOW A VISIT GOES — the maintainer's second ruling of 31 Oct 2026 on #167.
+ * The first time her step shows, the console sends `opened`, the pattern of
+ * Phoebe's first open, and she answers in her own words: who she is, what she
+ * does, why the basin matters to partners and funders, that she is still being
+ * built, and her one question, the pin, in the place's own words. Nothing is
+ * shown before it but her thinking line; the fixed greeting #167 first carried
+ * is gone. Each new pin sends `pinned`, and she thanks the visitor, reports
+ * the basin and its reading, and says when it is derived. Where the right rail
+ * offers Quantify she says Calvin is next, by the rail's button, and draws no
+ * link; where it does not she hands back to Wellington by the field, and the
+ * way back to Dispatches is drawn from it, as Phoebe's is. No next step is
+ * drawn here: next steps live in the right rail only (ruled 30 Sep 2026), and
+ * the pin has already moved the visit on there (pinnedVisit, src/lib/visit.ts).
  *
  * THE MAP IS THE SAME BasinMap the shell drew in the centre until slice 4,
  * still mounted for the whole visit, and kept at full size under
@@ -84,17 +86,6 @@ export const BRIDGET: AgentHost = {
   thinkingLine: 'Bridget is looking at the map…',
 };
 
-/**
- * Her first message — the maintainer's words of 31 Oct 2026, word for word.
- * The relay's copy is BRIDGET_GREETING in api/_bridgetPrompt.ts; the check
- * holds the two byte-identical. Never edited without her.
- */
-export const BRIDGET_GREETING =
-  "Hi, I'm Bridget. I'm still being built, so today I can only help you pin your project and tell you about the water stress in that area. Soon I'll also help you find other projects and funders where you work.";
-
-/** Shown in her name and never sent as her turn: the relay's prompt tells her it is already on the screen. */
-const GREETING_TURN: AgentTurn = { role: 'agent', text: BRIDGET_GREETING, evidence: [], speaker: BRIDGET };
-
 export default function BridgetScreen({
   onStatus,
   pin,
@@ -102,6 +93,7 @@ export default function BridgetScreen({
   place,
   onNavigate,
   phone,
+  quantifyNext,
   visible,
 }: {
   onStatus: (status: MapStatus) => void;
@@ -111,6 +103,8 @@ export default function BridgetScreen({
   place: string;
   onNavigate: (surface: Surface) => void;
   phone: boolean;
+  /** True when the right rail offers Quantify: then Calvin is next after the pin, not Wellington. */
+  quantifyNext: boolean;
   /** True while Partners is the visible step — her first answer runs then, not on mount. */
   visible: boolean;
 }) {
@@ -124,7 +118,7 @@ export default function BridgetScreen({
         role: role === 'agent' ? ('assistant' as const) : ('user' as const),
         content: text,
       })),
-      { place, phone, pin },
+      { place, phone, pin, quantifyNext },
       signal,
       { opened: meta?.opened === true, pinned: meta?.pinned === true }
     );
@@ -133,7 +127,8 @@ export default function BridgetScreen({
       text: answer.reply,
       evidence: [],
       abstained: answer.abstained,
-      /* The way back to him, from the field alone — Phoebe's hand-back. */
+      /* The way back to him, from the field alone — Phoebe's hand-back. The
+         relay sets it to "none" after a pin when Calvin is next. */
       ...(answer.handBack === 'wellington'
         ? { action: { label: `Back to Wellington on ${DESK_LABEL}`, go: () => onNavigate('desk') } }
         : {}),
@@ -144,15 +139,7 @@ export default function BridgetScreen({
   const chatRef = useRef(chat);
   chatRef.current = chat;
 
-  /* Her first message is on the thread from the start. */
-  const greeted = useRef(false);
-  useEffect(() => {
-    if (greeted.current) return;
-    greeted.current = true;
-    chatRef.current.seed([GREETING_TURN]);
-  }, []);
-
-  /* The first time her step shows, she follows it with her one question. */
+  /* The first time her step shows, she introduces herself and asks her one question. */
   const opened = useRef(false);
   useEffect(() => {
     if (!visible || opened.current) return;

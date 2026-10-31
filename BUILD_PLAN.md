@@ -121,7 +121,7 @@ The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done,
 | 3 | **Wellington asks the core facts first**: type and class, country, how many served, people or households, and whether it is already registered for carbon (the transition). | Her rewrite of his instructions, freeing at least 249 characters plus the new question's; the gate stays at 26,199. Step 2. | The record holds the new fields; one measured run; his prompt under the gate. |
 | 4 | **Calvin's chat**, on the open core's prompt, asking only what is missing (A21). | The core's `prompt.md` read against AGENT_RULES.md (#156, open point C). Steps 2 and 3. | One measured run; on a walk he opens with his facts filled and asks at most household size and, for a transition, the filed V1.0 fraction of non-renewable biomass (fNRB). |
 | 5 | **The water figure from the open core's VWBA D-3 module**, in place of this site's `vwbaD3.ts`. | Session C builds the module, with the test cases worked by hand and every step cited, in a pinned open core release. Step 2. | The hand-worked cases pass here; she has passed the water figure in the browser. |
-| 6 | **Bridget's chat** (A22, old step 6): her greeting, the pin, the reading, then back. | Nothing outside this repository. | A walk passes through her and back with no wrong turn; her eyeball. |
+| 6 | **Bridget's chat** (A22, old step 6): her opening, the pin, the reading, then Calvin or back. | Nothing outside this repository. | A walk passes through her and back with no wrong turn; her eyeball. |
 | 7 | **The screening report, free** (S21, old step 8): printed or saved, every figure cited. | Steps 2, 4 and 5. Whether it uses the core's print report is its own proposal. | She prints one from a walk; every figure matches the screen and carries its citation. |
 | 8 | **The save carries every input the figures rest on**, never a computed number (old step 7). | Steps 2 to 5. The paid site's receiver reads them: her carry (O14), its item #243. | A test visit saved here opens on the paid site with every input filled. |
 | 9 | **The v1 walks**: whole screenings, counted and compared. | Everything above; the paid site runs the same open core release. | Questions counted on each walk and the average reported; the paid site's carbon and VWBA figures on each saved project equal the screening's, or each difference is explained or shown in the paid site's report after the save; written in BUILD_LOG; she has watched one. |
@@ -129,10 +129,7 @@ The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done,
 **After v1, not needed for the finish line:** deleting `carried/` (ruled, #156 step 3); A23, Calvin's VWBA row
 becomes Violet's; A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
-- **The engine bundle is at `carried/`**: gs4gg-carbon v0.16.1, the paid site's `calculator-seal-2026-10-03`,
-  34 files, 34 of 34 hashes verified, crossed 3 Oct 2026 (#147). Tagged `engine-carry-2026-10-04`; the first bundle
-  was tagged `engine-carry-2026-09-27` (#132). Nothing edits it here, and nothing in the site reads it yet.
-- **Wellington's prompt is 26,034 characters against a gate of 26,199.** The gate moves only on her word.
+- **Wellington's prompt is 25,925 characters against a gate of 26,199.** The gate moves only on her word.
 - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull
   request; a measured run after any prompt change; the build-update fact refreshed at every full close-out.
 
@@ -148,9 +145,7 @@ order above, for her to move.
 
 How agents behave, what they may say, how they hand off. Governed by AGENT_RULES.md.
 
-**A21 · Calvin's brief — his chat, the engine, carbon beside water.** Step 5 · BONES. The old brief,
-`PROPOSAL_calvin-brief.md` (R1 to R26), stays on `calvin/engine-crosses` as history; its build, #151, closed unmerged
-15 Oct 2026. **27 Oct 2026: replaced by** [docs/proposals/calvin-from-open-core.md](./docs/proposals/calvin-from-open-core.md):
+**A21 · Calvin's brief — his chat, the engine, carbon beside water.** Step 5 · BONES. **27 Oct 2026: replaced by** [docs/proposals/calvin-from-open-core.md](./docs/proposals/calvin-from-open-core.md):
 Calvin's engine and screens from the open core, React 19, Wellington asks the core facts first. Ruled; six open.
 Done when his screening numbers match the paid site's calculators run on the saved project's inputs (the v1
 fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 2026; teal dropped).
@@ -160,9 +155,18 @@ fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 20
 draws them and `check-roster` does not read them. Her ruling is owed: the field goes and the header reads
 the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 2026.
 
-**A22 · Bridget's chat.** Step 6 · BONES. Built 31 Oct 2026 on her ruling, waiting on her eyeball and live walk: her chat
-with the map beside it, her greeting word for word, one ask (the pin), the reading said derived where it is, then back to
-Wellington by the field. A pin at Partners moves the visit to Quantify where a pathway allows it; the rail asks once. Closes A12.
+**A22 · Bridget's chat.** Step 6 · BONES. Built 31 Oct 2026 on her two rulings, waiting on her eyeball and live walk: her chat
+and the map side by side on one tab; her opening in her own words (who she is, what she does, why the basin matters to funders
+and partners, still being built, the pin); one ask; the reading said derived where it is; then Calvin, by the rail's Quantify
+button, or back to Wellington (A24). The pin finishes Partners; the rail asks once. Closes A12.
+
+**A24 · A pin where no pathway goes on to Quantify.** Step 6 · v1 · BONES. Her ruling of 31 Oct 2026: Bridget thanks the
+visitor and sends them back to Wellington, as built in A22. The visit stays at Partners after the pin, and he may point back
+to the map. Done is a line he reads after a pin there, and a measured walk.
+
+**A25 · Agents' knowledge copies refresh whenever their files change.** v1 · BONES. Her word of 31 Oct 2026. The primer,
+the cards and the lists reach the relays as generated copies (`scripts/build-prompt-modules.mjs`), written by hand; CI's
+`--check` fails a stale copy, but nothing refreshes one. Done is a copy that cannot ship stale and needs no hand. Proposal first.
 
 **A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet,
 who hosts the D-n modules in the Commons. Violet is not on the roster yet; it arrives by her hand. No proposal yet.
@@ -174,10 +178,6 @@ gaps that are another agent's subject, and anything no agent covers. Waits on us
 **A10 · Wellington's answers run long.** After v1 · BONES. The target is two or three plain sentences; his
 replies ran four or five. Done is a measured pass on the length rule, counts and not impressions, and a
 check that reads sentence counts off a walk. On her word.
-
-**A24 · A pin where no pathway goes on to Quantify.** After v1 · BONES. The visit stays at Partners after the pin,
-and Wellington may point the visitor back to the map. Left as it is by her ruling of 31 Oct 2026. Done is a line he
-reads after a pin there, and a measured walk.
 
 **A20 · Phoebe's runaway call is cut off, not prevented.** After v1 · PARK. One request in seventy-five
 spent all 16,000 output tokens; `CALL_TIMEOUT_MS`, 120 seconds, ends it. Done is a real count once there
@@ -191,35 +191,33 @@ What a visitor sees and works with. Her browser review is the gate.
 without answers, exportable as an easy-to-read, properly cited document. The screening report is the first
 export, in the phase-tags shape. It needs Calvin's figures. Proposal first, from a captured reference.
 
+**S25 · Tap size on phones.** v1 · WALKTHROUGH. Her word of 31 Oct 2026, after her preview check of #167. Every control a
+visitor taps, measured at phone width against a size she rules; S24's 44px for the main site's menu is the same question
+there. Proposal first, with the measurements.
+
 **S11 · The free desk — two typeable controls owed.** After v1 · WALKTHROUGH. "What it does" and the
 project type are heard in chat only; a visitor who never chats cannot fill them. Everything else is built.
 
 **S18 · Agent Commons — slices 4 and 5.** After v1 · PARTNER. v0, slices 1 to 3, is built (#68 to #70).
 Slice 4, Credentials fed by the grader's rig, waits on his per-case file and the three rig changes she takes to
 him; it reads "not yet graded" until a real card exists. Slice 5, the flag button, is later. One grader,
-real only, and an agent opens alone: canon in CLAUDE.md. **28 Oct 2026:** the site moves to open.waterbots.ai,
-every page takes the main site's menu, and the Commons is rewritten as a list of modules, her words. The
-same day, a second word: the page is centred under the menu and the sign-up bar is gone; the carbon packs
-read "In development · partner review", the health guide is Heather's and "Proposed", Phoebe's reads "Beta"; and four modules
-seeking a build partner and a domain consultant are listed below, with the button that asks a partner in. A
-third word the same day: one list, the foot text gone, the button at the header's right, plain-text cells, a
-display-only community rating, "Coming soon" for Calvin and Bridget, Heather "Proposal pending", "Work
-with us" emails for the seeking rows, the module page centred with "About this module", and an address per
-module that opens, /commons/phoebe first. A fourth word the same day: status becomes six stages, from seeking
-partners to graduated, each a name and a bar in one Tide shade, pale to solid, with an (i) legend; "Beta" is
-a tag on Phoebe, open to try, not a stage; the count line goes; a new opening, grading note and carbon
-method links in her words; Phoebe's Tool tab reads "Eligibility quiz" on the Commons; and the menu marks the
-page you are on. Her leaning Wellington, from the concept note, sits faded right of the opening, hidden below
-1240px.
+real only, and an agent opens alone: canon in CLAUDE.md. **28 Oct 2026:** four words the same day rewrote the
+Commons as one list of modules, built; the text moved to docs/OPEN_ITEMS_ARCHIVE.md on 31 Oct 2026.
 
 **S24 · The site on a phone.** After v1 · WALKTHROUGH. Her word of 29 Oct 2026, from that day's mobile check:
-every finding fixed in one pull request. At 900px and below the screening fills the screen, the rail and the crew
-slide over it, the step's name sits under the rings; the Commons and a module's tabs scroll with the page; the
-menu takes the live page's three rows. Desktop unchanged. Waits on her check on a real phone; a 44px tap area
+every finding fixed in one pull request, built; the list moved to docs/OPEN_ITEMS_ARCHIVE.md. Waits on her check on a real phone; a 44px tap area
 for the main site's menu is hers to carry.
 
 **S23 · The Commons check.** After v1 · PARTNER. v2, her word of 30 Oct 2026; it was old step 4. Phoebe and
 Calvin work on the Commons with no memory; Bridget introduces herself; Calvin's two cards on one engine. No proposal.
+
+**S26 · The Commons list in its own content file.** After v1 · PARTNER. v2, her word of 31 Oct 2026. The list of
+modules lives in code, `src/lib/commonsShelf.ts`; it moves to a content file of its own, so a row changes without
+touching code. Proposal first.
+
+**S27 · VWBA D-1 to D-9 rows on the Commons.** After v1 · PARTNER. v2, her word of 31 Oct 2026. One row for each of
+the VWBA methods D-1 to D-9 on the Commons list, each with a real status, never an invented one; Violet hosts them (A23).
+No proposal yet.
 
 **S19 · The Workshop — make your own agent on the Commons.** After v1 · PARTNER. Not built; the proposal
 is next on her word. Her cost model, review before publishing and the two-shape save are in the write-up.
@@ -283,6 +281,9 @@ the bundle. Nothing is due until there is usage. Route C, a custom vector basema
 **O12 · The map page is heavy.** After v1 · WALKTHROUGH. A pin at world view redraws 1,342 basins and
 stalls the page. Look at whether the pin redraws every polygon, and whether the hidden map keeps drawing.
 
+**O17 · The first page weighs 776 kB.** After v1 · WALKTHROUGH. v2, her word of 31 Oct 2026. The site's one script
+file, past the build's own 500 kB warning (778 kB on #167). Done is a measured figure she rules on, and what was cut. With O12.
+
 **O13 · Banned words in old code.** After v1 · BONES. `validate()` in `api/_wellingtonAnswer.ts` and its
 callers, and "console" in Bridget's and Calvin's dock copy. One hygiene pass; no behaviour changes.
 
@@ -292,9 +293,7 @@ for each. Check later, on her word.
 
 **O16 · Real-project figures in the carried bundle, public since #132.** Step 5 · BONES. The sweep of 3 Oct 2026
 found the India filing's figures in `presets.ts`, `emissions-legacy.ts` and `MANIFEST.md`. #244 is the paid site's
-item for real numbers left in this repository's public history. Her ruling of 3 Oct 2026: the "Test Project" and
-"Malawi" figures were play numbers, retired by the paid site. The v0.16.1 bundle crossed 3 Oct 2026 without them.
-Open: the figures stay in `main`'s history before it. List: BUILD_LOG.
+item for real numbers left in this repository's public history. Open: the figures stay in `main`'s history before it. List: BUILD_LOG.
 
 ---
 

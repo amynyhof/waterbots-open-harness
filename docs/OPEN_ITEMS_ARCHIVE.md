@@ -29,6 +29,7 @@ identifiers — S4 stays S4. Identifiers are never reused.
 **Third sweep: 8 Sep 2026**, one item — S7.
 **Fourth sweep: 9 Sep 2026**, one item — S16.
 **Fifth sweep: 18 Sep 2026, the triage**, eighteen items — K4, K5, K6, K8, A2, A3, A4, A7, A8, A9, A11, S2, S3, S9, S10, S13, O5, O8. Two family sections, Knowledge and Agents, open here for the first time.
+**Lines trimmed from BUILD_PLAN.md: 31 Oct 2026**, five finished passages, to keep it under its 400-line cap when five items joined. Not closed items; at the foot of this file.
 
 ---
 
@@ -2219,3 +2220,45 @@ Proposed and ruled 27 Aug 2026. ~~**Open only on the script question.**~~ **Clos
 
 **Closed 18 Sep 2026 in the maintainer's triage.** The step and the folder are retired; swept the day after it closed.
 
+---
+
+# Lines trimmed from BUILD_PLAN.md, 31 Oct 2026
+
+**Not closed items: finished passages inside items that stay open.** The maintainer's word of 31 Oct 2026 on #167:
+BUILD_PLAN.md was at its 400-line cap when five items joined it (A25, S25, S26, S27, O17), and finished lines
+were to be trimmed into the archive to fit. Each passage below is the text exactly as it stood, under where it stood.
+
+## Road to v1, the first bullet under the table
+
+- **The engine bundle is at `carried/`**: gs4gg-carbon v0.16.1, the paid site's `calculator-seal-2026-10-03`,
+  34 files, 34 of 34 hashes verified, crossed 3 Oct 2026 (#147). Tagged `engine-carry-2026-10-04`; the first bundle
+  was tagged `engine-carry-2026-09-27` (#132). Nothing edits it here, and nothing in the site reads it yet.
+
+## A21, its second sentence
+
+The old brief, `PROPOSAL_calvin-brief.md` (R1 to R26), stays on `calvin/engine-crosses` as history; its build, #151, closed unmerged 15 Oct 2026.
+
+## S18, its 28 Oct 2026 paragraph
+
+**28 Oct 2026:** the site moves to open.waterbots.ai,
+every page takes the main site's menu, and the Commons is rewritten as a list of modules, her words. The
+same day, a second word: the page is centred under the menu and the sign-up bar is gone; the carbon packs
+read "In development · partner review", the health guide is Heather's and "Proposed", Phoebe's reads "Beta"; and four modules
+seeking a build partner and a domain consultant are listed below, with the button that asks a partner in. A
+third word the same day: one list, the foot text gone, the button at the header's right, plain-text cells, a
+display-only community rating, "Coming soon" for Calvin and Bridget, Heather "Proposal pending", "Work
+with us" emails for the seeking rows, the module page centred with "About this module", and an address per
+module that opens, /commons/phoebe first. A fourth word the same day: status becomes six stages, from seeking
+partners to graduated, each a name and a bar in one Tide shade, pale to solid, with an (i) legend; "Beta" is
+a tag on Phoebe, open to try, not a stage; the count line goes; a new opening, grading note and carbon
+method links in her words; Phoebe's Tool tab reads "Eligibility quiz" on the Commons; and the menu marks the
+page you are on. Her leaning Wellington, from the concept note, sits faded right of the opening, hidden below
+1240px.
+
+## S24, what was built
+
+every finding fixed in one pull request. At 900px and below the screening fills the screen, the rail and the crew slide over it, the step's name sits under the rings; the Commons and a module's tabs scroll with the page; the menu takes the live page's three rows. Desktop unchanged.
+
+## O16, its finished ruling
+
+Her ruling of 3 Oct 2026: the "Test Project" and "Malawi" figures were play numbers, retired by the paid site. The v0.16.1 bundle crossed 3 Oct 2026 without them.

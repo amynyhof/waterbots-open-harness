@@ -6,8 +6,9 @@
  *
  * WHAT SHE IS SENT is what she needs for her one job and nothing else: the
  * place the visitor told Wellington, in their words; whether they are on a
- * phone, so she says tap rather than click; and the pinned basin as the map
- * read it. The relay checks every part again (api/_bridgetPin.ts).
+ * phone, so she says tap rather than click; the pinned basin as the map
+ * read it; and whether the right rail offers Quantify, so she says Calvin is
+ * next or hands back to Wellington (the maintainer's ruling of 31 Oct 2026). The relay checks every part again (api/_bridgetPin.ts).
  */
 
 import type { MapPin } from './visit';
@@ -28,11 +29,11 @@ export class BridgetError extends Error {}
 
 export async function askBridget(
   history: { role: 'user' | 'assistant'; content: string }[],
-  visit: { place: string; phone: boolean; pin: MapPin | null },
+  visit: { place: string; phone: boolean; pin: MapPin | null; quantifyNext: boolean },
   signal?: AbortSignal,
   opts?: { opened?: boolean; pinned?: boolean }
 ): Promise<BridgetAnswer> {
-  const body: Record<string, unknown> = { messages: history, phone: visit.phone };
+  const body: Record<string, unknown> = { messages: history, phone: visit.phone, quantifyNext: visit.quantifyNext };
   if (visit.place.trim()) body.place = visit.place.trim();
   if (visit.pin) {
     body.pin = {

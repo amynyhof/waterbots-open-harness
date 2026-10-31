@@ -5,8 +5,9 @@ When a tool changes, the seat changelog cites `tool-id@version`.
 
 ## 0.17.1 — 31 Oct 2026
 
-- **Bridget's chat is live**, item A22, step 6 of the Road to v1, on the maintainer's ruling of
-  31 Oct 2026. `bridget-map@0.1.2`: "The contract" is read again for a live chat.
+- **Bridget's chat is live**, item A22, step 6 of the Road to v1, on the maintainer's two rulings of
+  31 Oct 2026. `bridget-map@0.1.2`: "The contract" is read again for a live chat that opens in
+  her own words and, after the pin, says Calvin is next or hands back to Wellington.
   `product-shared@0.6.2`: the primer says her chat is live, and she inherits its roster
   region. `wellington-host@0.1.2`: the build update says so. No card changed; the seal of
   23 Sep 2026 is untouched.

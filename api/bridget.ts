@@ -11,14 +11,18 @@
  * A22). She asks one question, the pin, and reports the basin it landed on.
  * The console sends two turns no visitor typed: `opened`, the first time her
  * step shows, and `pinned`, each time a new basin is pinned. Each is one of
- * her answers and is counted like one.
+ * her answers and is counted like one. From the maintainer's second ruling the
+ * same day her opening is her own words, not a greeting the console shows, so
+ * `opened` is the turn that introduces her.
  *
  * THIRTY MESSAGES A DAY, per visitor, counted under her own key. The counting
  * lives in _cap.ts; what a visitor is told about it lives here. A message is
  * counted only when an answer is actually delivered.
  *
  * THE HAND-BACK IS A FIELD (contract line 8, _handBack.ts), and the console
- * draws the way back to Dispatches from it, never from her prose.
+ * draws the way back to Dispatches from it, never from her prose. After a pin,
+ * where the right rail offers Quantify (`quantifyNext`), Calvin is next and
+ * there is no way back drawn at all: settleHandBack in _bridgetPin.ts.
  *
  * THE PROMPT IS CACHED. The place, the device and the pin ride as a second
  * system block after the breakpoint, so only that small block changes.
@@ -26,7 +30,7 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 import { recordAbstention } from './_abstentions.js';
-import { readPin, readPlace, visitBlock } from './_bridgetPin.js';
+import { readPin, readPlace, settleHandBack, visitBlock } from './_bridgetPin.js';
 import { BRIDGET_RESPONSE_SCHEMA, BRIDGET_SYSTEM_PROMPT } from './_bridgetPrompt.js';
 import { BRIDGET, countOneMessage, timeUntilReset } from './_cap.js';
 import { readHandBack, type HandBack } from './_handBack.js';
@@ -89,6 +93,7 @@ export async function POST(req: Request): Promise<Response> {
     place?: unknown;
     phone?: unknown;
     pin?: unknown;
+    quantifyNext?: unknown;
   };
   try {
     body = (await req.json()) as typeof body;
@@ -99,6 +104,7 @@ export async function POST(req: Request): Promise<Response> {
   /* Exactly `true` counts; anything else is a typed turn. */
   const opened = body.opened === true;
   const pinned = body.pinned === true;
+  const quantifyNext = body.quantifyNext === true;
   const pin = readPin(body.pin);
 
   /* A pinned turn with no pin that holds is not one: there is nothing to report. */
@@ -134,9 +140,9 @@ export async function POST(req: Request): Promise<Response> {
     if (m.role === 'user') lastQuestion = m.content;
   }
 
-  /* Her first answer follows the greeting the console showed, and no visitor
-     typed before it, so a thread that starts with her opens on the turn the
-     console sent. The model needs a user turn first. */
+  /* Her first answer follows the turn the console sent, which is never kept as
+     a bubble, so a thread that starts with her opens on that turn again. The
+     model needs a user turn first. */
   if (clean.length > 0 && clean[0].role === 'assistant') {
     clean.unshift({ role: 'user', content: OPENED_TURN });
   }
@@ -152,7 +158,7 @@ export async function POST(req: Request): Promise<Response> {
     return problem(400, 'No message was sent.');
   }
 
-  const visitText = visitBlock(readPlace(body.place), body.phone === true, pin);
+  const visitText = visitBlock(readPlace(body.place), body.phone === true, pin, quantifyNext);
 
   /* Shape first, then whether we can actually answer — same order as Phoebe's. */
   const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -296,6 +302,7 @@ export async function POST(req: Request): Promise<Response> {
 
   return json(200, {
     ...answer,
+    handBack: settleHandBack(answer.handBack, { pinned, quantifyNext, abstained: answer.abstained }),
     usage: {
       cacheRead: response.usage.cache_read_input_tokens ?? 0,
       cacheWrite: response.usage.cache_creation_input_tokens ?? 0,

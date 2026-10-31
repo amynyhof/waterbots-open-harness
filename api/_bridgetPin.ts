@@ -57,8 +57,15 @@ export function readPlace(value: unknown): string {
   return place.length > 0 && place.length <= MAX_PLACE_CHARS ? place : '';
 }
 
-/** One block, after the cache breakpoint: where, which device, and what is pinned. */
-export function visitBlock(place: string, phone: boolean, pin: PinnedBasin | null): string {
+/**
+ * One block, after the cache breakpoint: where, which device, what is pinned,
+ * and who is next once it is. `quantifyNext` is true when the right rail offers
+ * Quantify — the visit's stage is Quantify, which a pin at Partners reaches only
+ * where a pathway read allows it (pinnedVisit, src/lib/visit.ts). The
+ * maintainer's ruling of 31 Oct 2026 on #167: Calvin is next then, by the
+ * rail's button; otherwise Wellington, by her hand-back.
+ */
+export function visitBlock(place: string, phone: boolean, pin: PinnedBasin | null, quantifyNext: boolean): string {
   const lines = ['# This visit', ''];
   lines.push(
     place
@@ -75,7 +82,23 @@ export function visitBlock(place: string, phone: boolean, pin: PinnedBasin | nul
     `A basin is pinned. Its area is ${km2} km². Its water stress reading is "${pin.stressLabel}".`,
     pin.level === 6
       ? 'The reading is published: WRI Aqueduct 4.0’s own figure for this basin.'
-      : 'The reading is derived: this site worked it out as the area-weighted majority of the smaller basins inside it, because WRI publishes no figure at this size. Zooming in to pin one of the smaller basins shows the published figure.'
+      : 'The reading is derived: this site worked it out as the area-weighted majority of the smaller basins inside it, because WRI publishes no figure at this size. Zooming in to pin one of the smaller basins shows the published figure.',
+    quantifyNext
+      ? `Calvin is next, on the Quantify step. The "Open Quantify" button ${phone ? 'is under "Crew" at the top of the screen' : 'is under "Next steps" on the right'}.`
+      : 'Nothing on this visit goes on to Quantify yet, so Wellington, on Dispatches, has the next step.'
   );
   return lines.join('\n');
+}
+
+/**
+ * The hand-back as the console will act on it. When Calvin is next after a pin,
+ * the rail's button is the way on and she draws no link of her own, whatever the
+ * model set; an abstention still goes back to Wellington. Ruled 31 Oct 2026.
+ */
+export function settleHandBack(
+  handBack: 'none' | 'wellington',
+  turn: { pinned: boolean; quantifyNext: boolean; abstained: boolean }
+): 'none' | 'wellington' {
+  if (turn.pinned && turn.quantifyNext && !turn.abstained) return 'none';
+  return handBack;
 }

@@ -206,8 +206,9 @@ credit line does not meet any of these bars.
   their one home, by the maintainer's ruling, and the new pack shape
   (cards, tool, evals, README, CHANGELOG) is the rule going forward, one
   pack at a time; item K8. Bridget staffs
-  the map and Calvin staffs quantification; neither chat is built, and
-  both panels say so plainly.
+  the map and Calvin staffs quantification. **Bridget's chat is live from
+  31 Oct 2026** (item A22, #167); Calvin's is not built, and his panel says
+  so plainly.
 - **Quantification, the third surface, from 1 Sep 2026.** The step holds
   **method packs** — one tool per way of working a number out — and the
   first is fitted: VWBA 2.0 · D-3 Volume Provided, for household and
@@ -404,8 +405,8 @@ credit line does not meet any of these bars.
   Quantify only where a pathway is likely eligible or not enough is known. For a water supply
   project he asks how many people or households it serves, after the stage; it is kept as said,
   households never converted here, on the record, the rail and the seal as `record.served`. His
-  prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep and is 26,034 from 4 Oct 2026, against the
-  unchanged gate of 26,199.
+  prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep, 26,034 from 4 Oct and is 25,925 from 31 Oct
+  2026, against the unchanged gate of 26,199.
 - **The engine bundle is tracked at `carried/`, from 27 Sep 2026**, placed by the maintainer's
   hand and merged on `main` as it stands (#132), tagged `engine-carry-2026-09-27`. **It was replaced
   on 3 Oct 2026 by v0.16.1**, the paid site's `calculator-seal-2026-10-03`: 34 files, 34 hashes
@@ -425,6 +426,15 @@ credit line does not meet any of these bars.
   that last sentence is bold, chips included**: display only, no prompt or relay change; the
   Commons shows the same Phoebe, so it is bold there too. **Calvin's brief has its bundle**,
   carried 3 Oct 2026.
+- **Bridget's chat is live beside her map, from 31 Oct 2026 (item A22, #167)**, by the maintainer's
+  two rulings of that day. Her chat and the map sit side by side on one tab; on a phone the map is
+  above the chat. She opens in her own words: who she is, what she does, why the basin matters to
+  funders and partners, that she is still being built, and her one question, the pin, in the place
+  the visitor gave Wellington. After the pin she thanks them, gives the basin and its water-stress
+  reading, says when it is derived, and says Calvin is next, by the Quantify button in the right
+  rail; where no pathway goes on to Quantify she hands back to Wellington. She draws no button of
+  her own. Thirty messages a day, under her own counter. She never guesses, never names a project,
+  partner, funder or place the visitor did not type, and never says she checks anything.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material

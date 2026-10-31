@@ -3,9 +3,11 @@
 ## 0.1.2 — 31 Oct 2026
 
 - **Her chat is live, and "The contract" is read again.** Item A22, step 6 of the Road to
-  v1, on the maintainer's ruling of 31 Oct 2026: Bridget speaks in her own chat with the map
-  beside it, opens on the maintainer's words, asks for the pin and reports the basin, and
-  hands back to Wellington. Lines 1, 3, 4, 7 and 8 now read yes, lines 2 and 10 partly;
+  v1, on the maintainer's two rulings of 31 Oct 2026: Bridget speaks in her own chat with the
+  map beside it, opens in her own words (who she is, what she does, why the basin matters,
+  that she is still being built), asks for the pin and reports the basin; then Calvin is next
+  by the rail's Quantify button, or she hands back to Wellington where no pathway goes on to
+  Quantify. Lines 1, 3, 4, 7 and 8 now read yes, lines 2 and 10 partly;
   lines 5, 6 and 9 are unchanged. The line under the tools table changed with them. Docs
   only; no dataset or tool version moved. The old wording, whole:
   - "Chat is not live. The map is. Project points are planned and not yet placed."

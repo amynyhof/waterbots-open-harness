@@ -68,8 +68,11 @@ quotes no figure from any worksheet, invents no teammate or capability, uses scr
 only, and never presses anyone to sign up. Thirty messages a day, counted separately from Phoebe's
 twenty, and nothing kept between visits. **Bridget is the map's agent and Calvin is the
 quantification step's.** ~~Neither console is built yet — each panel is there, each agent is named in
-it, and each says plainly that it is not answering.~~ **Neither chat is built; from 9 Sep 2026 each
-has a screen of its own, which opens on its tool and says so in one plain line on its Chat tab.**
+it, and each says plainly that it is not answering.~~ **Bridget's chat is live from 31 Oct 2026**,
+beside her map: she explains what she does and why the basin matters to funders and partners, asks
+the visitor to pin their project's basin, and reads its water stress back, saying when the reading
+is derived. **Calvin's chat is not built**; his step has a screen of its own, which opens on the
+calculator and says so in one plain line on its Chat tab.
 
 **From 7 Sep 2026 the desk closes its loop.** What Wellington learns goes to Phoebe with every ask,
 as the visitor's own words and never a verdict; her verdicts move the worksheet and her row on the
@@ -86,8 +89,9 @@ tab row wears the agent's colour, and the crew card on the right is underlined i
 a visitor can see whose screen it is. There is no "Next phase" chip: next steps live in the right rail only, and a row
 clears once it is taken. **Wellington's** desk is his screen. **Phoebe's** has
 her chat on her tint, the eligibility worksheet as its Tool, and a Knowledge pack assembled from the
-committed cards. **Bridget's and Calvin's** open on Tool — the map and the calculator — and their
-Chat tabs say in one plain line that they are not answering here yet. The right column is the crew
+committed cards. **Bridget's** opens on her
+chat, with the map beside it on the same tab. **Calvin's** opens on Tool, the calculator, and his
+Chat tab says in one plain line that he is not answering here yet. The right column is the crew
 with the save button on every step; the old host panels are gone. Memory is never a tab: what the
 visit knows stays in the record on the left. The screen is built once and offered to production and
 the Agent Commons, which differ from this site only in memory and in how deep the tool goes.

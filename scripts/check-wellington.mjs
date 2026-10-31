@@ -514,19 +514,28 @@ expect(
   'the strip or the not-live chat is still on her screen'
 );
 expect(
-  'she hands back the way Phoebe does — from the field, to Dispatches — and draws no next step',
+  'she hands back the way Phoebe does — from the field, to Dispatches — and draws no next step of her own',
   /answer\.handBack === 'wellington'/.test(bridgetSource) &&
     /Back to Wellington on \$\{DESK_LABEL\}/.test(bridgetSource) &&
     !/Open Quantify|surface: 'quantification'|onNavigate\('quantification'\)/.test(bridgetSource),
   'her hand-back is missing, or she draws a next step'
 );
 expect(
-  'her first ask follows the greeting when her step first shows, and each new basin is reported once',
+  'her opening is her own answer when her step first shows, with no fixed greeting before it, and each new basin is reported once',
   /askOpened\(\{ opened: true \}\)/.test(bridgetSource) &&
     /askOpened\(\{ pinned: true \}\)/.test(bridgetSource) &&
     /reported\.current === pin\.hybasId/.test(bridgetSource) &&
+    !/BRIDGET_GREETING|GREETING_TURN|\.seed\(/.test(bridgetSource) &&
     /visible=\{onMap\}/.test(readFileSync('src/App.tsx', 'utf8')),
-  'the opening or the pin report is not wired'
+  'the opening or the pin report is not wired, or a fixed greeting is still shown'
+);
+expect(
+  'she is told Calvin is next exactly when the rail offers Quantify (31 Oct 2026)',
+  /quantifyNext=\{visit\.stage === 'quantify'\}/.test(readFileSync('src/App.tsx', 'utf8')) &&
+    /\{ place, phone, pin, quantifyNext \}/.test(bridgetSource) &&
+    currentInvite({ ...mapped, stage: 'quantify' })?.key === 'invite-quantify' &&
+    currentInvite({ ...mapped, pin: { hybasId: 1 } }, false) === null,
+  'what she is told and what the rail shows can disagree'
 );
 expect(
   'the pathway rule is the one his route keeps: likely eligible or not enough known allows Quantify',
@@ -852,9 +861,11 @@ console.log('\n  People served\n');
 }
 
 /* ---------------------------------------------------------------------------
-   Bridget's chat — item A22, the maintainer's ruling of 31 Oct 2026. Her first
-   message is hers word for word; she asks one question, the pin; she reports
-   the basin from what the map read, says when it is derived, and hands back.
+   Bridget's chat — item A22, the maintainer's two rulings of 31 Oct 2026. Her
+   opening is her own words, in the maintainer's order, keeping the meaning of
+   her "still being built" sentence; she asks one question, the pin; she
+   reports the basin from what the map read, says when it is derived, and
+   says Calvin is next where the rail offers Quantify, or hands back.
    She never guesses, never names what the visitor did not type, never says
    she validates. Checked here without a model call; her measured walk is the
    maintainer's, on the preview.
@@ -863,20 +874,31 @@ console.log('\n  People served\n');
 console.log('\n  Bridget\n');
 
 {
-  const { BRIDGET_GREETING, BRIDGET_SYSTEM_PROMPT: BP, BRIDGET_RESPONSE_SCHEMA: BS } = await loadApi('_bridgetPrompt.js');
-  const { STRESS_LABELS, readPin, readPlace, visitBlock: bridgetBlock } = await loadApi('_bridgetPin.js');
+  const { BRIDGET_STILL_BUILT, BRIDGET_SYSTEM_PROMPT: BP, BRIDGET_RESPONSE_SCHEMA: BS } = await loadApi('_bridgetPrompt.js');
+  const { STRESS_LABELS, readPin, readPlace, settleHandBack, visitBlock: bridgetBlock } = await loadApi('_bridgetPin.js');
   const { BRIDGET: BRIDGET_CAP, BRIDGET_DAILY_CAP } = await loadApi('_cap.js');
   const screen = readFileSync('src/components/BridgetScreen.tsx', 'utf8');
   const relay = readFileSync('api/bridget.ts', 'utf8');
   const ruled =
-    "Hi, I'm Bridget. I'm still being built, so today I can only help you pin your project and tell you about the water stress in that area. Soon I'll also help you find other projects and funders where you work.";
-  const shown = screen.match(/export const BRIDGET_GREETING =\s*\n?\s*"([^"]+)";/)?.[1];
+    "I'm still being built, so today I can only help you pin your project and tell you about the water stress in that area. Soon I'll also help you find other projects and funders where you work.";
 
-  expect("her first message is the maintainer's, word for word, in the relay and on the screen", BRIDGET_GREETING === ruled && shown === ruled, JSON.stringify({ relay: BRIDGET_GREETING, screen: shown }));
-  expect('her prompt tells her the greeting is already shown and never to say it again', BP.includes(`"${ruled}"`) && /Never say it again/.test(BP), 'the greeting is not in her prompt as already said');
+  expect(
+    "her opening keeps the meaning of the maintainer's sentence, in her own words, and the screen shows no fixed greeting",
+    BRIDGET_STILL_BUILT === ruled && BP.includes(`Keep this meaning, in your own words: "${ruled}"`) && !/Never say it again/.test(BP),
+    JSON.stringify(BRIDGET_STILL_BUILT)
+  );
+  const order = ['1. Greet them and say who you are.', '2. Say what you do', '3. Say why that matters.', '4. Say honestly that you are still being built.', '5. Ask them, nicely, to click'];
+  expect(
+    "her opening walks the maintainer's five beats in order, the pin question last",
+    order.every((beat) => BP.includes(beat)) && order.every((beat, i) => i === 0 || BP.indexOf(order[i - 1]) < BP.indexOf(beat)) &&
+      /Many funders choose projects by river basin/.test(BP) && /put water back into the basins they draw from/.test(BP) &&
+      /groups working in the same basin can team up/.test(BP) && /the pin question last/.test(BP) &&
+      /Never name a company, funder or group while you explain why the basin matters/.test(BP),
+    'a beat is missing or out of order'
+  );
   expect(
     "she asks one question, the pin, and never where the project is or anything else of Wellington's",
-    /You ask exactly one thing in a whole visit/.test(BP) && /not where the project is/.test(BP) && /On a phone they tap instead of click/.test(BP),
+    /You ask exactly one thing in a whole visit/.test(BP) && /not where the project is/.test(BP) && /On a phone they tap instead/.test(BP),
     'her one-question rule is missing'
   );
   expect(
@@ -887,16 +909,29 @@ console.log('\n  Bridget\n');
   expect(
     'she never guesses, never names a real project, partner or place beyond what the visitor typed, and never says she validates',
     /\*\*Never guess a fact\.\*\*/.test(BP) &&
-      /\*\*Never name a real project, partner, organisation, funder, river, basin or place\*\* beyond what the visitor typed/.test(BP) &&
+      /\*\*Never name a real project, partner, organisation, company, funder, river, basin or place\*\* beyond what the visitor typed/.test(BP) &&
       /\*\*Never say you validate, verify, confirm, approve or check anything\.\*\*/.test(BP),
     "one of the maintainer's five rules is missing"
   );
   expect(
-    "after a pin she says when the reading is derived, never presents it as WRI's, and hands back by the field with no next step of her own",
-    /Say that whenever the reading is derived; never present a derived reading as WRI's/.test(BP) &&
-      /Set handBack to "wellington"/.test(BP) &&
-      /Do not name the next step yourself/.test(BP),
+    "after a pin she thanks them, says when the reading is derived, never presents it as WRI's, and says Calvin is next or hands back",
+    /- Thank them\./.test(BP) &&
+      /Say that whenever the reading is derived; never present a derived reading as WRI's/.test(BP) &&
+      /When the block says Calvin is next\*\*, tell them Calvin is next, on the Quantify step/.test(BP) &&
+      /Set handBack to "none"\. Do not offer the way back to Wellington/.test(BP) &&
+      /do not promise Calvin will chat/.test(BP) &&
+      /When the block says Wellington has the next step\*\*.*Set handBack to "wellington"\. Do not name that next step yourself/.test(BP),
     'the pin report rules are missing'
+  );
+  expect(
+    'after a pin with Calvin next the relay draws no way back, whatever she set; an abstention and the Wellington case still go back',
+    settleHandBack('wellington', { pinned: true, quantifyNext: true, abstained: false }) === 'none' &&
+      settleHandBack('wellington', { pinned: true, quantifyNext: true, abstained: true }) === 'wellington' &&
+      settleHandBack('wellington', { pinned: true, quantifyNext: false, abstained: false }) === 'wellington' &&
+      settleHandBack('wellington', { pinned: false, quantifyNext: true, abstained: false }) === 'wellington' &&
+      /handBack: settleHandBack\(answer\.handBack, \{ pinned, quantifyNext, abstained: answer\.abstained \}\)/.test(relay) &&
+      /body\.quantifyNext === true/.test(relay),
+    'the relay does not hold her hand-back to who is next'
   );
   expect('her answer carries the hand-back as a closed field', BS.properties.handBack.enum.join(',') === 'none,wellington' && BS.required.includes('handBack'), JSON.stringify(BS.properties.handBack));
   expect('her prompt says "validate" only to forbid it', (BP.match(/validat/gi) ?? []).length === 1, `${(BP.match(/validat/gi) ?? []).length} uses`);
@@ -920,16 +955,24 @@ console.log('\n  Bridget\n');
     readPlace('  Lilongwe,   Malawi ') === 'Lilongwe, Malawi' && readPlace('x'.repeat(81)) === '' && readPlace(3) === '',
     readPlace('  Lilongwe,   Malawi ')
   );
-  const six = bridgetBlock('Malawi', false, good);
-  const four = bridgetBlock('', true, { ...good, level: 4 });
+  const six = bridgetBlock('Malawi', false, good, true);
+  const four = bridgetBlock('', true, { ...good, level: 4 }, false);
+  const sixPhone = bridgetBlock('Malawi', true, good, true);
   expect(
     'her block gives the size and the label as written, published at Level 6 and derived at Level 4',
     /1,234 km²/.test(six) && /"High \(40-80%\)"/.test(six) && /The reading is published/.test(six) && /"Malawi"/.test(six) && /click/.test(six) &&
       /The reading is derived/.test(four) && /area-weighted majority/.test(four) && /has not heard where/.test(four) && /tap/.test(four),
     `${six}\n${four}`
   );
-  const empty = bridgetBlock('Malawi', false, null);
-  expect('with no pin she is told so, and handed no reading', /No basin is pinned yet\./.test(empty) && !/reading/.test(empty), empty);
+  expect(
+    'her block says who is next and where the Quantify button is on each device',
+    /Calvin is next, on the Quantify step\. The "Open Quantify" button is under "Next steps" on the right\./.test(six) &&
+      /is under "Crew" at the top of the screen/.test(sixPhone) &&
+      /Wellington, on Dispatches, has the next step/.test(four) && !/Calvin/.test(four),
+    `${six}\n${sixPhone}\n${four}`
+  );
+  const empty = bridgetBlock('Malawi', false, null, true);
+  expect('with no pin she is told so, handed no reading, and not told who is next', /No basin is pinned yet\./.test(empty) && !/reading|Calvin/.test(empty), empty);
 
   expect(
     `her cap is ${BRIDGET_DAILY_CAP} a day under her own key`,
