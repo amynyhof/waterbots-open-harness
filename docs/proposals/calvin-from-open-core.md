@@ -118,8 +118,9 @@ asks her to pass the whole list on.
    keeps Gold Standard's four classes: CWS, CWT, HWT, IWT. Which method community treatment (CWT) takes, and that
    institutions (IWT) are v2 (ruling R26), belongs in the core's own mapping, which says Calvin owns it.
 7. **The two settings in section 10**, arriving as a new open core version.
-8. **Violet's VWBA D-3 module** (its step M8), with its test cases worked by hand and every step cited, in a release
-   this site can pin. An outside expert checks it once the prototype is up (fourth round, 30 Oct 2026).
+8. **Violet's VWBA D-3 module** (its step M8): her D-3 math **and her screen**, like Calvin's, with its test cases
+   worked by hand and every step cited, in a release this site can pin. An outside expert checks it once the prototype
+   is up (fourth round, 30 Oct 2026).
 9. Optional: built files that also run in plain Node. Not needed for this plan (section 11 keeps the engine in the
    browser).
 
@@ -155,14 +156,16 @@ is the water figure from Violet's D-3 module.
 **Step 4 — Wellington asks the core facts first (section 11).** Own pull request: it changes a prompt, so it carries
 a measured run.
 
-**Step 5 — Violet's D-3 math on the calculator step (fourth round, 30 Oct 2026).** Once Session C releases Violet's
-VWBA D-3 module:
+**Step 5 — Violet's D-3 math and screen on the calculator step (fourth round, 30 Oct 2026).** Once Session C
+releases Violet's VWBA D-3 module:
 - `package.json` and `package-lock.json`: the module at an exact version, from its release file, like Calvin's.
-- **The screening's calculator step runs Violet's D-3 math alongside carbon V1 and V2**, fed from the same record.
-- `src/lib/vwbaD3.ts` and `scripts/check-vwba-d3.mjs` retire, and `src/lib/methodPacks.ts` lists no water pack of
-  its own. **This site keeps no water code.** Proof P4's table is in the pull request first.
+- **The screening's calculator step runs Violet's D-3 math alongside carbon V1 and V2, on her module's screen**, fed
+  from the same record through the same kind of adapter. The site gives her screen what it gives Calvin's.
+- **This site's own water display retires**, with `src/lib/vwbaD3.ts` and `scripts/check-vwba-d3.mjs`, and
+  `src/lib/methodPacks.ts` lists no water pack of its own. **This site keeps no water code.** Proof P4's table is in
+  the pull request first.
 - **Violet as her own chat agent in the screening, and on the crew list, is after v1.** Until then the step shows
-  her math and no Violet chat; the roster is not edited here.
+  her math and screen and no Violet chat; the roster is not edited here.
 
 **Screens.** Calvin's Tool tab, on the desk and on the Commons (the same screen), and his Knowledge tab, which names
 the package and its version. #151's sheet is not used, and neither is today's carbon tab.
@@ -256,7 +259,7 @@ Wellington → Phoebe → Bridget → Calvin → report / sign up.
   - the project's filed V1.0 fNRB, for a transition figure only. With no filing he gives a plain "no transition
     figure" instead of a borrowed one;
   - household size, only for a country with no UN figure.
-- **Violet.** The calculator step runs her VWBA D-3 math alongside carbon V1 and V2 (step 5). Her own chat in the
+- **Violet.** The calculator step runs her VWBA D-3 math, on her module's screen, alongside carbon V1 and V2 (step 5). Her own chat in the
   screening, and her place on the crew list, are after v1.
 - **Report.** Not built yet (item S21). The core's screens carry a print report; whether the screening report uses it
   is for that report's own proposal.
@@ -331,7 +334,8 @@ first, proven on the live site, and the fresh repository copies it afterward.
 - **d. Two calculator settings this site will turn on**: sliders, and a simple view. Neither exists yet. **They are
   built in the open core by Session C, Calvin's home since the seed, and arrive as a new open core version; never
   patched onto this site.** Section 10 lists what this site needs from each.
-- **e. Wellington's screening questions**: section 11. The whole screening stays within 30 questions.
+- **e. Wellington's screening questions**: section 11. The questions on each walk are counted and the average is
+  reported (the rule of 30 Oct 2026).
 
 ### Third round
 
@@ -354,7 +358,7 @@ first, proven on the live site, and the fresh repository copies it afterward.
    - React 19 upgrade in place, as its own pull request with before-and-after pictures of the map (section 9);
    - the four slider rows (section 10);
    - the simple view by default, with a "show full working" link (section 10);
-   - if a walk goes over 30 questions, the project-name question is dropped (section 11);
+   - the questions on each walk are counted and the average is reported (section 11; the rule of 30 Oct 2026);
    - a slider value with no methodology floor gets one found by Session C, or asked of Amy.
 
 ### Fourth round, 30 Oct 2026
@@ -364,6 +368,10 @@ first, proven on the live site, and the fresh repository copies it afterward.
    old wording is in `docs/archive/CORRECTIONS.md`.
 2. **Violet.** In v1, the screening's calculator step runs Violet's D-3 math alongside carbon V1 and V2. Violet as her
    own chat agent in the screening, and on the crew list, is after v1.
+3. **Her screen.** Violet's module brings both her D-3 math and her screen, like Calvin's. This site uses her module's
+   screen, not its own water display (step 5; Session C's list, item 8).
+4. **Counting questions.** The 30-question limits give way to the rule of 30 Oct 2026: count the questions on each
+   walk and report the average (second round e, third round 5, section 11).
 
 ## 8. Still open
 
@@ -372,8 +380,8 @@ Each needs Amy's word before the build steps they touch.
 - **A. The list for Session C.** Ruling 5 named three changes; section 1 now lists nine, Violet's D-3 module among
   them, and section 10 adds the two settings. Will she pass the whole list to Session C?
 - **B. Two looks on one Quantify step, until step 5.** The carbon calculator will look like the paid site's; the water
-  figure stays in this site's look until Violet's D-3 module arrives. Whether the module brings its own screen, or
-  only the math this site draws, is not yet known. Accept two looks until then, or restyle the water worksheet?
+  figure stays in this site's look until Violet's module arrives with her screen (fourth round, 3). Accept two looks
+  until then, or restyle the water worksheet?
 - **C. The core's `prompt.md`** has not been read against AGENT_RULES.md or this site's language rules. The build step
   reads it and puts any conflict in the add-on or in front of Amy. Ruling R25, no script for Calvin, still stands.
 - **D. Wellington's words.** The limit stays. The new questions need about 413 more characters and there are 164 of
@@ -523,9 +531,9 @@ A first draft of the change, measured on a copy (wording in section 12):
 **The new questions need about 413 more characters: 249 more than the room there is.** Either Amy's rewrite of the
 plain-text file frees at least 249 characters elsewhere, or the wording is cut; the limit stays where it is.
 
-### The 30-question budget
+### Counting the questions
 
-A ceiling from the files, not a measured count:
+A ceiling from the files, not a measured count, for comparison with the walks:
 
 | Who | Questions | Ceiling |
 |---|---|---|
@@ -536,8 +544,8 @@ A ceiling from the files, not a measured count:
 | Calvin | household size (rare), the filed V1.0 fNRB (transition only) | 2 |
 | **Total, worst case** | | **29** |
 
-**A real walk counts it** before step 4's pull request asks for a merge. **Agreed, third round:** if a walk goes past
-30, the project-name question is dropped.
+**Real walks count it**, the rule of 30 Oct 2026: the questions on each walk are counted and the average is reported,
+in step 4's pull request before it asks for a merge. There is no cap.
 
 ## 12. The draft wording behind the count
 

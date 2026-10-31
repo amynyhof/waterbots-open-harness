@@ -17,6 +17,59 @@ before 3 Oct 2026 link to an OPEN_ITEMS.md that has since been retired to this f
 
 ---
 
+## 30 Oct 2026, second correction — docs/proposals/calvin-from-open-core.md: Violet's screen, and questions counted
+
+**Why it changed.** The maintainer ruled on 30 Oct 2026, on pull request #156: Violet's module brings both her D-3
+math and her screen, like Calvin's, and this site uses her screen, not its own water display. The proposal had left
+open whether the module brought a screen. The same day, the 30-question limits gave way to her rule of 30 Oct 2026:
+count the questions on each walk and report the average.
+
+**Old wording, whole — section 1, What the core needs, item 8:**
+
+> 8. **Violet's VWBA D-3 module** (its step M8), with its test cases worked by hand and every step cited, in a release
+>    this site can pin. An outside expert checks it once the prototype is up (fourth round, 30 Oct 2026).
+
+**Old wording, whole — section 2, step 5:**
+
+> **Step 5 — Violet's D-3 math on the calculator step (fourth round, 30 Oct 2026).** Once Session C releases Violet's
+> VWBA D-3 module:
+> - `package.json` and `package-lock.json`: the module at an exact version, from its release file, like Calvin's.
+> - **The screening's calculator step runs Violet's D-3 math alongside carbon V1 and V2**, fed from the same record.
+> - `src/lib/vwbaD3.ts` and `scripts/check-vwba-d3.mjs` retire, and `src/lib/methodPacks.ts` lists no water pack of
+>   its own. **This site keeps no water code.** Proof P4's table is in the pull request first.
+> - **Violet as her own chat agent in the screening, and on the crew list, is after v1.** Until then the step shows
+>   her math and no Violet chat; the roster is not edited here.
+
+**Old wording, whole — section 5, Violet's line, its first sentence:**
+
+> - **Violet.** The calculator step runs her VWBA D-3 math alongside carbon V1 and V2 (step 5).
+
+**Old wording, whole — section 7, second round, e:**
+
+> - **e. Wellington's screening questions**: section 11. The whole screening stays within 30 questions.
+
+**Old wording, whole — section 7, third round, 5, its fourth agreed call:**
+
+>    - if a walk goes over 30 questions, the project-name question is dropped (section 11);
+
+**Old wording, whole — section 8, open point B:**
+
+> - **B. Two looks on one Quantify step, until step 5.** The carbon calculator will look like the paid site's; the water
+>   figure stays in this site's look until Violet's D-3 module arrives. Whether the module brings its own screen, or
+>   only the math this site draws, is not yet known. Accept two looks until then, or restyle the water worksheet?
+
+**Old wording, whole — section 11, The 30-question budget, its heading, first line and last paragraph:**
+
+> ### The 30-question budget
+>
+> A ceiling from the files, not a measured count:
+
+> **A real walk counts it** before step 4's pull request asks for a merge. **Agreed, third round:** if a walk goes past
+> 30, the project-name question is dropped.
+
+**Where the current text is:** [docs/proposals/calvin-from-open-core.md](../proposals/calvin-from-open-core.md),
+sections 1, 2, 5, 7 (second, third and fourth rounds), 8 and 11.
+
 ## 30 Oct 2026 — docs/proposals/calvin-from-open-core.md: the water figure comes from Violet's D-3 module
 
 **Why it changed.** The maintainer ruled on 30 Oct 2026, on pull request #156: the water figure comes from the open
