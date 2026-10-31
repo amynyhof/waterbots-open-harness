@@ -35,14 +35,17 @@ an action here (rule zero).
 **V1 is done when both parts hold.** Her wording of 7 Oct 2026 is in docs/archive/CORRECTIONS.md.
 
 1. **Reliable.** The carbon calculators reproduce one real household water treatment (HWT) filing (Mali) and one
-   real community water supply (CWS) filing (Tanzania). The VWBA D-3 module reproduces the VWBA 2.0 guidebook's
-   worked example. No figure from either filing comes into this repository; the guidebook's example may, cited.
+   real community water supply (CWS) filing (Tanzania). The VWBA D-3 module follows the VWBA 2.0 guidebook's
+   method on test cases worked by hand, with every step cited; an outside expert checks it once the prototype is
+   up. The guidebook has no worked example for D-3. No figure from either filing comes into this repository.
 2. **Whole journey.** A visitor runs a screening (Wellington → Phoebe → Bridget → Calvin → report or sign up). We
    count the questions on each walk and report the average. The project saves to the paid site. Same inputs give
    the same numbers on both sites. Where the paid site uses more precise data, the difference can be explained,
-   or the report shows what changed. **Benchmarks and pass rates are v2.**
+   or the report shows what changed (the paid site's report, after the save). **Benchmarks and pass rates are v2.**
 
 **Also in v1:**
+- **The free screening runs eligibility, carbon (V1 and V2) and VWBA D-3, for everyone.** The water figure comes
+  from the open core's VWBA D-3 module, built by Session C, never this site's own code.
 - **Transition screening.** If Wellington hears the project is already registered for carbon, the
   screening also shows its transitional volume, still maps it, quantifies it, checks VWBA, and offers
   the report and the move to the paid site.
@@ -89,14 +92,11 @@ the way to it.
 - **Wellington** asks type, stage, place, name; sends to Phoebe, then Calvin; reads back what
   Phoebe found. Done when one real walk goes end to end with no wrong turn.
 - **Phoebe** runs both packs: five row states, readiness per pathway, the tools line, the human
-  door once. Done at an 80% pass.
-- **Calvin** talks; picks the pack from the record; asks only for what is missing; his carbon
-  number comes from the same engine as the paid site. Done when his screening numbers match the paid
-  site's calculators run on the saved project's inputs (the v1 fence; the maintainer's ruling, 10 Oct
-  2026). Reproducing real filings is the paid site's check, not Calvin's.
+  door once. Her 80% pass is v2 (her word, 30 Oct 2026).
+- **Calvin** talks; picks the pack from the record; asks only for what is missing; his carbon number comes
+  from the same engine as the paid site. Done when the same inputs give the same numbers on both sites (the fence).
 - **Bridget**: map and pin as today. She introduces herself, says what the map shows, hands back.
-- **Commons**: Phoebe and Calvin work there too, no memory; Bridget introduces herself. Two Calvin
-  cards on one engine: screening, transition.
+- **Commons**: v2, not a v1 condition (her word, 30 Oct 2026).
 - **The screening report exports free.**
 - **Card sets are sealed at their versions on 23 Sep 2026.** No new cards until a real project fails
   on one.
@@ -116,19 +116,18 @@ The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done,
 
 | # | Step, in one line | Depends on | Done when |
 |---|---|---|---|
-| 1 | **The water module reproduces the VWBA 2.0 guidebook's worked example**, as a cited case in `check-vwba-d3`. | Her hand: the example's inputs, figure and page, never the guidebook itself (CITATIONS.md). | The check reproduces the example's figure; she has passed the case and its citation. |
-| 2 | **React 19 under the map**, so the open core's calculator screens can run here (#156, §9). | Nothing outside this repository. | Before-and-after map pictures she has passed; every check and the build pass. |
-| 3 | **Calvin's carbon calculator from the open core** on his Tool tab, simple view and sliders on (A21). | The open core (Session C): the release file and the eight changes in #156 §1, plus sliders and the simple view. The version pinned is the one shown reproducing Mali and Tanzania, on the paid side. | Proofs P1 to P5 of #156 pass; she has passed the before-and-after table and the tab in the browser. |
-| 4 | **Wellington asks the core facts first**: type and class, country, how many served, people or households, and whether it is already registered for carbon (the transition). | Her rewrite of his instructions, freeing at least 249 characters plus the new question's; the gate stays at 26,199. Step 3. | The record holds the new fields; one measured run; his prompt under the gate. |
-| 5 | **Calvin's chat**, on the open core's prompt, asking only what is missing (A21). | The core's `prompt.md` read against AGENT_RULES.md (#156, open point C). Steps 3 and 4. | One measured run; on a walk he opens with his facts filled and asks at most household size and, for a transition, the filed V1.0 fraction of non-renewable biomass (fNRB). |
-| 6 | **The water figure matches the paid site's VWBA calculator**: from the open core once it holds the water method, or this site's D-3 shown equal. | The open core's water step (its M8), or the paid site's figures on made-up cases, by her hand. Step 1. | Same numbers on made-up cases, or each difference explained, in a table she has passed. |
-| 7 | **Bridget's hello** (A22, old step 6): who she is, what the map shows, then back. | Nothing outside this repository. | A walk passes through her and back with no wrong turn; her eyeball. |
-| 8 | **The screening report, free** (S21, old step 8): printed or saved, every figure cited. | Steps 3, 5 and 6. Whether it uses the core's print report is its own proposal. | She prints one from a walk; every figure matches the screen and carries its citation. |
-| 9 | **The save carries every input the figures rest on**, never a computed number (old step 7). | Steps 3 to 6. The paid site's receiver reads them: her carry (O14), its item #243. | A test visit saved here opens on the paid site with every input filled. |
-| 10 | **The v1 walks**: whole screenings, counted and compared. | Everything above; the paid site runs the same open core version. | Questions counted on each walk and the average reported; the paid site's carbon and VWBA figures on each saved project equal the screening's, or each difference is explained or shown in a report; written in BUILD_LOG; she has watched one. |
+| 1 | **React 19 under the map**, so the open core's calculator screens can run here (#156, §9). | Nothing outside this repository. | Before-and-after map pictures she has passed; every check and the build pass. |
+| 2 | **Calvin's carbon calculator from the open core** on his Tool tab, V1 and V2, simple view and sliders on (A21). | The open core (Session C): the eight changes in #156 §1, sliders and the simple view. Pinned to the open core release that includes the sliders, as a release file. | Proofs P1 to P5 of #156 pass; she has passed the before-and-after table and the tab in the browser. |
+| 3 | **Wellington asks the core facts first**: type and class, country, how many served, people or households, and whether it is already registered for carbon (the transition). | Her rewrite of his instructions, freeing at least 249 characters plus the new question's; the gate stays at 26,199. Step 2. | The record holds the new fields; one measured run; his prompt under the gate. |
+| 4 | **Calvin's chat**, on the open core's prompt, asking only what is missing (A21). | The core's `prompt.md` read against AGENT_RULES.md (#156, open point C). Steps 2 and 3. | One measured run; on a walk he opens with his facts filled and asks at most household size and, for a transition, the filed V1.0 fraction of non-renewable biomass (fNRB). |
+| 5 | **The water figure from the open core's VWBA D-3 module**, in place of this site's `vwbaD3.ts`. | Session C builds the module, with the test cases worked by hand and every step cited, in a pinned open core release. Step 2. | The hand-worked cases pass here; she has passed the water figure in the browser. |
+| 6 | **Bridget's hello** (A22, old step 6): who she is, what the map shows, then back. | Nothing outside this repository. | A walk passes through her and back with no wrong turn; her eyeball. |
+| 7 | **The screening report, free** (S21, old step 8): printed or saved, every figure cited. | Steps 2, 4 and 5. Whether it uses the core's print report is its own proposal. | She prints one from a walk; every figure matches the screen and carries its citation. |
+| 8 | **The save carries every input the figures rest on**, never a computed number (old step 7). | Steps 2 to 5. The paid site's receiver reads them: her carry (O14), its item #243. | A test visit saved here opens on the paid site with every input filled. |
+| 9 | **The v1 walks**: whole screenings, counted and compared. | Everything above; the paid site runs the same open core release. | Questions counted on each walk and the average reported; the paid site's carbon and VWBA figures on each saved project equal the screening's, or each difference is explained or shown in the paid site's report after the save; written in BUILD_LOG; she has watched one. |
 
-**After v1, not needed for the finish line:** deleting `carried/` (ruled, #156 step 3); the Commons check (S23,
-old step 4); A14; benchmarks and pass rates, Phoebe's 80% among them (v2); the fresh public repository; the After v1 list.
+**After v1, not needed for the finish line:** deleting `carried/` (ruled, #156 step 3); A23, Calvin's VWBA row
+becomes Violet's; A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
 - **The engine bundle is at `carried/`**: gs4gg-carbon v0.16.1, the paid site's `calculator-seal-2026-10-03`,
   34 files, 34 of 34 hashes verified, crossed 3 Oct 2026 (#147). Tagged `engine-carry-2026-10-04`; the first bundle
@@ -164,6 +163,9 @@ the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 
 **A22 · Bridget's hello.** Step 6 · BONES. From the v1 done line: the map and the pin as today; she
 introduces herself, says what the map shows, and hands back. It is not her chat (A12). No proposal yet.
 
+**A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet,
+who hosts the D-n modules in the Commons. Violet is not on the roster yet; it arrives by her hand. No proposal yet.
+
 **A5 · Primer review against the abstention log.** After v1 · PARK. The primer was written from the rules,
 not from real questions, because there were none. Once there is real traffic, read the log against it:
 gaps that are another agent's subject, and anything no agent covers. Waits on usage, with O1, O9, A20.
@@ -180,13 +182,9 @@ the specialist contract's ten lines. Calvin's chat left this row for A21.
 spent all 16,000 output tokens; `CALL_TIMEOUT_MS`, 120 seconds, ends it. Done is a real count once there
 is traffic, then a smaller budget with a measured reason or a line saying the timeout is enough.
 
-### Sprint 2 — Surfaces: the Commons check (step 4), then the report export (step 8)
+### Sprint 2 — Surfaces: the report export (step 8)
 
 What a visitor sees and works with. Her browser review is the gate.
-
-**S23 · The Commons check.** Step 4 · PARTNER. From the v1 done line: Phoebe and Calvin work on the
-Commons too, with no memory; Bridget introduces herself; Calvin has two cards on one engine, screening
-and transition. His part waits on A21. No proposal yet.
 
 **S21 · The screening report exports free.** Step 8 · v1. Her word of 23 Sep 2026: every tool, with or
 without answers, exportable as an easy-to-read, properly cited document. The screening report is the first
@@ -218,6 +216,9 @@ every finding fixed in one pull request. At 900px and below the screening fills 
 slide over it, the step's name sits under the rings; the Commons and a module's tabs scroll with the page; the
 menu takes the live page's three rows. Desktop unchanged. Waits on her check on a real phone; a 44px tap area
 for the main site's menu is hers to carry.
+
+**S23 · The Commons check.** After v1 · PARTNER. v2, her word of 30 Oct 2026; it was old step 4. Phoebe and
+Calvin work on the Commons with no memory; Bridget introduces herself; Calvin's two cards on one engine. No proposal.
 
 **S19 · The Workshop — make your own agent on the Commons.** After v1 · PARTNER. Not built; the proposal
 is next on her word. Her cost model, review before publishing and the two-shape save are in the write-up.
