@@ -287,6 +287,23 @@ settings. Every pull request also runs gitleaks, a second secrets scan, as a req
 workflow asks GitHub for the least it needs: the lane job reads files and writes labels; only the
 auto-merge job, which is off, could ever write to the repository.
 
+#### The name scan runs before every push
+
+**Maintainer's ruling, 30 Oct 2026.** Every pull request runs the name scan, `scripts/check-names.mjs`, on
+the engineer's machine before its branch is pushed, and again before each later push to it. It checks text
+and file names against a private list of names, matching whole words. **It cannot run in GitHub's checks,
+because the list is private**; only its tests, which use made-up names, run there.
+
+- **Where the list is.** The `WB_NAMES_LIST` setting on the machine holds the list's full path. No path is
+  written in the code or in this repository. The list is never copied, printed or logged.
+- **What runs.** `node scripts/check-names.mjs --added origin/main` checks the lines and file names the pull
+  request adds. `node scripts/check-names.mjs` alone checks every tracked file and file name.
+- **What it says.** File, line and kind only, then a count per kind; never a name. A path that holds a name
+  shows as "(path hidden)". Exit 0 is clean, 1 is a finding, 2 is "could not run".
+- **It fails closed.** No setting, or a list that is missing or empty, is exit 2, never a pass. A push waits
+  until the scan runs clean; a finding is fixed or put to the maintainer, never pushed past.
+- **The pull request says it ran**, under *What I ran*, with the count.
+
 #### Every description opens with a block for the maintainer
 
 **Maintainer's ruling, 27 Aug 2026.** Every pull request description begins with a block
@@ -534,4 +551,5 @@ those gets the light close (*Two kinds of close*). **A ritual with a skipped ste
   `%USERPROFILE%\GitHub\...` or by its role, never with a person's folder or account name in it.
   **A pull request's title, commit messages and body never name what is being removed**: a
   cleanup is titled for the tidying ("Tidy paths and comments"), and the list it was checked
-  against stays outside this repository. Maintainer's ruling, 25 Oct 2026.
+  against stays outside this repository. Maintainer's ruling, 25 Oct 2026. The name scan, under
+  *The name scan runs before every push*, is how a push is checked against that list.
