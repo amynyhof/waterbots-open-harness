@@ -338,3 +338,46 @@ test('the case that slipped through: a first name in a file and in an added line
   const diff = ['diff --git a/p.md b/p.md', '--- a/p.md', '+++ b/p.md', '@@ -1 +1,2 @@', ' title', "+Harbour's word of 1 Nov"].join('\n');
   assert.deepEqual(scanDiff(diff, entries).findings, [{ file: 'p.md', line: 2, kind: KINDS.addedLine }]);
 });
+
+/* "Allowed in": a listed number that is also a figure in a published dataset, ruling 1 Nov 2026. */
+
+test('"allowed in" lets an entry through inside the files named, and nowhere else', () => {
+  const entries = parseNames('40417 | allowed in public/basins.json, data/other.json');
+  assert.deepEqual(entries[0].allowedIn, ['public/basins.json', 'data/other.json']);
+  assert.deepEqual(scanText('"SUB_AREA":40417,', entries, 'public/basins.json'), []);
+  assert.deepEqual(scanText('"SUB_AREA":40417,', entries, 'data/other.json'), []);
+  assert.deepEqual(scanText('"SUB_AREA":40417,', entries, 'public/other.json'), [1], 'another file is not allowed');
+  assert.deepEqual(scanText('"SUB_AREA":40417,', entries, 'old/public/basins.json.bak'), [1]);
+  assert.deepEqual(scanText('"SUB_AREA":40417,', entries), [1], 'text with no file is never allowed');
+});
+
+test('"allowed in" works on a whole-repository scan and on added lines', () => {
+  const entries = parseNames('40417 | allowed in public/basins.json');
+  const dir = tmp();
+  mkdirSync(join(dir, 'public'));
+  writeFileSync(join(dir, 'public', 'basins.json'), '{"SUB_AREA":40417}\n');
+  writeFileSync(join(dir, 'notes.md'), 'project 40417\n');
+  assert.deepEqual(scanFiles(dir, ['public/basins.json', 'notes.md'], entries).findings, [
+    { file: 'notes.md', line: 1, kind: KINDS.text },
+  ]);
+  const diff = [
+    'diff --git a/public/basins.json b/public/basins.json',
+    '--- a/public/basins.json',
+    '+++ b/public/basins.json',
+    '@@ -1 +1 @@',
+    '+{"SUB_AREA":40417}',
+    'diff --git a/notes.md b/notes.md',
+    '--- a/notes.md',
+    '+++ b/notes.md',
+    '@@ -1 +1 @@',
+    '+project 40417',
+  ].join('\n');
+  assert.deepEqual(scanDiff(diff, entries).findings, [{ file: 'notes.md', line: 1, kind: KINDS.addedLine }]);
+});
+
+test('both options may stand on one entry, and "allowed in" with no file is refused', () => {
+  const [entry] = parseNames('Harbour Voss | allowed on copyright and licence lines | allowed in NOTICE');
+  assert.equal(entry.copyrightOnly, true);
+  assert.deepEqual(entry.allowedIn, ['NOTICE']);
+  assert.throws(() => parseNames('40417 | allowed in'), ListError);
+});

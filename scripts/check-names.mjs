@@ -13,8 +13,11 @@
  *
  * THE LIST. One entry per line. `#` starts a comment; blank lines are skipped. An entry may end in
  * `| allowed on copyright and licence lines` (with or without a closing "only", either spelling of licence): it
- * is then let through on a copyright or licence line and nowhere else. Anything else after a `|` stops the run,
- * so a mistyped option can never quietly switch an entry off.
+ * is then let through on a copyright or licence line and nowhere else. An entry may also end in
+ * `| allowed in <path>` — several paths separated by commas, each from the repository's top — and is then let
+ * through inside those files only: a number that is also a figure in a published dataset, say (ruling 1 Nov 2026).
+ * Both options may stand on one entry, each after its own `|`. Anything else after a `|` stops the run, so a
+ * mistyped option can never quietly switch an entry off.
  *
  * A COPYRIGHT OR LICENCE LINE is one that opens, after any comment or list marks, with "Copyright", "©", "(c)",
  * "SPDX-", "Licence", "License" or "Licensed". A line that merely mentions a licence somewhere is not one.
@@ -44,7 +47,8 @@ import { fileURLToPath } from 'node:url';
 
 const SKIP_DIRS = new Set(['.git', 'node_modules', 'dist']);
 const COPYRIGHT_LINE = /^[\s#/*>\-;!<]*(?:copyright\b|©|\(c\)|SPDX-|licen[cs]e[sd]?\b)/i;
-const ALLOW_MARK = /\|\s*allowed on copyright and licen[cs]e lines(?:\s+only)?\s*$/i;
+const ALLOW_MARK = /^allowed on copyright and licen[cs]e lines(?:\s+only)?$/i;
+const ALLOW_IN = /^allowed in\s+(.+)$/i;
 const HIDDEN = '(path hidden)';
 
 export const KINDS = {
@@ -62,15 +66,21 @@ export function parseNames(text) {
   for (const raw of text.replace(/^﻿/, '').split(/\r?\n/)) {
     const line = raw.trim();
     if (line === '' || line.startsWith('#')) continue;
-    const copyrightOnly = ALLOW_MARK.test(line);
-    const name = line.replace(ALLOW_MARK, '').trim();
-    if (name.includes('|')) throw new ListError('an entry carries an option the scan does not know');
+    const [name, ...options] = line.split('|').map((s) => s.trim());
+    let copyrightOnly = false;
+    const allowedIn = [];
+    for (const option of options) {
+      const inFiles = ALLOW_IN.exec(option);
+      if (ALLOW_MARK.test(option)) copyrightOnly = true;
+      else if (inFiles) allowedIn.push(...inFiles[1].split(',').map((p) => p.trim().replace(/\\/g, '/').replace(/^\.?\//, '')).filter(Boolean));
+      else throw new ListError('an entry carries an option the scan does not know');
+    }
     const parts = name.split(/[\s_.\-]+/).filter(Boolean).map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
     if (parts.length === 0) continue;
     const whole = (p) => new RegExp(`(?<![A-Za-z0-9])${p}(?![A-Za-z0-9])`, 'i');
     const patterns = [whole(parts.join('[\\s_.\\-]*'))];
     if (copyrightOnly && parts.length > 1) patterns.push(...parts.map(whole));
-    entries.push({ patterns, copyrightOnly });
+    entries.push({ patterns, copyrightOnly, allowedIn });
   }
   if (entries.length === 0) throw new ListError('the names list holds no entries');
   return entries;
@@ -100,17 +110,24 @@ function hits(entry, text) {
   return entry.patterns.some((p) => p.test(text));
 }
 
-/** Whether one line holds a listed name, minding the copyright allowance. */
-function lineHasName(line, entries) {
-  const isCopyrightLine = COPYRIGHT_LINE.test(line);
-  return entries.some((e) => hits(e, line) && !(e.copyrightOnly && isCopyrightLine));
+/** Whether `file`, a path from the repository's top or under it, is one of the entry's allowed files. */
+function allowedHere(entry, file) {
+  if (!file) return false;
+  const path = `/${file.split(sep).join('/')}`;
+  return entry.allowedIn.some((a) => path.endsWith(`/${a}`));
 }
 
-/** Lines of `text` that hold a listed name. Returns line numbers only. */
-export function scanText(text, entries) {
+/** Whether one line holds a listed name, minding the copyright allowance and the files an entry is allowed in. */
+function lineHasName(line, entries, file) {
+  const isCopyrightLine = COPYRIGHT_LINE.test(line);
+  return entries.some((e) => hits(e, line) && !(e.copyrightOnly && isCopyrightLine) && !allowedHere(e, file));
+}
+
+/** Lines of `text` that hold a listed name. Returns line numbers only. `file` is where the text is from, if known. */
+export function scanText(text, entries, file = null) {
   const hits = [];
   text.split(/\r?\n/).forEach((line, i) => {
-    if (lineHasName(line, entries)) hits.push(i + 1);
+    if (lineHasName(line, entries, file)) hits.push(i + 1);
   });
   return hits;
 }
@@ -139,7 +156,7 @@ export function scanFiles(root, files, entries) {
       continue;
     }
     textFiles++;
-    for (const line of scanText(buf.toString('utf8'), entries)) findings.push({ file: shown, line, kind: KINDS.text });
+    for (const line of scanText(buf.toString('utf8'), entries, f)) findings.push({ file: shown, line, kind: KINDS.text });
   }
   return { findings, files: files.length, textFiles, skipped };
 }
@@ -192,7 +209,7 @@ export function scanDiff(diff, entries) {
     }
     if (!file) continue;
     if (raw.startsWith('+')) {
-      if (lineHasName(raw.slice(1), entries)) findings.push({ file: shown, line, kind: KINDS.addedLine });
+      if (lineHasName(raw.slice(1), entries, file)) findings.push({ file: shown, line, kind: KINDS.addedLine });
       line++;
     } else if (raw.startsWith(' ')) {
       line++;

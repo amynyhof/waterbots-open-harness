@@ -117,7 +117,7 @@ The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done,
 | # | Step, in one line | Depends on | Done when |
 |---|---|---|---|
 | 1 | **React 19 under the map**, so the open core's calculator screens can run here (#156, §9). | Nothing outside this repository. | Before-and-after map pictures she has passed; every check and the build pass. |
-| 2 | **Calvin's carbon calculator from the open core** on his Tool tab, V1 and V2, simple view and sliders on (A21). | The open core (Session C): the eight changes in #156 §1, sliders and the simple view. Pinned to the open core release that includes the sliders, as a release file. | Proofs P1 to P5 of #156 pass; she has passed the before-and-after table and the tab in the browser. |
+| 2 | **Calvin's carbon calculator from the open core** on his Tool tab, V1 and V2, simple view and sliders on (A21). | The open core (Session C): the eight changes in #156 §1, sliders and the simple view. Pinned to the open core release that includes the sliders, as a release file. | Proofs P1 to P5 of #156 pass; she has passed the before-and-after table and the tab in the browser; **`carried/` is removed from this repository in the same swap, required for v1** (ruling 1 Nov 2026: the paid repository keeps the private original as the archive). |
 | 3 | **Wellington asks the core facts first**: type and class, country, how many served, people or households, and whether it is already registered for carbon (the transition). | Her rewrite of his instructions, freeing at least 249 characters plus the new question's; the gate stays at 26,199. Step 2. | The record holds the new fields; one measured run; his prompt under the gate. |
 | 4 | **Calvin's chat**, on the open core's prompt, asking only what is missing (A21). | The core's `prompt.md` read against AGENT_RULES.md (#156, open point C). Steps 2 and 3. | One measured run; on a walk he opens with his facts filled and asks at most household size and, for a transition, the filed V1.0 fraction of non-renewable biomass (fNRB). |
 | 5 | **The water figure from the open core's VWBA D-3 module**, in place of this site's `vwbaD3.ts`. | Session C builds the module, with the test cases worked by hand and every step cited, in a pinned open core release. Step 2. | The hand-worked cases pass here; she has passed the water figure in the browser. |
@@ -126,8 +126,7 @@ The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done,
 | 8 | **The save carries every input the figures rest on**, never a computed number (old step 7). | Steps 2 to 5. The paid site's receiver reads them: her carry (O14), its item #243. | A test visit saved here opens on the paid site with every input filled. |
 | 9 | **The v1 walks**: whole screenings, counted and compared. | Everything above; the paid site runs the same open core release. | Questions counted on each walk and the average reported; the paid site's carbon and VWBA figures on each saved project equal the screening's, or each difference is explained or shown in the paid site's report after the save; written in BUILD_LOG; she has watched one. |
 
-**After v1, not needed for the finish line:** deleting `carried/` (ruled, #156 step 3); A23, Calvin's VWBA row
-becomes Violet's; A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
+**After v1, not needed for the finish line:** A23, Calvin's VWBA row becomes Violet's; A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
 - **Wellington's prompt is 26,079 characters against a gate of 26,199.** The gate moves only on her word.
 - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull
@@ -265,7 +264,7 @@ The deploy, the repository, settings and limits. Step 7 is the carry, by her han
 when its receiver reads them, and that receiver is not fixed, Shell A item #243); `project-types.md`; the
 ten-line contract; Q11; the paid-site tools line; the transition module; the one-row shape; the agent
 screen's file list; open.waterbots.ai for the landing box, the claim and the menu (28 Oct 2026). **To the brand book:** typing dots §5, the agent screen §7. **To this site:** the
-sign-up address, the confirmed roster columns. **To the grader:**
+sign-up address, the confirmed roster columns, and `roster.yaml` without the maintainer's name, fixed at the source by Session A and carried clean (ruling 1 Nov 2026; never edited here). **To the grader:**
 three rig changes.
 
 **O1 · Revisit the daily cap against real usage.** After v1 · PARK. Thirty a day per visitor is live
