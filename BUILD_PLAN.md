@@ -169,8 +169,8 @@ the cards and the lists reach the relays as generated copies (`scripts/build-pro
 **A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Her word of 31 Oct 2026: his prompt is 26,079 against a gate of 26,199, and
 step 3 needs room. A shorter version keeping every rule and step; the proposal is docs/proposals/wellington-rewrite-2026-10-31.md.
 
-**A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet,
-who hosts the D-n modules in the Commons. Violet is not on the roster yet; it arrives by her hand. No proposal yet.
+**A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet, host of the
+D-n modules in the Commons; not on the roster yet, by her hand. No proposal yet. Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026).
 
 **A5 · Primer review against the abstention log.** After v1 · PARK. The primer was written from the rules,
 not from real questions, because there were none. Once there is real traffic, read the log against it:

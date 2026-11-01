@@ -1,6 +1,6 @@
 # Proposal — Wellington's instructions, shorter
 
-**Written 31 Oct 2026 for Amy. Proposal only: nothing is changed until she approves.** Item A26, and the room
+**Written 31 Oct 2026 for Amy. Approved as written on 1 Nov 2026, at 23,122 characters; built in its own pull request after #168 merges, with all his checks and a preview for her walk.** Her 28 Oct draft is kept, marked superseded. Item A26, and the room
 road step 3 needs. It starts from her draft, [wellington-instructions-2026-10-28.txt](./wellington-instructions-2026-10-28.txt),
 which is the 28 Oct copy of his instructions. #167 changed his Bridget lines since then, so the starting text here is
 his instructions as they are on `main` today.
@@ -26,7 +26,7 @@ his instructions as they are on `main` today.
 1. Approve, change or refuse the shorter text below.
 2. If approved, the build is one pull request, lane 3: the two files, the generated region, CLAUDE.md's and
    BUILD_PLAN's size lines, and one measured run, as every prompt change needs.
-3. Your draft file says it is deleted when its pull request closes; it is still on `main`. Delete it with the build?
+3. Your draft file: kept and marked superseded, your ruling of 1 Nov 2026.
 
 ## The proposed text
 

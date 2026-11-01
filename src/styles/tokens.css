@@ -22,8 +22,12 @@
   /* Reef and Orchid — the maintainer's ruling of 31 Oct 2026: Reef is Calvin's,
      Orchid is Violet's. Both measured, not assumed: Reef 4.13:1 on white and
      3.81:1 on --paper, Orchid 4.29:1 and 3.96:1. Neither reaches 4.5:1, so
-     neither carries text; each is a portrait, a keyline, a tint or a wash. */
+     neither carries text; each is a portrait, a keyline, a tint or a wash.
+     Deep Reef is Reef's text shade, the maintainer's ruling of 1 Nov 2026:
+     4.96:1 on white, 4.57:1 on --paper, 4.80:1 on --frame. Orchid has no
+     text shade yet; Violet needs one when she is built (BUILD_PLAN, A23). */
   --reef: #0e8a94;
+  --deep-reef: #0c7c85;
   --orchid: #a457d4;
   --slate: #3d5878;
   --amber: #e8a12b;
@@ -329,14 +333,17 @@
 
        --bot-calvin   4.13:1 on white, 3.81:1 on --paper
 
+       --bot-calvin-text  4.96:1 on white, 4.57:1 on --paper
+
      Plum cleared 4.5:1 and carried text: his name and four labels on his
-     calculator. REEF DOES NOT, so from 31 Oct 2026 those are set in --ink, as
-     Bridget's name is, and Reef carries his portrait, keylines, tints and
-     washes only.
+     calculator. REEF DOES NOT, so from 1 Nov 2026 those are set in Deep Reef,
+     its text shade, by the maintainer's ruling; Reef carries his portrait,
+     keylines, tints and washes only.
 
      Form still carries the meaning, per §2.6: Reef as a portrait, a keyline or
      a wash means Calvin. It is never a status dot. */
   --bot-calvin: var(--reef);
+  --bot-calvin-text: var(--deep-reef);
 
   /* Violet — the VWBA agent, who will host the D-n modules on the Commons (item
      A23). Orchid, the maintainer's ruling of 31 Oct 2026. Not on the roster and

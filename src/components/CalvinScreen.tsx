@@ -33,7 +33,8 @@
  *
  * HIS ACCENT IS REEF from 31 Oct 2026, the maintainer's ruling; it was Plum,
  * Reggie's, by a knowing exception from 31 Aug. It is read from his token as
- * ever, and it never carries text (src/styles/tokens.css).
+ * ever, and it never carries text: his text is Deep Reef, from 1 Nov 2026
+ * (src/styles/tokens.css).
  */
 
 import calvinPortrait from '../../brand/assets/bots/calvin.svg';

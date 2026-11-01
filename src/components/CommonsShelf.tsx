@@ -215,7 +215,7 @@ function ModuleRow({ card, onOpen }: { card: ShelfCard; onOpen: () => void }) {
               fontSize: 14,
               fontWeight: 600,
               lineHeight: 1.2,
-              color: holder.nameInAccent ? `var(${holder.token})` : 'var(--ink)',
+              color: holder.nameInAccent ? `var(${holder.textToken ?? holder.token})` : 'var(--ink)',
             }}
           >
             {holder.name}
