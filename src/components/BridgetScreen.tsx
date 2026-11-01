@@ -4,11 +4,16 @@
  * the crew rail with the save button stands where it stood.
  *
  * HER CHAT IS LIVE FROM 31 OCT 2026, the maintainer's ruling on #167 (item
- * A22, step 6 of the Road to v1), and her map stands beside it on the Chat
- * tab — side by side on a computer, the map above the chat on a phone. The
- * strip of fixed lines above the map that #167 first built is gone, and so is
- * the separate Tool tab: the map is not somewhere else to go, it is what she
- * is talking about. The screen opens on her chat, as Phoebe's does.
+ * A22, step 6 of the Road to v1). The strip of fixed lines above the map that
+ * #167 first built is gone. The screen opens on her chat, as Phoebe's does.
+ *
+ * THE MAP HAS ITS OWN TAB, "Map", beside Chat, Knowledge pack and Credentials —
+ * the same tab layout the other agents use, the map at full width. The
+ * maintainer's third ruling of 31 Oct 2026, after the captures of the chat and
+ * map side by side. The first time the Map tab opens for a place, it opens on
+ * the country the visitor told Wellington (placeBox, src/lib/placeBox.ts), or
+ * on the whole world when no single country is named; never a guess. A new pin
+ * takes the visitor back to Chat, where her answer about it lands.
  *
  * HOW A VISIT GOES — the maintainer's second ruling of 31 Oct 2026 on #167.
  * The first time her step shows, the console sends `opened`, the pattern of
@@ -16,7 +21,7 @@
  * does, why the basin matters to partners and funders, that she is still being
  * built, and her one question, the pin, in the place's own words. Nothing is
  * shown before it but her thinking line; the fixed greeting #167 first carried
- * is gone. Each new pin sends `pinned`, and she thanks the visitor, reports
+ * is gone; her ask names the Map tab. Each new pin sends `pinned`, and she thanks the visitor, reports
  * the basin and its reading, and says when it is derived. Where the right rail
  * offers Quantify she says Calvin is next, by the rail's button; where it does
  * not she hands back to Wellington by the field. No button of her own, except
@@ -53,7 +58,7 @@
  * never text, so her name is set in ink, as everywhere else.
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import bridgetPortrait from '../../brand/assets/bots/bridget.svg';
 import type { AgentHost, AgentTurn } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
@@ -70,8 +75,10 @@ import {
 } from '../lib/licences';
 import { DESK_LABEL, type Surface } from '../lib/surfaces';
 import { citedDocument, toolSummary, toolVersion } from '../lib/toolReadmes';
+import { placeBox } from '../lib/placeBox';
 import type { MapPin } from '../lib/visit';
-import AgentScreen from '../screen/AgentScreen';
+import type { Bbox } from '../lib/basins';
+import AgentScreen, { type ScreenTab } from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, { type PackRow, type PackView } from '../screen/KnowledgePackTab';
 import ScreenChat from '../screen/ScreenChat';
@@ -148,6 +155,30 @@ export default function BridgetScreen({
     void chatRef.current.askOpened({ opened: true });
   }, [visible]);
 
+  /* The tab is held here, so a pin can bring the visitor back to Chat. */
+  const [tab, setTab] = useState<ScreenTab>('chat');
+
+  /* The Map tab opens on the place Wellington heard, once per place: a reader
+     who pans away and comes back is left where they were. No single country
+     named, no move — the map's own view is the whole world. */
+  const [focus, setFocus] = useState<{ box: Bbox; key: number } | null>(null);
+  const focusedPlace = useRef<string | null>(null);
+  useEffect(() => {
+    if (tab !== 'tool' || focusedPlace.current === place) return;
+    focusedPlace.current = place;
+    const box = placeBox(place);
+    if (box) setFocus((f) => ({ box, key: (f?.key ?? 0) + 1 }));
+  }, [tab, place]);
+
+  /* A new basin takes the visitor back to Chat, where her answer about it lands. */
+  const pinnedId = pin?.hybasId ?? null;
+  const lastPinned = useRef<number | null>(null);
+  useEffect(() => {
+    if (pinnedId === null || pinnedId === lastPinned.current) return;
+    lastPinned.current = pinnedId;
+    setTab('chat');
+  }, [pinnedId]);
+
   /* Each new basin is reported once, after anything in flight has landed. An
      unpin says nothing; pinning the same basin again is not a new one. */
   const reported = useRef<number | null>(null);
@@ -161,15 +192,14 @@ export default function BridgetScreen({
   return (
     <AgentScreen
       host={BRIDGET}
+      toolLabel="Map"
+      active={tab}
+      onActiveChange={setTab}
       tabs={{
-        chat: (
-          <div className="wb-bridget-split">
-            <div className="wb-bridget-chat">
-              <ScreenChat host={BRIDGET} chat={chat} composerId="wb-bridget-composer" />
-            </div>
-            <div className="wb-bridget-map" aria-label="The basin map">
-              <BasinMap onStatus={onStatus} pinnedHybas={pin?.hybasId ?? null} onPin={onPin} />
-            </div>
+        chat: <ScreenChat host={BRIDGET} chat={chat} composerId="wb-bridget-composer" />,
+        tool: (
+          <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
+            <BasinMap onStatus={onStatus} pinnedHybas={pin?.hybasId ?? null} onPin={onPin} focus={focus} />
           </div>
         ),
         pack: <KnowledgePackTab view={BRIDGET_PACK} />,

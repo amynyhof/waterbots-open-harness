@@ -405,7 +405,7 @@ credit line does not meet any of these bars.
   Quantify only where a pathway is likely eligible or not enough is known. For a water supply
   project he asks how many people or households it serves, after the stage; it is kept as said,
   households never converted here, on the record, the rail and the seal as `record.served`. His
-  prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep, 26,034 from 4 Oct and is 25,925 from 31 Oct
+  prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep, 26,034 from 4 Oct and is 26,079 from 31 Oct
   2026, against the unchanged gate of 26,199.
 - **The engine bundle is tracked at `carried/`, from 27 Sep 2026**, placed by the maintainer's
   hand and merged on `main` as it stands (#132), tagged `engine-carry-2026-09-27`. **It was replaced
@@ -426,11 +426,14 @@ credit line does not meet any of these bars.
   that last sentence is bold, chips included**: display only, no prompt or relay change; the
   Commons shows the same Phoebe, so it is bold there too. **Calvin's brief has its bundle**,
   carried 3 Oct 2026.
-- **Bridget's chat is live beside her map, from 31 Oct 2026 (item A22, #167)**, by the maintainer's
-  two rulings of that day. Her chat and the map sit side by side on one tab; on a phone the map is
-  above the chat. She opens in her own words: who she is, what she does, why the basin matters to
-  funders and partners, that she is still being built, and her one question, the pin, in the place
-  the visitor gave Wellington. After the pin she thanks them, gives the basin and its water-stress
+- **Bridget's chat is live, her map on its own tab, from 31 Oct 2026 (item A22, #167)**, by the
+  maintainer's three rulings of that day. Her screen has the other agents' tab layout: Chat, Map,
+  Knowledge pack, Credentials, opening on Chat, the map at full width on its tab. The Map tab opens
+  on the country the visitor told Wellington, matched from Natural Earth's country names, or on the
+  whole world when no single country is named; never a guess. She opens in her own words: who she
+  is, what she does, why the basin matters to funders and partners, that she is still being built,
+  and her one question: open the Map tab and pin the basin, in the place the visitor gave
+  Wellington. A pin brings the visitor back to Chat. There she thanks them, gives the basin and its water-stress
   reading, says when it is derived, and says Calvin is next, by the Quantify button in the right
   rail; where no pathway goes on to Quantify she hands back to Wellington. No button of her own,
   except the 'Back to Wellington' link when no pathway goes on to Quantify, the same hand-back Phoebe

@@ -281,6 +281,7 @@ const compileLib = spawnSync(
     join('src', 'lib', 'carried.ts'),
     join('src', 'lib', 'journey.ts'),
     join('src', 'lib', 'worksheetState.ts'),
+    join('src', 'lib', 'placeBox.ts'),
     '--outDir', libOut,
     '--module', 'commonjs',
     '--moduleResolution', 'node',
@@ -506,13 +507,45 @@ expect(
 );
 const bridgetSource = readFileSync('src/components/BridgetScreen.tsx', 'utf8');
 expect(
-  'her chat is on her screen with the map beside it, and the strip above the map is gone (31 Oct 2026)',
-  /<ScreenChat host=\{BRIDGET\}/.test(bridgetSource) &&
-    /wb-bridget-split/.test(bridgetSource) && /<BasinMap /.test(bridgetSource) &&
-    !/NotLiveChat|BridgetHello|wb-hello|opensOn="tool"/.test(bridgetSource) &&
-    !/wb-hello/.test(readFileSync('src/styles/base.css', 'utf8')),
-  'the strip or the not-live chat is still on her screen'
+  'her screen opens on Chat, and the map has its own tab, "Map", at full width; the strip and the side-by-side split are gone (31 Oct 2026)',
+  /chat: <ScreenChat host=\{BRIDGET\}/.test(bridgetSource) &&
+    /toolLabel="Map"/.test(bridgetSource) && /tool: \(/.test(bridgetSource) && /<BasinMap /.test(bridgetSource) &&
+    /useState<ScreenTab>\('chat'\)/.test(bridgetSource) &&
+    !/NotLiveChat|BridgetHello|wb-hello|opensOn="tool"|wb-bridget-split/.test(bridgetSource) &&
+    !/wb-hello|wb-bridget-split/.test(readFileSync('src/styles/base.css', 'utf8')),
+  'the map is not on its own tab, or the old layout is still on her screen'
 );
+expect(
+  'a new pin takes the visitor back to Chat, where her answer lands; an unpin does not',
+  /if \(pinnedId === null \|\| pinnedId === lastPinned\.current\) return;\s*lastPinned\.current = pinnedId;\s*setTab\('chat'\);/.test(bridgetSource) &&
+    /active=\{tab\}/.test(bridgetSource) && /onActiveChange=\{setTab\}/.test(bridgetSource),
+  'a pin does not bring the visitor back to Chat'
+);
+expect(
+  'the Map tab opens on the place Wellington heard, once per place, through placeBox',
+  /if \(tab !== 'tool' \|\| focusedPlace\.current === place\) return;/.test(bridgetSource) &&
+    /const box = placeBox\(place\);\s*if \(box\) setFocus/.test(bridgetSource) &&
+    /focus=\{focus\}/.test(bridgetSource) &&
+    /<FocusView focus=\{focus\} \/>/.test(readFileSync('src/components/BasinMap.tsx', 'utf8')),
+  'the Map tab does not open on the place'
+);
+{
+  const { placeBox } = createRequire(import.meta.url)(join(libOut, 'placeBox.js'));
+  const malawi = placeBox('Malawi');
+  expect(
+    "one country named is its box; none, two, or a name inside another country's name is the whole world — never a guess",
+    Array.isArray(malawi) && malawi[0] > 32 && malawi[2] < 36 && malawi[1] > -17 && malawi[3] < -9 &&
+      JSON.stringify(placeBox('Lilongwe district, MALAWI')) === JSON.stringify(malawi) &&
+      placeBox('') === null && placeBox('Lilongwe') === null &&
+      placeBox('between Malawi and Zambia') === null &&
+      placeBox('Sudan') === null && placeBox('Congo') === null && placeBox('Guinea') === null &&
+      Array.isArray(placeBox('South Sudan')) &&
+      Array.isArray(placeBox('Democratic Republic of the Congo')) &&
+      placeBox("Côte d'Ivoire") !== null &&
+      JSON.stringify(placeBox("Côte d'Ivoire")) === JSON.stringify(placeBox('Ivory Coast')),
+    'placeBox guessed, or missed a country plainly named'
+  );
+}
 expect(
   "No button of her own, except the 'Back to Wellington' link when no pathway goes on to Quantify, the same hand-back Phoebe uses",
   /answer\.handBack === 'wellington'/.test(bridgetSource) &&
@@ -887,7 +920,7 @@ console.log('\n  Bridget\n');
     BRIDGET_STILL_BUILT === ruled && BP.includes(`Keep this meaning, in your own words: "${ruled}"`) && !/Never say it again/.test(BP),
     JSON.stringify(BRIDGET_STILL_BUILT)
   );
-  const order = ['1. Greet them and say who you are.', '2. Say what you do', '3. Say why that matters.', '4. Say honestly that you are still being built.', '5. Ask them, nicely, to click'];
+  const order = ['1. Greet them and say who you are.', '2. Say what you do', '3. Say why that matters.', '4. Say honestly that you are still being built.', '5. Ask them, nicely, to open the Map tab'];
   expect(
     "her opening walks the maintainer's five beats in order, the pin question last",
     order.every((beat) => BP.includes(beat)) && order.every((beat, i) => i === 0 || BP.indexOf(order[i - 1]) < BP.indexOf(beat)) &&
@@ -994,7 +1027,7 @@ console.log('\n  Bridget\n');
   );
   expect(
     'the primer and his facts say her chat is live, and nothing on the desk says she is not answering',
-    /Her chat is live, beside the map/.test(AGENT_PRIMER_MD) && /her chat is live there/.test(WELLINGTON_PRIMER_MD) &&
+    /Her chat is live, with the map on its own Map tab beside it/.test(AGENT_PRIMER_MD) && /The one exception is Bridget's Map tab/.test(AGENT_PRIMER_MD) && /her chat is live there/.test(WELLINGTON_PRIMER_MD) &&
       !/Bridget is not\s+answering|Bridget cannot answer/.test(AGENT_PRIMER_MD + WELLINGTON_PRIMER_MD) &&
       !/Bridget is not answering/.test(readFileSync('api/_record.ts', 'utf8') + readFileSync('src/lib/visit.ts', 'utf8')),
     'a stale "not live" line about her remains'

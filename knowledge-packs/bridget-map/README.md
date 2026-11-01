@@ -8,8 +8,9 @@ is the two datasets already on this site.
 | [hydrosheds-hydrobasins](./tools/hydrosheds-hydrobasins/) | Basin boundaries, Levels 4 and 6 | [`public/hydrobasins_lev04.json`](../../public/hydrobasins_lev04.json), [`public/hydrobasins_lev06.json`](../../public/hydrobasins_lev06.json), [`src/lib/licences.ts`](../../src/lib/licences.ts) |
 | [wri-aqueduct-4.0](./tools/wri-aqueduct-4.0/) | Water stress | [`public/water_stress.json`](../../public/water_stress.json), [`src/lib/licences.ts`](../../src/lib/licences.ts) |
 
-Her chat is live beside the map from 31 Oct 2026: she says what she does and why the
-basin matters, asks for the pin, and says the water stress where it landed. Project points are planned and not yet placed.
+Her chat is live from 31 Oct 2026, with the map on its own Map tab: she says what she does
+and why the basin matters, asks for the pin on the Map tab, and says the water stress where it
+landed once a pin brings the visitor back to her chat. Project points are planned and not yet placed.
 
 Two datasets, two attributions. One combined line satisfies neither. Leaflet’s
 attribution control stays on. Text only for WWF — no WWF logo.
@@ -23,14 +24,14 @@ renders.
 Every specialist keeps the ten lines of **the specialist contract** in
 [AGENT_RULES.md](../../AGENT_RULES.md), the maintainer's ruling of 20 Sep 2026.
 This table is where Bridget stands against it. Her chat went live on the maintainer's
-two rulings of 31 Oct 2026 (item A22), doing one thing: the pin. Read as of 31 Oct 2026.
+three rulings of 31 Oct 2026 (item A22), doing one thing: the pin. Read as of 31 Oct 2026.
 
 | # | Line | Today | Where it is met |
 |---|---|---|---|
 | 1 | Introduces itself | **Yes** | In her own words, the first time her chat shows: who she is, what she does, why the basin matters to funders and partners, and that she is still being built. The meaning of the last is the maintainer's (`BRIDGET_STILL_BUILT`, `api/_bridgetPrompt.ts`); `check-wellington` holds the five beats and their order |
 | 2 | Knows its own tools | **Partly** | Her prompt knows the map and what it shows, and each pin says whether its reading is WRI's or derived. It does not carry the two dataset folders named here |
-| 3 | Sees its tool's state | **Yes** | The place the visitor told Wellington, phone or computer, the pin as the map read it, and whether the right rail offers Quantify ride with every ask, checked in `api/_bridgetPin.ts` |
-| 4 | Walks the user through the tool by talking | **Yes, one question** | She says why the pin matters, then asks for it, in the place's own words, and nothing else |
+| 3 | Sees its tool's state | **Yes** | The place the visitor told Wellington, phone or computer, the pin as the map read it, and whether the right rail offers Quantify ride with every ask, checked in `api/_bridgetPin.ts`. The Map tab opens on the country in that place, or the whole world (`placeBox`, `src/lib/placeBox.ts`) |
+| 4 | Walks the user through the tool by talking | **Yes, one question** | She says why the pin matters, then asks the visitor to open the Map tab and pin it, in the place's own words, and nothing else. A pin brings them back to her chat for her answer |
 | 5 | Fills the tool from answers, and shows what it filled | **No** | The visitor pins by hand; she says back what the pin holds |
 | 6 | Answers only from its own cards, with a citation | **No** | No rule cards. She answers only from the pin and her prompt, and cites nothing. What her cards are is a question for her brief |
 | 7 | Knows its limits and its level here | **Yes** | Her prompt says what she does today and what is coming, and carries the level sentence `check-roster` holds to the roster |

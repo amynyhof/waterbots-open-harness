@@ -69,9 +69,9 @@ only, and never presses anyone to sign up. Thirty messages a day, counted separa
 twenty, and nothing kept between visits. **Bridget is the map's agent and Calvin is the
 quantification step's.** ~~Neither console is built yet — each panel is there, each agent is named in
 it, and each says plainly that it is not answering.~~ **Bridget's chat is live from 31 Oct 2026**,
-beside her map: she explains what she does and why the basin matters to funders and partners, asks
-the visitor to pin their project's basin, and reads its water stress back, saying when the reading
-is derived. **Calvin's chat is not built**; his step has a screen of its own, which opens on the
+with her map on its own Map tab: she explains what she does and why the basin matters to funders and partners, asks
+the visitor to pin their project's basin on the Map tab, which opens on the country they named, and
+reads its water stress back in the chat, saying when the reading is derived. **Calvin's chat is not built**; his step has a screen of its own, which opens on the
 calculator and says so in one plain line on its Chat tab.
 
 **From 7 Sep 2026 the desk closes its loop.** What Wellington learns goes to Phoebe with every ask,
@@ -90,7 +90,7 @@ a visitor can see whose screen it is. There is no "Next phase" chip: next steps 
 clears once it is taken. **Wellington's** desk is his screen. **Phoebe's** has
 her chat on her tint, the eligibility worksheet as its Tool, and a Knowledge pack assembled from the
 committed cards. **Bridget's** opens on her
-chat, with the map beside it on the same tab. **Calvin's** opens on Tool, the calculator, and his
+chat, with the map on its own tab, Map, at full width; a pin brings the visitor back to Chat. **Calvin's** opens on Tool, the calculator, and his
 Chat tab says in one plain line that he is not answering here yet. The right column is the crew
 with the save button on every step; the old host panels are gone. Memory is never a tab: what the
 visit knows stays in the record on the left. The screen is built once and offered to production and
@@ -366,6 +366,12 @@ Tiles come from **CARTO**, on their Voyager style, and CARTO's free tier require
 requires that the CARTO and OpenStreetMap attribution stays visible. That is what the free tier is
 in exchange for, so the attribution control is not decoration here — it is a licence condition,
 and `check-attribution` fails the build if either credit goes missing.
+
+**Opening on a country.** Bridget's Map tab opens on the country the visitor named, using the
+box around each country from [Natural Earth](https://www.naturalearthdata.com)'s 1:110m Admin 0 –
+Countries, v5.1.2, which is public domain. Only the names and boxes are kept, in
+`src/lib/countryBoxes.generated.ts`, made by `scripts/build-country-boxes.mjs`; nothing from it is
+drawn on the map.
 
 **The key is a build-time setting** (`VITE_CARTO_KEY`) and is not held in this repository. A build
 without it produces a working map with every tile watermarked, which is why

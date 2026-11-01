@@ -129,7 +129,7 @@ The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done,
 **After v1, not needed for the finish line:** deleting `carried/` (ruled, #156 step 3); A23, Calvin's VWBA row
 becomes Violet's; A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
-- **Wellington's prompt is 25,925 characters against a gate of 26,199.** The gate moves only on her word.
+- **Wellington's prompt is 26,079 characters against a gate of 26,199.** The gate moves only on her word.
 - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull
   request; a measured run after any prompt change; the build-update fact refreshed at every full close-out.
 
@@ -156,8 +156,8 @@ draws them and `check-roster` does not read them. Her ruling is owed: the field 
 the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 2026.
 
 **A22 · Bridget's chat.** Step 6 · BONES. Built 31 Oct 2026 on her two rulings, waiting on her eyeball and live walk: her chat
-and the map side by side on one tab; her opening in her own words (who she is, what she does, why the basin matters to funders
-and partners, still being built, the pin); one ask; the reading said derived where it is; then Calvin, by the rail's Quantify
+first, the map on its own Map tab, opening on the country named; her opening in her own words (who she is, what she does, why the basin matters to funders
+and partners, still being built, the pin); one ask, naming the Map tab; a pin returns to Chat; the reading said derived where it is; then Calvin, by the rail's Quantify
 button, or back to Wellington (A24). The pin finishes Partners; the rail asks once. Closes A12.
 
 **A24 · A pin where no pathway goes on to Quantify.** Step 6 · v1 · BONES. Her ruling of 31 Oct 2026: Bridget thanks the
@@ -282,7 +282,7 @@ the bundle. Nothing is due until there is usage. Route C, a custom vector basema
 stalls the page. Look at whether the pin redraws every polygon, and whether the hidden map keeps drawing.
 
 **O17 · The first page weighs 776 kB.** After v1 · WALKTHROUGH. v2, her word of 31 Oct 2026. The site's one script
-file, past the build's own 500 kB warning (778 kB on #167). Done is a measured figure she rules on, and what was cut. With O12.
+file, past the build's own 500 kB warning (795 kB on #167, with the country boxes). Done is a measured figure she rules on, and what was cut. With O12.
 
 **O13 · Banned words in old code.** After v1 · BONES. `validate()` in `api/_wellingtonAnswer.ts` and its
 callers, and "console" in Bridget's and Calvin's dock copy. One hygiene pass; no behaviour changes.

@@ -32,6 +32,15 @@
   > Then invite Partners — the map; Bridget is not
   > answering yet, so point at the map.
 
+- `agent-primer.md`, the maintainer's third ruling of 31 Oct 2026 on #167: **the map has its
+  own tab again**, "Map", and Bridget's ask names it. Her entry and the journey table say the
+  map is on its own tab, and the rule that an agent never points at a tab gains its one
+  exception, her Map tab. Old wording, whole:
+
+  > **Her chat is live, beside the map, and today she does one thing:**
+
+  > | 2 | **Partners** — the basin map | Where is the water stress, and what is plotted on the map? | Built. Bridget answers here, beside the map. |
+
 ## 0.6.1 — 25 Sep 2026
 
 - `agent-primer.md`: Phoebe's line said each visitor may send twenty messages a
