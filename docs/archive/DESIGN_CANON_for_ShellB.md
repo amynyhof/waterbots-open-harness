@@ -2,7 +2,7 @@
 > The brand book still wins. This file is history and is not an opening read.
 > Never read the archive for current design direction.
 
-> SUPERSEDED — by Amy's hand, 28 Aug 2026. The brand book (BRAND.md v3) now
+> SUPERSEDED — by the maintainer's hand, 28 Aug 2026. The brand book (BRAND.md v3) now
 > governs all design on this site; where this document and the book disagree,
 > the book wins. This canon's rulings stand as history: the left rail, the '<'
 > navigation, and the chat dock rules it confirmed were carried into the book
@@ -15,7 +15,7 @@
 
 Brought by the maintainer on 27 Aug 2026, written by her hand on
 26 Aug 2026. Rules travel as rules; no private-platform files, names,
-values or paths appear here. The maintainer is Amy. The engineer is
+values or paths appear here. The maintainer owns this repository. The engineer is
 whoever is reading this.
 
 **This is the document [BUILD_PLAN.md](./BUILD_PLAN.md) was waiting on.**

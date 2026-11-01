@@ -695,7 +695,7 @@ add that line to the close-out ritual." **Built the same day:** the line above h
 desk, in her words; `knowledge-packs/wellington-host/build-update.md` with an agent-facing region
 generated into his prompt as "The build update", dated, facts he phrases only when asked;
 `check-wellington` holds that it is present, dated and unscripted; step 8 of the close-out ritual
-in PROCESS_RULES refreshes it. Measured run on the pull request; capture in the For Amy block.
+in PROCESS_RULES refreshes it. Measured run on the pull request; capture in the For the maintainer block.
 
 ## S12. The hero chat — a full page that is the conversation
 
@@ -848,7 +848,7 @@ no "Next phase" because there is no journey here, a back row naming the pack onc
 
 1. **Pictures** — three at 1280 by 720: the shelf; Phoebe's pack open on Chat; Calvin's open on
    Credentials. **Drawn 9 Sep 2026 inside the running app by script over the real frame**, one real
-   turn to Phoebe, in the pull request's For Amy block for her eyeball.
+   turn to Phoebe, in the pull request's For the maintainer block for her eyeball.
 2. **The address and the shelf.** Approved to build, on her approval of the pixels.
 3. **Open one** — the screen as the third consumer, the sign-up link in place of save. Approved to
    build.
@@ -999,7 +999,7 @@ merge.
   on their bill, no cap from us; (3) builder subscription later, on demand — hosted, private drafts
   kept, one-click publish.*
 - *Publishing: private until the builder publishes; publishing to the Commons is free but reviewed
-  by Amy first.*
+  by the maintainer first.*
 - *Format: every workshop pack is saved in BOTH shapes from day one — this site's cards and the grader's
   cartridge YAML — so any agent can sit his exam without rework. Grading stays manual until his rig
   can run on a trigger; log that dependency.*

@@ -1068,7 +1068,7 @@ first capture and fixed before the second.
 **Slice 5 needed no build of its own**: the Credentials honest state landed with slice 3 across
 every agent. **Slice 6 is this close-out.**
 
-**Calls made and kept**, each recorded in its pull request's For Amy block: the active tab's
+**Calls made and kept**, each recorded in its pull request's For the maintainer block: the active tab's
 underline is the agent's colour and the "Next phase" button is Tide, because it is navigation; a
 state chip's text is ink with the state's colour on the outline, because amber may not carry type;
 the bubble label reads Name · Role above the agent's bubble and the visitor's bubble has no label;

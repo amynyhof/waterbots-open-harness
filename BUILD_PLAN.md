@@ -208,7 +208,7 @@ real only, and an agent opens alone: canon in CLAUDE.md. Its 28 Oct 2026 rewrite
 Waits on her check on a real phone; a 44px tap area for the main site's menu is hers to carry (S25).
 
 **S28 · Countries named inside another country's name still zoom.** After v1 · WALKTHROUGH. v2, her word of 31 Oct 2026.
-Sudan, Congo, Guinea and Cyprus open the Map tab on the whole world today (`src/lib/placeBox.ts`); done is their own, never a guess.
+Four countries whose names are part of another country's name open the Map tab on the whole world today (`src/lib/placeBox.ts`); done is their own, never a guess.
 
 **S23 · The Commons check.** After v1 · PARTNER. v2, her word of 30 Oct 2026; it was old step 4. Phoebe and
 Calvin work on the Commons with no memory; Bridget introduces herself; Calvin's two cards on one engine. No proposal.
@@ -356,7 +356,7 @@ request. Proposal first, with a count of strikes per document.
 Known weaknesses in tools this machine runs, not in what visitors get. Not v1.
 
 **SP1 · A separate GitHub account for sessions.** BONES. A second account that can open pull requests but
-cannot merge, enforced by branch protection (only Amy's account may merge). First on this list: the deny
+cannot merge, enforced by branch protection (only the maintainer's account may merge). First on this list: the deny
 rules in session settings are a fence a session could edit away, branch protection is not. Needs her to
 create the account and set the rule; a proposal comes first.
 

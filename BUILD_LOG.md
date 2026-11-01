@@ -276,7 +276,7 @@ maintainer kept them.
 **Checkpoint D rode onto Checkpoint C's open pull request.** #45 was opened for C and approved for C,
 but was not merged before D was built on the same branch — and a branch can only carry one pull
 request. The two travelled together. **The pull request was retitled and rewritten to say so at the
-top of its For Amy block** rather than quietly spanning two of her checkpoints.
+top of its For the maintainer block** rather than quietly spanning two of her checkpoints.
 
 **A version bump nobody asked for.** The brand book went to 4.2 on the engineer's call, because
 CLAUDE.md, BUILD_PLAN.md and SESSION_HANDOFF.md all name its version and would have started telling a
@@ -626,7 +626,7 @@ one plain line; and the desk's grey intro paragraph gone.
 ### What was decided
 
 - **The four canon rules**, above, binding on every agent.
-- **Every capture for the maintainer's eyeball is attached inside the For Amy block as an image.**
+- **Every capture for the maintainer's eyeball is attached inside the For the maintainer block as an image.**
   Ruled at the close, after two captures reached her only as chat attachments and local paths. Logged
   in PROCESS_RULES.md with the engineer's way of doing it: committed under `captures/`, embedded by
   raw address at the commit.
@@ -1116,7 +1116,7 @@ chatbot face. Map/GIS “vector” words were not renamed.
 
 `--bot-vector` was left in place (class C — unused paid-roster token, same
 shelf as unused Audrey / Ally / Monty / Reggie). Brand book Vector-as-Calculator
-left for Amy’s hand; the book is gitignored and is not edited without her word.
+left for the maintainer’s hand; the book is gitignored and is not edited without her word.
 
 ### Decisions
 
@@ -1349,7 +1349,7 @@ main" under "How work moves": O5's words quoted, dated 24 Aug, marked
 carried 18 Sep, with one paragraph reading it together with the batch
 ruling of 28 Aug — commits on a branch and pull requests are part of an
 approved batch; nothing reaches main without her word. Flagged in the For
-Amy block for her check.
+the maintainer block for her check.
 
 Step 2, first commit: the sweep. A script moved the eighteen sections from
 OPEN_ITEMS.md to docs/OPEN_ITEMS_ARCHIVE.md bottom-up, appended one dated
@@ -1418,7 +1418,7 @@ four rulings; the file deleted on her word before the branch was cut.
 
 Step 1: `roster.yaml`, her carry, committed as carried — the repository's
 `text=auto eol=lf` stores it with LF, the one difference from her file, and
-said so in the For Amy block. `scripts/check-roster.mjs`, with `yaml` as a
+said so in the For the maintainer block. `scripts/check-roster.mjs`, with `yaml` as a
 dev dependency and the TypeScript compiler API for the crew file and the
 shelf, so a failure names the exact line. `npm run build` runs it first;
 `npm run roster:check` runs it alone, under production's name for it.
@@ -1484,7 +1484,7 @@ One brief, one batch. Proposal first to `proposal-agent-contract.md` at the root
 her go with four rulings (R1 rung 2 stays and line 8 adds the hand-back; R2 the notes split
 first; R3 the shown line on prose with a capture; R4 the bar, no worse than 1 in 60, stop and
 tell her if worse) and one addition, the measured counts and the run's cost in one plain
-sentence in every For Amy block; the file deleted on her word. Line 10 arrived by her word
+sentence in every For the maintainer block; the file deleted on her word. Line 10 arrived by her word
 before the rulebook merged, with where the project context is at each door; the addition to
 steps 2 and 3 for it was reported and went on her go. Three pull requests merged on her
 eyeball: #93 (step 0, own, rulebook), #94 (step 1, own, cards), #95 (steps 2 and 3). The
@@ -1763,7 +1763,7 @@ build lands, so her behaviour today is unchanged by design.
   embeds every card file whole, so any edit above the first card is a prompt change. Worth
   remembering before the next design-decision correction; the AGENT-FACING region pattern is the
   way to keep people-facing prose out of a prompt, and the card files do not use it.
-- The proposal's own For Amy block came in at 152 words on the first count and had to be cut
+- The proposal's own For the maintainer block came in at 152 words on the first count and had to be cut
   twice to reach 149; count before claiming.
 
 ### Housekeeping
@@ -1832,7 +1832,7 @@ was too large for the fetching tool to read; the card says so and waits for her 
 - Applying a no-strikes rule to a batch is mostly a matter of finding where the old wording goes,
   and the pack CHANGELOGs were the natural home for most of it; the archive file only had to take
   what no pack owns.
-- A pull request description's For Amy block came in at 153 and 151 words on two drafts before
+- A pull request description's For the maintainer block came in at 153 and 151 words on two drafts before
   149; the count is worth a script line before every `gh pr edit`.
 
 ### Housekeeping
@@ -2294,7 +2294,7 @@ comment, and are logged on the carbon pack's own page as route cards to draft af
 `check-vwba-d3` (69), `check-palette` and `check-roster` (267) green on every pull request;
 `npm run build` green. Twenty-eight failure modes were introduced across the three gate pull
 requests and each confirmed to fail the gate, then reverted. Two captures committed under
-`captures/` and embedded in #113's For Amy block.
+`captures/` and embedded in #113's For the maintainer block.
 
 ### Housekeeping
 
@@ -2359,7 +2359,7 @@ corrected it.
 One short run each after each pull request: Wellington 5 of 5 as wanted, Phoebe 3 of 3, none empty.
 One four-turn walk against the relay logged the type on the second turn, the class on the third,
 the stage on the fourth, then routed to Eligibility. The desk-walk script for Stop 4 is in #119's
-For Amy block; she merged on her word.
+For the maintainer block; she merged on her word.
 
 ### Housekeeping
 
@@ -3196,7 +3196,7 @@ tables live on each pack README under "The contract".
    same place and size as the citation line, no new colour; she may strike it at the eyeball.
 4. **The measured bar: no worse than 1 in 60 empty answers over sixty requests.** If any
    measured run is worse, the engineer stops and tells her before going on. And every For
-   Amy block carries the measured counts in one plain sentence, and roughly what the run cost
+   the maintainer block carries the measured counts in one plain sentence, and roughly what the run cost
    in API calls.
 
 **The plan, six steps, four pull requests, four eyeball stops.** Step 0, the contract into the
@@ -3878,7 +3878,7 @@ the tracked note in CLAUDE.md. No pack content. No runtime wire. No live-site UI
   The book stays at version 4.2.
 - **`--bot-vector` is not deleted.** `vector.svg` is not renamed. `calvin.svg` is already live.
 - The brand book does not publish. This pull request records the ruling in CLAUDE.md;
-  Amy carries the book by hand.
+  the maintainer carries the book by hand.
 
 The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
 
@@ -3892,7 +3892,7 @@ runtime wire. No live-site UI. No primer rewrite.
   rename of map/GIS “vector” words. No paid `/api/agents` shim.
 - **One class A leftover:** `src/styles/tokens.css` still said Vector *holds* the paid
   calculator seat. Struck and dated. Calvin is the only Quantify face here.
-- **Class C left for Amy:** unused `--bot-vector` token (sits with unused paid-roster
+- **Class C left for the maintainer:** unused `--bot-vector` token (sits with unused paid-roster
   tokens); gitignored brand book still names Vector as the shared-crew Calculator.
 
 The history of how it was done is in [BUILD_LOG.md](./BUILD_LOG.md).
@@ -4041,7 +4041,7 @@ is now true.
   the save button sits at the foot of the right rail, in view at laptop height; the phase names show
   at laptop width; next steps live in the right rail only; the map's line is one plain sentence; no
   intro paragraph above the conversation.
-- **Every capture for the maintainer's eyeball goes inside the For Amy block as an image**, by her
+- **Every capture for the maintainer's eyeball goes inside the For the maintainer block as an image**, by her
   ruling; the rule is in PROCESS_RULES.md.
 
 #### Previously — the bridge sender
@@ -4858,7 +4858,7 @@ add that line to the close-out ritual." **Built the same day:** the line above h
 desk, in her words; `knowledge-packs/wellington-host/build-update.md` with an agent-facing region
 generated into his prompt as "The build update", dated, facts he phrases only when asked;
 `check-wellington` holds that it is present, dated and unscripted; step 8 of the close-out ritual
-in PROCESS_RULES refreshes it. Measured run on the pull request; capture in the For Amy block.
+in PROCESS_RULES refreshes it. Measured run on the pull request; capture in the For the maintainer block.
 
 #### S12. The hero chat — a full page that is the conversation
 
@@ -5011,7 +5011,7 @@ no "Next phase" because there is no journey here, a back row naming the pack onc
 
 1. **Pictures** — three at 1280 by 720: the shelf; Phoebe's pack open on Chat; Calvin's open on
    Credentials. **Drawn 9 Sep 2026 inside the running app by script over the real frame**, one real
-   turn to Phoebe, in the pull request's For Amy block for her eyeball.
+   turn to Phoebe, in the pull request's For the maintainer block for her eyeball.
 2. **The address and the shelf.** Approved to build, on her approval of the pixels.
 3. **Open one** — the screen as the third consumer, the sign-up link in place of save. Approved to
    build.
@@ -5162,7 +5162,7 @@ merge.
   on their bill, no cap from us; (3) builder subscription later, on demand — hosted, private drafts
   kept, one-click publish.*
 - *Publishing: private until the builder publishes; publishing to the Commons is free but reviewed
-  by Amy first.*
+  by the maintainer first.*
 - *Format: every workshop pack is saved in BOTH shapes from day one — this site's cards and the grader's
   cartridge YAML — so any agent can sit his exam without rework. Grading stays manual until his rig
   can run on a trigger; log that dependency.*

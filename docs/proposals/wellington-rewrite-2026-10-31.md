@@ -1,11 +1,11 @@
 # Proposal — Wellington's instructions, shorter
 
-**Written 31 Oct 2026 for Amy. Approved as written on 1 Nov 2026, at 23,122 characters; built in its own pull request after #168 merges, with all his checks and a preview for her walk.** Her 28 Oct draft is kept, marked superseded. Item A26, and the room
+**Written 31 Oct 2026 for the maintainer. Approved as written on 1 Nov 2026, at 23,122 characters; built in its own pull request after #168 merges, with all his checks and a preview for her walk.** Her 28 Oct draft is kept, marked superseded. Item A26, and the room
 road step 3 needs. It starts from her draft, [wellington-instructions-2026-10-28.txt](./wellington-instructions-2026-10-28.txt),
 which is the 28 Oct copy of his instructions. #167 changed his Bridget lines since then, so the starting text here is
 his instructions as they are on `main` today.
 
-## For Amy
+## For the maintainer
 
 - **Today: 26,079 characters against a gate of 26,199, so 120 to spare. Proposed: 23,122, so 3,077 to spare.**
   Measured by putting the proposed text together with the real generated parts, the way his relay does.

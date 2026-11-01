@@ -65,7 +65,7 @@ maintainer to carry elsewhere — never an action here.
 
 **The open core is the one exception, from 27 Oct 2026, by the
 maintainer's ruling.** This site may install the open core packages
-from `amynyhof/waterbots-open-core-modules`, and the engineer may read
+from `waterbots-open-core-modules`, under the maintainer's GitHub account, and the engineer may read
 that repository on GitHub only: never a clone, never a write, never a
 pull request there. What the open core needs is made by its own
 session in its own repository. The paid site's repository stays
@@ -271,7 +271,7 @@ credit line does not meet any of these bars.
   posture** — short, one question at a time, ends with the next step; "I don't
   know" is an answer; a planned project is normal and criteria are things to
   do; status lines in a visitor's words — in AGENT_RULES.md. **Every capture
-  for the maintainer's eyeball is attached inside the pull request's For Amy
+  for the maintainer's eyeball is attached inside the pull request's For the maintainer
   block as an image**; the rule and the way of doing it are in
   PROCESS_RULES_for_ShellB.md.
 - **The agent screen, 9 Sep 2026 — every step is a screen, built once (item S16,

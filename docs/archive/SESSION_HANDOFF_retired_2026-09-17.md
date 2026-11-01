@@ -16,11 +16,11 @@
 
 ## What’s next
 
-Waiting on Amy’s word. **Do not start follow-up until she pastes a brief.**
+Waiting on the maintainer’s word. **Do not start follow-up until she pastes a brief.**
 
 Standing, not this sitting:
 
-1. **Workshop proposal (S19)** — on Amy’s word.
+1. **Workshop proposal (S19)** — on the maintainer’s word.
 2. **S20** “Connect with a human expert” — design session before any build.
 3. Commons **slice 4** — waits on the grader’s per-case file; slice 5 (flag) later.
 4. Production carries the sender; prove landing → desk end-to-end when she says.
@@ -30,8 +30,8 @@ Standing, not this sitting:
 - **No secrets / keys / PEMs / bridge key / customer memory** in this public repo.
 - **No long-form licensed or ingested paste** (methodologies, papers, brand books, vendor PDFs, decks). OK: our chrome, paraphrase, short citation, our copy.
 - **No private A prompts/internals** mixed in. Never “fix” a leak by pasting A into B.
-- **Do not read A’s private tree** to copy product rules; Amy carries or pastes.
-- Local PC: only `C:\Users\nyhof\Documents\GitHub\waterbots-open-harness`. No other users. GitHub writes only with Amy’s typed write OK for a named PR.
+- **Do not read A’s private tree** to copy product rules; the maintainer carries or pastes.
+- Local PC: only the repository's folder on the maintainer's machine. No other users. GitHub writes only with the maintainer’s typed write OK for a named PR.
 
 ## This sitting’s leftovers
 
