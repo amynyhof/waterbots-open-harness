@@ -16,6 +16,7 @@ import { latLngBounds, type LatLngBoundsExpression } from 'leaflet';
 import { BASEMAP_WASH } from '../lib/basemapWash';
 import 'leaflet/dist/leaflet.css';
 import BasinLayer from './BasinLayer';
+import type { Bbox } from '../lib/basins';
 import type { MapPin } from '../lib/visit';
 import StressLegend from './StressLegend';
 import LicencePanel from './LicencePanel';
@@ -240,6 +241,30 @@ function WorldConstraints() {
   return null;
 }
 
+/**
+ * Opens the map on a box — Bridget's Map tab, on the country the visitor told
+ * Wellington (src/lib/placeBox.ts, ruled 31 Oct 2026 on #167). It moves once
+ * per `key`, so a reader who pans away afterwards is left where they are.
+ * Zoom 7 at most: a small country still shows its neighbours. Once zoomed in,
+ * WorldConstraints leaves the view alone, as it does for any reader who zoomed.
+ */
+function FocusView({ focus }: { focus: { box: Bbox; key: number } | null }) {
+  const map = useMap();
+  const key = focus?.key;
+  useEffect(() => {
+    if (!focus) return;
+    const [w, s, e, n] = focus.box;
+    map.fitBounds(
+      [
+        [s, w],
+        [n, e],
+      ],
+      { maxZoom: 7, padding: [24, 24], animate: false }
+    );
+  }, [map, key]);
+  return null;
+}
+
 /** Reports zoom changes with the dead band applied. */
 function ZoomWatcher({ onZoom }: { onZoom: (z: number) => void }) {
   const map = useMap();
@@ -264,8 +289,11 @@ export default function BasinMap({
   onStatus,
   pinnedHybas,
   onPin,
+  focus = null,
 }: {
   onStatus?: (s: MapStatus) => void;
+  /** A box to open on, moved to once per key; null leaves the view as it is. */
+  focus?: { box: Bbox; key: number } | null;
   /** The visit's pinned basin, drawn with the Tide stroke. Held by the shell. */
   pinnedHybas: number | null;
   /** A click on a basin pins it for this visit; a click on the pinned one unpins. */
@@ -379,6 +407,7 @@ export default function BasinMap({
       >
         <WorldConstraints />
         <ZoomWatcher onZoom={onZoom} />
+        <FocusView focus={focus} />
 
         <TileLayer
           url={BASEMAP_URL}

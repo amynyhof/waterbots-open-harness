@@ -58,6 +58,7 @@ const flat = (name: string): Relay => ({
 const RELAYS: Relay[] = [
   flat('phoebe'),
   flat('wellington'),
+  flat('bridget'),
   {
     name: 'handoff',
     path: '/api/handoff',

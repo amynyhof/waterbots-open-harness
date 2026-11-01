@@ -90,7 +90,7 @@ const STAGE_LINES: Record<ScreeningStage, string> = {
   learn: 'Screening step: still learning the project. Ask only for what is missing. When you have enough, invite Eligibility with Phoebe.',
   eligibility: 'Screening step: Eligibility with Phoebe is next. Do not skip to the map.',
   partners:
-    'Screening step: Eligibility is done for this visit. Invite the Partners step — the map. Bridget is not answering yet; point at the map. Do not pretend her chat is live.',
+    'Screening step: Eligibility is done for this visit. Invite the Partners step — the map, where Bridget asks for the pin.',
   quantify:
     'Screening step: Quantify is next. Calvin is not answering yet; point at the calculator. Do not pretend his chat is live.',
 };

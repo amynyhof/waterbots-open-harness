@@ -1,5 +1,17 @@
 # Changelog — wellington-host
 
+## 0.1.2 — 31 Oct 2026
+
+- `build-update.md`: Bridget's chat went live on the maintainer's ruling of 31 Oct 2026
+  (item A22), and the region said it was not. Corrected and dated; nothing else in it
+  moved. Old wording, whole:
+
+  > # The build, as of 4 October 2026
+  >
+  > Live: the basin map; Eligibility, where Phoebe checks both the water and carbon pathways and gives
+
+  > chat on it is the next step. Not live: Bridget's and Calvin's chats; Plan, Monitor and Communicate,
+
 ## 0.1.1 — 26 Sep 2026
 
 - `build-update.md`: its guidance named his prompt's size gate as 24,000 characters. The gate is

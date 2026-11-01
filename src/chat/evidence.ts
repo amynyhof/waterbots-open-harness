@@ -162,6 +162,11 @@ export interface AskMeta {
    * No visitor bubble is added; the relay still needs a turn to answer.
    */
   opened?: boolean;
+  /**
+   * Bridget's: a basin was just pinned on her map, and she reports it. No
+   * visitor bubble is added, the same way as `opened`.
+   */
+  pinned?: boolean;
 }
 
 /** One piece of a laid-out answer: prose, or a marker standing in the prose. */

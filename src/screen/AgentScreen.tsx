@@ -64,6 +64,8 @@ export default function AgentScreen({
   opensOn = 'chat',
   idSlug,
   toolLabel,
+  active: heldActive,
+  onActiveChange,
 }: {
   host: AgentHost;
   tabs: ScreenTabs;
@@ -83,8 +85,20 @@ export default function AgentScreen({
    * 3's browser walk.
    */
   idSlug?: string;
+  /**
+   * The tab shown, where the consumer holds it — Bridget's screen, which goes
+   * back to Chat when a basin is pinned on the Map tab (31 Oct 2026, #167).
+   * Left out, the screen holds its own.
+   */
+  active?: ScreenTab;
+  onActiveChange?: (tab: ScreenTab) => void;
 }) {
-  const [active, setActive] = useState<ScreenTab>(opensOn);
+  const [ownActive, setOwnActive] = useState<ScreenTab>(opensOn);
+  const active = heldActive ?? ownActive;
+  const setActive = (tab: ScreenTab) => {
+    setOwnActive(tab);
+    onActiveChange?.(tab);
+  };
   const order: ScreenTab[] =
     tabs.tool !== undefined ? ['chat', 'tool', 'pack', 'credentials'] : ['chat', 'pack', 'credentials'];
   const slug = idSlug ?? host.name.toLowerCase();

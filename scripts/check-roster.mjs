@@ -387,7 +387,7 @@ console.log(`\n  ${PROMPT}\n`);
    specialist with a chat is one row here.
 --------------------------------------------------------------------------- */
 
-const LEVEL_PROMPTS = { Phoebe: 'api/_systemPrompt.ts' };
+const LEVEL_PROMPTS = { Phoebe: 'api/_systemPrompt.ts', Bridget: 'api/_bridgetPrompt.ts' };
 
 console.log('\n  Level sentences\n');
 
