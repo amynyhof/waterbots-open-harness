@@ -31,9 +31,9 @@
  * opens with a saved project, so the way on is the save button at the foot
  * of the crew rail — the proposal's fourth slice, approved 8 Sep 2026.
  *
- * PLUM IS A KNOWING EXCEPTION (BRAND.md §6): the maintainer pointed Reggie's
- * accent at Calvin on 31 Aug 2026 and paired it with a shape of his own. The
- * shape is now his screen; the accent is read from his token as ever.
+ * HIS ACCENT IS REEF from 31 Oct 2026, the maintainer's ruling; it was Plum,
+ * Reggie's, by a knowing exception from 31 Aug. It is read from his token as
+ * ever, and it never carries text (src/styles/tokens.css).
  */
 
 import calvinPortrait from '../../brand/assets/bots/calvin.svg';

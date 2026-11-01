@@ -72,6 +72,7 @@ import {
   HYDROSHEDS_CITATION,
   HYDROSHEDS_HREF,
   HYDROSHEDS_PUBLISHER,
+  NATURAL_EARTH_HREF,
 } from '../lib/licences';
 import { DESK_LABEL, type Surface } from '../lib/surfaces';
 import { citedDocument, toolSummary, toolVersion } from '../lib/toolReadmes';
@@ -276,7 +277,13 @@ export const BRIDGET_PACK: PackView = {
           From zoom 5 the map shows WRI&rsquo;s published water-stress figures for each basin; the
           world view&rsquo;s colours are derived from them, an area-weighted majority of each larger
           basin&rsquo;s children, and the legend says so. The full attributions and licences are
-          under &ldquo;Data &amp; licences&rdquo; on the map.
+          under &ldquo;Data &amp; licences&rdquo; on the map. When a visitor has named a country, the
+          map opens on it, using the box around each country from{' '}
+          <a href={NATURAL_EARTH_HREF} target="_blank" rel="noreferrer">
+            Natural Earth
+          </a>
+          &rsquo;s 1:110m Admin 0 – Countries, v5.1.2, which is public domain. Nothing from it is
+          drawn on the map.
         </>
       ),
       sets: [

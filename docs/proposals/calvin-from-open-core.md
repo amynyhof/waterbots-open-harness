@@ -350,6 +350,7 @@ first, proven on the live site, and the fresh repository copies it afterward.
    as a knowing exception of 31 Aug 2026; it then refused Mint because Mint also means success or approved. **The
    brand book needs updating to match**, by Amy's hand: it is gitignored and is never edited from here. CLAUDE.md's
    brand section says Plum and changes when the book does. The site's colour for Calvin changes in step 2.~~
+   **From 31 Oct 2026, Amy's ruling, Calvin is Reef `#0E8A94`, not Plum; read Plum in this item as Reef.**
    **Corrected 28 Oct 2026, Amy's word: Calvin's colour is Plum everywhere, not Mint.** The brand book, version 4.2,
    §6, already says Plum, and CLAUDE.md's brand section already agrees, so neither changes. This site's colour for
    Calvin does not change in step 2. The paid site's and the open core's Calvin screens change to Plum later, in

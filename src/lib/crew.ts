@@ -74,7 +74,8 @@ export const CREW: CrewMember[] = [
     role: 'Calculator',
     portrait: calvinPortrait,
     token: '--bot-calvin',
-    nameInAccent: true,
+    /* Reef is 4.13:1 on white and never carries text, from 31 Oct 2026. */
+    nameInAccent: false,
     surface: 'quantification',
   },
 ];

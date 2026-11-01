@@ -30,6 +30,7 @@ identifiers — S4 stays S4. Identifiers are never reused.
 **Fourth sweep: 9 Sep 2026**, one item — S16.
 **Fifth sweep: 18 Sep 2026, the triage**, eighteen items — K4, K5, K6, K8, A2, A3, A4, A7, A8, A9, A11, S2, S3, S9, S10, S13, O5, O8. Two family sections, Knowledge and Agents, open here for the first time.
 **Lines trimmed from BUILD_PLAN.md: 31 Oct 2026**, five finished passages, to keep it under its 400-line cap when five items joined. Not closed items; at the foot of this file.
+**Lines trimmed from BUILD_PLAN.md: 31 Oct 2026, second pass**, four passages, when A26 and S28 joined at the cap. At the foot of this file.
 
 ---
 
@@ -2262,3 +2263,34 @@ every finding fixed in one pull request. At 900px and below the screening fills 
 ## O16, its finished ruling
 
 Her ruling of 3 Oct 2026: the "Test Project" and "Malawi" figures were play numbers, retired by the paid site. The v0.16.1 bundle crossed 3 Oct 2026 without them.
+
+---
+
+# Lines trimmed from BUILD_PLAN.md, 31 Oct 2026, second pass
+
+The maintainer's word of 31 Oct 2026, after #167 merged: two items joined BUILD_PLAN.md (A26, Wellington's
+rewrite; S28, countries named inside another country's name), and it was at its 400-line cap. Each passage below
+is the text exactly as it stood. A22's is what #167 built, merged the same day; the other three are history.
+
+## A22 · Bridget's chat — what was built, now merged (#167)
+
+**A22 · Bridget's chat.** Step 6 · BONES. Built 31 Oct 2026 on her two rulings, waiting on her eyeball and live walk: her chat
+first, the map on its own Map tab, opening on the country named; her opening in her own words (who she is, what she does, why the basin matters to funders
+and partners, still being built, the pin); one ask, naming the Map tab; a pin returns to Chat; the reading said derived where it is; then Calvin, by the rail's Quantify
+button, or back to Wellington (A24). The pin finishes Partners; the rail asks once. Closes A12.
+
+## S24 · The site on a phone — its pointer, reworded
+
+**S24 · The site on a phone.** After v1 · WALKTHROUGH. Her word of 29 Oct 2026, from that day's mobile check:
+every finding fixed in one pull request, built; the list moved to docs/OPEN_ITEMS_ARCHIVE.md. Waits on her check on a real phone; a 44px tap area
+for the main site's menu is hers to carry.
+
+## S18 · Agent Commons — the 28 Oct pointer, shortened
+
+real only, and an agent opens alone: canon in CLAUDE.md. **28 Oct 2026:** four words the same day rewrote the
+Commons as one list of modules, built; the text moved to docs/OPEN_ITEMS_ARCHIVE.md on 31 Oct 2026.
+
+## S12 · The hero chat — the 3 Sep history
+
+2026, so the hero-chat reference must be brought in again if S12 is picked up. The landing never changes
+without her word; a landing built on 3 Sep was rejected whole.

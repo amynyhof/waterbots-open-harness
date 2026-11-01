@@ -155,10 +155,8 @@ fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 20
 draws them and `check-roster` does not read them. Her ruling is owed: the field goes and the header reads
 the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 2026.
 
-**A22 · Bridget's chat.** Step 6 · BONES. Built 31 Oct 2026 on her two rulings, waiting on her eyeball and live walk: her chat
-first, the map on its own Map tab, opening on the country named; her opening in her own words (who she is, what she does, why the basin matters to funders
-and partners, still being built, the pin); one ask, naming the Map tab; a pin returns to Chat; the reading said derived where it is; then Calvin, by the rail's Quantify
-button, or back to Wellington (A24). The pin finishes Partners; the rail asks once. Closes A12.
+**A22 · Bridget's chat.** Step 6 · BONES. Built and merged 31 Oct 2026 on her three rulings (#167); what it built is in
+docs/OPEN_ITEMS_ARCHIVE.md. Done when a walk passes through her and back with no wrong turn (road step 6). Closes A12.
 
 **A24 · A pin where no pathway goes on to Quantify.** Step 6 · v1 · BONES. Her ruling of 31 Oct 2026: Bridget thanks the
 visitor and sends them back to Wellington, as built in A22. The visit stays at Partners after the pin, and he may point back
@@ -167,6 +165,9 @@ to the map. Done is a line he reads after a pin there, and a measured walk.
 **A25 · Agents' knowledge copies refresh whenever their files change.** v1 · BONES. Her word of 31 Oct 2026. The primer,
 the cards and the lists reach the relays as generated copies (`scripts/build-prompt-modules.mjs`), written by hand; CI's
 `--check` fails a stale copy, but nothing refreshes one. Done is a copy that cannot ship stale and needs no hand. Proposal first.
+
+**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Her word of 31 Oct 2026: his prompt is 26,079 against a gate of 26,199, and
+step 3 needs room. A shorter version keeping every rule and step; the proposal is docs/proposals/wellington-rewrite-2026-10-31.md.
 
 **A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet,
 who hosts the D-n modules in the Commons. Violet is not on the roster yet; it arrives by her hand. No proposal yet.
@@ -201,12 +202,13 @@ project type are heard in chat only; a visitor who never chats cannot fill them.
 **S18 · Agent Commons — slices 4 and 5.** After v1 · PARTNER. v0, slices 1 to 3, is built (#68 to #70).
 Slice 4, Credentials fed by the grader's rig, waits on his per-case file and the three rig changes she takes to
 him; it reads "not yet graded" until a real card exists. Slice 5, the flag button, is later. One grader,
-real only, and an agent opens alone: canon in CLAUDE.md. **28 Oct 2026:** four words the same day rewrote the
-Commons as one list of modules, built; the text moved to docs/OPEN_ITEMS_ARCHIVE.md on 31 Oct 2026.
+real only, and an agent opens alone: canon in CLAUDE.md. Its 28 Oct 2026 rewrite is built; see the archive.
 
-**S24 · The site on a phone.** After v1 · WALKTHROUGH. Her word of 29 Oct 2026, from that day's mobile check:
-every finding fixed in one pull request, built; the list moved to docs/OPEN_ITEMS_ARCHIVE.md. Waits on her check on a real phone; a 44px tap area
-for the main site's menu is hers to carry.
+**S24 · The site on a phone.** After v1 · WALKTHROUGH. Her word of 29 Oct 2026: built; the list is in docs/OPEN_ITEMS_ARCHIVE.md.
+Waits on her check on a real phone; a 44px tap area for the main site's menu is hers to carry (S25).
+
+**S28 · Countries named inside another country's name still zoom.** After v1 · WALKTHROUGH. v2, her word of 31 Oct 2026.
+Sudan, Congo, Guinea and Cyprus open the Map tab on the whole world today (`src/lib/placeBox.ts`); done is their own, never a guess.
 
 **S23 · The Commons check.** After v1 · PARTNER. v2, her word of 30 Oct 2026; it was old step 4. Phoebe and
 Calvin work on the Commons with no memory; Bridget introduces herself; Calvin's two cards on one engine. No proposal.
@@ -234,8 +236,7 @@ Vercel does before a push, or a named guard per known difference. Never a second
 
 **S12 · The hero chat — a full page that is the conversation.** After v1 · PARK. Parked 9 Sep 2026. Waits
 on a demo reference brought in by her hand: the `Design refs/` folder was deleted on her word on 3 Oct
-2026, so the hero-chat reference must be brought in again if S12 is picked up. The landing never changes
-without her word; a landing built on 3 Sep was rejected whole.
+2026, so the hero-chat reference must be brought in again if S12 is picked up. The landing never changes without her word.
 
 **S14 · Typing dots — the book's third motion exception.** After v1 · PARK. Ruled 3 Sep 2026: three dots
 fading by opacity, stopped under reduced motion. Waits on her hand into brand book §5. No build until S12.

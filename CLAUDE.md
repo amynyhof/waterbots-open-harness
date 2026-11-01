@@ -507,6 +507,16 @@ whose whole message is *not verified* must not wash green. The version bump
 itself was the engineer's call, made so the documents naming the book's version
 did not start telling a lie; the maintainer let it stand.
 
+**Calvin is Reef `#0E8A94` from 31 Oct 2026, and Violet is Orchid `#A457D4`**,
+both by the maintainer's ruling of that day. Plum is Reggie's alone again, so the
+first of the two knowing exceptions above is over; his portrait is redrawn in
+Reef. Both colours are tokens, `--reef` and `--orchid`, reached through
+`--bot-calvin` and `--bot-violet`. **Neither carries text**: Reef measures
+4.13:1 on white and Orchid 4.29:1, short of 4.5:1, so Calvin's name and the
+labels on his calculator are set in `--ink`, as Bridget's name is. Violet is
+not on the roster or on this site yet. The brand book still says Plum for Calvin
+in §6, until the maintainer's hand changes it.
+
 **What version 4.1 changed, and it was the first amendment written into
 the book from inside this repository.** §2.5 only. Coral gained a text
 value it had never had, and the published live and approved text values
