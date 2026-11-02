@@ -264,7 +264,7 @@ The deploy, the repository, settings and limits. Step 7 is the carry, by her han
 when its receiver reads them, and that receiver is not fixed, Shell A item #243); `project-types.md`; the
 ten-line contract; Q11; the paid-site tools line; the transition module; the one-row shape; the agent
 screen's file list; open.waterbots.ai for the landing box, the claim and the menu (28 Oct 2026). **To the brand book:** typing dots §5, the agent screen §7. **To this site:** the
-sign-up address, the confirmed roster columns, and `roster.yaml` without the maintainer's name, fixed at the source by Session A and carried clean (ruling 1 Nov 2026; never edited here). **To the grader:**
+sign-up address, the confirmed roster columns. `roster.yaml` without the maintainer's name: carried 2 Nov 2026, version 0.3.1, `product-shared@0.6.3`. **To the grader:**
 three rig changes.
 
 **O1 · Revisit the daily cap against real usage.** After v1 · PARK. Thirty a day per visitor is live

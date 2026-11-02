@@ -339,20 +339,22 @@ test('the case that slipped through: a first name in a file and in an added line
   assert.deepEqual(scanDiff(diff, entries).findings, [{ file: 'p.md', line: 2, kind: KINDS.addedLine }]);
 });
 
-/* "Allowed in": a listed number that is also a figure in a published dataset, ruling 1 Nov 2026. */
+/* Map data, ruling 2 Nov 2026: a number-only entry is not looked for in public/*.json or public/map/*.json. */
 
-test('"allowed in" lets an entry through inside the files named, and nowhere else', () => {
-  const entries = parseNames('40417 | allowed in public/basins.json, data/other.json');
-  assert.deepEqual(entries[0].allowedIn, ['public/basins.json', 'data/other.json']);
-  assert.deepEqual(scanText('"SUB_AREA":40417,', entries, 'public/basins.json'), []);
-  assert.deepEqual(scanText('"SUB_AREA":40417,', entries, 'data/other.json'), []);
-  assert.deepEqual(scanText('"SUB_AREA":40417,', entries, 'public/other.json'), [1], 'another file is not allowed');
-  assert.deepEqual(scanText('"SUB_AREA":40417,', entries, 'old/public/basins.json.bak'), [1]);
-  assert.deepEqual(scanText('"SUB_AREA":40417,', entries), [1], 'text with no file is never allowed');
+test('a number-only entry is not looked for in map data files, and is everywhere else', () => {
+  const entries = parseNames('40417\n55180\nZelda Quimby');
+  for (const file of ['public/basins.json', 'public/map/level6.json']) {
+    assert.deepEqual(scanText('{"SUB_AREA":40417,"UP_AREA":55180.5}', entries, file), [], file);
+    assert.deepEqual(scanText('{"note":"Zelda Quimby"}', entries, file), [1], `${file}: a name is still found`);
+  }
+  for (const file of ['public/basins.geojson', 'public/map/deep/level6.json', 'src/public/basins.json', 'docs/notes.md']) {
+    assert.deepEqual(scanText('{"SUB_AREA":40417}', entries, file), [1], `${file} is not map data`);
+  }
+  assert.deepEqual(scanText('{"SUB_AREA":40417}', entries), [1], 'text from no file is scanned whole');
 });
 
-test('"allowed in" works on a whole-repository scan and on added lines', () => {
-  const entries = parseNames('40417 | allowed in public/basins.json');
+test('map data is skipped for numbers in a whole-repository scan and in added lines', () => {
+  const entries = parseNames('40417');
   const dir = tmp();
   mkdirSync(join(dir, 'public'));
   writeFileSync(join(dir, 'public', 'basins.json'), '{"SUB_AREA":40417}\n');
@@ -373,11 +375,4 @@ test('"allowed in" works on a whole-repository scan and on added lines', () => {
     '+project 40417',
   ].join('\n');
   assert.deepEqual(scanDiff(diff, entries).findings, [{ file: 'notes.md', line: 1, kind: KINDS.addedLine }]);
-});
-
-test('both options may stand on one entry, and "allowed in" with no file is refused', () => {
-  const [entry] = parseNames('Harbour Voss | allowed on copyright and licence lines | allowed in NOTICE');
-  assert.equal(entry.copyrightOnly, true);
-  assert.deepEqual(entry.allowedIn, ['NOTICE']);
-  assert.throws(() => parseNames('40417 | allowed in'), ListError);
 });

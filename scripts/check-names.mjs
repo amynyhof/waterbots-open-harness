@@ -13,17 +13,20 @@
  *
  * THE LIST. One entry per line. `#` starts a comment; blank lines are skipped. An entry may end in
  * `| allowed on copyright and licence lines` (with or without a closing "only", either spelling of licence): it
- * is then let through on a copyright or licence line and nowhere else. An entry may also end in
- * `| allowed in <path>` — several paths separated by commas, each from the repository's top — and is then let
- * through inside those files only: a number that is also a figure in a published dataset, say (ruling 1 Nov 2026).
- * Both options may stand on one entry, each after its own `|`. Anything else after a `|` stops the run, so a
- * mistyped option can never quietly switch an entry off.
+ * is then let through on a copyright or licence line and nowhere else. Anything else after a `|` stops the run,
+ * so a mistyped option can never quietly switch an entry off.
  *
  * A COPYRIGHT OR LICENCE LINE is one that opens, after any comment or list marks, with "Copyright", "©", "(c)",
  * "SPDX-", "Licence", "License" or "Licensed". A line that merely mentions a licence somewhere is not one.
  *
  * MATCHING. Whole words only, upper or lower case. A space, dot, dash or underscore inside an entry matches any
  * of those, or nothing, so `Ada Lovelace` also finds `ada_lovelace` and `AdaLovelace`.
+ *
+ * A NUMBER-ONLY ENTRY IS NOT LOOKED FOR IN MAP DATA: `public/*.json` and `public/map/*.json`, from the
+ * repository's top. Those files are published datasets made of figures, and a listed number turns up in them as
+ * an area or a count by chance. The paid site's scan has worked this way since 23 Oct 2026; the maintainer's
+ * ruling of 2 Nov 2026 brings it here. All three repositories read one private list, so this is a rule in the
+ * scan, not a note on the list. Every other file, and every other entry, is scanned as before.
  *
  * AN ENTRY WITH THE ALLOWANCE IS A PERSON WHO SIGNS COPYRIGHT HERE, and each part of that name is also found on
  * its own: the first name alone, the surname alone (a user folder, say). Other entries match whole, as written.
@@ -47,9 +50,10 @@ import { fileURLToPath } from 'node:url';
 
 const SKIP_DIRS = new Set(['.git', 'node_modules', 'dist']);
 const COPYRIGHT_LINE = /^[\s#/*>\-;!<]*(?:copyright\b|©|\(c\)|SPDX-|licen[cs]e[sd]?\b)/i;
-const ALLOW_MARK = /^allowed on copyright and licen[cs]e lines(?:\s+only)?$/i;
-const ALLOW_IN = /^allowed in\s+(.+)$/i;
+const ALLOW_MARK = /\|\s*allowed on copyright and licen[cs]e lines(?:\s+only)?\s*$/i;
 const HIDDEN = '(path hidden)';
+const MAP_DATA = /^public\/(?:map\/)?[^/]+\.json$/i;
+const NUMBER_ONLY = /^\d+$/;
 
 export const KINDS = {
   text: 'name in text',
@@ -66,21 +70,15 @@ export function parseNames(text) {
   for (const raw of text.replace(/^﻿/, '').split(/\r?\n/)) {
     const line = raw.trim();
     if (line === '' || line.startsWith('#')) continue;
-    const [name, ...options] = line.split('|').map((s) => s.trim());
-    let copyrightOnly = false;
-    const allowedIn = [];
-    for (const option of options) {
-      const inFiles = ALLOW_IN.exec(option);
-      if (ALLOW_MARK.test(option)) copyrightOnly = true;
-      else if (inFiles) allowedIn.push(...inFiles[1].split(',').map((p) => p.trim().replace(/\\/g, '/').replace(/^\.?\//, '')).filter(Boolean));
-      else throw new ListError('an entry carries an option the scan does not know');
-    }
+    const copyrightOnly = ALLOW_MARK.test(line);
+    const name = line.replace(ALLOW_MARK, '').trim();
+    if (name.includes('|')) throw new ListError('an entry carries an option the scan does not know');
     const parts = name.split(/[\s_.\-]+/).filter(Boolean).map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
     if (parts.length === 0) continue;
     const whole = (p) => new RegExp(`(?<![A-Za-z0-9])${p}(?![A-Za-z0-9])`, 'i');
     const patterns = [whole(parts.join('[\\s_.\\-]*'))];
     if (copyrightOnly && parts.length > 1) patterns.push(...parts.map(whole));
-    entries.push({ patterns, copyrightOnly, allowedIn });
+    entries.push({ patterns, copyrightOnly, numberOnly: NUMBER_ONLY.test(name) });
   }
   if (entries.length === 0) throw new ListError('the names list holds no entries');
   return entries;
@@ -110,17 +108,16 @@ function hits(entry, text) {
   return entry.patterns.some((p) => p.test(text));
 }
 
-/** Whether `file`, a path from the repository's top or under it, is one of the entry's allowed files. */
-function allowedHere(entry, file) {
-  if (!file) return false;
-  const path = `/${file.split(sep).join('/')}`;
-  return entry.allowedIn.some((a) => path.endsWith(`/${a}`));
+/** True for a map data file: `public/*.json` or `public/map/*.json`, from the repository's top. */
+export function isMapData(file) {
+  return Boolean(file) && MAP_DATA.test(file.split(sep).join('/'));
 }
 
-/** Whether one line holds a listed name, minding the copyright allowance and the files an entry is allowed in. */
+/** Whether one line holds a listed name, minding the copyright allowance and, in map data, number-only entries. */
 function lineHasName(line, entries, file) {
   const isCopyrightLine = COPYRIGHT_LINE.test(line);
-  return entries.some((e) => hits(e, line) && !(e.copyrightOnly && isCopyrightLine) && !allowedHere(e, file));
+  const mapData = isMapData(file);
+  return entries.some((e) => !(mapData && e.numberOnly) && hits(e, line) && !(e.copyrightOnly && isCopyrightLine));
 }
 
 /** Lines of `text` that hold a listed name. Returns line numbers only. `file` is where the text is from, if known. */

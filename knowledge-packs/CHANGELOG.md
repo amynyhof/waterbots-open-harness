@@ -3,6 +3,12 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.17.2 — 2 Nov 2026
+
+- **The roster is carried at version 0.3.1**, from Session A by the maintainer's hand, the ruling of
+  2 Nov 2026 on #168: the maintainer is no longer named in it. `product-shared@0.6.3` records the
+  carry and its SHA-256. No card changed; the seal of 23 Sep 2026 is untouched.
+
 ## 0.17.1 — 31 Oct 2026
 
 - **Bridget's chat is live**, item A22, step 6 of the Road to v1, on the maintainer's three rulings of

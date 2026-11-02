@@ -1,4 +1,11 @@
 # Changelog — product-shared
+## 0.6.3 — 2 Nov 2026
+
+- `roster.yaml`: **carried, roster version 0.3.1**, from Session A by the maintainer's hand, the ruling
+  of 2 Nov 2026 on #168. Taken in unedited from the handoff folder. SHA-256
+  `53dea1465457f1e08340425964fb4bc8a8e1050445f11f17ffc0d0f1ff2f7a71`: the handoff file, the working copy and the committed copy all
+  match, byte for byte. Three lines changed from 0.3.0: the version, and the maintainer's name in the
+  head comment and in `ruled_by`, each now "the maintainer". `check-roster` passes, 270 checks.
 ## 0.6.2 — 31 Oct 2026
 
 - `agent-primer.md`: **Bridget's chat is live**, the maintainer's ruling of 31 Oct 2026
