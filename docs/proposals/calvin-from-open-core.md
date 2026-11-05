@@ -1,6 +1,6 @@
 # Proposal — Calvin from the open core
 
-**Written 27 Oct 2026 for Amy. Proposal only: nothing is built, installed or deleted.** It answers her brief of
+**Written 27 Oct 2026 for the maintainer. Proposal only: nothing is built, installed or deleted.** It answers her brief of
 26 Oct 2026: the open site installs Calvin from the open core instead of keeping its own sealed engine copy.
 **Ruled in three rounds the same day, corrected on 28 Oct 2026, and a fourth round on 30 Oct 2026 (water and
 Violet),** all in section 7; what is still open is in section 8. **This proposal replaces Calvin's old brief**, `PROPOSAL_calvin-brief.md`, which stays on the closed
@@ -8,7 +8,7 @@ Violet),** all in section 7; what is still open is in section 8. **This proposal
 
 ## What I read, and what I found
 
-**Read on GitHub only, by Amy's word:** `amynyhof/waterbots-open-core-modules` at `50fe2f6`, the merge of its pull
+**Read on GitHub only, by the maintainer's word:** `waterbots-open-core-modules`, under the maintainer's GitHub account, at `50fe2f6`, the merge of its pull
 request #5 ("Add calculator module", 26 Oct 2026). Nothing was cloned. Rule zero now allows exactly this (ruling 1).
 
 **The open core, as it stands:**
@@ -18,7 +18,7 @@ request #5 ("Add calculator module", 26 Oct 2026). Nothing was cloned. Rule zero
 - The seed is recorded in its `SEEDS.md`: seal tag `calculator-seal-2026-10-25`, engine gs4gg-carbon **0.19.0**, 67
   fingerprints, 48 of 48 number checks passing on made-up cases.
 - Its own plan already chooses npm: a publish job with provenance (a signed record of which commit built the
-  package), Amy's approval on every release, and a first release `0.1.0` (its step M2.2).
+  package), the maintainer's approval on every release, and a first release `0.1.0` (its step M2.2).
 - **Calvin holds carbon only.** The water method (Volumetric Water Benefit Accounting, VWBA, method D-3) is
   Violet's, the VWBA agent's: the core's D-3 module, its step M8, built by Session C with test cases worked by hand
   and every step cited. **This site keeps no water code of its own** once it arrives (fourth round, 30 Oct 2026).
@@ -38,7 +38,7 @@ request #5 ("Add calculator module", 26 Oct 2026). Nothing was cloned. Rule zero
   stays.
 
 **Found after the first draft: the closed pull request #151.** I missed it in the first draft, and I should have
-found it. #151 built Calvin on the old copy, on the branch `calvin/engine-crosses`. Amy closed it without merging on
+found it. #151 built Calvin on the old copy, on the branch `calvin/engine-crosses`. The maintainer closed it without merging on
 15 Oct 2026, by her ruling: the free site installs the shared package instead of a hand-built copy of the engine.
 **That ruling came first, and this proposal carries it out.** Her closing note on #151 lists what was worth reusing.
 After her second round (ruling 7, changed), **#151's sheet is not used**; its six-slider layout is the guide for the
@@ -67,7 +67,7 @@ has. The site installs them like React.
   the package to one commit on the core's `main`, and this site's checks can confirm it with `npm audit signatures`.
   The risk: a publish is public and permanent (npm allows removal only for 72 hours).
 - **Pinning.** `"@waterbots/calvin": "0.1.0"`, exact, plus the lockfile's fingerprint.
-- **What Amy does.** The core's four hand-steps: own the `@waterbots` scope on npm, add the token, set herself as
+- **What the maintainer does.** The core's four hand-steps: own the `@waterbots` scope on npm, add the token, set herself as
   the release reviewer, set the tag rule. Then approve the release.
 - It was my first pick: the core's own plan, and two sites on one version number.
 
@@ -77,8 +77,8 @@ The same packages, kept on GitHub's own package store.
 
 - **Safety.** As good as npm for pinning. But **every install needs a token**, even for a public package. That puts
   a secret into Vercel and into this site's checks, which hold none today.
-- **What Amy does.** Make a token, store it in Vercel and in this repository's settings, and rename the packages to
-  `@amynyhof/...`, because GitHub Packages names must match the account.
+- **What the maintainer does.** Make a token, store it in Vercel and in this repository's settings, and rename the packages to
+  `@<the account name>/...`, because GitHub Packages names must match the account.
 
 ### Option C — a pinned commit, as a release file
 
@@ -89,16 +89,16 @@ GitHub release. The site installs that file by its web address.
 - **Safety.** The lockfile's fingerprint catches any swap. No signed record unless the core adds one. No account and
   no token.
 - **Pinning.** The release file's address plus the lockfile fingerprint.
-- **What Amy does.** Approve a release in the core, which first needs a release job there.
+- **What the maintainer does.** Approve a release in the core, which first needs a release job there.
 
-**Ruled 27 Oct 2026 (rulings 2 and 3):** the route is decided after Amy talks with an outside engineer. **Until then, Option
+**Ruled 27 Oct 2026 (rulings 2 and 3):** the route is decided after the maintainer talks with an outside engineer. **Until then, Option
 C: a release file pinned by its fingerprint.** No npm publish until after the fresh public repository and the full
 number gate. Moving from C to A later is a one-line change in `package.json`.
 
 ### Own the name first
 
-`@waterbots/calvin` asks for `@waterbots/core` by name. Until Amy owns the `@waterbots` scope on npm, a stranger
-could publish a package with that name, and an install could pick it up. **Ruled (ruling 4):** Amy claims it.
+`@waterbots/calvin` asks for `@waterbots/core` by name. Until the maintainer owns the `@waterbots` scope on npm, a stranger
+could publish a package with that name, and an install could pick it up. **Ruled (ruling 4):** the maintainer claims it.
 
 ### What the core needs (made by Session C in its own repository)
 
@@ -134,7 +134,7 @@ is the water figure from Violet's D-3 module.
 
 **Step 1 — React 19 (section 9).** Own pull request, with a before-and-after capture of the map.
 
-**Step 2 — install, prove the package, and mount Calvin's calculator (Amy's browser check).**
+**Step 2 — install, prove the package, and mount Calvin's calculator (the maintainer's browser check).**
 - `package.json` and `package-lock.json`: the two packages, exact versions, from the release files.
 - New `scripts/check-calvin-package.mjs`: re-runs the package's own made-up cases (proof P1) and checks the installed
   version is the pinned one. Added to `.github/workflows/checks.yml`.
@@ -225,7 +225,7 @@ site's calculator.
   read `0.19.0`. The lockfile fingerprint must match the release file.
 - **P2 — the package against the old copy here.** The same 45 cases run through `carried/` v0.16.1 too. They should
   match, except where the engine's own notes for 0.17.0 to 0.19.0 say they move: the full DAF table, and the cases
-  where 0.18.0 refuses rather than assumes a missing fact. **Any other difference stops the work** and goes to Amy.
+  where 0.18.0 refuses rather than assumes a missing fact. **Any other difference stops the work** and goes to the maintainer.
 - **P3 — the site before against the site after.** Every made-up case in `scripts/check-gs-sdws.mjs` runs through
   today's code and through the engine. One table: old figure, new figure, difference, cause. The causes I expect:
   - fNRB source: MoFuSS (today) against the official national figures the engine cites. India 0.06 → 0.07, Kenya
@@ -241,9 +241,9 @@ site's calculator.
 - **P5 — the screen shows the engine's number.** On the same made-up cases, the figure drawn on Calvin's screen equals
   the engine's own result for the same inputs.
 
-**Ruled (ruling 6):** the new carbon figures are accepted once Amy has seen the before-and-after table on test cases.
+**Ruled (ruling 6):** the new carbon figures are accepted once the maintainer has seen the before-and-after table on test cases.
 This replaces her rulings D, E and F of 2 Sep 2026. The table and a before-and-after capture of Calvin's Tool tab go in
-the step 2 pull request's For Amy block.
+the step 2 pull request's For the maintainer block.
 
 ## 5. The v1 journey
 
@@ -272,7 +272,7 @@ source, the order of Wellington's questions, and what Calvin asks.
 
 ## 6. The fresh public repository
 
-Amy plans a fresh public repository with clean history, guided by an outside engineer. **Ruled (ruling 11):** this work goes
+The maintainer plans a fresh public repository with clean history, guided by an outside engineer. **Ruled (ruling 11):** this work goes
 first, proven on the live site, and the fresh repository copies it afterward.
 
 - **It never holds `carried/`.** The copy is taken after step 3, so the old copy and its history (item O16) stay
@@ -281,12 +281,12 @@ first, proven on the live site, and the fresh repository copies it afterward.
   fingerprints travel), the adapter file, the colour-name stylesheet, `scripts/check-calvin-package.mjs`, Wellington's
   core-facts questions, and this proposal under `docs/`.
 - **What does not:** the two `engine-carry-*` tags, and the `carried/` lines in `.gitattributes` and `.gitignore`.
-- **The update rule travels too:** a new open core version comes in only on Amy's word, in a lane 3 pull request,
+- **The update rule travels too:** a new open core version comes in only on the maintainer's word, in a lane 3 pull request,
   with P1 to P5 run again and the table in the pull request. No automatic update tool.
 - **For the outside engineer's review:** the whole change is one dependency, one adapter file, one stylesheet and one check.
   It should move to any structure he proposes without rework.
 
-## 7. Amy's rulings, 27 Oct 2026
+## 7. The maintainer's rulings, 27 Oct 2026
 
 ### First round — each question as it was asked, then her ruling
 
@@ -295,20 +295,20 @@ first, proven on the live site, and the fresh repository copies it afterward.
    **Ruled: yes,** on GitHub only. CLAUDE.md's rule zero says so, and PROCESS_RULES_for_ShellB.md matches it (second
    round, a). The old wording of both is in `docs/archive/CORRECTIONS.md`.
 2. **The route.** npm with provenance, GitHub Packages, or the release-file stop-gap?
-   **Ruled: decided after Amy talks with an outside engineer.** Until then, a release file pinned by its fingerprint.
+   **Ruled: decided after the maintainer talks with an outside engineer.** Until then, a release file pinned by its fingerprint.
 3. **The first npm publish.** Does it wait for the core's real number gate (its step M1.2)?
    **Ruled: no npm publish until after the fresh public repository and the full number gate.**
 4. **Claim the `@waterbots` npm scope now**, even if publishing waits?
-   **Ruled: Amy will claim it.**
+   **Ruled: the maintainer will claim it.**
 5. **Changes in the core:** an engine door with no React, React optional for engine-only users, version `0.1.0`.
    **Ruled: Session C makes the three changes in its own repository.** Nothing is carried by hand. The list has since
    grown (section 1).
 6. **New carbon numbers.** Does the carbon figure move to the engine's cited data (official fNRB figures, DAF, age
    tiers)?
-   **Ruled: accepted, after Amy sees a before-and-after table on test cases.** This replaces rulings D, E and F of
+   **Ruled: accepted, after the maintainer sees a before-and-after table on test cases.** This replaces rulings D, E and F of
    2 Sep 2026.
 7. **Engine only, or the core's screens?**
-   **Ruled, then changed by Amy the same day: the open site uses the open core's calculator screens**, the same
+   **Ruled, then changed by the maintainer the same day: the open site uses the open core's calculator screens**, the same
    calculator and look as the paid site. Not its own screens, and not #151's sheet. Her first answer was to keep this
    site's own screens.
 8. **Calvin's chat prompt.** The site's own, or the core's `prompt.md`?
@@ -327,7 +327,7 @@ first, proven on the live site, and the fresh repository copies it afterward.
 ### Second round
 
 - **a. Rule zero in the process rules.** PROCESS_RULES_for_ShellB.md's standing rule now matches CLAUDE.md, with the
-  old wording archived. **AGENT_RULES.md's *The wall* is left as it is, by Amy's ruling:** it covers what agents see
+  old wording archived. **AGENT_RULES.md's *The wall* is left as it is, by the maintainer's ruling:** it covers what agents see
   at runtime, and installing a package does not change that.
 - **b. The calculator screens**: ruling 7 above, changed.
 - **c. React 19**: section 9 proposes how.
@@ -343,14 +343,15 @@ first, proven on the live site, and the fresh repository copies it afterward.
 2. **The screening order.** Wellington asks the core project facts first, because every agent needs them: the type
    of project, the country, how many it serves, and whether that is people or households. Calvin asks only what is
    still missing, using his missing-facts list. Section 11 is rewritten to match.
-3. **Wellington's size limit is not changed.** His current instructions are in a plain-text file for Amy to read and
+3. **Wellington's size limit is not changed.** His current instructions are in a plain-text file for the maintainer to read and
    rewrite: [wellington-instructions-2026-10-28.txt](./wellington-instructions-2026-10-28.txt). The new questions need
    about 413 more characters (section 11 and section 12).
 4. ~~**Calvin's colour is Mint everywhere.** The brand book, version 4.2, §6, gives him Plum, and records that choice
    as a knowing exception of 31 Aug 2026; it then refused Mint because Mint also means success or approved. **The
-   brand book needs updating to match**, by Amy's hand: it is gitignored and is never edited from here. CLAUDE.md's
+   brand book needs updating to match**, by the maintainer's hand: it is gitignored and is never edited from here. CLAUDE.md's
    brand section says Plum and changes when the book does. The site's colour for Calvin changes in step 2.~~
-   **Corrected 28 Oct 2026, Amy's word: Calvin's colour is Plum everywhere, not Mint.** The brand book, version 4.2,
+   **From 31 Oct 2026, the maintainer's ruling, Calvin is Reef `#0E8A94`, not Plum; read Plum in this item as Reef.**
+   **Corrected 28 Oct 2026, the maintainer's word: Calvin's colour is Plum everywhere, not Mint.** The brand book, version 4.2,
    §6, already says Plum, and CLAUDE.md's brand section already agrees, so neither changes. This site's colour for
    Calvin does not change in step 2. The paid site's and the open core's Calvin screens change to Plum later, in
    their own repositories; when step 2 installs the core's screens, Calvin's colour there is mapped to Plum.
@@ -359,7 +360,7 @@ first, proven on the live site, and the fresh repository copies it afterward.
    - the four slider rows (section 10);
    - the simple view by default, with a "show full working" link (section 10);
    - the questions on each walk are counted and the average is reported (section 11; the rule of 30 Oct 2026);
-   - a slider value with no methodology floor gets one found by Session C, or asked of Amy.
+   - a slider value with no methodology floor gets one found by Session C, or asked of the maintainer.
 
 ### Fourth round, 30 Oct 2026
 
@@ -375,7 +376,7 @@ first, proven on the live site, and the fresh repository copies it afterward.
 
 ## 8. Still open
 
-Each needs Amy's word before the build steps they touch.
+Each needs the maintainer's word before the build steps they touch.
 
 - **A. The list for Session C.** Ruling 5 named three changes; section 1 now lists nine, Violet's D-3 module among
   them, and section 10 adds the two settings. Will she pass the whole list to Session C?
@@ -383,9 +384,9 @@ Each needs Amy's word before the build steps they touch.
   figure stays in this site's look until Violet's module arrives with her screen (fourth round, 3). Accept two looks
   until then, or restyle the water worksheet?
 - **C. The core's `prompt.md`** has not been read against AGENT_RULES.md or this site's language rules. The build step
-  reads it and puts any conflict in the add-on or in front of Amy. Ruling R25, no script for Calvin, still stands.
+  reads it and puts any conflict in the add-on or in front of the maintainer. Ruling R25, no script for Calvin, still stands.
 - **D. Wellington's words.** The limit stays. The new questions need about 413 more characters and there are 164 of
-  room, so 249 must come out somewhere. Amy has his instructions as a plain-text file to rewrite (third round, 3).
+  room, so 249 must come out somewhere. The maintainer has his instructions as a plain-text file to rewrite (third round, 3).
 - **E. #151's open points that still apply** with the core's screens: the usage rate has no source yet; the version
   tabs need an "already registered" fact the record does not hold; with no type on the record there are no figures,
   which is every Commons visit; fNRB's citation says V2.0 SDWS 25 where Eq. 1 names SDWS 24; the page script grows
@@ -432,7 +433,7 @@ Two copies of React on one page, Calvin's screen mounted apart.
 - **Not my pick:** two Reacts, a heavier page, and the record has to cross between them. It solves today's clash and
   makes every later shared screen harder.
 
-**Step 1 is its own pull request, lane 3,** with the map captures in the For Amy block. It does not need the core's
+**Step 1 is its own pull request, lane 3,** with the map captures in the For the maintainer block. It does not need the core's
 changes, so it can go first.
 
 ## 10. The two calculator settings — what this site needs
@@ -449,7 +450,7 @@ For anticipated-performance values, the third kind of value. A learning, "what i
 
 1. Shows only in ex-ante mode (before the project runs), and only when the host turns sliders on.
 2. Is bounded by that value's methodology floor and ceiling, each cited. Where a methodology names no floor, Session C
-   finds one and cites it, or asks Amy (agreed, third round).
+   finds one and cites it, or asks the maintainer (agreed, third round).
 3. Opens at the cautious value the engine carries, with that value's name and citation (ruling R23).
 4. Has a pencil to type an exact value.
 5. A typed value outside the bounds stays as typed, and the row says plainly that the credit is capped at the bound.
@@ -465,7 +466,7 @@ For anticipated-performance values, the third kind of value. A learning, "what i
 | 1 | Drinking water per person per day | QPW_p, V2.0 SDWS 29 | 0 to the methodology's cap | The engine's Table 9 figure | Household and community supply; no slider for institutions (R26) |
 | 2 | Days a year the water is available | DO_p, V2.0 SDWS 32 | 1 to 365 | 347, the cap for paper logs | Above 347, only days a sensor records count: the capped message |
 | 2b | Days the device is in the home | DP_p, V2.0 SDWS 36 | up to 365 | 365, a full year (R24) | Household treatment only; moves down only |
-| 3 | Share of water tests that pass | M_q,y, V2.0 SDWS 22 | 0% to 100% | **100%**, by Amy's later ruling (#151 had 90%) | |
+| 3 | Share of water tests that pass | M_q,y, V2.0 SDWS 22 | 0% to 100% | **100%**, by the maintainer's later ruling (#151 had 90%) | |
 | 4 | Share of homes that really use the device | U_p, V2.0 SDWS 34 | 1% to 100%, never 0 | 100%, "no source yet" | Household treatment only; the methodology sets it by a usage survey |
 | 5 | Efficiency of the old stove | η, V2.0 SDWS 11 | — | — | **No slider, ruled:** a baseline value, not anticipated performance |
 | 6 | Water per person per day (water benefit) | VWBA D-3, Table D3.3 | 0 to 20 L | 20 L full, 2 L limited | **Not Calvin's carbon calculator**: Violet's D-3 module, from the open core (fourth round) |
@@ -528,7 +529,7 @@ A first draft of the change, measured on a copy (wording in section 12):
 | His region in the primer: the list of fields, reordered | −23 |
 | **Total** | **+413** |
 
-**The new questions need about 413 more characters: 249 more than the room there is.** Either Amy's rewrite of the
+**The new questions need about 413 more characters: 249 more than the room there is.** Either the maintainer's rewrite of the
 plain-text file frees at least 249 characters elsewhere, or the wording is cut; the limit stays where it is.
 
 ### Counting the questions
@@ -549,7 +550,7 @@ in step 4's pull request before it asks for a merge. There is no cap.
 
 ## 12. The draft wording behind the count
 
-A first draft, written only to measure. Amy approves rules, not wording, and her rewrite of the plain-text file comes
+A first draft, written only to measure. The maintainer approves rules, not wording, and her rewrite of the plain-text file comes
 first. Each change shows the words today, then the draft.
 
 **1. His prompt, section 4 — today:**

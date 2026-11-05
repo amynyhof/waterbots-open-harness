@@ -117,7 +117,7 @@ The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done,
 | # | Step, in one line | Depends on | Done when |
 |---|---|---|---|
 | 1 | **React 19 under the map**, so the open core's calculator screens can run here (#156, §9). | Nothing outside this repository. | Before-and-after map pictures she has passed; every check and the build pass. |
-| 2 | **Calvin's carbon calculator from the open core** on his Tool tab, V1 and V2, simple view and sliders on (A21). | The open core (Session C): the eight changes in #156 §1, sliders and the simple view. Pinned to the open core release that includes the sliders, as a release file. | Proofs P1 to P5 of #156 pass; she has passed the before-and-after table and the tab in the browser. |
+| 2 | **Calvin's carbon calculator from the open core** on his Tool tab, V1 and V2, simple view and sliders on (A21). | The open core (Session C): the eight changes in #156 §1, sliders and the simple view. Pinned to the open core release that includes the sliders, as a release file. | Proofs P1 to P5 of #156 pass; she has passed the before-and-after table and the tab in the browser; **`carried/` is removed from this repository in the same swap, required for v1** (ruling 1 Nov 2026: the paid repository keeps the private original as the archive). |
 | 3 | **Wellington asks the core facts first**: type and class, country, how many served, people or households, and whether it is already registered for carbon (the transition). | Her rewrite of his instructions, freeing at least 249 characters plus the new question's; the gate stays at 26,199. Step 2. | The record holds the new fields; one measured run; his prompt under the gate. |
 | 4 | **Calvin's chat**, on the open core's prompt, asking only what is missing (A21). | The core's `prompt.md` read against AGENT_RULES.md (#156, open point C). Steps 2 and 3. | One measured run; on a walk he opens with his facts filled and asks at most household size and, for a transition, the filed V1.0 fraction of non-renewable biomass (fNRB). |
 | 5 | **The water figure from the open core's VWBA D-3 module**, in place of this site's `vwbaD3.ts`. | Session C builds the module, with the test cases worked by hand and every step cited, in a pinned open core release. Step 2. | The hand-worked cases pass here; she has passed the water figure in the browser. |
@@ -126,8 +126,7 @@ The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done,
 | 8 | **The save carries every input the figures rest on**, never a computed number (old step 7). | Steps 2 to 5. The paid site's receiver reads them: her carry (O14), its item #243. | A test visit saved here opens on the paid site with every input filled. |
 | 9 | **The v1 walks**: whole screenings, counted and compared. | Everything above; the paid site runs the same open core release. | Questions counted on each walk and the average reported; the paid site's carbon and VWBA figures on each saved project equal the screening's, or each difference is explained or shown in the paid site's report after the save; written in BUILD_LOG; she has watched one. |
 
-**After v1, not needed for the finish line:** deleting `carried/` (ruled, #156 step 3); A23, Calvin's VWBA row
-becomes Violet's; A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
+**After v1, not needed for the finish line:** A23, Calvin's VWBA row becomes Violet's; A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
 - **Wellington's prompt is 26,079 characters against a gate of 26,199.** The gate moves only on her word.
 - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull
@@ -155,10 +154,8 @@ fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 20
 draws them and `check-roster` does not read them. Her ruling is owed: the field goes and the header reads
 the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 2026.
 
-**A22 · Bridget's chat.** Step 6 · BONES. Built 31 Oct 2026 on her two rulings, waiting on her eyeball and live walk: her chat
-first, the map on its own Map tab, opening on the country named; her opening in her own words (who she is, what she does, why the basin matters to funders
-and partners, still being built, the pin); one ask, naming the Map tab; a pin returns to Chat; the reading said derived where it is; then Calvin, by the rail's Quantify
-button, or back to Wellington (A24). The pin finishes Partners; the rail asks once. Closes A12.
+**A22 · Bridget's chat.** Step 6 · BONES. Built and merged 31 Oct 2026 on her three rulings (#167); what it built is in
+docs/OPEN_ITEMS_ARCHIVE.md. Done when a walk passes through her and back with no wrong turn (road step 6). Closes A12.
 
 **A24 · A pin where no pathway goes on to Quantify.** Step 6 · v1 · BONES. Her ruling of 31 Oct 2026: Bridget thanks the
 visitor and sends them back to Wellington, as built in A22. The visit stays at Partners after the pin, and he may point back
@@ -168,8 +165,11 @@ to the map. Done is a line he reads after a pin there, and a measured walk.
 the cards and the lists reach the relays as generated copies (`scripts/build-prompt-modules.mjs`), written by hand; CI's
 `--check` fails a stale copy, but nothing refreshes one. Done is a copy that cannot ship stale and needs no hand. Proposal first.
 
-**A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet,
-who hosts the D-n modules in the Commons. Violet is not on the roster yet; it arrives by her hand. No proposal yet.
+**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Her word of 31 Oct 2026: his prompt is 26,079 against a gate of 26,199, and
+step 3 needs room. A shorter version keeping every rule and step; the proposal is docs/proposals/wellington-rewrite-2026-10-31.md.
+
+**A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet, host of the
+D-n modules in the Commons; not on the roster yet, by her hand. No proposal yet. Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026).
 
 **A5 · Primer review against the abstention log.** After v1 · PARK. The primer was written from the rules,
 not from real questions, because there were none. Once there is real traffic, read the log against it:
@@ -201,12 +201,13 @@ project type are heard in chat only; a visitor who never chats cannot fill them.
 **S18 · Agent Commons — slices 4 and 5.** After v1 · PARTNER. v0, slices 1 to 3, is built (#68 to #70).
 Slice 4, Credentials fed by the grader's rig, waits on his per-case file and the three rig changes she takes to
 him; it reads "not yet graded" until a real card exists. Slice 5, the flag button, is later. One grader,
-real only, and an agent opens alone: canon in CLAUDE.md. **28 Oct 2026:** four words the same day rewrote the
-Commons as one list of modules, built; the text moved to docs/OPEN_ITEMS_ARCHIVE.md on 31 Oct 2026.
+real only, and an agent opens alone: canon in CLAUDE.md. Its 28 Oct 2026 rewrite is built; see the archive.
 
-**S24 · The site on a phone.** After v1 · WALKTHROUGH. Her word of 29 Oct 2026, from that day's mobile check:
-every finding fixed in one pull request, built; the list moved to docs/OPEN_ITEMS_ARCHIVE.md. Waits on her check on a real phone; a 44px tap area
-for the main site's menu is hers to carry.
+**S24 · The site on a phone.** After v1 · WALKTHROUGH. Her word of 29 Oct 2026: built; the list is in docs/OPEN_ITEMS_ARCHIVE.md.
+Waits on her check on a real phone; a 44px tap area for the main site's menu is hers to carry (S25).
+
+**S28 · Countries named inside another country's name still zoom.** After v1 · WALKTHROUGH. v2, her word of 31 Oct 2026.
+Four countries whose names are part of another country's name open the Map tab on the whole world today (`src/lib/placeBox.ts`); done is their own, never a guess.
 
 **S23 · The Commons check.** After v1 · PARTNER. v2, her word of 30 Oct 2026; it was old step 4. Phoebe and
 Calvin work on the Commons with no memory; Bridget introduces herself; Calvin's two cards on one engine. No proposal.
@@ -234,8 +235,7 @@ Vercel does before a push, or a named guard per known difference. Never a second
 
 **S12 · The hero chat — a full page that is the conversation.** After v1 · PARK. Parked 9 Sep 2026. Waits
 on a demo reference brought in by her hand: the `Design refs/` folder was deleted on her word on 3 Oct
-2026, so the hero-chat reference must be brought in again if S12 is picked up. The landing never changes
-without her word; a landing built on 3 Sep was rejected whole.
+2026, so the hero-chat reference must be brought in again if S12 is picked up. The landing never changes without her word.
 
 **S14 · Typing dots — the book's third motion exception.** After v1 · PARK. Ruled 3 Sep 2026: three dots
 fading by opacity, stopped under reduced motion. Waits on her hand into brand book §5. No build until S12.
@@ -264,7 +264,7 @@ The deploy, the repository, settings and limits. Step 7 is the carry, by her han
 when its receiver reads them, and that receiver is not fixed, Shell A item #243); `project-types.md`; the
 ten-line contract; Q11; the paid-site tools line; the transition module; the one-row shape; the agent
 screen's file list; open.waterbots.ai for the landing box, the claim and the menu (28 Oct 2026). **To the brand book:** typing dots §5, the agent screen §7. **To this site:** the
-sign-up address, the confirmed roster columns. **To the grader:**
+sign-up address, the confirmed roster columns. `roster.yaml` without the maintainer's name: carried 2 Nov 2026, version 0.3.1, `product-shared@0.6.3`. **To the grader:**
 three rig changes.
 
 **O1 · Revisit the daily cap against real usage.** After v1 · PARK. Thirty a day per visitor is live
@@ -355,7 +355,7 @@ request. Proposal first, with a count of strikes per document.
 Known weaknesses in tools this machine runs, not in what visitors get. Not v1.
 
 **SP1 · A separate GitHub account for sessions.** BONES. A second account that can open pull requests but
-cannot merge, enforced by branch protection (only Amy's account may merge). First on this list: the deny
+cannot merge, enforced by branch protection (only the maintainer's account may merge). First on this list: the deny
 rules in session settings are a fence a session could edit away, branch protection is not. Needs her to
 create the account and set the rule; a proposal comes first.
 

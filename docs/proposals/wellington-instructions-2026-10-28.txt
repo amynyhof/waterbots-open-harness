@@ -1,9 +1,13 @@
-WELLINGTON'S CURRENT INSTRUCTIONS — a copy for Amy to read and rewrite
+SUPERSEDED 1 Nov 2026 by wellington-rewrite-2026-10-31.md, in this folder, which the maintainer
+approved as written on 1 Nov 2026. Kept, by her word, as the starting copy; the site
+never read it and nothing reads it now.
+
+WELLINGTON'S CURRENT INSTRUCTIONS — a copy for the maintainer to read and rewrite
 =====================================================================
 
 Taken 28 Oct 2026 from main at commit 9274168. This is a copy, not the source: the
-site does not read this file, and it is deleted when the pull request that
-carries it is merged or closed.
+site does not read this file. It was to be deleted when its pull request
+closed; the maintainer ruled on 1 Nov 2026 to keep it, marked superseded.
 
 Everything below the second line of equals signs is exactly what Wellington
 is given, word for word: 26,034 characters. The size gate allows anything

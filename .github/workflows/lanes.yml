@@ -1,7 +1,7 @@
 # Merge lanes — labels every pull request lane-1, lane-2 or lane-3 by which files it
 # changes. Nothing else decides a lane: not the session, not a person, not the description.
 #
-# AUTO-MERGE IS OFF (Amy's ruling, 19 Oct 2026). The `automerge` job below is switched off
+# AUTO-MERGE IS OFF (the maintainer's ruling, 19 Oct 2026). The `automerge` job below is switched off
 # by default and, even when switched on, refuses to run while the number gate has no
 # patterns. It is to be switched on only after the keyed-fingerprint number gate ships
 # (BUILD_PLAN, Safety pass, SP3). Do not enable it before.
@@ -61,8 +61,8 @@ jobs:
           existing=$(gh label list --repo "$REPO" --limit 200 --json name --jq '.[].name')
           make() { echo "$existing" | grep -qx "$1" || gh label create "$1" --color "$2" --description "$3" --repo "$REPO"; }
           make lane-1 0E8A16 "Plain writing only. Auto-merge is off for now"
-          make lane-2 FBCA04 "Amy looks in the browser, then merges"
-          make lane-3 D93F0B "Amy and the second reader"
+          make lane-2 FBCA04 "The maintainer looks in the browser, then merges"
+          make lane-3 D93F0B "The maintainer and the second reader"
           for n in 1 2 3; do
             if [ "$n" = "$LANE" ]; then gh pr edit "$PR" --add-label "lane-$n" --repo "$REPO"
             else gh pr edit "$PR" --remove-label "lane-$n" --repo "$REPO" || true

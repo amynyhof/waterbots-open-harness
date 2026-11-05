@@ -66,7 +66,7 @@ export default function CrewRow({
             fontSize: 15,
             fontWeight: 600,
             lineHeight: 1.2,
-            color: member.nameInAccent ? `var(${member.token})` : 'var(--ink)',
+            color: member.nameInAccent ? `var(${member.textToken ?? member.token})` : 'var(--ink)',
           }}
         >
           {member.name}

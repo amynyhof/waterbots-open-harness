@@ -133,7 +133,7 @@ is, by her ruling: it covers what agents see at runtime, and installing a packag
 
 > - **Rule zero:** this repo sees only this repo. The engineer never
 >   fetches, guesses at, or imitates the private platform. Rules
->   arrive as extracted rule files like this one, brought by Amy.
+>   arrive as extracted rule files like this one, brought by the maintainer.
 
 **Where the current text is:** [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Standing rules that
 govern everything above*.
@@ -849,7 +849,7 @@ from before the no-strikes rule; they are kept here exactly as they stood.
 **Old wording, whole:**
 
 > 3. ~~SESSION_HANDOFF.md is **rewritten from scratch**, current state only, so a cold reader can
->    resume: where we are, what is committed vs. uncommitted, what is waiting on Amy, what comes
+>    resume: where we are, what is committed vs. uncommitted, what is waiting on the maintainer, what comes
 >    next. **It carries no history** — that is what BUILD_LOG is for.~~
 >    **Corrected 17 Sep 2026: no handoff rewrite.** There is no live root
 >    `SESSION_HANDOFF.md`. Close-out refreshes BUILD_PLAN, OPEN_ITEMS, and CLAUDE (if

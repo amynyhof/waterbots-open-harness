@@ -65,7 +65,7 @@ maintainer to carry elsewhere — never an action here.
 
 **The open core is the one exception, from 27 Oct 2026, by the
 maintainer's ruling.** This site may install the open core packages
-from `amynyhof/waterbots-open-core-modules`, and the engineer may read
+from `waterbots-open-core-modules`, under the maintainer's GitHub account, and the engineer may read
 that repository on GitHub only: never a clone, never a write, never a
 pull request there. What the open core needs is made by its own
 session in its own repository. The paid site's repository stays
@@ -271,7 +271,7 @@ credit line does not meet any of these bars.
   posture** — short, one question at a time, ends with the next step; "I don't
   know" is an answer; a planned project is normal and criteria are things to
   do; status lines in a visitor's words — in AGENT_RULES.md. **Every capture
-  for the maintainer's eyeball is attached inside the pull request's For Amy
+  for the maintainer's eyeball is attached inside the pull request's For the maintainer
   block as an image**; the rule and the way of doing it are in
   PROCESS_RULES_for_ShellB.md.
 - **The agent screen, 9 Sep 2026 — every step is a screen, built once (item S16,
@@ -506,6 +506,18 @@ merits**: §2.1 also makes Mint *Success / approved*, and a screening surface
 whose whole message is *not verified* must not wash green. The version bump
 itself was the engineer's call, made so the documents naming the book's version
 did not start telling a lie; the maintainer let it stand.
+
+**Calvin is Reef `#0E8A94` from 31 Oct 2026, and Violet is Orchid `#A457D4`**,
+both by the maintainer's ruling of that day. Plum is Reggie's alone again, so the
+first of the two knowing exceptions above is over; his portrait is redrawn in
+Reef. Both colours are tokens, `--reef` and `--orchid`, reached through
+`--bot-calvin` and `--bot-violet`. **Neither carries text**: Reef measures
+4.13:1 on white and Orchid 4.29:1, short of 4.5:1. **Calvin's text is Deep Reef
+`#0C7C85`** from 1 Nov 2026, her ruling: `--deep-reef` through
+`--bot-calvin-text`, 4.96:1 on white, for his name and the four labels on his
+calculator. Orchid has no text shade yet; Violet needs one when she is built.
+Violet is not on the roster or on this site yet. The brand book still says Plum for Calvin
+in §6, until the maintainer's hand changes it.
 
 **What version 4.1 changed, and it was the first amendment written into
 the book from inside this repository.** §2.5 only. Coral gained a text

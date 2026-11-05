@@ -1,5 +1,5 @@
 # THE CREW — one roster, read by Wellington when he runs and checked against the
-# screens on every build. Amy edits this file by hand. No code lives here.
+# screens on every build. The maintainer edits this file by hand. No code lives here.
 #
 # HOW TO EDIT SAFELY
 # - Keep the shape. Every seat has the same fields. A missing field fails the build
@@ -15,9 +15,9 @@
 # confirmed by the open site's own check when the file is carried there. Until then
 # they stay "unconfirmed" and Wellington treats them as the plan, never as a promise.
 
-version: 0.3.0
+version: 0.3.1
 ruled: 2026-09-17
-ruled_by: Amy
+ruled_by: the maintainer
 
 notes: |
   One crew everywhere. Each door sets how much an agent may do (see levels).

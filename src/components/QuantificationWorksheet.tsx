@@ -580,7 +580,7 @@ function StopCard({ stopReason, routeForward }: { stopReason: string; routeForwa
           fontSize: 9.5,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
-          color: 'var(--bot-calvin)',
+          color: 'var(--bot-calvin-text)',
           marginBottom: 7,
         }}
       >
@@ -756,7 +756,7 @@ function Variable({
                 fontSize: 9,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: 'var(--bot-calvin)',
+                color: 'var(--bot-calvin-text)',
               }}
             >
               why
@@ -957,7 +957,7 @@ function Segmented({
               background: on
                 ? 'color-mix(in oklab, var(--bot-calvin) 10%, var(--card))'
                 : 'var(--card)',
-              color: on ? 'var(--bot-calvin)' : 'var(--ink-3)',
+              color: on ? 'var(--bot-calvin-text)' : 'var(--ink-3)',
               borderColor: on
                 ? 'color-mix(in oklab, var(--bot-calvin) 40%, transparent)'
                 : 'var(--line)',
@@ -1039,7 +1039,7 @@ function Chip({ children, muted }: { children: React.ReactNode; muted?: boolean 
         whiteSpace: 'nowrap',
         padding: '4px 9px',
         borderRadius: 'var(--r-pill)',
-        color: muted ? 'var(--ink-2)' : 'var(--bot-calvin)',
+        color: muted ? 'var(--ink-2)' : 'var(--bot-calvin-text)',
         background: muted
           ? 'color-mix(in oklab, var(--ink-4) 14%, transparent)'
           : 'color-mix(in oklab, var(--bot-calvin) 8%, transparent)',

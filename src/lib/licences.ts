@@ -90,3 +90,11 @@ export const AQUEDUCT_PUBLISHER = 'World Resources Institute';
 
 /** The DOI the suggested citation gives, written out with its scheme. */
 export const AQUEDUCT_HREF = 'https://doi.org/10.46830/writn.23.00061';
+
+/**
+ * Natural Earth, whose country boxes open Bridget's Map tab on a named country
+ * (src/lib/countryBoxes.generated.ts). Public domain, so no credit is required;
+ * it is credited on her Knowledge pack tab anyway, the maintainer's word of
+ * 31 Oct 2026.
+ */
+export const NATURAL_EARTH_HREF = 'https://www.naturalearthdata.com';

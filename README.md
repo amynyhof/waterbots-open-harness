@@ -440,6 +440,18 @@ book's own — each says so below:
   It is deliberately the same value as `--state-live`. The book's §2.6 accepts Surf's double duty on
   the condition that **form carries the meaning**: a status may only be a dot or a keyline on a data
   row, an identity only a bubble, portrait, surface accent or keyline.
+- **Calvin's identity colour** — **Reef `#0E8A94`**, the maintainer's ruling of 31 Oct 2026, in
+  `--reef` through `--bot-calvin`, and his portrait is drawn in it. He was Plum `#5848A8` from
+  31 Aug 2026, a knowing exception to the book's §6, which gives Plum to Reggie; Plum is Reggie's
+  alone again. **Mint was refused on the merits then and still is**: the book also makes Mint
+  *Success / approved*, and a screening step whose whole message is *not verified* must not wash
+  green. At 4.13:1 on white Reef carries his portrait, keylines, tints and washes, never text. His
+  name and his calculator's labels are set in **Deep Reef `#0C7C85`**, its text shade, in
+  `--deep-reef` through `--bot-calvin-text`: 4.96:1 on white, the maintainer's ruling of 1 Nov 2026.
+- **Violet's identity colour** — **Orchid `#A457D4`**, the same ruling, in `--orchid` through
+  `--bot-violet`. Violet is the VWBA agent who will host the D-n modules on the Commons; she is not
+  on the roster or on this site yet, so the token waits for her. At 4.29:1 on white it never carries
+  text; she will need a darker text shade when she is built.
 - **Warning text is a darkened coral** — **`#BF4949`**, in `--state-warn-text`. The book's §2.5
   rule is that a role colour used as **type** is darkened to clear 4.5:1, the same hue mixed toward
   ink, while the dot or fill value is unchanged. Coral `#E25858` set as 11px type measured

@@ -36,6 +36,8 @@ export interface CrewMember {
   token: string;
   /** Whether the accent clears 4.5:1 on white and may carry the name as text. */
   nameInAccent: boolean;
+  /** Where the accent itself is too light for text, the token its text shade lives in. */
+  textToken?: string;
   /** The console surface the member's row opens. */
   surface: Surface;
 }
@@ -74,7 +76,10 @@ export const CREW: CrewMember[] = [
     role: 'Calculator',
     portrait: calvinPortrait,
     token: '--bot-calvin',
+    /* Reef is 4.13:1 on white and never carries text; his name is set in Deep
+       Reef, its text shade, 4.96:1 — the maintainer's ruling of 1 Nov 2026. */
     nameInAccent: true,
+    textToken: '--bot-calvin-text',
     surface: 'quantification',
   },
 ];

@@ -22,7 +22,7 @@
  *
  * WHAT IT RECORDS, per request: status, elapsed time, reply length, cards
  * cited, abstained, worksheet updates, and the relay's token usage. The cost
- * line at the end is calls and tokens, so the For Amy block can say what the
+ * line at the end is calls and tokens, so the For the maintainer block can say what the
  * run cost. It never prints a visitor's question because there is none: the
  * three questions are this file's own.
  *

@@ -283,3 +283,96 @@ test('command line: a missing folder to scan is a failed run, not a pass', () =>
   writeFileSync(list, LIST);
   assert.equal(run([join(dir, 'no-such-folder')], list).status, 2);
 });
+
+/* The three causes of 1 Nov 2026, when the maintainer's first name stood in public files and the scan said nothing. */
+
+test('the allowance is read with or without "only", in either spelling of licence', () => {
+  for (const mark of ['allowed on copyright and licence lines', 'allowed on copyright and license lines only']) {
+    const [entry] = parseNames(`Harbour Voss | ${mark}`);
+    assert.equal(entry.copyrightOnly, true, mark);
+    assert.deepEqual(scanText('written by Harbour Voss', [entry]), [1], `${mark}: the entry still matches`);
+  }
+});
+
+test('an option the scan does not know stops the run instead of switching the entry off', () => {
+  assert.throws(() => parseNames('Harbour Voss | allowed on copyright lines, mostly'), ListError);
+  assert.throws(() => parseNames('Harbour Voss |'), ListError);
+});
+
+test('a person who signs copyright is found by first name or surname alone; other entries only whole', () => {
+  const entries = parseNames('Harbour Voss | allowed on copyright and licence lines\nZelda Quimby');
+  assert.deepEqual(scanText("Harbour's ruling, 3 Oct", entries), [1]);
+  assert.deepEqual(scanText('For Harbour', entries), [1]);
+  assert.deepEqual(scanText('C:\\Users\\voss\\Documents', entries), [1]);
+  assert.deepEqual(scanText('harbourvoss/some-repository', entries), [1]);
+  assert.deepEqual(scanText('Zelda alone, and Quimby alone', entries), [], 'an entry without the allowance matches whole');
+  assert.deepEqual(scanText('harbourage and vossberg', entries), [], 'still whole words only');
+});
+
+test('a copyright or licence line is one that opens with it, not any line that mentions a licence', () => {
+  const entries = parseNames('Harbour Voss | allowed on copyright and licence lines');
+  for (const line of [
+    'Copyright 2026 Harbour Voss',
+    '// Copyright (c) 2026 Harbour Voss',
+    '© 2026 Harbour Voss',
+    ' * SPDX-FileCopyrightText: 2026 Harbour Voss',
+    '# Licence: Harbour Voss',
+    'Licensed to Harbour Voss under the Apache License',
+  ]) {
+    assert.deepEqual(scanText(line, entries), [], line);
+  }
+  for (const line of [
+    'Harbour approved the licence on 3 Oct',
+    "the maintainer's ruling (3)(c), by Harbour",
+    'a CC-BY licence, as Harbour said',
+  ]) {
+    assert.deepEqual(scanText(line, entries), [1], line);
+  }
+});
+
+test('the case that slipped through: a first name in a file and in an added line, with the list written as it was', () => {
+  const entries = parseNames('Harbour Voss | allowed on copyright and licence lines');
+  const dir = tmp();
+  writeFileSync(join(dir, 'proposal.md'), '# Proposal\n\n**Written 31 Oct 2026 for Harbour.**\n');
+  assert.deepEqual(scanFiles(dir, ['proposal.md'], entries).findings, [{ file: 'proposal.md', line: 3, kind: KINDS.text }]);
+  const diff = ['diff --git a/p.md b/p.md', '--- a/p.md', '+++ b/p.md', '@@ -1 +1,2 @@', ' title', "+Harbour's word of 1 Nov"].join('\n');
+  assert.deepEqual(scanDiff(diff, entries).findings, [{ file: 'p.md', line: 2, kind: KINDS.addedLine }]);
+});
+
+/* Map data, ruling 2 Nov 2026: a number-only entry is not looked for in public/*.json or public/map/*.json. */
+
+test('a number-only entry is not looked for in map data files, and is everywhere else', () => {
+  const entries = parseNames('40417\n55180\nZelda Quimby');
+  for (const file of ['public/basins.json', 'public/map/level6.json']) {
+    assert.deepEqual(scanText('{"SUB_AREA":40417,"UP_AREA":55180.5}', entries, file), [], file);
+    assert.deepEqual(scanText('{"note":"Zelda Quimby"}', entries, file), [1], `${file}: a name is still found`);
+  }
+  for (const file of ['public/basins.geojson', 'public/map/deep/level6.json', 'src/public/basins.json', 'docs/notes.md']) {
+    assert.deepEqual(scanText('{"SUB_AREA":40417}', entries, file), [1], `${file} is not map data`);
+  }
+  assert.deepEqual(scanText('{"SUB_AREA":40417}', entries), [1], 'text from no file is scanned whole');
+});
+
+test('map data is skipped for numbers in a whole-repository scan and in added lines', () => {
+  const entries = parseNames('40417');
+  const dir = tmp();
+  mkdirSync(join(dir, 'public'));
+  writeFileSync(join(dir, 'public', 'basins.json'), '{"SUB_AREA":40417}\n');
+  writeFileSync(join(dir, 'notes.md'), 'project 40417\n');
+  assert.deepEqual(scanFiles(dir, ['public/basins.json', 'notes.md'], entries).findings, [
+    { file: 'notes.md', line: 1, kind: KINDS.text },
+  ]);
+  const diff = [
+    'diff --git a/public/basins.json b/public/basins.json',
+    '--- a/public/basins.json',
+    '+++ b/public/basins.json',
+    '@@ -1 +1 @@',
+    '+{"SUB_AREA":40417}',
+    'diff --git a/notes.md b/notes.md',
+    '--- a/notes.md',
+    '+++ b/notes.md',
+    '@@ -1 +1 @@',
+    '+project 40417',
+  ].join('\n');
+  assert.deepEqual(scanDiff(diff, entries).findings, [{ file: 'notes.md', line: 1, kind: KINDS.addedLine }]);
+});

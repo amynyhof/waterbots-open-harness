@@ -2,7 +2,7 @@
 
 Extracted from main-platform working canon (2026-08-23) for use on the
 open site. Rules travel as rules; no private-platform files, names, or
-paths appear here. The maintainer is Amy. The engineer is whoever is
+paths appear here. The maintainer owns this repository. The engineer is whoever is
 reading this.
 
 ## How a session opens
@@ -84,10 +84,10 @@ rule it exists to serve — see *the opening reads stay thin, forever*.
 Every piece of work follows one sequence, no skipped steps:
 
 1. **Proposal** — the engineer says what it will do and why.
-2. **Approval** — Amy says go. No go, no build.
+2. **Approval** — the maintainer says go. No go, no build.
 3. **Build** — the engineer builds exactly what was approved.
-4. **Eyeball** — Amy checks it in the browser herself.
-5. **Commit word** — Amy says commit. Nothing is done until she does.
+4. **Eyeball** — the maintainer checks it in the browser herself.
+5. **Commit word** — the maintainer says commit. Nothing is done until she does.
 
 One topic at a time. One step per exchange where possible.
 
@@ -268,11 +268,11 @@ holds the cases that prove them. It labels the pull request `lane-1`, `lane-2` o
    file, CLAUDE.md, AGENT_RULES.md, CITATIONS.md, anything CARRY-related, the lane rule itself),
    `.github/`, secrets or anything a visitor sees. **Lane 1 is meant to merge on its own, but that is OFF
    (ruling of 19 Oct 2026, after the second reader's read).** It stays off until the keyed-fingerprint number gate
-   exists (BUILD_PLAN, Safety pass); until then Amy merges lane 1 too. The job that would do it is
+   exists (BUILD_PLAN, Safety pass); until then the maintainer merges lane 1 too. The job that would do it is
    guarded so it cannot run while the number gate has no patterns.
-2. **Lane 2 — Amy looks.** Anything that changes what a visitor sees or reads: screens, copy, the
+2. **Lane 2 — the maintainer looks.** Anything that changes what a visitor sees or reads: screens, copy, the
    README, captures, brand files. She checks in the browser, then merges.
-3. **Lane 3 — Amy and the second reader.** Calculator and engine numbers, security, packages, data files, rules files,
+3. **Lane 3 — the maintainer and the second reader.** Calculator and engine numbers, security, packages, data files, rules files,
    CI, the lane rule itself, and anything that could leak real figures. Before she merges, she gives
    The second reader the pull request's diff plus the rules files (CLAUDE.md, this file, CITATIONS.md,
    AGENT_RULES.md). **The second reader flags problems; it never approves.** A clean read from the second reader is not a merge
@@ -307,7 +307,7 @@ because the list is private**; only its tests, which use made-up names, run ther
 #### Every description opens with a block for the maintainer
 
 **Maintainer's ruling, 27 Aug 2026.** Every pull request description begins with a block
-titled **"For Amy"** — three short parts, plain English at about a 6th-grade level, no
+titled **"For the maintainer"** — three short parts, plain English at about a 6th-grade level, no
 jargon:
 
 1. **What changed** — the files, named, and what each one does in plain words.
@@ -324,7 +324,7 @@ jargon:
 3. **Anything the agent was unsure of** — each doubt, stated plainly, or "nothing" if there is
    none. An unsure point left out is a defect.
 
-**Every capture for the maintainer's eyeball is attached inside the For Amy block as an image,
+**Every capture for the maintainer's eyeball is attached inside the For the maintainer block as an image,
 never printed as a local file path.** Maintainer's ruling, 8 Sep 2026: she reads pull requests from
 where a path on the engineer's machine cannot be opened, and a capture she cannot see is not an
 eyeball. The engineer's way of doing it, until she says otherwise: the capture is committed on the
@@ -334,7 +334,7 @@ deletion. A capture sent to her in chat is a courtesy, not the record; the recor
 Pull requests before the ruling are not reformatted.
 
 **A pull request that depends on an unpushed migration says so first.** Maintainer's ruling,
-29 Aug 2026: its For Amy block opens with **`DO NOT MERGE YET`** on its own first line, naming what
+29 Aug 2026: its For the maintainer block opens with **`DO NOT MERGE YET`** on its own first line, naming what
 it waits on. A pull request whose code reads a migration that has not landed is a green button that
 breaks production, and the only reliable guard is the one a reviewer reads before clicking.
 
@@ -355,7 +355,7 @@ ones are not reformatted.
 - Never claim something was sent, done, or fixed without it actually
   being so. "Built, not tested" and "tested, not committed" are
   different states; name the real one.
-- Mistakes are self-reported honestly and immediately. Amy makes all
+- Mistakes are self-reported honestly and immediately. The maintainer makes all
   rulings.
 
 ## Corrections replace text; the archive keeps the old wording
@@ -528,10 +528,10 @@ those gets the light close (*Two kinds of close*). **A ritual with a skipped ste
 
 - **Rule zero:** this repo sees only this repo, except the open core:
   this site may install its packages, and the engineer may read
-  `amynyhof/waterbots-open-core-modules` on GitHub only, never clone or
-  write to it (CLAUDE.md, *Rule zero*; Amy's ruling, 27 Oct 2026). The
+  `waterbots-open-core-modules`, under the maintainer's GitHub account, on GitHub only, never clone or
+  write to it (CLAUDE.md, *Rule zero*; the maintainer's ruling, 27 Oct 2026). The
   engineer never fetches, guesses at, or imitates the private platform.
-  Rules arrive as extracted rule files like this one, brought by Amy.
+  Rules arrive as extracted rule files like this one, brought by the maintainer.
 - **No fabricated data, ever.** Not in tests, not in demos, not as
   placeholders that look real.
 - **A test stand-in for infrastructure is not fabricated data.** The rule

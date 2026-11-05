@@ -12,11 +12,29 @@
  * *The name scan runs before every push*).
  *
  * THE LIST. One entry per line. `#` starts a comment; blank lines are skipped. An entry may end in
- * `| allowed on copyright and licence lines only`: it is then let through on lines that say copyright, licence
- * or SPDX, and nowhere else.
+ * `| allowed on copyright and licence lines` (with or without a closing "only", either spelling of licence): it
+ * is then let through on a copyright or licence line and nowhere else. Anything else after a `|` stops the run,
+ * so a mistyped option can never quietly switch an entry off.
+ *
+ * A COPYRIGHT OR LICENCE LINE is one that opens, after any comment or list marks, with "Copyright", "©", "(c)",
+ * "SPDX-", "Licence", "License" or "Licensed". A line that merely mentions a licence somewhere is not one.
  *
  * MATCHING. Whole words only, upper or lower case. A space, dot, dash or underscore inside an entry matches any
  * of those, or nothing, so `Ada Lovelace` also finds `ada_lovelace` and `AdaLovelace`.
+ *
+ * A NUMBER-ONLY ENTRY IS NOT LOOKED FOR IN MAP DATA: `public/*.json` and `public/map/*.json`, from the
+ * repository's top. Those files are published datasets made of figures, and a listed number turns up in them as
+ * an area or a count by chance. The paid site's scan has worked this way since 23 Oct 2026; the maintainer's
+ * ruling of 2 Nov 2026 brings it here. All three repositories read one private list, so this is a rule in the
+ * scan, not a note on the list. Every other file, and every other entry, is scanned as before.
+ *
+ * AN ENTRY WITH THE ALLOWANCE IS A PERSON WHO SIGNS COPYRIGHT HERE, and each part of that name is also found on
+ * its own: the first name alone, the surname alone (a user folder, say). Other entries match whole, as written.
+ *
+ * WHY THESE THREE, 1 Nov 2026. The maintainer's own entry ended in the allowance without "only", so the option was
+ * read as part of the name and the entry could match nothing; it held her full name, so her first name alone was
+ * never looked for; and any line mentioning a licence, or "(c)" as in "ruling (3)(c)", counted as a copyright
+ * line. Her first name stood in public files and the scan said nothing. Each is now tested.
  *
  * FAILS CLOSED. An unset or empty setting, or a list that is missing, unreadable or empty, stops the run with
  * exit code 2 and no result. So does a file or folder to scan that does not exist, or a diff git cannot give.
@@ -31,9 +49,11 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const SKIP_DIRS = new Set(['.git', 'node_modules', 'dist']);
-const COPYRIGHT_LINE = /copyright|licen[cs]e|©|\(c\)|SPDX/i;
-const ALLOW_MARK = /\|\s*allowed on copyright and licence lines only\s*$/i;
+const COPYRIGHT_LINE = /^[\s#/*>\-;!<]*(?:copyright\b|©|\(c\)|SPDX-|licen[cs]e[sd]?\b)/i;
+const ALLOW_MARK = /\|\s*allowed on copyright and licen[cs]e lines(?:\s+only)?\s*$/i;
 const HIDDEN = '(path hidden)';
+const MAP_DATA = /^public\/(?:map\/)?[^/]+\.json$/i;
+const NUMBER_ONLY = /^\d+$/;
 
 export const KINDS = {
   text: 'name in text',
@@ -52,10 +72,13 @@ export function parseNames(text) {
     if (line === '' || line.startsWith('#')) continue;
     const copyrightOnly = ALLOW_MARK.test(line);
     const name = line.replace(ALLOW_MARK, '').trim();
+    if (name.includes('|')) throw new ListError('an entry carries an option the scan does not know');
     const parts = name.split(/[\s_.\-]+/).filter(Boolean).map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
     if (parts.length === 0) continue;
-    const pattern = new RegExp(`(?<![A-Za-z0-9])${parts.join('[\\s_.\\-]*')}(?![A-Za-z0-9])`, 'i');
-    entries.push({ pattern, copyrightOnly });
+    const whole = (p) => new RegExp(`(?<![A-Za-z0-9])${p}(?![A-Za-z0-9])`, 'i');
+    const patterns = [whole(parts.join('[\\s_.\\-]*'))];
+    if (copyrightOnly && parts.length > 1) patterns.push(...parts.map(whole));
+    entries.push({ patterns, copyrightOnly, numberOnly: NUMBER_ONLY.test(name) });
   }
   if (entries.length === 0) throw new ListError('the names list holds no entries');
   return entries;
@@ -80,24 +103,35 @@ export function listPathFromEnv(env = process.env) {
   return path;
 }
 
-/** Whether one line holds a listed name, minding the copyright allowance. */
-function lineHasName(line, entries) {
-  const isCopyrightLine = COPYRIGHT_LINE.test(line);
-  return entries.some((e) => e.pattern.test(line) && !(e.copyrightOnly && isCopyrightLine));
+/** Whether one entry's name, or for a person who signs copyright any part of it, is in `text`. */
+function hits(entry, text) {
+  return entry.patterns.some((p) => p.test(text));
 }
 
-/** Lines of `text` that hold a listed name. Returns line numbers only. */
-export function scanText(text, entries) {
+/** True for a map data file: `public/*.json` or `public/map/*.json`, from the repository's top. */
+export function isMapData(file) {
+  return Boolean(file) && MAP_DATA.test(file.split(sep).join('/'));
+}
+
+/** Whether one line holds a listed name, minding the copyright allowance and, in map data, number-only entries. */
+function lineHasName(line, entries, file) {
+  const isCopyrightLine = COPYRIGHT_LINE.test(line);
+  const mapData = isMapData(file);
+  return entries.some((e) => !(mapData && e.numberOnly) && hits(e, line) && !(e.copyrightOnly && isCopyrightLine));
+}
+
+/** Lines of `text` that hold a listed name. Returns line numbers only. `file` is where the text is from, if known. */
+export function scanText(text, entries, file = null) {
   const hits = [];
   text.split(/\r?\n/).forEach((line, i) => {
-    if (lineHasName(line, entries)) hits.push(i + 1);
+    if (lineHasName(line, entries, file)) hits.push(i + 1);
   });
   return hits;
 }
 
 /** True when the path itself holds a listed name. */
 export function pathHasName(path, entries) {
-  return entries.some((e) => e.pattern.test(path.split(sep).join('/')));
+  return entries.some((e) => hits(e, path.split(sep).join('/')));
 }
 
 function isBinary(buf) {
@@ -119,7 +153,7 @@ export function scanFiles(root, files, entries) {
       continue;
     }
     textFiles++;
-    for (const line of scanText(buf.toString('utf8'), entries)) findings.push({ file: shown, line, kind: KINDS.text });
+    for (const line of scanText(buf.toString('utf8'), entries, f)) findings.push({ file: shown, line, kind: KINDS.text });
   }
   return { findings, files: files.length, textFiles, skipped };
 }
@@ -172,7 +206,7 @@ export function scanDiff(diff, entries) {
     }
     if (!file) continue;
     if (raw.startsWith('+')) {
-      if (lineHasName(raw.slice(1), entries)) findings.push({ file: shown, line, kind: KINDS.addedLine });
+      if (lineHasName(raw.slice(1), entries, file)) findings.push({ file: shown, line, kind: KINDS.addedLine });
       line++;
     } else if (raw.startsWith(' ')) {
       line++;
