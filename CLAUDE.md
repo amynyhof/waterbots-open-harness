@@ -405,8 +405,9 @@ credit line does not meet any of these bars.
   Quantify only where a pathway is likely eligible or not enough is known. For a water supply
   project he asks how many people or households it serves, after the stage; it is kept as said,
   households never converted here, on the record, the rail and the seal as `record.served`. His
-  prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep, 26,034 from 4 Oct and is 26,079 from 31 Oct
-  2026, against the unchanged gate of 26,199.
+  prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep, 26,034 from 4 Oct, 26,079 from 31 Oct, and
+  is 23,123 from 5 Nov 2026, when his shorter instructions were built (item A26), against the
+  unchanged gate of 26,199.
 - **The engine bundle is tracked at `carried/`, from 27 Sep 2026**, placed by the maintainer's
   hand and merged on `main` as it stands (#132), tagged `engine-carry-2026-09-27`. **It was replaced
   on 3 Oct 2026 by v0.16.1**, the paid site's `calculator-seal-2026-10-03`: 34 files, 34 hashes

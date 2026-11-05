@@ -128,7 +128,7 @@ The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done,
 
 **After v1, not needed for the finish line:** A23, Calvin's VWBA row becomes Violet's; A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
-- **Wellington's prompt is 26,079 characters against a gate of 26,199.** The gate moves only on her word.
+- **Wellington's prompt is 23,123 characters against a gate of 26,199** (A26, 5 Nov 2026). The gate moves only on her word.
 - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull
   request; a measured run after any prompt change; the build-update fact refreshed at every full close-out.
 
@@ -165,8 +165,8 @@ to the map. Done is a line he reads after a pin there, and a measured walk.
 the cards and the lists reach the relays as generated copies (`scripts/build-prompt-modules.mjs`), written by hand; CI's
 `--check` fails a stale copy, but nothing refreshes one. Done is a copy that cannot ship stale and needs no hand. Proposal first.
 
-**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Her word of 31 Oct 2026: his prompt is 26,079 against a gate of 26,199, and
-step 3 needs room. A shorter version keeping every rule and step; the proposal is docs/proposals/wellington-rewrite-2026-10-31.md.
+**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved (docs/proposals/wellington-rewrite-2026-10-31.md):
+his prompt is 23,123, from 26,079, so step 3 has room. Waiting on her walk on the preview and one measured run.
 
 **A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet, host of the
 D-n modules in the Commons; not on the roster yet, by her hand. No proposal yet. Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026).
