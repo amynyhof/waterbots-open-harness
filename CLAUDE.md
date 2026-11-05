@@ -186,6 +186,17 @@ attribution requirement (e.g. © OpenStreetMap contributors, © CARTO).
 Leaflet's attribution control stays ON. A tiny, faded, hand-rolled
 credit line does not meet any of these bars.
 
+## Where every value comes from
+
+Every value shown to a user says where it came from. It never credits a ruling or a person.
+- Entered: the user typed it. The source is the user.
+- Default: the site filled it in from a published source (document, section, page). The user's own local value replaces it.
+- Derived: worked out from other values. It shows the source of its formula.
+- Assumed: expected project performance, starting from a cited value.
+If no published source gives a default for a value, the site leaves it blank, and the user enters it.
+
+Stove and fuel presets: do not raise their sources with the maintainer. A V2 agent and module source sweep checks them.
+
 ## Scope — v1
 
 - HydroSHEDS basins worldwide, colored by Aqueduct 4.0 water stress.
