@@ -186,6 +186,21 @@ attribution requirement (e.g. © OpenStreetMap contributors, © CARTO).
 Leaflet's attribution control stays ON. A tiny, faded, hand-rolled
 credit line does not meet any of these bars.
 
+## Where every value comes from
+
+Every value shown to a user says where it came from. It never credits a ruling or a person.
+- Entered: the user typed it. The source is the user.
+- Default: the site filled it in from a published source (document, section, page). The user's own local value replaces it.
+- Derived: worked out from other values. It shows the source of its formula.
+- Assumed: expected project performance, starting from a cited value.
+Three kinds of value (Calvin carbon modules):
+- Project facts (the project record): the user gives them at intake, and Wellington collects them. Until then, the field shows 'awaiting user project input'. Never guessed.
+- Method defaults: at screening, the site fills them in from cited sources, chosen by the user's project facts.
+- Anticipated performance (screening and ex-ante): starts at a labelled 'assumed' value. Calvin encourages the user to adjust it to their planned project.
+This is settled. Do not raise it again.
+
+Stove and fuel presets: do not raise their sources with the maintainer. A V2 agent and module source sweep checks them.
+
 ## Scope — v1
 
 - HydroSHEDS basins worldwide, colored by Aqueduct 4.0 water stress.
