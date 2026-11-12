@@ -119,9 +119,9 @@ export interface AgentHost {
   colourToken: string;
   /** Beta is stated in words where it is true, not tucked away. */
   beta?: boolean;
-  /** Composer placeholder and the standing note beneath it. */
+  /** Composer placeholder and the standing note beneath it; no note, no line. */
   composerPlaceholder: string;
-  composerNote: string;
+  composerNote?: string;
   /** Shown while a request is in flight. Agent-specific wording. */
   thinkingLine: string;
   /** The small label beside an abstained turn. Phoebe's is "no card for this". */

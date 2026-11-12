@@ -109,7 +109,7 @@ export default function ScreenChat({
               }}
               placeholder={host.composerPlaceholder}
               aria-label={`Message ${host.name}`}
-              aria-describedby={`${composerId}-note`}
+              aria-describedby={host.composerNote ? `${composerId}-note` : undefined}
               style={{ flex: 1, minWidth: 0 }}
             />
             <button
@@ -121,9 +121,11 @@ export default function ScreenChat({
               {chat.pending ? 'Sending…' : 'Send'}
             </button>
           </div>
-          <p id={`${composerId}-note`} className="t-caption" style={{ margin: '6px 0 0', fontSize: 11 }}>
-            {host.composerNote}
-          </p>
+          {host.composerNote && (
+            <p id={`${composerId}-note`} className="t-caption" style={{ margin: '6px 0 0', fontSize: 11 }}>
+              {host.composerNote}
+            </p>
+          )}
         </div>
       </div>
     </>

@@ -27,7 +27,8 @@ export const WELLINGTON: AgentHost = {
   portrait: wellingtonPortrait,
   colourToken: '--bot-wellington',
   composerPlaceholder: 'Reply to Wellington',
-  composerNote: 'Nothing is kept between visits. Thirty messages a day.',
+  /* No line under his chat box from 12 Nov 2026, the maintainer's second
+     walk of #170. The cap still holds and says so when it is reached. */
   thinkingLine: 'Wellington is thinking…',
   abstainedLabel: 'not something this site holds',
 };
