@@ -260,9 +260,9 @@ whatever is still missing when they reach Calvin, Calvin asks.
 
 - **Phoebe:** whether a project can count, from the published eligibility
   criteria. Her chat is live, on the Eligibility step.
-- **The Quantify step:** a screening figure from the visitor's own numbers, the
-  water a supply project provides or the carbon a safe-water project would
-  screen at. It is Calvin's; his chat is not live yet, and the worksheet takes a
+- **The Quantify step:** a first estimate from the visitor's own numbers, the
+  water a supply project provides or how much carbon a safe-water project might
+  avoid. It is Calvin's; his chat is not live yet, and the worksheet takes a
   visitor through it.
 - **The Partners step:** the basin map, where the water stress is and where a
   project sits. It is Bridget's; her chat is live there, and she asks the

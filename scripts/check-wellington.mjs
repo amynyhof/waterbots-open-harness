@@ -174,6 +174,18 @@ expect('his prompt states the five things he never does', /quote no figure/.test
    still keeps any card set out. Hers is checked in scripts/check-phoebe.mjs,
    which holds her own ceiling, because from 25 Sep 2026 her prompt is staged
    and its size depends on how far a visit has gone. */
+expect(
+  "the maintainer's walk of 12 Nov 2026: he asks the class, says why he asks, introduces each colleague, always asks people served, and keeps to plain words",
+  /Never work it out from a word such as "borehole"/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Is this a new water source, or does it clean water people already have\?/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /collect a few basics so that you and the other agents can give a first, directional estimate/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Introduce a colleague before you name them/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /always ask how many people or households it will serve, right after the stage, and route nowhere until you have asked/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /never say "type" or "class" to them/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /say how much carbon the project might avoid/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    !/would\s+screen at/.test(WELLINGTON_PRIMER_MD),
+  'a rule from the walk is missing, or his region still says "would screen at"'
+);
 expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 26199 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
 
 /* ---------------------------------------------------------------------------

@@ -128,9 +128,8 @@ The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done,
 
 **After v1, not needed for the finish line:** A23, Calvin's VWBA row becomes Violet's; A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
-- **Wellington's prompt is 23,123 characters against a gate of 26,199** (A26, 5 Nov 2026). The gate moves only on her word.
-- **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull
-  request; a measured run after any prompt change; the build-update fact refreshed at every full close-out.
+- **Wellington's prompt is 24,179 characters against a gate of 26,199** (A26, 12 Nov 2026). The gate moves only on her word.
+- **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull request; a measured run after any prompt change; the build-update fact refreshed at every full close-out.
 
 ---
 
@@ -157,16 +156,18 @@ the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 
 **A22 · Bridget's chat.** Step 6 · BONES. Built and merged 31 Oct 2026 on her three rulings (#167); what it built is in
 docs/OPEN_ITEMS_ARCHIVE.md. Done when a walk passes through her and back with no wrong turn (road step 6). Closes A12.
 
-**A24 · A pin where no pathway goes on to Quantify.** Step 6 · v1 · BONES. Her ruling of 31 Oct 2026: Bridget thanks the
-visitor and sends them back to Wellington, as built in A22. The visit stays at Partners after the pin, and he may point back
-to the map. Done is a line he reads after a pin there, and a measured walk.
+**A24 · A pin where no pathway goes on to Quantify.** Step 6 · v1 · BONES. Her ruling of 31 Oct 2026: Bridget thanks the visitor and sends them
+back to Wellington, as built in A22. The visit stays at Partners after the pin, and he may point back to the map. Done is a line he reads after a pin there, and a measured walk.
 
 **A25 · Agents' knowledge copies refresh whenever their files change.** v1 · BONES. Her word of 31 Oct 2026. The primer,
 the cards and the lists reach the relays as generated copies (`scripts/build-prompt-modules.mjs`), written by hand; CI's
 `--check` fails a stale copy, but nothing refreshes one. Done is a copy that cannot ship stale and needs no hand. Proposal first.
 
-**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved (docs/proposals/wellington-rewrite-2026-10-31.md):
-his prompt is 23,123, from 26,079, so step 3 has room. Waiting on her walk on the preview and one measured run.
+**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved (docs/proposals/wellington-rewrite-2026-10-31.md);
+her first walk's six fixes 12 Nov 2026. His prompt is 24,179, from 26,079. Waiting on her second walk and one measured run.
+
+**A27 · Agent door bug.** v1 · BONES. Her word of 12 Nov 2026: in the Agent Commons, Phoebe tells visitors to go to Wellington. In the Commons,
+every agent works alone and asks for what she needs herself; on the sites, she hands back to Wellington. Each module must know which door it is at (see the plug-in contract).
 
 **A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet, host of the
 D-n modules in the Commons; not on the roster yet, by her hand. No proposal yet. Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026).
