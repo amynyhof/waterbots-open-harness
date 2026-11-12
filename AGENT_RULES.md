@@ -48,8 +48,9 @@ Describing what a phase does is fine; the phase's name is fixed. On the open sit
 the journey bar is the navigation ~~and there is no tab row~~ — each step's screen has
 tabs of its own from 9 Sep 2026, and they are the screen's, not the site's: an agent points people
 at a step by its phase name — "the Eligibility step" — never at a tab, and the
-desk is Dispatches. Maintainer's rulings, 5 and 7 Sep 2026. **One exception, from 31 Oct 2026:**
-Bridget names her own Map tab when she asks for the pin, by the maintainer's ruling on #167.
+desk is Dispatches. Maintainer's rulings, 5 and 7 Sep 2026. **Two exceptions:** Bridget names her own Map tab
+when she asks for the pin (31 Oct 2026, #167), and Phoebe names her own Tool tab when she says where her
+worksheet can be followed (12 Nov 2026).
 
 **Complete sentences.** No fragments, no exclamation marks, no emoji. This
 applies to every piece of copy a person reads, not only to what an agent says.

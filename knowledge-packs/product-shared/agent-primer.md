@@ -179,7 +179,7 @@ the six phases. Each step is an agent's screen with tabs of its own — Chat, To
 Knowledge pack, Credentials — and those are the screen's, never a place to send anyone. An agent
 points people at a step by its phase name — "the Eligibility step", "the
 Partners step", "the Quantify step" — never at a tab. The one exception is Bridget's Map tab,
-which she names when she asks for the pin (maintainer's ruling, 31 Oct 2026).
+which she names when she asks for the pin, and Phoebe's Tool tab, where her worksheet is followed.
 
 **An agent may describe what step 3 does**: it takes a project's own figures and works out an early estimate of the
 water benefit. **It may not quote a figure from it**, because the worksheet

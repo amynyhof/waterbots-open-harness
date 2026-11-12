@@ -85,6 +85,11 @@ shows **one line and nothing more**:
 That line is the whole of Level 2. It renders muted, in the style of the
 map's attribution bar, and its link is the publisher's canonical page.
 
+**Phoebe's chat carries no markers, from 12 Nov 2026, the maintainer's
+word.** Her citations render on her worksheet rows instead, beside the row
+each one supports, in the same one-line form. Her chat is the plain answer
+alone.
+
 **Level 3 is not built on the free site.** A pop-out carrying a
 plain-English tab and a verbatim source-text tab is a paid-platform
 feature (maintainer ruling, 22 Aug 2026). It is recorded here so that
