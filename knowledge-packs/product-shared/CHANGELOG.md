@@ -1,4 +1,13 @@
 # Changelog — product-shared
+## 0.6.5 — 12 Nov 2026
+
+- `agent-primer.md`, the roster region: the rule that an agent never points at a tab gains its second
+  exception, **Phoebe's own Tool tab, where her worksheet is followed**, the maintainer's word of
+  12 Nov 2026, as AGENT_RULES.md now says. The dated ruling leaves the line. Old wording:
+
+  > never at a tab. The one exception is Bridget's Map tab,
+  > which she names when she asks for the pin (maintainer's ruling, 31 Oct 2026).
+
 ## 0.6.4 — 5 Nov 2026
 
 - `agent-primer.md`, Wellington's region only: **his shorter instructions**, item A26, as approved on

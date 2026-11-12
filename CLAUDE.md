@@ -422,8 +422,8 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   project he asks how many people or households it serves, after the stage; it is kept as said,
   households never converted here, on the record, the rail and the seal as `record.served`. His
   prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep, 26,034 from 4 Oct, 26,079 from 31 Oct, and
-  23,123 from 5 Nov 2026, when his shorter instructions were built (item A26), and is 24,361 from
-  12 Nov 2026, after the maintainer's two walks of them, against the unchanged gate of 26,199.
+  23,123 from 5 Nov 2026, when his shorter instructions were built (item A26), and is 24,382 from
+  12 Nov 2026, after the maintainer's two walks of them and the primer's line on Phoebe's tab, against the unchanged gate of 26,199.
 - **The engine bundle is tracked at `carried/`, from 27 Sep 2026**, placed by the maintainer's
   hand and merged on `main` as it stands (#132), tagged `engine-carry-2026-09-27`. **It was replaced
   on 3 Oct 2026 by v0.16.1**, the paid site's `calculator-seal-2026-10-03`: 34 files, 34 hashes

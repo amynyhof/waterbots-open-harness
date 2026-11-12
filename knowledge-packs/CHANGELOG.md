@@ -3,6 +3,12 @@
 Semver for this folder tree. Seat and tool versions live in their own changelogs.
 When a tool changes, the seat changelog cites `tool-id@version`.
 
+## 0.17.4 — 12 Nov 2026
+
+- **Phoebe speaks plainly**, the maintainer's rulings of 12 Nov 2026. `product-shared@0.6.5`: the
+  primer names her Tool tab as the second tab an agent may point at. Her prompt and her chat change
+  outside the packs. No card changed; the seal of 23 Sep 2026 is untouched.
+
 ## 0.17.3 — 5 Nov 2026
 
 - **Wellington's shorter instructions**, item A26, approved 1 Nov 2026: `product-shared@0.6.4`, his
