@@ -335,6 +335,73 @@ expect(
     relaySource.indexOf('text: sheetText') > relaySource.lastIndexOf("cache_control: { type: 'ephemeral' }"),
   'a block is above a breakpoint, or a breakpoint is missing'
 );
+/* P13, the maintainer's word of 13 Nov 2026: the carbon pack's requirements
+   and routes load only when the next question is on them. */
+const waterOpen = setsFor({
+  pathways: [
+    { pack: 'vwba-2.0', state: 'applies', open: 2 },
+    { pack: 'gs-paa-v2.0', state: 'applies', open: 9 },
+  ],
+});
+const waterDone = setsFor({
+  pathways: [
+    { pack: 'vwba-2.0', state: 'applies', open: 0 },
+    { pack: 'gs-paa-v2.0', state: 'applies', open: 9 },
+  ],
+});
+const waterStillTesting = setsFor({
+  pathways: [
+    { pack: 'vwba-2.0', state: 'unchecked' },
+    { pack: 'gs-paa-v2.0', state: 'applies', open: 9 },
+  ],
+});
+const waterOut = setsFor({
+  pathways: [
+    { pack: 'vwba-2.0', state: 'does-not-apply' },
+    { pack: 'gs-paa-v2.0', state: 'applies', open: 9 },
+  ],
+});
+expect(
+  'P13: while water rows are still to ask, or its tests are, the carbon pack stays at its applies cards',
+  JSON.stringify(waterOpen) === JSON.stringify(['water:applies', 'water:eligibility', 'water:routes', 'carbon:applies']) &&
+    JSON.stringify(waterStillTesting) === JSON.stringify(['water:applies', 'carbon:applies']),
+  `${JSON.stringify(waterOpen)} / ${JSON.stringify(waterStillTesting)}`
+);
+expect(
+  'P13: once the water rows are done, or water does not apply, the carbon pack opens in full',
+  waterDone.includes('carbon:eligibility') && waterDone.includes('carbon:routes') &&
+    waterOut.includes('carbon:eligibility') && waterOut.includes('carbon:routes'),
+  `${JSON.stringify(waterDone)} / ${JSON.stringify(waterOut)}`
+);
+expect(
+  'P13: a carbon set she asked for still stays loaded, and the relay counts the open rows it stages by',
+  setsFor({
+    pathways: [
+      { pack: 'vwba-2.0', state: 'applies', open: 2 },
+      { pack: 'gs-paa-v2.0', state: 'applies', open: 9 },
+    ],
+    loaded: ['carbon:eligibility'],
+  }).includes('carbon:eligibility') &&
+    /verdictRows\(pack, context\)\.filter\(\(row\) => \(states\[row\.id\] \?\? 'unchecked'\) === 'unchecked'\)\.length/.test(relaySource),
+  'a loaded set was dropped, or the relay does not count open rows'
+);
+expect(
+  'P13: the reply streams — needCards is first and required, the relay streams every call and the console asks for it',
+  Object.keys(RESPONSE_SCHEMA.properties)[0] === 'needCards' &&
+    RESPONSE_SCHEMA.required[0] === 'needCards' &&
+    /client\.messages\.stream\(/.test(relaySource) &&
+    !/client\.messages\.create\(/.test(relaySource) &&
+    /body\.stream === true/.test(relaySource) &&
+    /'application\/x-ndjson; charset=utf-8'/.test(relaySource) &&
+    /if \(opts\?\.onLive\) body\.stream = true/.test(clientSource) &&
+    /onLive,/.test(readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8')),
+  'a part of the stream is missing'
+);
+expect(
+  'P13: a pass that will be asked again is never shown, and what was shown is reset before the second speaks',
+  /!pass\.includes\(asked as CardSet\)/.test(relaySource) && /onReset\?\.\(\);\s*firstWordAt = null;/.test(relaySource),
+  'a first pass could reach the visitor'
+);
 expect(
   'the one extra call happens only for a set she has not been given, and only once',
   /answer\.needCards !== 'none' && !usedSets\.includes\(answer\.needCards\)/.test(relaySource) &&
@@ -523,14 +590,41 @@ expect(
   "the maintainer's walk of 12 Nov 2026: plain names, the reply's shape, the arrival, fixable only when it blocks, the tools line once, no cards-only line",
   /\*\*water benefits\*\* and \*\*carbon credits\*\*/.test(SYSTEM_PROMPT) &&
     /Never say "baseline", "criterion", "additionality", "mapped activity", "counting route" or "Volume Provided method"/.test(SYSTEM_PROMPT) &&
-    /one or two plain sentences on what the answer settled, then one question/.test(SYSTEM_PROMPT) &&
     /Solar is good news for carbon\./.test(SYSTEM_PROMPT) &&
-    /follow it on the Tool tab at the top of your screen, and that they can come back to this chat any time/.test(SYSTEM_PROMPT) &&
     /Say "fixable" only when something actually stands in the way/.test(SYSTEM_PROMPT) &&
     /said once: if this conversation already holds it, do not say it again/.test(SYSTEM_PROMPT) &&
     !/You read from a small set of cards/.test(SYSTEM_PROMPT) &&
     !/nothing here is verified, and a consultant confirms it/.test(SYSTEM_PROMPT),
   'a rule from the walk is missing, or an old line is back'
+);
+/* HER SECOND ROUND, the maintainer's word of 13 Nov 2026: the opener (P8),
+   the record first (P9), short replies (P10). */
+expect(
+  'P8: her opener is the eligibility quiz on the Tool tab, then a question; no "in beta", no repeat of Wellington, no early read',
+  /Let me help you find which impact pathway might suit your project\. I'll use the eligibility quiz in the Tool tab, so follow along if you want\. If you're ready, tell me…/.test(SYSTEM_PROMPT) &&
+    /No "in beta", no more introduction, and nothing Wellington already said/.test(SYSTEM_PROMPT) &&
+    /No early read: never say how either pathway looks/.test(SYSTEM_PROMPT) &&
+    !/you are in beta|You are Phoebe, in beta|You are in beta/i.test(SYSTEM_PROMPT) &&
+    !/follow it on the Tool tab at the top of your screen/.test(SYSTEM_PROMPT) &&
+    /Do not repeat him\. Say your opener/.test(phoebeNotesBlock({ opened: true }) ?? '') &&
+    !/ask if they are ready to work through eligibility/.test(phoebeNotesBlock({ opened: true }) ?? ''),
+  'the opener rule is missing, or the old greeting is back'
+);
+expect(
+  'P9: the record is read first and nothing it holds is asked again, in any words',
+  /# Read the record first — a hard rule/.test(SYSTEM_PROMPT) &&
+    /Never ask for anything it holds, in any words/.test(SYSTEM_PROMPT) &&
+    /new source or cleaning water, stage, people or households served, place, name/.test(SYSTEM_PROMPT) &&
+    SYSTEM_PROMPT.indexOf('# Read the record first') < SYSTEM_PROMPT.indexOf('# Your opener'),
+  'the record-first rule is missing, or comes after the opener'
+);
+expect(
+  'P10: two or three short sentences, then one question, four at most and under 400 characters, and the relay counts a long one',
+  /two or three short sentences, then one question/.test(SYSTEM_PROMPT) &&
+    /Four sentences at most, under 400 characters/.test(SYSTEM_PROMPT) &&
+    /Two or three short sentences, then one question/.test(RESPONSE_SCHEMA.properties.reply.description) &&
+    /isLongReply\(answer\.reply\)/.test(relaySource),
+  'the length rule is missing from her prompt, her answer shape or the relay'
 );
 /* THE TOKEN IS THE CARD'S OWN ID. Measured 25 Sep 2026: told to cite
    "water:feasibility/7" she cited "water:feasibility/B-1", because B-1 is what
@@ -751,12 +845,15 @@ console.log('\n  Her cap\n');
 expect('thirty a day, under her own name', PHOEBE.cap === 30 && PHOEBE.name === 'phoebe', JSON.stringify(PHOEBE));
 const screenSource = readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8');
 const primer = readFileSync(join('knowledge-packs', 'product-shared', 'agent-primer.md'), 'utf8');
+/* NO LINE UNDER HER CHAT BOX FROM 13 NOV 2026, the maintainer's word, as
+   Wellington's went on 12 Nov. A visitor reads the cap only when it is reached,
+   in the relay's own message, which takes the number from the cap itself. */
 expect(
-  'the number a visitor reads, and the number an agent reads, are the cap itself',
-  /Thirty messages a day/.test(screenSource) &&
-    !/Twenty messages a day/.test(screenSource) &&
+  'no standing note under her chat box; the cap is said when reached, from the cap itself, and the primer agrees',
+  !/composerNote:/.test(screenSource) &&
+    /today's limit of \$\{decision\.cap\} messages/.test(relaySource) &&
     /may send thirty messages a day/.test(primer.slice(primer.indexOf('### Phoebe'))),
-  'a visitor or an agent is being told a number the code does not hold'
+  'a note is back under her chat box, or a visitor or an agent is told a number the code does not hold'
 );
 
 /* ---------------------------------------------------------------------------
@@ -774,15 +871,158 @@ expect(
   'the screen holds its own copy of the rows'
 );
 expect(
-  'the screen says "likely" and never certifies',
-  /Likely, not settled/.test(worksheetSource) && /reads likely eligible/.test(worksheetSource),
-  'the banner overclaims'
+  'the screen says "likely", calls itself a first screening, and never certifies (13 Nov 2026)',
+  /reads likely eligible/.test(worksheetSource) &&
+    (worksheetSource.match(/This is a first screening, not an official decision\./g) ?? []).length === 3 &&
+    !/verified|consultant confirms/i.test(worksheetSource),
+  'the banner overclaims, or an old "nothing is verified" line is back'
 );
 expect(
   'the screen draws a route from its card, with the card’s citation',
   /routeFor\(/.test(worksheetSource) && /route!\.notPromise/.test(worksheetSource),
   'a route could be drawn without its citation or its limit'
 );
+
+/* ---------------------------------------------------------------------------
+   The stream, end to end — P13, 13 Nov 2026.
+
+   THE MODEL SERVICE IS A TEST STAND-IN HERE, named as one: a local server that
+   answers the relay's one request the way the real service streams, with a
+   fixed answer that never reaches a person. The maintainer's ruling of
+   25 Aug 2026 allows it. What it proves is the relay's half — that her reply
+   goes out in pieces as it is written, that the pieces add up to the checked
+   reply, and that a pass asking for a card set is never shown. Whether the real
+   service writes needCards first is what only a measured run can say.
+--------------------------------------------------------------------------- */
+
+console.log('\n  The stream, against a stand-in for the model service\n');
+
+const { createServer } = await import('node:http');
+
+/** One streamed answer in the service's event shape, split into small pieces. */
+function sse(answer) {
+  const json = JSON.stringify(answer);
+  const pieces = json.match(/[\s\S]{1,7}/g) ?? [];
+  const event = (type, data) => `event: ${type}\ndata: ${JSON.stringify({ type, ...data })}\n\n`;
+  return [
+    event('message_start', {
+      message: {
+        id: 'msg_stand_in', type: 'message', role: 'assistant', model: 'stand-in', content: [],
+        stop_reason: null, stop_sequence: null, usage: { input_tokens: 1, output_tokens: 1 },
+      },
+    }),
+    event('content_block_start', { index: 0, content_block: { type: 'text', text: '' } }),
+    ...pieces.map((text) => event('content_block_delta', { index: 0, delta: { type: 'text_delta', text } })),
+    event('content_block_stop', { index: 0 }),
+    event('message_delta', { delta: { stop_reason: 'end_turn', stop_sequence: null }, usage: { output_tokens: 1 } }),
+    event('message_stop', {}),
+  ].join('');
+}
+
+const STAND_IN_REPLY = 'Stand-in reply for the check. It is never shown to anyone. Is the stream whole?';
+const answerOf = (extra) => ({ needCards: 'none', reply: STAND_IN_REPLY, cited: [], handBack: 'none', abstained: false, ...extra });
+let script = [];
+const seen = [];
+const server = createServer((req, res) => {
+  let raw = '';
+  req.on('data', (chunk) => (raw += chunk));
+  req.on('end', () => {
+    seen.push(JSON.parse(raw));
+    res.writeHead(200, { 'content-type': 'text/event-stream' });
+    res.end(sse(script.shift() ?? answerOf({})));
+  });
+});
+await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+const saved = { key: process.env.ANTHROPIC_API_KEY, base: process.env.ANTHROPIC_BASE_URL, error: console.error, log: console.log };
+process.env.ANTHROPIC_API_KEY = 'stand-in';
+process.env.ANTHROPIC_BASE_URL = `http://127.0.0.1:${server.address().port}`;
+/* The relay imports the model service's own package; the compiled copy sits in
+   a temporary folder, so the repository's packages are linked in beside it for
+   this one import, and unlinked before the folder is removed. */
+const { symlinkSync, unlinkSync } = await import('node:fs');
+const { resolve } = await import('node:path');
+symlinkSync(resolve('node_modules'), join(apiOut, 'node_modules'), 'junction');
+const { POST } = await loadApi('phoebe.js');
+
+/** Asks the relay as the console does and reads every line it sends. */
+async function streamedAsk() {
+  console.error = () => {};
+  console.log = () => {};
+  try {
+    const response = await POST(
+      new Request('http://localhost/api/phoebe', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'user', content: 'A borehole for a village.' }], stream: true }),
+      })
+    );
+    const text = await response.text();
+    return { type: response.headers.get('content-type'), lines: text.split('\n').filter(Boolean).map((l) => JSON.parse(l)) };
+  } finally {
+    console.error = saved.error;
+    console.log = saved.log;
+  }
+}
+
+script = [answerOf({})];
+const plain = await streamedAsk();
+const pieces = plain.lines.filter((l) => l.type === 'text');
+const done = plain.lines.at(-1);
+expect(
+  'the reply goes out in pieces as it is written, and the pieces add up to the checked reply',
+  /application\/x-ndjson/.test(plain.type ?? '') &&
+    pieces.length > 3 &&
+    pieces.map((l) => l.text).join('') === STAND_IN_REPLY &&
+    done?.type === 'done' &&
+    done.answer.reply === STAND_IN_REPLY &&
+    typeof done.answer.usage.firstWordMs === 'number',
+  JSON.stringify(plain.lines.slice(-2))
+);
+expect(
+  'the request asks for the reply shape with needCards first, as the stream relies on',
+  seen.at(-1)?.output_config?.format?.schema?.required?.[0] === 'needCards' && seen.at(-1)?.stream === true,
+  JSON.stringify(seen.at(-1)?.output_config?.format?.schema?.required)
+);
+
+script = [answerOf({ needCards: 'carbon:routes', reply: 'Fetching that card set, then the same question goes again.' }), answerOf({})];
+const fetched = await streamedAsk();
+expect(
+  'a first pass that asks for a card set shows nothing; only the second pass is streamed',
+  fetched.lines.filter((l) => l.type === 'text').map((l) => l.text).join('') === STAND_IN_REPLY &&
+    !fetched.lines.some((l) => l.type === 'reset') &&
+    fetched.lines.at(-1)?.answer?.usage?.calls === 2,
+  JSON.stringify(fetched.lines.filter((l) => l.type !== 'text'))
+);
+
+/* Written out of order on purpose: the reply before needCards. */
+script = [
+  { reply: 'Shown for a moment, then thrown away before the second pass.', needCards: 'carbon:routes', cited: [], handBack: 'none', abstained: false },
+  answerOf({}),
+];
+const outOfOrder = await streamedAsk();
+const resetAt = outOfOrder.lines.findIndex((l) => l.type === 'reset');
+expect(
+  'if needCards comes after the reply anyway, what was shown is reset before the second pass speaks',
+  resetAt > 0 &&
+    outOfOrder.lines.slice(resetAt + 1).filter((l) => l.type === 'text').map((l) => l.text).join('') === STAND_IN_REPLY &&
+    outOfOrder.lines.at(-1)?.answer?.reply === STAND_IN_REPLY,
+  JSON.stringify(outOfOrder.lines.filter((l) => l.type !== 'text'))
+);
+
+script = [answerOf({ reply: 'ab' })];
+const empty = await streamedAsk();
+expect(
+  'an answer too short to be one ends the stream with the relay’s own honest failure, never a done',
+  empty.lines.at(-1)?.type === 'error' && /almost nothing in it/.test(empty.lines.at(-1)?.error ?? ''),
+  JSON.stringify(empty.lines.at(-1))
+);
+
+server.close();
+unlinkSync(join(apiOut, 'node_modules'));
+if (saved.key === undefined) delete process.env.ANTHROPIC_API_KEY;
+else process.env.ANTHROPIC_API_KEY = saved.key;
+if (saved.base === undefined) delete process.env.ANTHROPIC_BASE_URL;
+else process.env.ANTHROPIC_BASE_URL = saved.base;
 
 /* ------------------------------------------------------------------------- */
 

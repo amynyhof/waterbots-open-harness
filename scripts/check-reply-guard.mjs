@@ -135,6 +135,88 @@ expect(
   `${MIN_REPLY_CHARS} would refuse the shortest real answer measured`
 );
 
+/* ---------------------------------------------------------------------------
+   How long a reply runs — the maintainer's word of 13 Nov 2026 for Phoebe:
+   two or three short sentences, then one question. The relay logs a long
+   reply and scripts/measure-phoebe-walk.mjs fails a walk that has one; this
+   holds the counting both of them use.
+--------------------------------------------------------------------------- */
+
+const { PHOEBE_REPLY_LIMIT, replyLength, isLongReply } = await import(
+  pathToFileURL(join(out, '_reply.js')).href
+);
+
+console.log('\n  How long a reply runs (Phoebe, 13 Nov 2026)');
+const target =
+  "Solar is good news for carbon. For water benefits, you'd count how much water the borehole gives people each year. Next: how do the villagers get drinking water today, and do they boil it?";
+const opener =
+  "Let me help you find which impact pathway might suit your project. I'll use the eligibility quiz in the Tool tab, so follow along if you want. If you're ready, tell me… how do people get their drinking water today?";
+const fourAndAQuestion =
+  'The project is planned. Planned is normal. A well is a new source. Water benefits count the new water. Carbon credits count the fuel saved. Who will use the water?';
+expect(
+  'the limit is four sentences and 400 characters (proposed 13 Nov 2026; hers to move)',
+  PHOEBE_REPLY_LIMIT.sentences === 4 && PHOEBE_REPLY_LIMIT.chars === 400,
+  JSON.stringify(PHOEBE_REPLY_LIMIT)
+);
+expect(
+  'her prompt’s own target reply is three sentences and passes',
+  replyLength(target).sentences === 3 && !isLongReply(target),
+  JSON.stringify(replyLength(target))
+);
+expect(
+  'the maintainer’s opener passes, and an ellipsis does not end a sentence',
+  replyLength(opener).sentences === 3 && !isLongReply(opener),
+  JSON.stringify(replyLength(opener))
+);
+expect(
+  'five statements and a question fail',
+  replyLength(fourAndAQuestion).sentences === 6 && isLongReply(fourAndAQuestion),
+  JSON.stringify(replyLength(fourAndAQuestion))
+);
+expect(
+  'three sentences past 400 characters fail on length alone',
+  isLongReply(`${'A long sentence that goes on '.repeat(8)}. ${'And on '.repeat(30)}. Is that all?`),
+  'a long reply passed'
+);
+expect(
+  '"e.g.", "2.5" and a question in quotes are counted as people read them',
+  replyLength('A filter, e.g. a ceramic one, costs 2.5 dollars. Is it "on paper"?').sentences === 2,
+  JSON.stringify(replyLength('A filter, e.g. a ceramic one, costs 2.5 dollars. Is it "on paper"?'))
+);
+
+/* ---------------------------------------------------------------------------
+   Reading her reply out of an answer still being written (P13, streaming).
+--------------------------------------------------------------------------- */
+
+const { replySoFar, needCardsSoFar } = await import(pathToFileURL(join(out, '_replyStream.js')).href);
+
+console.log('\n  Her reply, read while it is written');
+const whole = JSON.stringify({ needCards: 'none', reply: 'Line one.\nShe said "yes" — café ✓. Next?', cited: [] });
+let grows = true;
+let previous = '';
+for (let end = 0; end <= whole.length; end += 1) {
+  const sofar = replySoFar(whole.slice(0, end)) ?? '';
+  if (!sofar.startsWith(previous)) grows = false;
+  previous = sofar;
+}
+expect(
+  'cut at every character, the reply only ever grows, never shows half an escape, and ends exact',
+  grows && previous === JSON.parse(whole).reply && !/\\$/.test(replySoFar(whole.slice(0, whole.indexOf('\\n') + 1)) ?? ''),
+  JSON.stringify(previous)
+);
+expect(
+  'nothing shows before the reply starts, and needCards is read as soon as it is written',
+  replySoFar('{"needCards":"none","rep') === null &&
+    needCardsSoFar('{"needCards":"carbon:eli') === null &&
+    needCardsSoFar('{"needCards":"carbon:eligibility","reply":"') === 'carbon:eligibility',
+  'the reader saw something that was not yet there'
+);
+expect(
+  'a "reply" key quoted inside another field is never mistaken for hers',
+  replySoFar(JSON.stringify({ rows: [{ because: 'He wrote "reply": "no"' }], reply: 'Real.' })) === 'Real.',
+  'the reader picked up a quoted key'
+);
+
 rmSync(out, { recursive: true, force: true });
 
 if (problems.length) {

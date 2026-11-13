@@ -156,7 +156,7 @@ export function recordBlock(record: ProjectRecord): string {
   return [
     `# ${RECORD_HEADING}`,
     '',
-    'These are the visitor’s own words about their project, carried from the desk so they need not say them twice. They are facts about the project and never a verdict on any row of your worksheet; only the cards decide that. Start from them, do not ask again for what is here, and ask for what is missing.',
+    'These are the visitor’s own words about their project, carried from the desk so they need not say them twice. They are facts about the project and never a verdict on any row of your worksheet; only the cards decide that. Start from them, never ask again for what is here in any words, and ask only for what is missing.',
     '',
     ...recordLines(record),
   ].join('\n');
@@ -167,7 +167,7 @@ export function phoebeNotesBlock(notes: { opened?: boolean; eligibilityDone?: bo
   const extra: string[] = [];
   if (notes.opened) {
     extra.push(
-      'The visitor has just opened Eligibility after Wellington invited them. His invite is already on this thread. Greet them, say what your worksheet and knowledge pack are for at screening, and ask if they are ready to work through eligibility. Do not invent a method.'
+      'The visitor has just opened Eligibility after Wellington invited them. Do not repeat him. Say your opener: which impact pathway might suit the project, the eligibility quiz on the Tool tab to follow along, then your first question, the first thing the record does not already answer. No "in beta", and no read on either pathway yet. Do not invent a method.'
     );
   }
   if (notes.eligibilityDone) {

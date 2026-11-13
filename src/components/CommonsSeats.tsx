@@ -37,7 +37,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import type { AgentTurn } from '../chat/evidence';
+import type { AgentTurn, AskMeta } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
 import {
   EMPTY_SHEET,
@@ -66,7 +66,9 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
 
   async function ask(
     history: { role: 'user' | 'agent'; text: string }[],
-    signal: AbortSignal
+    signal: AbortSignal,
+    _meta?: AskMeta,
+    onLive?: (text: string | null) => void
   ): Promise<AgentTurn> {
     /* No record: the Commons carries no visit. The seat's own rows do go,
        though — contract line 3, 21 Sep 2026 — so she sees her tool's state
@@ -78,7 +80,7 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
       })),
       null,
       signal,
-      { sheet: carriedSheet(sheet, HER_PACKS), loaded: loaded.current }
+      { sheet: carriedSheet(sheet, HER_PACKS), loaded: loaded.current, onLive }
     );
     if (answer.loaded) loaded.current = answer.loaded;
     const verdicts = { rows: answer.rows, pathways: answer.pathways, sorts: answer.sorts };

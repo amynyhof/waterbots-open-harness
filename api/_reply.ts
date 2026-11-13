@@ -48,3 +48,52 @@ export const MIN_REPLY_CHARS = 40;
 export function isDegenerateReply(reply: string): boolean {
   return reply.trim().length < MIN_REPLY_CHARS;
 }
+
+/* --------------------------------------------------------------------------
+   How long a reply runs — the maintainer's word of 13 Nov 2026 for Phoebe:
+   two or three short sentences, then one question.
+   -------------------------------------------------------------------------- */
+
+/**
+ * Phoebe's ceiling: four sentences at most, the question included, and 400
+ * characters. Her target reply in her prompt is three sentences and 190
+ * characters, so the ceiling sits a full sentence and about twice the length
+ * above what she is asked for. A threshold, so it moves only on the
+ * maintainer's word.
+ *
+ * WHERE IT BITES. Not on a visitor: a long answer still reaches them, because
+ * refusing a real answer for its length would be the worse failure. The relay
+ * writes a line to the log for each one, so real traffic can be counted, and
+ * scripts/measure-phoebe-walk.mjs fails a walk that has one. One message a
+ * visit may run longer by her prompt — the one that shows the rows done later,
+ * by phase — and the walk leaves that one out by name.
+ */
+export const PHOEBE_REPLY_LIMIT = { sentences: 4, chars: 400 } as const;
+
+/** Short words with a full stop that do not end a sentence. */
+const NOT_AN_END = /\b(e\.g|i\.e|etc|vs|approx|No|Dr|Mr|Ms|Mrs|St)\.(?=\s)/g;
+
+/**
+ * Sentences and characters in a reply, counted the same way everywhere.
+ *
+ * A sentence ends at a full stop, a question mark or an exclamation mark
+ * followed by a space or the end — so "2.5" and "e.g." do not end one, and
+ * nor does an ellipsis, as in "tell me… how". Plain counting, not grammar: it
+ * is a check on length, not on style.
+ */
+export function replyLength(reply: string): { sentences: number; chars: number } {
+  const text = reply.trim().replace(NOT_AN_END, (match) => match.replace(/\./g, ''));
+  const ends = text.match(/[.?!]+["”’)]*(?=\s|$)/g) ?? [];
+  /* A last sentence with no mark still counts. */
+  const trailing = text.length > 0 && !/[.?!]+["”’)]*$/.test(text) ? 1 : 0;
+  return { sentences: ends.length + trailing, chars: reply.trim().length };
+}
+
+/** True when a reply runs past the ceiling, on either count. */
+export function isLongReply(
+  reply: string,
+  limit: { sentences: number; chars: number } = PHOEBE_REPLY_LIMIT
+): boolean {
+  const { sentences, chars } = replyLength(reply);
+  return sentences > limit.sentences || chars > limit.chars;
+}

@@ -416,6 +416,13 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   Blocked row she offers a person once; a ticked box at the save door sends one email to
   hello@waterbots.ai through Resend, its key the hosting secret `RESEND_API_KEY`, never in the
   repository. The seal carries `wantsHuman` and `humanNote` only on a tick.
+- **Phoebe's second round, 13 Nov 2026, the maintainer's word.** She opens on the eligibility quiz
+  in her Tool tab, with no "in beta" and no early read; she reads the record first and never asks
+  again for what it holds; she answers in two or three short sentences, then one question, and a
+  reply past four sentences or 400 characters is logged by the relay and fails the measured walk.
+  Her reply streams as it is written. The carbon pack's requirements and routes load only once the
+  water rows she asks are done, or when a question asks for them. Her chat box and Bridget's carry
+  no line under them, and the worksheet says "This is a first screening, not an official decision."
 - **Wellington reads back what Phoebe found, and asks people served, from 26–27 Sep 2026 (items A17
   and A16, #128 and #130).** Each ask carries her worksheet as row ids and states only; he greets a
   visitor coming back from her knowing each pathway's read, never her sentences, and routes to

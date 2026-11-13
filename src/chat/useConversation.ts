@@ -11,7 +11,9 @@
  * diverge — and the part that diverges is the part that must not.
  *
  * NO SCRIPTED MESSAGES AND NO FAKE TYPING. What comes back is a real exchange
- * or an honest statement that something failed. A failed turn keeps the
+ * or an honest statement that something failed. A reply streamed as it is
+ * written (`live`, from 13 Nov 2026) is that real exchange arriving, not typing
+ * put on for show, and the checked answer replaces it when it lands. A failed turn keeps the
  * question in the transcript so the reader can see what was asked.
  *
  * NO MEMORY. Nothing is stored, here or anywhere else. A reload empties the
@@ -33,6 +35,8 @@ export interface Conversation {
   draft: string;
   setDraft: (value: string) => void;
   pending: boolean;
+  /** The reply so far while it streams in, or null. Replaced by the answer. */
+  live: string | null;
   error: string | null;
   /** Send the draft. Does nothing while a turn is in flight or the draft is blank. */
   send: () => Promise<void>;
@@ -56,6 +60,7 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
   const [turns, setTurns] = useState<Turn[]>([]);
   const [draft, setDraft] = useState('');
   const [pending, setPending] = useState(false);
+  const [live, setLive] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const inFlight = useRef<AbortController | null>(null);
@@ -78,7 +83,7 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
       inFlight.current = controller;
 
       try {
-        const answer: AgentTurn = await ask(forAsk(history), controller.signal, meta);
+        const answer: AgentTurn = await ask(forAsk(history), controller.signal, meta, setLive);
         setTurns([...history, answer]);
       } catch (failure) {
         if (failure instanceof DOMException && failure.name === 'AbortError') return;
@@ -90,6 +95,7 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
             : `Something went wrong reaching ${hostName}. Nothing has been recorded.`
         );
       } finally {
+        setLive(null);
         setPending(false);
         inFlight.current = null;
       }
@@ -112,7 +118,7 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
     inFlight.current = controller;
     const history = turnsRef.current;
     try {
-      const answer: AgentTurn = await ask(forAsk(history), controller.signal, meta);
+      const answer: AgentTurn = await ask(forAsk(history), controller.signal, meta, setLive);
       const next = [...turnsRef.current, answer];
       turnsRef.current = next;
       setTurns(next);
@@ -124,10 +130,11 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
           : `Something went wrong reaching ${hostName}. Nothing has been recorded.`
       );
     } finally {
+      setLive(null);
       setPending(false);
       inFlight.current = null;
     }
   }, [ask, pending, hostName]);
 
-  return { turns, draft, setDraft, pending, error, send, sendText, seed, askOpened };
+  return { turns, draft, setDraft, pending, live, error, send, sendText, seed, askOpened };
 }

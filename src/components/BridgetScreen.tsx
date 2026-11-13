@@ -91,7 +91,8 @@ export const BRIDGET: AgentHost = {
   portrait: bridgetPortrait,
   colourToken: '--bot-bridget',
   composerPlaceholder: 'Reply to Bridget',
-  composerNote: 'Nothing is kept between visits. Thirty messages a day.',
+  /* No line under her chat box, the maintainer's word of 13 Nov 2026, as Wellington's
+     went on 12 Nov: the daily cap still says so when it is reached. */
   thinkingLine: 'Bridget is looking at the map…',
 };
 
