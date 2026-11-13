@@ -142,13 +142,11 @@ How agents behave, what they may say, how they hand off. Governed by AGENT_RULES
 
 **A21 · Calvin's brief — his chat, the engine, carbon beside water.** Step 5 · BONES. **27 Oct 2026: replaced by** [docs/proposals/calvin-from-open-core.md](./docs/proposals/calvin-from-open-core.md):
 Calvin's engine and screens from the open core, React 19, Wellington asks the core facts first. Ruled; six open.
-Done when his screening numbers match the paid site's calculators run on the saved project's inputs (the v1
-fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 2026; teal dropped).
+Done when his screening numbers match the paid site's calculators run on the saved project's inputs (the v1 fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 2026; teal dropped).
 
 **A14 · Screen host role words — one home.** Step 6, before or with A22 · BONES. `BridgetScreen.tsx` says
 `role: 'Map'` where her crew card says "Partners"; `PhoebeScreen.tsx` carries its own too. The chat header
-draws them and `check-roster` does not read them. Her ruling is owed: the field goes and the header reads
-the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 2026.
+draws them and `check-roster` does not read them. Her ruling is owed: the field goes and the header reads the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 2026.
 
 **A22 · Bridget's chat.** Step 6 · BONES. Built and merged 31 Oct 2026 on her three rulings (#167); what it built is in
 docs/OPEN_ITEMS_ARCHIVE.md. Done when a walk passes through her and back with no wrong turn (road step 6). Closes A12.
@@ -165,6 +163,8 @@ her three walks' fixes 12–13 Nov 2026. His prompt is 24,560 after them and 24,
 
 **A27 · Agent door bug.** v1 · BONES. Her word of 12 Nov 2026: in the Agent Commons, Phoebe tells visitors to go to Wellington. In the Commons,
 every agent works alone and asks for what she needs herself; on the sites, she hands back to Wellington. Each module must know which door it is at (see the plug-in contract).
+
+**A28 · Phoebe's walk fixes.** v1 · BONES. Her word of 12–13 Nov 2026; round two built 13 Nov: opener, record first, short replies (4 sentences or 400 characters, proposed), carbon cards after the water rows, reply streamed. Waiting on one measured run.
 
 **A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet, host of the
 D-n modules in the Commons; not on the roster yet, by her hand. No proposal yet. Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026).
