@@ -114,6 +114,20 @@ export interface VisitContext {
   };
 }
 
+/**
+ * True once anything is on the record: a fact the visitor gave, or a pinned
+ * basin. The save button waits for it — the maintainer's walk of 13 Nov 2026:
+ * on landing there is nothing to save, so the site menu's Sign up is the door.
+ */
+export function somethingOnRecord(visit: { context: VisitContext; pin: unknown }): boolean {
+  const c = visit.context;
+  return (
+    Boolean(visit.pin) ||
+    c.served !== null ||
+    [c.does, c.name, c.place, c.type, c.gsClass, c.stage].some((v) => String(v).trim() !== '')
+  );
+}
+
 export const EMPTY_CONTEXT: VisitContext = {
   does: '',
   name: '',
