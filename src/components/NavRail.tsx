@@ -37,7 +37,7 @@ import { WATER_SUPPLY_TYPES, servedWords, type Provenance, type VisitContext } f
 const EXPANDED = 224;
 const COLLAPSED = 52;
 
-/** Below this the rail starts collapsed. The reader can still expand it. */
+/** Narrowed below this after landing, the rail collapses. The reader can still expand it. */
 const AUTO_COLLAPSE_BELOW = 1180;
 
 /** What the card says when the visit has not named its project. Not a value. */
@@ -70,9 +70,10 @@ export default function NavRail({
   /** On a phone: the rail is a sliding panel, open or shut by the shell. */
   drawer?: { open: boolean; onClose: () => void };
 }) {
-  const [railOpen, setOpen] = useState(
-    () => typeof window === 'undefined' || window.innerWidth >= AUTO_COLLAPSE_BELOW
-  );
+  /* OPEN ON LANDING, whatever the width — the maintainer's walk of 13 Nov
+     2026: the record is the first thing a visitor should see filling. A
+     later resize still follows the viewport until the reader chooses. */
+  const [railOpen, setOpen] = useState(true);
   /* A phone's panel always shows the whole record; shut, it is off the screen. */
   const open = drawer ? true : railOpen;
 

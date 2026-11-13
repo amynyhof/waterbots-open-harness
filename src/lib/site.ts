@@ -51,9 +51,10 @@ export const OPEN_SITE_URL = 'https://open.waterbots.ai';
  * THE ONE MENU, the same as the main site's — maintainer's ruling, 28 Oct
  * 2026. Words and order are the live waterbots.ai menu's, read from the live
  * page only: the wordmark, Consulting, Open Source, Agent Commons, and Sign in
- * at the right. The main site's "Sign up" is a button with no address of its
- * own and is not in her list, so it is not drawn here. Links open in the same
- * tab with no arrows, so the two sites read as one.
+ * at the right, then the main site's "Sign up" button, drawn here from 13 Nov
+ * 2026 by the maintainer's word: it goes to the main site's welcome page, the
+ * save button's own landing, with no project. Links open in the same tab with
+ * no arrows, so the two sites read as one.
  *
  * `page` marks the two links that are this site's own pages: the shell opens
  * them in place, so a visit is not lost, and the address stays the full one
@@ -84,3 +85,6 @@ export const CONSULTING_URL = MENU_LINKS[0].href;
  * through sign-in first, and the ticket in the address survives it.
  */
 export const HANDOFF_LANDING = 'https://www.waterbots.ai/welcome';
+
+/** The site menu's Sign up: the same welcome page, with no project to carry. */
+export const MENU_SIGN_UP: MenuLink = { label: 'Sign up', href: HANDOFF_LANDING };

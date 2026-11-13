@@ -30,7 +30,7 @@
 
 import { useLayoutEffect, useRef, type MouseEvent, type ReactNode } from 'react';
 import type { Page } from '../lib/pages';
-import { MENU_HOME, MENU_LINKS, MENU_SIGN_IN, type MenuLink } from '../lib/site';
+import { MENU_HOME, MENU_LINKS, MENU_SIGN_IN, MENU_SIGN_UP, type MenuLink } from '../lib/site';
 
 export default function SiteMenu({
   page,
@@ -83,6 +83,9 @@ export default function SiteMenu({
           {readout}
           <a className="wb-site-menu-link wb-site-menu-quiet" href={MENU_SIGN_IN.href}>
             {MENU_SIGN_IN.label}
+          </a>
+          <a className="wb-site-menu-link wb-site-menu-signup" href={MENU_SIGN_UP.href}>
+            {MENU_SIGN_UP.label}
           </a>
         </div>
       </div>
