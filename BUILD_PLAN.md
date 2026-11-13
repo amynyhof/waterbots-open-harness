@@ -126,7 +126,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 
 **After v1, not needed for the finish line:** A23, Calvin's VWBA row becomes Violet's; A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
-- **Wellington's prompt is 24,382 characters against a gate of 26,199** (A26, 12 Nov 2026; the primer's tab line). The gate moves only on her word.
+- **Wellington's prompt is 24,581 characters against a gate of 26,199** (A26, 13 Nov 2026; with the primer's line on Phoebe's tab). The gate moves only on her word.
 - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull request; a measured run after any prompt change; the build-update fact refreshed at every full close-out.
 
 ---
@@ -161,7 +161,7 @@ the cards and the lists reach the relays as generated copies (`scripts/build-pro
 `--check` fails a stale copy, but nothing refreshes one. Done is a copy that cannot ship stale and needs no hand. Proposal first.
 
 **A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved (docs/proposals/wellington-rewrite-2026-10-31.md);
-her two walks' fixes 12 Nov 2026; he passed the second. His prompt is 24,382, from 26,079. Waiting on one measured run.
+her three walks' fixes 12–13 Nov 2026. His prompt is 24,581, from 26,079. Waiting on one measured run.
 
 **A27 · Agent door bug.** v1 · BONES. Her word of 12 Nov 2026: in the Agent Commons, Phoebe tells visitors to go to Wellington. In the Commons,
 every agent works alone and asks for what she needs herself; on the sites, she hands back to Wellington. Each module must know which door it is at (see the plug-in contract).

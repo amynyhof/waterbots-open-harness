@@ -1281,6 +1281,18 @@ button.wb-phase:hover span:last-child {
 .wb-site-menu-quiet:hover {
   color: var(--ink);
 }
+/* Sign up — the main site's button beside Sign in, the maintainer's walk of
+   13 Nov 2026. The save button's own look (§7's primary), at menu size. */
+.wb-site-menu-signup {
+  padding: 5px 14px;
+  border-radius: var(--r-md);
+  background: var(--tide-ui);
+  color: #ffffff;
+  transition: background var(--dur) var(--ease);
+}
+.wb-site-menu-signup:hover {
+  background: var(--tide-hover);
+}
 
 /* ---------------------------------------------------------------------------
    The Agent Commons' module list — maintainer's ruling, 28 Oct 2026. A

@@ -6,14 +6,14 @@ When a tool changes, the seat changelog cites `tool-id@version`.
 ## 0.17.4 — 12 Nov 2026
 
 - **Phoebe speaks plainly**, the maintainer's rulings of 12 Nov 2026. `product-shared@0.6.5`: the
-  primer names her Tool tab as the second tab an agent may point at. Her prompt and her chat change
-  outside the packs. No card changed; the seal of 23 Sep 2026 is untouched.
+  primer names her Tool tab as the second tab an agent may point at; Wellington reads the same line,
+  so his prompt is 24,581. Her prompt and her chat change outside the packs. No card changed; the seal of 23 Sep 2026 is untouched.
 
 ## 0.17.3 — 5 Nov 2026
 
 - **Wellington's shorter instructions**, item A26, approved 1 Nov 2026: `product-shared@0.6.4`, his
   region of the primer. His whole prompt goes from 26,079 to 23,123 characters against the unchanged
-  gate of 26,199. After her two walks, 12 Nov 2026, the fixes take it to 24,361. No card changed; the
+  gate of 26,199. After her walks of 12 and 13 Nov 2026, the fixes take it to 24,560. No card changed; the
   seal of 23 Sep 2026 is untouched.
 
 ## 0.17.2 — 2 Nov 2026

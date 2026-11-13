@@ -114,6 +114,7 @@ import {
   pathwayAllowsQuantify,
   pinnedVisit,
   rowTaken,
+  somethingOnRecord,
   typedContext,
   type Learned,
   type MapPin,
@@ -535,6 +536,7 @@ export default function App() {
               onNavigate={setSurface}
               sealing={sealing}
               onSeal={onSeal}
+              showSave={somethingOnRecord(visit)}
               showTools={showTools}
               showPerson={showPerson}
               person={person}
