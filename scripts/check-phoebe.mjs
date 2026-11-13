@@ -510,11 +510,27 @@ expect(
   'the Monitor block’s fact is missing'
 );
 expect(
-  'she cites by token and never writes a citation',
+  'she cites by token in the cited field, never in the chat, and the chat draws none (12 Nov 2026)',
   /section:set\/id/.test(SYSTEM_PROMPT) &&
     /water:eligibility\/4/.test(SYSTEM_PROMPT) &&
-    /You are placing a pointer, not writing a citation/.test(SYSTEM_PROMPT),
-  'the citation rule is missing'
+    /Your reply carries no citation at all/.test(SYSTEM_PROMPT) &&
+    /never in the chat/.test(SYSTEM_PROMPT) &&
+    !/Place a marker where a card carries a point/.test(SYSTEM_PROMPT) &&
+    /evidence: \[\],/.test(readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8')),
+  'the citation rule is missing, or her chat still draws citations'
+);
+expect(
+  "the maintainer's walk of 12 Nov 2026: plain names, the reply's shape, the arrival, fixable only when it blocks, the tools line once, no cards-only line",
+  /\*\*water benefits\*\* and \*\*carbon credits\*\*/.test(SYSTEM_PROMPT) &&
+    /Never say "baseline", "criterion", "additionality", "mapped activity", "counting route" or "Volume Provided method"/.test(SYSTEM_PROMPT) &&
+    /one or two plain sentences on what the answer settled, then one question/.test(SYSTEM_PROMPT) &&
+    /Solar is good news for carbon\./.test(SYSTEM_PROMPT) &&
+    /follow it on the Tool tab at the top of your screen, and that they can come back to this chat any time/.test(SYSTEM_PROMPT) &&
+    /Say "fixable" only when something actually stands in the way/.test(SYSTEM_PROMPT) &&
+    /said once: if this conversation already holds it, do not say it again/.test(SYSTEM_PROMPT) &&
+    !/You read from a small set of cards/.test(SYSTEM_PROMPT) &&
+    !/nothing here is verified, and a consultant confirms it/.test(SYSTEM_PROMPT),
+  'a rule from the walk is missing, or an old line is back'
 );
 /* THE TOKEN IS THE CARD'S OWN ID. Measured 25 Sep 2026: told to cite
    "water:feasibility/7" she cited "water:feasibility/B-1", because B-1 is what

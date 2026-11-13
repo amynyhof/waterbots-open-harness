@@ -167,7 +167,11 @@ export default function PhoebeScreen({
     return {
       role: 'agent',
       text: answer.reply,
-      evidence: answer.evidence,
+      /* No citations in her chat, the maintainer's word of 12 Nov 2026: they
+         stay on the worksheet rows, beside the row each one supports. What she
+         cites still travels in answer.evidence; the chat just does not draw it,
+         and a stray marker is dropped from the text for want of evidence. */
+      evidence: [],
       abstained: answer.abstained,
       /* The shown line — contract line 5: what the worksheet holds after this
          turn, from her verdicts alone, only under a turn that moved a row. */

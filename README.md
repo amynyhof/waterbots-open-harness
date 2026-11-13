@@ -163,12 +163,13 @@ Both card sets live in her Knowledge Pack,
 from 17 Sep 2026. The pack is their one home; the worksheet and Phoebe's relay both read from
 there.
 
-**She never writes a citation.** She names a card and places a marker in her answer; the console
-looks that card up in the committed file and renders the citation itself. A wrong page number or an
-invented link is therefore not something she can produce. A marker naming a card that does not exist
-is dropped rather than shown.
+**She never writes a citation.** She names the card each answer rests on; the console looks that
+card up in the committed file and renders the citation itself, on the worksheet row it supports. A
+wrong page number or an invented link is therefore not something she can produce. A card that does not
+exist is dropped rather than shown. **Her chat carries no citations from 12 Nov 2026**: it is the
+plain answer, and the citations stay on the worksheet rows.
 
-Clicking a marker opens one line: the document, its version, the section, the page, and a link to the
+Each citation is one line: the document, its version, the section, the page, and a link to the
 publisher's own page. Every card carries that link — no canonical link, no card.
 
 The rules behind this are published, not internal: [CITATIONS.md](./CITATIONS.md) governs what a
