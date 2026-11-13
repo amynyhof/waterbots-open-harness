@@ -52,6 +52,7 @@ export default function CrewRail({
   onNavigate,
   sealing,
   onSeal,
+  showSave,
   showTools,
   showPerson,
   person,
@@ -71,6 +72,12 @@ export default function CrewRail({
   /** The bridge's state while a seal is in flight, and the click that starts one. */
   sealing: SealState;
   onSeal: () => void;
+  /**
+   * Something is on the record, so there is a project to save. Until then
+   * the save button is not drawn, and the site menu's Sign up is the door —
+   * the maintainer's walk of 13 Nov 2026.
+   */
+  showSave: boolean;
   /** A Fixable or Unknown row stands on the sheet: the tools line shows. */
   showTools: boolean;
   /** A Blocked row stands on the sheet: the box to ask for a person shows. */
@@ -208,6 +215,7 @@ export default function CrewRail({
           shown; the page moves only once a ticket is back. The fine print that
           sat under it, saying what goes with the visitor, was removed on the
           maintainer's word of 12 Nov 2026. */}
+      {showSave && (
       <div style={{ flex: 'none', padding: '12px 18px 16px', borderTop: '1px solid var(--line)' }}>
         {showTools && (
           <p style={{ margin: '0 0 10px', fontSize: 11.5, lineHeight: 1.5, color: 'var(--ink-2)' }}>
@@ -266,6 +274,7 @@ export default function CrewRail({
           </p>
         )}
       </div>
+      )}
     </aside>
   );
 }

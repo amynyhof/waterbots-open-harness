@@ -186,6 +186,17 @@ expect(
     !/would\s+screen at/.test(WELLINGTON_PRIMER_MD),
   'a rule from the walk is missing, or his region still says "would screen at"'
 );
+expect(
+  "the maintainer's walk of 13 Nov 2026: a three-sentence welcome that never says free, and a handoff that names one next step",
+  /your welcome is three short sentences and no more/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Hi, I'm Wellington, the Team Lead\. Our team helps you see if your water project could earn water benefits or carbon credits\. Tell me about your project\./.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Never say "free"/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    !/\bfree site\b|it is free\b/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /A handoff names one next step, and nothing after it/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Click Open Eligibility to meet her/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Never preview the steps after that one/.test(WELLINGTON_SYSTEM_PROMPT),
+  'a rule from the walk is missing, or "free" is back'
+);
 expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 26199 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
 
 /* ---------------------------------------------------------------------------
