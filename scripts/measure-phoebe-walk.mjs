@@ -42,6 +42,16 @@
  * moved a row at all, which is where the shown line would draw; empty, refused
  * or failed turns; cards cited; the routes she named. A budget caps the total
  * requests across all runs, so a short run costs what it says.
+ *
+ * TWO MORE, FROM 13 NOV 2026 (the maintainer's second round for Phoebe):
+ *
+ *   LONG REPLIES FAIL THE WALK (P10). Every reply is counted with the relay's
+ *     own counter (api/_reply.ts) against her ceiling, four sentences and 400
+ *     characters; the one message her prompt lets run longer, the hand-back
+ *     that shows the rows done later, is left out by its field. Any other long
+ *     reply is listed and the script exits 1.
+ *   TIME TO FIRST WORD (P13). The walk asks as the console does, streamed, and
+ *     reports how long each answer took to show its first word and to finish.
  */
 
 import { spawnSync } from 'node:child_process';
@@ -81,6 +91,21 @@ writeFileSync(join(out, 'package.json'), '{"type":"commonjs"}');
 const { askedRows, readinessOf, pathwayStateOf, section, READINESS_LABEL, ROW_STATE_LABEL, PATHWAY_STATE_LABEL } =
   createRequire(import.meta.url)(join(out, 'worksheet.generated.js'));
 rmSync(out, { recursive: true, force: true });
+
+/* The relay's own length counter, so the walk and the log count alike. */
+const replyOut = mkdtempSync(join(tmpdir(), 'wb-walk-reply-'));
+const compileReply = spawnSync(
+  process.execPath,
+  [join('node_modules', 'typescript', 'bin', 'tsc'), join('api', '_reply.ts'), '--outDir', replyOut, '--module', 'commonjs', '--target', 'es2022', '--skipLibCheck'],
+  { encoding: 'utf8' }
+);
+if (compileReply.status !== 0) {
+  console.error(compileReply.stdout || compileReply.stderr);
+  process.exit(1);
+}
+writeFileSync(join(replyOut, 'package.json'), '{"type":"commonjs"}');
+const { PHOEBE_REPLY_LIMIT, replyLength, isLongReply } = createRequire(import.meta.url)(join(replyOut, '_reply.js'));
+rmSync(replyOut, { recursive: true, force: true });
 
 /* Every row she asks, pack by pack, in the tool files' order. The scripted
    visitor answers whichever is first still unchecked, so a walk that skips
@@ -220,6 +245,7 @@ const carried = (held, sorted) =>
 const states = (held, pack) =>
   Object.fromEntries(Object.entries(held[pack] ?? {}).map(([id, row]) => [id, row.state]));
 
+/** One ask, streamed as the console asks (13 Nov 2026), timed to the first word and to the end. */
 async function ask(messages, sheet, loaded) {
   const started = Date.now();
   let res;
@@ -227,19 +253,36 @@ async function ask(messages, sheet, loaded) {
     res = await fetch(`${BASE}/api/phoebe`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ messages, sheet, loaded }),
+      body: JSON.stringify({ messages, sheet, loaded, stream: true }),
     });
   } catch (e) {
     return { status: 0, ms: Date.now() - started, error: String(e) };
   }
-  const ms = Date.now() - started;
-  let body = {};
-  try {
-    body = await res.json();
-  } catch {
-    body = {};
+  if (!/application\/x-ndjson/.test(res.headers.get('content-type') ?? '')) {
+    let body = {};
+    try {
+      body = await res.json();
+    } catch {
+      body = {};
+    }
+    return { status: res.status, ms: Date.now() - started, ...body };
   }
-  return { status: res.status, ms, ...body };
+  let last = null;
+  const text = await res.text().catch(() => '');
+  for (const line of text.split('\n')) {
+    if (!line.trim()) continue;
+    let event;
+    try {
+      event = JSON.parse(line);
+    } catch {
+      continue;
+    }
+    if (event.type === 'done' || event.type === 'error') last = event;
+  }
+  const ms = Date.now() - started;
+  if (last?.type === 'done') return { status: 200, ms, firstMs: last.answer?.usage?.firstWordMs ?? null, ...last.answer };
+  if (last?.type === 'error') return { status: last.status ?? 500, ms, error: last.error };
+  return { status: 500, ms, error: 'the stream ended without an answer' };
 }
 
 console.log(`\nPhoebe — measured walk of the ${WHICH} pathway, up to ${RUNS} run(s), ${BUDGET} requests in all, against ${BASE}`);
@@ -259,7 +302,7 @@ for (let r = 0; r < RUNS && calls < BUDGET; r += 1) {
   let held = {};
   let sorted = {};
   let loaded = [];
-  const run = { turns: 0, moved: 0, inOrder: 0, questions: [], empty: 0, other: 0, cards: 0, routes: 0, done: null };
+  const run = { turns: 0, moved: 0, inOrder: 0, questions: [], empty: 0, other: 0, cards: 0, routes: 0, done: null, long: [], firstMs: [] };
   let next = OPENING;
   console.log(`--- run ${r + 1}`);
   while (calls < BUDGET && run.turns < MAX_TURNS) {
@@ -295,6 +338,12 @@ for (let r = 0; r < RUNS && calls < BUDGET; r += 1) {
     if (Array.isArray(res.sorts)) for (const f of res.sorts) if (PACKS.includes(f.pack)) movedIds.push(`sort=${f.value}`);
     const questionMarks = (res.reply.match(/\?/g) ?? []).length;
     run.questions.push(questionMarks);
+    if (typeof res.firstMs === 'number') run.firstMs.push(res.firstMs);
+    const length = replyLength(res.reply);
+    /* The hand-back shows the rows done later, by phase: the one message her prompt lets run longer. */
+    if (isLongReply(res.reply) && res.handBack !== 'wellington') {
+      run.long.push({ turn: `${r + 1}.${run.turns}`, ...length });
+    }
     run.cards += Array.isArray(res.cited) ? res.cited.length : 0;
     run.routes += rows.reduce((n, u) => n + (u.routes?.length ?? 0), 0);
     if (movedIds.length) {
@@ -308,7 +357,7 @@ for (let r = 0; r < RUNS && calls < BUDGET; r += 1) {
         `${section(pack).sectionName}: ${PATHWAY_STATE_LABEL[pathwayStateOf(pack, states(held, pack))]}, ${READINESS_LABEL[readinessOf(pack, states(held, pack))]}`
     ).join(' | ');
     console.log(
-      `  turn ${run.turns}  200  ${(res.ms / 1000).toFixed(1)}s  asked ${target ? `${target.id}` : '-'}  moved [${movedIds.join(',')}]  ?=${questionMarks}  cards=${(res.cited ?? []).length}  handBack=${res.handBack}`
+      `  turn ${run.turns}  200  ${(res.ms / 1000).toFixed(1)}s  first word ${typeof res.firstMs === 'number' ? `${(res.firstMs / 1000).toFixed(1)}s` : '-'}  ${length.sentences} sentences, ${length.chars} chars  asked ${target ? `${target.id}` : '-'}  moved [${movedIds.join(',')}]  ?=${questionMarks}  cards=${(res.cited ?? []).length}  handBack=${res.handBack}`
     );
     console.log(`      → ${reads}`);
     for (const u of rows) {
@@ -353,4 +402,20 @@ const replies = runs.flatMap((r) => r.questions);
 const oneQuestion = replies.filter((q) => q <= 1).length;
 console.log(`\nEmpty answers: ${empty} in ${calls}. Other failures: ${other}.`);
 console.log(`Order kept: ${inOrder} of ${moved} moving turns moved the first unchecked row. One question or none: ${oneQuestion} of ${replies.length} replies.`);
-console.log(`Cost: ${calls} API calls; ${input.toLocaleString('en-GB')} input tokens (cache reads included) and ${output.toLocaleString('en-GB')} output tokens as the relay reported them.\n`);
+console.log(`Cost: ${calls} API calls; ${input.toLocaleString('en-GB')} input tokens (cache reads included) and ${output.toLocaleString('en-GB')} output tokens as the relay reported them.`);
+
+const firsts = runs.flatMap((r) => r.firstMs).sort((a, b) => a - b);
+if (firsts.length) {
+  const median = firsts[Math.floor(firsts.length / 2)];
+  console.log(`Time to first word: median ${(median / 1000).toFixed(1)}s, slowest ${(firsts[firsts.length - 1] / 1000).toFixed(1)}s, over ${firsts.length} streamed replies.`);
+}
+
+const long = runs.flatMap((r) => r.long);
+console.log(
+  `Long replies (over ${PHOEBE_REPLY_LIMIT.sentences} sentences or ${PHOEBE_REPLY_LIMIT.chars} characters, the hand-back left out): ${long.length} of ${replies.length}.\n`
+);
+if (long.length) {
+  for (const l of long) console.log(`  FAIL  turn ${l.turn}: ${l.sentences} sentences, ${l.chars} characters`);
+  console.log('');
+  process.exit(1);
+}

@@ -139,11 +139,17 @@ export interface AgentHost {
  *
  * A thrown Error's `message` is shown to the reader as-is, so an adapter throws
  * only messages already fit to read.
+ *
+ * `onLive`, from 13 Nov 2026: an agent whose relay streams hands the layer its
+ * reply as it is written — the whole text so far each time, or null to clear
+ * it. It is real text arriving, never typing put on for show, and the answer
+ * the adapter returns replaces it. An agent that does not stream ignores it.
  */
 export type Ask = (
   history: { role: 'user' | 'agent'; text: string }[],
   signal: AbortSignal,
-  meta?: AskMeta
+  meta?: AskMeta,
+  onLive?: (text: string | null) => void
 ) => Promise<AgentTurn>;
 
 /**

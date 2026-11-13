@@ -1044,9 +1044,9 @@ console.log('\n  Bridget\n');
     'a guard is missing from her relay'
   );
   expect(
-    'her composer note states her cap in words',
-    /composerNote: 'Nothing is kept between visits\. Thirty messages a day\.'/.test(screen) && BRIDGET_DAILY_CAP === 30,
-    'the note and the cap disagree'
+    'no standing note under her chat box (13 Nov 2026); the cap is said when reached, from the cap itself',
+    !/composerNote:/.test(screen) && /today's limit of \$\{decision\.cap\} messages to Bridget/.test(relay) && BRIDGET_DAILY_CAP === 30,
+    'a note is back under her chat box, or the cap message and the cap disagree'
   );
   expect(
     'the primer and his facts say her chat is live, and nothing on the desk says she is not answering',

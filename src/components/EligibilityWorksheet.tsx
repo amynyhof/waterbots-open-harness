@@ -113,8 +113,7 @@ export default function EligibilityWorksheet({
               that would otherwise be spent finding out late.
             </p>
             <p className="t-caption" style={{ margin: 0, lineHeight: 1.7, maxWidth: '66ch' }}>
-              Nothing on this page is verified, and nothing here speaks for any standard beyond
-              citing it. A consultant confirms what a screening suggests.
+              This is a first screening, not an official decision.
             </p>
           </div>
         </header>
@@ -235,7 +234,7 @@ function PathwaySection({
             {worked ? (
               <>
                 The reading from these rows: <strong style={{ color: 'var(--ink)' }}>{READINESS_LABEL[read]}</strong>.
-                Likely, not settled — nothing here is verified.
+                This is a first screening, not an official decision.
               </>
             ) : (
               <>
@@ -672,8 +671,8 @@ function ReadyBanner({ onOpenMap }: { onOpenMap?: () => void }) {
           This pathway reads likely eligible — next stop: Partners
         </div>
         <p className="t-caption" style={{ margin: 0 }}>
-          Every row asked here is met. Nothing is verified; a consultant confirms it. The basin map
-          is where you find who else is working nearby.
+          Every row asked here is met. This is a first screening, not an official decision. The
+          basin map is where you find who else is working nearby.
         </p>
       </div>
       {onOpenMap && (

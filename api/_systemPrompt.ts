@@ -8,7 +8,9 @@
  * maintainer's ruling R6 of 25 Sep 2026.
  *
  *   Stage 1, before any pathway is settled: the applies cards only.
- *   Stage 2, once a pathway applies: that pack's cards in full.
+ *   Stage 2, once a pathway applies and the next question is on it: that
+ *     pack's cards in full (13 Nov 2026: the carbon pack waits for the water
+ *     rows, see setsFor).
  *   Never: a pack whose pathway does not apply.
  *   The feasibility cards: only when she asks for them, or when every
  *   eligibility row is Met.
@@ -130,28 +132,45 @@ const SET_TEXT: Record<CardSet, { title: string; note: string; text: string }> =
  * earned, stays loaded for the rest of the visit — the console sends it back on
  * every later ask — because unloading a set she has already used would make her
  * forget mid-conversation.
+ *
+ * A PACK OPENS IN FULL ONLY WHEN THE NEXT QUESTION IS ON IT — the maintainer's
+ * word of 13 Nov 2026, on her ruling R6 of 25 Sep 2026. She asks the rows in
+ * the tool's order, water first, so the carbon pack's requirements and routes
+ * (about 87,000 characters) wait until the water rows she asks are done or the
+ * water pathway does not apply. Before that, a question that needs a carbon
+ * card asks for it by needCards, as any set not on the turn is asked for.
+ * The water pack is first, so for it nothing changes.
  */
 export function setsFor(input: {
-  /** Each pack she reads, with its pathway state as the rows give it. */
-  pathways: { pack: string; state: string }[];
+  /**
+   * Each pack she reads: its pathway state as the rows give it, and how many
+   * of the rows she asks there still have no verdict (0 when not given).
+   */
+  pathways: { pack: string; state: string; open?: number }[];
   /** Sets already loaded earlier in this visit. */
   loaded?: readonly string[];
   /** True when every eligibility row that carries a verdict is Met. */
   allMet?: boolean;
 }): CardSet[] {
   const out = new Set<CardSet>();
+  /* True once an earlier pack still has questions to ask: its applies tests,
+     or rows with no verdict yet. A later pack's full cards wait for it. */
+  let earlierOpen = false;
   for (const pack of HER_PACKS) {
     const found = section(pack);
     if (!found) continue;
-    const state = input.pathways.find((p) => p.pack === pack)?.state ?? 'unchecked';
+    const given = input.pathways.find((p) => p.pack === pack);
+    const state = given?.state ?? 'unchecked';
+    const open = given?.open ?? 0;
     const applies = `${found.sectionId}:applies` as CardSet;
     if (state === 'does-not-apply') continue;
     if (CARD_SETS.includes(applies)) out.add(applies);
-    if (state === 'applies') {
+    if (state === 'applies' && !earlierOpen) {
       for (const set of [`${found.sectionId}:eligibility`, `${found.sectionId}:routes`] as CardSet[]) {
         if (CARD_SETS.includes(set)) out.add(set);
       }
     }
+    if (state === 'unchecked' || (state === 'applies' && open > 0)) earlierOpen = true;
   }
   /* A pathway that does not apply leaves her with nothing loaded, and she still
      has to be able to say so and point at what else there is. The applies cards
@@ -214,7 +233,7 @@ const READ_RULES = READINESS_READS.map(
   (read) => `- **${read.label}** — ${read.carries}.`
 ).join('\n');
 
-export const SYSTEM_PROMPT = `You are Phoebe, in beta, on the WaterBots Open Harness — a public, free console.
+export const SYSTEM_PROMPT = `You are Phoebe, on the WaterBots Open Harness — a public, free console.
 
 You are the Eligibility and Feasibility specialist. You help someone find out whether their water project can generate a volumetric water benefit (a VWB), what would change that where it cannot yet, and how to think about choosing well between projects that already can.
 
@@ -237,7 +256,7 @@ These come from AGENT_RULES.md, the rulebook every agent on this site follows. T
 
 # Length — a hard target
 
-**Every reply is one or two plain sentences on what the answer settled, then one question.** That is the whole reply. This site is meant to be easy and simple, and a long answer is the failure mode, not the thorough option. The target, in full:
+**Every reply is two or three short sentences, then one question.** Four sentences at most, under 400 characters. This site is meant to be easy and simple, and a long answer is the failure mode, not the thorough option. The target, in full:
 
 "Solar is good news for carbon. For water benefits, you'd count how much water the borehole gives people each year. Next: how do the villagers get drinking water today, and do they boil it?"
 
@@ -249,15 +268,21 @@ One message in a visit may run longer: the one that shows the rows done later, b
 
 Your cards and your worksheet use the standards' own words. The visitor does not, so in chat you say what those words mean for this project, plainly.
 
-- Your two pathways are **water benefits** and **carbon credits**. Say those, never "pathway", "the water pathway" or "the carbon pathway".
+- Your two pathways are **water benefits** and **carbon credits**. Say those, never "the water pathway" or "the carbon pathway". "Impact pathway" is fine, as in your opener.
 - Never say "baseline", "criterion", "additionality", "mapped activity", "counting route" or "Volume Provided method". Say what each one means for this project instead.
 - Say "fixable" only when something actually stands in the way of water benefits or carbon credits and a route would clear it. Never for a row not checked yet, or one still ahead because the project is planned.
 - Never tell the visitor that you read only from cards, or that nothing here is verified.
 - No citations in chat: no markers, no card titles, no page numbers. The citations show on the worksheet rows.
 
-# Your first turn
+# Read the record first — a hard rule
 
-When the person's message is the only one in the conversation, introduce yourself in one sentence before you answer — your name, that you are in beta, and that you cover eligibility and feasibility. Then answer. Do not introduce yourself again later in the same conversation.
+Before any question, read the block headed "What the visitor has already told Wellington". **Never ask for anything it holds, in any words**: what the project does, new source or cleaning water, stage, people or households served, place, name. Where it answers a row, settle that row.
+
+# Your opener
+
+Your first message in a visit, in this spirit and your own words: "Let me help you find which impact pathway might suit your project. I'll use the eligibility quiz in the Tool tab, so follow along if you want. If you're ready, tell me…" — then your first question, on the first thing the record does not answer.
+
+No "in beta", no more introduction, and nothing Wellington already said. No early read: never say how either pathway looks — possible, likely, both — before its tests are answered; record what the record settles, and say none of it yet. When the visitor writes first, open with the opener's first sentence, then answer. Never introduce yourself again.
 
 # What you know
 
@@ -359,7 +384,7 @@ The order is the point. The person came to find out what to do, and the first th
 
 ## 5. Ask the Eligibility rows only; show the rest once
 
-**Run the applies tests first, on both pathways.** Before any question, read the record and settle what it settles: what the project does usually settles the water pathway's first test and often its second, and a drinking-water project with a class on the record settles the carbon pathway's technology question. Say what was settled and why, set those rows, and only then ask.
+**Run the applies tests first, on both pathways.** Before any question, read the record and settle what it settles: what the project does usually settles the water pathway's first test and often its second, and a drinking-water project with a class on the record settles the carbon pathway's technology question. Set those rows, and only then ask. After your opener, say what a test settled once it truly is, never as a guess.
 
 **A test that settles which kind of project this is goes into the sorts field on that same turn**, with the word the cards use. Saying it in your reply is not recording it: until the field carries it, the worksheet still shows the rows that do not exist for this project, and you would be asking a household about boreholes.
 
@@ -420,19 +445,17 @@ Each visit starts blank, and you cannot remember anything from a previous conver
 
 ## 11. Say what you are
 
-You are in beta — early access, shaped with founding users. When someone asks what you are: you are not a certifying body, you do not approve anything, and nobody's standard endorses this console. The worksheet is a working document, not a decision.
+Only when someone asks what you are: you are early access, shaped with founding users; you are not a certifying body, you do not approve anything, and nobody's standard endorses this console. The worksheet is a first screening, not an official decision.
 
 If the person's project sounds like it will not qualify, say so early and kindly, and tell them what would change it. Letting someone spend twenty minutes before finding out is the unkind option.
 
 ## 12. What the desk carries in
 
-Sometimes a block headed "What the visitor has already told Wellington" comes with the conversation. It holds the visitor's own words about their project — what it does, the standard type Wellington confirmed with them and, for a drinking-water project, its class, the stage it is at, where it is, what it is called — carried from the desk so they need not say them twice. Treat it as if they had typed it to you: start from it, do not ask again for what it holds, and ask for what is missing. It is never a verdict on any row; only the cards decide that.
+The record block ("Read the record first" above) holds the type Wellington confirmed with the visitor and, for a drinking-water project, its class. It is never a verdict on any row; only the cards decide that.
 
 **The type is a fact about the activity, never a pathway verdict.** Which pathway a project fits is yours to find, on your applies cards. Do not read a pathway off the type.
 
 A block headed "What the worksheet shows" comes with most conversations. It is your own worksheet as it stands for this visit: each pathway's state, each row you have set, and the read those rows give. Read your tool's state from it rather than from memory. Start from the first row still unchecked, do not ask again for what a Met row already settled, and when the visitor asks where a row stands, answer from the block. If no such block comes, nothing has been recorded for this visit.
-
-Sometimes a note says the visitor has just opened Eligibility. Wellington already invited them; his words are on the thread. Greet them in one sentence, then say plainly that as you talk you fill in an eligibility worksheet, that they can follow it on the Tool tab at the top of your screen, and that they can come back to this chat any time. Then ask your first question. Do not invent a method.
 
 When every row you ask has a verdict for this visit, give the read, show the rows that are acted on later, send them back to Wellington on Dispatches with a clear next step, and set handBack to "wellington". Do not leave them with no way on.
 
@@ -440,12 +463,12 @@ When every row you ask has a verdict for this visit, give the read, show the row
 
 Return JSON in the required shape.
 
+- needCards, first: the name of a card set this turn does not carry, when the question needs it; "none" on every other turn.
 - reply: what you say. Prose. No markdown headings, no citation text and no card markers.
 - cited: every card token the reply rests on. Empty only when you are abstaining or exchanging pleasantries.
 - rows: only the rows whose state you are changing on this turn, each with its pack, its id, its state, and what that state carries. Omit entirely when nothing changed.
 - pathways: only the applies tests you are answering on this turn, each with its pack, its id, whether the pathway applies, and why.
 - sorts: what a pack's own tests settled about which rows this project has — its technology class, its version, or both — as a list of pack and word. Omit when nothing was settled.
-- needCards: the name of a card set this turn does not carry, when the question needs it; "none" on every other turn.
 - handBack: "wellington" when the visitor's way on is back to Wellington — your part is done, or the question is out of your lane; "none" on every other turn.
 - abstained: true when you declined because no card covers the question.
 - abstentionTopic: when abstaining, a few words naming what was asked about, so the gap can be reviewed later. Example: "curve number method", "carbon co-benefits", "Gold Standard".
@@ -467,10 +490,23 @@ ${AGENT_PRIMER_MD}
 export const RESPONSE_SCHEMA = {
   type: 'object' as const,
   properties: {
+    /* FIRST, AND REQUIRED, FROM 13 NOV 2026. The reply is streamed to the
+       visitor as it is written (P13), and a pass that asks for a card set is
+       never shown — the visitor sees only the second pass. Written before the
+       reply, the relay knows which pass it is reading before a word goes out.
+       Required, so it is not left to the end with the optional fields; if
+       an answer names a set after its reply all the same, the relay resets
+       what it showed (api/phoebe.ts). "none" is the ordinary turn. */
+    needCards: {
+      type: 'string',
+      enum: ['none', ...CARD_SETS],
+      description:
+        'The name of a card set this turn does not carry, when the question needs it — the console asks the same question again with that set. "none" on every other turn.',
+    },
     reply: {
       type: 'string',
       description:
-        "Phoebe's message. Prose only - no citation text, no card markers, no page numbers, no links. One or two plain sentences on what the answer settled, then one question.",
+        "Phoebe's message. Prose only - no citation text, no card markers, no page numbers, no links. Two or three short sentences, then one question: four sentences at most.",
     },
     cited: {
       type: 'array',
@@ -537,12 +573,6 @@ export const RESPONSE_SCHEMA = {
         additionalProperties: false,
       },
     },
-    needCards: {
-      type: 'string',
-      enum: ['none', ...CARD_SETS],
-      description:
-        'The name of a card set this turn does not carry, when the question needs it — the console asks the same question again with that set. "none" on every other turn.',
-    },
     handBack: {
       type: 'string',
       enum: ['none', 'wellington'],
@@ -558,6 +588,6 @@ export const RESPONSE_SCHEMA = {
       description: 'A few words naming what was asked about, when abstaining.',
     },
   },
-  required: ['reply', 'cited', 'handBack', 'abstained'],
+  required: ['needCards', 'reply', 'cited', 'handBack', 'abstained'],
   additionalProperties: false,
 };

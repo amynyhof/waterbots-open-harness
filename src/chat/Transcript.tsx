@@ -44,11 +44,17 @@ export default function Transcript({
   turns,
   pending,
   error,
+  live = null,
 }: {
   host: AgentHost;
   turns: Turn[];
   pending: boolean;
   error: string | null;
+  /**
+   * The reply so far while it streams in (13 Nov 2026). Drawn in the host's
+   * own bubble in place of the thinking dots, and replaced by the answer.
+   */
+  live?: string | null;
 }) {
   const accent = { '--turn-accent': `var(${host.colourToken})` } as CSSProperties;
 
@@ -62,7 +68,13 @@ export default function Transcript({
         )
       )}
 
-      {pending && (
+      {pending && live && (
+        <div aria-busy="true">
+          <HostBubble host={host} turn={{ role: 'agent', text: live, evidence: [] }} />
+        </div>
+      )}
+
+      {pending && !live && (
         <div className="wb-thinking" style={accent} role="status" aria-live="polite">
           <HostFace host={host} thinking />
           <span className="wb-thinking-dots" aria-hidden>

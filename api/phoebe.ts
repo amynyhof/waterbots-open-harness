@@ -29,7 +29,8 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 import { recordAbstention } from './_abstentions.js';
-import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
+import { MIN_REPLY_CHARS, PHOEBE_REPLY_LIMIT, isDegenerateReply, isLongReply, replyLength } from './_reply.js';
+import { needCardsSoFar, replySoFar } from './_replyStream.js';
 import { PHOEBE, countOneMessage, timeUntilReset } from './_cap.js';
 import { readHandBack, type HandBack } from './_handBack.js';
 import { CARD_SETS, RESPONSE_SCHEMA, SYSTEM_PROMPT, cardsBlock, setsFor, type CardSet } from './_systemPrompt.js';
@@ -225,6 +226,7 @@ export async function POST(req: Request): Promise<Response> {
     loaded?: unknown;
     opened?: unknown;
     eligibilityDone?: unknown;
+    stream?: unknown;
   };
   try {
     body = (await req.json()) as {
@@ -234,6 +236,7 @@ export async function POST(req: Request): Promise<Response> {
       loaded?: unknown;
       opened?: unknown;
       eligibilityDone?: unknown;
+      stream?: unknown;
     };
   } catch {
     return problem(400, 'That request could not be read.');
@@ -360,16 +363,67 @@ export async function POST(req: Request): Promise<Response> {
 
   const client = new Anthropic({ apiKey });
 
+  /* STREAMED WHEN THE CONSOLE ASKS FOR IT — the maintainer's word of
+     13 Nov 2026 (P13). The console sends `stream: true` and reads her reply as
+     it is written; a caller that does not (the measuring scripts) gets the one
+     JSON answer as before. Every failure above this line is still a plain
+     JSON answer with its status, because nothing has been said yet. */
+  if (body.stream === true) {
+    return streamed((onText, onReset) => answerTurn(onText, onReset), undelivered);
+  }
+  return answerTurn();
+
+  /**
+   * Everything from the model call to the checked answer. `onText` receives
+   * each new piece of the reply as it is written, and `onReset` says that what
+   * was sent so far is to be thrown away, because the same question is going
+   * again (a late 400, or a card set she asked for).
+   */
+  async function answerTurn(onText?: (text: string) => void, onReset?: () => void): Promise<Response> {
   let response: Anthropic.Message;
   const calledAt = Date.now();
+  let firstWordAt: number | null = null;
+
+  /**
+   * One pass's streamed reply. A pass that is about to ask for a card set it
+   * was not given is never shown, because the visitor sees only the second
+   * pass's answer (ruling R6); if her answer names that set only after its
+   * reply, what was shown is reset before the second pass.
+   */
+  const passWriter = (pass: readonly CardSet[]) => {
+    let sent = 0;
+    return {
+      snapshot(raw: string): void {
+        if (!onText) return;
+        const asked = needCardsSoFar(raw);
+        if (asked && asked !== 'none' && (CARD_SETS as readonly string[]).includes(asked) && !pass.includes(asked as CardSet)) {
+          return;
+        }
+        const text = replySoFar(raw);
+        if (text === null || text.length <= sent) return;
+        if (firstWordAt === null) firstWordAt = Date.now();
+        onText(text.slice(sent));
+        sent = text.length;
+      },
+      restart(): void {
+        if (sent > 0) onReset?.();
+        sent = 0;
+      },
+    };
+  };
 
   /* One attempt, and a second only for a late 400 — see LATE_400_MS. The
      retry is inside a single visitor message: the cap was charged before this
      point and is refunded by undelivered() if both attempts fail, so a retry
      never costs anyone two of their thirty. Confirmed in
-     scripts/check-cap.mjs rather than assumed. */
-  const callModel = (withSets: readonly CardSet[]): Promise<Anthropic.Message> =>
-    client.messages.create(
+     scripts/check-cap.mjs rather than assumed.
+
+     STREAMED FROM 13 NOV 2026, on every call: the request and the finished
+     message are the same as before (finalMessage() is the Message create()
+     returned), and while it is written the reply's text is read out of it for
+     the visitor. */
+  const callModel = (withSets: readonly CardSet[], writer: ReturnType<typeof passWriter>): Promise<Anthropic.Message> => {
+    const stream = client.messages.stream(
       {
         model: MODEL,
         max_tokens: MAX_TOKENS,
@@ -396,11 +450,15 @@ export async function POST(req: Request): Promise<Response> {
       },
       { timeout: CALL_TIMEOUT_MS }
     );
+    stream.on('text', (_delta, snapshot) => writer.snapshot(snapshot));
+    return stream.finalMessage();
+  };
 
   /** One call, with one narrow retry for a late 400 — see LATE_400_MS. */
   const callOnce = async (withSets: readonly CardSet[]): Promise<Anthropic.Message> => {
+    const writer = passWriter(withSets);
     try {
-      return await callModel(withSets);
+      return await callModel(withSets, writer);
     } catch (first) {
       const status = pick(first, 'status');
       const elapsed = Date.now() - calledAt;
@@ -409,7 +467,8 @@ export async function POST(req: Request): Promise<Response> {
       console.error(
         `phoebe: a 400 arrived after ${(elapsed / 1000).toFixed(1)}s, which is too late to be a malformed request — retrying once`
       );
-      return await callModel(withSets);
+      writer.restart();
+      return await callModel(withSets, writer);
     }
   };
 
@@ -535,6 +594,11 @@ export async function POST(req: Request): Promise<Response> {
   if (answer.needCards !== 'none' && !usedSets.includes(answer.needCards)) {
     usedSets = [...usedSets, answer.needCards];
     console.log(`phoebe: asked for ${answer.needCards}, so the same question goes again with it`);
+    /* Anything the first pass showed is thrown away before the second speaks. */
+    if (firstWordAt !== null) {
+      onReset?.();
+      firstWordAt = null;
+    }
     try {
       response = await callOnce(usedSets);
     } catch (error) {
@@ -556,6 +620,18 @@ export async function POST(req: Request): Promise<Response> {
     await recordAbstention(lastQuestion, answer.abstentionTopic, new Date());
   }
 
+  /* A LONG REPLY IS COUNTED, NOT REFUSED — the maintainer's word of
+     13 Nov 2026 (P10): two or three short sentences, then one question. A real
+     answer still reaches the visitor; the log says so, so real traffic can be
+     counted, and the measured walk fails on one. See api/_reply.ts. */
+  if (isLongReply(answer.reply)) {
+    const length = replyLength(answer.reply);
+    console.log(
+      `phoebe: reply ran long — ${length.sentences} sentences and ${length.chars} characters, against ${PHOEBE_REPLY_LIMIT.sentences} and ${PHOEBE_REPLY_LIMIT.chars}`
+    );
+  }
+
+  const doneAt = Date.now();
   return json(200, {
     ...answer,
     /* Which card sets this answer was given, so the console can send them back
@@ -569,6 +645,75 @@ export async function POST(req: Request): Promise<Response> {
       output: outputTokens,
       /* Two on the one turn where she asked for a set she did not have. */
       calls,
+      /* How long the visitor waited, so speed is measured rather than felt:
+         to the first word shown (streamed asks only) and to the whole answer. */
+      firstWordMs: firstWordAt === null ? null : firstWordAt - calledAt,
+      totalMs: doneAt - calledAt,
+    },
+  });
+  }
+}
+
+/**
+ * The answer as it is written: one JSON object a line (NDJSON).
+ *
+ *   {"type":"text","text":"…"}   the next piece of her reply, to show at once
+ *   {"type":"reset"}             throw away what was shown; the question is going again
+ *   {"type":"done","answer":{…}} the checked answer, exactly what the JSON answer was
+ *   {"type":"error","status":502,"error":"…"} the honest failure, as the JSON answer said it
+ *
+ * The status is 200 because the stream has begun; the real outcome is the last
+ * line. Every failure keeps its own words and its refund: `run` returns the
+ * same Responses it always did, and they are read into the last line here. A
+ * fault this cannot read is refunded and said plainly, never left hanging.
+ */
+function streamed(
+  run: (onText: (text: string) => void, onReset: () => void) => Promise<Response>,
+  undelivered: (response: Response) => Promise<Response>
+): Response {
+  const encoder = new TextEncoder();
+  const body = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      /* A visitor who leaves mid-answer closes the stream; the work finishes
+         and is counted as delivered, as it was when the answer came whole. */
+      const send = (event: unknown): void => {
+        try {
+          controller.enqueue(encoder.encode(`${JSON.stringify(event)}\n`));
+        } catch {
+          /* Closed by the reader. Nothing to tell anyone. */
+        }
+      };
+      try {
+        const final = await run(
+          (text) => send({ type: 'text', text }),
+          () => send({ type: 'reset' })
+        );
+        const payload = (await final.json()) as Record<string, unknown>;
+        send(
+          final.ok
+            ? { type: 'done', answer: payload }
+            : { type: 'error', status: final.status, error: payload.error }
+        );
+      } catch (error) {
+        console.error('phoebe: the streamed answer failed', error);
+        const failed = await undelivered(problem(500, 'Something went wrong on our side. Nothing has been recorded.'));
+        send({ type: 'error', status: failed.status, error: ((await failed.json()) as { error?: string }).error });
+      } finally {
+        try {
+          controller.close();
+        } catch {
+          /* Already closed by the reader. */
+        }
+      }
+    },
+  });
+  return new Response(body, {
+    status: 200,
+    headers: {
+      'content-type': 'application/x-ndjson; charset=utf-8',
+      'cache-control': 'no-store',
+      /* Asks any proxy in between not to hold the lines back. */
+      'x-accel-buffering': 'no',
     },
   });
 }
@@ -602,13 +747,17 @@ function contextOf(record: ReturnType<typeof readRecord>, pack: string, sorts?: 
 function pathwaysOf(
   sheets: PackSheet[] | null,
   record: ReturnType<typeof readRecord>
-): { pack: string; state: string }[] {
+): { pack: string; state: string; open: number }[] {
   return HER_PACKS.map((pack) => {
     const sheet = sheets?.find((s) => s.pack === pack);
-    if (!sheet) return { pack, state: 'unchecked' };
+    if (!sheet) return { pack, state: 'unchecked', open: 0 };
     const states: Record<string, string> = {};
     for (const row of sheet.rows) states[row.id] = row.state;
-    return { pack, state: pathwayStateOf(pack, states, contextOf(record, pack, sheet.sorts)) };
+    const context = contextOf(record, pack, sheet.sorts);
+    /* The rows she asks there that have no verdict yet: while the water pack
+       has any, the next question is on it, and the carbon pack waits (setsFor). */
+    const open = verdictRows(pack, context).filter((row) => (states[row.id] ?? 'unchecked') === 'unchecked').length;
+    return { pack, state: pathwayStateOf(pack, states, context), open };
   });
 }
 

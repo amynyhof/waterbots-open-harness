@@ -62,7 +62,7 @@ export default function ScreenChat({
     if (chat.turns.length > 0 || chat.pending || chat.error) {
       scroller.current?.scrollTo({ top: scroller.current.scrollHeight, behavior: 'smooth' });
     }
-  }, [chat.turns, chat.pending, chat.error]);
+  }, [chat.turns, chat.pending, chat.error, chat.live]);
 
   return (
     <>
@@ -74,6 +74,7 @@ export default function ScreenChat({
             turns={chat.turns}
             pending={chat.pending}
             error={chat.error}
+            live={chat.live}
           />
         </div>
       </div>

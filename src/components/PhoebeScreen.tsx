@@ -89,7 +89,8 @@ export const PHOEBE: AgentHost = {
   colourToken: '--bot-phoebe',
   beta: true,
   composerPlaceholder: 'Tell her about your project, or ask about a criterion.',
-  composerNote: 'Nothing is kept between visits. Thirty messages a day.',
+  /* No line under her chat box, the maintainer's word of 13 Nov 2026, as Wellington's
+     went on 12 Nov: the daily cap still says so when it is reached. */
   /* A visitor's words for what she is doing — canon rule 4, 8 Sep 2026. */
   thinkingLine: 'Phoebe is reviewing the criteria…',
   /* Her closing question is set in bold — display only, the maintainer's word,
@@ -130,7 +131,8 @@ export default function PhoebeScreen({
   async function ask(
     history: { role: 'user' | 'agent'; text: string }[],
     signal: AbortSignal,
-    meta?: { opened?: boolean }
+    meta?: { opened?: boolean },
+    onLive?: (text: string | null) => void
   ): Promise<AgentTurn> {
     const answer = await askPhoebe(
       history.map(({ role, text }) => ({
@@ -146,6 +148,8 @@ export default function PhoebeScreen({
         eligibilityDone,
         sheet: carriedSheet(sheet, HER_PACKS),
         loaded: loaded.current,
+        /* Her reply shows as it is written (13 Nov 2026). */
+        onLive,
       }
     );
 
