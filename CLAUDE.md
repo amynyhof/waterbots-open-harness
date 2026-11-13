@@ -269,8 +269,9 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   "dispatch", "rail" or "surface". ~~**The bridge's contract is ruled**
   (item S7) and its sender builds next, once the maintainer carries
   production's sign-up address, claim endpoint and key name.~~ **The bridge
-  is built, 8 Sep 2026** (item S7, archived): the save row is a button with
-  a consent line in a visitor's words; the click seals the visit for one
+  is built, 8 Sep 2026** (item S7, archived): the save row is a button (the
+  line under it saying what goes with the visitor was removed on 12 Nov 2026, the maintainer's
+  word); the click seals the visit for one
   hour under a random ticket and moves the page to production's welcome
   with only the ticket in the address; production claims it once behind
   `BRIDGE_KEY`, then it is gone. Never a computed number, never the
@@ -420,8 +421,9 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   Quantify only where a pathway is likely eligible or not enough is known. For a water supply
   project he asks how many people or households it serves, after the stage; it is kept as said,
   households never converted here, on the record, the rail and the seal as `record.served`. His
-  prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep, 26,034 from 4 Oct and is 26,079 from 31 Oct
-  2026, against the unchanged gate of 26,199.
+  prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep, 26,034 from 4 Oct, 26,079 from 31 Oct, and
+  23,123 from 5 Nov 2026, when his shorter instructions were built (item A26), and is 24,361 from
+  12 Nov 2026, after the maintainer's two walks of them, against the unchanged gate of 26,199.
 - **The engine bundle is tracked at `carried/`, from 27 Sep 2026**, placed by the maintainer's
   hand and merged on `main` as it stands (#132), tagged `engine-carry-2026-09-27`. **It was replaced
   on 3 Oct 2026 by v0.16.1**, the paid site's `calculator-seal-2026-10-03`: 34 files, 34 hashes

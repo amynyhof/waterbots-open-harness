@@ -35,23 +35,6 @@ import type { DeskRow } from '../lib/visit';
 import CrewRow from './CrewRow';
 
 /**
- * THE CONSENT LINE — item S7, the contract's first step: the visitor is told
- * what crosses before they click, in their own words for the things. It
- * lists exactly what the seal holds (src/lib/handoff.ts) and names the two
- * things it never holds. If the seal ever changes, this line changes with it.
- */
-function consentLine(askingForPerson: boolean): string {
-  return (
-    'Going with you: what you said about the project, the basin you pinned, where each ' +
-    'eligibility criterion stands, ' +
-    (askingForPerson
-      ? 'the numbers you typed in, and your request for the WaterBots team to look at it, with your note. '
-      : 'and the numbers you typed in. ') +
-    'Not the results worked out here, and not your conversation. Nothing stays on this site.'
-  );
-}
-
-/**
  * THE TOOLS LINE — the maintainer's canon of 23 Sep 2026, in AGENT_RULES.md
  * under ruling 5: wherever a Fixable or Unknown row shows, the visitor is told
  * that WaterBots is building tools for exactly those fixes, and the same line
@@ -98,9 +81,6 @@ export default function CrewRail({
   /** On a phone: the column is a sliding panel, open or shut by the shell. */
   drawer?: { open: boolean; onClose: () => void };
 }) {
-  /* Only a box the visitor can see can be ticked. If the Blocked row goes
-     (Phoebe moves it), an old tick does not travel unseen. */
-  const asking = showPerson && person.wanted;
   const busy = sealing.kind === 'sealing' || sealing.kind === 'sealed';
   return (
     <aside
@@ -115,6 +95,15 @@ export default function CrewRail({
         borderLeft: '1px solid var(--line)',
         borderBottom: 0,
         minHeight: 0,
+        /* THE WHOLE RAIL SCROLLS WHEN THE WINDOW IS SHORT — the maintainer's
+           walk of 12 Nov 2026 on a mid-sized screen. The next steps used to
+           scroll on their own, so on a short window they shrank to a sliver
+           and Phoebe's button slid out of sight behind the save button. Now
+           nothing shrinks: with room to spare the save button sits at the
+           foot, and without it the rail scrolls and the button follows the
+           rows, so nothing is ever covered. */
+        overflowY: 'auto',
+        overflowX: 'hidden',
       }}
     >
       <div
@@ -170,7 +159,7 @@ export default function CrewRail({
         Next steps
         <span style={{ marginLeft: 'auto', color: 'var(--ink-4)', letterSpacing: '0.08em' }}>{rows.length}</span>
       </div>
-      <div style={{ padding: '0 12px', overflowY: 'auto', minHeight: 0 }}>
+      <div style={{ padding: '0 12px', flex: 'none' }}>
         {rows.length === 0 && (
           <p className="t-caption" style={{ margin: '0 6px 10px', fontSize: 10.5, lineHeight: 1.55 }}>
             Rows land here from this visit only, as Wellington learns the project. None is ever
@@ -215,9 +204,10 @@ export default function CrewRail({
           under it; now the footer is gone and the save button lives here, in
           view without scrolling at laptop height. A primary button — solid
           Tide, the book's §7 — because it is the one action on this site that
-          takes the visitor somewhere else with their work. The consent line
-          sits under it, before the click. Every state is shown; the page moves
-          only once a ticket is back. */}
+          takes the visitor somewhere else with their work. Every state is
+          shown; the page moves only once a ticket is back. The fine print that
+          sat under it, saying what goes with the visitor, was removed on the
+          maintainer's word of 12 Nov 2026. */}
       <div style={{ flex: 'none', padding: '12px 18px 16px', borderTop: '1px solid var(--line)' }}>
         {showTools && (
           <p style={{ margin: '0 0 10px', fontSize: 11.5, lineHeight: 1.5, color: 'var(--ink-2)' }}>
@@ -270,9 +260,6 @@ export default function CrewRail({
           {sealing.kind === 'sealed' && 'Saved. Taking you to waterbots.ai…'}
           {(sealing.kind === 'idle' || sealing.kind === 'failed') && 'Save this project and sign up'}
         </button>
-        <p className="t-caption" style={{ margin: '8px 0 0', fontSize: 10.5, lineHeight: 1.55 }}>
-          {consentLine(asking)}
-        </p>
         {sealing.kind === 'failed' && (
           <p role="alert" style={{ margin: '8px 0 0', fontSize: 12, lineHeight: 1.5, color: 'var(--state-pending)' }}>
             {sealing.message}

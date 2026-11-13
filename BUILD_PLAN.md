@@ -86,8 +86,7 @@ lives at `brand/BRAND.md`, gitignored. Two rules stand:
 
 ## The v1 order — per-seat conditions under the fence (ruled 23 Sep 2026)
 
-The finish line is the fence above and nothing else. These are the conditions each seat meets on
-the way to it.
+The finish line is the fence above and nothing else. These are the conditions each seat meets on the way to it.
 
 - **Wellington** asks type, stage, place, name; sends to Phoebe, then Calvin; reads back what
   Phoebe found. Done when one real walk goes end to end with no wrong turn.
@@ -110,9 +109,8 @@ the way to it.
 
 ## Road to v1 — this repository's work, in order (30 Oct 2026)
 
-Only the work here that the finish line needs, in the engineer's order, for her to move. Nothing on it is built
-yet. It rests on #156, the proposal to install Calvin from the open core, merged with her word on its open points.
-The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done, 24–26 Sep 2026, in the log.
+Only the work here that the finish line needs, in the engineer's order, for her to move. Nothing on it is built yet. It rests on #156,
+the proposal to install Calvin from the open core, merged with her word on its open points. The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done, 24–26 Sep 2026, in the log.
 
 | # | Step, in one line | Depends on | Done when |
 |---|---|---|---|
@@ -128,17 +126,15 @@ The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done,
 
 **After v1, not needed for the finish line:** A23, Calvin's VWBA row becomes Violet's; A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
-- **Wellington's prompt is 26,079 characters against a gate of 26,199.** The gate moves only on her word.
-- **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull
-  request; a measured run after any prompt change; the build-update fact refreshed at every full close-out.
+- **Wellington's prompt is 24,361 characters against a gate of 26,199** (A26, 12 Nov 2026). The gate moves only on her word.
+- **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull request; a measured run after any prompt change; the build-update fact refreshed at every full close-out.
 
 ---
 
 ## Sprints — one per family, in order
 
-A sprint is a family with work on a v1 step. Each holds all of its family's open items: the v1 items
-first, in step order, then that family's after-v1 items. The order is the engineer's reading of the v1
-order above, for her to move.
+A sprint is a family with work on a v1 step. Each holds all of its family's open items: the v1 items first, in step order,
+then that family's after-v1 items. The order is the engineer's reading of the v1 order above, for her to move.
 
 ### Sprint 1 — Agents: Calvin (step 5), then Bridget (step 6)
 
@@ -157,16 +153,18 @@ the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 
 **A22 · Bridget's chat.** Step 6 · BONES. Built and merged 31 Oct 2026 on her three rulings (#167); what it built is in
 docs/OPEN_ITEMS_ARCHIVE.md. Done when a walk passes through her and back with no wrong turn (road step 6). Closes A12.
 
-**A24 · A pin where no pathway goes on to Quantify.** Step 6 · v1 · BONES. Her ruling of 31 Oct 2026: Bridget thanks the
-visitor and sends them back to Wellington, as built in A22. The visit stays at Partners after the pin, and he may point back
-to the map. Done is a line he reads after a pin there, and a measured walk.
+**A24 · A pin where no pathway goes on to Quantify.** Step 6 · v1 · BONES. Her ruling of 31 Oct 2026: Bridget thanks the visitor and sends them
+back to Wellington, as built in A22. The visit stays at Partners after the pin, and he may point back to the map. Done is a line he reads after a pin there, and a measured walk.
 
 **A25 · Agents' knowledge copies refresh whenever their files change.** v1 · BONES. Her word of 31 Oct 2026. The primer,
 the cards and the lists reach the relays as generated copies (`scripts/build-prompt-modules.mjs`), written by hand; CI's
 `--check` fails a stale copy, but nothing refreshes one. Done is a copy that cannot ship stale and needs no hand. Proposal first.
 
-**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Her word of 31 Oct 2026: his prompt is 26,079 against a gate of 26,199, and
-step 3 needs room. A shorter version keeping every rule and step; the proposal is docs/proposals/wellington-rewrite-2026-10-31.md.
+**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved (docs/proposals/wellington-rewrite-2026-10-31.md);
+her two walks' fixes 12 Nov 2026; he passed the second. His prompt is 24,361, from 26,079. Waiting on one measured run.
+
+**A27 · Agent door bug.** v1 · BONES. Her word of 12 Nov 2026: in the Agent Commons, Phoebe tells visitors to go to Wellington. In the Commons,
+every agent works alone and asks for what she needs herself; on the sites, she hands back to Wellington. Each module must know which door it is at (see the plug-in contract).
 
 **A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet, host of the
 D-n modules in the Commons; not on the roster yet, by her hand. No proposal yet. Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026).
@@ -251,6 +249,9 @@ groups: which exist, where, how to reach them. The companion to D1. Not started.
 
 **S5 · Narrow-column wraps.** After v1 · PARK. The citation line wraps badly in the narrow dock; cosmetic.
 One piece of work with O4's legend strip and the rail-width rider.
+
+**S29 · Three blue buttons together.** After v1 · PARK. Her second walk of #170, 12 Nov 2026: the rail shows Open Eligibility,
+Save and Send as three solid blue buttons at once. For the design pass; no change now.
 
 **S22 · The Blocked row colour.** After v1 · PARK. Blocked rows reuse `--state-pending` until her pixels;
 the brand book's §2.5 has no stopped state that is not an error. A raise for the book, from an image.

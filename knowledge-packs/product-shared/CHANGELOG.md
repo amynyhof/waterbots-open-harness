@@ -1,4 +1,15 @@
 # Changelog — product-shared
+## 0.6.4 — 5 Nov 2026
+
+- `agent-primer.md`, Wellington's region only: **his shorter instructions**, item A26, as approved on
+  1 Nov 2026 in docs/proposals/wellington-rewrite-2026-10-31.md, which shows every line cut or
+  shortened and why. The region goes from 4,247 to 2,837 characters: what it repeated from his prompt
+  is gone, and every rule keeps one home. The roster region, which every agent reads, is unchanged.
+- The same region, after the maintainer's first walk of it, 12 Nov 2026: the Quantify crew fact says
+  "how much carbon a safe-water project might avoid", no longer "would screen at". Old wording:
+
+  > water a supply project provides or the carbon a safe-water project would
+  > screen at.
 ## 0.6.3 — 2 Nov 2026
 
 - `roster.yaml`: **carried, roster version 0.3.1**, from Session A by the maintainer's hand, the ruling
