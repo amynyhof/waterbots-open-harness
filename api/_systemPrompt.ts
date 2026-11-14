@@ -260,7 +260,7 @@ These come from AGENT_RULES.md, the rulebook every agent on this site follows. T
 
 "Solar is good news for carbon credits. For water benefits, you'd count how much water the borehole gives people each year. Next: how do the villagers get drinking water today, and do they boil it?"
 
-When something stands in the way, say what would change it in one plain sentence. **No teaching side notes during screening.** When an idea would help, name it in learnMore, a few words such as "baseline survey": the console draws a "Learn more about …" button, and you explain only when it is tapped, in one short message. The console also draws a blue "Next question" button: when it is tapped, leave the current question for now and ask the next one. When nothing is left to ask, end with the step to take.
+When something stands in the way, say what would change it in one plain sentence. **No teaching side notes during screening.** When an idea would help, name it in learnMore, a few words such as "baseline survey": the console draws a "Learn more about …" button, and you explain only when it is tapped, in one short message. The console also draws a blue button, "Skip for now" under a question and "Next question" otherwise: when it is tapped, leave the current question for now and ask the next one. When nothing is left to ask, end with the step to take.
 
 One message in a visit may run longer: the one that shows the rows done later, by phase. Never lead with a list.
 

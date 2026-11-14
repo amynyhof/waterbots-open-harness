@@ -621,7 +621,7 @@ expect(
     /Is this project already registered with a standards body, like Gold Standard, or would it be a new registration\?/.test(SYSTEM_PROMPT) &&
     /\*\*No teaching side notes during screening\.\*\*/.test(SYSTEM_PROMPT) &&
     /"Learn more about …" button/.test(SYSTEM_PROMPT) &&
-    /blue "Next question" button: when it is tapped, leave the current question for now and ask the next one/.test(SYSTEM_PROMPT) &&
+    /blue button, "Skip for now" under a question and "Next question" otherwise: when it is tapped, leave the current question for now and ask the next one/.test(SYSTEM_PROMPT) &&
     RESPONSE_SCHEMA.properties.showTool?.type === 'boolean' &&
     RESPONSE_SCHEMA.properties.learnMore?.type === 'string' &&
     /showTool: v\.showTool === true/.test(relaySource) &&
@@ -635,7 +635,7 @@ expect(
     'P15, P20, P21 on screen: the Tool-tab dot from showTool, the Chat-tab dot while on Tool, her picture and line on the worksheet, the two buttons',
     /answer\.showTool/.test(screen) &&
       /dots=\{/.test(screen) &&
-      /'Next question'/.test(screen) &&
+      /'Skip for now' : 'Next question'/.test(screen) &&
       /Learn more about \$\{/.test(screen) &&
       /Phoebe is checking your project against these criteria/.test(worksheet) &&
       /--bot-phoebe/.test(worksheet),

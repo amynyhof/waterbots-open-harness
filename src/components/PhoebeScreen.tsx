@@ -100,14 +100,18 @@ export const PHOEBE: AgentHost = {
 
 /**
  * The buttons under her latest message — the maintainer's word of 14 Nov 2026
- * (P21). "Next question", blue, sends that as the visitor's own message, and
- * she leaves the current question for now; "Learn more about …", where she
+ * (P21). The blue one reads "Skip for now" when her reply ends on a question
+ * and "Next question" otherwise (her ruling of 14 Nov 2026); either sends its
+ * words as the visitor's own message, and she leaves the current question for
+ * now. Which label is display only, read from the reply's last mark the way
+ * the bold closing question is; "Learn more about …", where she
  * named an idea in learnMore, asks her to explain it. Both are real messages
  * the visitor sends with a tap, shown in their bubble, never words put in
  * anyone's mouth unseen. Shared by the console and the Commons.
  */
-export function phoebeButtons(learnMore: string, send: (text: string) => void): TurnButton[] {
-  const buttons: TurnButton[] = [{ label: 'Next question', primary: true, go: () => send('Next question.') }];
+export function phoebeButtons(reply: string, learnMore: string, send: (text: string) => void): TurnButton[] {
+  const label = /\?["”’)]*\s*$/.test(reply) ? 'Skip for now' : 'Next question';
+  const buttons: TurnButton[] = [{ label, primary: true, go: () => send(`${label}.`) }];
   if (learnMore) {
     buttons.push({ label: `Learn more about ${learnMore}`, go: () => send(`Tell me more about ${learnMore}.`) });
   }
@@ -222,13 +226,13 @@ export default function PhoebeScreen({
       ...(answer.handBack === 'wellington'
         ? { action: { label: `Back to Wellington on ${DESK_LABEL}`, go: () => onNavigate('desk') } }
         : {}),
-      /* P21: "Next question", blue, and "Learn more about …" where she named
+      /* P21: "Skip for now" or "Next question", blue, and "Learn more about …" where she named
          an idea — real messages the visitor sends with a tap. Not under her
          first hello, which asks "Ready to get started?", and not once she has
          handed back. */
       ...(meta?.opened || answer.handBack === 'wellington'
         ? {}
-        : { buttons: phoebeButtons(answer.learnMore, (text) => void chatRef.current.sendText(text)) }),
+        : { buttons: phoebeButtons(answer.reply, answer.learnMore, (text) => void chatRef.current.sendText(text)) }),
     };
   }
 
