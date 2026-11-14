@@ -66,6 +66,7 @@ export default function AgentScreen({
   toolLabel,
   active: heldActive,
   onActiveChange,
+  dots,
 }: {
   host: AgentHost;
   tabs: ScreenTabs;
@@ -92,6 +93,12 @@ export default function AgentScreen({
    */
   active?: ScreenTab;
   onActiveChange?: (tab: ScreenTab) => void;
+  /**
+   * Tabs that carry a pulsing dot in the agent's colour, guiding the visitor
+   * there — Phoebe's Tool and Chat tabs, the maintainer's word of 14 Nov 2026.
+   * The consumer decides when; the screen only draws.
+   */
+  dots?: Partial<Record<ScreenTab, boolean>>;
 }) {
   const [ownActive, setOwnActive] = useState<ScreenTab>(opensOn);
   const active = heldActive ?? ownActive;
@@ -123,6 +130,7 @@ export default function AgentScreen({
             onClick={() => setActive(tab)}
           >
             {tab === 'tool' && toolLabel ? toolLabel : LABELS[tab]}
+            {dots?.[tab] && tab !== active && <span className="wb-tab-dot" aria-hidden />}
           </button>
         ))}
 

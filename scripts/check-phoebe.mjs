@@ -479,12 +479,15 @@ expect(
     /Blocked is rare and it is the card's decision, not yours/.test(SYSTEM_PROMPT),
   'a state rule is missing from her prompt'
 );
+/* The paid-site tools line went on 14 Nov 2026, the maintainer's P18: a row
+   that cannot be settled yet gets one line and the walk moves on. */
 expect(
-  'the tools line is a fact she phrases, said only where a Fixable or Unknown row shows',
-  /WaterBots is building tools and resources on the paid site/.test(SYSTEM_PROMPT) &&
-    /said where such a row shows and nowhere else/.test(SYSTEM_PROMPT) &&
-    /Never press anyone to sign up/.test(SYSTEM_PROMPT),
-  'the tools line is missing, or is not bounded'
+  'P18: what cannot be settled yet is one line, in her spirit, with no document named and no paid-site pitch',
+  !/WaterBots is building tools and resources on the paid site/.test(SYSTEM_PROMPT) &&
+    /You might need a baseline survey to learn that, and we can help you find tools for it\. For now, …/.test(SYSTEM_PROMPT) &&
+    /Never name a document/.test(SYSTEM_PROMPT) &&
+    /never a document's name/.test(SYSTEM_PROMPT),
+  'the paid-site line is back, or the one-line rule is missing'
 );
 /* THE DOOR TO A PERSON, item A18, 26 Sep 2026. Offered once, only on a
    Blocked row, pointing at the box the save door shows; rung 3 still says
@@ -571,10 +574,10 @@ expect(
   'the retroactive framing is missing'
 );
 expect(
-  'the Monitor group opens with the reporting fact, and never marks a planned project down',
-  /routine reporting is the critical part of impact funding/.test(SYSTEM_PROMPT) &&
+  'the Monitor group never marks a planned project down, and carries no teaching note (P21, 14 Nov 2026)',
+  !/routine reporting is the critical part of impact funding/.test(SYSTEM_PROMPT) &&
     /never as a mark against a project that has not started/.test(SYSTEM_PROMPT),
-  'the Monitor block’s fact is missing'
+  'the Monitor rule is missing, or its teaching note is back'
 );
 expect(
   'she cites by token in the cited field, never in the chat, and the chat draws none (12 Nov 2026)',
@@ -589,33 +592,62 @@ expect(
 expect(
   "the maintainer's walk of 12 Nov 2026: plain names, the reply's shape, the arrival, fixable only when it blocks, the tools line once, no cards-only line",
   /\*\*water benefits\*\* and \*\*carbon credits\*\*/.test(SYSTEM_PROMPT) &&
-    /Never say "baseline", "criterion", "additionality", "mapped activity", "counting route" or "Volume Provided method"/.test(SYSTEM_PROMPT) &&
-    /Solar is good news for carbon\./.test(SYSTEM_PROMPT) &&
+    /Never say "baseline" \(a "baseline survey" is fine\), "criterion", "additionality", "mapped activity", "counting route", "Volume Provided method", "water stewardship activity" or "community water supply class"/.test(SYSTEM_PROMPT) &&
+    /Solar is good news for carbon credits\./.test(SYSTEM_PROMPT) &&
+    /Say "good news for carbon credits", never "good news for carbon"/.test(SYSTEM_PROMPT) &&
     /Say "fixable" only when something actually stands in the way/.test(SYSTEM_PROMPT) &&
-    /said once: if this conversation already holds it, do not say it again/.test(SYSTEM_PROMPT) &&
     !/You read from a small set of cards/.test(SYSTEM_PROMPT) &&
     !/nothing here is verified, and a consultant confirms it/.test(SYSTEM_PROMPT),
   'a rule from the walk is missing, or an old line is back'
 );
 /* HER SECOND ROUND, the maintainer's word of 13 Nov 2026: the opener (P8),
    the record first (P9), short replies (P10). */
+/* Her opener was P8 (13 Nov 2026); from 14 Nov it is two messages, P14 and P15. */
 expect(
-  'P8: her opener is the eligibility quiz on the Tool tab, then a question; no "in beta", no repeat of Wellington, no early read',
-  /Let me help you find which impact pathway might suit your project\. I'll use the eligibility quiz in the Tool tab, so follow along if you want\. If you're ready, tell me…/.test(SYSTEM_PROMPT) &&
-    /No "in beta", no more introduction, and nothing Wellington already said/.test(SYSTEM_PROMPT) &&
-    /No early read: never say how either pathway looks/.test(SYSTEM_PROMPT) &&
+  'P14–P15: message 1 is a warm hello and "Ready to get started?"; message 2 points at the quiz with showTool, then asks; no "in beta", no repeat, no early read',
+  /\*\*Message 1, on its own:\*\* a warm hello with some personality, one line on what you do, then "Ready to get started\?" and nothing else/.test(SYSTEM_PROMPT) &&
+    /I'm Phoebe, and I find which funding paths might suit your project\. Ready to get started\?/.test(SYSTEM_PROMPT) &&
+    /\*\*Message 2, after their yes:\*\* one line saying you fill in the eligibility quiz on your Tool tab as you talk, with showTool set to true/.test(SYSTEM_PROMPT) &&
+    /No "in beta" and nothing Wellington already said\. Never say how either pathway looks before the record or the visitor settles its tests/.test(SYSTEM_PROMPT) &&
     !/you are in beta|You are Phoebe, in beta|You are in beta/i.test(SYSTEM_PROMPT) &&
-    !/follow it on the Tool tab at the top of your screen/.test(SYSTEM_PROMPT) &&
-    /Do not repeat him\. Say your opener/.test(phoebeNotesBlock({ opened: true }) ?? '') &&
-    !/ask if they are ready to work through eligibility/.test(phoebeNotesBlock({ opened: true }) ?? ''),
-  'the opener rule is missing, or the old greeting is back'
+    !/Let me help you find which impact pathway/.test(SYSTEM_PROMPT) &&
+    /This is your message 1, on its own/.test(phoebeNotesBlock({ opened: true }) ?? '') &&
+    /Do not repeat him/.test(phoebeNotesBlock({ opened: true }) ?? ''),
+  'a first-two-messages rule is missing, or the old opener is back'
 );
+expect(
+  'P16, P19, P21: one thing a message, the registration question, no side notes, and the two buttons as fields',
+  /\*\*One thing per message, said simply\.\*\*/.test(SYSTEM_PROMPT) &&
+    /Is this project already registered with a standards body, like Gold Standard, or would it be a new registration\?/.test(SYSTEM_PROMPT) &&
+    /\*\*No teaching side notes during screening\.\*\*/.test(SYSTEM_PROMPT) &&
+    /"Learn more about …" button/.test(SYSTEM_PROMPT) &&
+    /blue "Next question" button: when it is tapped, leave the current question for now and ask the next one/.test(SYSTEM_PROMPT) &&
+    RESPONSE_SCHEMA.properties.showTool?.type === 'boolean' &&
+    RESPONSE_SCHEMA.properties.learnMore?.type === 'string' &&
+    /showTool: v\.showTool === true/.test(relaySource) &&
+    /MAX_LEARN_MORE_CHARS/.test(relaySource),
+  'a rule from the third round is missing, or a field is not in her answer'
+);
+{
+  const screen = readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8');
+  const worksheet = readFileSync(join('src', 'components', 'EligibilityWorksheet.tsx'), 'utf8');
+  expect(
+    'P15, P20, P21 on screen: the Tool-tab dot from showTool, the Chat-tab dot while on Tool, her picture and line on the worksheet, the two buttons',
+    /answer\.showTool/.test(screen) &&
+      /dots=\{/.test(screen) &&
+      /'Next question'/.test(screen) &&
+      /Learn more about \$\{/.test(screen) &&
+      /Phoebe is checking your project against these criteria/.test(worksheet) &&
+      /--bot-phoebe/.test(worksheet),
+    'a piece of the screen is missing'
+  );
+}
 expect(
   'P9: the record is read first and nothing it holds is asked again, in any words',
   /# Read the record first — a hard rule/.test(SYSTEM_PROMPT) &&
     /Never ask for anything it holds, in any words/.test(SYSTEM_PROMPT) &&
     /new source or cleaning water, stage, people or households served, place, name/.test(SYSTEM_PROMPT) &&
-    SYSTEM_PROMPT.indexOf('# Read the record first') < SYSTEM_PROMPT.indexOf('# Your opener'),
+    SYSTEM_PROMPT.indexOf('# Read the record first') < SYSTEM_PROMPT.indexOf('# Your first two messages'),
   'the record-first rule is missing, or comes after the opener'
 );
 expect(

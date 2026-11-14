@@ -988,6 +988,27 @@ button.wb-phase:hover span:last-child {
   outline-offset: -2px;
 }
 
+/* A dot on a tab that guides the visitor there — the maintainer's word of
+   14 Nov 2026 (P15, P20): on Phoebe's Tool tab when she says her quiz is
+   there, and on her Chat tab while the visitor is on Tool. In the agent's own
+   colour by her word, not teal. Opacity only, the typing dots' own pulse, and
+   still under reduced motion. */
+.wb-tab-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 6px;
+  vertical-align: middle;
+  border-radius: var(--r-pill);
+  background: var(--screen-accent);
+  animation: wb-dot-pulse 1.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wb-tab-dot {
+    animation: none;
+  }
+}
+
 /* "Next phase" at the right end of the row — §7's secondary button: a
    Tide-tinted border with Tide text. Navigation, so Tide, not the agent. */
 

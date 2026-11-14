@@ -50,6 +50,10 @@ export interface PhoebeAnswer {
   /** What a pack's own tests settled about which rows this project has. */
   sorts: { pack: string; value: string }[];
   handBack: HandBack;
+  /** P15, 14 Nov 2026: this message says her quiz is on the Tool tab — the console dots the tab. */
+  showTool: boolean;
+  /** P21, 14 Nov 2026: one idea for a "Learn more about …" button, or "". */
+  learnMore: string;
   abstained: boolean;
   abstentionTopic?: string;
   /** Which card sets the relay had loaded for this answer, so later asks keep them. */
@@ -209,6 +213,8 @@ export async function askPhoebe(
     pathways: resolvePathways(data.pathways),
     sorts: resolveSorts(data.sorts),
     handBack: HAND_BACKS.find((h) => h === data.handBack) ?? 'none',
+    showTool: data.showTool === true,
+    learnMore: typeof data.learnMore === 'string' ? data.learnMore.trim().slice(0, 48) : '',
     abstained: data.abstained === true,
     abstentionTopic:
       typeof data.abstentionTopic === 'string' ? data.abstentionTopic : undefined,

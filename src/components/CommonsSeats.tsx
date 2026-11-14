@@ -49,7 +49,7 @@ import {
 import { HER_PACKS } from '../lib/worksheet.generated';
 import { fittedPack, type PackValues } from '../lib/methodPacks';
 import { askPhoebe, carriedSheet } from '../lib/phoebeClient';
-import AgentScreen from '../screen/AgentScreen';
+import AgentScreen, { type ScreenTab } from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab from '../screen/KnowledgePackTab';
 import NotLiveChat from '../screen/NotLiveChat';
@@ -57,12 +57,16 @@ import ScreenChat from '../screen/ScreenChat';
 import { BRIDGET, BRIDGET_PACK } from './BridgetScreen';
 import { CALVIN, CALVIN_NOT_LIVE_LINE, CALVIN_PACK } from './CalvinScreen';
 import EligibilityWorksheet from './EligibilityWorksheet';
-import { PHOEBE, PHOEBE_PACK } from './PhoebeScreen';
+import { PHOEBE, PHOEBE_PACK, phoebeButtons } from './PhoebeScreen';
 import QuantificationWorksheet from './QuantificationWorksheet';
 
 export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
   const [sheet, setSheet] = useState<Sheet>(EMPTY_SHEET);
   const loaded = useRef<string[]>([]);
+  /* The guiding dots and buttons, as on the console (14 Nov 2026). */
+  const [tab, setTab] = useState<ScreenTab>('chat');
+  const [toolDot, setToolDot] = useState(false);
+  const chatRef = useRef<ReturnType<typeof useConversation> | null>(null);
 
   async function ask(
     history: { role: 'user' | 'agent'; text: string }[],
@@ -83,6 +87,7 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
       { sheet: carriedSheet(sheet, HER_PACKS), loaded: loaded.current, onLive }
     );
     if (answer.loaded) loaded.current = answer.loaded;
+    if (answer.showTool) setToolDot(true);
     const verdicts = { rows: answer.rows, pathways: answer.pathways, sorts: answer.sorts };
     const moved = answer.rows.length > 0 || answer.pathways.length > 0;
     if (moved || answer.sorts.length > 0) {
@@ -105,16 +110,26 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
         : {}),
       /* The way back to the shelf, from the field alone. */
       ...(answer.handBack === 'wellington' ? { action: { label: 'Back to the shelf', go: onBack } } : {}),
+      ...(answer.handBack === 'wellington' || history.length <= 1
+        ? {}
+        : { buttons: phoebeButtons(answer.learnMore, (text) => void chatRef.current?.sendText(text)) }),
     };
   }
 
   const chat = useConversation(ask, PHOEBE.name);
+  chatRef.current = chat;
 
   return (
     <AgentScreen
       host={PHOEBE}
       idSlug="commons-phoebe"
       toolLabel="Eligibility quiz"
+      active={tab}
+      onActiveChange={(next) => {
+        setTab(next);
+        if (next === 'tool') setToolDot(false);
+      }}
+      dots={{ tool: toolDot, chat: tab === 'tool' && chat.turns.some((turn) => turn.role === 'agent') }}
       tabs={{
         chat: <ScreenChat host={PHOEBE} chat={chat} composerId="wb-commons-phoebe-composer" />,
         tool: <EligibilityWorksheet sheet={sheet} gsClass="" herPacks={HER_PACKS} />,

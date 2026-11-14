@@ -42,9 +42,9 @@
  * access, shaped with founding users.
  */
 
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
-import type { AgentHost, AgentTurn } from '../chat/evidence';
+import type { AgentHost, AgentTurn, TurnButton } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
 import type { Citation } from '../lib/citation';
 import { worksheetCaption, contextFor, applyUpdates, type Sheet, type Verdicts } from '../lib/worksheetState';
@@ -71,7 +71,7 @@ import {
 import { askPhoebe, carriedRecord, carriedSheet } from '../lib/phoebeClient';
 import type { Surface } from '../lib/surfaces';
 import type { VisitContext } from '../lib/visit';
-import AgentScreen from '../screen/AgentScreen';
+import AgentScreen, { type ScreenTab } from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, {
   type PackLayer,
@@ -97,6 +97,22 @@ export const PHOEBE: AgentHost = {
      30 Sep 2026. Nothing about her prompt, her relay or the record changes. */
   boldClosingQuestion: true,
 };
+
+/**
+ * The buttons under her latest message — the maintainer's word of 14 Nov 2026
+ * (P21). "Next question", blue, sends that as the visitor's own message, and
+ * she leaves the current question for now; "Learn more about …", where she
+ * named an idea in learnMore, asks her to explain it. Both are real messages
+ * the visitor sends with a tap, shown in their bubble, never words put in
+ * anyone's mouth unseen. Shared by the console and the Commons.
+ */
+export function phoebeButtons(learnMore: string, send: (text: string) => void): TurnButton[] {
+  const buttons: TurnButton[] = [{ label: 'Next question', primary: true, go: () => send('Next question.') }];
+  if (learnMore) {
+    buttons.push({ label: `Learn more about ${learnMore}`, go: () => send(`Tell me more about ${learnMore}.`) });
+  }
+  return buttons;
+}
 
 export default function PhoebeScreen({
   onVerdicts,
@@ -128,6 +144,17 @@ export default function PhoebeScreen({
      it with everything else. */
   const loaded = useRef<string[]>([]);
 
+  /* THE TABS THAT GUIDE — the maintainer's word of 14 Nov 2026. A dot on the
+     Tool tab from the message that says her quiz is there (P15) until the
+     visitor opens it; a dot on the Chat tab while they are on Tool, to bring
+     them back (P20). In her own colour, through the screen's accent. */
+  const [tab, setTab] = useState<ScreenTab>('chat');
+  const [toolDot, setToolDot] = useState(false);
+  const onTab = (next: ScreenTab) => {
+    setTab(next);
+    if (next === 'tool') setToolDot(false);
+  };
+
   async function ask(
     history: { role: 'user' | 'agent'; text: string }[],
     signal: AbortSignal,
@@ -154,6 +181,7 @@ export default function PhoebeScreen({
     );
 
     if (answer.loaded) loaded.current = answer.loaded;
+    if (answer.showTool) setToolDot(true);
 
     /* Her side effect, fired before the turn is returned so a failed request
        never half-moves the worksheet. */
@@ -194,6 +222,13 @@ export default function PhoebeScreen({
       ...(answer.handBack === 'wellington'
         ? { action: { label: `Back to Wellington on ${DESK_LABEL}`, go: () => onNavigate('desk') } }
         : {}),
+      /* P21: "Next question", blue, and "Learn more about …" where she named
+         an idea — real messages the visitor sends with a tap. Not under her
+         first hello, which asks "Ready to get started?", and not once she has
+         handed back. */
+      ...(meta?.opened || answer.handBack === 'wellington'
+        ? {}
+        : { buttons: phoebeButtons(answer.learnMore, (text) => void chatRef.current.sendText(text)) }),
     };
   }
 
@@ -211,6 +246,9 @@ export default function PhoebeScreen({
   return (
     <AgentScreen
       host={PHOEBE}
+      active={tab}
+      onActiveChange={onTab}
+      dots={{ tool: toolDot, chat: tab === 'tool' && chat.turns.some((turn) => turn.role === 'agent') }}
       tabs={{
         chat: <ScreenChat host={PHOEBE} chat={chat} composerId="wb-phoebe-composer" />,
         tool: (

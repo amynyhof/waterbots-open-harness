@@ -25,6 +25,7 @@
  */
 
 import { useState, type ReactNode } from 'react';
+import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
 import {
   CONSIDERATIONS,
   CONSIDERATION_GROUPS,
@@ -85,6 +86,27 @@ export default function EligibilityWorksheet({
     <div style={{ height: '100%', overflowY: 'auto' }}>
       <div style={{ maxWidth: 880, margin: '0 auto', padding: '28px var(--gutter) 64px' }}>
         <header style={{ marginBottom: 30 }}>
+          {/* WHO IS FILLING THIS IN — the maintainer's word of 14 Nov 2026
+              (P20). Her face and one line, in her own colour as an identity —
+              a tint and a keyline, the way her tabs wear it — never teal,
+              which on this site marks a value a baseline can set. */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              marginBottom: 18,
+              padding: '8px 12px',
+              borderLeft: '3px solid var(--bot-phoebe)',
+              background: 'color-mix(in oklab, var(--bot-phoebe) 8%, var(--paper))',
+              borderRadius: 'var(--r-xs)',
+            }}
+          >
+            <img src={phoebePortrait} alt="" width={28} height={28} style={{ flex: 'none' }} />
+            <span className="t-caption" style={{ color: 'var(--ink)', fontSize: 13 }}>
+              Phoebe is checking your project against these criteria.
+            </span>
+          </div>
           <div className="eyebrow" style={{ marginBottom: 10 }}>
             Eligibility worksheet
           </div>

@@ -632,6 +632,11 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   const doneAt = Date.now();
+  /* SPEED, WRITTEN DOWN — added 14 Nov 2026, when the platform's log showed
+     each answer's whole time but not when its first word reached the visitor. */
+  console.log(
+    `phoebe: first word ${firstWordAt === null ? 'not streamed' : `${((firstWordAt - calledAt) / 1000).toFixed(1)}s`}, whole answer ${((doneAt - calledAt) / 1000).toFixed(1)}s, ${calls} call(s)`
+  );
   return json(200, {
     ...answer,
     /* Which card sets this answer was given, so the console can send them back
@@ -788,9 +793,16 @@ interface Answer {
   needCards: 'none' | CardSet;
   /** Contract line 8: the way back to Wellington, a field the console acts on. See _handBack.ts. */
   handBack: HandBack;
+  /** P15, 14 Nov 2026: the message that says her quiz is on the Tool tab. */
+  showTool: boolean;
+  /** P21, 14 Nov 2026: one idea for a "Learn more about …" button, or "". */
+  learnMore: string;
   abstained: boolean;
   abstentionTopic?: string;
 }
+
+/** The longest "Learn more about …" topic shown; longer is dropped, not cut. */
+const MAX_LEARN_MORE_CHARS = 48;
 
 /** A card token is `section:set/id`, and the section has to be one of the tool's. */
 const TOKEN = /^([a-z][a-z0-9-]*):([a-z]+)\/([A-Za-z0-9-]+)$/;
@@ -921,6 +933,10 @@ function readAnswer(value: unknown): Answer | null {
   const abstained = v.abstained === true;
   const topic = typeof v.abstentionTopic === 'string' ? v.abstentionTopic.trim() : '';
 
+  /* A button label is a few words on one line, or nothing. */
+  const learnRaw = typeof v.learnMore === 'string' ? v.learnMore.trim().replace(/[.?!]+$/, '') : '';
+  const learnMore = learnRaw.length <= MAX_LEARN_MORE_CHARS && !/[\n\r]/.test(learnRaw) ? learnRaw : '';
+
   return {
     reply: v.reply.trim(),
     cited,
@@ -929,6 +945,8 @@ function readAnswer(value: unknown): Answer | null {
     sorts,
     needCards,
     handBack,
+    showTool: v.showTool === true,
+    learnMore,
     abstained,
     ...(abstained && topic ? { abstentionTopic: topic } : {}),
   };
