@@ -115,7 +115,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 | # | Step, in one line | Depends on | Done when |
 |---|---|---|---|
 | 1 | **React 19 under the map**, so the open core's calculator screens can run here (#156, §9). | Nothing outside this repository. | Before-and-after map pictures she has passed; every check and the build pass. |
-| 2 | **Calvin's carbon calculator from the open core** on his Tool tab, V1 and V2, simple view and sliders on (A21). | The open core (Session C): the eight changes in #156 §1, sliders and the simple view. Pinned to the open core release that includes the sliders, as a release file. | Proofs P1 to P5 of #156 pass; she has passed the before-and-after table and the tab in the browser; **`carried/` is removed from this repository in the same swap, required for v1** (ruling 1 Nov 2026: the paid repository keeps the private original as the archive). |
+| 2 | **Calvin's carbon calculator from the open core** on his Tool tab, V1 and V2, simple view and sliders on (A21). | The open core (Session C): the eight changes in #156 §1, sliders and the simple view. Pinned to the open core release that includes the sliders, as a release file. | Proofs P1 to P5 of #156 pass; she has passed the before-and-after table and the tab in the browser; **`carried/` is removed from this repository in the same swap, required for v1** (ruling 1 Nov 2026: the paid repository keeps the private original as the archive). **14 Nov 2026: calvin 0.2.0 installed, ex-ante with sliders, `carried/` deleted; P1 to P3 run. 0.2.0 has no simple view, and shows a new project no figure without a filed V1.0 fNRB: both for Session C.** |
 | 3 | **Wellington asks the core facts first**: type and class, country, how many served, people or households, and whether it is already registered for carbon (the transition). | Her rewrite of his instructions, freeing at least 249 characters plus the new question's; the gate stays at 26,199. Step 2. | The record holds the new fields; one measured run; his prompt under the gate. |
 | 4 | **Calvin's chat**, on the open core's prompt, asking only what is missing (A21). | The core's `prompt.md` read against AGENT_RULES.md (#156, open point C). Steps 2 and 3. | One measured run; on a walk he opens with his facts filled and asks at most household size and, for a transition, the filed V1.0 fraction of non-renewable biomass (fNRB). |
 | 5 | **The water figure from the open core's VWBA D-3 module**, in place of this site's `vwbaD3.ts`. | Session C builds the module, with the test cases worked by hand and every step cited, in a pinned open core release. Step 2. | The hand-worked cases pass here; she has passed the water figure in the browser. |
@@ -293,7 +293,7 @@ callers, and "console" in Bridget's and Calvin's dock copy. One hygiene pass; no
 for each. Check later, on her word.
 
 **O16 · Real-project figures in the carried bundle, public since #132.** Step 5 · BONES. The sweep of 3 Oct 2026
-found the India filing's figures in `presets.ts`, `emissions-legacy.ts` and `MANIFEST.md`. #244 is the paid site's
+found the India filing's figures in `presets.ts`, `emissions-legacy.ts` and `MANIFEST.md` (`carried/` deleted 14 Nov 2026). #244 is the paid site's
 item for real numbers left in this repository's public history. Open: the figures stay in `main`'s history before it. List: BUILD_LOG.
 
 ---
