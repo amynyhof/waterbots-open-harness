@@ -375,7 +375,7 @@ function MethodStrip({ pack, values }: { pack: MethodPack; values: PackValues })
         </div>
       ))}
       <div className="t-caption" style={{ fontSize: 9.5, marginTop: 5 }}>
-        {pack.method.optionName} · anticipated, screening, not verified.
+        {pack.method.optionName} · anticipated. This is a first screening, not an official decision.
       </div>
     </div>
   );
@@ -456,7 +456,10 @@ function Header({
             {pack.measures}
           </p>
           <div style={{ marginTop: 9, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <Chip>Screening · not verified</Chip>
+            {/* The maintainer's word of 14 Nov 2026: the first-screening line, as on Phoebe's worksheet. */}
+            <span className="t-caption" style={{ fontSize: 11, alignSelf: 'center' }}>
+              This is a first screening, not an official decision.
+            </span>
             {exampleOn && pack.example && <Chip muted>{pack.example.label}</Chip>}
           </div>
         </div>
@@ -832,7 +835,7 @@ function ResultBlock({
       >
         <Chip>Screening · consultant review</Chip>
         <span className="t-caption" style={{ fontSize: 10 }}>
-          Anticipated. Not delivered, and not verified.
+          Anticipated, not delivered. This is a first screening, not an official decision.
         </span>
       </div>
 

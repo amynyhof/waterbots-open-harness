@@ -9,8 +9,9 @@
  * No composer.
  *
  * THE DOCK'S CAVEAT STRIP IS NOT CARRIED OVER, and nothing is lost by that:
- * the worksheet says "screening, not verified" on its method strip, on the
- * result and on the consultant-review tag, wherever a figure renders. The
+ * the worksheet says it is a first screening, not an official decision, on
+ * its method strip and on the result, beside the consultant-review tag
+ * (wording of 14 Nov 2026), wherever a figure renders. The
  * strip was a second statement of the same thing beside the first.
  *
  * HIS KNOWLEDGE PACK IS THE METHOD PACKS. Calvin carries no rule cards; what
