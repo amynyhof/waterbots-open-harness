@@ -435,6 +435,15 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   prompt. A handoff introduces the colleague and draws "Meet <name>" (blue) and "Keep chatting" (a
   quiet chip); his line also heads Phoebe's page, before her hello. A reply with card words ("water
   stewardship work", "mapped way to count") is logged and fails the measured walk.
+- **Voice cards, no scripts, 14 Nov 2026, the maintainer's word on #173.** Each agent's prompt opens
+  with a voice card (who it is, who it talks to, the principles) and keeps at most two tone examples,
+  marked never to copy; the rule is in AGENT_RULES.md. Method terms are said in everyday words from one
+  shared list, `knowledge-packs/product-shared/plain-words.md`, with `before-and-after.md` beside it
+  as examples, not rules; both reach both prompts, generated. Wellington never implies a result is near,
+  and on a handoff to Phoebe he writes one line to her that heads her page, summing the project up.
+  Phoebe asks deal-breakers first (a running project's start date before anything else), then what
+  settles both paths, then one path, water first, never carbon first; a closed path gets one plain line
+  and she goes straight on; the offer of a person is in the right panel only, never in chat.
 - **Wellington reads back what Phoebe found, and asks people served, from 26–27 Sep 2026 (items A17
   and A16, #128 and #130).** Each ask carries her worksheet as row ids and states only; he greets a
   visitor coming back from her knowing each pathway's read, never her sentences, and routes to
@@ -443,7 +452,8 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   households never converted here, on the record, the rail and the seal as `record.served`. His
   prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep, 26,034 from 4 Oct, 26,079 from 31 Oct, and
   23,123 from 5 Nov 2026, when his shorter instructions were built (item A26), 24,560 from
-  13 Nov 2026, after the maintainer's three walks of them, 24,581 with the primer's line on Phoebe's tab, 25,943 after her fourth walk and 26,145 after her fifth, both 14 Nov 2026, against the unchanged gate of 26,199.
+  13 Nov 2026, after the maintainer's three walks of them, 24,581 with the primer's line on Phoebe's tab, 25,943 after her fourth walk, 26,145 after her fifth and 26,148 with the voice card and the
+  shared plain-words list, all 14 Nov 2026, against the unchanged gate of 26,199.
 - **The engine bundle is tracked at `carried/`, from 27 Sep 2026**, placed by the maintainer's
   hand and merged on `main` as it stands (#132), tagged `engine-carry-2026-09-27`. **It was replaced
   on 3 Oct 2026 by v0.16.1**, the paid site's `calculator-seal-2026-10-03`: 34 files, 34 hashes
