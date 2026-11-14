@@ -505,6 +505,7 @@ export default function App() {
                   onNavigate={setSurface}
                   visible={onEligibility}
                   eligibilityDone={sheetDone(visit, sheet)}
+                  invite={visit.eligibilityInvite}
                 />
               </div>
 

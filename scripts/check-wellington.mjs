@@ -188,25 +188,38 @@ expect(
 );
 expect(
   "the maintainer's walk of 13 Nov 2026: a three-sentence welcome that never says free, and a handoff that names one next step",
-  /your welcome is three short sentences and no more/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /Hi, I'm Wellington, the Team Lead\. Our team helps match water projects with funding they might qualify for\. Tell me about your project\./.test(WELLINGTON_SYSTEM_PROMPT) &&
+  /three short sentences and no more/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Never say "free"/.test(WELLINGTON_SYSTEM_PROMPT) &&
     !/\bfree site\b|it is free\b/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /A handoff names one next step, and nothing after it/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /Next is Phoebe, who checks whether your project could earn water benefits or carbon credits\./.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /names one next step/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Never preview the steps after that one/.test(WELLINGTON_SYSTEM_PROMPT),
   'a rule from the walk is missing, or "free" is back'
+);
+/* HIS FIFTH WALK, the maintainer's word of 14 Nov 2026 (W19 to W22): a person,
+   not a script. The examples are tone, never lines to copy. */
+expect(
+  'W19–W21: answer first, then who he is, then one related follow-up; a friendly mentor who never thanks for answers and steers back kindly; a handoff that introduces a colleague',
+  /\*\*Talk like a person, not a script: a friendly mentor, warm, encouraging and brief\.\*\*/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Respond to what the visitor actually said, then ask one follow-up related to it\. Never thank them for answering/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /If they drift, answer briefly or say who covers it, then steer back kindly/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Examples here show tone only; never copy them/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /answer what they said first, then who you are/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Is the borehole for community drinking water, or for farming\?/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /\*\*A handoff introduces a colleague, and names one next step\.\*\*/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Let me introduce you to Phoebe, who checks whether your project could earn water benefits or carbon credits/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    !/Tell me about your project\."/.test(WELLINGTON_SYSTEM_PROMPT),
+  'a rule from the fifth walk is missing, or the old scripted welcome is back'
 );
 /* HIS FOURTH WALK, the maintainer's word of 14 Nov 2026 (W14 to W18). */
 expect(
   'W14–W18: the team line, the basics line first, words that settle the class, no invented detail, the two buttons, basic funding facts',
-  /Our team helps match water projects with funding they might qualify for/.test(WELLINGTON_SYSTEM_PROMPT) &&
+  /our team here matches water projects with funding they might qualify for/.test(WELLINGTON_SYSTEM_PROMPT) &&
     !/Our team helps you see if your water project/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /only then asks your first question, in the same message\. Never after the question/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /"borehole", "well" or "spring" is a new source \(CWS\); "filter" or "chlorine" cleans water/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /\*\*Never invent a detail\*\* the visitor did not say, such as a pump type/.test(WELLINGTON_SYSTEM_PROMPT) &&
     !/Never work it out from a word such as "borehole"/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /"Meet Phoebe" and "Keep chatting"; never describe them/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /"Meet Phoebe" and "Keep chatting" under it/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /\*\*Basic questions about impact funding are yours\*\*/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /A carbon credit stands for one tonne of carbon dioxide/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Whether this project is eligible, any number, and anything about a basin stay with Phoebe, Calvin and Bridget/.test(WELLINGTON_SYSTEM_PROMPT),
@@ -215,8 +228,10 @@ expect(
 {
   const wellingtonLib = readFileSync(join('src', 'lib', 'wellington.ts'), 'utf8');
   expect(
-    'W17: a route to a colleague draws "Meet <name>" and "Keep chatting" under his message, from the field alone',
-    /Meet \$\{/.test(wellingtonLib) && /'Keep chatting'/.test(wellingtonLib) && /actionsFor\(answer\.route/.test(wellingtonLib),
+    'W17, P24: a route to a colleague draws "Meet <name>" (blue) and "Keep chatting" (a quiet chip) under his message, from the field alone',
+    /Meet \$\{/.test(wellingtonLib) && /'Keep chatting'/.test(wellingtonLib) && /actionsFor\(answer\.route/.test(wellingtonLib) &&
+      /button\.primary \? 'btn btn-primary' : 'wb-chip'/.test(readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8')) &&
+      /\.wb-chip \{[^}]*background: transparent;/.test(readFileSync(join('src', 'styles', 'base.css'), 'utf8')),
     'the two buttons are not built from the route field'
   );
 }
@@ -632,10 +647,16 @@ expect(
 const navSource = readFileSync('src/components/NavRail.tsx', 'utf8');
 expect('empty record fields do not say Wellington asks this', !/Wellington asks this/.test(navSource), 'the caption is still there');
 const phoebeSource = readFileSync('src/components/PhoebeScreen.tsx', 'utf8');
+const appSourceForInvite = readFileSync('src/App.tsx', 'utf8');
 expect(
-  "Phoebe's first open asks without a visitor bubble and does not show his routing message again; her greeting stands alone",
-  /askOpened/.test(phoebeSource) && !/speaker: WELLINGTON/.test(phoebeSource) && !/eligibilityInvite/.test(phoebeSource) && !/\.seed\(/.test(phoebeSource),
-  'his routing message is copied onto her desk, or the first-open ask is missing'
+  /* Reversed 14 Nov 2026 (W22), the maintainer's word: his handoff line is at
+     the top of her page again, before her hello, display only — it is never
+     sent to her as a turn (useConversation's forAsk drops speaker turns). */
+  "W22: Phoebe's first open shows his handoff line first, display only, then asks without a visitor bubble",
+  /askOpened/.test(phoebeSource) && /speaker: WELLINGTON/.test(phoebeSource) && /\.seed\(\[/.test(phoebeSource) &&
+    /invite=\{visit\.eligibilityInvite\}/.test(appSourceForInvite) &&
+    /turn\.role === 'agent' && !turn\.speaker/.test(readFileSync('src/chat/useConversation.ts', 'utf8')),
+  'his line is not seeded before her hello, or it could be sent to her as her own turn'
 );
 const screenSource = readFileSync('src/screen/AgentScreen.tsx', 'utf8');
 const railSource = readFileSync('src/components/CrewRail.tsx', 'utf8');
