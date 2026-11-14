@@ -91,8 +91,9 @@ export interface AgentTurn {
   action?: TurnAction;
   /**
    * Buttons under the turn, from 14 Nov 2026: Wellington's "Meet Phoebe" and
-   * "Keep chatting" at a handoff (W17), and Phoebe's "Next question" and
-   * "Learn more about …" (P21). Built by an adapter from fields, never from
+   * "Keep chatting" at a handoff (W17), and Phoebe's "Learn more about …"
+   * (P22). Only the main next step is primary and blue; the rest are quiet
+   * chips (P24). Built by an adapter from fields, never from
    * prose, and drawn only under the latest turn.
    */
   buttons?: TurnButton[];

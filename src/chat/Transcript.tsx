@@ -160,7 +160,8 @@ function HostBubble({ host, turn, latest = false }: { host: AgentHost; turn: Age
 
 /**
  * The buttons under the latest turn (14 Nov 2026): the blue primary one
- * first, then plain ones. Only the latest turn draws them, so an old handoff's
+ * first — only the main next step, such as "Meet Phoebe" — then quiet chips,
+ * small, outlined and unfilled (P24). Only the latest turn draws them, so an old handoff's
  * buttons do not stay on the thread as if they were still the next step.
  */
 function TurnButtons({ turn }: { turn: AgentTurn }) {
@@ -171,8 +172,8 @@ function TurnButtons({ turn }: { turn: AgentTurn }) {
         <button
           key={button.label}
           type="button"
-          className={button.primary ? 'btn btn-primary' : 'btn'}
-          style={{ padding: '6px 14px', fontSize: 13 }}
+          className={button.primary ? 'btn btn-primary' : 'wb-chip'}
+          style={button.primary ? { padding: '6px 14px', fontSize: 13 } : undefined}
           onClick={button.go}
         >
           {button.label}

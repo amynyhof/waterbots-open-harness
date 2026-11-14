@@ -988,6 +988,25 @@ button.wb-phase:hover span:last-child {
   outline-offset: -2px;
 }
 
+/* A quiet chip under a chat message — the maintainer's word of 14 Nov 2026
+   (P24): small text, a plain outline, no fill. Blue is kept for the main next
+   step alone (Meet Phoebe, Save). */
+.wb-chip {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.3;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.wb-chip:hover {
+  color: var(--ink);
+  border-color: var(--ink-4);
+}
+
 /* A dot on a tab that guides the visitor there — the maintainer's word of
    14 Nov 2026 (P15, P20): on Phoebe's Tool tab when she says her quiz is
    there, and on her Chat tab while the visitor is on Tool. In the agent's own
