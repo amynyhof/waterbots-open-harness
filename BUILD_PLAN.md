@@ -126,7 +126,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 
 **After v1, not needed for the finish line:** A23, Calvin's VWBA row becomes Violet's; A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
-- **Wellington's prompt is 25,943 characters against a gate of 26,199** (A26, 14 Nov 2026, after her fourth walk; 24,581 the day before). The gate moves only on her word.
+- **Wellington's prompt is 26,145 characters against a gate of 26,199** (A26, 14 Nov 2026, after her fifth walk; 24,581 the day before). The gate moves only on her word.
 - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull request; a measured run after any prompt change; the build-update fact refreshed at every full close-out.
 
 ---
@@ -159,12 +159,12 @@ the cards and the lists reach the relays as generated copies (`scripts/build-pro
 `--check` fails a stale copy, but nothing refreshes one. Done is a copy that cannot ship stale and needs no hand. Proposal first.
 
 **A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved (docs/proposals/wellington-rewrite-2026-10-31.md);
-her four walks' fixes 12–14 Nov 2026. His prompt is 25,943, from 26,079. Waiting on one measured run.
+her five walks' fixes 12–14 Nov 2026. His prompt is 26,145, from 26,079. Waiting on one measured run.
 
 **A27 · Agent door bug.** v1 · BONES. Her word of 12 Nov 2026: in the Agent Commons, Phoebe tells visitors to go to Wellington. In the Commons,
 every agent works alone and asks for what she needs herself; on the sites, she hands back to Wellington. Each module must know which door it is at (see the plug-in contract).
 
-**A28 · Phoebe's walk fixes.** v1 · BONES. Her word of 12–14 Nov 2026: rounds two and three (#173), the limit of 4 sentences or 400 characters approved 14 Nov. Her first walk on the preview: answers took 6.8 to 23.1 seconds in all; first-word time is logged from 14 Nov. Waiting on one measured run.
+**A28 · Phoebe's walk fixes.** v1 · BONES. Her word of 12–14 Nov 2026: rounds two and three (#173), the limit of 4 sentences or 400 characters approved 14 Nov. On the preview her first word came at 4.8 to 6.1 seconds and whole answers took 5.8 to 9.3 (14 Nov). The skipped hello is fixed. Waiting on one measured run.
 
 **A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet, host of the
 D-n modules in the Commons; not on the roster yet, by her hand. No proposal yet. Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026).
