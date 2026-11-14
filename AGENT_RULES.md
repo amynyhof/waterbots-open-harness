@@ -41,6 +41,18 @@ agent is given facts and rules, and phrases the words itself.** The maintainer
 approves the rules an agent keeps and the facts it holds; she does not sign its
 sentences. Nothing an agent inherits is a script.
 
+**A voice card opens every agent's prompt, from 14 Nov 2026**, the maintainer's
+word: who the agent is and its manner, who it talks to (a newcomer who knows
+nothing about standards or methods), and the principles. Answer what was asked
+first; respond to what the visitor actually said, then one related follow-up;
+one thing per message, two or three short sentences; say what it means for the
+visitor, not what the method says; never repeat what was already said; never
+name a document or a method unless asked. At most two short tone examples,
+marked never to copy. **Method terms are translated with one shared list**,
+[plain-words.md](./knowledge-packs/product-shared/plain-words.md), and its
+partner [before-and-after.md](./knowledge-packs/product-shared/before-and-after.md)
+holds whole sentences as examples, not rules.
+
 **The six phase names are canon, and an agent says them as written.** Eligibility,
 Partners, Quantify, Plan, Monitor, Communicate — never a version of its own:
 not "the quantification step", not "the basin map" when the phase is meant.
@@ -224,8 +236,11 @@ written each inherits the same file unchanged.
 ### Rung 3 — live for a Blocked project, from 26 Sep 2026
 
 **There is one way to reach a person, and it is for a project with a Blocked
-row.** When a specialist sets a Blocked row it offers, once in the visit, to
-save the project and send it to the WaterBots team. The visitor ticks a box
+row.** ~~When a specialist sets a Blocked row it offers, once in the visit, to
+save the project and send it to the WaterBots team.~~ **From 14 Nov 2026, the
+maintainer's word: the offer sits in the right panel, beside the save button,
+and the specialist does not make it in chat**; it says in one plain line why the
+path closed and goes on to the other path's first question. The visitor ticks a box
 beside the save button and may add a note; on the save, an email carrying the
 project, each pathway's read, its Blocked rows and the note goes to the team,
 and the project reaches the paid site when the visitor signs up, where the team

@@ -319,7 +319,7 @@ export function worksheetBlock(sheets: PackSheet[], record: ProjectRecord | null
   const parts: string[] = [
     `# ${WORKSHEET_HEADING}`,
     '',
-    'Your eligibility worksheet as it stands for this visit. Every verdict below is one you set earlier in this conversation, from what the visitor told you; a row not listed has not been looked at. Start from the first row still unchecked, do not ask again for what a Met row already settled, and when the visitor asks where a row stands, read it from here. The read at the end of each pathway is worked out from these rows, and it is what the screen shows — say it in your own words and never a different one.',
+    'Your eligibility worksheet as it stands for this visit. Every verdict below is one you set earlier in this conversation, from what the visitor told you; a row not listed has not been looked at. Ask in the order of questions in your rules, do not ask again for what a Met row already settled, and when the visitor asks where a row stands, read it from here. The read at the end of each pathway is worked out from these rows, and it is what the screen shows — say it in your own words and never a different one.',
   ];
 
   for (const sheet of sheets) {

@@ -312,7 +312,14 @@ export async function POST(req: Request): Promise<Response> {
   const loaded = Array.isArray(body.loaded)
     ? body.loaded.filter((set): set is string => typeof set === 'string')
     : [];
-  const sets = setsFor({ pathways: pathwaysOf(sheet, record), loaded, allMet: allMet(sheet, record) });
+  const sets = setsFor({
+    pathways: pathwaysOf(sheet, record),
+    loaded,
+    allMet: allMet(sheet, record),
+    /* P29: a running project's start date is asked first, so the card that
+       judges it is in front of her when the answer comes. */
+    running: record?.stage === 'running',
+  });
 
 
   /* The configuration check sits AFTER the request is validated, on purpose.

@@ -368,6 +368,13 @@ expect(
   `${JSON.stringify(waterOpen)} / ${JSON.stringify(waterStillTesting)}`
 );
 expect(
+  'P29: a running project opens a pack that applies in full at once, because its start date is asked first',
+  JSON.stringify(setsFor({ pathways: [{ pack: 'vwba-2.0', state: 'applies', open: 2 }, { pack: 'gs-paa-v2.0', state: 'applies', open: 9 }], running: true })) ===
+    JSON.stringify(['water:applies', 'water:eligibility', 'water:routes', 'carbon:applies', 'carbon:eligibility', 'carbon:routes']) &&
+    /running: record\?\.stage === 'running'/.test(relaySource),
+  'a running project still waits for the water rows'
+);
+expect(
   'P13: once the water rows are done, or water does not apply, the carbon pack opens in full',
   waterDone.includes('carbon:eligibility') && waterDone.includes('carbon:routes') &&
     waterOut.includes('carbon:eligibility') && waterOut.includes('carbon:routes'),
@@ -484,7 +491,7 @@ expect(
 expect(
   'P18: what cannot be settled yet is one line, in her spirit, with no document named and no paid-site pitch',
   !/WaterBots is building tools and resources on the paid site/.test(SYSTEM_PROMPT) &&
-    /You might need a baseline survey to learn that, and we can help you find tools for it\. For now, …/.test(SYSTEM_PROMPT) &&
+    /in chat, one plain line on what would find it out and that we can help find tools for it, then your next question/.test(SYSTEM_PROMPT) &&
     /Never name a document/.test(SYSTEM_PROMPT) &&
     /never a document's name/.test(SYSTEM_PROMPT),
   'the paid-site line is back, or the one-line rule is missing'
@@ -493,12 +500,48 @@ expect(
    Blocked row, pointing at the box the save door shows; rung 3 still says
    consultants are coming everywhere else, because everywhere else there is
    still no way to reach one. */
+/* THE NEXT ROUND ON #173, the maintainer's word of 14 Nov 2026: a voice card
+   at the top, the order of questions (P29, P31), a closed path said in one line
+   (P30), and the shared plain-words list and before-and-after pairs. */
+{
+  const { PLAIN_WORDS_MD, BEFORE_AFTER_MD } = await loadApi('_plainWords.generated.js');
+  const voice = SYSTEM_PROMPT.slice(0, SYSTEM_PROMPT.indexOf('# The base rules you inherit'));
+  expect(
+    'the voice card comes first: who she is, who she talks to, the principles',
+    /^You are Phoebe[^\n]*\n\n# Your voice — read this first/.test(SYSTEM_PROMPT) &&
+      /warm, clear and encouraging/.test(voice) &&
+      /a newcomer who knows nothing about standards or methods/.test(voice) &&
+      /Answer what was asked first\. Respond to what the visitor actually said, then ask one follow-up related to it/.test(voice) &&
+      /Say what it means for the visitor, not what the method says\. Never repeat something already said\. Never name a document or a method unless asked/.test(voice),
+    'a part of the voice card is missing'
+  );
+  expect(
+    'P29, P31: deal-breakers first, then what settles both paths, then one path, water first; never lead with carbon',
+    /# The order of questions — a hard rule/.test(SYSTEM_PROMPT) &&
+      /1\. \*\*Deal-breakers first:\*\*[^\n]*If the record says the project is already running, your first question is when it started running, before anything else/.test(SYSTEM_PROMPT) &&
+      /2\. \*\*Then questions one answer settles for both paths\.\*\*/.test(SYSTEM_PROMPT) &&
+      /3\. \*\*Then questions for one path only:\*\* water benefits first, in your tool's order\. Never lead with carbon\./.test(SYSTEM_PROMPT) &&
+      /then your first question, in the order of questions below/.test(SYSTEM_PROMPT) &&
+      !/First: what will lift the water/.test(SYSTEM_PROMPT),
+    'the order is missing, or the carbon-first example is back'
+  );
+  expect(
+    'P30: a closed path is one plain line, then straight to the other path; never "shall I move on?"',
+    /\*\*When a path closes\*\* \(it does not apply, or a row is Blocked\), say why in one plain line and go straight to the other path's first question\. Never ask whether to move on\./.test(SYSTEM_PROMPT),
+    'the closed-path rule is missing'
+  );
+  expect(
+    'the shared plain-words list and the before-and-after pairs reach her prompt whole',
+    SYSTEM_PROMPT.includes(PLAIN_WORDS_MD) && SYSTEM_PROMPT.includes(BEFORE_AFTER_MD) && /examples, not rules; never copy them/.test(SYSTEM_PROMPT),
+    'the list or the pairs are missing'
+  );
+}
 expect(
-  'on a Blocked row she offers a person once, points at the box, and promises no reply',
-  /When you set a Blocked row, offer a person, once in the visit/.test(SYSTEM_PROMPT) &&
-    /tick the box beside the save button/.test(SYSTEM_PROMPT) &&
-    /do not make it again/.test(SYSTEM_PROMPT) &&
-    /Never promise when or how anyone will reply/.test(SYSTEM_PROMPT),
+  'P30: on a Blocked row the offer of a person is in the right panel, never in chat, and she promises no reply',
+  /When you set a Blocked row, the console offers the visitor a person\*\*, beside the save button\. You do not make that offer in chat/.test(SYSTEM_PROMPT) &&
+    /Never offer the team's review in chat: the console shows that offer beside the save button/.test(SYSTEM_PROMPT) &&
+    !/tick the box beside the save button/.test(SYSTEM_PROMPT) &&
+    /never promise when or how anyone will reply/.test(SYSTEM_PROMPT),
   'the door rule is missing a part'
 );
 expect(
@@ -509,7 +552,7 @@ expect(
 );
 expect(
   'she asks the Eligibility rows only, one a turn, and shows the rest once',
-  /Ask the Eligibility-phase rows, in the order your tool lists them, one row and one question a turn/.test(
+  /Ask the Eligibility-phase rows one row and one question a turn\*\*, in the order of questions above, and within each step in the order your tool lists them/.test(
     SYSTEM_PROMPT
   ) &&
     /Never ask about two rows in one turn/.test(SYSTEM_PROMPT) &&
@@ -554,7 +597,7 @@ expect(
   'the tests run on both pathways, one question covering both where one answer can',
   /Run the applies tests first, on both pathways/.test(SYSTEM_PROMPT) &&
     /Write a question to cover both pathways whenever one answer can/.test(SYSTEM_PROMPT) &&
-    /A pathway that does not apply is said once, with its reason, and dropped/.test(SYSTEM_PROMPT),
+    /A pathway that does not apply is said once, in one plain line, and dropped/.test(SYSTEM_PROMPT),
   'a both-pathways rule is missing'
 );
 expect(
@@ -567,10 +610,10 @@ expect(
   'the sorting rule, the field rule or the transition fact is missing'
 );
 expect(
-  'a running project hears the carbon standard’s own rule before the walk, not after it',
-  /Already running is hard on the carbon pathway, and you say so before the walk/.test(SYSTEM_PROMPT) &&
+  'P29: a running project is asked when it started before anything else, and if the year has gone carbon credits close in one line',
+  /Already running is hard on carbon credits, so when it started is your first question/.test(SYSTEM_PROMPT) &&
     /retroactive project/.test(SYSTEM_PROMPT) &&
-    /the water pathway is separate/.test(SYSTEM_PROMPT),
+    /carbon credits close there: one plain line why, then straight on to water benefits/.test(SYSTEM_PROMPT),
   'the retroactive framing is missing'
 );
 expect(
@@ -593,8 +636,7 @@ expect(
   "the maintainer's walk of 12 Nov 2026: plain names, the reply's shape, the arrival, fixable only when it blocks, the tools line once, no cards-only line",
   /\*\*water benefits\*\* and \*\*carbon credits\*\*/.test(SYSTEM_PROMPT) &&
     /\*\*Plain words a newcomer knows\.\*\* Row titles, card titles and the names of types and classes are labels for the worksheet: never say one in chat, nor a close rewording/.test(SYSTEM_PROMPT) &&
-    /Solar is good news for carbon credits\./.test(SYSTEM_PROMPT) &&
-    /Say "good news for carbon credits", never "good news for carbon"/.test(SYSTEM_PROMPT) &&
+    /Say those, never "the water pathway" or "the carbon pathway"/.test(SYSTEM_PROMPT) &&
     /Say "fixable" only when something actually stands in the way/.test(SYSTEM_PROMPT) &&
     !/You read from a small set of cards/.test(SYSTEM_PROMPT) &&
     !/nothing here is verified, and a consultant confirms it/.test(SYSTEM_PROMPT),
@@ -606,9 +648,9 @@ expect(
 expect(
   'P14–P15: message 1 is a warm hello and "Ready to get started?"; message 2 points at the quiz with showTool, then asks; no "in beta", no repeat, no early read',
   /\*\*Message 1, on its own:\*\* a warm hello with some personality, one line on what you do, then "Ready to get started\?" and nothing else/.test(SYSTEM_PROMPT) &&
-    /I'm Phoebe, and I find which funding paths might suit your project\. Ready to get started\?/.test(SYSTEM_PROMPT) &&
+    /For tone only, never copy:\*\* "Hello there\. [^"]*I'm Phoebe, and I find which funding paths might suit your project\. Ready to get started\?"/.test(SYSTEM_PROMPT) &&
     /\*\*Message 2, after their yes:\*\* one line saying you fill in the eligibility quiz on your Tool tab as you talk, with showTool set to true/.test(SYSTEM_PROMPT) &&
-    /No "in beta" and nothing Wellington already said\. Never say how either pathway looks before the record or the visitor settles its tests/.test(SYSTEM_PROMPT) &&
+    /No "in beta" and nothing Wellington already said\. Never say how either funding path looks before the record or the visitor settles its tests/.test(SYSTEM_PROMPT) &&
     !/you are in beta|You are Phoebe, in beta|You are in beta/i.test(SYSTEM_PROMPT) &&
     !/Let me help you find which impact pathway/.test(SYSTEM_PROMPT) &&
     /This is your message 1, on its own/.test(phoebeNotesBlock({ opened: true }) ?? '') &&
@@ -617,8 +659,8 @@ expect(
 );
 expect(
   'P16, P19, P21: one thing a message, the registration question, no side notes, and the two buttons as fields',
-  /\*\*One thing per message, said simply\.\*\*/.test(SYSTEM_PROMPT) &&
-    /Is this project already registered with a standards body, like Gold Standard, or would it be a new registration\?/.test(SYSTEM_PROMPT) &&
+  /One thing per message: two or three short sentences, then one question/.test(SYSTEM_PROMPT) &&
+    /\*\*Registration:\*\* ask plainly whether the project is already registered with a standards body or would be new/.test(SYSTEM_PROMPT) &&
     /\*\*No teaching side notes during screening\.\*\*/.test(SYSTEM_PROMPT) &&
     /"Learn more about …" button/.test(SYSTEM_PROMPT) &&
     !/"Skip for now"|"Next question"/.test(SYSTEM_PROMPT) &&
@@ -671,23 +713,24 @@ expect(
    check. Every example in her prompt has to pass the same check her replies do. */
 {
   const { cardWordsIn } = await loadApi('_reply.js');
-  const examples = [...SYSTEM_PROMPT.matchAll(/(?:In this spirit|The tone|in this tone|In this spirit, in your own words)[^"]*"([^"]+)"/gi)].map((m) => m[1]);
+  const toneLine = (SYSTEM_PROMPT.match(/For tone only, never copy:([^\n]*)/) ?? ['', ''])[1];
+  const examples = [...toneLine.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+  const scripted = [...SYSTEM_PROMPT.matchAll(/(?:In this spirit|The tone|in this tone|Say "[A-Z][^"]{20,}")/g)].map((m) => m[0]);
   const dirty = examples.filter((e) => cardWordsIn(e).length > 0);
   expect(
     'P23: every tone example in her prompt passes the card-word check, and the relay and the walk use the same list',
-    examples.length >= 4 &&
+    examples.length >= 1 && examples.length <= 2 && scripted.length === 0 &&
       dirty.length === 0 &&
-      /\*\*Talk like a person, not a script\.\*\*/.test(SYSTEM_PROMPT) &&
+      /\*\*How you talk: like a person, not a script\.\*\*/.test(SYSTEM_PROMPT) &&
       /Providing safe water to a community has benefits that can be counted/.test(SYSTEM_PROMPT) &&
       /cardWordsIn\(answer\.reply\)/.test(relaySource) &&
       /cardWordsIn\(res\.reply\)/.test(readFileSync(join('scripts', 'measure-phoebe-walk.mjs'), 'utf8')),
-    `${examples.length} examples; with card words: ${JSON.stringify(dirty)}`
+    `${examples.length} tone examples; scripted lines ${JSON.stringify(scripted)}; with card words: ${JSON.stringify(dirty)}`
   );
 }
 expect(
   'P10: two or three short sentences, then one question, four at most and under 400 characters, and the relay counts a long one',
-  /two or three short sentences, then one question/.test(SYSTEM_PROMPT) &&
-    /Four sentences at most, under 400 characters/.test(SYSTEM_PROMPT) &&
+  /two or three short sentences, then one question; four sentences and 400 characters at most/.test(SYSTEM_PROMPT) &&
     /Two or three short sentences, then one question/.test(RESPONSE_SCHEMA.properties.reply.description) &&
     /isLongReply\(answer\.reply\)/.test(relaySource),
   'the length rule is missing from her prompt, her answer shape or the relay'
