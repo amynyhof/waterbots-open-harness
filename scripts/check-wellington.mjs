@@ -75,6 +75,7 @@ const { WELLINGTON_PRIMER_MD } = await loadApi('_wellingtonPrimer.generated.js')
 const { PROJECT_TYPES_MD, PROJECT_TYPES, PROJECT_TYPE_IDS, GS_CLASS_IDS, PROJECT_STAGE_IDS, DRINKING_WATER_TYPE } = await loadApi('_projectTypes.generated.js');
 const { WELLINGTON_BUILD_UPDATE_MD } = await loadApi('_buildUpdate.generated.js');
 const { SYSTEM_PROMPT: PHOEBE_PROMPT } = await loadApi('_systemPrompt.js');
+const { PLAIN_WORDS_MD, BEFORE_AFTER_MD } = await loadApi('_plainWords.generated.js');
 
 /* ---------------------------------------------------------------------------
    The output is checked, not trusted.
@@ -117,6 +118,23 @@ const abst = validate({ reply: 'That is not something this console holds.', rout
 expect('an abstention keeps its topic', abst?.abstained === true && abst?.abstentionTopic === 'carbon price', JSON.stringify(abst));
 const notAbst = validate({ reply: 'Phoebe covers that.', route: 'eligibility', abstained: false, abstentionTopic: 'stray' });
 expect('a topic without an abstention is dropped', notAbst?.abstentionTopic === undefined, 'a stray topic was kept');
+/* W24, 14 Nov 2026: his line to Phoebe is kept only beside a route to her,
+   only as one line, and her page shows it in place of his reply. */
+{
+  const intro = 'Phoebe, this is a borehole for 1,600 people in Kitui, still on paper.';
+  const kept = validate({ reply: 'Let me introduce you to a colleague.', route: 'eligibility', introduction: intro, abstained: false });
+  const offRoute = validate({ reply: 'Tell me more about it, please.', route: 'none', introduction: intro, abstained: false });
+  const twoLines = validate({ reply: 'Let me introduce you to a colleague.', route: 'eligibility', introduction: 'Phoebe,\nmeet them.', abstained: false });
+  const wellingtonLib = readFileSync(join('src', 'lib', 'wellington.ts'), 'utf8');
+  expect(
+    'W24: the introduction is kept on a route to Phoebe, dropped elsewhere or past one line, and heads her page',
+    kept?.introduction === intro && offRoute?.introduction === undefined && twoLines?.introduction === undefined &&
+      /onRouted\(answer\.route, answer\.introduction \?\? answer\.reply\)/.test(wellingtonLib) &&
+      /route === 'eligibility' && typeof data\.introduction === 'string'/.test(readFileSync(join('src', 'lib', 'wellingtonClient.ts'), 'utf8')) &&
+      /cardWordsIn\(answer\.reply\)/.test(readFileSync(join('api', 'wellington.ts'), 'utf8')),
+    JSON.stringify({ kept, offRoute, twoLines })
+  );
+}
 
 expect(
   'the schema closes the route list',
@@ -177,11 +195,11 @@ expect('his prompt states the five things he never does', /quote no figure/.test
    and its size depends on how far a visit has gone. */
 expect(
   "the maintainer's walk of 12 Nov 2026: he asks the class, says why he asks, introduces each colleague, always asks people served, and keeps to plain words",
-    /Is this a new water source, or does it clean water people already have\?/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /ask in plain words whether it is a new water source or cleans water people already have/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /collect a few basics so you and the other agents can give a first, directional estimate/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Introduce a colleague before you name them/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /always ask how many people or households it will serve, right after the stage, and route nowhere until you have asked/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /never say "type" or "class" to them/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Never say "type" or "class" to the visitor/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /say how much carbon the project might avoid/.test(WELLINGTON_SYSTEM_PROMPT) &&
     !/would\s+screen at/.test(WELLINGTON_PRIMER_MD),
   'a rule from the walk is missing, or his region still says "would screen at"'
@@ -196,20 +214,41 @@ expect(
   'a rule from the walk is missing, or "free" is back'
 );
 /* HIS FIFTH WALK, the maintainer's word of 14 Nov 2026 (W19 to W22): a person,
-   not a script. The examples are tone, never lines to copy. */
-expect(
-  'W19–W21: answer first, then who he is, then one related follow-up; a friendly mentor who never thanks for answers and steers back kindly; a handoff that introduces a colleague',
-  /\*\*Talk like a person, not a script: a friendly mentor, warm, encouraging and brief\.\*\*/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /Respond to what the visitor actually said, then ask one follow-up related to it\. Never thank them for answering/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /If they drift, answer briefly or say who covers it, then steer back kindly/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /Examples here show tone only; never copy them/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /answer what they said first, then who you are/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /Is the borehole for community drinking water, or for farming\?/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /\*\*A handoff introduces a colleague, and names one next step\.\*\*/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /Let me introduce you to Phoebe, who checks whether your project could earn water benefits or carbon credits/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    !/Tell me about your project\."/.test(WELLINGTON_SYSTEM_PROMPT),
-  'a rule from the fifth walk is missing, or the old scripted welcome is back'
-);
+   not a script. The examples are tone, never lines to copy. HIS SIXTH, the same
+   day: a voice card at the top of his prompt, principles in place of scripted
+   lines, two tone examples at most, a result never near (W23) and a real
+   introduction on Phoebe's page (W24). */
+{
+  const voice = WELLINGTON_SYSTEM_PROMPT.slice(0, WELLINGTON_SYSTEM_PROMPT.indexOf('# The base rules you inherit'));
+  const toneExamples = (WELLINGTON_SYSTEM_PROMPT.match(/For tone only, never copy:([^\n]*)/) ?? ['', ''])[1].match(/"[^"]+"/g) ?? [];
+  expect(
+    'W19–W24: the voice card comes first — who he is, who he talks to, the principles — with two tone examples at most',
+    /^You are Wellington[^\n]*\n\n# Your voice — read this first/.test(WELLINGTON_SYSTEM_PROMPT) &&
+      /a warm, friendly mentor/.test(voice) &&
+      /a newcomer who knows nothing about standards or methods/.test(voice) &&
+      /Answer what was asked first\. Respond to what the visitor actually said, then ask one follow-up related to it\. One thing per message, in two or three short sentences/.test(voice) &&
+      /Say what it means for the visitor, not what a method says\. Never repeat something already said\. Never name a document, a standard or a method unless asked/.test(voice) &&
+      /Never thank them for answering\. If they drift, answer briefly or say who covers it, then steer back kindly/.test(voice) &&
+      toneExamples.length >= 1 && toneExamples.length <= 2 &&
+      /answer what they said first, then who you are/.test(WELLINGTON_SYSTEM_PROMPT) &&
+      !/Let me introduce you to Phoebe|that sounds like a new water source a community collects from|Tell me about your project\."/.test(WELLINGTON_SYSTEM_PROMPT),
+    `a principle is missing, or a scripted line is back (${toneExamples.length} tone examples)`
+  );
+  expect(
+    'W23, W24: a result is never near, and a handoff to Phoebe carries one line to her, required in his answer',
+    /\*\*Never imply a result is near\.\*\* Phoebe, Bridget and Calvin each come before any result/.test(WELLINGTON_SYSTEM_PROMPT) &&
+      /\*\*A handoff is a real introduction, and names one next step/.test(WELLINGTON_SYSTEM_PROMPT) &&
+      /also fill the introduction field/.test(WELLINGTON_SYSTEM_PROMPT) &&
+      WELLINGTON_RESPONSE_SCHEMA.required.includes('introduction') &&
+      /summing up the project in one natural line — place, size, stage/.test(WELLINGTON_RESPONSE_SCHEMA.properties.introduction.description),
+    'the rule or the field is missing'
+  );
+  expect(
+    'the shared plain-words list and the before-and-after pairs reach his prompt whole',
+    WELLINGTON_SYSTEM_PROMPT.includes(PLAIN_WORDS_MD) && WELLINGTON_SYSTEM_PROMPT.includes(BEFORE_AFTER_MD) && /examples, not rules; never copy them/.test(WELLINGTON_SYSTEM_PROMPT),
+    'the list or the pairs are missing'
+  );
+}
 /* HIS FOURTH WALK, the maintainer's word of 14 Nov 2026 (W14 to W18). */
 expect(
   'W14–W18: the team line, the basics line first, words that settle the class, no invented detail, the two buttons, basic funding facts',

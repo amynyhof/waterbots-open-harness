@@ -127,7 +127,10 @@ export function wellingtonAsk(
       { sheet, returned: meta?.opened === true }
     );
     if (Object.keys(answer.learned).length > 0) onLearned(answer.learned);
-    onRouted(answer.route, answer.reply);
+    /* W24, 14 Nov 2026: on Phoebe's page he speaks to her, so her page gets
+       his introduction; his reply to the visitor stays here. Without one, his
+       reply is shown there as before (W22). */
+    onRouted(answer.route, answer.introduction ?? answer.reply);
     return {
       role: 'agent',
       text: answer.reply,

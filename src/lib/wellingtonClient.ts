@@ -71,6 +71,8 @@ export interface VisitRecord {
 export interface WellingtonAnswer {
   reply: string;
   route: WellingtonRoute;
+  /** W24: his one line to Phoebe, shown at the top of her page; only on a route to her. */
+  introduction?: string;
   learned: Learned;
   abstained: boolean;
   abstentionTopic?: string;
@@ -182,9 +184,15 @@ export async function askWellington(
     if (served) learned.served = served;
   }
 
+  const introduction =
+    route === 'eligibility' && typeof data.introduction === 'string' && data.introduction.trim()
+      ? data.introduction.trim()
+      : undefined;
+
   return {
     reply: data.reply,
     route,
+    ...(introduction ? { introduction } : {}),
     learned,
     abstained: data.abstained === true,
     abstentionTopic: typeof data.abstentionTopic === 'string' ? data.abstentionTopic : undefined,

@@ -29,7 +29,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { recordAbstention } from './_abstentions.js';
 import { CARRIED, WELLINGTON, countOneMessage, timeUntilReset } from './_cap.js';
 import { phoebeFound, readRecord, readSheet, readStage, stageBlock, visitBlock } from './_record.js';
-import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
+import { MIN_REPLY_CHARS, cardWordsIn, isDegenerateReply } from './_reply.js';
 import { validate } from './_wellingtonAnswer.js';
 import { WELLINGTON_RESPONSE_SCHEMA, WELLINGTON_SYSTEM_PROMPT } from './_wellingtonPrompt.js';
 
@@ -357,6 +357,12 @@ export async function POST(req: Request): Promise<Response> {
       )
     );
   }
+
+  /* The shared word list (14 Nov 2026): the plain-words list and the
+     before-and-after pairs reach both agents, so his replies are held to the
+     same list as hers. Logged, never blocked. */
+  const cardWords = cardWordsIn(answer.reply);
+  if (cardWords.length) console.warn(`wellington: reply used card words — ${cardWords.join(', ')}`);
 
   /* Only a question outside every lane is logged, and it is marked as his.
      His routings are not abstentions and are not written down. */
