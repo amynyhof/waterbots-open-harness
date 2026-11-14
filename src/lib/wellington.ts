@@ -14,7 +14,8 @@
  */
 
 import wellingtonPortrait from '../../brand/assets/bots/wellington.svg';
-import type { AgentHost, AgentTurn, Ask, TurnAction } from '../chat/evidence';
+import type { AgentHost, AgentTurn, Ask, TurnAction, TurnButton } from '../chat/evidence';
+import type { Surface } from './surfaces';
 import { carriedSheet } from './phoebeClient';
 import type { Learned, Visit } from './visit';
 import { askWellington, type FoundSheet, type VisitRecord, type WellingtonRoute } from './wellingtonClient';
@@ -46,6 +47,33 @@ export function actionFor(route: WellingtonRoute): TurnAction | undefined {
   return undefined;
 }
 
+/** Who meets the visitor on each step a route opens. */
+const MEET: Partial<Record<WellingtonRoute, { name: string; surface: Surface }>> = {
+  eligibility: { name: 'Phoebe', surface: 'eligibility' },
+  map: { name: 'Bridget', surface: 'map' },
+  quantification: { name: 'Calvin', surface: 'quantification' },
+};
+
+/**
+ * TWO BUTTONS IN THE CHAT AT A HANDOFF — the maintainer's word of 14 Nov 2026
+ * (W17), beside the rail's own row, which stays. A route to a colleague draws
+ * "Meet <name>", which opens that step, and "Keep chatting", which puts the
+ * cursor back in his chat box. Built from the route field alone, never from
+ * his prose; a route to the paid site, or none, draws nothing.
+ */
+export function actionsFor(
+  route: WellingtonRoute,
+  onNavigate?: (surface: Surface) => void,
+  composerId = 'wb-desk-composer'
+): TurnButton[] | undefined {
+  const meet = MEET[route];
+  if (!meet || !onNavigate) return undefined;
+  return [
+    { label: `Meet ${meet.name}`, primary: true, go: () => onNavigate(meet.surface) },
+    { label: 'Keep chatting', go: () => document.getElementById(composerId)?.focus() },
+  ];
+}
+
 /** The visit as the relay expects it, or nothing when every field is blank. */
 function recordFrom(visit: Visit): VisitRecord | null {
   const record: VisitRecord = {
@@ -69,8 +97,10 @@ function recordFrom(visit: Visit): VisitRecord | null {
 export function wellingtonAsk(
   onLearned: (learned: Learned) => void,
   getVisit: () => Visit,
-  onRouted: (route: WellingtonRoute, reply: string) => void,
-  getSheet: () => Sheet
+  onRouted: (route: WellingtonRoute, reply: string, isIntroduction?: boolean) => void,
+  getSheet: () => Sheet,
+  /** Opens a step, for the "Meet <name>" button at a handoff (W17). */
+  onNavigate?: (surface: Surface) => void
 ): Ask {
   return async (history, signal, meta): Promise<AgentTurn> => {
     const visit = getVisit();
@@ -94,16 +124,21 @@ export function wellingtonAsk(
       visit.stage,
       /* The desk's one turn when the visitor comes back from Phoebe is sent
          through askOpened, so it arrives here as `opened`. */
-      { sheet, returned: meta?.opened === true }
+      { sheet, returned: meta?.opened === true, ...(meta?.at ? { at: meta.at } : {}) }
     );
     if (Object.keys(answer.learned).length > 0) onLearned(answer.learned);
-    onRouted(answer.route, answer.reply);
+    /* W24, 14 Nov 2026: on Phoebe's page he speaks to her, so her page gets
+       his introduction; his reply to the visitor stays here. Without one, his
+       reply is shown there as before (W22). */
+    onRouted(answer.route, answer.introduction ?? answer.reply, answer.introduction !== undefined);
     return {
       role: 'agent',
       text: answer.reply,
       evidence: [],
       abstained: answer.abstained,
       action: actionFor(answer.route),
+      /* In another agent's chat, "Keep chatting" focuses that chat's box. */
+      buttons: actionsFor(answer.route, onNavigate, meta?.composerId),
     };
   };
 }

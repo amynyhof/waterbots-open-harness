@@ -75,6 +75,7 @@ const { WELLINGTON_PRIMER_MD } = await loadApi('_wellingtonPrimer.generated.js')
 const { PROJECT_TYPES_MD, PROJECT_TYPES, PROJECT_TYPE_IDS, GS_CLASS_IDS, PROJECT_STAGE_IDS, DRINKING_WATER_TYPE } = await loadApi('_projectTypes.generated.js');
 const { WELLINGTON_BUILD_UPDATE_MD } = await loadApi('_buildUpdate.generated.js');
 const { SYSTEM_PROMPT: PHOEBE_PROMPT } = await loadApi('_systemPrompt.js');
+const { PLAIN_WORDS_MD, BEFORE_AFTER_MD } = await loadApi('_plainWords.generated.js');
 
 /* ---------------------------------------------------------------------------
    The output is checked, not trusted.
@@ -117,6 +118,24 @@ const abst = validate({ reply: 'That is not something this console holds.', rout
 expect('an abstention keeps its topic', abst?.abstained === true && abst?.abstentionTopic === 'carbon price', JSON.stringify(abst));
 const notAbst = validate({ reply: 'Phoebe covers that.', route: 'eligibility', abstained: false, abstentionTopic: 'stray' });
 expect('a topic without an abstention is dropped', notAbst?.abstentionTopic === undefined, 'a stray topic was kept');
+/* W24, 14 Nov 2026: his line to Phoebe is kept only beside a route to her,
+   only as one line, and her page shows it in place of his reply. */
+{
+  const intro = 'Phoebe, this is a borehole for 1,600 people in Kitui, still on paper.';
+  const kept = validate({ reply: 'Let me introduce you to a colleague.', route: 'eligibility', introduction: intro, abstained: false });
+  const offRoute = validate({ reply: 'Tell me more about it, please.', route: 'none', introduction: intro, abstained: false });
+  const twoLines = validate({ reply: 'Let me introduce you to a colleague.', route: 'eligibility', introduction: 'Phoebe,\nmeet them.', abstained: false });
+  const wellingtonLib = readFileSync(join('src', 'lib', 'wellington.ts'), 'utf8');
+  expect(
+    'W24: the introduction is kept on a route to Phoebe, dropped elsewhere or past one line, and heads her page',
+    kept?.introduction === intro && offRoute?.introduction === undefined && twoLines?.introduction === undefined &&
+      /onRouted\(answer\.route, answer\.introduction \?\? answer\.reply/.test(wellingtonLib) &&
+      /\(route === 'eligibility' \|\| route === 'map'\) && typeof data\.introduction === 'string'/.test(readFileSync(join('src', 'lib', 'wellingtonClient.ts'), 'utf8')) &&
+      validate({ reply: 'Let me introduce you to a colleague.', route: 'map', introduction: 'Bridget, this is a borehole in Kitui.', abstained: false })?.introduction === 'Bridget, this is a borehole in Kitui.' &&
+      /cardWordsIn\(answer\.reply\)/.test(readFileSync(join('api', 'wellington.ts'), 'utf8')),
+    JSON.stringify({ kept, offRoute, twoLines })
+  );
+}
 
 expect(
   'the schema closes the route list',
@@ -133,7 +152,8 @@ expect(
 );
 expect('the type list is the file\'s: twenty water types and NONE, four classes, C-19 the one that takes a class', PROJECT_TYPE_IDS.length === 21 && PROJECT_TYPE_IDS[0] === 'C-1' && PROJECT_TYPE_IDS[19] === 'C-20' && PROJECT_TYPE_IDS[20] === 'NONE' && JSON.stringify(GS_CLASS_IDS) === JSON.stringify(['HWT', 'IWT', 'CWT', 'CWS']) && DRINKING_WATER_TYPE === 'C-19' && PROJECT_TYPES.length === 25, `${PROJECT_TYPE_IDS.length} types, ${GS_CLASS_IDS.length} classes`);
 expect('the short form carries every id and no page cite', PROJECT_TYPES.every((t) => PROJECT_TYPES_MD.includes(`- ${t.id} — ${t.name}: `)) && !/\(Table|\(Appendix|pp?\. \d/.test(PROJECT_TYPES_MD), 'an id is missing from the short form, or a cite got in');
-expect('his prompt carries the short form and the confirm-then-log rule, and never "what kind"', WELLINGTON_SYSTEM_PROMPT.includes(PROJECT_TYPES_MD) && /Return type only after the visitor says yes/.test(WELLINGTON_SYSTEM_PROMPT) && /return stage only on the visitor's yes/.test(WELLINGTON_SYSTEM_PROMPT) && /Never say the id/.test(WELLINGTON_SYSTEM_PROMPT) && !/what kind/i.test(WELLINGTON_SYSTEM_PROMPT), 'the list, the rule or the retirement is missing');
+/* Confirm-then-log until 14 Nov 2026; from then, the maintainer's W15: confirm only what is unclear. */
+expect('his prompt carries the short form and the confirm-only-what-is-unclear rule, and never "what kind"', WELLINGTON_SYSTEM_PROMPT.includes(PROJECT_TYPES_MD) && /\*\*Confirm only what is unclear\.\*\* When the visitor says something plainly, record it and move on/.test(WELLINGTON_SYSTEM_PROMPT) && /Never say the id/.test(WELLINGTON_SYSTEM_PROMPT) && !/Return type only after the visitor says yes/.test(WELLINGTON_SYSTEM_PROMPT) && !/what kind/i.test(WELLINGTON_SYSTEM_PROMPT), 'the list, the rule or the retirement is missing');
 expect("Phoebe's prompt does not carry the type list", !PHOEBE_PROMPT.includes(PROJECT_TYPES_MD), 'the type list leaked into her prompt');
 
 /* ---------------------------------------------------------------------------
@@ -176,27 +196,85 @@ expect('his prompt states the five things he never does', /quote no figure/.test
    and its size depends on how far a visit has gone. */
 expect(
   "the maintainer's walk of 12 Nov 2026: he asks the class, says why he asks, introduces each colleague, always asks people served, and keeps to plain words",
-  /Never work it out from a word such as "borehole"/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /Is this a new water source, or does it clean water people already have\?/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /collect a few basics so that you and the other agents can give a first, directional estimate/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /ask in plain words whether it is a new water source or cleans water people already have/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /collect a few basics so you and the other agents can give a first, directional estimate/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Introduce a colleague before you name them/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /always ask how many people or households it will serve, right after the stage, and route nowhere until you have asked/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /never say "type" or "class" to them/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Never say "type" or "class" to the visitor/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /say how much carbon the project might avoid/.test(WELLINGTON_SYSTEM_PROMPT) &&
     !/would\s+screen at/.test(WELLINGTON_PRIMER_MD),
   'a rule from the walk is missing, or his region still says "would screen at"'
 );
 expect(
   "the maintainer's walk of 13 Nov 2026: a three-sentence welcome that never says free, and a handoff that names one next step",
-  /your welcome is three short sentences and no more/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /Hi, I'm Wellington, the Team Lead\. Our team helps you see if your water project could earn water benefits or carbon credits\. Tell me about your project\./.test(WELLINGTON_SYSTEM_PROMPT) &&
+  /three short sentences and no more/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Never say "free"/.test(WELLINGTON_SYSTEM_PROMPT) &&
     !/\bfree site\b|it is free\b/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /A handoff names one next step, and nothing after it/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /Click Open Eligibility to meet her/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /names one next step/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Never preview the steps after that one/.test(WELLINGTON_SYSTEM_PROMPT),
   'a rule from the walk is missing, or "free" is back'
 );
+/* HIS FIFTH WALK, the maintainer's word of 14 Nov 2026 (W19 to W22): a person,
+   not a script. The examples are tone, never lines to copy. HIS SIXTH, the same
+   day: a voice card at the top of his prompt, principles in place of scripted
+   lines, two tone examples at most, a result never near (W23) and a real
+   introduction on Phoebe's page (W24). */
+{
+  const voice = WELLINGTON_SYSTEM_PROMPT.slice(0, WELLINGTON_SYSTEM_PROMPT.indexOf('# The base rules you inherit'));
+  const toneExamples = (WELLINGTON_SYSTEM_PROMPT.match(/For tone only, never copy:([^\n]*)/) ?? ['', ''])[1].match(/"[^"]+"/g) ?? [];
+  expect(
+    'W19–W24: the voice card comes first — who he is, who he talks to, the principles — with two tone examples at most',
+    /^You are Wellington[^\n]*\n\n# Your voice — read this first/.test(WELLINGTON_SYSTEM_PROMPT) &&
+      /a warm, friendly mentor/.test(voice) &&
+      /a newcomer who knows nothing about standards or methods/.test(voice) &&
+      /Answer what was asked first\. Respond to what the visitor actually said, then ask one follow-up related to it\. One thing per message, in two or three short sentences/.test(voice) &&
+      /Say what it means for the visitor, not what a method says\. Never repeat something already said\. Never name a document, a standard or a method unless asked/.test(voice) &&
+      /Never thank them for answering\. If they drift, answer briefly or say who covers it, then steer back kindly/.test(voice) &&
+      toneExamples.length >= 1 && toneExamples.length <= 2 &&
+      /answer what they said first, then who you are/.test(WELLINGTON_SYSTEM_PROMPT) &&
+      !/Let me introduce you to Phoebe|that sounds like a new water source a community collects from|Tell me about your project\."/.test(WELLINGTON_SYSTEM_PROMPT),
+    `a principle is missing, or a scripted line is back (${toneExamples.length} tone examples)`
+  );
+  expect(
+    'W23, W24: a result is never near, and a handoff to Phoebe carries one line to her, required in his answer',
+    /\*\*Never imply a result is near\.\*\* Phoebe, Bridget and Calvin each come before any result/.test(WELLINGTON_SYSTEM_PROMPT) &&
+      /\*\*A handoff is a real introduction, and names one next step/.test(WELLINGTON_SYSTEM_PROMPT) &&
+      /also fill the introduction field/.test(WELLINGTON_SYSTEM_PROMPT) &&
+      WELLINGTON_RESPONSE_SCHEMA.required.includes('introduction') &&
+      /summing up the project in one natural line — place, size, stage/.test(WELLINGTON_RESPONSE_SCHEMA.properties.introduction.description),
+    'the rule or the field is missing'
+  );
+  expect(
+    'the shared plain-words list and the before-and-after pairs reach his prompt whole',
+    WELLINGTON_SYSTEM_PROMPT.includes(PLAIN_WORDS_MD) && WELLINGTON_SYSTEM_PROMPT.includes(BEFORE_AFTER_MD) && /examples, not rules; never copy them/.test(WELLINGTON_SYSTEM_PROMPT),
+    'the list or the pairs are missing'
+  );
+}
+/* HIS FOURTH WALK, the maintainer's word of 14 Nov 2026 (W14 to W18). */
+expect(
+  'W14–W18: the team line, the basics line first, words that settle the class, no invented detail, the two buttons, basic funding facts',
+  /our team here matches water projects with funding they might qualify for/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    !/Our team helps you see if your water project/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /only then asks your first question, in the same message\. Never after the question/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /"borehole", "well" or "spring" is a new source \(CWS\); "filter" or "chlorine" cleans water/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /\*\*Never invent a detail\*\* the visitor did not say, such as a pump type/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    !/Never work it out from a word such as "borehole"/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /"Meet Phoebe" and "Keep chatting" under it/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /\*\*Basic questions about impact funding are yours\*\*/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /A carbon credit stands for one tonne of carbon dioxide/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Whether this project is eligible, any number, and anything about a basin stay with Phoebe, Calvin and Bridget/.test(WELLINGTON_SYSTEM_PROMPT),
+  'a rule from the fourth walk is missing, or an old one is back'
+);
+{
+  const wellingtonLib = readFileSync(join('src', 'lib', 'wellington.ts'), 'utf8');
+  expect(
+    'W17, P24: a route to a colleague draws "Meet <name>" (blue) and "Keep chatting" (a quiet chip) under his message, from the field alone',
+    /Meet \$\{/.test(wellingtonLib) && /'Keep chatting'/.test(wellingtonLib) && /actionsFor\(answer\.route/.test(wellingtonLib) &&
+      /button\.primary \? 'btn btn-primary' : 'wb-chip'/.test(readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8')) &&
+      /\.wb-chip \{[^}]*background: transparent;/.test(readFileSync(join('src', 'styles', 'base.css'), 'utf8')),
+    'the two buttons are not built from the route field'
+  );
+}
 expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 26199 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
 
 /* ---------------------------------------------------------------------------
@@ -281,8 +359,9 @@ expect(
   phoebeNotesBlock({ opened: true })
 );
 expect(
-  'a done note sends them back to Wellington on Dispatches',
-  /send them back to Wellington on Dispatches/i.test(phoebeNotesBlock({ eligibilityDone: true })),
+  'a done note says Wellington joins with the next step, and never sends them back to him (14 Nov 2026)',
+  /say Wellington will join with the next step/.test(phoebeNotesBlock({ eligibilityDone: true })) &&
+    !/send them back to Wellington on Dispatches/i.test(phoebeNotesBlock({ eligibilityDone: true })),
   phoebeNotesBlock({ eligibilityDone: true })
 );
 
@@ -545,9 +624,10 @@ expect(
   'a pin does not bring the visitor back to Chat'
 );
 expect(
-  'the Map tab opens on the place Wellington heard, once per place, through placeBox',
-  /if \(tab !== 'tool' \|\| focusedPlace\.current === place\) return;/.test(bridgetSource) &&
-    /const box = placeBox\(place\);\s*if \(box\) setFocus/.test(bridgetSource) &&
+  'B2: the map zooms to the country by itself as soon as the place is known, and again when the Map tab first opens; once per place, through placeBox',
+  /if \(focusedPlace\.current !== place\) \{\s*focusedPlace\.current = place;\s*if \(box\) setFocus/.test(bridgetSource) &&
+    /if \(tab === 'tool' && shownPlace\.current !== place\) \{\s*shownPlace\.current = place;\s*if \(box\) setFocus/.test(bridgetSource) &&
+    /map\.invalidateSize\(\{ animate: false \}\);\s*map\.fitBounds\(/.test(readFileSync('src/components/BasinMap.tsx', 'utf8')) &&
     /focus=\{focus\}/.test(bridgetSource) &&
     /<FocusView focus=\{focus\} \/>/.test(readFileSync('src/components/BasinMap.tsx', 'utf8')),
   'the Map tab does not open on the place'
@@ -570,18 +650,20 @@ expect(
   );
 }
 expect(
-  "No button of her own, except the 'Back to Wellington' link when no pathway goes on to Quantify, the same hand-back Phoebe uses",
-  /answer\.handBack === 'wellington'/.test(bridgetSource) &&
-    /Back to Wellington on \$\{DESK_LABEL\}/.test(bridgetSource) &&
+  'Wellington comes to her chat when her part is done; she has no button of her own and no way back to him (14 Nov 2026)',
+  /if \(answer\.handBack === 'wellington'\) window\.setTimeout\(\(\) => void wellingtonJoins\(\), 0\)/.test(bridgetSource) &&
+    /onWellington\('map', 'wb-bridget-composer'\)/.test(bridgetSource) &&
+    !/Back to Wellington/.test(bridgetSource) &&
     !/Open Quantify|surface: 'quantification'|onNavigate\('quantification'\)/.test(bridgetSource),
   'her hand-back is missing, or she draws a next step'
 );
 expect(
-  'her opening is her own answer when her step first shows, with no fixed greeting before it, and each new basin is reported once',
+  "her opening is her own answer when her step first shows, with only Wellington's line before it, and each new basin is reported once",
   /askOpened\(\{ opened: true \}\)/.test(bridgetSource) &&
     /askOpened\(\{ pinned: true \}\)/.test(bridgetSource) &&
     /reported\.current === pin\.hybasId/.test(bridgetSource) &&
-    !/BRIDGET_GREETING|GREETING_TURN|\.seed\(/.test(bridgetSource) &&
+    !/BRIDGET_GREETING|GREETING_TURN/.test(bridgetSource) &&
+    /speaker: WELLINGTON \}\]\);\s*\}\s*void chatRef\.current\.askOpened\(\{ opened: true \}\)/.test(bridgetSource) &&
     /visible=\{onMap\}/.test(readFileSync('src/App.tsx', 'utf8')),
   'the opening or the pin report is not wired, or a fixed greeting is still shown'
 );
@@ -609,10 +691,16 @@ expect(
 const navSource = readFileSync('src/components/NavRail.tsx', 'utf8');
 expect('empty record fields do not say Wellington asks this', !/Wellington asks this/.test(navSource), 'the caption is still there');
 const phoebeSource = readFileSync('src/components/PhoebeScreen.tsx', 'utf8');
+const appSourceForInvite = readFileSync('src/App.tsx', 'utf8');
 expect(
-  "Phoebe's first open asks without a visitor bubble and does not show his routing message again; her greeting stands alone",
-  /askOpened/.test(phoebeSource) && !/speaker: WELLINGTON/.test(phoebeSource) && !/eligibilityInvite/.test(phoebeSource) && !/\.seed\(/.test(phoebeSource),
-  'his routing message is copied onto her desk, or the first-open ask is missing'
+  /* Reversed 14 Nov 2026 (W22), the maintainer's word: his handoff line is at
+     the top of her page again, before her hello, display only — it is never
+     sent to her as a turn (useConversation's forAsk drops speaker turns). */
+  "W22: Phoebe's first open shows his handoff line first, display only, then asks without a visitor bubble",
+  /askOpened/.test(phoebeSource) && /speaker: WELLINGTON/.test(phoebeSource) && /\.seed\(\[/.test(phoebeSource) &&
+    /invite=\{visit\.eligibilityInvite\}/.test(appSourceForInvite) &&
+    /turn\.role === 'agent' && !turn\.speaker/.test(readFileSync('src/chat/useConversation.ts', 'utf8')),
+  'his line is not seeded before her hello, or it could be sent to her as her own turn'
 );
 const screenSource = readFileSync('src/screen/AgentScreen.tsx', 'utf8');
 const railSource = readFileSync('src/components/CrewRail.tsx', 'utf8');
@@ -630,9 +718,9 @@ expect(
   'a desk can still draw the top chip'
 );
 expect(
-  'the shell draws only the rows not yet taken, on every step',
-  /filter\(\(row\) => !rowTaken\(row, surface, visit\)\)/.test(appSource),
-  'a taken row stays in the rail'
+  'W27: the right panel is the crew, one plain status line each, with no next-step rows (14 Nov 2026)',
+  /crewStatus\(visit, sheet, LIVE_PACKS\)/.test(appSource) && /status=\{crew\}/.test(appSource) && !/nextStepRows/.test(appSource),
+  'the right panel still draws next-step rows'
 );
 expect(
   'the chat box grows as the visitor types, to three lines, then scrolls — one component, every desk',
@@ -640,10 +728,12 @@ expect(
   'the composer does not grow'
 );
 expect(
-  'the rail invite is the filled primary, and derived rows stay quiet links',
-  /row\.primary \? 'wb-invite-action' : 'wb-row-action'/.test(railSource) &&
-    /wb-invite-action/.test(readFileSync('src/styles/base.css', 'utf8')),
-  'the rail invite is not the one filled primary'
+  'W27, S21: the save door sits in the left rail under the project, the report under it, and the crew rail draws neither',
+  /\{save\.show && <SaveBlock save=\{save\} \/>\}/.test(readFileSync('src/components/NavRail.tsx', 'utf8')) &&
+    /Export screening report/.test(readFileSync('src/components/NavRail.tsx', 'utf8')) &&
+    /onExport: \(\) => window\.print\(\)/.test(appSource) &&
+    !/wb-save-button|Next steps|TOOLS_LINE/.test(railSource),
+  'the save door or the report is not in the left rail'
 );
 expect(
   'his prompt names the screening loop and forbids a fake live chat',
@@ -722,7 +812,7 @@ expect(
   'the first carried send reads the visit from a ref written before the send, not the last paint',
   /visitRef\.current/.test(appSource) &&
     /learnedContext\(visitRef\.current\.context, learned\)/.test(appSource) &&
-    /wellingtonAsk\(onLearned, \(\) => visitRef\.current, onRouted, \(\) => sheetRef\.current\)/.test(appSource) &&
+    /wellingtonAsk\(onLearned, \(\) => visitRef\.current, onRouted, \(\) => sheetRef\.current, setSurface\)/.test(appSource) &&
     /void sendCarried\(question, \{ carried: true \}\)/.test(appSource),
   'the first ask can still see a blank visit'
 );
@@ -940,17 +1030,17 @@ console.log('\n  Bridget\n');
 
   expect(
     "her opening keeps the meaning of the maintainer's sentence, in her own words, and the screen shows no fixed greeting",
-    BRIDGET_STILL_BUILT === ruled && BP.includes(`Keep this meaning, in your own words: "${ruled}"`) && !/Never say it again/.test(BP),
+    BRIDGET_STILL_BUILT === ruled && BP.includes(`keeping this meaning: "${ruled}"`) && !/Never say it again/.test(BP),
     JSON.stringify(BRIDGET_STILL_BUILT)
   );
-  const order = ['1. Greet them and say who you are.', '2. Say what you do', '3. Say why that matters.', '4. Say honestly that you are still being built.', '5. Ask them, nicely, to open the Map tab'];
   expect(
-    "her opening walks the maintainer's five beats in order, the pin question last",
-    order.every((beat) => BP.includes(beat)) && order.every((beat, i) => i === 0 || BP.indexOf(order[i - 1]) < BP.indexOf(beat)) &&
-      /Many funders choose projects by river basin/.test(BP) && /put water back into the basins they draw from/.test(BP) &&
-      /groups working in the same basin can team up/.test(BP) && /the pin question last/.test(BP) &&
-      /Never name a company, funder or group while you explain why the basin matters/.test(BP),
-    'a beat is missing or out of order'
+    'B1: a voice card first, and a short opening — who she is, why the basin matters, the pin question; still built only when asked',
+    /^You are Bridget[^\n]*\n\n# Your voice — read this first/.test(BP) &&
+      /Your opening is short, like every reply: two or three sentences, one thing/.test(BP) &&
+      /funders and partners often work by river basin/.test(BP) &&
+      /Being still built is said only when asked/.test(BP) &&
+      !/Many funders choose projects by river basin|two short paragraphs/.test(BP),
+    'the voice card or the short opening is missing'
   );
   expect(
     "she asks one question, the pin, and never where the project is or anything else of Wellington's",
@@ -959,7 +1049,8 @@ console.log('\n  Bridget\n');
   );
   expect(
     'she uses the place the visitor told Wellington, in their words, and never says where on the map it is',
-    /use their words for it, exactly as written/.test(BP) && /Do not say where on the map that is, which basin it is, or which river/.test(BP),
+    /The map opens on the country the visitor gave Wellington by itself, so never ask them to find the country/.test(BP) &&
+      /name it as written/.test(BP) && /Do not say which basin it is or which river/.test(BP),
     'the place rule is missing'
   );
   expect(
@@ -973,18 +1064,15 @@ console.log('\n  Bridget\n');
     "after a pin she thanks them, says when the reading is derived, never presents it as WRI's, and says Calvin is next or hands back",
     /- Thank them\./.test(BP) &&
       /Say that whenever the reading is derived; never present a derived reading as WRI's/.test(BP) &&
-      /When the block says Calvin is next\*\*, tell them Calvin is next, on the Quantify step/.test(BP) &&
-      /Set handBack to "none"\. Do not offer the way back to Wellington/.test(BP) &&
-      /do not promise Calvin will chat/.test(BP) &&
-      /When the block says Wellington has the next step\*\*.*Set handBack to "wellington"\. Do not name that next step yourself/.test(BP),
+      /Say that Wellington will join you here with the next step\. Never name that step yourself, and never send the visitor back to him\. Set handBack to "wellington"/.test(BP),
     'the pin report rules are missing'
   );
   expect(
-    'after a pin with Calvin next the relay draws no way back, whatever she set; an abstention and the Wellington case still go back',
-    settleHandBack('wellington', { pinned: true, quantifyNext: true, abstained: false }) === 'none' &&
-      settleHandBack('wellington', { pinned: true, quantifyNext: true, abstained: true }) === 'wellington' &&
-      settleHandBack('wellington', { pinned: true, quantifyNext: false, abstained: false }) === 'wellington' &&
-      settleHandBack('wellington', { pinned: false, quantifyNext: true, abstained: false }) === 'wellington' &&
+    'after a pin Wellington always joins her chat, whatever she set; off a pin her own field stands (14 Nov 2026)',
+    settleHandBack('none', { pinned: true, quantifyNext: true, abstained: false }) === 'wellington' &&
+      settleHandBack('none', { pinned: true, quantifyNext: false, abstained: false }) === 'wellington' &&
+      settleHandBack('none', { pinned: false, quantifyNext: true, abstained: false }) === 'none' &&
+      settleHandBack('wellington', { pinned: false, quantifyNext: true, abstained: true }) === 'wellington' &&
       /handBack: settleHandBack\(answer\.handBack, \{ pinned, quantifyNext, abstained: answer\.abstained \}\)/.test(relay) &&
       /body\.quantifyNext === true/.test(relay),
     'the relay does not hold her hand-back to who is next'
@@ -1021,10 +1109,8 @@ console.log('\n  Bridget\n');
     `${six}\n${four}`
   );
   expect(
-    'her block says who is next and where the Quantify button is on each device',
-    /Calvin is next, on the Quantify step\. The "Open Quantify" button is under "Next steps" on the right\./.test(six) &&
-      /is under "Crew" at the top of the screen/.test(sixPhone) &&
-      /Wellington, on Dispatches, has the next step/.test(four) && !/Calvin/.test(four),
+    'her block says Wellington joins her chat next with the next step, on every device, and never names it',
+    [six, sixPhone, four].every((b) => /Wellington joins this chat next with the next step\. Do not name it yourself\./.test(b) && !/Open Quantify|Calvin|Dispatches/.test(b)),
     `${six}\n${sixPhone}\n${four}`
   );
   const empty = bridgetBlock('Malawi', false, null, true);
@@ -1044,9 +1130,9 @@ console.log('\n  Bridget\n');
     'a guard is missing from her relay'
   );
   expect(
-    'her composer note states her cap in words',
-    /composerNote: 'Nothing is kept between visits\. Thirty messages a day\.'/.test(screen) && BRIDGET_DAILY_CAP === 30,
-    'the note and the cap disagree'
+    'no standing note under her chat box (13 Nov 2026); the cap is said when reached, from the cap itself',
+    !/composerNote:/.test(screen) && /today's limit of \$\{decision\.cap\} messages to Bridget/.test(relay) && BRIDGET_DAILY_CAP === 30,
+    'a note is back under her chat box, or the cap message and the cap disagree'
   );
   expect(
     'the primer and his facts say her chat is live, and nothing on the desk says she is not answering',

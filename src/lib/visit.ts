@@ -24,7 +24,7 @@
  * else, and this site keeps no copy.
  */
 
-import { HER_PACKS, READINESS_LABEL, section, verdictRows } from './worksheet.generated';
+import { HER_PACKS, section, verdictRows } from './worksheet.generated';
 import {
   contextFor,
   counts,
@@ -249,6 +249,8 @@ export interface Visit {
   stage: ScreeningStage;
   /** Wellington's real Eligibility invite, copied onto Phoebe's thread once. */
   eligibilityInvite: string;
+  /** His line to Bridget, copied onto her thread once — "Wellington comes to you", 14 Nov 2026. */
+  partnersInvite: string;
   /** True once he has invited Partners while the stage is partners. */
   invitedPartners: boolean;
   /** True once he has invited Quantify. */
@@ -261,6 +263,7 @@ export const EMPTY_VISIT: Visit = {
   packValues: {},
   stage: 'learn',
   eligibilityInvite: '',
+  partnersInvite: '',
   invitedPartners: false,
   invitedQuantify: false,
 };
@@ -305,8 +308,15 @@ export function applyWellingtonRoute(
       eligibilityInvite: text || visit.eligibilityInvite,
     };
   }
-  if (route === 'map' && visit.stage === 'partners') {
-    return { ...visit, invitedPartners: true };
+  /* His line to Bridget is kept whenever he routes to her, so it heads her
+     chat however the visitor got there (14 Nov 2026); the invite itself still
+     waits for the Partners stage. */
+  if (route === 'map') {
+    return {
+      ...visit,
+      invitedPartners: visit.invitedPartners || visit.stage === 'partners',
+      partnersInvite: text || visit.partnersInvite,
+    };
   }
   if (route === 'quantification' && (visit.stage === 'partners' || visit.stage === 'quantify')) {
     return { ...visit, stage: 'quantify', invitedQuantify: true };
@@ -378,6 +388,16 @@ export interface DeskRow {
 
 const group = (n: number) => n.toLocaleString('en-GB');
 
+/** Each funding path by its plain name, as Phoebe says it in chat (14 Nov 2026). */
+const PLAIN_PATH: Record<string, string> = { water: 'Water benefits', carbon: 'Carbon credits' };
+
+/** What each read means, in a visitor's words, for the right panel (14 Nov 2026). */
+const PLAIN_READ: Record<string, string> = {
+  'likely-eligible': 'look likely so far',
+  'likely-not': 'look unlikely for now',
+  'not-enough-known': 'need a few more answers',
+};
+
 /**
  * The rows, derived from the visit and from nothing else.
  *
@@ -406,24 +426,30 @@ export function deskRows(visit: Visit, sheet: Sheet, packs: MethodPack[]): DeskR
       (row) => stateOf(sheet, pack, row.id).state !== 'unchecked'
     ).length;
 
+    /* PLAIN WORDS, the maintainer's word of 14 Nov 2026 on #173: the line
+       named the pathway and its read in the worksheet's own words ("The water
+       pathway reads not enough known yet"). It now says the funding path and
+       what the read means, as Phoebe does in chat. The read itself is still
+       worked out from the rows and never from prose. */
+    const name = PLAIN_PATH[part.sectionId] ?? part.sectionName;
     let sentence = '';
     if (state === 'does-not-apply') {
-      sentence = `${part.sectionName} does not apply to this project, and Phoebe says on the worksheet why.`;
+      sentence = `${name} do not fit this project. Phoebe's worksheet says why.`;
     } else if (looked > 0) {
       const open = [
-        tally.fixable ? `${tally.fixable} fixable` : '',
-        tally.unknown ? `${tally.unknown} still unknown` : '',
-        tally.blocked ? `${tally.blocked} blocked` : '',
+        tally.fixable ? `${tally.fixable} can be fixed` : '',
+        tally.unknown ? `${tally.unknown} to find out` : '',
+        tally.blocked ? `${tally.blocked} cannot be fixed` : '',
       ].filter(Boolean);
-      const read = READINESS_LABEL[readiness(sheet, pack, context)].toLowerCase();
+      const read = PLAIN_READ[readiness(sheet, pack, context)];
       /* A Blocked row has no fix to show, only the card's reason, so where one
          stands the line says "or why it cannot". Corrected 26 Sep 2026. */
       const carries = tally.blocked
-        ? 'each with what would change it, or why it cannot, on the worksheet'
-        : 'each with what would change it on the worksheet';
+        ? 'The worksheet shows what would change each, or why it cannot.'
+        : 'The worksheet shows what would change each.';
       sentence = open.length
-        ? `${part.sectionName} reads ${read}: ${tally.met} met, ${open.join(', ')}, ${carries}.`
-        : `${part.sectionName} reads ${read}, with ${tally.met} of the rows asked here met. Nothing is verified.`;
+        ? `${name} ${read}: ${tally.met} in place, ${open.join(', ')}. ${carries}`
+        : `${name} ${read}, with ${tally.met} of the questions asked here in place. This is a first screening, not an official decision.`;
     }
     if (!sentence) continue;
     rows.push({
@@ -473,7 +499,7 @@ export function deskRows(visit: Visit, sheet: Sheet, packs: MethodPack[]): DeskR
       rows.push({
         key: `calvin-${pack.key}`,
         from: 'calvin',
-        sentence: `${lead}${pack.name} screens at ${figure} ${h.unit} for ${h.label.toLowerCase()} — a screening estimate, not verified.`,
+        sentence: `${lead}${pack.name} screens at ${figure} ${h.unit} for ${h.label.toLowerCase()} — a screening estimate. This is a first screening, not an official decision.`,
         action: { kind: 'surface', label: 'Open Quantify', surface: 'quantification' },
       });
     } else if (result.kind === 'incomplete') {
@@ -632,4 +658,60 @@ export function journeyProgress(
       return r.kind === 'complete' || r.kind === 'incomplete';
     }),
   };
+}
+
+/* --------------------------------------------------------------------------
+   THE CREW'S STATUS — the maintainer's word of 14 Nov 2026 (W27). The right
+   panel is the crew, each with one plain line on where their part stands,
+   worked out from the visit and the rows alone, never from anyone's prose:
+   "Phoebe: water likely · carbon ruled out".
+   -------------------------------------------------------------------------- */
+
+/** Each funding path's short name in a status line. */
+const SHORT_PATH: Record<string, string> = { water: 'water', carbon: 'carbon' };
+
+/**
+ * Where one funding path stands, in a visitor's words. A path that does not
+ * apply and a path with a Blocked row are both "ruled out": the maintainer's
+ * ruling of 14 Nov 2026 calls a path that does not apply ruled out too.
+ */
+export function pathStatus(visit: Visit, sheet: Sheet, pack: string): 'likely' | 'ruled out' | 'more to find out' | 'not started' {
+  const context = contextFor(sheet, pack, visit.context.gsClass);
+  if (pathwayState(sheet, pack, context) === 'does-not-apply') return 'ruled out';
+  const read = readiness(sheet, pack, context);
+  if (read === 'likely-not') return 'ruled out';
+  if (read === 'likely-eligible') return 'likely';
+  const looked = verdictRows(pack, context).some((row) => stateOf(sheet, pack, row.id).state !== 'unchecked');
+  return looked || pathwayState(sheet, pack, context) === 'applies' ? 'more to find out' : 'not started';
+}
+
+/** One line per crew member, keyed by the step each one opens. */
+export function crewStatus(visit: Visit, sheet: Sheet, packs: MethodPack[]): Record<Surface, string> {
+  const c = visit.context;
+  const asked = [c.does, c.type, c.stage, c.place.trim(), ...(WATER_SUPPLY_TYPES.includes(c.type) ? [c.served ? 'x' : ''] : [])];
+  const known = asked.filter(Boolean).length;
+  const wellington = known === 0 ? 'getting to know your project' : `${known} of ${asked.length} project details`;
+
+  const paths = HER_PACKS.filter((pack) => section(pack) !== undefined).map((pack) => ({
+    name: SHORT_PATH[section(pack)!.sectionId] ?? section(pack)!.sectionName,
+    status: pathStatus(visit, sheet, pack),
+  }));
+  const phoebe = paths.every((p) => p.status === 'not started')
+    ? 'not started'
+    : paths.map((p) => `${p.name} ${p.status}`).join(' · ');
+
+  const bridget = visit.pin ? `basin pinned · ${visit.pin.stressLabel.toLowerCase()} water stress` : 'not done yet';
+
+  let calvin = 'not done yet';
+  for (const pack of packs) {
+    const values = visit.packValues[pack.key];
+    if (!values) continue;
+    const result = pack.compute(values);
+    if (result.kind === 'complete') {
+      calvin = 'estimate ready';
+      break;
+    }
+    if (result.kind === 'incomplete') calvin = 'part-way';
+  }
+  return { desk: wellington, eligibility: phoebe, map: bridget, quantification: calvin };
 }

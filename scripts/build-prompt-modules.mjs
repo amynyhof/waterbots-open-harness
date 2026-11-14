@@ -329,6 +329,18 @@ const BUNDLES = [
     sources: [{ name: 'WELLINGTON_BUILD_UPDATE_MD', file: 'knowledge-packs/wellington-host/build-update.md', region: 'AGENT-FACING' }],
     stale: 'Wellington would deploy telling visitors a build state that the close-out has moved past.',
   },
+  {
+    label: 'plain-words',
+    target: 'api/_plainWords.generated.ts',
+    /* The shared plain-words list and the before-and-after pairs — the
+       maintainer's word of 14 Nov 2026 on #173. Both agents read both; only the
+       marked regions embed. */
+    sources: [
+      { name: 'PLAIN_WORDS_MD', file: 'knowledge-packs/product-shared/plain-words.md', region: 'AGENT-FACING' },
+      { name: 'BEFORE_AFTER_MD', file: 'knowledge-packs/product-shared/before-and-after.md', region: 'AGENT-FACING' },
+    ],
+    stale: 'An agent would deploy translating method terms with a list the maintainer has since changed.',
+  },
 ];
 
 const checkOnly = process.argv.includes('--check');

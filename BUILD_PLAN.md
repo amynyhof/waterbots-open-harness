@@ -126,7 +126,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 
 **After v1, not needed for the finish line:** A23, Calvin's VWBA row becomes Violet's; A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
-- **Wellington's prompt is 24,581 characters against a gate of 26,199** (A26, 13 Nov 2026: 24,560 after her three walks, then 24,581 with the primer's line on Phoebe's tab). The gate moves only on her word.
+- **Wellington's prompt is 26,136 characters against a gate of 26,199** (A26, 14 Nov 2026, when he came to the agents' chats; 24,581 the day before). The gate moves only on her word.
 - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull request; a measured run after any prompt change; the build-update fact refreshed at every full close-out.
 
 ---
@@ -142,13 +142,11 @@ How agents behave, what they may say, how they hand off. Governed by AGENT_RULES
 
 **A21 · Calvin's brief — his chat, the engine, carbon beside water.** Step 5 · BONES. **27 Oct 2026: replaced by** [docs/proposals/calvin-from-open-core.md](./docs/proposals/calvin-from-open-core.md):
 Calvin's engine and screens from the open core, React 19, Wellington asks the core facts first. Ruled; six open.
-Done when his screening numbers match the paid site's calculators run on the saved project's inputs (the v1
-fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 2026; teal dropped).
+Done when his screening numbers match the paid site's calculators run on the saved project's inputs (the v1 fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 2026; teal dropped).
 
 **A14 · Screen host role words — one home.** Step 6, before or with A22 · BONES. `BridgetScreen.tsx` says
 `role: 'Map'` where her crew card says "Partners"; `PhoebeScreen.tsx` carries its own too. The chat header
-draws them and `check-roster` does not read them. Her ruling is owed: the field goes and the header reads
-the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 2026.
+draws them and `check-roster` does not read them. Her ruling is owed: the field goes and the header reads the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 2026.
 
 **A22 · Bridget's chat.** Step 6 · BONES. Built and merged 31 Oct 2026 on her three rulings (#167); what it built is in
 docs/OPEN_ITEMS_ARCHIVE.md. Done when a walk passes through her and back with no wrong turn (road step 6). Closes A12.
@@ -160,11 +158,12 @@ back to Wellington, as built in A22. The visit stays at Partners after the pin, 
 the cards and the lists reach the relays as generated copies (`scripts/build-prompt-modules.mjs`), written by hand; CI's
 `--check` fails a stale copy, but nothing refreshes one. Done is a copy that cannot ship stale and needs no hand. Proposal first.
 
-**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved (docs/proposals/wellington-rewrite-2026-10-31.md);
-her three walks' fixes 12–13 Nov 2026. His prompt is 24,560 after them and 24,581 with the primer's line on Phoebe's tab, from 26,079. Waiting on one measured run.
+**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved (docs/proposals/wellington-rewrite-2026-10-31.md); her walks' fixes, the voice card and "Wellington comes to you" 12–14 Nov 2026. His prompt is 26,136, from 26,079. Waiting on one measured run.
 
 **A27 · Agent door bug.** v1 · BONES. Her word of 12 Nov 2026: in the Agent Commons, Phoebe tells visitors to go to Wellington. In the Commons,
 every agent works alone and asks for what she needs herself; on the sites, she hands back to Wellington. Each module must know which door it is at (see the plug-in contract).
+
+**A28 · Phoebe's walk fixes.** v1 · BONES. Her word of 12–14 Nov 2026: rounds two and three (#173), the limit of 4 sentences or 400 characters approved 14 Nov. On the preview her first word came at 4.8 to 6.1 seconds and whole answers took 5.8 to 9.3 (14 Nov). The skipped hello is fixed. From 14 Nov a voice card, the shared plain-words list, the order of questions, and a ruled-out path saved the same turn (W25). Waiting on one measured run.
 
 **A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet, host of the
 D-n modules in the Commons; not on the roster yet, by her hand. No proposal yet. Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026).
@@ -187,7 +186,7 @@ What a visitor sees and works with. Her browser review is the gate.
 
 **S21 · The screening report exports free.** Step 8 · v1. Her word of 23 Sep 2026: every tool, with or
 without answers, exportable as an easy-to-read, properly cited document. The screening report is the first
-export, in the phase-tags shape. It needs Calvin's figures. Proposal first, from a captured reference.
+export, in the phase-tags shape. **A first version is built on her word of 14 Nov 2026 (#173)**: print-only, from the left rail, growing with the visit, in the feel of the core's ReportView. Calvin's figures fill it once he has them.
 
 **S25 · Tap size on phones.** v1 · WALKTHROUGH. Her word of 31 Oct 2026, after her preview check of #167. Every control a
 visitor taps, measured at phone width against a size she rules; S24's 44px for the main site's menu is the same question
@@ -247,11 +246,12 @@ design session, both shells. Four questions are open, in her words, in the write
 **S1 · Collective action as a partner-finding surface.** After v1 · PARK. Regional collective action
 groups: which exist, where, how to reach them. The companion to D1. Not started.
 
-**S5 · Narrow-column wraps.** After v1 · PARK. The citation line wraps badly in the narrow dock; cosmetic.
-One piece of work with O4's legend strip and the rail-width rider.
+**S5 · Narrow-column wraps.** After v1 · PARK. Citation lines wrap badly in the narrow dock; one piece with O4's legend strip and the rail-width rider.
 
-**S29 · Three blue buttons together.** After v1 · PARK. Her second walk of #170, 12 Nov 2026: the rail shows Open Eligibility,
-Save and Send as three solid blue buttons at once. For the design pass; no change now.
+**S29 · Three blue buttons together.** After v1 · PARK. Her walk of #170, 12 Nov: Open Eligibility, Save and Send all solid blue.
+**S30 · Phoebe's screen, for the console pass (job 2).** PARK, not built; her word of 14 Nov 2026, with S29: a small progress bar
+for her questions; an Eligibility quiz tracker in the left rail, the Project Record collapsed while she works, in place of the
+"Worksheet — …" line in chat; what belongs in the right panel; and once "Save this project" shows, Sign up goes quiet: one blue.
 
 **S22 · The Blocked row colour.** After v1 · PARK. Blocked rows reuse `--state-pending` until her pixels;
 the brand book's §2.5 has no stopped state that is not an error. A raise for the book, from an image.

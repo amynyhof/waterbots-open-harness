@@ -988,6 +988,46 @@ button.wb-phase:hover span:last-child {
   outline-offset: -2px;
 }
 
+/* A quiet chip under a chat message — the maintainer's word of 14 Nov 2026
+   (P24): small text, a plain outline, no fill. Blue is kept for the main next
+   step alone (Meet Phoebe, Save). */
+.wb-chip {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.3;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.wb-chip:hover {
+  color: var(--ink);
+  border-color: var(--ink-4);
+}
+
+/* A dot on a tab that guides the visitor there — the maintainer's word of
+   14 Nov 2026 (P15, P20): on Phoebe's Tool tab when she says her quiz is
+   there, and on her Chat tab while the visitor is on Tool. In the agent's own
+   colour by her word, not teal. Opacity only, the typing dots' own pulse, and
+   still under reduced motion. */
+.wb-tab-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 6px;
+  vertical-align: middle;
+  border-radius: var(--r-pill);
+  background: var(--screen-accent);
+  animation: wb-dot-pulse 1.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wb-tab-dot {
+    animation: none;
+  }
+}
+
 /* "Next phase" at the right end of the row — §7's secondary button: a
    Tide-tinted border with Tide text. Navigation, so Tide, not the agent. */
 
@@ -1853,5 +1893,62 @@ button.wb-info {
     width: max(100%, 44px);
     height: 44px;
     transform: translate(-50%, -50%);
+  }
+}
+
+/* THE SAVE DOOR IN THE LEFT RAIL — the maintainer's word of 14 Nov 2026 (W27):
+   under the project, full width; the report button under it is quiet (S21),
+   because blue is for the one main next step. */
+.wb-rail-save .wb-save-button {
+  width: 100%;
+}
+.wb-report-button {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+.wb-report-button:hover {
+  border-color: var(--ink-4);
+}
+
+/* THE SCREENING REPORT (S21) is print-only, as the paid calculator's export is:
+   hidden on screen, and the only thing printed. */
+.wb-report {
+  display: none;
+}
+@media print {
+  html,
+  body,
+  #root {
+    height: auto !important;
+    overflow: visible !important;
+    background: #ffffff;
+  }
+  .wb-app {
+    height: auto !important;
+    display: block !important;
+    background: #ffffff !important;
+  }
+  .wb-app > :not(.wb-report) {
+    display: none !important;
+  }
+  .wb-report {
+    display: block;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    max-width: 7.5in;
+    margin: 0 auto;
+  }
+  @page {
+    size: letter portrait;
+    margin: 1in;
   }
 }

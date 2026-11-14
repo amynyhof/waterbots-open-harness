@@ -90,6 +90,14 @@ export interface AgentTurn {
    */
   action?: TurnAction;
   /**
+   * Buttons under the turn, from 14 Nov 2026: Wellington's "Meet Phoebe" and
+   * "Keep chatting" at a handoff (W17), and Phoebe's "Learn more about …"
+   * (P22). Only the main next step is primary and blue; the rest are quiet
+   * chips (P24). Built by an adapter from fields, never from
+   * prose, and drawn only under the latest turn.
+   */
+  buttons?: TurnButton[];
+  /**
    * One caption line under the answer, in the citation line's place and size.
    * An agent's adapter builds it from a structured field, never from prose —
    * Phoebe's says what her worksheet holds after a turn that moved a row
@@ -104,6 +112,14 @@ export interface TurnAction {
   href?: string;
   /** Something to do on this console. The layer calls it and knows no more. */
   go?: () => void;
+}
+
+/** A button under a turn: the blue primary one first, then plain ones. */
+export interface TurnButton {
+  label: string;
+  primary?: boolean;
+  /** Called on a tap. The layer knows no more than that. */
+  go: () => void;
 }
 
 export type Turn = UserTurn | AgentTurn;
@@ -139,11 +155,17 @@ export interface AgentHost {
  *
  * A thrown Error's `message` is shown to the reader as-is, so an adapter throws
  * only messages already fit to read.
+ *
+ * `onLive`, from 13 Nov 2026: an agent whose relay streams hands the layer its
+ * reply as it is written — the whole text so far each time, or null to clear
+ * it. It is real text arriving, never typing put on for show, and the answer
+ * the adapter returns replaces it. An agent that does not stream ignores it.
  */
 export type Ask = (
   history: { role: 'user' | 'agent'; text: string }[],
   signal: AbortSignal,
-  meta?: AskMeta
+  meta?: AskMeta,
+  onLive?: (text: string | null) => void
 ) => Promise<AgentTurn>;
 
 /**
@@ -167,6 +189,13 @@ export interface AskMeta {
    * visitor bubble is added, the same way as `opened`.
    */
   pinned?: boolean;
+  /**
+   * Wellington's: he joins the visitor in another agent's chat (the
+   * maintainer's ruling of 14 Nov 2026, "Wellington comes to you"). The step
+   * he speaks at, and the chat box his "Keep chatting" button focuses there.
+   */
+  at?: 'eligibility' | 'map';
+  composerId?: string;
 }
 
 /** One piece of a laid-out answer: prose, or a marker standing in the prose. */

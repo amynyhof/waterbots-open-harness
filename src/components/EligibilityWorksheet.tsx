@@ -25,6 +25,7 @@
  */
 
 import { useState, type ReactNode } from 'react';
+import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
 import {
   CONSIDERATIONS,
   CONSIDERATION_GROUPS,
@@ -85,6 +86,27 @@ export default function EligibilityWorksheet({
     <div style={{ height: '100%', overflowY: 'auto' }}>
       <div style={{ maxWidth: 880, margin: '0 auto', padding: '28px var(--gutter) 64px' }}>
         <header style={{ marginBottom: 30 }}>
+          {/* WHO IS FILLING THIS IN — the maintainer's word of 14 Nov 2026
+              (P20). Her face and one line, in her own colour as an identity —
+              a tint and a keyline, the way her tabs wear it — never teal,
+              which on this site marks a value a baseline can set. */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              marginBottom: 18,
+              padding: '8px 12px',
+              borderLeft: '3px solid var(--bot-phoebe)',
+              background: 'color-mix(in oklab, var(--bot-phoebe) 8%, var(--paper))',
+              borderRadius: 'var(--r-xs)',
+            }}
+          >
+            <img src={phoebePortrait} alt="" width={28} height={28} style={{ flex: 'none' }} />
+            <span className="t-caption" style={{ color: 'var(--ink)', fontSize: 13 }}>
+              Phoebe is checking your project against these criteria.
+            </span>
+          </div>
           <div className="eyebrow" style={{ marginBottom: 10 }}>
             Eligibility worksheet
           </div>
@@ -113,8 +135,7 @@ export default function EligibilityWorksheet({
               that would otherwise be spent finding out late.
             </p>
             <p className="t-caption" style={{ margin: 0, lineHeight: 1.7, maxWidth: '66ch' }}>
-              Nothing on this page is verified, and nothing here speaks for any standard beyond
-              citing it. A consultant confirms what a screening suggests.
+              This is a first screening, not an official decision.
             </p>
           </div>
         </header>
@@ -235,7 +256,7 @@ function PathwaySection({
             {worked ? (
               <>
                 The reading from these rows: <strong style={{ color: 'var(--ink)' }}>{READINESS_LABEL[read]}</strong>.
-                Likely, not settled — nothing here is verified.
+                This is a first screening, not an official decision.
               </>
             ) : (
               <>
@@ -672,8 +693,8 @@ function ReadyBanner({ onOpenMap }: { onOpenMap?: () => void }) {
           This pathway reads likely eligible — next stop: Partners
         </div>
         <p className="t-caption" style={{ margin: 0 }}>
-          Every row asked here is met. Nothing is verified; a consultant confirms it. The basin map
-          is where you find who else is working nearby.
+          Every row asked here is met. This is a first screening, not an official decision. The
+          basin map is where you find who else is working nearby.
         </p>
       </div>
       {onOpenMap && (

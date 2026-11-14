@@ -75,6 +75,8 @@ import NavRail from './components/NavRail';
 import JourneyBar from './components/JourneyBar';
 import Desk from './components/Desk';
 import CrewRail from './components/CrewRail';
+import ScreeningReport from './components/ScreeningReport';
+import type { AgentTurn } from './chat/evidence';
 import Commons from './components/Commons';
 import {
   HandoffError,
@@ -96,24 +98,24 @@ import { useConversation } from './chat/useConversation';
 import { WELLINGTON, wellingtonAsk } from './lib/wellington';
 import {
   EMPTY_SHEET,
-  anyRowIn,
   applyUpdates as applySheetUpdates,
   type Sheet,
   type Verdicts,
 } from './lib/worksheetState';
 import { eligibilityDone as sheetDone } from './lib/visit';
+import { HER_PACKS } from './lib/worksheet.generated';
 import { fittedPack, livePacks, type PackValues } from './lib/methodPacks';
 import {
   EMPTY_VISIT,
   applyEligibilityProgress,
   applyWellingtonRoute,
+  crewStatus,
   journeyProgress,
   learnedContext,
-  nextStepRows,
   openedEligibility,
+  pathStatus,
   pathwayAllowsQuantify,
   pinnedVisit,
-  rowTaken,
   somethingOnRecord,
   typedContext,
   type Learned,
@@ -229,7 +231,7 @@ export default function App() {
   /* Look pass, 8 Sep 2026: his route no longer draws a button under his turn.
      He names the step in words, and the next steps live in the right rail. */
   const ask = useMemo(
-    () => wellingtonAsk(onLearned, () => visitRef.current, onRouted, () => sheetRef.current),
+    () => wellingtonAsk(onLearned, () => visitRef.current, onRouted, () => sheetRef.current, setSurface),
     [onLearned, onRouted]
   );
   const chat = useConversation(ask, WELLINGTON.name);
@@ -323,16 +325,25 @@ export default function App() {
     void askReturned();
   }, [surface, visit.stage, askReturned]);
 
-  /* The current invite first, then derived rows that never outrank it. */
-  /* A row clears once it is taken: the visitor is on the step it invites them to,
-     or, for the map row, a basin is pinned (rowTaken, in src/lib/visit.ts). The
-     rail then shows nothing until the next agent says they are ready. The save
-     button is not a row and stays. Maintainer's ruling, 30 Sep 2026. */
-  const rows = useMemo(
-    () =>
-      nextStepRows(visit, sheet, LIVE_PACKS).filter((row) => !rowTaken(row, surface, visit)),
-    [visit, sheet, surface]
+  /* WELLINGTON COMES TO YOU — the maintainer's ruling of 14 Nov 2026. When an
+     agent's step is done he joins the visitor in that agent's chat with the
+     next step and its button. It is one ask on his own conversation, so his
+     desk holds the same turn and he knows where the visitor left off; the
+     agent's screen shows a copy with his face. Once he has come, the desk's
+     own greet-back is not sent again. */
+  const askHim = chat.askOpened;
+  const wellingtonComes = useCallback(
+    async (at: 'eligibility' | 'map', composerId: string): Promise<AgentTurn | null> => {
+      greetedBack.current = true;
+      return askHim({ opened: true, at, composerId });
+    },
+    [askHim]
   );
+
+  /* THE RIGHT PANEL IS A QUIET LIST — W27, 14 Nov 2026: the crew, each with
+     one plain line on where their part stands. Every handoff's button sits in
+     the chat (W26). */
+  const crew = useMemo(() => crewStatus(visit, sheet, LIVE_PACKS), [visit, sheet]);
   const progress = useMemo(() => journeyProgress(visit, sheet, LIVE_PACKS), [visit, sheet]);
 
   /* THE BRIDGE (item S7, built 8 Sep 2026). The click seals the visit as it
@@ -345,8 +356,12 @@ export default function App() {
      the tools line once a row is Fixable or Unknown. A tick whose box is no
      longer shown is not sent. */
   const [person, setPerson] = useState<PersonAsk>(NO_PERSON);
-  const showPerson = useMemo(() => anyRowIn(sheet, ['blocked']), [sheet]);
-  const showTools = useMemo(() => anyRowIn(sheet, ['fixable', 'unknown']), [sheet]);
+  /* From 14 Nov 2026 the box shows whenever a path is ruled out, Blocked or
+     not applying — the ruling of 23 Sep 2026, confirmed that day. */
+  const showPerson = useMemo(
+    () => HER_PACKS.some((pack) => pathStatus(visit, sheet, pack) === 'ruled out'),
+    [visit, sheet]
+  );
   const onSeal = useCallback(async () => {
     setSealing({ kind: 'sealing' });
     try {
@@ -428,6 +443,15 @@ export default function App() {
         <NavRail
           context={visit.context}
           onTyped={onTyped}
+          save={{
+            show: somethingOnRecord(visit),
+            sealing,
+            onSeal,
+            showPerson,
+            person,
+            onPerson: setPerson,
+            onExport: () => window.print(),
+          }}
           drawer={phone ? { open: drawer === 'project', onClose: closeDrawer } : undefined}
         />
 
@@ -438,7 +462,7 @@ export default function App() {
             onNavigate={setSurface}
             phone={
               phone
-                ? { onProject: () => setDrawer('project'), onCrew: () => setDrawer('crew'), steps: rows.length }
+                ? { onProject: () => setDrawer('project'), onCrew: () => setDrawer('crew'), steps: 0 }
                 : undefined
             }
           />
@@ -483,6 +507,8 @@ export default function App() {
                   phone={phone}
                   quantifyNext={visit.stage === 'quantify'}
                   visible={onMap}
+                  invite={visit.partnersInvite}
+                  onWellington={wellingtonComes}
                 />
               </div>
 
@@ -505,6 +531,8 @@ export default function App() {
                   onNavigate={setSurface}
                   visible={onEligibility}
                   eligibilityDone={sheetDone(visit, sheet)}
+                  invite={visit.eligibilityInvite}
+                  onWellington={wellingtonComes}
                 />
               </div>
 
@@ -531,16 +559,8 @@ export default function App() {
                 each agent's screen holds its own chat in the centre. */}
             <CrewRail
               active={surface}
-              openCount={rows.length}
-              rows={rows}
+              status={crew}
               onNavigate={setSurface}
-              sealing={sealing}
-              onSeal={onSeal}
-              showSave={somethingOnRecord(visit)}
-              showTools={showTools}
-              showPerson={showPerson}
-              person={person}
-              onPerson={setPerson}
               drawer={phone ? { open: drawer === 'crew', onClose: closeDrawer } : undefined}
             />
           </div>
@@ -563,6 +583,10 @@ export default function App() {
         <Commons path={path} navigate={navigate} />
       </main>
       </div>
+
+      {/* S21 — the screening report, print-only; "Export screening report"
+          in the left rail opens the print dialog on it. */}
+      <ScreeningReport visit={visit} sheet={sheet} packs={LIVE_PACKS} showPerson={showPerson} />
     </div>
   );
 }

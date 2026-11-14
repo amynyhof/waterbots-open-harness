@@ -30,6 +30,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import { MAX_HUMAN_NOTE_CHARS, type PersonAsk, type SealState } from '../lib/handoff';
 import { SITE_LABEL, SITE_URL } from '../lib/site';
 import { PROJECT_STAGES, projectType } from '../lib/projectTypes.generated';
 import { WATER_SUPPLY_TYPES, servedWords, type Provenance, type VisitContext } from '../lib/visit';
@@ -60,13 +61,34 @@ const PROVENANCE_LABEL: Record<Provenance, string> = {
 const RECORD_EXPLAINER =
   'Wellington asks for these in the chat, and what you tell him lands here. Phoebe reads them, and the eligibility verdicts she reaches with you show on her step and in the next steps. Nothing is kept between visits.';
 
+/**
+ * THE SAVE DOOR AND THE REPORT, under the project — the maintainer's word of
+ * 14 Nov 2026 (W27, S21). The save button left the foot of the crew column
+ * for here, with the box that sends the project to the team for review, and
+ * "Export screening report" sits under it. One blue button: Save.
+ */
+export interface SaveDoor {
+  /** Something is on the record, so there is a project to save and report. */
+  show: boolean;
+  sealing: SealState;
+  onSeal: () => void;
+  /** A path is ruled out: the box to send the project to the team shows. */
+  showPerson: boolean;
+  person: PersonAsk;
+  onPerson: (next: PersonAsk) => void;
+  /** Opens the print dialog on the screening report (S21). */
+  onExport: () => void;
+}
+
 export default function NavRail({
   context,
   onTyped,
+  save,
   drawer,
 }: {
   context: VisitContext;
   onTyped: (field: 'name' | 'place', value: string) => void;
+  save: SaveDoor;
   /** On a phone: the rail is a sliding panel, open or shut by the shell. */
   drawer?: { open: boolean; onClose: () => void };
 }) {
@@ -181,6 +203,8 @@ export default function NavRail({
             </div>
           </div>
 
+          {save.show && <SaveBlock save={save} />}
+
           {/* THE RECORD his interview populates. Four rows; a dash until he
               has heard it. The explainer sits behind the (i). */}
           <div
@@ -268,6 +292,72 @@ export default function NavRail({
         {open && <span>{SITE_LABEL}</span>}
       </a>
     </nav>
+  );
+}
+
+/** The save button, the team-review box above it when a path is ruled out, and the report under it. */
+function SaveBlock({ save }: { save: SaveDoor }) {
+  const { sealing, person, onPerson } = save;
+  const busy = sealing.kind === 'sealing' || sealing.kind === 'sealed';
+  return (
+    <div className="wb-rail-save" style={{ marginTop: 10 }}>
+      {/* THE DOOR TO A PERSON — item A18, 26 Sep 2026; from 14 Nov 2026 shown
+          whenever a path is ruled out, Blocked or not applying (the ruling of
+          23 Sep 2026), and never offered in chat. Nothing is sent until the
+          save button below is pressed, and then only with it. */}
+      {save.showPerson && (
+        <div style={{ margin: '0 2px 10px' }}>
+          <label
+            style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12.5, lineHeight: 1.45, color: 'var(--ink)', cursor: 'pointer' }}
+          >
+            <input
+              type="checkbox"
+              checked={person.wanted}
+              disabled={busy}
+              onChange={(e) => onPerson({ ...person, wanted: e.target.checked })}
+              style={{ marginTop: 3, accentColor: 'var(--tide-ui)', flex: 'none' }}
+            />
+            Send my project to the WaterBots team so a person can look at it
+          </label>
+          {person.wanted && (
+            <textarea
+              className="wb-rail-input"
+              value={person.note}
+              disabled={busy}
+              onChange={(e) => onPerson({ ...person, note: e.target.value })}
+              placeholder="A note for them, if you like"
+              aria-label="A note for the WaterBots team"
+              maxLength={MAX_HUMAN_NOTE_CHARS}
+              rows={2}
+              style={{ resize: 'none', marginTop: 6 }}
+            />
+          )}
+        </div>
+      )}
+
+      <button
+        type="button"
+        className="wb-save-button"
+        onClick={save.onSeal}
+        disabled={busy}
+        aria-busy={sealing.kind === 'sealing' || undefined}
+      >
+        {sealing.kind === 'sealing' && 'Saving your project…'}
+        {sealing.kind === 'sealed' && 'Saved. Taking you to waterbots.ai…'}
+        {(sealing.kind === 'idle' || sealing.kind === 'failed') && 'Save this project and sign up'}
+      </button>
+      {sealing.kind === 'failed' && (
+        <p role="alert" style={{ margin: '8px 0 0', fontSize: 12, lineHeight: 1.5, color: 'var(--state-pending)' }}>
+          {sealing.message}
+        </p>
+      )}
+
+      {/* S21 — the screening report, printed or saved as a PDF. A quiet
+          button: blue is for the one main next step. */}
+      <button type="button" className="wb-report-button" onClick={save.onExport}>
+        Export screening report
+      </button>
+    </div>
   );
 }
 

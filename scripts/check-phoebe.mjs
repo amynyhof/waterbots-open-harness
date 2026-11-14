@@ -335,6 +335,80 @@ expect(
     relaySource.indexOf('text: sheetText') > relaySource.lastIndexOf("cache_control: { type: 'ephemeral' }"),
   'a block is above a breakpoint, or a breakpoint is missing'
 );
+/* P13, the maintainer's word of 13 Nov 2026: the carbon pack's requirements
+   and routes load only when the next question is on them. */
+const waterOpen = setsFor({
+  pathways: [
+    { pack: 'vwba-2.0', state: 'applies', open: 2 },
+    { pack: 'gs-paa-v2.0', state: 'applies', open: 9 },
+  ],
+});
+const waterDone = setsFor({
+  pathways: [
+    { pack: 'vwba-2.0', state: 'applies', open: 0 },
+    { pack: 'gs-paa-v2.0', state: 'applies', open: 9 },
+  ],
+});
+const waterStillTesting = setsFor({
+  pathways: [
+    { pack: 'vwba-2.0', state: 'unchecked' },
+    { pack: 'gs-paa-v2.0', state: 'applies', open: 9 },
+  ],
+});
+const waterOut = setsFor({
+  pathways: [
+    { pack: 'vwba-2.0', state: 'does-not-apply' },
+    { pack: 'gs-paa-v2.0', state: 'applies', open: 9 },
+  ],
+});
+expect(
+  'P13: while water rows are still to ask, or its tests are, the carbon pack stays at its applies cards',
+  JSON.stringify(waterOpen) === JSON.stringify(['water:applies', 'water:eligibility', 'water:routes', 'carbon:applies']) &&
+    JSON.stringify(waterStillTesting) === JSON.stringify(['water:applies', 'carbon:applies']),
+  `${JSON.stringify(waterOpen)} / ${JSON.stringify(waterStillTesting)}`
+);
+expect(
+  'P29: a running project opens a pack that applies in full at once, because its start date is asked first',
+  JSON.stringify(setsFor({ pathways: [{ pack: 'vwba-2.0', state: 'applies', open: 2 }, { pack: 'gs-paa-v2.0', state: 'applies', open: 9 }], running: true })) ===
+    JSON.stringify(['water:applies', 'water:eligibility', 'water:routes', 'carbon:applies', 'carbon:eligibility', 'carbon:routes']) &&
+    /running: record\?\.stage === 'running'/.test(relaySource),
+  'a running project still waits for the water rows'
+);
+expect(
+  'P13: once the water rows are done, or water does not apply, the carbon pack opens in full',
+  waterDone.includes('carbon:eligibility') && waterDone.includes('carbon:routes') &&
+    waterOut.includes('carbon:eligibility') && waterOut.includes('carbon:routes'),
+  `${JSON.stringify(waterDone)} / ${JSON.stringify(waterOut)}`
+);
+expect(
+  'P13: a carbon set she asked for still stays loaded, and the relay counts the open rows it stages by',
+  setsFor({
+    pathways: [
+      { pack: 'vwba-2.0', state: 'applies', open: 2 },
+      { pack: 'gs-paa-v2.0', state: 'applies', open: 9 },
+    ],
+    loaded: ['carbon:eligibility'],
+  }).includes('carbon:eligibility') &&
+    /verdictRows\(pack, context\)\.filter\(\(row\) => \(states\[row\.id\] \?\? 'unchecked'\) === 'unchecked'\)\.length/.test(relaySource),
+  'a loaded set was dropped, or the relay does not count open rows'
+);
+expect(
+  'P13: the reply streams — needCards is first and required, the relay streams every call and the console asks for it',
+  Object.keys(RESPONSE_SCHEMA.properties)[0] === 'needCards' &&
+    RESPONSE_SCHEMA.required[0] === 'needCards' &&
+    /client\.messages\.stream\(/.test(relaySource) &&
+    !/client\.messages\.create\(/.test(relaySource) &&
+    /body\.stream === true/.test(relaySource) &&
+    /'application\/x-ndjson; charset=utf-8'/.test(relaySource) &&
+    /if \(opts\?\.onLive\) body\.stream = true/.test(clientSource) &&
+    /onLive,/.test(readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8')),
+  'a part of the stream is missing'
+);
+expect(
+  'P13: a pass that will be asked again is never shown, and what was shown is reset before the second speaks',
+  /!pass\.includes\(asked as CardSet\)/.test(relaySource) && /onReset\?\.\(\);\s*firstWordAt = null;/.test(relaySource),
+  'a first pass could reach the visitor'
+);
 expect(
   'the one extra call happens only for a set she has not been given, and only once',
   /answer\.needCards !== 'none' && !usedSets\.includes\(answer\.needCards\)/.test(relaySource) &&
@@ -412,23 +486,80 @@ expect(
     /Blocked is rare and it is the card's decision, not yours/.test(SYSTEM_PROMPT),
   'a state rule is missing from her prompt'
 );
+/* The paid-site tools line went on 14 Nov 2026, the maintainer's P18: a row
+   that cannot be settled yet gets one line and the walk moves on. */
 expect(
-  'the tools line is a fact she phrases, said only where a Fixable or Unknown row shows',
-  /WaterBots is building tools and resources on the paid site/.test(SYSTEM_PROMPT) &&
-    /said where such a row shows and nowhere else/.test(SYSTEM_PROMPT) &&
-    /Never press anyone to sign up/.test(SYSTEM_PROMPT),
-  'the tools line is missing, or is not bounded'
+  'P18: what cannot be settled yet is one line, in her spirit, with no document named and no paid-site pitch',
+  !/WaterBots is building tools and resources on the paid site/.test(SYSTEM_PROMPT) &&
+    /in chat, one plain line on what would find it out and that we can help find tools for it, then your next question/.test(SYSTEM_PROMPT) &&
+    /Never name a document/.test(SYSTEM_PROMPT) &&
+    /never a document's name/.test(SYSTEM_PROMPT),
+  'the paid-site line is back, or the one-line rule is missing'
 );
 /* THE DOOR TO A PERSON, item A18, 26 Sep 2026. Offered once, only on a
    Blocked row, pointing at the box the save door shows; rung 3 still says
    consultants are coming everywhere else, because everywhere else there is
    still no way to reach one. */
+/* THE NEXT ROUND ON #173, the maintainer's word of 14 Nov 2026: a voice card
+   at the top, the order of questions (P29, P31), a closed path said in one line
+   (P30), and the shared plain-words list and before-and-after pairs. */
+{
+  const { PLAIN_WORDS_MD, BEFORE_AFTER_MD } = await loadApi('_plainWords.generated.js');
+  const voice = SYSTEM_PROMPT.slice(0, SYSTEM_PROMPT.indexOf('# The base rules you inherit'));
+  expect(
+    'the voice card comes first: who she is, who she talks to, the principles',
+    /^You are Phoebe[^\n]*\n\n# Your voice — read this first/.test(SYSTEM_PROMPT) &&
+      /warm, clear and encouraging/.test(voice) &&
+      /a newcomer who knows nothing about standards or methods/.test(voice) &&
+      /Answer what was asked first\. Respond to what the visitor actually said, then ask one follow-up related to it/.test(voice) &&
+      /Say what it means for the visitor, not what the method says\. Never repeat something already said\. Never name a document or a method unless asked/.test(voice),
+    'a part of the voice card is missing'
+  );
+  expect(
+    'P29, P31: deal-breakers first, then what settles both paths, then one path, water first; never lead with carbon',
+    /# The order of questions — a hard rule/.test(SYSTEM_PROMPT) &&
+      /1\. \*\*Deal-breakers first:\*\*[^\n]*If the record says the project is already running, your first question is when it started running, before anything else/.test(SYSTEM_PROMPT) &&
+      /2\. \*\*Then questions one answer settles for both paths\.\*\*/.test(SYSTEM_PROMPT) &&
+      /3\. \*\*Then questions for one path only:\*\* water benefits first, in your tool's order\. Never lead with carbon\./.test(SYSTEM_PROMPT) &&
+      /then your first question, in the order of questions below/.test(SYSTEM_PROMPT) &&
+      !/First: what will lift the water/.test(SYSTEM_PROMPT),
+    'the order is missing, or the carbon-first example is back'
+  );
+  expect(
+    'P30: a closed path is one plain line, then straight to the other path; never "shall I move on?"',
+    /\*\*When a path closes\*\* \(it does not apply, or a row is Blocked\), say why in one plain line and go straight to the other path's first question\. Never ask whether to move on\./.test(SYSTEM_PROMPT),
+    'the closed-path rule is missing'
+  );
+  expect(
+    'the shared plain-words list and the before-and-after pairs reach her prompt whole',
+    SYSTEM_PROMPT.includes(PLAIN_WORDS_MD) && SYSTEM_PROMPT.includes(BEFORE_AFTER_MD) && /examples, not rules; never copy them/.test(SYSTEM_PROMPT),
+    'the list or the pairs are missing'
+  );
+}
 expect(
-  'on a Blocked row she offers a person once, points at the box, and promises no reply',
-  /When you set a Blocked row, offer a person, once in the visit/.test(SYSTEM_PROMPT) &&
-    /tick the box beside the save button/.test(SYSTEM_PROMPT) &&
-    /do not make it again/.test(SYSTEM_PROMPT) &&
-    /Never promise when or how anyone will reply/.test(SYSTEM_PROMPT),
+  'W25: a path she rules out is saved the same turn — closes is required, and the relay saves a Blocked row or a test that does not apply',
+  RESPONSE_SCHEMA.required.includes('closes') &&
+    RESPONSE_SCHEMA.properties.closes.items.required.join(',') === 'pack,id,because' &&
+    /\*\*Saying it is saving it\.\*\*/.test(SYSTEM_PROMPT) && /A running project past its year is G12/.test(SYSTEM_PROMPT) &&
+    /const saved = \{ pack, id, state: 'blocked', because \}/.test(relaySource) &&
+    /const saved = \{ pack, id, state: 'does-not-apply', because \}/.test(relaySource) &&
+    /else if \(row\.fixable !== 'yes'\)/.test(relaySource),
+  'a ruled-out path could still go unsaved'
+);
+expect(
+  'Wellington comes to her chat: no "Back to Wellington" link, and she never sends the visitor back to him (14 Nov 2026)',
+  !/Back to Wellington/.test(readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8')) &&
+    /onWellington\('eligibility', 'wb-phoebe-composer'\)/.test(readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8')) &&
+    /he joins the visitor in this chat with the next step\. You never send them back to him\./.test(SYSTEM_PROMPT) &&
+    !/visitor goes back to him on Dispatches|send them back to Wellington on Dispatches/.test(SYSTEM_PROMPT),
+  'a way back to Wellington survives'
+);
+expect(
+  'P30: on a Blocked row the offer of a person is in the right panel, never in chat, and she promises no reply',
+  /When you set a Blocked row, the console offers the visitor a person\*\*, beside the save button\. You do not make that offer in chat/.test(SYSTEM_PROMPT) &&
+    /Never offer the team's review in chat: the console shows that offer beside the save button/.test(SYSTEM_PROMPT) &&
+    !/tick the box beside the save button/.test(SYSTEM_PROMPT) &&
+    /never promise when or how anyone will reply/.test(SYSTEM_PROMPT),
   'the door rule is missing a part'
 );
 expect(
@@ -439,7 +570,7 @@ expect(
 );
 expect(
   'she asks the Eligibility rows only, one a turn, and shows the rest once',
-  /Ask the Eligibility-phase rows, in the order your tool lists them, one row and one question a turn/.test(
+  /Ask the Eligibility-phase rows one row and one question a turn\*\*, in the order of questions above, and within each step in the order your tool lists them/.test(
     SYSTEM_PROMPT
   ) &&
     /Never ask about two rows in one turn/.test(SYSTEM_PROMPT) &&
@@ -484,7 +615,7 @@ expect(
   'the tests run on both pathways, one question covering both where one answer can',
   /Run the applies tests first, on both pathways/.test(SYSTEM_PROMPT) &&
     /Write a question to cover both pathways whenever one answer can/.test(SYSTEM_PROMPT) &&
-    /A pathway that does not apply is said once, with its reason, and dropped/.test(SYSTEM_PROMPT),
+    /A pathway that does not apply is said once, in one plain line, and dropped/.test(SYSTEM_PROMPT),
   'a both-pathways rule is missing'
 );
 expect(
@@ -497,17 +628,17 @@ expect(
   'the sorting rule, the field rule or the transition fact is missing'
 );
 expect(
-  'a running project hears the carbon standard’s own rule before the walk, not after it',
-  /Already running is hard on the carbon pathway, and you say so before the walk/.test(SYSTEM_PROMPT) &&
+  'P29: a running project is asked when it started before anything else, and if the year has gone carbon credits close in one line',
+  /Already running is hard on carbon credits, so when it started is your first question/.test(SYSTEM_PROMPT) &&
     /retroactive project/.test(SYSTEM_PROMPT) &&
-    /the water pathway is separate/.test(SYSTEM_PROMPT),
+    /carbon credits close there: one plain line why, then straight on to water benefits/.test(SYSTEM_PROMPT),
   'the retroactive framing is missing'
 );
 expect(
-  'the Monitor group opens with the reporting fact, and never marks a planned project down',
-  /routine reporting is the critical part of impact funding/.test(SYSTEM_PROMPT) &&
+  'the Monitor group never marks a planned project down, and carries no teaching note (P21, 14 Nov 2026)',
+  !/routine reporting is the critical part of impact funding/.test(SYSTEM_PROMPT) &&
     /never as a mark against a project that has not started/.test(SYSTEM_PROMPT),
-  'the Monitor block’s fact is missing'
+  'the Monitor rule is missing, or its teaching note is back'
 );
 expect(
   'she cites by token in the cited field, never in the chat, and the chat draws none (12 Nov 2026)',
@@ -522,15 +653,106 @@ expect(
 expect(
   "the maintainer's walk of 12 Nov 2026: plain names, the reply's shape, the arrival, fixable only when it blocks, the tools line once, no cards-only line",
   /\*\*water benefits\*\* and \*\*carbon credits\*\*/.test(SYSTEM_PROMPT) &&
-    /Never say "baseline", "criterion", "additionality", "mapped activity", "counting route" or "Volume Provided method"/.test(SYSTEM_PROMPT) &&
-    /one or two plain sentences on what the answer settled, then one question/.test(SYSTEM_PROMPT) &&
-    /Solar is good news for carbon\./.test(SYSTEM_PROMPT) &&
-    /follow it on the Tool tab at the top of your screen, and that they can come back to this chat any time/.test(SYSTEM_PROMPT) &&
+    /\*\*Plain words a newcomer knows\.\*\* Row titles, card titles and the names of types and classes are labels for the worksheet: never say one in chat, nor a close rewording/.test(SYSTEM_PROMPT) &&
+    /Say those, never "the water pathway" or "the carbon pathway"/.test(SYSTEM_PROMPT) &&
     /Say "fixable" only when something actually stands in the way/.test(SYSTEM_PROMPT) &&
-    /said once: if this conversation already holds it, do not say it again/.test(SYSTEM_PROMPT) &&
     !/You read from a small set of cards/.test(SYSTEM_PROMPT) &&
     !/nothing here is verified, and a consultant confirms it/.test(SYSTEM_PROMPT),
   'a rule from the walk is missing, or an old line is back'
+);
+/* HER SECOND ROUND, the maintainer's word of 13 Nov 2026: the opener (P8),
+   the record first (P9), short replies (P10). */
+/* Her opener was P8 (13 Nov 2026); from 14 Nov it is two messages, P14 and P15. */
+expect(
+  'P14–P15: message 1 is a warm hello and an invitation to begin, in her own words (14 Nov 2026); message 2 points at the quiz with showTool, then asks; no "in beta", no repeat, no early read',
+  /\*\*Message 1, on its own:\*\* a warm hello with some personality, one line on what you do, then invite them to begin, in your own words, and nothing else/.test(SYSTEM_PROMPT) &&
+    !/Ready to get started/.test(SYSTEM_PROMPT) && !/Ready to get started/.test(phoebeNotesBlock({ opened: true }) ?? '') &&
+    /For tone only, never copy:\*\* "Hello there\. [^"]*I'm Phoebe, and I find which funding paths might suit your project\."/.test(SYSTEM_PROMPT) &&
+    /\*\*Message 2, after their yes:\*\* one line saying you fill in the eligibility quiz on your Tool tab as you talk, with showTool set to true/.test(SYSTEM_PROMPT) &&
+    /No "in beta" and nothing Wellington already said\. Never say how either funding path looks before the record or the visitor settles its tests/.test(SYSTEM_PROMPT) &&
+    !/you are in beta|You are Phoebe, in beta|You are in beta/i.test(SYSTEM_PROMPT) &&
+    !/Let me help you find which impact pathway/.test(SYSTEM_PROMPT) &&
+    /This is your message 1, on its own/.test(phoebeNotesBlock({ opened: true }) ?? '') &&
+    /Do not repeat him/.test(phoebeNotesBlock({ opened: true }) ?? ''),
+  'a first-two-messages rule is missing, or the old opener is back'
+);
+expect(
+  'P16, P19, P21: one thing a message, the registration question, no side notes, and the two buttons as fields',
+  /One thing per message: two or three short sentences, then one question/.test(SYSTEM_PROMPT) &&
+    /\*\*Registration:\*\* ask plainly whether the project is already registered with a standards body or would be new/.test(SYSTEM_PROMPT) &&
+    /\*\*No teaching side notes during screening\.\*\*/.test(SYSTEM_PROMPT) &&
+    /"Learn more about …" button/.test(SYSTEM_PROMPT) &&
+    !/"Skip for now"|"Next question"/.test(SYSTEM_PROMPT) &&
+    /Name one only when it helps/.test(SYSTEM_PROMPT) &&
+    RESPONSE_SCHEMA.properties.showTool?.type === 'boolean' &&
+    RESPONSE_SCHEMA.properties.learnMore?.type === 'string' &&
+    /showTool: v\.showTool === true/.test(relaySource) &&
+    /MAX_LEARN_MORE_CHARS/.test(relaySource),
+  'a rule from the third round is missing, or a field is not in her answer'
+);
+{
+  const screen = readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8');
+  const worksheet = readFileSync(join('src', 'components', 'EligibilityWorksheet.tsx'), 'utf8');
+  expect(
+    'P15, P20, P21 on screen: the Tool-tab dot from showTool, the Chat-tab dot while on Tool, her picture and line on the worksheet, the two buttons',
+    /answer\.showTool/.test(screen) &&
+      /dots=\{/.test(screen) &&
+      !/Skip for now|'Next question'/.test(screen) &&
+      /if \(!learnMore\) return undefined;/.test(screen) &&
+      /Learn more about \$\{/.test(screen) &&
+      /Phoebe is checking your project against these criteria/.test(worksheet) &&
+      /--bot-phoebe/.test(worksheet),
+    'a piece of the screen is missing'
+  );
+}
+expect(
+  'P9: the record is read first and nothing it holds is asked again, in any words',
+  /# Read the record first — a hard rule/.test(SYSTEM_PROMPT) &&
+    /Never ask for anything it holds, in any words/.test(SYSTEM_PROMPT) &&
+    /new source or cleaning water, stage, people or households served, place, name/.test(SYSTEM_PROMPT) &&
+    SYSTEM_PROMPT.indexOf('# Your first two messages') < SYSTEM_PROMPT.indexOf('# Read the record first'),
+  'the record-first rule is missing, or comes before her first two messages'
+);
+/* THE SKIPPED HELLO, found on the maintainer's walk of 14 Nov 2026. On her
+   first turn three blocks told her to work through the record and ask the
+   first unchecked row; only one told her to say hello. Now the hello is a hard
+   rule that comes first, the empty worksheet's "start from the first row" is
+   not sent on that turn, and anything she sets on it is dropped. */
+expect(
+  'the hello comes first: a hard rule ahead of the record rule, no worksheet block on the opened turn, and nothing set on it',
+  /# Your first two messages — a hard rule that comes first/.test(SYSTEM_PROMPT) &&
+    /\*\*Message 1 comes before every other rule\.\*\* On that turn ask nothing about the project and set no rows, pathways or sorts/.test(SYSTEM_PROMPT) &&
+    /# Read the record first — a hard rule from message 2/.test(SYSTEM_PROMPT) &&
+    /const sheetText = sheet && !opened \? worksheetBlock\(sheet, record\) : null;/.test(relaySource) &&
+    /if \(opened\) answer = \{ \.\.\.answer, rows: \[\], pathways: \[\], sorts: \[\] \};/.test(relaySource) &&
+    /It comes before every other rule/.test(phoebeNotesBlock({ opened: true }) ?? ''),
+  'a part of the hello fix is missing'
+);
+/* P22 and P23, 14 Nov 2026: a person, not a script; plain words; the card-word
+   check. Every example in her prompt has to pass the same check her replies do. */
+{
+  const { cardWordsIn } = await loadApi('_reply.js');
+  const toneLine = (SYSTEM_PROMPT.match(/For tone only, never copy:([^\n]*)/) ?? ['', ''])[1];
+  const examples = [...toneLine.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+  const scripted = [...SYSTEM_PROMPT.matchAll(/(?:In this spirit|The tone|in this tone|Say "[A-Z][^"]{20,}")/g)].map((m) => m[0]);
+  const dirty = examples.filter((e) => cardWordsIn(e).length > 0);
+  expect(
+    'P23: every tone example in her prompt passes the card-word check, and the relay and the walk use the same list',
+    examples.length >= 1 && examples.length <= 2 && scripted.length === 0 &&
+      dirty.length === 0 &&
+      /\*\*How you talk: like a person, not a script\.\*\*/.test(SYSTEM_PROMPT) &&
+      /Providing safe water to a community has benefits that can be counted/.test(SYSTEM_PROMPT) &&
+      /cardWordsIn\(answer\.reply\)/.test(relaySource) &&
+      /cardWordsIn\(res\.reply\)/.test(readFileSync(join('scripts', 'measure-phoebe-walk.mjs'), 'utf8')),
+    `${examples.length} tone examples; scripted lines ${JSON.stringify(scripted)}; with card words: ${JSON.stringify(dirty)}`
+  );
+}
+expect(
+  'P10: two or three short sentences, then one question, four at most and under 400 characters, and the relay counts a long one',
+  /two or three short sentences, then one question; four sentences and 400 characters at most/.test(SYSTEM_PROMPT) &&
+    /Two or three short sentences, then one question/.test(RESPONSE_SCHEMA.properties.reply.description) &&
+    /isLongReply\(answer\.reply\)/.test(relaySource),
+  'the length rule is missing from her prompt, her answer shape or the relay'
 );
 /* THE TOKEN IS THE CARD'S OWN ID. Measured 25 Sep 2026: told to cite
    "water:feasibility/7" she cited "water:feasibility/B-1", because B-1 is what
@@ -751,12 +973,15 @@ console.log('\n  Her cap\n');
 expect('thirty a day, under her own name', PHOEBE.cap === 30 && PHOEBE.name === 'phoebe', JSON.stringify(PHOEBE));
 const screenSource = readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8');
 const primer = readFileSync(join('knowledge-packs', 'product-shared', 'agent-primer.md'), 'utf8');
+/* NO LINE UNDER HER CHAT BOX FROM 13 NOV 2026, the maintainer's word, as
+   Wellington's went on 12 Nov. A visitor reads the cap only when it is reached,
+   in the relay's own message, which takes the number from the cap itself. */
 expect(
-  'the number a visitor reads, and the number an agent reads, are the cap itself',
-  /Thirty messages a day/.test(screenSource) &&
-    !/Twenty messages a day/.test(screenSource) &&
+  'no standing note under her chat box; the cap is said when reached, from the cap itself, and the primer agrees',
+  !/composerNote:/.test(screenSource) &&
+    /today's limit of \$\{decision\.cap\} messages/.test(relaySource) &&
     /may send thirty messages a day/.test(primer.slice(primer.indexOf('### Phoebe'))),
-  'a visitor or an agent is being told a number the code does not hold'
+  'a note is back under her chat box, or a visitor or an agent is told a number the code does not hold'
 );
 
 /* ---------------------------------------------------------------------------
@@ -774,15 +999,158 @@ expect(
   'the screen holds its own copy of the rows'
 );
 expect(
-  'the screen says "likely" and never certifies',
-  /Likely, not settled/.test(worksheetSource) && /reads likely eligible/.test(worksheetSource),
-  'the banner overclaims'
+  'the screen says "likely", calls itself a first screening, and never certifies (13 Nov 2026)',
+  /reads likely eligible/.test(worksheetSource) &&
+    (worksheetSource.match(/This is a first screening, not an official decision\./g) ?? []).length === 3 &&
+    !/verified|consultant confirms/i.test(worksheetSource),
+  'the banner overclaims, or an old "nothing is verified" line is back'
 );
 expect(
   'the screen draws a route from its card, with the card’s citation',
   /routeFor\(/.test(worksheetSource) && /route!\.notPromise/.test(worksheetSource),
   'a route could be drawn without its citation or its limit'
 );
+
+/* ---------------------------------------------------------------------------
+   The stream, end to end — P13, 13 Nov 2026.
+
+   THE MODEL SERVICE IS A TEST STAND-IN HERE, named as one: a local server that
+   answers the relay's one request the way the real service streams, with a
+   fixed answer that never reaches a person. The maintainer's ruling of
+   25 Aug 2026 allows it. What it proves is the relay's half — that her reply
+   goes out in pieces as it is written, that the pieces add up to the checked
+   reply, and that a pass asking for a card set is never shown. Whether the real
+   service writes needCards first is what only a measured run can say.
+--------------------------------------------------------------------------- */
+
+console.log('\n  The stream, against a stand-in for the model service\n');
+
+const { createServer } = await import('node:http');
+
+/** One streamed answer in the service's event shape, split into small pieces. */
+function sse(answer) {
+  const json = JSON.stringify(answer);
+  const pieces = json.match(/[\s\S]{1,7}/g) ?? [];
+  const event = (type, data) => `event: ${type}\ndata: ${JSON.stringify({ type, ...data })}\n\n`;
+  return [
+    event('message_start', {
+      message: {
+        id: 'msg_stand_in', type: 'message', role: 'assistant', model: 'stand-in', content: [],
+        stop_reason: null, stop_sequence: null, usage: { input_tokens: 1, output_tokens: 1 },
+      },
+    }),
+    event('content_block_start', { index: 0, content_block: { type: 'text', text: '' } }),
+    ...pieces.map((text) => event('content_block_delta', { index: 0, delta: { type: 'text_delta', text } })),
+    event('content_block_stop', { index: 0 }),
+    event('message_delta', { delta: { stop_reason: 'end_turn', stop_sequence: null }, usage: { output_tokens: 1 } }),
+    event('message_stop', {}),
+  ].join('');
+}
+
+const STAND_IN_REPLY = 'Stand-in reply for the check. It is never shown to anyone. Is the stream whole?';
+const answerOf = (extra) => ({ needCards: 'none', reply: STAND_IN_REPLY, cited: [], handBack: 'none', abstained: false, ...extra });
+let script = [];
+const seen = [];
+const server = createServer((req, res) => {
+  let raw = '';
+  req.on('data', (chunk) => (raw += chunk));
+  req.on('end', () => {
+    seen.push(JSON.parse(raw));
+    res.writeHead(200, { 'content-type': 'text/event-stream' });
+    res.end(sse(script.shift() ?? answerOf({})));
+  });
+});
+await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+const saved = { key: process.env.ANTHROPIC_API_KEY, base: process.env.ANTHROPIC_BASE_URL, error: console.error, log: console.log };
+process.env.ANTHROPIC_API_KEY = 'stand-in';
+process.env.ANTHROPIC_BASE_URL = `http://127.0.0.1:${server.address().port}`;
+/* The relay imports the model service's own package; the compiled copy sits in
+   a temporary folder, so the repository's packages are linked in beside it for
+   this one import, and unlinked before the folder is removed. */
+const { symlinkSync, unlinkSync } = await import('node:fs');
+const { resolve } = await import('node:path');
+symlinkSync(resolve('node_modules'), join(apiOut, 'node_modules'), 'junction');
+const { POST } = await loadApi('phoebe.js');
+
+/** Asks the relay as the console does and reads every line it sends. */
+async function streamedAsk() {
+  console.error = () => {};
+  console.log = () => {};
+  try {
+    const response = await POST(
+      new Request('http://localhost/api/phoebe', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'user', content: 'A borehole for a village.' }], stream: true }),
+      })
+    );
+    const text = await response.text();
+    return { type: response.headers.get('content-type'), lines: text.split('\n').filter(Boolean).map((l) => JSON.parse(l)) };
+  } finally {
+    console.error = saved.error;
+    console.log = saved.log;
+  }
+}
+
+script = [answerOf({})];
+const plain = await streamedAsk();
+const pieces = plain.lines.filter((l) => l.type === 'text');
+const done = plain.lines.at(-1);
+expect(
+  'the reply goes out in pieces as it is written, and the pieces add up to the checked reply',
+  /application\/x-ndjson/.test(plain.type ?? '') &&
+    pieces.length > 3 &&
+    pieces.map((l) => l.text).join('') === STAND_IN_REPLY &&
+    done?.type === 'done' &&
+    done.answer.reply === STAND_IN_REPLY &&
+    typeof done.answer.usage.firstWordMs === 'number',
+  JSON.stringify(plain.lines.slice(-2))
+);
+expect(
+  'the request asks for the reply shape with needCards first, as the stream relies on',
+  seen.at(-1)?.output_config?.format?.schema?.required?.[0] === 'needCards' && seen.at(-1)?.stream === true,
+  JSON.stringify(seen.at(-1)?.output_config?.format?.schema?.required)
+);
+
+script = [answerOf({ needCards: 'carbon:routes', reply: 'Fetching that card set, then the same question goes again.' }), answerOf({})];
+const fetched = await streamedAsk();
+expect(
+  'a first pass that asks for a card set shows nothing; only the second pass is streamed',
+  fetched.lines.filter((l) => l.type === 'text').map((l) => l.text).join('') === STAND_IN_REPLY &&
+    !fetched.lines.some((l) => l.type === 'reset') &&
+    fetched.lines.at(-1)?.answer?.usage?.calls === 2,
+  JSON.stringify(fetched.lines.filter((l) => l.type !== 'text'))
+);
+
+/* Written out of order on purpose: the reply before needCards. */
+script = [
+  { reply: 'Shown for a moment, then thrown away before the second pass.', needCards: 'carbon:routes', cited: [], handBack: 'none', abstained: false },
+  answerOf({}),
+];
+const outOfOrder = await streamedAsk();
+const resetAt = outOfOrder.lines.findIndex((l) => l.type === 'reset');
+expect(
+  'if needCards comes after the reply anyway, what was shown is reset before the second pass speaks',
+  resetAt > 0 &&
+    outOfOrder.lines.slice(resetAt + 1).filter((l) => l.type === 'text').map((l) => l.text).join('') === STAND_IN_REPLY &&
+    outOfOrder.lines.at(-1)?.answer?.reply === STAND_IN_REPLY,
+  JSON.stringify(outOfOrder.lines.filter((l) => l.type !== 'text'))
+);
+
+script = [answerOf({ reply: 'ab' })];
+const empty = await streamedAsk();
+expect(
+  'an answer too short to be one ends the stream with the relay’s own honest failure, never a done',
+  empty.lines.at(-1)?.type === 'error' && /almost nothing in it/.test(empty.lines.at(-1)?.error ?? ''),
+  JSON.stringify(empty.lines.at(-1))
+);
+
+server.close();
+unlinkSync(join(apiOut, 'node_modules'));
+if (saved.key === undefined) delete process.env.ANTHROPIC_API_KEY;
+else process.env.ANTHROPIC_API_KEY = saved.key;
+if (saved.base === undefined) delete process.env.ANTHROPIC_BASE_URL;
+else process.env.ANTHROPIC_BASE_URL = saved.base;
 
 /* ------------------------------------------------------------------------- */
 

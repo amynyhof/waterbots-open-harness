@@ -24,13 +24,10 @@
  * through onCriteriaUpdate to the criteria, and her row on the desk follows.
  *
  * THE HAND-BACK IS A FIELD, AND THIS SEAT ACTS ON IT — contract line 8, item
- * A15, step 4, 21 Sep 2026. When her answer sets handBack to "wellington" —
- * her part done, or the question out of her lane — the turn carries one
- * quiet action, the way back to Dispatches, built from the field and never
- * from her prose. It is the chat layer's own turn action, the one Wellington's
- * route stopped drawing at the look pass of 8 Sep 2026 because the rail
- * already held his next step; hers is the way back to him, which the rail
- * does not hold, and the maintainer may strike it at the eyeball.
+ * A15. When her answer sets handBack to "wellington" — her part done, or the
+ * question out of her lane — Wellington joins this chat with the next step
+ * and its button (the maintainer's ruling of 14 Nov 2026), built from the field
+ * and never from her prose.
  *
  * NO OPENING PARAGRAPH. The dock carried a "Where to start" paragraph above
  * an empty conversation; the desk lost its intro paragraph on 8 Sep 2026 and
@@ -42,14 +39,14 @@
  * access, shaped with founding users.
  */
 
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
-import type { AgentHost, AgentTurn } from '../chat/evidence';
+import type { AgentHost, AgentTurn, TurnButton } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
 import type { Citation } from '../lib/citation';
 import { worksheetCaption, contextFor, applyUpdates, type Sheet, type Verdicts } from '../lib/worksheetState';
 import { HER_PACKS } from '../lib/worksheet.generated';
-import { DESK_LABEL } from '../lib/surfaces';
+import { WELLINGTON } from '../lib/wellington';
 import {
   APPROVED_ON,
   CARBON_APPLIES,
@@ -71,7 +68,7 @@ import {
 import { askPhoebe, carriedRecord, carriedSheet } from '../lib/phoebeClient';
 import type { Surface } from '../lib/surfaces';
 import type { VisitContext } from '../lib/visit';
-import AgentScreen from '../screen/AgentScreen';
+import AgentScreen, { type ScreenTab } from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, {
   type PackLayer,
@@ -88,8 +85,9 @@ export const PHOEBE: AgentHost = {
   portrait: phoebePortrait,
   colourToken: '--bot-phoebe',
   beta: true,
-  composerPlaceholder: 'Tell her about your project, or ask about a criterion.',
-  composerNote: 'Nothing is kept between visits. Thirty messages a day.',
+  composerPlaceholder: 'Tell her about your project, or ask her a question.',
+  /* No line under her chat box, the maintainer's word of 13 Nov 2026, as Wellington's
+     went on 12 Nov: the daily cap still says so when it is reached. */
   /* A visitor's words for what she is doing — canon rule 4, 8 Sep 2026. */
   thinkingLine: 'Phoebe is reviewing the criteria…',
   /* Her closing question is set in bold — display only, the maintainer's word,
@@ -97,14 +95,27 @@ export const PHOEBE: AgentHost = {
   boldClosingQuestion: true,
 };
 
+/**
+ * The one button under her latest message: "Learn more about …", only where
+ * she named an idea in learnMore — the maintainer's word of 14 Nov 2026 (P22),
+ * which took away the blue button that moved her on, the same day.
+ * A quiet chip, not blue (P24). It sends a real message the visitor can see in
+ * their bubble. Shared by the console and the Commons.
+ */
+export function phoebeButtons(learnMore: string, send: (text: string) => void): TurnButton[] | undefined {
+  if (!learnMore) return undefined;
+  return [{ label: `Learn more about ${learnMore}`, go: () => send(`Tell me more about ${learnMore}.`) }];
+}
+
 export default function PhoebeScreen({
   onVerdicts,
   record,
   sheet,
   onOpenMap,
-  onNavigate,
   visible,
   eligibilityDone,
+  invite = '',
+  onWellington,
 }: {
   onVerdicts: (verdicts: Verdicts) => void;
   /** The visit's project record, carried to Phoebe with every ask. */
@@ -117,8 +128,26 @@ export default function PhoebeScreen({
   visible: boolean;
   /** Every criterion has a verdict — she should send them back to Wellington. */
   eligibilityDone: boolean;
+  /**
+   * Wellington's handoff line, shown at the top of her page before her hello —
+   * the maintainer's word of 14 Nov 2026 (W22). Display only: it is his real
+   * words with his face, and it is never sent to her as one of her turns.
+   */
+  invite?: string;
+  /** Brings Wellington into her chat with the next step, once her part is done. */
+  onWellington?: (at: 'eligibility' | 'map', composerId: string) => Promise<AgentTurn | null>;
 }) {
   const carried = carriedRecord(record);
+
+  /* WELLINGTON COMES TO YOU — the maintainer's ruling of 14 Nov 2026. When her
+     answer sets handBack (her part done, or a question not hers) he joins this
+     chat with the next step and its button, under his own face, where a link
+     back to the desk used to be. No agent sends the visitor back to him. */
+  async function wellingtonJoins() {
+    if (!onWellington) return;
+    const turn = await onWellington('eligibility', 'wb-phoebe-composer');
+    if (turn) chatRef.current.append([{ ...turn, speaker: WELLINGTON }]);
+  }
 
   /* The card sets she has been given this visit. Staged loading (ruling R6)
      sends only what the visit has reached, and a set she has already used must
@@ -127,10 +156,22 @@ export default function PhoebeScreen({
      it with everything else. */
   const loaded = useRef<string[]>([]);
 
+  /* THE TABS THAT GUIDE — the maintainer's word of 14 Nov 2026. A dot on the
+     Tool tab from the message that says her quiz is there (P15) until the
+     visitor opens it; a dot on the Chat tab while they are on Tool, to bring
+     them back (P20). In her own colour, through the screen's accent. */
+  const [tab, setTab] = useState<ScreenTab>('chat');
+  const [toolDot, setToolDot] = useState(false);
+  const onTab = (next: ScreenTab) => {
+    setTab(next);
+    if (next === 'tool') setToolDot(false);
+  };
+
   async function ask(
     history: { role: 'user' | 'agent'; text: string }[],
     signal: AbortSignal,
-    meta?: { opened?: boolean }
+    meta?: { opened?: boolean },
+    onLive?: (text: string | null) => void
   ): Promise<AgentTurn> {
     const answer = await askPhoebe(
       history.map(({ role, text }) => ({
@@ -146,10 +187,13 @@ export default function PhoebeScreen({
         eligibilityDone,
         sheet: carriedSheet(sheet, HER_PACKS),
         loaded: loaded.current,
+        /* Her reply shows as it is written (13 Nov 2026). */
+        onLive,
       }
     );
 
     if (answer.loaded) loaded.current = answer.loaded;
+    if (answer.showTool) setToolDot(true);
 
     /* Her side effect, fired before the turn is returned so a failed request
        never half-moves the worksheet. */
@@ -157,6 +201,9 @@ export default function PhoebeScreen({
     if (moved || answer.sorts.length > 0) {
       onVerdicts({ rows: answer.rows, pathways: answer.pathways, sorts: answer.sorts });
     }
+
+    /* He joins once her answer has landed, from the field alone. */
+    if (answer.handBack === 'wellington') window.setTimeout(() => void wellingtonJoins(), 0);
 
     const after = applyUpdates(sheet, {
       rows: answer.rows,
@@ -186,10 +233,11 @@ export default function PhoebeScreen({
             ),
           }
         : {}),
-      /* The way back to him, from the field alone. */
-      ...(answer.handBack === 'wellington'
-        ? { action: { label: `Back to Wellington on ${DESK_LABEL}`, go: () => onNavigate('desk') } }
-        : {}),
+      /* "Learn more about …" where she named an idea (P22). Not under her
+         first hello, and not once she has handed back. */
+      ...(meta?.opened || answer.handBack === 'wellington'
+        ? {}
+        : { buttons: phoebeButtons(answer.learnMore, (text) => void chatRef.current.sendText(text)) }),
     };
   }
 
@@ -201,12 +249,20 @@ export default function PhoebeScreen({
   useEffect(() => {
     if (!visible || opened.current) return;
     opened.current = true;
+    /* W22: his handoff line first, then her hello. The chat layer never sends
+       a turn with a speaker to her (useConversation's forAsk). */
+    if (invite.trim()) {
+      chatRef.current.seed([{ role: 'agent', text: invite.trim(), evidence: [], speaker: WELLINGTON }]);
+    }
     void chatRef.current.askOpened();
-  }, [visible]);
+  }, [visible, invite]);
 
   return (
     <AgentScreen
       host={PHOEBE}
+      active={tab}
+      onActiveChange={onTab}
+      dots={{ tool: toolDot, chat: tab === 'tool' && chat.turns.some((turn) => turn.role === 'agent') }}
       tabs={{
         chat: <ScreenChat host={PHOEBE} chat={chat} composerId="wb-phoebe-composer" />,
         tool: (

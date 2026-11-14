@@ -11,7 +11,9 @@
  * diverge — and the part that diverges is the part that must not.
  *
  * NO SCRIPTED MESSAGES AND NO FAKE TYPING. What comes back is a real exchange
- * or an honest statement that something failed. A failed turn keeps the
+ * or an honest statement that something failed. A reply streamed as it is
+ * written (`live`, from 13 Nov 2026) is that real exchange arriving, not typing
+ * put on for show, and the checked answer replaces it when it lands. A failed turn keeps the
  * question in the transcript so the reader can see what was asked.
  *
  * NO MEMORY. Nothing is stored, here or anywhere else. A reload empties the
@@ -33,6 +35,8 @@ export interface Conversation {
   draft: string;
   setDraft: (value: string) => void;
   pending: boolean;
+  /** The reply so far while it streams in, or null. Replaced by the answer. */
+  live: string | null;
   error: string | null;
   /** Send the draft. Does nothing while a turn is in flight or the draft is blank. */
   send: () => Promise<void>;
@@ -44,18 +48,21 @@ export interface Conversation {
   sendText: (text: string, meta?: AskMeta) => Promise<void>;
   /** Put turns on the thread without asking — Wellington's copied invite. */
   seed: (turns: Turn[]) => void;
+  /** Add turns after what is there — Wellington joining another agent's chat. */
+  append: (turns: Turn[]) => void;
   /**
    * Ask without adding a visitor bubble. Phoebe's first open this visit:
    * greet after the copied invite. Bridget's pin passes `{ pinned: true }`
    * instead. Does nothing while a turn is in flight.
    */
-  askOpened: (meta?: AskMeta) => Promise<void>;
+  askOpened: (meta?: AskMeta) => Promise<AgentTurn | null>;
 }
 
 export function useConversation(ask: Ask, hostName: string): Conversation {
   const [turns, setTurns] = useState<Turn[]>([]);
   const [draft, setDraft] = useState('');
   const [pending, setPending] = useState(false);
+  const [live, setLive] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const inFlight = useRef<AbortController | null>(null);
@@ -78,7 +85,7 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
       inFlight.current = controller;
 
       try {
-        const answer: AgentTurn = await ask(forAsk(history), controller.signal, meta);
+        const answer: AgentTurn = await ask(forAsk(history), controller.signal, meta, setLive);
         setTurns([...history, answer]);
       } catch (failure) {
         if (failure instanceof DOMException && failure.name === 'AbortError') return;
@@ -90,6 +97,7 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
             : `Something went wrong reaching ${hostName}. Nothing has been recorded.`
         );
       } finally {
+        setLive(null);
         setPending(false);
         inFlight.current = null;
       }
@@ -104,30 +112,41 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
     setTurns(next);
   }, []);
 
-  const askOpened = useCallback(async (meta: AskMeta = { opened: true }) => {
-    if (pending) return;
+  const append = useCallback((more: Turn[]) => {
+    const next = [...turnsRef.current, ...more];
+    turnsRef.current = next;
+    setTurns(next);
+  }, []);
+
+  /* Returns the answer it added, so a frame can show the same turn elsewhere
+     (Wellington's, in another agent's chat); null when nothing was added. */
+  const askOpened = useCallback(async (meta: AskMeta = { opened: true }): Promise<AgentTurn | null> => {
+    if (pending) return null;
     setError(null);
     setPending(true);
     const controller = new AbortController();
     inFlight.current = controller;
     const history = turnsRef.current;
     try {
-      const answer: AgentTurn = await ask(forAsk(history), controller.signal, meta);
+      const answer: AgentTurn = await ask(forAsk(history), controller.signal, meta, setLive);
       const next = [...turnsRef.current, answer];
       turnsRef.current = next;
       setTurns(next);
+      return answer;
     } catch (failure) {
-      if (failure instanceof DOMException && failure.name === 'AbortError') return;
+      if (failure instanceof DOMException && failure.name === 'AbortError') return null;
       setError(
         failure instanceof Error && failure.message
           ? failure.message
           : `Something went wrong reaching ${hostName}. Nothing has been recorded.`
       );
+      return null;
     } finally {
+      setLive(null);
       setPending(false);
       inFlight.current = null;
     }
   }, [ask, pending, hostName]);
 
-  return { turns, draft, setDraft, pending, error, send, sendText, seed, askOpened };
+  return { turns, draft, setDraft, pending, live, error, send, sendText, seed, append, askOpened };
 }

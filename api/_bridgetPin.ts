@@ -65,7 +65,7 @@ export function readPlace(value: unknown): string {
  * maintainer's ruling of 31 Oct 2026 on #167: Calvin is next then, by the
  * rail's button; otherwise Wellington, by her hand-back.
  */
-export function visitBlock(place: string, phone: boolean, pin: PinnedBasin | null, quantifyNext: boolean): string {
+export function visitBlock(place: string, phone: boolean, pin: PinnedBasin | null, _quantifyNext = false): string {
   const lines = ['# This visit', ''];
   lines.push(
     place
@@ -83,9 +83,9 @@ export function visitBlock(place: string, phone: boolean, pin: PinnedBasin | nul
     pin.level === 6
       ? 'The reading is published: WRI Aqueduct 4.0’s own figure for this basin.'
       : 'The reading is derived: this site worked it out as the area-weighted majority of the smaller basins inside it, because WRI publishes no figure at this size. Zooming in to pin one of the smaller basins shows the published figure.',
-    quantifyNext
-      ? `Calvin is next, on the Quantify step. The "Open Quantify" button ${phone ? 'is under "Crew" at the top of the screen' : 'is under "Next steps" on the right'}.`
-      : 'Nothing on this visit goes on to Quantify yet, so Wellington, on Dispatches, has the next step.'
+    /* "Wellington comes to you", 14 Nov 2026: he joins her chat with the next
+       step, whichever it is, so she never names it. */
+    'Wellington joins this chat next with the next step. Do not name it yourself.'
   );
   return lines.join('\n');
 }
@@ -101,6 +101,8 @@ export function settleHandBack(
   handBack: 'none' | 'wellington',
   turn: { pinned: boolean; quantifyNext: boolean; abstained: boolean }
 ): 'none' | 'wellington' {
-  if (turn.pinned && turn.quantifyNext && !turn.abstained) return 'none';
+  /* From 14 Nov 2026 a pin always ends her part: Wellington joins her chat
+     with the next step, whether that is Calvin or not. */
+  if (turn.pinned) return 'wellington';
   return handBack;
 }

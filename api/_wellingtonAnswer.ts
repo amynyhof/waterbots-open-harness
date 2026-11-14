@@ -77,10 +77,15 @@ export function readServed(value: unknown): Served | undefined {
 export interface Answer {
   reply: string;
   route: Route;
+  /** W24: his one line to Phoebe or Bridget in her chat, only beside a route to her. */
+  introduction?: string;
   context?: LearnedContext;
   abstained: boolean;
   abstentionTopic?: string;
 }
+
+/** His line to Phoebe is one line; anything longer is not an introduction (W24). */
+export const MAX_INTRODUCTION_CHARS = 300;
 
 /** A learned name or place is kept only if it is short enough to be one, never an essay. */
 const MAX_CONTEXT_CHARS = 160;
@@ -150,10 +155,18 @@ export function validate(value: unknown, known: KnownContext = {}): Answer | nul
 
   const abstained = v.abstained === true;
   const topic = typeof v.abstentionTopic === 'string' ? v.abstentionTopic.trim() : '';
+  /* W24, 14 Nov 2026: kept only on a route to Phoebe, and only when it is one
+     line; otherwise dropped, and her page shows his reply as before. */
+  const intro = typeof v.introduction === 'string' ? v.introduction.trim() : '';
+  const introduction =
+    (route === 'eligibility' || route === 'map') && intro && intro.length <= MAX_INTRODUCTION_CHARS && !intro.includes('\n')
+      ? intro
+      : '';
 
   return {
     reply: v.reply.trim(),
     route,
+    ...(introduction ? { introduction } : {}),
     ...(context ? { context } : {}),
     abstained,
     ...(abstained && topic ? { abstentionTopic: topic } : {}),

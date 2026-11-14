@@ -15,20 +15,15 @@
  * on the whole world when no single country is named; never a guess. A new pin
  * takes the visitor back to Chat, where her answer about it lands.
  *
- * HOW A VISIT GOES — the maintainer's second ruling of 31 Oct 2026 on #167.
- * The first time her step shows, the console sends `opened`, the pattern of
- * Phoebe's first open, and she answers in her own words: who she is, what she
- * does, why the basin matters to partners and funders, that she is still being
- * built, and her one question, the pin, in the place's own words. Nothing is
- * shown before it but her thinking line; the fixed greeting #167 first carried
- * is gone; her ask names the Map tab. Each new pin sends `pinned`, and she thanks the visitor, reports
- * the basin and its reading, and says when it is derived. Where the right rail
- * offers Quantify she says Calvin is next, by the rail's button; where it does
- * not she hands back to Wellington by the field. No button of her own, except
- * the 'Back to Wellington' link when no pathway goes on to Quantify, the same
- * hand-back Phoebe uses, drawn from the field as Phoebe's is. No next step is
- * drawn here: next steps live in the right rail only (ruled 30 Sep 2026), and
- * the pin has already moved the visit on there (pinnedVisit, src/lib/visit.ts).
+ * HOW A VISIT GOES — the maintainer's rulings of 31 Oct and 14 Nov 2026.
+ * The first time her step shows, Wellington's line to her heads the chat, and
+ * the console sends `opened`: she answers in her own words, short — who she
+ * is, why the basin matters, and her one question, the pin. Each new pin sends
+ * `pinned`: she thanks the visitor, reports the basin and its reading, says
+ * when it is derived, and says Wellington will join with the next step.
+ * WELLINGTON COMES TO YOU (14 Nov 2026): when her part is done he joins this
+ * chat with the next step and its button. She has no button of her own, and
+ * no agent sends the visitor back to him.
  *
  * THE MAP IS THE SAME BasinMap the shell drew in the centre until slice 4,
  * still mounted for the whole visit, and kept at full size under
@@ -74,7 +69,8 @@ import {
   HYDROSHEDS_PUBLISHER,
   NATURAL_EARTH_HREF,
 } from '../lib/licences';
-import { DESK_LABEL, type Surface } from '../lib/surfaces';
+import type { Surface } from '../lib/surfaces';
+import { WELLINGTON } from '../lib/wellington';
 import { citedDocument, toolSummary, toolVersion } from '../lib/toolReadmes';
 import { placeBox } from '../lib/placeBox';
 import type { MapPin } from '../lib/visit';
@@ -91,7 +87,8 @@ export const BRIDGET: AgentHost = {
   portrait: bridgetPortrait,
   colourToken: '--bot-bridget',
   composerPlaceholder: 'Reply to Bridget',
-  composerNote: 'Nothing is kept between visits. Thirty messages a day.',
+  /* No line under her chat box, the maintainer's word of 13 Nov 2026, as Wellington's
+     went on 12 Nov: the daily cap still says so when it is reached. */
   thinkingLine: 'Bridget is looking at the map…',
 };
 
@@ -100,10 +97,11 @@ export default function BridgetScreen({
   pin,
   onPin,
   place,
-  onNavigate,
   phone,
   quantifyNext,
   visible,
+  invite = '',
+  onWellington,
 }: {
   onStatus: (status: MapStatus) => void;
   pin: MapPin | null;
@@ -116,7 +114,24 @@ export default function BridgetScreen({
   quantifyNext: boolean;
   /** True while Partners is the visible step — her first answer runs then, not on mount. */
   visible: boolean;
+  /**
+   * Wellington's line to her, shown at the top of her chat before her opening —
+   * "Wellington comes to you", 14 Nov 2026. Display only, never sent to her.
+   */
+  invite?: string;
+  /** Brings Wellington into her chat with the next step, once her part is done. */
+  onWellington?: (at: 'eligibility' | 'map', composerId: string) => Promise<AgentTurn | null>;
 }) {
+  /* WELLINGTON COMES TO YOU — the maintainer's ruling of 14 Nov 2026. When her
+     part is done (a basin reported, or a question not hers) he joins this chat
+     with the next step and its button, under his own face. No agent sends the
+     visitor back to him. */
+  async function wellingtonJoins() {
+    if (!onWellington) return;
+    const turn = await onWellington('map', 'wb-bridget-composer');
+    if (turn) chatRef.current.append([{ ...turn, speaker: WELLINGTON }]);
+  }
+
   async function ask(
     history: { role: 'user' | 'agent'; text: string }[],
     signal: AbortSignal,
@@ -131,16 +146,13 @@ export default function BridgetScreen({
       signal,
       { opened: meta?.opened === true, pinned: meta?.pinned === true }
     );
+    /* After her answer lands, he joins: from the field alone. */
+    if (answer.handBack === 'wellington') window.setTimeout(() => void wellingtonJoins(), 0);
     return {
       role: 'agent',
       text: answer.reply,
       evidence: [],
       abstained: answer.abstained,
-      /* The way back to him, from the field alone — Phoebe's hand-back. The
-         relay sets it to "none" after a pin when Calvin is next. */
-      ...(answer.handBack === 'wellington'
-        ? { action: { label: `Back to Wellington on ${DESK_LABEL}`, go: () => onNavigate('desk') } }
-        : {}),
     };
   }
 
@@ -153,22 +165,36 @@ export default function BridgetScreen({
   useEffect(() => {
     if (!visible || opened.current) return;
     opened.current = true;
+    /* His line to her first, then her opening. */
+    if (invite.trim()) {
+      chatRef.current.seed([{ role: 'agent', text: invite.trim(), evidence: [], speaker: WELLINGTON }]);
+    }
     void chatRef.current.askOpened({ opened: true });
-  }, [visible]);
+  }, [visible, invite]);
 
   /* The tab is held here, so a pin can bring the visitor back to Chat. */
   const [tab, setTab] = useState<ScreenTab>('chat');
 
-  /* The Map tab opens on the place Wellington heard, once per place: a reader
-     who pans away and comes back is left where they were. No single country
-     named, no move — the map's own view is the whole world. */
+  /* THE MAP ZOOMS TO THE COUNTRY BY ITSELF — the ruling of 31 Oct 2026, made
+     firmer on 14 Nov 2026 (B2), after a walk where the visitor was asked to
+     find Kenya. The view is set as soon as the place is known, before the Map
+     tab is ever opened, and set again the first time the tab opens for that
+     place, in case the panel's size moved underneath it. Once per place: a
+     reader who pans away and comes back is left where they were. No single
+     country named, no move — the map's own view is the whole world. */
   const [focus, setFocus] = useState<{ box: Bbox; key: number } | null>(null);
   const focusedPlace = useRef<string | null>(null);
+  const shownPlace = useRef<string | null>(null);
   useEffect(() => {
-    if (tab !== 'tool' || focusedPlace.current === place) return;
-    focusedPlace.current = place;
     const box = placeBox(place);
-    if (box) setFocus((f) => ({ box, key: (f?.key ?? 0) + 1 }));
+    if (focusedPlace.current !== place) {
+      focusedPlace.current = place;
+      if (box) setFocus((f) => ({ box, key: (f?.key ?? 0) + 1 }));
+    }
+    if (tab === 'tool' && shownPlace.current !== place) {
+      shownPlace.current = place;
+      if (box) setFocus((f) => ({ box, key: (f?.key ?? 0) + 1 }));
+    }
   }, [tab, place]);
 
   /* A new basin takes the visitor back to Chat, where her answer about it lands. */

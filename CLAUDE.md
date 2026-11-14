@@ -281,9 +281,9 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
 - **The look pass of 8 Sep 2026, and four canon rules the same day.** Wellington
   opens warmly and names the next step in words; the project name shows once,
   in the card; the record has three rows and an (i); the save button sits at
-  the foot of the right rail (from 13 Nov 2026 only once something is on the record; until then
-  the site menu's Sign up, beside Sign in, is the door); the phase names show at laptop width; next steps
-  live in the right rail only; the map's line is one plain sentence; no intro
+  ~~the foot of the right rail~~ **the left rail, under the project, from 14 Nov 2026** (from 13 Nov 2026 only once something is on the record; until then
+  the site menu's Sign up, beside Sign in, is the door); the phase names show at laptop width; ~~next steps
+  live in the right rail only~~ **every handoff's button sits in the chat from 14 Nov 2026**; the map's line is one plain sentence; no intro
   paragraph above the conversation. **Every agent keeps four rules on pace and
   posture** — short, one question at a time, ends with the next step; "I don't
   know" is an answer; a planned project is normal and criteria are things to
@@ -296,8 +296,8 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   Chat, always; Tool, when the agent has one; Knowledge pack — cards, versions,
   sources; Credentials — exam and scores only, honest that none exists. **The
   tabs wear the agent's colour** and the active crew card takes the same
-  underline. **There is no "Next phase" chip on this site from 30 Sep 2026**: next
-  steps live in the right rail only. Where the chat is not live the screen opens on Tool and the Chat
+  underline. **There is no "Next phase" chip on this site from 30 Sep 2026**: ~~next
+  steps live in the right rail only~~ the next step comes with Wellington, in the chat (14 Nov 2026). Where the chat is not live the screen opens on Tool and the Chat
   tab carries one plain line. **Memory is never a tab**; it stays in the record
   on the left rail, its source behind the (i). The three host docks and the old
   dock frame are gone; the crew with the save button is the right column on
@@ -416,6 +416,45 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   Blocked row she offers a person once; a ticked box at the save door sends one email to
   hello@waterbots.ai through Resend, its key the hosting secret `RESEND_API_KEY`, never in the
   repository. The seal carries `wantsHuman` and `humanNote` only on a tick.
+- **Phoebe's second and third rounds, 13–14 Nov 2026, the maintainer's word.** Her first message is
+  a warm hello and an invitation to begin in her own words (14 Nov 2026); her second points at the eligibility quiz on her Tool tab,
+  which takes a pulsing dot in her colour, then asks. She reads the record first and never asks again
+  for what it holds; one thing a message, two or three short sentences, then one question, and a reply
+  past four sentences or 400 characters (her approved limit) is logged and fails the measured walk.
+  No teaching side notes and no paid-site pitch: where useful, a quiet "Learn more about …" chip sits
+  under her reply, and nothing else (14 Nov 2026). Her reply streams as it is written; the relay logs
+  each answer's time to first word. The carbon requirements load only once the water rows are done,
+  or when a question asks for them. Her chat box and Bridget's carry no line under them, and her
+  worksheet and Calvin's say "This is a first screening, not an official decision."
+- **Wellington's fourth and fifth walks, 14 Nov 2026.** Both agents talk like a person, not a
+  script: respond to what was said, then one related follow-up; examples are tone, never lines. He
+  answers the visitor first, then says who he is and that the team matches water projects with
+  funding they might qualify for, then asks; a friendly mentor who never thanks for answers and
+  steers back kindly. He confirms only what is unclear, takes "borehole", "well" or "spring" as a new
+  source, never invents a detail, and answers basic questions about impact funding from facts in his
+  prompt. A handoff introduces the colleague and draws "Meet <name>" (blue) and "Keep chatting" (a
+  quiet chip); his line also heads Phoebe's page, before her hello. A reply with card words ("water
+  stewardship work", "mapped way to count") is logged and fails the measured walk.
+- **Voice cards, no scripts, 14 Nov 2026, the maintainer's word on #173.** Each agent's prompt opens
+  with a voice card (who it is, who it talks to, the principles) and keeps at most two tone examples,
+  marked never to copy; the rule is in AGENT_RULES.md. Method terms are said in everyday words from one
+  shared list, `knowledge-packs/product-shared/plain-words.md`, with `before-and-after.md` beside it
+  as examples, not rules; both reach both prompts, generated. Wellington never implies a result is near,
+  and on a handoff to Phoebe he writes one line to her that heads her page, summing the project up.
+  Phoebe asks deal-breakers first (a running project's start date before anything else), then what
+  settles both paths, then one path, water first, never carbon first; a closed path gets one plain line
+  and she goes straight on; the offer of a person is in the right panel only, never in chat.
+- **Wellington comes to you, 14 Nov 2026, the maintainer's ruling; the rule is in AGENT_RULES.md.**
+  His one line to Phoebe or Bridget, summing up the project, heads her chat; when her part is done
+  he joins that chat with the next step and its button ("Meet Bridget", "Meet Calvin"), one ask on
+  his own conversation, so his desk holds it too. No agent sends the visitor back to him. A path
+  Phoebe rules out in chat is saved the same turn, through a required `closes` field (W25: on the
+  maintainer's walk carbon was said ruled out and saved as "not enough known"). The right rail is
+  the crew with one status line each ("water likely · carbon ruled out"); the save door, the box to
+  send the project to the team (whenever a path is ruled out) and **Export screening report** (S21,
+  print-only, growing with the visit) sit in the left rail under the project. Bridget has a voice
+  card and a short opening (B1), and the map zooms to the country as soon as the place is known
+  (B2). Calvin's chat is not built, so Wellington does not yet come to it.
 - **Wellington reads back what Phoebe found, and asks people served, from 26–27 Sep 2026 (items A17
   and A16, #128 and #130).** Each ask carries her worksheet as row ids and states only; he greets a
   visitor coming back from her knowing each pathway's read, never her sentences, and routes to
@@ -424,7 +463,9 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   households never converted here, on the record, the rail and the seal as `record.served`. His
   prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep, 26,034 from 4 Oct, 26,079 from 31 Oct, and
   23,123 from 5 Nov 2026, when his shorter instructions were built (item A26), 24,560 from
-  13 Nov 2026, after the maintainer's three walks of them, and 24,581 with the primer's line on Phoebe's tab, against the unchanged gate of 26,199.
+  13 Nov 2026, after the maintainer's three walks of them, 24,581 with the primer's line on Phoebe's tab, 25,943 after her fourth walk, 26,145 after her fifth, 26,148 with the voice card and the
+  shared plain-words list, and 26,136 when he came to the agents' chats, all 14 Nov 2026, against the
+  unchanged gate of 26,199.
 - **The engine bundle is tracked at `carried/`, from 27 Sep 2026**, placed by the maintainer's
   hand and merged on `main` as it stands (#132), tagged `engine-carry-2026-09-27`. **It was replaced
   on 3 Oct 2026 by v0.16.1**, the paid site's `calculator-seal-2026-10-03`: 34 files, 34 hashes
@@ -434,7 +475,8 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   #138. The wordmark at the top left goes to waterbots.ai from 28 Oct 2026, as the main site's
   menu does; until then it started a fresh visit at the landing. Every chat box grows to three lines, then
   scrolls. **No desk has a "Next phase" chip**, by the maintainer's ruling of 30 Sep 2026, which
-  replaces the 16 Sep rule on this site: next steps live in the right rail only. **A rail row that
+  replaces the 16 Sep rule on this site: ~~next steps live in the right rail only~~ next steps come
+  with Wellington in the chat, and the right rail is the crew with a status line each (14 Nov 2026). **A rail row that
   sends the visitor somewhere clears when taken**: they are on its step, or, for the map row, a
   basin is pinned. Then Wellington's invite to Quantify lands, only where a pathway read allows
   it; otherwise the rail is empty until the next agent is ready. **Record facts never clear**: the
@@ -452,10 +494,10 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   is, what she does, why the basin matters to funders and partners, that she is still being built,
   and her one question: open the Map tab and pin the basin, in the place the visitor gave
   Wellington. A pin brings the visitor back to Chat. There she thanks them, gives the basin and its water-stress
-  reading, says when it is derived, and says Calvin is next, by the Quantify button in the right
+  reading, says when it is derived, ~~and says Calvin is next, by the Quantify button in the right
   rail; where no pathway goes on to Quantify she hands back to Wellington. No button of her own,
   except the 'Back to Wellington' link when no pathway goes on to Quantify, the same hand-back Phoebe
-  uses. Thirty messages a day, under her own counter. She never guesses, never names a project,
+  uses.~~ and says Wellington will join with the next step (14 Nov 2026). Thirty messages a day, under her own counter. She never guesses, never names a project,
   partner, funder or place the visitor did not type, and never says she checks anything.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 

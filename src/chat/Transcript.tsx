@@ -44,11 +44,17 @@ export default function Transcript({
   turns,
   pending,
   error,
+  live = null,
 }: {
   host: AgentHost;
   turns: Turn[];
   pending: boolean;
   error: string | null;
+  /**
+   * The reply so far while it streams in (13 Nov 2026). Drawn in the host's
+   * own bubble in place of the thinking dots, and replaced by the answer.
+   */
+  live?: string | null;
 }) {
   const accent = { '--turn-accent': `var(${host.colourToken})` } as CSSProperties;
 
@@ -58,11 +64,17 @@ export default function Transcript({
         turn.role === 'user' ? (
           <ReaderBubble key={i} text={turn.text} />
         ) : (
-          <HostBubble key={i} host={host} turn={turn} />
+          <HostBubble key={i} host={host} turn={turn} latest={i === turns.length - 1 && !pending} />
         )
       )}
 
-      {pending && (
+      {pending && live && (
+        <div aria-busy="true">
+          <HostBubble host={host} turn={{ role: 'agent', text: live, evidence: [] }} />
+        </div>
+      )}
+
+      {pending && !live && (
         <div className="wb-thinking" style={accent} role="status" aria-live="polite">
           <HostFace host={host} thinking />
           <span className="wb-thinking-dots" aria-hidden>
@@ -112,7 +124,7 @@ function ReaderBubble({ text }: { text: string }) {
   );
 }
 
-function HostBubble({ host, turn }: { host: AgentHost; turn: AgentTurn }) {
+function HostBubble({ host, turn, latest = false }: { host: AgentHost; turn: AgentTurn; latest?: boolean }) {
   const who = turn.speaker ?? host;
   const accent = { '--turn-accent': `var(${who.colourToken})` } as CSSProperties;
   return (
@@ -139,8 +151,34 @@ function HostBubble({ host, turn }: { host: AgentHost; turn: AgentTurn }) {
               same place, size and colour, and nothing new is invented. */}
           {turn.caption && <div className="wb-cite-line" style={{ marginTop: 6 }}>{turn.caption}</div>}
           <TurnAction turn={turn} />
+          {latest && <TurnButtons turn={turn} />}
         </div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * The buttons under the latest turn (14 Nov 2026): the blue primary one
+ * first — only the main next step, such as "Meet Phoebe" — then quiet chips,
+ * small, outlined and unfilled (P24). Only the latest turn draws them, so an old handoff's
+ * buttons do not stay on the thread as if they were still the next step.
+ */
+function TurnButtons({ turn }: { turn: AgentTurn }) {
+  if (!turn.buttons?.length) return null;
+  return (
+    <div style={{ marginTop: 10, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+      {turn.buttons.map((button) => (
+        <button
+          key={button.label}
+          type="button"
+          className={button.primary ? 'btn btn-primary' : 'wb-chip'}
+          style={button.primary ? { padding: '6px 14px', fontSize: 13 } : undefined}
+          onClick={button.go}
+        >
+          {button.label}
+        </button>
+      ))}
     </div>
   );
 }

@@ -149,7 +149,19 @@ function serveRelay(server: ViteDevServer, relay: Relay): void {
           }
           res.statusCode = result.status;
           result.headers.forEach((value, key) => res.setHeader(key, value));
-          res.end(await result.text());
+          /* Written as it arrives, the way the platform sends a streamed
+             body (Phoebe's reply, from 13 Nov 2026). Reading it whole first
+             would hold every line back to the end, so development would be
+             slower than production and a streaming fault would not show. */
+          if (result.body) {
+            const reader = result.body.getReader();
+            for (;;) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              res.write(value);
+            }
+          }
+          res.end();
         } catch (error) {
           /* An honest failure. The console shows the message rather than
              hanging or inventing a reply. */
