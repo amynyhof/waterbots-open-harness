@@ -126,7 +126,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 
 **After v1, not needed for the finish line:** A23, Calvin's VWBA row becomes Violet's; A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
-- **Wellington's prompt is 26,148 characters against a gate of 26,199** (A26, 14 Nov 2026, after the voice cards; 24,581 the day before). The gate moves only on her word.
+- **Wellington's prompt is 26,136 characters against a gate of 26,199** (A26, 14 Nov 2026, when he came to the agents' chats; 24,581 the day before). The gate moves only on her word.
 - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull request; a measured run after any prompt change; the build-update fact refreshed at every full close-out.
 
 ---
@@ -158,12 +158,12 @@ back to Wellington, as built in A22. The visit stays at Partners after the pin, 
 the cards and the lists reach the relays as generated copies (`scripts/build-prompt-modules.mjs`), written by hand; CI's
 `--check` fails a stale copy, but nothing refreshes one. Done is a copy that cannot ship stale and needs no hand. Proposal first.
 
-**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved (docs/proposals/wellington-rewrite-2026-10-31.md); her walks' fixes and the voice card 12–14 Nov 2026. His prompt is 26,148, from 26,079. Waiting on one measured run.
+**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved (docs/proposals/wellington-rewrite-2026-10-31.md); her walks' fixes, the voice card and "Wellington comes to you" 12–14 Nov 2026. His prompt is 26,136, from 26,079. Waiting on one measured run.
 
 **A27 · Agent door bug.** v1 · BONES. Her word of 12 Nov 2026: in the Agent Commons, Phoebe tells visitors to go to Wellington. In the Commons,
 every agent works alone and asks for what she needs herself; on the sites, she hands back to Wellington. Each module must know which door it is at (see the plug-in contract).
 
-**A28 · Phoebe's walk fixes.** v1 · BONES. Her word of 12–14 Nov 2026: rounds two and three (#173), the limit of 4 sentences or 400 characters approved 14 Nov. On the preview her first word came at 4.8 to 6.1 seconds and whole answers took 5.8 to 9.3 (14 Nov). The skipped hello is fixed. From 14 Nov a voice card, the shared plain-words list and the order of questions: deal-breakers, then both paths, then one. Waiting on one measured run.
+**A28 · Phoebe's walk fixes.** v1 · BONES. Her word of 12–14 Nov 2026: rounds two and three (#173), the limit of 4 sentences or 400 characters approved 14 Nov. On the preview her first word came at 4.8 to 6.1 seconds and whole answers took 5.8 to 9.3 (14 Nov). The skipped hello is fixed. From 14 Nov a voice card, the shared plain-words list, the order of questions, and a ruled-out path saved the same turn (W25). Waiting on one measured run.
 
 **A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet, host of the
 D-n modules in the Commons; not on the roster yet, by her hand. No proposal yet. Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026).
@@ -186,7 +186,7 @@ What a visitor sees and works with. Her browser review is the gate.
 
 **S21 · The screening report exports free.** Step 8 · v1. Her word of 23 Sep 2026: every tool, with or
 without answers, exportable as an easy-to-read, properly cited document. The screening report is the first
-export, in the phase-tags shape. It needs Calvin's figures. Proposal first, from a captured reference.
+export, in the phase-tags shape. **A first version is built on her word of 14 Nov 2026 (#173)**: print-only, from the left rail, growing with the visit, in the feel of the core's ReportView. Calvin's figures fill it once he has them.
 
 **S25 · Tap size on phones.** v1 · WALKTHROUGH. Her word of 31 Oct 2026, after her preview check of #167. Every control a
 visitor taps, measured at phone width against a size she rules; S24's 44px for the main site's menu is the same question
