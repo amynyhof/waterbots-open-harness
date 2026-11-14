@@ -1,0 +1,42 @@
+/* Calvin's calculator, from the open core (@waterbots/calvin 0.2.0) — the colour and shape names its
+   screens use, mapped to this site's tokens. Built 14 Nov 2026 (proposal
+   docs/proposals/calvin-from-open-core.md, step 2: "the colour names the screens use, mapped to
+   this site's tokens in one stylesheet").
+
+   Everything here is scoped to .wb-calvin, the wrapper the calculator is mounted in, so nothing
+   reaches the rest of the site. The core's classes themselves are copied, scoped, into
+   calvin.generated.css by scripts/build-calvin-css.mjs. No new colour is invented: each name points
+   at a token this site already has.
+
+   - Text: fg-1 to fg-3 are --ink to --ink-3. fg-4 is --ink-3 too, because this site's --ink-4 is
+     for disabled and placeholder text only and does not reach 4.5:1 as type.
+   - Accent: the core's "tide" is Calvin's accent here. His colour is Reef, which never carries
+     text (4.13:1), so the accent is Deep Reef, his text shade (4.96:1), the maintainer's ruling of
+     1 Nov 2026.
+   - Shapes and motion: the nearest of this site's radii and its own easing. */
+
+@import './calvin.generated.css';
+
+.wb-calvin {
+  --fg-1: var(--ink);
+  --fg-2: var(--ink-2);
+  --fg-3: var(--ink-3);
+  --fg-4: var(--ink-3);
+  --tide: var(--bot-calvin-text);
+  --warn-text: var(--state-warn-text);
+  --approved-text: var(--ink);
+  --radius-sm: var(--r-xs);
+  --radius-md: var(--r-sm);
+  --radius-lg: var(--r-md);
+  --radius-pill: var(--r-pill);
+  --ease-out: var(--ease);
+  --duration-fast: 120ms;
+  --duration-base: var(--dur);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+/* This site's eyebrow draws a short rule before its words; the core's does not. */
+.wb-calvin .eyebrow::before {
+  content: none;
+}

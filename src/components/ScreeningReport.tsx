@@ -26,7 +26,9 @@ import { PROJECT_STAGES, projectType } from '../lib/projectTypes.generated';
 import type { MethodPack } from '../lib/methodPacks';
 import { HER_PACKS, section, verdictRows, pathwayRows } from '../lib/worksheet.generated';
 import { contextFor, stateOf, type Sheet } from '../lib/worksheetState';
-import { deskRows, pathStatus, servedWords, WATER_SUPPLY_TYPES, type Visit } from '../lib/visit';
+import { deskRows, pathStatus, servedWords, WATER_SUPPLY_TYPES, type CarbonFigure, type Visit } from '../lib/visit';
+import { GS4GG_CALCULATOR_VERSION } from '@waterbots/calvin/engine';
+import { CALVIN_PACKAGE_VERSION } from '../lib/calvinProject';
 
 const AWAITING = 'awaiting user project input';
 const FIRST_SCREENING = 'This is a first screening, not an official decision.';
@@ -99,10 +101,13 @@ export default function ScreeningReport({
   sheet,
   packs,
   showPerson,
+  carbon = null,
 }: {
   visit: Visit;
   sheet: Sheet;
   packs: MethodPack[];
+  /** Calvin's carbon headline from the open core's engine, once Quantify was opened. */
+  carbon?: CarbonFigure | null;
   /** A path is ruled out, so the box to send the project to the team is offered. */
   showPerson: boolean;
 }) {
@@ -215,7 +220,17 @@ export default function ScreeningReport({
       )}
 
       <Heading>4. A first estimate, with Calvin</Heading>
-      {calvin.length ? calvin.map((row) => <Row key={row.key} k="Screening estimate" v="" note={row.sentence} />) : <p style={{ fontSize: 11 }}>Not done yet.</p>}
+      {carbon && (
+        <Row
+          k="Carbon credits, first estimate (ex-ante)"
+          v={`${carbon.er.toLocaleString('en-GB', { maximumFractionDigits: 1 })} tCO₂e a year`}
+          note={`Gold Standard's safe drinking water methodology, ${carbon.version === 'paa' ? 'version 2.0' : 'version 1.0'}. Worked out by the open core's engine, gs4gg-carbon ${GS4GG_CALCULATOR_VERSION}, in @waterbots/calvin ${CALVIN_PACKAGE_VERSION}. The full working prints from the calculator itself.`}
+        />
+      )}
+      {calvin.map((row) => (
+        <Row key={row.key} k="Water benefits, first estimate" v="" note={row.sentence} />
+      ))}
+      {!carbon && calvin.length === 0 && <p style={{ fontSize: 11 }}>Not done yet.</p>}
 
       <footer style={{ marginTop: 18, borderTop: '1px solid var(--line)', paddingTop: 6, fontSize: 9.5, color: 'var(--ink-3)' }}>
         {FIRST_SCREENING} Nothing from this visit is kept on this site.

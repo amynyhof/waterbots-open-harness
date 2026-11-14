@@ -1920,27 +1920,44 @@ button.wb-info {
 }
 
 /* THE SCREENING REPORT (S21) is print-only, as the paid calculator's export is:
-   hidden on screen, and the only thing printed. */
+   hidden on screen, and the only thing printed.
+
+   TWO EXPORTS TAKE TURNS, from 14 Nov 2026, when Calvin's calculator came from the
+   open core with its own report and print rules (@waterbots/calvin/styles.css),
+   which hide everything but its .print-report. "Export screening report" marks
+   the page with .wb-print-screening while it prints: then only this report
+   prints and Calvin's stays hidden. Unmarked, Calvin's own export prints his,
+   and only the one on the page in view. */
 .wb-report {
   display: none;
 }
 @media print {
-  html,
-  body,
-  #root {
+  .wb-page.is-off .print-report,
+  .wb-module-page.is-off .print-report {
+    display: none !important;
+  }
+  body.wb-print-screening .print-report {
+    display: none !important;
+  }
+  body.wb-print-screening .wb-report,
+  body.wb-print-screening .wb-report * {
+    visibility: visible !important;
+  }
+  body.wb-print-screening,
+  body.wb-print-screening #root {
     height: auto !important;
     overflow: visible !important;
     background: #ffffff;
   }
-  .wb-app {
+  body.wb-print-screening .wb-app {
     height: auto !important;
     display: block !important;
     background: #ffffff !important;
   }
-  .wb-app > :not(.wb-report) {
+  body.wb-print-screening .wb-app > :not(.wb-report) {
     display: none !important;
   }
-  .wb-report {
+  body.wb-print-screening .wb-report {
     display: block;
     color: var(--ink);
     font-family: var(--font-sans);

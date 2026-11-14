@@ -76,6 +76,9 @@ import JourneyBar from './components/JourneyBar';
 import Desk from './components/Desk';
 import CrewRail from './components/CrewRail';
 import ScreeningReport from './components/ScreeningReport';
+import { useCalculatorState } from '@waterbots/calvin/screen';
+import { calvinProject } from './lib/calvinProject';
+import type { CarbonFigure } from './lib/visit';
 import type { AgentTurn } from './chat/evidence';
 import Commons from './components/Commons';
 import {
@@ -124,6 +127,22 @@ import {
 } from './lib/visit';
 
 const LIVE_PACKS = livePacks();
+
+/**
+ * Prints the screening report and nothing else (S21). The page is marked while
+ * it prints, so Calvin's own report, from the open core, stays out of it
+ * (src/styles/base.css). The mark comes off when printing ends.
+ */
+function printScreeningReport() {
+  const body = document.body;
+  const done = () => {
+    body.classList.remove('wb-print-screening');
+    window.removeEventListener('afterprint', done);
+  };
+  body.classList.add('wb-print-screening');
+  window.addEventListener('afterprint', done);
+  window.print();
+}
 
 export default function App() {
   const [status, setStatus] = useState<MapStatus | null>(null);
@@ -325,6 +344,43 @@ export default function App() {
     void askReturned();
   }, [surface, visit.stage, askReturned]);
 
+  /* CALVIN'S CARBON CALCULATOR IS THE OPEN CORE'S — @waterbots/calvin 0.2.0,
+     the maintainer's word of 14 Nov 2026. Its state is held here, like
+     Wellington's conversation, so the calculator, the crew panel and the
+     screening report read one thing. The project comes from the visit's record
+     alone (src/lib/calvinProject.ts); the engine does every sum. Its figure is
+     shown elsewhere only once the visitor has opened Quantify. */
+  const project = useMemo(() => calvinProject(visit.context), [visit.context]);
+  const calc = useCalculatorState(project, { exAnteOnly: true });
+  /* THE COUNT FOLLOWS THE RECORD. The core re-reads the technology, the
+     country and people-or-households whenever the project changes, but takes
+     the number served only when it first opens — and here it opens with the
+     page, before Wellington has heard anything. So when the record's count
+     changes, it is handed on, the way a record save reaches a seat already
+     open. Found on the first look, 14 Nov 2026. */
+  const patchCalc = calc.patch;
+  const servedOnRecord = project.population?.served ?? null;
+  const lastServed = useRef<number | null>(null);
+  useEffect(() => {
+    if (servedOnRecord === lastServed.current) return;
+    lastServed.current = servedOnRecord;
+    if (servedOnRecord !== null) patchCalc({ populationCount: servedOnRecord });
+  }, [servedOnRecord, patchCalc]);
+  const [seenQuantify, setSeenQuantify] = useState(false);
+  useEffect(() => {
+    if (surface === 'quantification') setSeenQuantify(true);
+  }, [surface]);
+  /* Only a figure the calculator's own screen shows: every fact present, an
+     official fNRB, and — in calvin 0.2.0, whose work surface is the transition
+     seat — the project's filed V1.0 fNRB. Without it the screen shows the
+     core's request and no figure, so nothing here claims one either. */
+  const shown =
+    seenQuantify && calc.result && calc.missingFacts.length === 0 && !calc.fnrbRefusal && !calc.filedFnrbRefusal;
+  const carbon: CarbonFigure | null = useMemo(
+    () => (shown && calc.result ? { er: calc.result.result.ER, version: calc.result.version } : null),
+    [shown, calc.result]
+  );
+
   /* WELLINGTON COMES TO YOU — the maintainer's ruling of 14 Nov 2026. When an
      agent's step is done he joins the visitor in that agent's chat with the
      next step and its button. It is one ask on his own conversation, so his
@@ -343,7 +399,7 @@ export default function App() {
   /* THE RIGHT PANEL IS A QUIET LIST — W27, 14 Nov 2026: the crew, each with
      one plain line on where their part stands. Every handoff's button sits in
      the chat (W26). */
-  const crew = useMemo(() => crewStatus(visit, sheet, LIVE_PACKS), [visit, sheet]);
+  const crew = useMemo(() => crewStatus(visit, sheet, LIVE_PACKS, carbon), [visit, sheet, carbon]);
   const progress = useMemo(() => journeyProgress(visit, sheet, LIVE_PACKS), [visit, sheet]);
 
   /* THE BRIDGE (item S7, built 8 Sep 2026). The click seals the visit as it
@@ -450,7 +506,7 @@ export default function App() {
             showPerson,
             person,
             onPerson: setPerson,
-            onExport: () => window.print(),
+            onExport: printScreeningReport,
           }}
           drawer={phone ? { open: drawer === 'project', onClose: closeDrawer } : undefined}
         />
@@ -544,6 +600,9 @@ export default function App() {
                 aria-hidden={!onQuantification}
               >
                 <CalvinScreen
+                  calc={calc}
+                  project={project}
+                  missingFacts={calc.missingFacts.map((fact) => fact.label)}
                   activeKey={activePack}
                   onSelect={setActivePack}
                   allValues={visit.packValues}
@@ -586,7 +645,7 @@ export default function App() {
 
       {/* S21 — the screening report, print-only; "Export screening report"
           in the left rail opens the print dialog on it. */}
-      <ScreeningReport visit={visit} sheet={sheet} packs={LIVE_PACKS} showPerson={showPerson} />
+      <ScreeningReport visit={visit} sheet={sheet} packs={LIVE_PACKS} showPerson={showPerson} carbon={carbon} />
     </div>
   );
 }

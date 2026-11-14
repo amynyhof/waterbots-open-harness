@@ -36,7 +36,9 @@
  * clicked.
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCalculatorState, type CalvinProject } from '@waterbots/calvin/screen';
+import { COUNTRIES } from '@waterbots/calvin/engine';
 import type { AgentTurn, AskMeta } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
 import {
@@ -55,10 +57,9 @@ import KnowledgePackTab from '../screen/KnowledgePackTab';
 import NotLiveChat from '../screen/NotLiveChat';
 import ScreenChat from '../screen/ScreenChat';
 import { BRIDGET, BRIDGET_PACK } from './BridgetScreen';
-import { CALVIN, CALVIN_NOT_LIVE_LINE, CALVIN_PACK } from './CalvinScreen';
+import { CALVIN, CALVIN_NOT_LIVE_LINE, CALVIN_PACK, CalvinTool } from './CalvinScreen';
 import EligibilityWorksheet from './EligibilityWorksheet';
 import { PHOEBE, PHOEBE_PACK, phoebeButtons } from './PhoebeScreen';
-import QuantificationWorksheet from './QuantificationWorksheet';
 
 export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
   const [sheet, setSheet] = useState<Sheet>(EMPTY_SHEET);
@@ -140,13 +141,106 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
   );
 }
 
+/**
+ * THE COMMONS HOLDS NO RECORD, so Calvin's carbon calculator — the open core's,
+ * from 14 Nov 2026 — takes its project facts from this small form, in the
+ * lens's header, the slot a host fills. The facts stay in this page and are
+ * never sent anywhere. Nothing is filled in for the visitor.
+ */
+interface CommonsFacts {
+  country: string;
+  technology: '' | 'CWS' | 'HWT';
+  served: string;
+  unit: 'people' | 'households';
+}
+
+function CommonsFactsForm({ facts, onChange }: { facts: CommonsFacts; onChange: (next: CommonsFacts) => void }) {
+  const label = { display: 'block', fontSize: 12, color: 'var(--ink-2)', margin: '8px 0 3px' } as const;
+  return (
+    <div style={{ marginBottom: 12 }}>
+      <p className="t-caption" style={{ margin: 0, color: 'var(--ink-2)' }}>
+        Tell Calvin about your project. Nothing here is kept.
+      </p>
+      <label style={label} htmlFor="commons-calvin-system">The water system</label>
+      <select
+        id="commons-calvin-system"
+        className="wb-rail-input"
+        value={facts.technology}
+        onChange={(e) => onChange({ ...facts, technology: e.target.value as CommonsFacts['technology'] })}
+      >
+        <option value="">Choose one</option>
+        <option value="CWS">A new water source a community collects from</option>
+        <option value="HWT">Water made safe in the home</option>
+      </select>
+      <label style={label} htmlFor="commons-calvin-country">The country</label>
+      <select
+        id="commons-calvin-country"
+        className="wb-rail-input"
+        value={facts.country}
+        onChange={(e) => onChange({ ...facts, country: e.target.value })}
+      >
+        <option value="">Choose one</option>
+        {COUNTRIES.map((c) => (
+          <option key={c.iso} value={c.iso}>
+            {c.name}
+          </option>
+        ))}
+      </select>
+      <label style={label} htmlFor="commons-calvin-served">How many it serves</label>
+      <div style={{ display: 'flex', gap: 6 }}>
+        <input
+          id="commons-calvin-served"
+          className="wb-rail-input"
+          inputMode="numeric"
+          value={facts.served}
+          onChange={(e) => onChange({ ...facts, served: e.target.value.replace(/[^0-9]/g, '') })}
+          style={{ flex: 1, minWidth: 0 }}
+        />
+        <select
+          className="wb-rail-input"
+          aria-label="People or households"
+          value={facts.unit}
+          onChange={(e) => onChange({ ...facts, unit: e.target.value as CommonsFacts['unit'] })}
+          style={{ width: 'auto' }}
+        >
+          <option value="people">people</option>
+          <option value="households">households</option>
+        </select>
+      </div>
+    </div>
+  );
+}
+
 export function CalvinCommonsSeat({ packKey }: { packKey: string | null }) {
-  const [activeKey, setActiveKey] = useState<string>(packKey ?? fittedPack()?.key ?? '');
-  /* A click on another of his cards moves the calculator to that pack. */
+  const [activeKey, setActiveKey] = useState<string>(fittedPack()?.key ?? '');
+  /* A water card opens the water worksheet; the carbon card opens the core's calculator. */
+  const opensOn: 'carbon' | 'water' = packKey && packKey === fittedPack()?.key ? 'water' : 'carbon';
   useEffect(() => {
-    if (packKey) setActiveKey(packKey);
-  }, [packKey]);
+    if (opensOn === 'water' && packKey) setActiveKey(packKey);
+  }, [packKey, opensOn]);
   const [values, setValues] = useState<Record<string, PackValues>>({});
+  const [facts, setFacts] = useState<CommonsFacts>({ country: '', technology: '', served: '', unit: 'people' });
+  const project: CalvinProject = useMemo(() => {
+    const served = Number(facts.served);
+    return {
+      name: 'Your project',
+      standards: ['carbon'],
+      ...(facts.technology ? { technology: facts.technology } : {}),
+      ...(facts.country ? { country: facts.country } : {}),
+      ...(served > 0 ? { population: { mode: facts.unit, served } } : {}),
+    };
+  }, [facts]);
+  const calc = useCalculatorState(project, { exAnteOnly: true });
+  /* The core takes the number served only when it first opens, so a count
+     typed afterwards is handed on, as on the console (App.tsx). */
+  const patchCalc = calc.patch;
+  const served = project.population?.served ?? null;
+  const lastServed = useRef<number | null>(null);
+  useEffect(() => {
+    if (served === lastServed.current) return;
+    lastServed.current = served;
+    if (served !== null) patchCalc({ populationCount: served });
+  }, [served, patchCalc]);
 
   return (
     <AgentScreen
@@ -156,14 +250,17 @@ export function CalvinCommonsSeat({ packKey }: { packKey: string | null }) {
       tabs={{
         chat: <NotLiveChat host={CALVIN} line={CALVIN_NOT_LIVE_LINE} />,
         tool: (
-          <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
-            <QuantificationWorksheet
-              activeKey={activeKey}
-              onSelect={setActiveKey}
-              allValues={values}
-              onChange={(key, next) => setValues((v) => ({ ...v, [key]: next }))}
-            />
-          </div>
+          <CalvinTool
+            key={opensOn}
+            calc={calc}
+            project={project}
+            header={<CommonsFactsForm facts={facts} onChange={setFacts} />}
+            activeKey={activeKey}
+            onSelect={setActiveKey}
+            allValues={values}
+            onChange={(key, next) => setValues((v) => ({ ...v, [key]: next }))}
+            opensOn={opensOn}
+          />
         ),
         pack: <KnowledgePackTab view={CALVIN_PACK} />,
         credentials: <CredentialsTab host={CALVIN} />,
