@@ -249,6 +249,8 @@ export interface Visit {
   stage: ScreeningStage;
   /** Wellington's real Eligibility invite, copied onto Phoebe's thread once. */
   eligibilityInvite: string;
+  /** His line to Bridget, copied onto her thread once — "Wellington comes to you", 14 Nov 2026. */
+  partnersInvite: string;
   /** True once he has invited Partners while the stage is partners. */
   invitedPartners: boolean;
   /** True once he has invited Quantify. */
@@ -261,6 +263,7 @@ export const EMPTY_VISIT: Visit = {
   packValues: {},
   stage: 'learn',
   eligibilityInvite: '',
+  partnersInvite: '',
   invitedPartners: false,
   invitedQuantify: false,
 };
@@ -305,8 +308,15 @@ export function applyWellingtonRoute(
       eligibilityInvite: text || visit.eligibilityInvite,
     };
   }
-  if (route === 'map' && visit.stage === 'partners') {
-    return { ...visit, invitedPartners: true };
+  /* His line to Bridget is kept whenever he routes to her, so it heads her
+     chat however the visitor got there (14 Nov 2026); the invite itself still
+     waits for the Partners stage. */
+  if (route === 'map') {
+    return {
+      ...visit,
+      invitedPartners: visit.invitedPartners || visit.stage === 'partners',
+      partnersInvite: text || visit.partnersInvite,
+    };
   }
   if (route === 'quantification' && (visit.stage === 'partners' || visit.stage === 'quantify')) {
     return { ...visit, stage: 'quantify', invitedQuantify: true };
@@ -648,4 +658,60 @@ export function journeyProgress(
       return r.kind === 'complete' || r.kind === 'incomplete';
     }),
   };
+}
+
+/* --------------------------------------------------------------------------
+   THE CREW'S STATUS — the maintainer's word of 14 Nov 2026 (W27). The right
+   panel is the crew, each with one plain line on where their part stands,
+   worked out from the visit and the rows alone, never from anyone's prose:
+   "Phoebe: water likely · carbon ruled out".
+   -------------------------------------------------------------------------- */
+
+/** Each funding path's short name in a status line. */
+const SHORT_PATH: Record<string, string> = { water: 'water', carbon: 'carbon' };
+
+/**
+ * Where one funding path stands, in a visitor's words. A path that does not
+ * apply and a path with a Blocked row are both "ruled out": the maintainer's
+ * ruling of 14 Nov 2026 calls a path that does not apply ruled out too.
+ */
+export function pathStatus(visit: Visit, sheet: Sheet, pack: string): 'likely' | 'ruled out' | 'more to find out' | 'not started' {
+  const context = contextFor(sheet, pack, visit.context.gsClass);
+  if (pathwayState(sheet, pack, context) === 'does-not-apply') return 'ruled out';
+  const read = readiness(sheet, pack, context);
+  if (read === 'likely-not') return 'ruled out';
+  if (read === 'likely-eligible') return 'likely';
+  const looked = verdictRows(pack, context).some((row) => stateOf(sheet, pack, row.id).state !== 'unchecked');
+  return looked || pathwayState(sheet, pack, context) === 'applies' ? 'more to find out' : 'not started';
+}
+
+/** One line per crew member, keyed by the step each one opens. */
+export function crewStatus(visit: Visit, sheet: Sheet, packs: MethodPack[]): Record<Surface, string> {
+  const c = visit.context;
+  const asked = [c.does, c.type, c.stage, c.place.trim(), ...(WATER_SUPPLY_TYPES.includes(c.type) ? [c.served ? 'x' : ''] : [])];
+  const known = asked.filter(Boolean).length;
+  const wellington = known === 0 ? 'getting to know your project' : `${known} of ${asked.length} project details`;
+
+  const paths = HER_PACKS.filter((pack) => section(pack) !== undefined).map((pack) => ({
+    name: SHORT_PATH[section(pack)!.sectionId] ?? section(pack)!.sectionName,
+    status: pathStatus(visit, sheet, pack),
+  }));
+  const phoebe = paths.every((p) => p.status === 'not started')
+    ? 'not started'
+    : paths.map((p) => `${p.name} ${p.status}`).join(' · ');
+
+  const bridget = visit.pin ? `basin pinned · ${visit.pin.stressLabel.toLowerCase()} water stress` : 'not done yet';
+
+  let calvin = 'not done yet';
+  for (const pack of packs) {
+    const values = visit.packValues[pack.key];
+    if (!values) continue;
+    const result = pack.compute(values);
+    if (result.kind === 'complete') {
+      calvin = 'estimate ready';
+      break;
+    }
+    if (result.kind === 'incomplete') calvin = 'part-way';
+  }
+  return { desk: wellington, eligibility: phoebe, map: bridget, quantification: calvin };
 }

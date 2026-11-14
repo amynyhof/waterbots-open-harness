@@ -947,6 +947,41 @@ function readAnswer(value: unknown): Answer | null {
 
   /* Checked against the closed list, never trusted: an unknown hand-back is
      "none", the ordinary turn, and the console draws nothing for it. */
+  /* W25, THE MAINTAINER'S WORD OF 14 NOV 2026: SAYING IT IS SAVING IT. On her
+     walk Phoebe told the visitor carbon was ruled out (a project started in
+     2018), but no row recorded it, so the worksheet, the save and Wellington
+     all read "not enough known". Every path her reply rules out now rides in
+     `closes`, a required field, and is saved here: a test that does not
+     apply, or a Blocked row where the card allows one. A row whose card says
+     it can always be fixed is never Blocked, and is logged rather than saved. */
+  if (Array.isArray(v.closes)) {
+    for (const raw of v.closes) {
+      if (typeof raw !== 'object' || raw === null) continue;
+      const u = raw as Record<string, unknown>;
+      const pack = typeof u.pack === 'string' ? u.pack : '';
+      const id = typeof u.id === 'string' ? u.id : '';
+      const because = typeof u.because === 'string' ? u.because.trim() : '';
+      const row = section(pack)?.rows.find((r) => r.id === id);
+      if (!row || because === '' || because.length > MAX_BECAUSE_CHARS) {
+        console.warn(`phoebe: a ruled-out path could not be saved — ${pack}/${id}`);
+        continue;
+      }
+      if (row.takes.of === 'pathway-state') {
+        const at = pathways.findIndex((p) => p.pack === pack && p.id === id);
+        const saved = { pack, id, state: 'does-not-apply', because };
+        if (at >= 0) pathways[at] = saved;
+        else pathways.push(saved);
+      } else if (row.fixable !== 'yes') {
+        const at = rows.findIndex((r) => r.pack === pack && r.id === id);
+        const saved = { pack, id, state: 'blocked', because };
+        if (at >= 0) rows[at] = saved;
+        else rows.push(saved);
+      } else {
+        console.warn(`phoebe: said ${pack}/${id} rules a path out, but its card says it can be fixed — not saved`);
+      }
+    }
+  }
+
   const handBack = readHandBack(v.handBack);
 
   const abstained = v.abstained === true;

@@ -17,6 +17,7 @@ export default function CrewRow({
   member,
   current = false,
   count = null,
+  status,
   onOpen,
 }: {
   member: CrewMember;
@@ -24,6 +25,8 @@ export default function CrewRow({
   current?: boolean;
   /** A count to show at the row's end, or null for none. */
   count?: number | null;
+  /** One plain line on where this member's part stands (W27, 14 Nov 2026), or none. */
+  status?: string;
   onOpen: () => void;
 }) {
   return (
@@ -84,6 +87,11 @@ export default function CrewRow({
         >
           {member.role}
         </span>
+        {status && (
+          <span style={{ display: 'block', fontSize: 12, lineHeight: 1.4, color: 'var(--ink-2)', marginTop: 4 }}>
+            {status}
+          </span>
+        )}
       </span>
       {count !== null && count > 0 && (
         <span

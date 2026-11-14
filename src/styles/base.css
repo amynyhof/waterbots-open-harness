@@ -1895,3 +1895,60 @@ button.wb-info {
     transform: translate(-50%, -50%);
   }
 }
+
+/* THE SAVE DOOR IN THE LEFT RAIL — the maintainer's word of 14 Nov 2026 (W27):
+   under the project, full width; the report button under it is quiet (S21),
+   because blue is for the one main next step. */
+.wb-rail-save .wb-save-button {
+  width: 100%;
+}
+.wb-report-button {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+.wb-report-button:hover {
+  border-color: var(--ink-4);
+}
+
+/* THE SCREENING REPORT (S21) is print-only, as the paid calculator's export is:
+   hidden on screen, and the only thing printed. */
+.wb-report {
+  display: none;
+}
+@media print {
+  html,
+  body,
+  #root {
+    height: auto !important;
+    overflow: visible !important;
+    background: #ffffff;
+  }
+  .wb-app {
+    height: auto !important;
+    display: block !important;
+    background: #ffffff !important;
+  }
+  .wb-app > :not(.wb-report) {
+    display: none !important;
+  }
+  .wb-report {
+    display: block;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    max-width: 7.5in;
+    margin: 0 auto;
+  }
+  @page {
+    size: letter portrait;
+    margin: 1in;
+  }
+}

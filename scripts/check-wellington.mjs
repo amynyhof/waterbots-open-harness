@@ -129,8 +129,9 @@ expect('a topic without an abstention is dropped', notAbst?.abstentionTopic === 
   expect(
     'W24: the introduction is kept on a route to Phoebe, dropped elsewhere or past one line, and heads her page',
     kept?.introduction === intro && offRoute?.introduction === undefined && twoLines?.introduction === undefined &&
-      /onRouted\(answer\.route, answer\.introduction \?\? answer\.reply\)/.test(wellingtonLib) &&
-      /route === 'eligibility' && typeof data\.introduction === 'string'/.test(readFileSync(join('src', 'lib', 'wellingtonClient.ts'), 'utf8')) &&
+      /onRouted\(answer\.route, answer\.introduction \?\? answer\.reply/.test(wellingtonLib) &&
+      /\(route === 'eligibility' \|\| route === 'map'\) && typeof data\.introduction === 'string'/.test(readFileSync(join('src', 'lib', 'wellingtonClient.ts'), 'utf8')) &&
+      validate({ reply: 'Let me introduce you to a colleague.', route: 'map', introduction: 'Bridget, this is a borehole in Kitui.', abstained: false })?.introduction === 'Bridget, this is a borehole in Kitui.' &&
       /cardWordsIn\(answer\.reply\)/.test(readFileSync(join('api', 'wellington.ts'), 'utf8')),
     JSON.stringify({ kept, offRoute, twoLines })
   );
@@ -358,8 +359,9 @@ expect(
   phoebeNotesBlock({ opened: true })
 );
 expect(
-  'a done note sends them back to Wellington on Dispatches',
-  /send them back to Wellington on Dispatches/i.test(phoebeNotesBlock({ eligibilityDone: true })),
+  'a done note says Wellington joins with the next step, and never sends them back to him (14 Nov 2026)',
+  /say Wellington will join with the next step/.test(phoebeNotesBlock({ eligibilityDone: true })) &&
+    !/send them back to Wellington on Dispatches/i.test(phoebeNotesBlock({ eligibilityDone: true })),
   phoebeNotesBlock({ eligibilityDone: true })
 );
 
@@ -622,9 +624,10 @@ expect(
   'a pin does not bring the visitor back to Chat'
 );
 expect(
-  'the Map tab opens on the place Wellington heard, once per place, through placeBox',
-  /if \(tab !== 'tool' \|\| focusedPlace\.current === place\) return;/.test(bridgetSource) &&
-    /const box = placeBox\(place\);\s*if \(box\) setFocus/.test(bridgetSource) &&
+  'B2: the map zooms to the country by itself as soon as the place is known, and again when the Map tab first opens; once per place, through placeBox',
+  /if \(focusedPlace\.current !== place\) \{\s*focusedPlace\.current = place;\s*if \(box\) setFocus/.test(bridgetSource) &&
+    /if \(tab === 'tool' && shownPlace\.current !== place\) \{\s*shownPlace\.current = place;\s*if \(box\) setFocus/.test(bridgetSource) &&
+    /map\.invalidateSize\(\{ animate: false \}\);\s*map\.fitBounds\(/.test(readFileSync('src/components/BasinMap.tsx', 'utf8')) &&
     /focus=\{focus\}/.test(bridgetSource) &&
     /<FocusView focus=\{focus\} \/>/.test(readFileSync('src/components/BasinMap.tsx', 'utf8')),
   'the Map tab does not open on the place'
@@ -647,18 +650,20 @@ expect(
   );
 }
 expect(
-  "No button of her own, except the 'Back to Wellington' link when no pathway goes on to Quantify, the same hand-back Phoebe uses",
-  /answer\.handBack === 'wellington'/.test(bridgetSource) &&
-    /Back to Wellington on \$\{DESK_LABEL\}/.test(bridgetSource) &&
+  'Wellington comes to her chat when her part is done; she has no button of her own and no way back to him (14 Nov 2026)',
+  /if \(answer\.handBack === 'wellington'\) window\.setTimeout\(\(\) => void wellingtonJoins\(\), 0\)/.test(bridgetSource) &&
+    /onWellington\('map', 'wb-bridget-composer'\)/.test(bridgetSource) &&
+    !/Back to Wellington/.test(bridgetSource) &&
     !/Open Quantify|surface: 'quantification'|onNavigate\('quantification'\)/.test(bridgetSource),
   'her hand-back is missing, or she draws a next step'
 );
 expect(
-  'her opening is her own answer when her step first shows, with no fixed greeting before it, and each new basin is reported once',
+  "her opening is her own answer when her step first shows, with only Wellington's line before it, and each new basin is reported once",
   /askOpened\(\{ opened: true \}\)/.test(bridgetSource) &&
     /askOpened\(\{ pinned: true \}\)/.test(bridgetSource) &&
     /reported\.current === pin\.hybasId/.test(bridgetSource) &&
-    !/BRIDGET_GREETING|GREETING_TURN|\.seed\(/.test(bridgetSource) &&
+    !/BRIDGET_GREETING|GREETING_TURN/.test(bridgetSource) &&
+    /speaker: WELLINGTON \}\]\);\s*\}\s*void chatRef\.current\.askOpened\(\{ opened: true \}\)/.test(bridgetSource) &&
     /visible=\{onMap\}/.test(readFileSync('src/App.tsx', 'utf8')),
   'the opening or the pin report is not wired, or a fixed greeting is still shown'
 );
@@ -713,9 +718,9 @@ expect(
   'a desk can still draw the top chip'
 );
 expect(
-  'the shell draws only the rows not yet taken, on every step',
-  /filter\(\(row\) => !rowTaken\(row, surface, visit\)\)/.test(appSource),
-  'a taken row stays in the rail'
+  'W27: the right panel is the crew, one plain status line each, with no next-step rows (14 Nov 2026)',
+  /crewStatus\(visit, sheet, LIVE_PACKS\)/.test(appSource) && /status=\{crew\}/.test(appSource) && !/nextStepRows/.test(appSource),
+  'the right panel still draws next-step rows'
 );
 expect(
   'the chat box grows as the visitor types, to three lines, then scrolls — one component, every desk',
@@ -723,10 +728,12 @@ expect(
   'the composer does not grow'
 );
 expect(
-  'the rail invite is the filled primary, and derived rows stay quiet links',
-  /row\.primary \? 'wb-invite-action' : 'wb-row-action'/.test(railSource) &&
-    /wb-invite-action/.test(readFileSync('src/styles/base.css', 'utf8')),
-  'the rail invite is not the one filled primary'
+  'W27, S21: the save door sits in the left rail under the project, the report under it, and the crew rail draws neither',
+  /\{save\.show && <SaveBlock save=\{save\} \/>\}/.test(readFileSync('src/components/NavRail.tsx', 'utf8')) &&
+    /Export screening report/.test(readFileSync('src/components/NavRail.tsx', 'utf8')) &&
+    /onExport: \(\) => window\.print\(\)/.test(appSource) &&
+    !/wb-save-button|Next steps|TOOLS_LINE/.test(railSource),
+  'the save door or the report is not in the left rail'
 );
 expect(
   'his prompt names the screening loop and forbids a fake live chat',
@@ -1023,17 +1030,17 @@ console.log('\n  Bridget\n');
 
   expect(
     "her opening keeps the meaning of the maintainer's sentence, in her own words, and the screen shows no fixed greeting",
-    BRIDGET_STILL_BUILT === ruled && BP.includes(`Keep this meaning, in your own words: "${ruled}"`) && !/Never say it again/.test(BP),
+    BRIDGET_STILL_BUILT === ruled && BP.includes(`keeping this meaning: "${ruled}"`) && !/Never say it again/.test(BP),
     JSON.stringify(BRIDGET_STILL_BUILT)
   );
-  const order = ['1. Greet them and say who you are.', '2. Say what you do', '3. Say why that matters.', '4. Say honestly that you are still being built.', '5. Ask them, nicely, to open the Map tab'];
   expect(
-    "her opening walks the maintainer's five beats in order, the pin question last",
-    order.every((beat) => BP.includes(beat)) && order.every((beat, i) => i === 0 || BP.indexOf(order[i - 1]) < BP.indexOf(beat)) &&
-      /Many funders choose projects by river basin/.test(BP) && /put water back into the basins they draw from/.test(BP) &&
-      /groups working in the same basin can team up/.test(BP) && /the pin question last/.test(BP) &&
-      /Never name a company, funder or group while you explain why the basin matters/.test(BP),
-    'a beat is missing or out of order'
+    'B1: a voice card first, and a short opening — who she is, why the basin matters, the pin question; still built only when asked',
+    /^You are Bridget[^\n]*\n\n# Your voice — read this first/.test(BP) &&
+      /Your opening is short, like every reply: two or three sentences, one thing/.test(BP) &&
+      /funders and partners often work by river basin/.test(BP) &&
+      /Being still built is said only when asked/.test(BP) &&
+      !/Many funders choose projects by river basin|two short paragraphs/.test(BP),
+    'the voice card or the short opening is missing'
   );
   expect(
     "she asks one question, the pin, and never where the project is or anything else of Wellington's",
@@ -1042,7 +1049,8 @@ console.log('\n  Bridget\n');
   );
   expect(
     'she uses the place the visitor told Wellington, in their words, and never says where on the map it is',
-    /use their words for it, exactly as written/.test(BP) && /Do not say where on the map that is, which basin it is, or which river/.test(BP),
+    /The map opens on the country the visitor gave Wellington by itself, so never ask them to find the country/.test(BP) &&
+      /name it as written/.test(BP) && /Do not say which basin it is or which river/.test(BP),
     'the place rule is missing'
   );
   expect(
@@ -1056,18 +1064,15 @@ console.log('\n  Bridget\n');
     "after a pin she thanks them, says when the reading is derived, never presents it as WRI's, and says Calvin is next or hands back",
     /- Thank them\./.test(BP) &&
       /Say that whenever the reading is derived; never present a derived reading as WRI's/.test(BP) &&
-      /When the block says Calvin is next\*\*, tell them Calvin is next, on the Quantify step/.test(BP) &&
-      /Set handBack to "none"\. Do not offer the way back to Wellington/.test(BP) &&
-      /do not promise Calvin will chat/.test(BP) &&
-      /When the block says Wellington has the next step\*\*.*Set handBack to "wellington"\. Do not name that next step yourself/.test(BP),
+      /Say that Wellington will join you here with the next step\. Never name that step yourself, and never send the visitor back to him\. Set handBack to "wellington"/.test(BP),
     'the pin report rules are missing'
   );
   expect(
-    'after a pin with Calvin next the relay draws no way back, whatever she set; an abstention and the Wellington case still go back',
-    settleHandBack('wellington', { pinned: true, quantifyNext: true, abstained: false }) === 'none' &&
-      settleHandBack('wellington', { pinned: true, quantifyNext: true, abstained: true }) === 'wellington' &&
-      settleHandBack('wellington', { pinned: true, quantifyNext: false, abstained: false }) === 'wellington' &&
-      settleHandBack('wellington', { pinned: false, quantifyNext: true, abstained: false }) === 'wellington' &&
+    'after a pin Wellington always joins her chat, whatever she set; off a pin her own field stands (14 Nov 2026)',
+    settleHandBack('none', { pinned: true, quantifyNext: true, abstained: false }) === 'wellington' &&
+      settleHandBack('none', { pinned: true, quantifyNext: false, abstained: false }) === 'wellington' &&
+      settleHandBack('none', { pinned: false, quantifyNext: true, abstained: false }) === 'none' &&
+      settleHandBack('wellington', { pinned: false, quantifyNext: true, abstained: true }) === 'wellington' &&
       /handBack: settleHandBack\(answer\.handBack, \{ pinned, quantifyNext, abstained: answer\.abstained \}\)/.test(relay) &&
       /body\.quantifyNext === true/.test(relay),
     'the relay does not hold her hand-back to who is next'
@@ -1104,10 +1109,8 @@ console.log('\n  Bridget\n');
     `${six}\n${four}`
   );
   expect(
-    'her block says who is next and where the Quantify button is on each device',
-    /Calvin is next, on the Quantify step\. The "Open Quantify" button is under "Next steps" on the right\./.test(six) &&
-      /is under "Crew" at the top of the screen/.test(sixPhone) &&
-      /Wellington, on Dispatches, has the next step/.test(four) && !/Calvin/.test(four),
+    'her block says Wellington joins her chat next with the next step, on every device, and never names it',
+    [six, sixPhone, four].every((b) => /Wellington joins this chat next with the next step\. Do not name it yourself\./.test(b) && !/Open Quantify|Calvin|Dispatches/.test(b)),
     `${six}\n${sixPhone}\n${four}`
   );
   const empty = bridgetBlock('Malawi', false, null, true);

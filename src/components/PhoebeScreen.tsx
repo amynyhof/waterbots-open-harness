@@ -24,13 +24,10 @@
  * through onCriteriaUpdate to the criteria, and her row on the desk follows.
  *
  * THE HAND-BACK IS A FIELD, AND THIS SEAT ACTS ON IT — contract line 8, item
- * A15, step 4, 21 Sep 2026. When her answer sets handBack to "wellington" —
- * her part done, or the question out of her lane — the turn carries one
- * quiet action, the way back to Dispatches, built from the field and never
- * from her prose. It is the chat layer's own turn action, the one Wellington's
- * route stopped drawing at the look pass of 8 Sep 2026 because the rail
- * already held his next step; hers is the way back to him, which the rail
- * does not hold, and the maintainer may strike it at the eyeball.
+ * A15. When her answer sets handBack to "wellington" — her part done, or the
+ * question out of her lane — Wellington joins this chat with the next step
+ * and its button (the maintainer's ruling of 14 Nov 2026), built from the field
+ * and never from her prose.
  *
  * NO OPENING PARAGRAPH. The dock carried a "Where to start" paragraph above
  * an empty conversation; the desk lost its intro paragraph on 8 Sep 2026 and
@@ -49,7 +46,6 @@ import { useConversation } from '../chat/useConversation';
 import type { Citation } from '../lib/citation';
 import { worksheetCaption, contextFor, applyUpdates, type Sheet, type Verdicts } from '../lib/worksheetState';
 import { HER_PACKS } from '../lib/worksheet.generated';
-import { DESK_LABEL } from '../lib/surfaces';
 import { WELLINGTON } from '../lib/wellington';
 import {
   APPROVED_ON,
@@ -116,10 +112,10 @@ export default function PhoebeScreen({
   record,
   sheet,
   onOpenMap,
-  onNavigate,
   visible,
   eligibilityDone,
   invite = '',
+  onWellington,
 }: {
   onVerdicts: (verdicts: Verdicts) => void;
   /** The visit's project record, carried to Phoebe with every ask. */
@@ -138,8 +134,20 @@ export default function PhoebeScreen({
    * words with his face, and it is never sent to her as one of her turns.
    */
   invite?: string;
+  /** Brings Wellington into her chat with the next step, once her part is done. */
+  onWellington?: (at: 'eligibility' | 'map', composerId: string) => Promise<AgentTurn | null>;
 }) {
   const carried = carriedRecord(record);
+
+  /* WELLINGTON COMES TO YOU — the maintainer's ruling of 14 Nov 2026. When her
+     answer sets handBack (her part done, or a question not hers) he joins this
+     chat with the next step and its button, under his own face, where a link
+     back to the desk used to be. No agent sends the visitor back to him. */
+  async function wellingtonJoins() {
+    if (!onWellington) return;
+    const turn = await onWellington('eligibility', 'wb-phoebe-composer');
+    if (turn) chatRef.current.append([{ ...turn, speaker: WELLINGTON }]);
+  }
 
   /* The card sets she has been given this visit. Staged loading (ruling R6)
      sends only what the visit has reached, and a set she has already used must
@@ -194,6 +202,9 @@ export default function PhoebeScreen({
       onVerdicts({ rows: answer.rows, pathways: answer.pathways, sorts: answer.sorts });
     }
 
+    /* He joins once her answer has landed, from the field alone. */
+    if (answer.handBack === 'wellington') window.setTimeout(() => void wellingtonJoins(), 0);
+
     const after = applyUpdates(sheet, {
       rows: answer.rows,
       pathways: answer.pathways,
@@ -221,10 +232,6 @@ export default function PhoebeScreen({
               }))
             ),
           }
-        : {}),
-      /* The way back to him, from the field alone. */
-      ...(answer.handBack === 'wellington'
-        ? { action: { label: `Back to Wellington on ${DESK_LABEL}`, go: () => onNavigate('desk') } }
         : {}),
       /* "Learn more about …" where she named an idea (P22). Not under her
          first hello, and not once she has handed back. */

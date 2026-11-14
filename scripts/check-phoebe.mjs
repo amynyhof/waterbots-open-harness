@@ -537,6 +537,24 @@ expect(
   );
 }
 expect(
+  'W25: a path she rules out is saved the same turn — closes is required, and the relay saves a Blocked row or a test that does not apply',
+  RESPONSE_SCHEMA.required.includes('closes') &&
+    RESPONSE_SCHEMA.properties.closes.items.required.join(',') === 'pack,id,because' &&
+    /\*\*Saying it is saving it\.\*\*/.test(SYSTEM_PROMPT) && /A running project past its year is G12/.test(SYSTEM_PROMPT) &&
+    /const saved = \{ pack, id, state: 'blocked', because \}/.test(relaySource) &&
+    /const saved = \{ pack, id, state: 'does-not-apply', because \}/.test(relaySource) &&
+    /else if \(row\.fixable !== 'yes'\)/.test(relaySource),
+  'a ruled-out path could still go unsaved'
+);
+expect(
+  'Wellington comes to her chat: no "Back to Wellington" link, and she never sends the visitor back to him (14 Nov 2026)',
+  !/Back to Wellington/.test(readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8')) &&
+    /onWellington\('eligibility', 'wb-phoebe-composer'\)/.test(readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8')) &&
+    /he joins the visitor in this chat with the next step\. You never send them back to him\./.test(SYSTEM_PROMPT) &&
+    !/visitor goes back to him on Dispatches|send them back to Wellington on Dispatches/.test(SYSTEM_PROMPT),
+  'a way back to Wellington survives'
+);
+expect(
   'P30: on a Blocked row the offer of a person is in the right panel, never in chat, and she promises no reply',
   /When you set a Blocked row, the console offers the visitor a person\*\*, beside the save button\. You do not make that offer in chat/.test(SYSTEM_PROMPT) &&
     /Never offer the team's review in chat: the console shows that offer beside the save button/.test(SYSTEM_PROMPT) &&
@@ -646,9 +664,10 @@ expect(
    the record first (P9), short replies (P10). */
 /* Her opener was P8 (13 Nov 2026); from 14 Nov it is two messages, P14 and P15. */
 expect(
-  'P14–P15: message 1 is a warm hello and "Ready to get started?"; message 2 points at the quiz with showTool, then asks; no "in beta", no repeat, no early read',
-  /\*\*Message 1, on its own:\*\* a warm hello with some personality, one line on what you do, then "Ready to get started\?" and nothing else/.test(SYSTEM_PROMPT) &&
-    /For tone only, never copy:\*\* "Hello there\. [^"]*I'm Phoebe, and I find which funding paths might suit your project\. Ready to get started\?"/.test(SYSTEM_PROMPT) &&
+  'P14–P15: message 1 is a warm hello and an invitation to begin, in her own words (14 Nov 2026); message 2 points at the quiz with showTool, then asks; no "in beta", no repeat, no early read',
+  /\*\*Message 1, on its own:\*\* a warm hello with some personality, one line on what you do, then invite them to begin, in your own words, and nothing else/.test(SYSTEM_PROMPT) &&
+    !/Ready to get started/.test(SYSTEM_PROMPT) && !/Ready to get started/.test(phoebeNotesBlock({ opened: true }) ?? '') &&
+    /For tone only, never copy:\*\* "Hello there\. [^"]*I'm Phoebe, and I find which funding paths might suit your project\."/.test(SYSTEM_PROMPT) &&
     /\*\*Message 2, after their yes:\*\* one line saying you fill in the eligibility quiz on your Tool tab as you talk, with showTool set to true/.test(SYSTEM_PROMPT) &&
     /No "in beta" and nothing Wellington already said\. Never say how either funding path looks before the record or the visitor settles its tests/.test(SYSTEM_PROMPT) &&
     !/you are in beta|You are Phoebe, in beta|You are in beta/i.test(SYSTEM_PROMPT) &&

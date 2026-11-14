@@ -97,7 +97,7 @@ function recordFrom(visit: Visit): VisitRecord | null {
 export function wellingtonAsk(
   onLearned: (learned: Learned) => void,
   getVisit: () => Visit,
-  onRouted: (route: WellingtonRoute, reply: string) => void,
+  onRouted: (route: WellingtonRoute, reply: string, isIntroduction?: boolean) => void,
   getSheet: () => Sheet,
   /** Opens a step, for the "Meet <name>" button at a handoff (W17). */
   onNavigate?: (surface: Surface) => void
@@ -124,20 +124,21 @@ export function wellingtonAsk(
       visit.stage,
       /* The desk's one turn when the visitor comes back from Phoebe is sent
          through askOpened, so it arrives here as `opened`. */
-      { sheet, returned: meta?.opened === true }
+      { sheet, returned: meta?.opened === true, ...(meta?.at ? { at: meta.at } : {}) }
     );
     if (Object.keys(answer.learned).length > 0) onLearned(answer.learned);
     /* W24, 14 Nov 2026: on Phoebe's page he speaks to her, so her page gets
        his introduction; his reply to the visitor stays here. Without one, his
        reply is shown there as before (W22). */
-    onRouted(answer.route, answer.introduction ?? answer.reply);
+    onRouted(answer.route, answer.introduction ?? answer.reply, answer.introduction !== undefined);
     return {
       role: 'agent',
       text: answer.reply,
       evidence: [],
       abstained: answer.abstained,
       action: actionFor(answer.route),
-      buttons: actionsFor(answer.route, onNavigate),
+      /* In another agent's chat, "Keep chatting" focuses that chat's box. */
+      buttons: actionsFor(answer.route, onNavigate, meta?.composerId),
     };
   };
 }

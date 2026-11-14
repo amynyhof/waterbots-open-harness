@@ -95,6 +95,20 @@ export async function GET(): Promise<Response> {
   return problem(405, 'This endpoint takes POST requests only.');
 }
 
+/** The turn he answers when he joins another agent's chat. Never shown as a bubble. */
+const AT_TURN: Record<'eligibility' | 'map', string> = {
+  eligibility: "(Phoebe's step is done. Wellington joins the visitor in her chat.)",
+  map: "(Bridget's step is done. Wellington joins the visitor in her chat.)",
+};
+
+/** What he is told when he joins another agent's chat — 14 Nov 2026. */
+const AT_NOTE: Record<'eligibility' | 'map', string> = {
+  eligibility:
+    "# Where you are speaking\n\nYou have joined the visitor in Phoebe's chat, because her step is done. In a line, say where things stand from what Phoebe found, then the one next step, and set the route to it; the console draws its button under your message. Never tell the visitor to come back to you.",
+  map:
+    "# Where you are speaking\n\nYou have joined the visitor in Bridget's chat, because the basin is pinned. In a line, say where things stand, then the one next step, and set the route to it; the console draws its button under your message. Never tell the visitor to come back to you.",
+};
+
 export async function POST(req: Request): Promise<Response> {
   let body: {
     messages?: IncomingMessage[];
@@ -103,6 +117,7 @@ export async function POST(req: Request): Promise<Response> {
     stage?: unknown;
     sheet?: unknown;
     returned?: unknown;
+    at?: unknown;
   };
   try {
     body = (await req.json()) as {
@@ -112,6 +127,7 @@ export async function POST(req: Request): Promise<Response> {
       stage?: unknown;
       sheet?: unknown;
       returned?: unknown;
+      at?: unknown;
     };
   } catch {
     return problem(400, 'That request could not be read.');
@@ -127,6 +143,11 @@ export async function POST(req: Request): Promise<Response> {
      worksheet is done, the way her screen sends `opened`. He may have said
      nothing yet this visit, so an empty thread is allowed on this turn only. */
   const returned = body.returned === true;
+
+  /* WELLINGTON COMES TO YOU — the maintainer's ruling of 14 Nov 2026. When an
+     agent's step is done he joins the visitor in that agent's chat with the
+     next step; `at` names the step. Only with `returned`, and only these. */
+  const at = returned && (body.at === 'eligibility' || body.at === 'map') ? body.at : null;
 
   const messages = Array.isArray(body.messages) ? body.messages : null;
   if (!messages || (messages.length === 0 && !returned)) {
@@ -157,8 +178,8 @@ export async function POST(req: Request): Promise<Response> {
   }
   if (returned && (clean.length === 0 || clean[clean.length - 1].role !== 'user')) {
     /* The model needs a user turn. This line is never shown as a bubble. */
-    clean.push({ role: 'user', content: '(The visitor came back from Eligibility.)' });
-    if (!lastQuestion) lastQuestion = '(came back from Eligibility)';
+    clean.push({ role: 'user', content: at ? AT_TURN[at] : '(The visitor came back from Eligibility.)' });
+    if (!lastQuestion) lastQuestion = at ? `(joined at ${at})` : '(came back from Eligibility)';
   }
   if (clean.length === 0 || clean[clean.length - 1].role !== 'user') {
     return problem(400, 'No message was sent.');
@@ -272,6 +293,7 @@ export async function POST(req: Request): Promise<Response> {
           { type: 'text', text: WELLINGTON_SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
           ...(visitText ? [{ type: 'text' as const, text: visitText }] : []),
           ...(found ? [{ type: 'text' as const, text: found.text }] : []),
+          ...(at ? [{ type: 'text' as const, text: AT_NOTE[at] }] : []),
         ],
         messages: clean,
         thinking: { type: 'adaptive' },

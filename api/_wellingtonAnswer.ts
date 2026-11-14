@@ -77,7 +77,7 @@ export function readServed(value: unknown): Served | undefined {
 export interface Answer {
   reply: string;
   route: Route;
-  /** W24: his one line to Phoebe on her page, only beside a route to her. */
+  /** W24: his one line to Phoebe or Bridget in her chat, only beside a route to her. */
   introduction?: string;
   context?: LearnedContext;
   abstained: boolean;
@@ -159,7 +159,9 @@ export function validate(value: unknown, known: KnownContext = {}): Answer | nul
      line; otherwise dropped, and her page shows his reply as before. */
   const intro = typeof v.introduction === 'string' ? v.introduction.trim() : '';
   const introduction =
-    route === 'eligibility' && intro && intro.length <= MAX_INTRODUCTION_CHARS && !intro.includes('\n') ? intro : '';
+    (route === 'eligibility' || route === 'map') && intro && intro.length <= MAX_INTRODUCTION_CHARS && !intro.includes('\n')
+      ? intro
+      : '';
 
   return {
     reply: v.reply.trim(),

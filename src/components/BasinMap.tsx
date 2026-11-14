@@ -254,6 +254,8 @@ function FocusView({ focus }: { focus: { box: Bbox; key: number } | null }) {
   useEffect(() => {
     if (!focus) return;
     const [w, s, e, n] = focus.box;
+    /* The panel may have changed size while it was hidden; measure first. */
+    map.invalidateSize({ animate: false });
     map.fitBounds(
       [
         [s, w],

@@ -167,12 +167,12 @@ export function phoebeNotesBlock(notes: { opened?: boolean; eligibilityDone?: bo
   const extra: string[] = [];
   if (notes.opened) {
     extra.push(
-      'The visitor has just opened Eligibility after Wellington invited them. Do not repeat him. This is your message 1, on its own: a warm hello with some personality, one line on what you do, then "Ready to get started?" It comes before every other rule: no question about the project, no rows, pathways or sorts, no "in beta", and no read on either pathway. Do not invent a method.'
+      'The visitor has just opened Eligibility after Wellington invited them. Do not repeat him. This is your message 1, on its own: a warm hello with some personality, one line on what you do, then an invitation to begin, in your own words. It comes before every other rule: no question about the project, no rows, pathways or sorts, no "in beta", and no read on either pathway. Do not invent a method.'
     );
   }
   if (notes.eligibilityDone) {
     extra.push(
-      'Every row you ask on this site has a verdict for this visit. Give the read for each pathway, show once the rows that are acted on at later phases, send them back to Wellington on Dispatches with a clear next step, and set handBack to "wellington". Do not leave them with no way on.'
+      'Every row you ask on this site has a verdict for this visit. Give the read for each pathway, show once the rows that are acted on at later phases, say Wellington will join with the next step, and set handBack to "wellington". Never send them back to him.'
     );
   }
   return extra.length ? extra.join('\n\n') : null;
@@ -394,9 +394,10 @@ export function phoebeFound(sheets: PackSheet[] | null, record: ProjectRecord | 
     for (const row of sheet.rows) states[row.id] = row.state;
     const name = found.sectionName;
 
+    /* W25, 14 Nov 2026: a path ruled out is said as ruled out, plainly. */
     if (pathwayStateOf(sheet.pack, states, context) === 'does-not-apply') {
       reads.push('does-not-apply');
-      lines.push(`- ${name}: does not apply to this project.`);
+      lines.push(`- ${name}: ruled out — it does not apply to this project.`);
       continue;
     }
     const read = readinessOf(sheet.pack, states, context);
@@ -411,7 +412,7 @@ export function phoebeFound(sheets: PackSheet[] | null, record: ProjectRecord | 
     const open = rows
       .filter((row) => states[row.id] !== 'met' && states[row.id] !== 'blocked')
       .map((row) => row.id);
-    const parts = [`- ${name}: ${READINESS_LABEL[read]}.`];
+    const parts = [read === 'likely-not' ? `- ${name}: ruled out (${READINESS_LABEL[read]}).` : `- ${name}: ${READINESS_LABEL[read]}.`];
     if (blocked.length) parts.push(`Blocked: ${titled(blocked, rows)}.`);
     if (open.length) parts.push(`Still open: ${titled(open, rows)}.`);
     lines.push(parts.join(' '));
@@ -422,7 +423,7 @@ export function phoebeFound(sheets: PackSheet[] | null, record: ProjectRecord | 
     text: [
       `# ${FOUND_HEADING}`,
       '',
-      'Worked out from Phoebe’s worksheet for this visit, from the same rows the screen shows. Each read is hers: say it in your own words and never read out a row id. A Blocked row is hers to explain, and she offers the visitor a person for it. Do not reopen her questions.',
+      'Worked out from Phoebe’s worksheet for this visit, from the same rows the screen shows. Each read is hers: say it in your own words and never read out a row id. A path ruled out is ruled out: say so plainly, never as "not enough known". Do not reopen her questions.',
       '',
       ...lines,
     ].join('\n'),

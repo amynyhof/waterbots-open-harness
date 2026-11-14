@@ -189,6 +189,13 @@ export interface AskMeta {
    * visitor bubble is added, the same way as `opened`.
    */
   pinned?: boolean;
+  /**
+   * Wellington's: he joins the visitor in another agent's chat (the
+   * maintainer's ruling of 14 Nov 2026, "Wellington comes to you"). The step
+   * he speaks at, and the chat box his "Keep chatting" button focuses there.
+   */
+  at?: 'eligibility' | 'map';
+  composerId?: string;
 }
 
 /** One piece of a laid-out answer: prose, or a marker standing in the prose. */

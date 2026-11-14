@@ -71,7 +71,7 @@ export interface VisitRecord {
 export interface WellingtonAnswer {
   reply: string;
   route: WellingtonRoute;
-  /** W24: his one line to Phoebe, shown at the top of her page; only on a route to her. */
+  /** W24: his one line to Phoebe or Bridget, shown at the top of her chat; only on a route to her. */
   introduction?: string;
   learned: Learned;
   abstained: boolean;
@@ -109,7 +109,7 @@ export async function askWellington(
    * it, each row by id and state only — never her own sentences. `returned` is
    * true on the one turn the desk sends when the visitor comes back from her.
    */
-  found: { sheet?: FoundSheet[]; returned?: boolean } = {}
+  found: { sheet?: FoundSheet[]; returned?: boolean; at?: 'eligibility' | 'map' } = {}
 ): Promise<WellingtonAnswer> {
   let response: Response;
   try {
@@ -120,6 +120,7 @@ export async function askWellington(
       stage?: typeof stage;
       sheet?: FoundSheet[];
       returned?: true;
+      at?: 'eligibility' | 'map';
     } = {
       messages: history,
     };
@@ -128,6 +129,8 @@ export async function askWellington(
     if (stage !== 'learn') body.stage = stage;
     if (found.sheet && found.sheet.some((s) => s.rows.length > 0)) body.sheet = found.sheet;
     if (found.returned) body.returned = true;
+    /* "Wellington comes to you" (14 Nov 2026): the step whose chat he joins. */
+    if (found.at) body.at = found.at;
     response = await fetch('/api/wellington', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -185,7 +188,7 @@ export async function askWellington(
   }
 
   const introduction =
-    route === 'eligibility' && typeof data.introduction === 'string' && data.introduction.trim()
+    (route === 'eligibility' || route === 'map') && typeof data.introduction === 'string' && data.introduction.trim()
       ? data.introduction.trim()
       : undefined;
 

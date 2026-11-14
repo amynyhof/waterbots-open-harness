@@ -48,12 +48,14 @@ export interface Conversation {
   sendText: (text: string, meta?: AskMeta) => Promise<void>;
   /** Put turns on the thread without asking — Wellington's copied invite. */
   seed: (turns: Turn[]) => void;
+  /** Add turns after what is there — Wellington joining another agent's chat. */
+  append: (turns: Turn[]) => void;
   /**
    * Ask without adding a visitor bubble. Phoebe's first open this visit:
    * greet after the copied invite. Bridget's pin passes `{ pinned: true }`
    * instead. Does nothing while a turn is in flight.
    */
-  askOpened: (meta?: AskMeta) => Promise<void>;
+  askOpened: (meta?: AskMeta) => Promise<AgentTurn | null>;
 }
 
 export function useConversation(ask: Ask, hostName: string): Conversation {
@@ -110,8 +112,16 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
     setTurns(next);
   }, []);
 
-  const askOpened = useCallback(async (meta: AskMeta = { opened: true }) => {
-    if (pending) return;
+  const append = useCallback((more: Turn[]) => {
+    const next = [...turnsRef.current, ...more];
+    turnsRef.current = next;
+    setTurns(next);
+  }, []);
+
+  /* Returns the answer it added, so a frame can show the same turn elsewhere
+     (Wellington's, in another agent's chat); null when nothing was added. */
+  const askOpened = useCallback(async (meta: AskMeta = { opened: true }): Promise<AgentTurn | null> => {
+    if (pending) return null;
     setError(null);
     setPending(true);
     const controller = new AbortController();
@@ -122,13 +132,15 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
       const next = [...turnsRef.current, answer];
       turnsRef.current = next;
       setTurns(next);
+      return answer;
     } catch (failure) {
-      if (failure instanceof DOMException && failure.name === 'AbortError') return;
+      if (failure instanceof DOMException && failure.name === 'AbortError') return null;
       setError(
         failure instanceof Error && failure.message
           ? failure.message
           : `Something went wrong reaching ${hostName}. Nothing has been recorded.`
       );
+      return null;
     } finally {
       setLive(null);
       setPending(false);
@@ -136,5 +148,5 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
     }
   }, [ask, pending, hostName]);
 
-  return { turns, draft, setDraft, pending, live, error, send, sendText, seed, askOpened };
+  return { turns, draft, setDraft, pending, live, error, send, sendText, seed, append, askOpened };
 }

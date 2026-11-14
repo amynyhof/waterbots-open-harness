@@ -53,6 +53,14 @@ marked never to copy. **Method terms are translated with one shared list**,
 partner [before-and-after.md](./knowledge-packs/product-shared/before-and-after.md)
 holds whole sentences as examples, not rules.
 
+**Wellington comes to you, from 14 Nov 2026**, the maintainer's ruling. At the
+start of each agent's step, his one line to that agent, summing up the project,
+heads the agent's chat. When the agent's part is done, he joins that chat with
+the next step and its button. **No agent ever sends the visitor "back to
+Wellington."** On his own desk he knows where the visitor left off and points to
+the one next step. **A path an agent rules out in chat is saved on the worksheet
+the same turn**: saying it is saving it.
+
 **The six phase names are canon, and an agent says them as written.** Eligibility,
 Partners, Quantify, Plan, Monitor, Communicate — never a version of its own:
 not "the quantification step", not "the basin map" when the phase is meant.
@@ -140,8 +148,11 @@ her words:
 > project and sign up for updates and access. The same line goes on the save
 > door's copy.
 
-It is a fact, phrased, never a sales line: it is said where a Fixable or Unknown
-row shows and nowhere else, and *never press a visitor to sign up* still holds
+~~It is a fact, phrased, never a sales line: it is said where a Fixable or Unknown
+row shows and nowhere else,~~ **Struck from the save door on 14 Nov 2026**, the
+maintainer's word (W27): no sales text in the right panel or beside the save
+button; and from Phoebe's chat on 14 Nov 2026 (P20, no side notes). It was a fact
+said where a Fixable or Unknown row showed and nowhere else, and *never press a visitor to sign up* still holds
 everywhere else. It reaches the agents' prompts and the save door with item
 A18's build.
 
@@ -235,8 +246,9 @@ written each inherits the same file unchanged.
 
 ### Rung 3 — live for a Blocked project, from 26 Sep 2026
 
-**There is one way to reach a person, and it is for a project with a Blocked
-row.** ~~When a specialist sets a Blocked row it offers, once in the visit, to
+**There is one way to reach a person, and it is for a project with a path
+ruled out** — a Blocked row, or, from 14 Nov 2026 by the maintainer's word, a
+path that does not apply (her ruling of 23 Sep 2026). ~~When a specialist sets a Blocked row it offers, once in the visit, to
 save the project and send it to the WaterBots team.~~ **From 14 Nov 2026, the
 maintainer's word: the offer sits in the right panel, beside the save button,
 and the specialist does not make it in chat**; it says in one plain line why the
