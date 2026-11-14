@@ -24,7 +24,7 @@
  * else, and this site keeps no copy.
  */
 
-import { HER_PACKS, READINESS_LABEL, section, verdictRows } from './worksheet.generated';
+import { HER_PACKS, section, verdictRows } from './worksheet.generated';
 import {
   contextFor,
   counts,
@@ -378,6 +378,16 @@ export interface DeskRow {
 
 const group = (n: number) => n.toLocaleString('en-GB');
 
+/** Each funding path by its plain name, as Phoebe says it in chat (14 Nov 2026). */
+const PLAIN_PATH: Record<string, string> = { water: 'Water benefits', carbon: 'Carbon credits' };
+
+/** What each read means, in a visitor's words, for the right panel (14 Nov 2026). */
+const PLAIN_READ: Record<string, string> = {
+  'likely-eligible': 'look likely so far',
+  'likely-not': 'look unlikely for now',
+  'not-enough-known': 'need a few more answers',
+};
+
 /**
  * The rows, derived from the visit and from nothing else.
  *
@@ -406,24 +416,30 @@ export function deskRows(visit: Visit, sheet: Sheet, packs: MethodPack[]): DeskR
       (row) => stateOf(sheet, pack, row.id).state !== 'unchecked'
     ).length;
 
+    /* PLAIN WORDS, the maintainer's word of 14 Nov 2026 on #173: the line
+       named the pathway and its read in the worksheet's own words ("The water
+       pathway reads not enough known yet"). It now says the funding path and
+       what the read means, as Phoebe does in chat. The read itself is still
+       worked out from the rows and never from prose. */
+    const name = PLAIN_PATH[part.sectionId] ?? part.sectionName;
     let sentence = '';
     if (state === 'does-not-apply') {
-      sentence = `${part.sectionName} does not apply to this project, and Phoebe says on the worksheet why.`;
+      sentence = `${name} do not fit this project. Phoebe's worksheet says why.`;
     } else if (looked > 0) {
       const open = [
-        tally.fixable ? `${tally.fixable} fixable` : '',
-        tally.unknown ? `${tally.unknown} still unknown` : '',
-        tally.blocked ? `${tally.blocked} blocked` : '',
+        tally.fixable ? `${tally.fixable} can be fixed` : '',
+        tally.unknown ? `${tally.unknown} to find out` : '',
+        tally.blocked ? `${tally.blocked} cannot be fixed` : '',
       ].filter(Boolean);
-      const read = READINESS_LABEL[readiness(sheet, pack, context)].toLowerCase();
+      const read = PLAIN_READ[readiness(sheet, pack, context)];
       /* A Blocked row has no fix to show, only the card's reason, so where one
          stands the line says "or why it cannot". Corrected 26 Sep 2026. */
       const carries = tally.blocked
-        ? 'each with what would change it, or why it cannot, on the worksheet'
-        : 'each with what would change it on the worksheet';
+        ? 'The worksheet shows what would change each, or why it cannot.'
+        : 'The worksheet shows what would change each.';
       sentence = open.length
-        ? `${part.sectionName} reads ${read}: ${tally.met} met, ${open.join(', ')}, ${carries}.`
-        : `${part.sectionName} reads ${read}, with ${tally.met} of the rows asked here met. Nothing is verified.`;
+        ? `${name} ${read}: ${tally.met} in place, ${open.join(', ')}. ${carries}`
+        : `${name} ${read}, with ${tally.met} of the questions asked here in place. This is a first screening, not an official decision.`;
     }
     if (!sentence) continue;
     rows.push({

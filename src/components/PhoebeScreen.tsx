@@ -89,7 +89,7 @@ export const PHOEBE: AgentHost = {
   portrait: phoebePortrait,
   colourToken: '--bot-phoebe',
   beta: true,
-  composerPlaceholder: 'Tell her about your project, or ask about a criterion.',
+  composerPlaceholder: 'Tell her about your project, or ask her a question.',
   /* No line under her chat box, the maintainer's word of 13 Nov 2026, as Wellington's
      went on 12 Nov: the daily cap still says so when it is reached. */
   /* A visitor's words for what she is doing — canon rule 4, 8 Sep 2026. */
