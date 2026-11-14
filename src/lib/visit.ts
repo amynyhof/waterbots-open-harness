@@ -473,7 +473,7 @@ export function deskRows(visit: Visit, sheet: Sheet, packs: MethodPack[]): DeskR
       rows.push({
         key: `calvin-${pack.key}`,
         from: 'calvin',
-        sentence: `${lead}${pack.name} screens at ${figure} ${h.unit} for ${h.label.toLowerCase()} — a screening estimate, not verified.`,
+        sentence: `${lead}${pack.name} screens at ${figure} ${h.unit} for ${h.label.toLowerCase()} — a screening estimate. This is a first screening, not an official decision.`,
         action: { kind: 'surface', label: 'Open Quantify', surface: 'quantification' },
       });
     } else if (result.kind === 'incomplete') {

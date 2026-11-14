@@ -114,7 +114,8 @@ export const CALVIN_PACK: PackView = {
         <>
           Calvin carries no rule cards. He works from {PACKS.length} method packs, one tool per way of
           working a number out, each read from its published method and cited beneath. Everything a
-          pack produces is a screening estimate: anticipated, not delivered, and not verified.
+          pack produces is a screening estimate: anticipated, not delivered. This is a first
+          screening, not an official decision.
         </>
       ),
       sets: [
