@@ -421,8 +421,8 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   which takes a pulsing dot in her colour, then asks. She reads the record first and never asks again
   for what it holds; one thing a message, two or three short sentences, then one question, and a reply
   past four sentences or 400 characters (her approved limit) is logged and fails the measured walk.
-  No teaching side notes and no paid-site pitch: a blue "Next question" button and, where useful, a
-  "Learn more about …" button sit under her reply. Her reply streams as it is written; the relay logs
+  No teaching side notes and no paid-site pitch: a blue "Skip for now" button ("Next question" when
+  she asked nothing) and, where useful, a "Learn more about …" button sit under her reply. Her reply streams as it is written; the relay logs
   each answer's time to first word. The carbon requirements load only once the water rows are done,
   or when a question asks for them. Her chat box and Bridget's carry no line under them, and her
   worksheet and Calvin's say "This is a first screening, not an official decision."
