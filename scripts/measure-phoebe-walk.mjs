@@ -50,6 +50,8 @@
  *     characters; the one message her prompt lets run longer, the hand-back
  *     that shows the rows done later, is left out by its field. Any other long
  *     reply is listed and the script exits 1.
+ *   CARD WORDS FAIL THE WALK TOO (P23, 14 Nov 2026), counted by the relay's
+ *     own list (CARD_WORDS in api/_reply.ts).
  *   TIME TO FIRST WORD (P13). The walk asks as the console does, streamed, and
  *     reports how long each answer took to show its first word and to finish.
  */
@@ -104,7 +106,7 @@ if (compileReply.status !== 0) {
   process.exit(1);
 }
 writeFileSync(join(replyOut, 'package.json'), '{"type":"commonjs"}');
-const { PHOEBE_REPLY_LIMIT, replyLength, isLongReply } = createRequire(import.meta.url)(join(replyOut, '_reply.js'));
+const { PHOEBE_REPLY_LIMIT, replyLength, isLongReply, cardWordsIn } = createRequire(import.meta.url)(join(replyOut, '_reply.js'));
 rmSync(replyOut, { recursive: true, force: true });
 
 /* Every row she asks, pack by pack, in the tool files' order. The scripted
@@ -302,7 +304,7 @@ for (let r = 0; r < RUNS && calls < BUDGET; r += 1) {
   let held = {};
   let sorted = {};
   let loaded = [];
-  const run = { turns: 0, moved: 0, inOrder: 0, questions: [], empty: 0, other: 0, cards: 0, routes: 0, done: null, long: [], firstMs: [] };
+  const run = { turns: 0, moved: 0, inOrder: 0, questions: [], empty: 0, other: 0, cards: 0, routes: 0, done: null, long: [], firstMs: [], cardWords: [] };
   let next = OPENING;
   console.log(`--- run ${r + 1}`);
   while (calls < BUDGET && run.turns < MAX_TURNS) {
@@ -344,6 +346,9 @@ for (let r = 0; r < RUNS && calls < BUDGET; r += 1) {
     if (isLongReply(res.reply) && res.handBack !== 'wellington') {
       run.long.push({ turn: `${r + 1}.${run.turns}`, ...length });
     }
+    /* P23, 14 Nov 2026: a card word in any reply fails the walk. */
+    const said = cardWordsIn(res.reply);
+    if (said.length) run.cardWords.push({ turn: `${r + 1}.${run.turns}`, said });
     run.cards += Array.isArray(res.cited) ? res.cited.length : 0;
     run.routes += rows.reduce((n, u) => n + (u.routes?.length ?? 0), 0);
     if (movedIds.length) {
@@ -414,8 +419,11 @@ const long = runs.flatMap((r) => r.long);
 console.log(
   `Long replies (over ${PHOEBE_REPLY_LIMIT.sentences} sentences or ${PHOEBE_REPLY_LIMIT.chars} characters, the hand-back left out): ${long.length} of ${replies.length}.\n`
 );
-if (long.length) {
-  for (const l of long) console.log(`  FAIL  turn ${l.turn}: ${l.sentences} sentences, ${l.chars} characters`);
+const cardWords = runs.flatMap((r) => r.cardWords);
+console.log(`Replies with card words: ${cardWords.length} of ${replies.length}.\n`);
+for (const l of long) console.log(`  FAIL  turn ${l.turn}: ${l.sentences} sentences, ${l.chars} characters`);
+for (const c of cardWords) console.log(`  FAIL  turn ${c.turn}: card words — ${c.said.join(', ')}`);
+if (long.length || cardWords.length) {
   console.log('');
   process.exit(1);
 }

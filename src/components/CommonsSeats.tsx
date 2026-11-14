@@ -112,7 +112,7 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
       ...(answer.handBack === 'wellington' ? { action: { label: 'Back to the shelf', go: onBack } } : {}),
       ...(answer.handBack === 'wellington' || history.length <= 1
         ? {}
-        : { buttons: phoebeButtons(answer.reply, answer.learnMore, (text) => void chatRef.current?.sendText(text)) }),
+        : { buttons: phoebeButtons(answer.learnMore, (text) => void chatRef.current?.sendText(text)) }),
     };
   }
 

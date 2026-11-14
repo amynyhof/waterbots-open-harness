@@ -142,7 +142,7 @@ expect(
    holds the counting both of them use.
 --------------------------------------------------------------------------- */
 
-const { PHOEBE_REPLY_LIMIT, replyLength, isLongReply } = await import(
+const { PHOEBE_REPLY_LIMIT, replyLength, isLongReply, cardWordsIn } = await import(
   pathToFileURL(join(out, '_reply.js')).href
 );
 
@@ -183,6 +183,30 @@ expect(
   replyLength('A filter, e.g. a ceramic one, costs 2.5 dollars. Is it "on paper"?').sentences === 2,
   JSON.stringify(replyLength('A filter, e.g. a ceramic one, costs 2.5 dollars. Is it "on paper"?'))
 );
+
+/* ---------------------------------------------------------------------------
+   Card words in chat (P23, 14 Nov 2026). The three phrases from the
+   maintainer's walk must be caught, and a plain answer must pass.
+--------------------------------------------------------------------------- */
+
+console.log('\n  Card words in chat (Phoebe, 14 Nov 2026)');
+for (const said of [
+  'Your borehole is water stewardship work with a volume behind it.',
+  'There is a mapped way to count that.',
+  'That puts it in the community supply kind.',
+  'This criterion is about additionality.',
+  'We need the baseline first.',
+  'It is a CWS project on the carbon pathway.',
+]) {
+  expect(`caught: "${said}"`, cardWordsIn(said).length > 0, 'a card word passed');
+}
+for (const plain of [
+  'Providing safe water to a community has benefits that can be counted.',
+  "You might need a baseline survey to learn that, and we can help you find tools for it.",
+  "Solar is good news for carbon credits. Who will use the water?",
+]) {
+  expect(`passes as plain: "${plain}"`, cardWordsIn(plain).length === 0, JSON.stringify(cardWordsIn(plain)));
+}
 
 /* ---------------------------------------------------------------------------
    Reading her reply out of an answer still being written (P13, streaming).

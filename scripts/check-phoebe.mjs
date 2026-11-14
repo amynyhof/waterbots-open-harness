@@ -592,7 +592,7 @@ expect(
 expect(
   "the maintainer's walk of 12 Nov 2026: plain names, the reply's shape, the arrival, fixable only when it blocks, the tools line once, no cards-only line",
   /\*\*water benefits\*\* and \*\*carbon credits\*\*/.test(SYSTEM_PROMPT) &&
-    /Never say "baseline" \(a "baseline survey" is fine\), "criterion", "additionality", "mapped activity", "counting route", "Volume Provided method", "water stewardship activity" or "community water supply class"/.test(SYSTEM_PROMPT) &&
+    /\*\*Plain words a newcomer knows\.\*\* Row titles, card titles and the names of types and classes are labels for the worksheet: never say one in chat, nor a close rewording/.test(SYSTEM_PROMPT) &&
     /Solar is good news for carbon credits\./.test(SYSTEM_PROMPT) &&
     /Say "good news for carbon credits", never "good news for carbon"/.test(SYSTEM_PROMPT) &&
     /Say "fixable" only when something actually stands in the way/.test(SYSTEM_PROMPT) &&
@@ -621,7 +621,8 @@ expect(
     /Is this project already registered with a standards body, like Gold Standard, or would it be a new registration\?/.test(SYSTEM_PROMPT) &&
     /\*\*No teaching side notes during screening\.\*\*/.test(SYSTEM_PROMPT) &&
     /"Learn more about …" button/.test(SYSTEM_PROMPT) &&
-    /blue button, "Skip for now" under a question and "Next question" otherwise: when it is tapped, leave the current question for now and ask the next one/.test(SYSTEM_PROMPT) &&
+    !/"Skip for now"|"Next question"/.test(SYSTEM_PROMPT) &&
+    /Name one only when it helps/.test(SYSTEM_PROMPT) &&
     RESPONSE_SCHEMA.properties.showTool?.type === 'boolean' &&
     RESPONSE_SCHEMA.properties.learnMore?.type === 'string' &&
     /showTool: v\.showTool === true/.test(relaySource) &&
@@ -635,7 +636,8 @@ expect(
     'P15, P20, P21 on screen: the Tool-tab dot from showTool, the Chat-tab dot while on Tool, her picture and line on the worksheet, the two buttons',
     /answer\.showTool/.test(screen) &&
       /dots=\{/.test(screen) &&
-      /'Skip for now' : 'Next question'/.test(screen) &&
+      !/Skip for now|'Next question'/.test(screen) &&
+      /if \(!learnMore\) return undefined;/.test(screen) &&
       /Learn more about \$\{/.test(screen) &&
       /Phoebe is checking your project against these criteria/.test(worksheet) &&
       /--bot-phoebe/.test(worksheet),
@@ -647,9 +649,41 @@ expect(
   /# Read the record first — a hard rule/.test(SYSTEM_PROMPT) &&
     /Never ask for anything it holds, in any words/.test(SYSTEM_PROMPT) &&
     /new source or cleaning water, stage, people or households served, place, name/.test(SYSTEM_PROMPT) &&
-    SYSTEM_PROMPT.indexOf('# Read the record first') < SYSTEM_PROMPT.indexOf('# Your first two messages'),
-  'the record-first rule is missing, or comes after the opener'
+    SYSTEM_PROMPT.indexOf('# Your first two messages') < SYSTEM_PROMPT.indexOf('# Read the record first'),
+  'the record-first rule is missing, or comes before her first two messages'
 );
+/* THE SKIPPED HELLO, found on the maintainer's walk of 14 Nov 2026. On her
+   first turn three blocks told her to work through the record and ask the
+   first unchecked row; only one told her to say hello. Now the hello is a hard
+   rule that comes first, the empty worksheet's "start from the first row" is
+   not sent on that turn, and anything she sets on it is dropped. */
+expect(
+  'the hello comes first: a hard rule ahead of the record rule, no worksheet block on the opened turn, and nothing set on it',
+  /# Your first two messages — a hard rule that comes first/.test(SYSTEM_PROMPT) &&
+    /\*\*Message 1 comes before every other rule\.\*\* On that turn ask nothing about the project and set no rows, pathways or sorts/.test(SYSTEM_PROMPT) &&
+    /# Read the record first — a hard rule from message 2/.test(SYSTEM_PROMPT) &&
+    /const sheetText = sheet && !opened \? worksheetBlock\(sheet, record\) : null;/.test(relaySource) &&
+    /if \(opened\) answer = \{ \.\.\.answer, rows: \[\], pathways: \[\], sorts: \[\] \};/.test(relaySource) &&
+    /It comes before every other rule/.test(phoebeNotesBlock({ opened: true }) ?? ''),
+  'a part of the hello fix is missing'
+);
+/* P22 and P23, 14 Nov 2026: a person, not a script; plain words; the card-word
+   check. Every example in her prompt has to pass the same check her replies do. */
+{
+  const { cardWordsIn } = await loadApi('_reply.js');
+  const examples = [...SYSTEM_PROMPT.matchAll(/(?:In this spirit|The tone|in this tone|In this spirit, in your own words)[^"]*"([^"]+)"/gi)].map((m) => m[1]);
+  const dirty = examples.filter((e) => cardWordsIn(e).length > 0);
+  expect(
+    'P23: every tone example in her prompt passes the card-word check, and the relay and the walk use the same list',
+    examples.length >= 4 &&
+      dirty.length === 0 &&
+      /\*\*Talk like a person, not a script\.\*\*/.test(SYSTEM_PROMPT) &&
+      /Providing safe water to a community has benefits that can be counted/.test(SYSTEM_PROMPT) &&
+      /cardWordsIn\(answer\.reply\)/.test(relaySource) &&
+      /cardWordsIn\(res\.reply\)/.test(readFileSync(join('scripts', 'measure-phoebe-walk.mjs'), 'utf8')),
+    `${examples.length} examples; with card words: ${JSON.stringify(dirty)}`
+  );
+}
 expect(
   'P10: two or three short sentences, then one question, four at most and under 400 characters, and the relay counts a long one',
   /two or three short sentences, then one question/.test(SYSTEM_PROMPT) &&

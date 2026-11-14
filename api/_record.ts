@@ -167,7 +167,7 @@ export function phoebeNotesBlock(notes: { opened?: boolean; eligibilityDone?: bo
   const extra: string[] = [];
   if (notes.opened) {
     extra.push(
-      'The visitor has just opened Eligibility after Wellington invited them. Do not repeat him. This is your message 1, on its own: a warm hello with some personality, one line on what you do, then "Ready to get started?" No question about the project yet, no "in beta", and no read on either pathway. Do not invent a method.'
+      'The visitor has just opened Eligibility after Wellington invited them. Do not repeat him. This is your message 1, on its own: a warm hello with some personality, one line on what you do, then "Ready to get started?" It comes before every other rule: no question about the project, no rows, pathways or sorts, no "in beta", and no read on either pathway. Do not invent a method.'
     );
   }
   if (notes.eligibilityDone) {

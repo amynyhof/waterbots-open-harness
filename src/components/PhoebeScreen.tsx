@@ -50,6 +50,7 @@ import type { Citation } from '../lib/citation';
 import { worksheetCaption, contextFor, applyUpdates, type Sheet, type Verdicts } from '../lib/worksheetState';
 import { HER_PACKS } from '../lib/worksheet.generated';
 import { DESK_LABEL } from '../lib/surfaces';
+import { WELLINGTON } from '../lib/wellington';
 import {
   APPROVED_ON,
   CARBON_APPLIES,
@@ -99,23 +100,15 @@ export const PHOEBE: AgentHost = {
 };
 
 /**
- * The buttons under her latest message — the maintainer's word of 14 Nov 2026
- * (P21). The blue one reads "Skip for now" when her reply ends on a question
- * and "Next question" otherwise (her ruling of 14 Nov 2026); either sends its
- * words as the visitor's own message, and she leaves the current question for
- * now. Which label is display only, read from the reply's last mark the way
- * the bold closing question is; "Learn more about …", where she
- * named an idea in learnMore, asks her to explain it. Both are real messages
- * the visitor sends with a tap, shown in their bubble, never words put in
- * anyone's mouth unseen. Shared by the console and the Commons.
+ * The one button under her latest message: "Learn more about …", only where
+ * she named an idea in learnMore — the maintainer's word of 14 Nov 2026 (P22),
+ * which took away the blue button that moved her on, the same day.
+ * A quiet chip, not blue (P24). It sends a real message the visitor can see in
+ * their bubble. Shared by the console and the Commons.
  */
-export function phoebeButtons(reply: string, learnMore: string, send: (text: string) => void): TurnButton[] {
-  const label = /\?["”’)]*\s*$/.test(reply) ? 'Skip for now' : 'Next question';
-  const buttons: TurnButton[] = [{ label, primary: true, go: () => send(`${label}.`) }];
-  if (learnMore) {
-    buttons.push({ label: `Learn more about ${learnMore}`, go: () => send(`Tell me more about ${learnMore}.`) });
-  }
-  return buttons;
+export function phoebeButtons(learnMore: string, send: (text: string) => void): TurnButton[] | undefined {
+  if (!learnMore) return undefined;
+  return [{ label: `Learn more about ${learnMore}`, go: () => send(`Tell me more about ${learnMore}.`) }];
 }
 
 export default function PhoebeScreen({
@@ -126,6 +119,7 @@ export default function PhoebeScreen({
   onNavigate,
   visible,
   eligibilityDone,
+  invite = '',
 }: {
   onVerdicts: (verdicts: Verdicts) => void;
   /** The visit's project record, carried to Phoebe with every ask. */
@@ -138,6 +132,12 @@ export default function PhoebeScreen({
   visible: boolean;
   /** Every criterion has a verdict — she should send them back to Wellington. */
   eligibilityDone: boolean;
+  /**
+   * Wellington's handoff line, shown at the top of her page before her hello —
+   * the maintainer's word of 14 Nov 2026 (W22). Display only: it is his real
+   * words with his face, and it is never sent to her as one of her turns.
+   */
+  invite?: string;
 }) {
   const carried = carriedRecord(record);
 
@@ -226,13 +226,11 @@ export default function PhoebeScreen({
       ...(answer.handBack === 'wellington'
         ? { action: { label: `Back to Wellington on ${DESK_LABEL}`, go: () => onNavigate('desk') } }
         : {}),
-      /* P21: "Skip for now" or "Next question", blue, and "Learn more about …" where she named
-         an idea — real messages the visitor sends with a tap. Not under her
-         first hello, which asks "Ready to get started?", and not once she has
-         handed back. */
+      /* "Learn more about …" where she named an idea (P22). Not under her
+         first hello, and not once she has handed back. */
       ...(meta?.opened || answer.handBack === 'wellington'
         ? {}
-        : { buttons: phoebeButtons(answer.reply, answer.learnMore, (text) => void chatRef.current.sendText(text)) }),
+        : { buttons: phoebeButtons(answer.learnMore, (text) => void chatRef.current.sendText(text)) }),
     };
   }
 
@@ -244,8 +242,13 @@ export default function PhoebeScreen({
   useEffect(() => {
     if (!visible || opened.current) return;
     opened.current = true;
+    /* W22: his handoff line first, then her hello. The chat layer never sends
+       a turn with a speaker to her (useConversation's forAsk). */
+    if (invite.trim()) {
+      chatRef.current.seed([{ role: 'agent', text: invite.trim(), evidence: [], speaker: WELLINGTON }]);
+    }
     void chatRef.current.askOpened();
-  }, [visible]);
+  }, [visible, invite]);
 
   return (
     <AgentScreen

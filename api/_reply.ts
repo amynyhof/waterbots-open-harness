@@ -97,3 +97,34 @@ export function isLongReply(
   const { sentences, chars } = replyLength(reply);
   return sentences > limit.sentences || chars > limit.chars;
 }
+
+/* --------------------------------------------------------------------------
+   Card words in chat — the maintainer's word of 14 Nov 2026 (P23): plain
+   words a newcomer knows. Her cards and worksheet name things in the
+   standards' own words, and on the walk of that day she said them back
+   ("water stewardship work with a volume behind it", "mapped way to count",
+   "community supply kind"). These are those phrases and their near kin.
+   -------------------------------------------------------------------------- */
+
+/** Each phrase a newcomer would not know, with the plain sense to say instead. */
+export const CARD_WORDS: readonly { pattern: RegExp; label: string }[] = [
+  { pattern: /water stewardship (activity|work|project)/i, label: 'water stewardship activity' },
+  { pattern: /volume behind it/i, label: 'a volume behind it' },
+  { pattern: /mapped (route|way|path) to count/i, label: 'mapped route to counting' },
+  { pattern: /counting route/i, label: 'counting route' },
+  { pattern: /mapped activity/i, label: 'mapped activity' },
+  { pattern: /supply (kind|class|technolog)/i, label: 'community supply kind or class' },
+  { pattern: /technology class/i, label: 'technology class' },
+  { pattern: /\bcriteri(on|a)\b/i, label: 'criterion' },
+  { pattern: /additionality/i, label: 'additionality' },
+  { pattern: /volume provided/i, label: 'Volume Provided' },
+  { pattern: /\bbaseline\b(?!\s+survey)/i, label: 'baseline (not "baseline survey")' },
+  { pattern: /\bthe (water|carbon) pathway\b/i, label: 'the water or carbon pathway' },
+  { pattern: /\b(applies|eligibility) (test|row)s?\b/i, label: 'applies test or eligibility row' },
+  { pattern: /\b(CWS|HWT|IWT|CWT)\b/, label: 'a class id' },
+];
+
+/** The card words a reply uses, by label; empty when it speaks plainly. */
+export function cardWordsIn(reply: string): string[] {
+  return CARD_WORDS.filter(({ pattern }) => pattern.test(reply)).map(({ label }) => label);
+}

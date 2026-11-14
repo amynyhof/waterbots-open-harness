@@ -29,7 +29,7 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 import { recordAbstention } from './_abstentions.js';
-import { MIN_REPLY_CHARS, PHOEBE_REPLY_LIMIT, isDegenerateReply, isLongReply, replyLength } from './_reply.js';
+import { MIN_REPLY_CHARS, PHOEBE_REPLY_LIMIT, cardWordsIn, isDegenerateReply, isLongReply, replyLength } from './_reply.js';
 import { needCardsSoFar, replySoFar } from './_replyStream.js';
 import { PHOEBE, countOneMessage, timeUntilReset } from './_cap.js';
 import { readHandBack, type HandBack } from './_handBack.js';
@@ -298,7 +298,11 @@ export async function POST(req: Request): Promise<Response> {
      cards stay cached and only these small blocks change between asks. Every
      verdict in it is her own. */
   const sheet = readSheet(body.sheet);
-  const sheetText = sheet ? worksheetBlock(sheet, record) : null;
+  /* NOT ON HER FIRST TURN — found 14 Nov 2026, when she skipped her hello on
+     the maintainer's walk. The block tells her to "start from the first row
+     still unchecked", and on the opened turn that pulled against message 1;
+     the sheet is empty then in any case. */
+  const sheetText = sheet && !opened ? worksheetBlock(sheet, record) : null;
 
   /* WHICH CARDS THIS TURN GETS — ruling R6, staged loading. The pathway states
      come from her own answers to the applies tests, worked out by the same
@@ -579,6 +583,9 @@ export async function POST(req: Request): Promise<Response> {
   let outcome = readTurn(response);
   if ('problem' in outcome) return undelivered(outcome.problem);
   let answer = outcome.answer;
+  /* MESSAGE 1 SETS NOTHING (P14, 14 Nov 2026): on the opened turn any row, test
+     or sort she returns is dropped, so the worksheet waits for message 2. */
+  if (opened) answer = { ...answer, rows: [], pathways: [], sorts: [] };
   let calls = 1;
   let inputTokens = response.usage.input_tokens;
   let outputTokens = response.usage.output_tokens;
@@ -606,7 +613,7 @@ export async function POST(req: Request): Promise<Response> {
     }
     outcome = readTurn(response);
     if ('problem' in outcome) return undelivered(outcome.problem);
-    answer = outcome.answer;
+    answer = opened ? { ...outcome.answer, rows: [], pathways: [], sorts: [] } : outcome.answer;
     calls = 2;
     inputTokens += response.usage.input_tokens;
     outputTokens += response.usage.output_tokens;
@@ -630,6 +637,11 @@ export async function POST(req: Request): Promise<Response> {
       `phoebe: reply ran long — ${length.sentences} sentences and ${length.chars} characters, against ${PHOEBE_REPLY_LIMIT.sentences} and ${PHOEBE_REPLY_LIMIT.chars}`
     );
   }
+
+  /* CARD WORDS ARE COUNTED THE SAME WAY (P23, 14 Nov 2026): logged here, and
+     the measured walk fails on one. See CARD_WORDS in api/_reply.ts. */
+  const cardWords = cardWordsIn(answer.reply);
+  if (cardWords.length) console.log(`phoebe: reply used card words — ${cardWords.join(', ')}`);
 
   const doneAt = Date.now();
   /* SPEED, WRITTEN DOWN — added 14 Nov 2026, when the platform's log showed
