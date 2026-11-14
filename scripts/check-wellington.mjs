@@ -133,7 +133,8 @@ expect(
 );
 expect('the type list is the file\'s: twenty water types and NONE, four classes, C-19 the one that takes a class', PROJECT_TYPE_IDS.length === 21 && PROJECT_TYPE_IDS[0] === 'C-1' && PROJECT_TYPE_IDS[19] === 'C-20' && PROJECT_TYPE_IDS[20] === 'NONE' && JSON.stringify(GS_CLASS_IDS) === JSON.stringify(['HWT', 'IWT', 'CWT', 'CWS']) && DRINKING_WATER_TYPE === 'C-19' && PROJECT_TYPES.length === 25, `${PROJECT_TYPE_IDS.length} types, ${GS_CLASS_IDS.length} classes`);
 expect('the short form carries every id and no page cite', PROJECT_TYPES.every((t) => PROJECT_TYPES_MD.includes(`- ${t.id} — ${t.name}: `)) && !/\(Table|\(Appendix|pp?\. \d/.test(PROJECT_TYPES_MD), 'an id is missing from the short form, or a cite got in');
-expect('his prompt carries the short form and the confirm-then-log rule, and never "what kind"', WELLINGTON_SYSTEM_PROMPT.includes(PROJECT_TYPES_MD) && /Return type only after the visitor says yes/.test(WELLINGTON_SYSTEM_PROMPT) && /return stage only on the visitor's yes/.test(WELLINGTON_SYSTEM_PROMPT) && /Never say the id/.test(WELLINGTON_SYSTEM_PROMPT) && !/what kind/i.test(WELLINGTON_SYSTEM_PROMPT), 'the list, the rule or the retirement is missing');
+/* Confirm-then-log until 14 Nov 2026; from then, the maintainer's W15: confirm only what is unclear. */
+expect('his prompt carries the short form and the confirm-only-what-is-unclear rule, and never "what kind"', WELLINGTON_SYSTEM_PROMPT.includes(PROJECT_TYPES_MD) && /\*\*Confirm only what is unclear\.\*\* When the visitor says something plainly, record it and move on/.test(WELLINGTON_SYSTEM_PROMPT) && /Never say the id/.test(WELLINGTON_SYSTEM_PROMPT) && !/Return type only after the visitor says yes/.test(WELLINGTON_SYSTEM_PROMPT) && !/what kind/i.test(WELLINGTON_SYSTEM_PROMPT), 'the list, the rule or the retirement is missing');
 expect("Phoebe's prompt does not carry the type list", !PHOEBE_PROMPT.includes(PROJECT_TYPES_MD), 'the type list leaked into her prompt');
 
 /* ---------------------------------------------------------------------------
@@ -176,9 +177,8 @@ expect('his prompt states the five things he never does', /quote no figure/.test
    and its size depends on how far a visit has gone. */
 expect(
   "the maintainer's walk of 12 Nov 2026: he asks the class, says why he asks, introduces each colleague, always asks people served, and keeps to plain words",
-  /Never work it out from a word such as "borehole"/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Is this a new water source, or does it clean water people already have\?/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /collect a few basics so that you and the other agents can give a first, directional estimate/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /collect a few basics so you and the other agents can give a first, directional estimate/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Introduce a colleague before you name them/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /always ask how many people or households it will serve, right after the stage, and route nowhere until you have asked/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /never say "type" or "class" to them/.test(WELLINGTON_SYSTEM_PROMPT) &&
@@ -189,14 +189,37 @@ expect(
 expect(
   "the maintainer's walk of 13 Nov 2026: a three-sentence welcome that never says free, and a handoff that names one next step",
   /your welcome is three short sentences and no more/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /Hi, I'm Wellington, the Team Lead\. Our team helps you see if your water project could earn water benefits or carbon credits\. Tell me about your project\./.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Hi, I'm Wellington, the Team Lead\. Our team helps match water projects with funding they might qualify for\. Tell me about your project\./.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Never say "free"/.test(WELLINGTON_SYSTEM_PROMPT) &&
     !/\bfree site\b|it is free\b/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /A handoff names one next step, and nothing after it/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /Click Open Eligibility to meet her/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Next is Phoebe, who checks whether your project could earn water benefits or carbon credits\./.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Never preview the steps after that one/.test(WELLINGTON_SYSTEM_PROMPT),
   'a rule from the walk is missing, or "free" is back'
 );
+/* HIS FOURTH WALK, the maintainer's word of 14 Nov 2026 (W14 to W18). */
+expect(
+  'W14–W18: the team line, the basics line first, words that settle the class, no invented detail, the two buttons, basic funding facts',
+  /Our team helps match water projects with funding they might qualify for/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    !/Our team helps you see if your water project/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /only then asks your first question, in the same message\. Never after the question/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /"borehole", "well" or "spring" is a new source \(CWS\); "filter" or "chlorine" cleans water/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /\*\*Never invent a detail\*\* the visitor did not say, such as a pump type/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    !/Never work it out from a word such as "borehole"/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /"Meet Phoebe" and "Keep chatting"; never describe them/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /\*\*Basic questions about impact funding are yours\*\*/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /A carbon credit stands for one tonne of carbon dioxide/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Whether this project is eligible, any number, and anything about a basin stay with Phoebe, Calvin and Bridget/.test(WELLINGTON_SYSTEM_PROMPT),
+  'a rule from the fourth walk is missing, or an old one is back'
+);
+{
+  const wellingtonLib = readFileSync(join('src', 'lib', 'wellington.ts'), 'utf8');
+  expect(
+    'W17: a route to a colleague draws "Meet <name>" and "Keep chatting" under his message, from the field alone',
+    /Meet \$\{/.test(wellingtonLib) && /'Keep chatting'/.test(wellingtonLib) && /actionsFor\(answer\.route/.test(wellingtonLib),
+    'the two buttons are not built from the route field'
+  );
+}
 expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 26199 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
 
 /* ---------------------------------------------------------------------------
@@ -722,7 +745,7 @@ expect(
   'the first carried send reads the visit from a ref written before the send, not the last paint',
   /visitRef\.current/.test(appSource) &&
     /learnedContext\(visitRef\.current\.context, learned\)/.test(appSource) &&
-    /wellingtonAsk\(onLearned, \(\) => visitRef\.current, onRouted, \(\) => sheetRef\.current\)/.test(appSource) &&
+    /wellingtonAsk\(onLearned, \(\) => visitRef\.current, onRouted, \(\) => sheetRef\.current, setSurface\)/.test(appSource) &&
     /void sendCarried\(question, \{ carried: true \}\)/.test(appSource),
   'the first ask can still see a blank visit'
 );

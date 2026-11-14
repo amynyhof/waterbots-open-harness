@@ -14,7 +14,8 @@
  */
 
 import wellingtonPortrait from '../../brand/assets/bots/wellington.svg';
-import type { AgentHost, AgentTurn, Ask, TurnAction } from '../chat/evidence';
+import type { AgentHost, AgentTurn, Ask, TurnAction, TurnButton } from '../chat/evidence';
+import type { Surface } from './surfaces';
 import { carriedSheet } from './phoebeClient';
 import type { Learned, Visit } from './visit';
 import { askWellington, type FoundSheet, type VisitRecord, type WellingtonRoute } from './wellingtonClient';
@@ -46,6 +47,33 @@ export function actionFor(route: WellingtonRoute): TurnAction | undefined {
   return undefined;
 }
 
+/** Who meets the visitor on each step a route opens. */
+const MEET: Partial<Record<WellingtonRoute, { name: string; surface: Surface }>> = {
+  eligibility: { name: 'Phoebe', surface: 'eligibility' },
+  map: { name: 'Bridget', surface: 'map' },
+  quantification: { name: 'Calvin', surface: 'quantification' },
+};
+
+/**
+ * TWO BUTTONS IN THE CHAT AT A HANDOFF — the maintainer's word of 14 Nov 2026
+ * (W17), beside the rail's own row, which stays. A route to a colleague draws
+ * "Meet <name>", which opens that step, and "Keep chatting", which puts the
+ * cursor back in his chat box. Built from the route field alone, never from
+ * his prose; a route to the paid site, or none, draws nothing.
+ */
+export function actionsFor(
+  route: WellingtonRoute,
+  onNavigate?: (surface: Surface) => void,
+  composerId = 'wb-desk-composer'
+): TurnButton[] | undefined {
+  const meet = MEET[route];
+  if (!meet || !onNavigate) return undefined;
+  return [
+    { label: `Meet ${meet.name}`, primary: true, go: () => onNavigate(meet.surface) },
+    { label: 'Keep chatting', go: () => document.getElementById(composerId)?.focus() },
+  ];
+}
+
 /** The visit as the relay expects it, or nothing when every field is blank. */
 function recordFrom(visit: Visit): VisitRecord | null {
   const record: VisitRecord = {
@@ -70,7 +98,9 @@ export function wellingtonAsk(
   onLearned: (learned: Learned) => void,
   getVisit: () => Visit,
   onRouted: (route: WellingtonRoute, reply: string) => void,
-  getSheet: () => Sheet
+  getSheet: () => Sheet,
+  /** Opens a step, for the "Meet <name>" button at a handoff (W17). */
+  onNavigate?: (surface: Surface) => void
 ): Ask {
   return async (history, signal, meta): Promise<AgentTurn> => {
     const visit = getVisit();
@@ -104,6 +134,7 @@ export function wellingtonAsk(
       evidence: [],
       abstained: answer.abstained,
       action: actionFor(answer.route),
+      buttons: actionsFor(answer.route, onNavigate),
     };
   };
 }

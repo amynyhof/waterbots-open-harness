@@ -64,7 +64,7 @@ export default function Transcript({
         turn.role === 'user' ? (
           <ReaderBubble key={i} text={turn.text} />
         ) : (
-          <HostBubble key={i} host={host} turn={turn} />
+          <HostBubble key={i} host={host} turn={turn} latest={i === turns.length - 1 && !pending} />
         )
       )}
 
@@ -124,7 +124,7 @@ function ReaderBubble({ text }: { text: string }) {
   );
 }
 
-function HostBubble({ host, turn }: { host: AgentHost; turn: AgentTurn }) {
+function HostBubble({ host, turn, latest = false }: { host: AgentHost; turn: AgentTurn; latest?: boolean }) {
   const who = turn.speaker ?? host;
   const accent = { '--turn-accent': `var(${who.colourToken})` } as CSSProperties;
   return (
@@ -151,8 +151,33 @@ function HostBubble({ host, turn }: { host: AgentHost; turn: AgentTurn }) {
               same place, size and colour, and nothing new is invented. */}
           {turn.caption && <div className="wb-cite-line" style={{ marginTop: 6 }}>{turn.caption}</div>}
           <TurnAction turn={turn} />
+          {latest && <TurnButtons turn={turn} />}
         </div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * The buttons under the latest turn (14 Nov 2026): the blue primary one
+ * first, then plain ones. Only the latest turn draws them, so an old handoff's
+ * buttons do not stay on the thread as if they were still the next step.
+ */
+function TurnButtons({ turn }: { turn: AgentTurn }) {
+  if (!turn.buttons?.length) return null;
+  return (
+    <div style={{ marginTop: 10, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+      {turn.buttons.map((button) => (
+        <button
+          key={button.label}
+          type="button"
+          className={button.primary ? 'btn btn-primary' : 'btn'}
+          style={{ padding: '6px 14px', fontSize: 13 }}
+          onClick={button.go}
+        >
+          {button.label}
+        </button>
+      ))}
     </div>
   );
 }

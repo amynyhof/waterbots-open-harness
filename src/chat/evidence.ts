@@ -90,6 +90,13 @@ export interface AgentTurn {
    */
   action?: TurnAction;
   /**
+   * Buttons under the turn, from 14 Nov 2026: Wellington's "Meet Phoebe" and
+   * "Keep chatting" at a handoff (W17), and Phoebe's "Next question" and
+   * "Learn more about …" (P21). Built by an adapter from fields, never from
+   * prose, and drawn only under the latest turn.
+   */
+  buttons?: TurnButton[];
+  /**
    * One caption line under the answer, in the citation line's place and size.
    * An agent's adapter builds it from a structured field, never from prose —
    * Phoebe's says what her worksheet holds after a turn that moved a row
@@ -104,6 +111,14 @@ export interface TurnAction {
   href?: string;
   /** Something to do on this console. The layer calls it and knows no more. */
   go?: () => void;
+}
+
+/** A button under a turn: the blue primary one first, then plain ones. */
+export interface TurnButton {
+  label: string;
+  primary?: boolean;
+  /** Called on a tap. The layer knows no more than that. */
+  go: () => void;
 }
 
 export type Turn = UserTurn | AgentTurn;

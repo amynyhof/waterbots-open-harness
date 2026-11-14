@@ -229,7 +229,7 @@ export default function App() {
   /* Look pass, 8 Sep 2026: his route no longer draws a button under his turn.
      He names the step in words, and the next steps live in the right rail. */
   const ask = useMemo(
-    () => wellingtonAsk(onLearned, () => visitRef.current, onRouted, () => sheetRef.current),
+    () => wellingtonAsk(onLearned, () => visitRef.current, onRouted, () => sheetRef.current, setSurface),
     [onLearned, onRouted]
   );
   const chat = useConversation(ask, WELLINGTON.name);
