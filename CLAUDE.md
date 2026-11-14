@@ -416,13 +416,20 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   Blocked row she offers a person once; a ticked box at the save door sends one email to
   hello@waterbots.ai through Resend, its key the hosting secret `RESEND_API_KEY`, never in the
   repository. The seal carries `wantsHuman` and `humanNote` only on a tick.
-- **Phoebe's second round, 13 Nov 2026, the maintainer's word.** She opens on the eligibility quiz
-  in her Tool tab, with no "in beta" and no early read; she reads the record first and never asks
-  again for what it holds; she answers in two or three short sentences, then one question, and a
-  reply past four sentences or 400 characters is logged by the relay and fails the measured walk.
-  Her reply streams as it is written. The carbon pack's requirements and routes load only once the
-  water rows she asks are done, or when a question asks for them. Her chat box and Bridget's carry
-  no line under them, and the worksheet says "This is a first screening, not an official decision."
+- **Phoebe's second and third rounds, 13–14 Nov 2026, the maintainer's word.** Her first message is
+  a warm hello and "Ready to get started?"; her second points at the eligibility quiz on her Tool tab,
+  which takes a pulsing dot in her colour, then asks. She reads the record first and never asks again
+  for what it holds; one thing a message, two or three short sentences, then one question, and a reply
+  past four sentences or 400 characters (her approved limit) is logged and fails the measured walk.
+  No teaching side notes and no paid-site pitch: a blue "Next question" button and, where useful, a
+  "Learn more about …" button sit under her reply. Her reply streams as it is written; the relay logs
+  each answer's time to first word. The carbon requirements load only once the water rows are done,
+  or when a question asks for them. Her chat box and Bridget's carry no line under them, and her
+  worksheet and Calvin's say "This is a first screening, not an official decision."
+- **Wellington's fourth walk, 14 Nov 2026.** "Our team helps match water projects with funding they
+  might qualify for." He confirms only what is unclear, takes "borehole", "well" or "spring" as a new
+  source, never invents a detail, answers basic questions about impact funding from facts in his
+  prompt, and a handoff draws "Meet <name>" and "Keep chatting" under his message.
 - **Wellington reads back what Phoebe found, and asks people served, from 26–27 Sep 2026 (items A17
   and A16, #128 and #130).** Each ask carries her worksheet as row ids and states only; he greets a
   visitor coming back from her knowing each pathway's read, never her sentences, and routes to
@@ -431,7 +438,7 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   households never converted here, on the record, the rail and the seal as `record.served`. His
   prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep, 26,034 from 4 Oct, 26,079 from 31 Oct, and
   23,123 from 5 Nov 2026, when his shorter instructions were built (item A26), 24,560 from
-  13 Nov 2026, after the maintainer's three walks of them, and 24,581 with the primer's line on Phoebe's tab, against the unchanged gate of 26,199.
+  13 Nov 2026, after the maintainer's three walks of them, 24,581 with the primer's line on Phoebe's tab, and 25,943 from 14 Nov 2026, after her fourth walk, against the unchanged gate of 26,199.
 - **The engine bundle is tracked at `carried/`, from 27 Sep 2026**, placed by the maintainer's
   hand and merged on `main` as it stands (#132), tagged `engine-carry-2026-09-27`. **It was replaced
   on 3 Oct 2026 by v0.16.1**, the paid site's `calculator-seal-2026-10-03`: 34 files, 34 hashes
