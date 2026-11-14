@@ -13,6 +13,13 @@ applies cards read. **It follows the roster rule:** drafted here, carried by her
 hand to the paid repository, which becomes its source, and never edited here after
 that; a build-time check then holds this site to it. Nothing reads it yet.
 
+**The plain-words list and the before-and-after pairs live here from 14 Nov 2026**, at
+[`plain-words.md`](./plain-words.md) and [`before-and-after.md`](./before-and-after.md): each
+method term with the everyday words an agent says instead, and whole sentences as examples, not
+rules. Both agents on this site read both, generated into their prompts by
+`scripts/build-prompt-modules.mjs` under the staleness gate. Drafted here on the maintainer's word;
+whether production carries them is hers to say.
+
 **The roster lives here from 18 Sep 2026**, at [`roster.yaml`](./roster.yaml): the
 one crew list for both sites, ten seats and three doors, carried whole from
 production by the maintainer's hand and **never edited on this site**. It is

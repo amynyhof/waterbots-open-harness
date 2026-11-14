@@ -122,6 +122,12 @@ export const CARD_WORDS: readonly { pattern: RegExp; label: string }[] = [
   { pattern: /\bthe (water|carbon) pathway\b/i, label: 'the water or carbon pathway' },
   { pattern: /\b(applies|eligibility) (test|row)s?\b/i, label: 'applies test or eligibility row' },
   { pattern: /\b(CWS|HWT|IWT|CWT)\b/, label: 'a class id' },
+  /* The maintainer's word of 14 Nov 2026, the next round on #173: "the method
+     names" and "the method lists", and "a first look", which tells a visitor a
+     result is near when three agents still come before one (W23). Each is a
+     "Not" in knowledge-packs/product-shared/before-and-after.md. */
+  { pattern: /\bthe (\w+ )?method (names|lists)\b/i, label: 'the method names or lists' },
+  { pattern: /\bfirst look\b/i, label: 'a first look (a result sounds near)' },
 ];
 
 /** The card words a reply uses, by label; empty when it speaks plainly. */

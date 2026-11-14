@@ -208,6 +208,26 @@ for (const plain of [
   expect(`passes as plain: "${plain}"`, cardWordsIn(plain).length === 0, JSON.stringify(cardWordsIn(plain)));
 }
 
+/* The shared before-and-after pairs (14 Nov 2026, the next round on #173):
+   every "Not" fails the list and every "This" passes it. Read from the
+   generated module, so a pair added to the file is held the same day. */
+const { BEFORE_AFTER_MD, PLAIN_WORDS_MD } = await import(pathToFileURL(join(out, '_plainWords.generated.js')).href);
+const nots = [...BEFORE_AFTER_MD.matchAll(/Not: "([^"]+)"/g)].map((m) => m[1]);
+const thises = [...BEFORE_AFTER_MD.matchAll(/This: "([^"]+)"/g)].map((m) => m[1]);
+expect(
+  'the before-and-after file has pairs, as many "Not" as "This"',
+  nots.length >= 3 && nots.length === thises.length,
+  `${nots.length} Not, ${thises.length} This`
+);
+for (const said of nots) expect(`a "Not" is caught: "${said}"`, cardWordsIn(said).length > 0, 'it passed');
+for (const plain of thises) expect(`a "This" passes: "${plain}"`, cardWordsIn(plain).length === 0, JSON.stringify(cardWordsIn(plain)));
+const sayInstead = [...PLAIN_WORDS_MD.matchAll(/^\| [^|]+ \| ([^|]+) \|$/gm)].map((m) => m[1].trim()).filter((s) => s !== 'Say instead' && !/^-+$/.test(s));
+expect(
+  'every "Say instead" on the plain-words list passes the list',
+  sayInstead.length >= 10 && sayInstead.every((s) => cardWordsIn(s).length === 0),
+  JSON.stringify(sayInstead.filter((s) => cardWordsIn(s).length > 0))
+);
+
 /* ---------------------------------------------------------------------------
    Reading her reply out of an answer still being written (P13, streaming).
 --------------------------------------------------------------------------- */
