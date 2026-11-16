@@ -165,6 +165,8 @@ every agent works alone and asks for what she needs herself; on the sites, she h
 
 **A28 · Phoebe's walk fixes.** v1 · BONES. Her word of 12–14 Nov 2026: rounds two and three (#173), the limit of 4 sentences or 400 characters approved 14 Nov. On the preview her first word came at 4.8 to 6.1 seconds and whole answers took 5.8 to 9.3 (14 Nov). The skipped hello is fixed. From 14 Nov a voice card, the shared plain-words list, the order of questions, and a ruled-out path saved the same turn (W25). Waiting on one measured run.
 
+**A29 · "Already earning Gold Standard credits?" reaches Calvin as `creditedUnderV1`.** Step 2 · v1 · BONES. Her word of 16 Nov 2026. The screening asks it once, plainly, and keeps the answer as a field (yes, no, not sure), never read from prose; the record carries it and `src/lib/calvinProject.ts` passes it to Calvin, so a new project runs V2.0 alone and only a credited one is asked its filed V1.0 fNRB. Waits on Calvin 0.3.0, which takes the field; #174 holds until then. Who asks it, and where it shows, is in docs/proposals/queued-round-2026-11-16.md.
+
 **A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet, host of the
 D-n modules in the Commons; not on the roster yet, by her hand. No proposal yet. Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026).
 
@@ -248,10 +250,8 @@ groups: which exist, where, how to reach them. The companion to D1. Not started.
 
 **S5 · Narrow-column wraps.** After v1 · PARK. Citation lines wrap badly in the narrow dock; one piece with O4's legend strip and the rail-width rider.
 
-**S29 · Three blue buttons together.** After v1 · PARK. Her walk of #170, 12 Nov: Open Eligibility, Save and Send all solid blue.
-**S30 · Phoebe's screen, for the console pass (job 2).** PARK, not built; her word of 14 Nov 2026, with S29: a small progress bar
-for her questions; an Eligibility quiz tracker in the left rail, the Project Record collapsed while she works, in place of the
-"Worksheet — …" line in chat; what belongs in the right panel; and once "Save this project" shows, Sign up goes quiet: one blue.
+**S30 · Phoebe's screen, for the console pass (job 2).** PARK, not built; her word of 14 Nov 2026, with S29 (three blue buttons at once, her walk of #170; one blue at a time is proposed in docs/proposals/queued-round-2026-11-16.md): a small progress bar
+for her questions; an Eligibility quiz tracker in the left rail, the Project Record collapsed while she works, in place of the "Worksheet — …" line in chat; what belongs in the right panel; and once "Save this project" shows, Sign up goes quiet: one blue.
 
 **S22 · The Blocked row colour.** After v1 · PARK. Blocked rows reuse `--state-pending` until her pixels;
 the brand book's §2.5 has no stopped state that is not an error. A raise for the book, from an image.
