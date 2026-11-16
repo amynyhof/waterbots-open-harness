@@ -229,6 +229,68 @@ expect(
 );
 
 /* ---------------------------------------------------------------------------
+   Reading level (V1, 16 Nov 2026): 3rd- to 6th-grade English. Her bars, the
+   counting, the names left out, and every relay and walk wired to it.
+--------------------------------------------------------------------------- */
+
+const { READING_GRADE, readingGrade, gradedWords, syllables, isHardReply, walkGrades } = await import(
+  pathToFileURL(join(out, '_reply.js')).href
+);
+const { readFileSync } = await import('node:fs');
+
+console.log('\n  Reading level (V1, 16 Nov 2026)');
+expect(
+  'her bars: a walk averages grade 6 or under, and no reply is above grade 8',
+  READING_GRADE.average === 6 && READING_GRADE.reply === 8,
+  JSON.stringify(READING_GRADE)
+);
+expect(
+  'syllables, by the rule of thumb: water 2, people 2, the 1, village 2, community 4',
+  syllables('water') === 2 && syllables('people') === 2 && syllables('the') === 1 && syllables('village') === 2 && syllables('community') === 4,
+  ['water', 'people', 'the', 'village', 'community'].map((w) => `${w} ${syllables(w)}`).join(', ')
+);
+expect(
+  'Phoebe’s own target reply reads at grade 6 or under',
+  readingGrade(target) <= READING_GRADE.average && !isHardReply(target),
+  `grade ${readingGrade(target)}`
+);
+const welcome = 'Hi, I am Wellington. Our team helps water projects find money they might get. What does your project do?';
+expect('a plain welcome reads well under grade 6', readingGrade(welcome) <= 4, `grade ${readingGrade(welcome)}`);
+const dense =
+  'The additionality demonstration necessitates comprehensive documentation of the counterfactual consumption scenario, substantiated by independently verified monitoring methodologies.';
+expect('dense method talk reads far above grade 8 and is logged', readingGrade(dense) > READING_GRADE.reply && isHardReply(dense), `grade ${readingGrade(dense)}`);
+expect(
+  'names, places and the methods’ own terms are left out of the count',
+  gradedWords('We asked Phoebe about Gold Standard rules for VWBA and fNRB in Turkana, Kenya.').join(' ') === 'We asked about rules for and in',
+  JSON.stringify(gradedWords('We asked Phoebe about Gold Standard rules for VWBA and fNRB in Turkana, Kenya.'))
+);
+expect(
+  'a word that starts a sentence is counted, capital and all',
+  gradedWords('Water is life. Clean water helps.').length === 6,
+  JSON.stringify(gradedWords('Water is life. Clean water helps.'))
+);
+expect('a reply with no counted words is grade 0, never negative', readingGrade('VWBA? fNRB!') === 0 && readingGrade('Yes. No. Go.') >= 0, 'a grade below 0');
+expect(
+  'a walk passes at average 6 and hardest 8, and fails at 6.1 or with one reply at 8.1',
+  walkGrades([6, 6, 8, 4]).passes && !walkGrades([6.1, 6.1]).passes && !walkGrades([2, 2, 8.1]).passes,
+  JSON.stringify([walkGrades([6, 6, 8, 4]), walkGrades([6.1, 6.1]), walkGrades([2, 2, 8.1])])
+);
+for (const relay of ['phoebe', 'wellington', 'bridget']) {
+  expect(
+    `${relay}'s relay logs a reply above grade 6`,
+    /isHardReply\(answer\.reply\)/.test(readFileSync(join('api', `${relay}.ts`), 'utf8')),
+    `api/${relay}.ts does not call isHardReply(answer.reply)`
+  );
+}
+for (const walk of ['measure-phoebe-walk.mjs', 'measure-wellington.mjs']) {
+  expect(
+    `${walk} grades every reply and fails on her bars`,
+    /readingGrade\((r|res)\.reply\)/.test(readFileSync(join('scripts', walk), 'utf8')) && /walkGrades\(/.test(readFileSync(join('scripts', walk), 'utf8')),
+    `${walk} does not grade its replies`
+  );
+}
+
+/* ---------------------------------------------------------------------------
    Reading her reply out of an answer still being written (P13, streaming).
 --------------------------------------------------------------------------- */
 

@@ -35,8 +35,15 @@ fill. Longer is for the cases that genuinely need it — a list, a walkthrough o
 a rule set, a comparison. Reaching for length by default is the failure mode
 this rule exists to stop.
 
-**Plain sentences a twelve-year-old could read — at or under a sixth-grade
-reading level — warm and teaching.** Maintainer's ruling 1, 3 Sep 2026. **An
+~~**Plain sentences a twelve-year-old could read — at or under a sixth-grade
+reading level — warm and teaching.** Maintainer's ruling 1, 3 Sep 2026.~~
+**3rd- to 6th-grade English: short everyday words, short sentences, one idea
+each — warm and teaching.** Her word of 16 Nov 2026 (V1), in place of the
+wording of 3 Sep 2026, and every voice card says it. It is measured: a
+reading-grade count in `api/_reply.ts` logs a reply above grade 6, and a
+measured walk fails when its replies average above grade 6 or any one is above
+grade 8, her two bars. Names, places and a method's own terms are left out of
+the count. **An
 agent is given facts and rules, and phrases the words itself.** The maintainer
 approves the rules an agent keeps and the facts it holds; she does not sign its
 sentences. Nothing an agent inherits is a script.

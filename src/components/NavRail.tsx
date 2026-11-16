@@ -32,6 +32,7 @@
 import { useEffect, useState } from 'react';
 import { MAX_HUMAN_NOTE_CHARS, type PersonAsk, type SealState } from '../lib/handoff';
 import { SITE_LABEL, SITE_URL } from '../lib/site';
+import { pathForInterest } from '../lib/pages';
 import { PROJECT_STAGES, projectType } from '../lib/projectTypes.generated';
 import { WATER_SUPPLY_TYPES, servedWords, type Provenance, type VisitContext } from '../lib/visit';
 
@@ -65,7 +66,8 @@ const RECORD_EXPLAINER =
  * THE SAVE DOOR AND THE REPORT, under the project — the maintainer's word of
  * 14 Nov 2026 (W27, S21). The save button left the foot of the crew column
  * for here, with the box that sends the project to the team for review, and
- * "Export screening report" sits under it. One blue button: Save.
+ * "Export screening report" sits under it. Save is blue only when it is the
+ * one next step (src/lib/blue.ts, 16 Nov 2026); otherwise it is drawn quiet.
  */
 export interface SaveDoor {
   /** Something is on the record, so there is a project to save and report. */
@@ -78,17 +80,22 @@ export interface SaveDoor {
   onPerson: (next: PersonAsk) => void;
   /** Opens the print dialog on the screening report (S21). */
   onExport: () => void;
+  /** One blue button at a time: Save is the blue one only when nothing comes before it. */
+  blue: boolean;
 }
 
 export default function NavRail({
   context,
   onTyped,
   save,
+  onInterest,
   drawer,
 }: {
   context: VisitContext;
   onTyped: (field: 'name' | 'place', value: string) => void;
   save: SaveDoor;
+  /** Opens the Register your interest form (16 Nov 2026). */
+  onInterest?: () => void;
   /** On a phone: the rail is a sliding panel, open or shut by the shell. */
   drawer?: { open: boolean; onClose: () => void };
 }) {
@@ -204,6 +211,24 @@ export default function NavRail({
           </div>
 
           {save.show && <SaveBlock save={save} />}
+
+          {/* REGISTER YOUR INTEREST — approved 16 Nov 2026: a quiet link under
+              "Export screening report", and under the project card before
+              anything is on the record. */}
+          {onInterest && (
+            <a
+              className="wb-quiet-link"
+              href={pathForInterest()}
+              onClick={(e) => {
+                if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                e.preventDefault();
+                onInterest();
+              }}
+              style={{ display: 'block', margin: '10px 4px 0', fontSize: 12.5 }}
+            >
+              Register your interest
+            </a>
+          )}
 
           {/* THE RECORD his interview populates. Four rows; a dash until he
               has heard it. The explainer sits behind the (i). */}
@@ -337,7 +362,7 @@ function SaveBlock({ save }: { save: SaveDoor }) {
 
       <button
         type="button"
-        className="wb-save-button"
+        className={save.blue ? 'wb-save-button' : 'wb-save-button is-quiet'}
         onClick={save.onSeal}
         disabled={busy}
         aria-busy={sealing.kind === 'sealing' || undefined}

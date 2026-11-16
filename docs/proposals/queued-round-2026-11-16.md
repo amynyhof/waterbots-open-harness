@@ -1,6 +1,14 @@
 # Proposal — the queued round: build banner, Wellington's opening, reading level, one blue button, Register your interest
 
-**Written 16 Nov 2026 for the maintainer. Proposal only: nothing is built.** It answers her message of 16 Nov 2026:
+> **Approved 16 Nov 2026, the maintainer's word, and built on the same pull request (#175).** Her decisions:
+> W28 and W29 are read right. The banner's words are **"This site is still being built."**; the "first
+> screening, not an official decision" note stays beside the figures and in the report, not in the banner.
+> Reading bars as proposed: **a walk averages grade 6 or under, and no reply is above grade 8.** Register
+> your interest: **no time limit; a sign-up is kept until the person asks to be removed, and the form says
+> how to ask. Nothing deletes on its own.** **Phoebe asks A29.** The text below is the proposal as written;
+> where her decision differs from it (the banner's words, retention), her decision stands.
+
+~~**Written 16 Nov 2026 for the maintainer. Proposal only: nothing is built.**~~ **Written 16 Nov 2026 for the maintainer.** It answers her message of 16 Nov 2026:
 propose the queued round as its own pull request, separate from #174, which stays on hold until Calvin 0.3.0 is
 out. One plan item joins BUILD_PLAN with this proposal: A29, "already earning Gold Standard credits?", passed to
 Calvin as `creditedUnderV1`.

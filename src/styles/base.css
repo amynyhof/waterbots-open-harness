@@ -887,6 +887,17 @@ button.wb-phase:hover span:last-child {
 .wb-save-button:active:not(:disabled) {
   transform: scale(0.98);
 }
+/* One blue button at a time (src/lib/blue.ts, 16 Nov 2026): when another
+   button is the next step, Save keeps its place and words, drawn quiet. */
+.wb-save-button.is-quiet {
+  background: transparent;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.wb-save-button.is-quiet:hover:not(:disabled) {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--ink-4);
+}
 .wb-save-button:disabled {
   opacity: 0.6;
   cursor: progress;
@@ -1321,6 +1332,18 @@ button.wb-phase:hover span:last-child {
 .wb-site-menu-quiet:hover {
   color: var(--ink);
 }
+/* The build banner — W28, 16 Nov 2026: one quiet line under the menu, on
+   every page, in her words. No colour of its own and no close button. */
+.wb-build-banner {
+  margin: 0;
+  padding: 4px 24px 5px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--ink-2);
+}
+
 /* Sign up — the main site's button beside Sign in, the maintainer's walk of
    13 Nov 2026. The save button's own look (§7's primary), at menu size. */
 .wb-site-menu-signup {
@@ -1332,6 +1355,16 @@ button.wb-phase:hover span:last-child {
 }
 .wb-site-menu-signup:hover {
   background: var(--tide-hover);
+}
+/* Quiet when another button is the one next step (src/lib/blue.ts). */
+.wb-site-menu-signup.is-quiet {
+  background: transparent;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.wb-site-menu-signup.is-quiet:hover {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--ink-4);
 }
 
 /* ---------------------------------------------------------------------------
@@ -1951,4 +1984,56 @@ button.wb-info {
     size: letter portrait;
     margin: 1in;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Register your interest — approved 16 Nov 2026. The form's fields, its
+   checkboxes, and the quiet link that opens it from the rail and the Commons.
+--------------------------------------------------------------------------- */
+.wb-quiet-link {
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 2px;
+}
+.wb-quiet-link:hover {
+  color: var(--ink);
+  text-decoration-color: var(--ink-4);
+}
+.wb-form-label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 5px;
+  padding: 0;
+}
+.wb-form-input {
+  display: block;
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--card);
+  color: var(--ink);
+}
+.wb-form-input:focus-visible {
+  outline: 2px solid var(--tide-ui);
+  outline-offset: 1px;
+}
+.wb-form-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--ink);
+  margin: 0 0 7px;
+  cursor: pointer;
+}
+.wb-form-check input {
+  accent-color: var(--tide-ui);
+  flex: none;
 }

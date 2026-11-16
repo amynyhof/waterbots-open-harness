@@ -38,7 +38,7 @@
 
 import { useEffect, useState } from 'react';
 import { SHELF, type ShelfCard } from '../lib/commonsShelf';
-import { COMMONS_LABEL, COMMONS_PATH, moduleFromPath, pageFromPath, pathForModule } from '../lib/pages';
+import { COMMONS_LABEL, COMMONS_PATH, moduleFromPath, pageFromPath, pathForModule, pathForInterest } from '../lib/pages';
 import { BridgetCommonsSeat, CalvinCommonsSeat, PhoebeCommonsSeat } from './CommonsSeats';
 import { partnerMailto } from '../lib/site';
 import CommonsShelf, { Method, Rating, Stage } from './CommonsShelf';
@@ -122,7 +122,7 @@ export default function Commons({
           hidden, as everywhere in this shell. */}
       <div className="wb-commons-panes" style={{ flex: 1, minHeight: 0, position: 'relative' }}>
         <Pane shown={onShelf}>
-          <CommonsShelf onOpen={openCard} />
+          <CommonsShelf onOpen={openCard} onInterest={(card) => navigate(pathForInterest(card.slug))} />
         </Pane>
 
         {/* THE MODULE PAGE — the maintainer's word of 28 Oct 2026: the tabs

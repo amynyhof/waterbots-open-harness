@@ -27,7 +27,14 @@
  * step away and back.
  */
 
-export type Page = 'console' | 'commons';
+export type Page = 'console' | 'commons' | 'interest';
+
+/**
+ * THE INTEREST FORM AT "/interest" — Register your interest, the maintainer's
+ * plan of 14 Nov 2026, approved 16 Nov 2026. A third page under the same
+ * menu; `?module=<slug>` opens it with a Commons module already chosen.
+ */
+export const INTEREST_PATH = '/interest';
 
 /** The Commons' address, without a host. */
 export const COMMONS_PATH = '/commons';
@@ -39,8 +46,16 @@ export const COMMONS_LABEL = 'Agent Commons';
  * Which page a path opens. A trailing slash is tolerated because a typed
  * address often carries one; anything else is the console.
  */
-export function pageFromPath(pathname: string): Page {
+export function pageFromPath(address: string): Page {
+  /* A move to the form may carry ?module=; the page is the path alone. */
+  const pathname = address.split('?')[0];
+  if (pathname === INTEREST_PATH || pathname === `${INTEREST_PATH}/`) return 'interest';
   return pathname === COMMONS_PATH || pathname.startsWith(`${COMMONS_PATH}/`) ? 'commons' : 'console';
+}
+
+/** The interest form's address, with a Commons module already chosen if one is named. */
+export function pathForInterest(module?: string): string {
+  return module ? `${INTEREST_PATH}?module=${encodeURIComponent(module)}` : INTEREST_PATH;
 }
 
 /** The module a Commons path names, or null on the list. One segment only. */
@@ -56,5 +71,5 @@ export function pathForModule(slug: string): string {
 
 /** The path the shell writes into the address when a visitor moves. */
 export function pathForPage(page: Page): string {
-  return page === 'commons' ? COMMONS_PATH : '/';
+  return page === 'commons' ? COMMONS_PATH : page === 'interest' ? INTEREST_PATH : '/';
 }
