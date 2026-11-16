@@ -14,10 +14,34 @@
  * question, and what he learned. Then Phoebe's three standing questions once
  * each, to see that her behaviour is unchanged.
  *
+ * From 16 Nov 2026 it also asks his opening turn on the desk (W29) and grades
+ * every reply of his for reading level, failing on her bars (V1).
+ *
  * WHAT IT RECORDS. Status, elapsed time, route, abstained, what was learned,
  * reply length, and whether the reply carries a digit-heavy figure. It prints
  * the replies for the first run of each, so the maintainer reads his words.
  */
+
+import { spawnSync } from 'node:child_process';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
+/* The relay's own reading-grade counter (V1, 16 Nov 2026), so the walk and the log count alike. */
+const replyOut = mkdtempSync(join(tmpdir(), 'wb-wwalk-reply-'));
+const compileReply = spawnSync(
+  process.execPath,
+  [join('node_modules', 'typescript', 'bin', 'tsc'), join('api', '_reply.ts'), '--outDir', replyOut, '--module', 'commonjs', '--target', 'es2022', '--skipLibCheck'],
+  { encoding: 'utf8' }
+);
+if (compileReply.status !== 0) {
+  console.error(compileReply.stdout || compileReply.stderr);
+  process.exit(1);
+}
+writeFileSync(join(replyOut, 'package.json'), '{"type":"commonjs"}');
+const { READING_GRADE, readingGrade, walkGrades } = createRequire(import.meta.url)(join(replyOut, '_reply.js'));
+rmSync(replyOut, { recursive: true, force: true });
 
 const BASE = process.env.WB_BASE ?? 'http://localhost:5173';
 const RUNS = Number(process.argv[2] ?? 3);
@@ -43,7 +67,10 @@ async function ask(agent, text) {
     res = await fetch(`${BASE}/api/${agent}`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ messages: [{ role: 'user', content: text }] }),
+      /* No text is his opening turn on the desk (W29): no visitor bubble, `at: open`. */
+      body: JSON.stringify(
+        text === null ? { messages: [], returned: true, at: 'open' } : { messages: [{ role: 'user', content: text }] }
+      ),
     });
   } catch (e) {
     return { status: 0, ms: Date.now() - started, error: String(e) };
@@ -57,6 +84,18 @@ async function ask(agent, text) {
 const digits = (s) => (s.match(/\d[\d,.]*\s?(tCO|t\b|tonnes|m³|L\b|litres)/gi) ?? []).length;
 
 console.log(`\nMeasured walk — ${RUNS} run(s) each, against ${BASE}\n`);
+
+/* Every Wellington reply's reading grade (V1); the walk fails on her bars. */
+const grades = [];
+
+/* W29, 16 Nov 2026: he speaks first on the desk. Asked `runs` times. */
+for (let i = 0; i < RUNS; i += 1) {
+  const r = await ask('wellington', null);
+  const grade = r.status === 200 ? readingGrade(r.reply) : null;
+  if (grade !== null) grades.push({ key: 'opening', grade });
+  console.log(`--- Wellington · opening · ${r.status} · ${(r.ms / 1000).toFixed(1)}s · route=${r.route} · grade ${grade ?? '-'}`);
+  console.log(`    A: ${r.reply ?? r.error}\n`);
+}
 
 const tally = {};
 for (const q of WELLINGTON_QUESTIONS) {
@@ -72,6 +111,7 @@ for (const q of WELLINGTON_QUESTIONS) {
       if (r.abstained) t.abstained += 1;
       if (digits(r.reply ?? '') > 0) t.figures += 1;
       if (r.context && Object.keys(r.context).length) t.learned += 1;
+      grades.push({ key: q.key, grade: readingGrade(r.reply) });
     }
     if (i === 0) {
       console.log(`--- Wellington · ${q.key} · ${r.status} · ${(r.ms / 1000).toFixed(1)}s · route=${r.route} abstained=${r.abstained} context=${JSON.stringify(r.context ?? {})}`);
@@ -88,6 +128,13 @@ for (const [key, t] of Object.entries(tally)) {
   console.log(`| ${key} | ${t.asked} | ${t.ok} | ${t.routedRight} | ${t.abstained} | ${t.figures} | ${t.learned} | ${med.toFixed(1)} |`);
 }
 
+const walk = walkGrades(grades.map((g) => g.grade));
+console.log(
+  `\nReading grade: average ${walk.average} (bar ${READING_GRADE.average}), hardest ${walk.hardest} (bar ${READING_GRADE.reply}), over ${grades.length} replies.`
+);
+if (walk.average > READING_GRADE.average) console.log(`  FAIL  his replies average grade ${walk.average}`);
+for (const g of grades) if (g.grade > READING_GRADE.reply) console.log(`  FAIL  ${g.key}: grade ${g.grade}`);
+
 console.log('\n--- Phoebe, unchanged?\n');
 for (const text of PHOEBE_QUESTIONS) {
   const r = await ask('phoebe', text);
@@ -95,3 +142,5 @@ for (const text of PHOEBE_QUESTIONS) {
   console.log(`    Q: ${text}`);
   console.log(`    A: ${(r.reply ?? r.error ?? '').slice(0, 400)}\n`);
 }
+
+if (!walk.passes) process.exit(1);

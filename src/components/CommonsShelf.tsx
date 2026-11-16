@@ -35,6 +35,7 @@
  */
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { pathForInterest } from '../lib/pages';
 import {
   PLANNED,
   SEEKING,
@@ -89,7 +90,14 @@ const EYEBROW = {
   color: 'var(--ink-3)',
 } as const;
 
-export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => void }) {
+export default function CommonsShelf({
+  onOpen,
+  onInterest,
+}: {
+  onOpen: (card: ShelfCard) => void;
+  /** Opens the interest form with this module chosen (16 Nov 2026). */
+  onInterest?: (card: ShelfCard) => void;
+}) {
   return (
     /* The scrollbar's room is kept on both edges, so the centred page sits
        exactly under the menu, which has no scrollbar beside it. */
@@ -184,7 +192,12 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
         <ModuleHead />
         <ul className="wb-module-list">
           {SHELF.map((card) => (
-            <ModuleRow key={card.key} card={card} onOpen={() => onOpen(card)} />
+            <ModuleRow
+              key={card.key}
+              card={card}
+              onOpen={() => onOpen(card)}
+              onInterest={onInterest ? () => onInterest(card) : undefined}
+            />
           ))}
           {PLANNED.map((planned) => (
             <PlannedRow key={planned.key} planned={planned} />
@@ -198,7 +211,7 @@ export default function CommonsShelf({ onOpen }: { onOpen: (card: ShelfCard) => 
   );
 }
 
-function ModuleRow({ card, onOpen }: { card: ShelfCard; onOpen: () => void }) {
+function ModuleRow({ card, onOpen, onInterest }: { card: ShelfCard; onOpen: () => void; onInterest?: () => void }) {
   const { holder } = card;
   return (
     <li className="wb-module-row" aria-label={card.title}>
@@ -242,6 +255,24 @@ function ModuleRow({ card, onOpen }: { card: ShelfCard; onOpen: () => void }) {
           <button type="button" className="wb-row-action wb-hit" onClick={onOpen}>
             Open
           </button>
+        ) : onInterest ? (
+          /* REGISTER YOUR INTEREST — the maintainer's plan of 14 Nov 2026,
+             approved 16 Nov 2026: a "Coming soon" row opens the form with this
+             module already chosen. Still quiet: it is not the next step. */
+          <span style={{ display: 'block', fontSize: 12, lineHeight: 1.45, color: 'var(--ink-3)' }}>
+            <span style={{ whiteSpace: 'nowrap' }}>Coming soon ·</span>{' '}
+            <a
+              className="wb-quiet-link"
+              href={pathForInterest(card.slug)}
+              onClick={(e) => {
+                if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                e.preventDefault();
+                onInterest();
+              }}
+            >
+              Register your interest
+            </a>
+          </span>
         ) : (
           <Quiet>Coming soon</Quiet>
         )}

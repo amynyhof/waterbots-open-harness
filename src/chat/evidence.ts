@@ -193,8 +193,10 @@ export interface AskMeta {
    * Wellington's: he joins the visitor in another agent's chat (the
    * maintainer's ruling of 14 Nov 2026, "Wellington comes to you"). The step
    * he speaks at, and the chat box his "Keep chatting" button focuses there.
+   * `open` is his own desk on a visitor's arrival: he speaks first (W29,
+   * 16 Nov 2026).
    */
-  at?: 'eligibility' | 'map';
+  at?: 'eligibility' | 'map' | 'open';
   composerId?: string;
 }
 

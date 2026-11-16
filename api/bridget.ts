@@ -34,7 +34,7 @@ import { readPin, readPlace, settleHandBack, visitBlock } from './_bridgetPin.js
 import { BRIDGET_RESPONSE_SCHEMA, BRIDGET_SYSTEM_PROMPT } from './_bridgetPrompt.js';
 import { BRIDGET, countOneMessage, timeUntilReset } from './_cap.js';
 import { readHandBack, type HandBack } from './_handBack.js';
-import { MIN_REPLY_CHARS, isDegenerateReply } from './_reply.js';
+import { MIN_REPLY_CHARS, READING_GRADE, isDegenerateReply, isHardReply, readingGrade } from './_reply.js';
 
 /** The same tier as her colleagues, for their measured reason (item A6): a voice that goes silent is the worse fault. */
 const MODEL = 'claude-opus-5';
@@ -293,6 +293,13 @@ export async function POST(req: Request): Promise<Response> {
         'Bridget returned an answer with almost nothing in it. This is a fault on our side rather than something you did, and asking again usually works.'
       )
     );
+  }
+
+  /* READING LEVEL (V1, 16 Nov 2026): 3rd- to 6th-grade English. A reply above
+     grade 6 is logged, never blocked; the measured walks fail on the bars.
+     See readingGrade in api/_reply.ts. */
+  if (isHardReply(answer.reply)) {
+    console.log(`bridget: reply read above grade ${READING_GRADE.average} — grade ${readingGrade(answer.reply)}`);
   }
 
   /* Only a question outside her one job is logged, and it is marked as hers. */

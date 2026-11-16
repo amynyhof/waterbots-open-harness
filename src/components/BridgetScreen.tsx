@@ -57,6 +57,7 @@ import { useEffect, useRef, useState } from 'react';
 import bridgetPortrait from '../../brand/assets/bots/bridget.svg';
 import type { AgentHost, AgentTurn } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
+import { meetShowing } from '../lib/blue';
 import { askBridget } from '../lib/bridgetClient';
 import {
   AQUEDUCT_CITATION,
@@ -102,6 +103,7 @@ export default function BridgetScreen({
   visible,
   invite = '',
   onWellington,
+  onMeet,
 }: {
   onStatus: (status: MapStatus) => void;
   pin: MapPin | null;
@@ -121,6 +123,8 @@ export default function BridgetScreen({
   invite?: string;
   /** Brings Wellington into her chat with the next step, once her part is done. */
   onWellington?: (at: 'eligibility' | 'map', composerId: string) => Promise<AgentTurn | null>;
+  /** Tells the shell whether "Meet <name>" is under her chat's latest turn (one blue button, 16 Nov 2026). */
+  onMeet?: (showing: boolean) => void;
 }) {
   /* WELLINGTON COMES TO YOU — the maintainer's ruling of 14 Nov 2026. When her
      part is done (a basin reported, or a question not hers) he joins this chat
@@ -157,6 +161,12 @@ export default function BridgetScreen({
   }
 
   const chat = useConversation(ask, BRIDGET.name);
+  /* ONE BLUE BUTTON (16 Nov 2026): the shell decides which button is blue, so
+     it is told whether Wellington's "Meet <name>" is the latest thing here. */
+  const meet = meetShowing(chat.turns);
+  useEffect(() => {
+    onMeet?.(meet);
+  }, [meet, onMeet]);
   const chatRef = useRef(chat);
   chatRef.current = chat;
 

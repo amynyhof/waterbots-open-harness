@@ -211,6 +211,18 @@ export async function takeOnce(config: StoreConfig, key: string): Promise<string
   return result;
 }
 
+/**
+ * Add an entry to the front of a list and keep everything.
+ *
+ * FOR THE INTEREST FORM ONLY — the maintainer's ruling of 16 Nov 2026: a
+ * sign-up is kept until the person asks to be removed, and nothing deletes on
+ * its own. So no trim and no expiry, unlike every other key here. Removal is
+ * by hand, on a person's request (scripts/count-interest.mjs --remove).
+ */
+export async function appendKept(config: StoreConfig, key: string, entry: string): Promise<void> {
+  await run(config, [['LPUSH', key, entry]]);
+}
+
 /** Read a capped list back, newest first. */
 export async function readList(
   config: StoreConfig,

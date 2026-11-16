@@ -134,3 +134,83 @@ export const CARD_WORDS: readonly { pattern: RegExp; label: string }[] = [
 export function cardWordsIn(reply: string): string[] {
   return CARD_WORDS.filter(({ pattern }) => pattern.test(reply)).map(({ label }) => label);
 }
+
+/* --------------------------------------------------------------------------
+   Reading level — V1, the maintainer's word of 16 Nov 2026: every agent
+   speaks 3rd- to 6th-grade English. The rule lives once, in AGENT_RULES.md,
+   and every voice card says it; this measures it.
+   -------------------------------------------------------------------------- */
+
+/**
+ * Her two bars, 16 Nov 2026. A walk fails when its replies average above
+ * grade 6, or when any one reply is above grade 8. A relay logs a reply above
+ * grade 6, so real traffic can be counted. Thresholds: they move only on her
+ * word. The average is the bar and the single reply only the outer limit,
+ * because a two-sentence reply gives a noisy grade.
+ */
+export const READING_GRADE = { average: 6, reply: 8 } as const;
+
+/**
+ * Syllables in one word, by the usual rule of thumb: vowel groups, less a
+ * silent final e. Plain counting, not a dictionary; it is right often enough
+ * to measure a reply, and it counts every reply the same way.
+ */
+export function syllables(word: string): number {
+  const w = word.toLowerCase().replace(/[^a-z]/g, '');
+  if (!w) return 0;
+  if (w.length <= 3) return 1;
+  const trimmed = w.replace(/(?:[^laeiouy]es|[^laeiouy]ed|[^laeiouy]e)$/, (m) => m[0]).replace(/^y/, '');
+  return Math.max(1, (trimmed.match(/[aeiouy]{1,2}/g) ?? []).length);
+}
+
+/**
+ * The words a reply's grade is counted on. Names, place names and the
+ * methods' own terms are left out (the proposal of 16 Nov 2026, approved), so
+ * a correct name never fails a reply: a word with a digit, a word with a
+ * capital after its first letter (fNRB, VWBA, WaterBots), and a capitalised
+ * word that does not start a sentence (Phoebe, Turkana, Gold Standard).
+ */
+export function gradedWords(reply: string): string[] {
+  const out: string[] = [];
+  let sentenceStart = true;
+  for (const raw of reply.trim().split(/\s+/)) {
+    const word = raw.replace(/^[^A-Za-z0-9]+|[^A-Za-z0-9']+$/g, '');
+    const ends = /[.?!:]["”’)]*$/.test(raw);
+    if (word) {
+      const named =
+        /\d/.test(word) ||
+        /^.+[A-Z]/.test(word) ||
+        (/^[A-Z]/.test(word) && !sentenceStart && word !== 'I');
+      if (!named) out.push(word);
+      sentenceStart = false;
+    }
+    if (ends) sentenceStart = true;
+  }
+  return out;
+}
+
+/**
+ * The Flesch–Kincaid grade of a reply, to one decimal, from its sentences,
+ * its counted words and their syllables. Never below 0: a very plain reply is
+ * grade 0, not a negative grade that would pull a walk's average down.
+ */
+export function readingGrade(reply: string): number {
+  const words = gradedWords(reply);
+  if (words.length === 0) return 0;
+  const { sentences } = replyLength(reply);
+  const syl = words.reduce((n, w) => n + syllables(w), 0);
+  const grade = 0.39 * (words.length / Math.max(1, sentences)) + 11.8 * (syl / words.length) - 15.59;
+  return Math.max(0, Math.round(grade * 10) / 10);
+}
+
+/** True when a relay should log the reply: above the average bar. */
+export function isHardReply(reply: string): boolean {
+  return readingGrade(reply) > READING_GRADE.average;
+}
+
+/** A walk's verdict on its replies' grades: the average and the hardest, against her bars. */
+export function walkGrades(grades: number[]): { average: number; hardest: number; passes: boolean } {
+  const average = grades.length ? Math.round((grades.reduce((a, b) => a + b, 0) / grades.length) * 10) / 10 : 0;
+  const hardest = grades.length ? Math.max(...grades) : 0;
+  return { average, hardest, passes: average <= READING_GRADE.average && hardest <= READING_GRADE.reply };
+}

@@ -37,8 +37,8 @@ same file unchanged.
 **This file gives an agent FACTS and RULES, not lines** — the maintainer's ruling 1,
 3 Sep 2026. What each colleague covers, what is live,
 where each one is found — and the rules every agent keeps. An agent phrases
-those facts itself, in two or three plain sentences a twelve-year-old could
-read, warm and teaching. The maintainer approves the rules, not the wording.
+those facts itself, in two or three plain sentences of 3rd- to 6th-grade
+English, warm and teaching. The maintainer approves the rules, not the wording.
 The quoted "what another agent may say" sentences that stood here until 3 Sep
 2026 left the file on 24 Sep 2026 under the no-strikes rule; their wording is in
 this pack's CHANGELOG.

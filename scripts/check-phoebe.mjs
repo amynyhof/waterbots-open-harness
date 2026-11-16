@@ -690,6 +690,11 @@ expect(
     /MAX_LEARN_MORE_CHARS/.test(relaySource),
   'a rule from the third round is missing, or a field is not in her answer'
 );
+expect(
+  'V1, 16 Nov 2026: her voice card and base rules say 3rd- to 6th-grade English, and the old wording is gone',
+  (SYSTEM_PROMPT.match(/3rd- to 6th-grade English/g) ?? []).length >= 2 && !/twelve-year-old/.test(SYSTEM_PROMPT),
+  'the reading level is missing from her prompt'
+);
 {
   const screen = readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8');
   const worksheet = readFileSync(join('src', 'components', 'EligibilityWorksheet.tsx'), 'utf8');

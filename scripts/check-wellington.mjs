@@ -177,7 +177,7 @@ expect('his prompt carries the roster and his region, and none of her cards', WE
 expect('no prompt tells any agent to say anything word for word — ruling 1, 3 Sep 2026', !/word for word/.test(WELLINGTON_SYSTEM_PROMPT) && !/word for word/.test(PHOEBE_PROMPT), 'a word-for-word rule survived');
 expect('his prompt carries the dated build update as facts he phrases, and the region is dated', WELLINGTON_SYSTEM_PROMPT.includes('# The build update, when asked') && WELLINGTON_SYSTEM_PROMPT.includes(WELLINGTON_BUILD_UPDATE_MD.trim().slice(0, 120)) && /^# The build, as of \d{1,2} \w+ \d{4}/m.test(WELLINGTON_BUILD_UPDATE_MD) && /Not live/.test(WELLINGTON_BUILD_UPDATE_MD) && !/^> "/m.test(WELLINGTON_BUILD_UPDATE_MD), 'the build update is missing, undated, or scripted');
 expect('the roster gives facts, not quoted lines, for every colleague', !/^> "/m.test(AGENT_PRIMER_MD), 'a quoted colleague sentence is still live in the roster');
-expect('both prompts carry the voice rule — plain sentences a twelve-year-old could read', /twelve-year-old/.test(WELLINGTON_SYSTEM_PROMPT), 'the voice rule is missing from his prompt');
+expect('his voice card carries the reading level — 3rd- to 6th-grade English (V1, 16 Nov 2026)', /3rd- to 6th-grade English/.test(WELLINGTON_SYSTEM_PROMPT) && !/twelve-year-old/.test(WELLINGTON_SYSTEM_PROMPT), 'the reading level is missing from his prompt');
 expect('his prompt states the five things he never does', /quote no figure/.test(WELLINGTON_SYSTEM_PROMPT) && /never invent/i.test(WELLINGTON_SYSTEM_PROMPT) && /abstain and route/i.test(WELLINGTON_SYSTEM_PROMPT) && /Screening language only/.test(WELLINGTON_SYSTEM_PROMPT) && /never press a visitor to sign up/i.test(WELLINGTON_SYSTEM_PROMPT), 'a rule is missing');
 /* The ceiling was 20,000 until 7 Sep 2026. Three rules the maintainer added
    that week — phase names, no tabs, plain words — each cost about a hundred
@@ -1141,6 +1141,49 @@ console.log('\n  Bridget\n');
       !/Bridget is not answering/.test(readFileSync('api/_record.ts', 'utf8') + readFileSync('src/lib/visit.ts', 'utf8')),
     'a stale "not live" line about her remains'
   );
+}
+
+/* ---------------------------------------------------------------------------
+   The queued round, approved 16 Nov 2026 (docs/proposals/queued-round-2026-11-16.md).
+--------------------------------------------------------------------------- */
+
+console.log('\n  W28, W29 and V1 — the queued round, 16 Nov 2026');
+{
+  const banner = readFileSync(join('src', 'components', 'BuildBanner.tsx'), 'utf8');
+  const menu = readFileSync(join('src', 'components', 'SiteMenu.tsx'), 'utf8');
+  const desk = readFileSync(join('src', 'components', 'Desk.tsx'), 'utf8');
+  expect(
+    'W28: one line under the site menu, in her words, on every page; the desk paragraph is gone',
+    /BUILD_BANNER_LINE = 'This site is still being built\.'/.test(banner) &&
+      /<BuildBanner \/>\s*<\/header>/.test(menu) &&
+      !/under build|Ask Wellington for a build update/.test(desk),
+    'the banner is not her line under the menu, or the old paragraph remains'
+  );
+  expect(
+    'W28: the banner does not carry the first-screening note (her word: beside the figures and in the report)',
+    !/first screening|official decision/i.test((banner.match(/BUILD_BANNER_LINE = '([^']*)'/) ?? [])[1] ?? 'first screening') &&
+      /<p className="wb-build-banner t-caption" role="note">\s*\{BUILD_BANNER_LINE\}\s*<\/p>/.test(banner),
+    'the banner says the screening note'
+  );
+  const relay = readFileSync(join('api', 'wellington.ts'), 'utf8');
+  const app = readFileSync(join('src', 'App.tsx'), 'utf8');
+  expect(
+    'W29: the relay takes `open` only as an opened turn, with its own note and no route',
+    /body\.at === 'open'/.test(relay) && /returned && \(body\.at === 'eligibility'/.test(relay) &&
+      /open:\s*'# Where you are speaking[^']*Speak first, in your own words[^']*Set no route\./.test(relay),
+    'the open case is missing or not bound to an opened turn'
+  );
+  expect(
+    'W29: the desk asks it once, on the console desk, and never when a question was carried in',
+    /askOpening\(\{ opened: true, at: 'open' \}\)/.test(app) &&
+      /if \(openedDesk\.current \|\| !onConsole \|\| surface !== 'desk'\) return;/.test(app) &&
+      /carried\.current !== null \|\| deskTurns > 0/.test(app),
+    'the opening turn is not sent once, or not held back for a carried question'
+  );
+}
+for (const [who, file] of [['Wellington', '_wellingtonPrompt.ts'], ['Bridget', '_bridgetPrompt.ts'], ['Phoebe', '_systemPrompt.ts']]) {
+  const src = readFileSync(join('api', file), 'utf8');
+  expect(`V1: ${who}'s voice card says 3rd- to 6th-grade English`, /3rd- to 6th-grade English/.test(src) && !/twelve-year-old/.test(src), `api/${file}`);
 }
 
 /* ------------------------------------------------------------------------- */

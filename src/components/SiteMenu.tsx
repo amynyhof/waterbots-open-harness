@@ -26,20 +26,28 @@
  * right, each on its own row. At 430px and narrower this menu takes the same
  * three rows (base.css). Its height is told to the page as --menu-h, so a
  * phone's screening fills the screen below it (src/lib/phone.ts).
+ *
+ * THE BUILD BANNER RIDES UNDER IT, inside the same header — W28, 16 Nov 2026
+ * (src/components/BuildBanner.tsx). Inside, so --menu-h counts it and a
+ * phone's chat box is never pushed off the screen.
  */
 
 import { useLayoutEffect, useRef, type MouseEvent, type ReactNode } from 'react';
 import type { Page } from '../lib/pages';
+import BuildBanner from './BuildBanner';
 import { MENU_HOME, MENU_LINKS, MENU_SIGN_IN, MENU_SIGN_UP, type MenuLink } from '../lib/site';
 
 export default function SiteMenu({
   page,
   onPage,
   readout,
+  signupBlue = true,
 }: {
   page: Page;
   onPage: (page: Page) => void;
   readout?: ReactNode;
+  /** One blue button at a time (src/lib/blue.ts): quiet when another is the next step. */
+  signupBlue?: boolean;
 }) {
   const open = (link: MenuLink) => (e: MouseEvent<HTMLAnchorElement>) => {
     if (!link.page) return;
@@ -84,11 +92,15 @@ export default function SiteMenu({
           <a className="wb-site-menu-link wb-site-menu-quiet" href={MENU_SIGN_IN.href}>
             {MENU_SIGN_IN.label}
           </a>
-          <a className="wb-site-menu-link wb-site-menu-signup" href={MENU_SIGN_UP.href}>
+          <a
+            className={`wb-site-menu-link wb-site-menu-signup${signupBlue ? '' : ' is-quiet'}`}
+            href={MENU_SIGN_UP.href}
+          >
             {MENU_SIGN_UP.label}
           </a>
         </div>
       </div>
+      <BuildBanner />
     </header>
   );
 }

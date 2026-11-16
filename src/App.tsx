@@ -69,7 +69,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { readCarriedFacts, readCarriedQuestion, withoutCarried } from './lib/carried';
-import { pageFromPath, pathForPage, type Page } from './lib/pages';
+import { pageFromPath, pathForInterest, pathForPage, type Page } from './lib/pages';
 import { type MapStatus } from './components/BasinMap';
 import NavRail from './components/NavRail';
 import JourneyBar from './components/JourneyBar';
@@ -81,6 +81,7 @@ import { calvinProject } from './lib/calvinProject';
 import type { CarbonFigure } from './lib/visit';
 import type { AgentTurn } from './chat/evidence';
 import Commons from './components/Commons';
+import InterestPage from './components/InterestPage';
 import {
   HandoffError,
   NO_PERSON,
@@ -96,6 +97,7 @@ import PhoebeScreen from './components/PhoebeScreen';
 import CalvinScreen from './components/CalvinScreen';
 import SiteMenu from './components/SiteMenu';
 import { usePhone } from './lib/phone';
+import { blueButton, meetShowing } from './lib/blue';
 import { DEFAULT_SURFACE, type Surface } from './lib/surfaces';
 import { useConversation } from './chat/useConversation';
 import { WELLINGTON, wellingtonAsk } from './lib/wellington';
@@ -180,6 +182,7 @@ export default function App() {
   }, []);
   const onConsole = page === 'console';
   const onCommons = page === 'commons';
+  const onInterest = page === 'interest';
 
   /* ON A PHONE the left rail and the crew are panels that slide over the
      page, one at a time, opened from the row under the journey bar — the
@@ -320,6 +323,30 @@ export default function App() {
        never again. */
   }, []);
 
+  /* HE SPEAKS FIRST — W29, the maintainer's word of 16 Nov 2026. The first
+     time the desk shows on the console, and only when no question was carried
+     in from the paid site's landing, the desk sends him one opening turn, the
+     way Phoebe's and Bridget's screens greet: no bubble for the visitor, and
+     he writes it himself under his voice card. It counts as one of his thirty.
+     A carried question is answered first instead, as before. Declared after
+     the receiver above, so the address has been read when this runs; deferred
+     one tick for the same StrictMode reason. */
+  const openedDesk = useRef(false);
+  const askOpening = chat.askOpened;
+  const deskTurns = chat.turns.length;
+  useEffect(() => {
+    if (openedDesk.current || !onConsole || surface !== 'desk') return;
+    if (carried.current !== null || deskTurns > 0) {
+      if (deskTurns > 0) openedDesk.current = true;
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      openedDesk.current = true;
+      void askOpening({ opened: true, at: 'open' });
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [onConsole, surface, askOpening, deskTurns]);
+
   /* Opening Eligibility during learn starts that stage. Completing the
      worksheet — every criterion a verdict — hands the visit back to Wellington. */
   useEffect(() => {
@@ -441,6 +468,20 @@ export default function App() {
   const onEligibility = surface === 'eligibility';
   const onQuantification = surface === 'quantification';
 
+  /* ONE BLUE BUTTON AT A TIME — the maintainer's word of 16 Nov 2026
+     (src/lib/blue.ts). Meet <name> under the latest turn on the step in view,
+     else Save once something is on the record, else the menu's Sign up. */
+  const [meetOn, setMeetOn] = useState({ eligibility: false, map: false });
+  const onPhoebeMeet = useCallback((showing: boolean) => setMeetOn((m) => (m.eligibility === showing ? m : { ...m, eligibility: showing })), []);
+  const onBridgetMeet = useCallback((showing: boolean) => setMeetOn((m) => (m.map === showing ? m : { ...m, map: showing })), []);
+  const meetInView =
+    onConsole &&
+    !(phone && drawer !== null) &&
+    ((onDesk && meetShowing(chat.turns)) || (onEligibility && meetOn.eligibility) || (onMap && meetOn.map));
+  /* On a phone the save button is inside the project panel, so it counts only while that panel is open. */
+  const saveInView = onConsole && somethingOnRecord(visit) && (!phone || drawer === 'project');
+  const blue = blueButton({ meet: meetInView, save: saveInView, form: onInterest });
+
   return (
     <div
       className="wb-app"
@@ -458,6 +499,7 @@ export default function App() {
       <SiteMenu
         page={page}
         onPage={goTo}
+        signupBlue={blue === 'signup'}
         readout={
           /* The layer readout describes the map, so it only shows on the map. */
           onConsole && onMap && status && (
@@ -507,7 +549,9 @@ export default function App() {
             person,
             onPerson: setPerson,
             onExport: printScreeningReport,
+            blue: blue === 'save',
           }}
+          onInterest={() => navigate(pathForInterest())}
           drawer={phone ? { open: drawer === 'project', onClose: closeDrawer } : undefined}
         />
 
@@ -565,6 +609,7 @@ export default function App() {
                   visible={onMap}
                   invite={visit.partnersInvite}
                   onWellington={wellingtonComes}
+                  onMeet={onBridgetMeet}
                 />
               </div>
 
@@ -589,6 +634,7 @@ export default function App() {
                   eligibilityDone={sheetDone(visit, sheet)}
                   invite={visit.eligibilityInvite}
                   onWellington={wellingtonComes}
+                  onMeet={onPhoebeMeet}
                 />
               </div>
 
@@ -640,6 +686,17 @@ export default function App() {
         aria-hidden={!onCommons}
       >
         <Commons path={path} navigate={navigate} />
+      </main>
+
+      {/* REGISTER YOUR INTEREST — a third page at /interest, approved
+          16 Nov 2026. Like the Commons it holds no visit; the console stays
+          mounted, hidden, so a visit in progress survives the step away. */}
+      <main
+        className={onInterest ? 'wb-page wb-page-commons' : 'wb-page wb-page-commons is-off'}
+        style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden', visibility: onInterest ? 'visible' : 'hidden' }}
+        aria-hidden={!onInterest}
+      >
+        <InterestPage shown={onInterest} />
       </main>
       </div>
 

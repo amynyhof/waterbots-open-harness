@@ -43,6 +43,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
 import type { AgentHost, AgentTurn, TurnButton } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
+import { meetShowing } from '../lib/blue';
 import type { Citation } from '../lib/citation';
 import { worksheetCaption, contextFor, applyUpdates, type Sheet, type Verdicts } from '../lib/worksheetState';
 import { HER_PACKS } from '../lib/worksheet.generated';
@@ -116,6 +117,7 @@ export default function PhoebeScreen({
   eligibilityDone,
   invite = '',
   onWellington,
+  onMeet,
 }: {
   onVerdicts: (verdicts: Verdicts) => void;
   /** The visit's project record, carried to Phoebe with every ask. */
@@ -136,6 +138,8 @@ export default function PhoebeScreen({
   invite?: string;
   /** Brings Wellington into her chat with the next step, once her part is done. */
   onWellington?: (at: 'eligibility' | 'map', composerId: string) => Promise<AgentTurn | null>;
+  /** Tells the shell whether "Meet <name>" is under her chat's latest turn (one blue button, 16 Nov 2026). */
+  onMeet?: (showing: boolean) => void;
 }) {
   const carried = carriedRecord(record);
 
@@ -242,6 +246,12 @@ export default function PhoebeScreen({
   }
 
   const chat = useConversation(ask, PHOEBE.name);
+  /* ONE BLUE BUTTON (16 Nov 2026): the shell decides which button is blue, so
+     it is told whether Wellington's "Meet <name>" is the latest thing here. */
+  const meet = meetShowing(chat.turns);
+  useEffect(() => {
+    onMeet?.(meet);
+  }, [meet, onMeet]);
 
   const opened = useRef(false);
   const chatRef = useRef(chat);
