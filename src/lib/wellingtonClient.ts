@@ -109,7 +109,7 @@ export async function askWellington(
    * it, each row by id and state only — never her own sentences. `returned` is
    * true on the one turn the desk sends when the visitor comes back from her.
    */
-  found: { sheet?: FoundSheet[]; returned?: boolean; at?: 'eligibility' | 'map' } = {}
+  found: { sheet?: FoundSheet[]; returned?: boolean; at?: 'eligibility' | 'map' | 'open' } = {}
 ): Promise<WellingtonAnswer> {
   let response: Response;
   try {
@@ -120,7 +120,7 @@ export async function askWellington(
       stage?: typeof stage;
       sheet?: FoundSheet[];
       returned?: true;
-      at?: 'eligibility' | 'map';
+      at?: 'eligibility' | 'map' | 'open';
     } = {
       messages: history,
     };

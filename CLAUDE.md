@@ -252,9 +252,11 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   are taken from saved production pages brought in by the maintainer's
   hand, and none of their data, composers, organisations, roles or
   saving.
-- **The desk says the site is under build, from 23 Sep 2026.** One line in the maintainer's words
-  above Wellington's chat, and a dated build-update fact he phrases when asked, refreshed at every
-  full close-out (the ritual's step 8). Item S11.
+- **The desk says the site is under build, from 23 Sep 2026.** ~~One line in the maintainer's words
+  above Wellington's chat~~ **From 16 Nov 2026 (W28) one line under the site menu on every page, in
+  her words: "This site is still being built."**, and a dated build-update fact he phrases when asked, refreshed at every
+  full close-out (the ritual's step 8). Item S11. The "first screening, not an official decision"
+  note stays beside the figures and in the report, never in the banner.
 - **Agents phrase the roster's facts themselves, from 3 Sep 2026.** An
   agent is given facts and rules and writes its own two or three plain
   sentences; the maintainer approves rules, not wording, and no prompt
@@ -455,6 +457,19 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   print-only, growing with the visit) sit in the left rail under the project. Bridget has a voice
   card and a short opening (B1), and the map zooms to the country as soon as the place is known
   (B2). Calvin's chat is not built, so Wellington does not yet come to it.
+- **The queued round, 16 Nov 2026, the maintainer's word on #175** (the proposal is
+  docs/proposals/queued-round-2026-11-16.md). **W28:** the build banner above. **W29:** Wellington
+  speaks first on the desk, one opened turn in his own words, unless a question was carried in.
+  **V1:** every agent speaks 3rd- to 6th-grade English (AGENT_RULES.md and every voice card); a
+  reading-grade count in `api/_reply.ts` logs a reply above grade 6, and a measured walk fails when
+  its replies average above 6 or one is above 8, her bars. **One blue button at a time**
+  (`src/lib/blue.ts`): Meet <name> under the latest turn on the step in view, else Save, else the
+  menu's Sign up; the form's Send on its own page. **Register your interest** at `/interest`, from
+  the left rail and each Commons "Coming soon" row: kept in the site store with no time limit until
+  the person asks to be removed, the form says how, nothing deletes on its own, a copy to
+  hello@waterbots.ai, three a day per visitor; `scripts/count-interest.mjs` counts and removes and
+  never prints a name or an email. **A29** (Phoebe asks "already earning Gold Standard credits?",
+  passed to Calvin as `creditedUnderV1`) waits on Calvin 0.3.0.
 - **Wellington reads back what Phoebe found, and asks people served, from 26–27 Sep 2026 (items A17
   and A16, #128 and #130).** Each ask carries her worksheet as row ids and states only; he greets a
   visitor coming back from her knowing each pathway's read, never her sentences, and routes to
@@ -464,8 +479,9 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep, 26,034 from 4 Oct, 26,079 from 31 Oct, and
   23,123 from 5 Nov 2026, when his shorter instructions were built (item A26), 24,560 from
   13 Nov 2026, after the maintainer's three walks of them, 24,581 with the primer's line on Phoebe's tab, 25,943 after her fourth walk, 26,145 after her fifth, 26,148 with the voice card and the
-  shared plain-words list, and 26,136 when he came to the agents' chats, all 14 Nov 2026, against the
-  unchanged gate of 26,199.
+  shared plain-words list, and 26,136 when he came to the agents' chats, all 14 Nov 2026, and 26,158
+  with the reading level in his voice card, 16 Nov 2026 (his opening note rides beside the prompt,
+  as his notes for joining a chat do), against the unchanged gate of 26,199.
 - **The engine bundle is tracked at `carried/`, from 27 Sep 2026**, placed by the maintainer's
   hand and merged on `main` as it stands (#132), tagged `engine-carry-2026-09-27`. **It was replaced
   on 3 Oct 2026 by v0.16.1**, the paid site's `calculator-seal-2026-10-03`: 34 files, 34 hashes

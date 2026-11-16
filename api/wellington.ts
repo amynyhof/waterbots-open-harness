@@ -29,7 +29,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { recordAbstention } from './_abstentions.js';
 import { CARRIED, WELLINGTON, countOneMessage, timeUntilReset } from './_cap.js';
 import { phoebeFound, readRecord, readSheet, readStage, stageBlock, visitBlock } from './_record.js';
-import { MIN_REPLY_CHARS, cardWordsIn, isDegenerateReply } from './_reply.js';
+import { MIN_REPLY_CHARS, READING_GRADE, cardWordsIn, isDegenerateReply, isHardReply, readingGrade } from './_reply.js';
 import { validate } from './_wellingtonAnswer.js';
 import { WELLINGTON_RESPONSE_SCHEMA, WELLINGTON_SYSTEM_PROMPT } from './_wellingtonPrompt.js';
 
@@ -95,14 +95,18 @@ export async function GET(): Promise<Response> {
   return problem(405, 'This endpoint takes POST requests only.');
 }
 
-/** The turn he answers when he joins another agent's chat. Never shown as a bubble. */
-const AT_TURN: Record<'eligibility' | 'map', string> = {
+/** The turn he answers when he joins another agent's chat, or opens his own. Never shown as a bubble. */
+const AT_TURN: Record<'eligibility' | 'map' | 'open', string> = {
   eligibility: "(Phoebe's step is done. Wellington joins the visitor in her chat.)",
   map: "(Bridget's step is done. Wellington joins the visitor in her chat.)",
+  open: '(The visitor has just arrived and has not said anything yet.)',
 };
 
-/** What he is told when he joins another agent's chat — 14 Nov 2026. */
-const AT_NOTE: Record<'eligibility' | 'map', string> = {
+/** What he is told when he joins another agent's chat — 14 Nov 2026 — or opens his own desk (W29). */
+const AT_NOTE: Record<'eligibility' | 'map' | 'open', string> = {
+  /* W29, 16 Nov 2026: he speaks first on his desk when no question was carried in. */
+  open:
+    '# Where you are speaking\n\nThe visitor has just arrived on your desk and has said nothing yet. Speak first, in your own words: who you are and what the team does, then one question about their project. If the record already holds something, use it and ask only for what is missing. Set no route.',
   eligibility:
     "# Where you are speaking\n\nYou have joined the visitor in Phoebe's chat, because her step is done. In a line, say where things stand from what Phoebe found, then the one next step, and set the route to it; the console draws its button under your message. Never tell the visitor to come back to you.",
   map:
@@ -146,8 +150,10 @@ export async function POST(req: Request): Promise<Response> {
 
   /* WELLINGTON COMES TO YOU — the maintainer's ruling of 14 Nov 2026. When an
      agent's step is done he joins the visitor in that agent's chat with the
-     next step; `at` names the step. Only with `returned`, and only these. */
-  const at = returned && (body.at === 'eligibility' || body.at === 'map') ? body.at : null;
+     next step; `at` names the step. Only with `returned`, and only these.
+     `open` is his own desk on arrival: he speaks first (W29, 16 Nov 2026). */
+  const at =
+    returned && (body.at === 'eligibility' || body.at === 'map' || body.at === 'open') ? body.at : null;
 
   const messages = Array.isArray(body.messages) ? body.messages : null;
   if (!messages || (messages.length === 0 && !returned)) {
@@ -179,7 +185,9 @@ export async function POST(req: Request): Promise<Response> {
   if (returned && (clean.length === 0 || clean[clean.length - 1].role !== 'user')) {
     /* The model needs a user turn. This line is never shown as a bubble. */
     clean.push({ role: 'user', content: at ? AT_TURN[at] : '(The visitor came back from Eligibility.)' });
-    if (!lastQuestion) lastQuestion = at ? `(joined at ${at})` : '(came back from Eligibility)';
+    if (!lastQuestion) {
+      lastQuestion = at === 'open' ? '(opened the desk)' : at ? `(joined at ${at})` : '(came back from Eligibility)';
+    }
   }
   if (clean.length === 0 || clean[clean.length - 1].role !== 'user') {
     return problem(400, 'No message was sent.');
@@ -385,6 +393,13 @@ export async function POST(req: Request): Promise<Response> {
      same list as hers. Logged, never blocked. */
   const cardWords = cardWordsIn(answer.reply);
   if (cardWords.length) console.warn(`wellington: reply used card words — ${cardWords.join(', ')}`);
+
+  /* READING LEVEL (V1, 16 Nov 2026): 3rd- to 6th-grade English. A reply above
+     grade 6 is logged, never blocked; the measured walks fail on the bars.
+     See readingGrade in api/_reply.ts. */
+  if (isHardReply(answer.reply)) {
+    console.log(`wellington: reply read above grade ${READING_GRADE.average} — grade ${readingGrade(answer.reply)}`);
+  }
 
   /* Only a question outside every lane is logged, and it is marked as his.
      His routings are not abstentions and are not written down. */

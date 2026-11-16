@@ -32,6 +32,7 @@
 import { useEffect, useState } from 'react';
 import { MAX_HUMAN_NOTE_CHARS, type PersonAsk, type SealState } from '../lib/handoff';
 import { SITE_LABEL, SITE_URL } from '../lib/site';
+import { pathForInterest } from '../lib/pages';
 import { PROJECT_STAGES, projectType } from '../lib/projectTypes.generated';
 import { WATER_SUPPLY_TYPES, servedWords, type Provenance, type VisitContext } from '../lib/visit';
 
@@ -65,7 +66,8 @@ const RECORD_EXPLAINER =
  * THE SAVE DOOR AND THE REPORT, under the project — the maintainer's word of
  * 14 Nov 2026 (W27, S21). The save button left the foot of the crew column
  * for here, with the box that sends the project to the team for review, and
- * "Export screening report" sits under it. One blue button: Save.
+ * "Export screening report" sits under it. Save is blue only when it is the
+ * one next step (src/lib/blue.ts, 16 Nov 2026); otherwise it is drawn quiet.
  */
 export interface SaveDoor {
   /** Something is on the record, so there is a project to save and report. */
@@ -78,17 +80,22 @@ export interface SaveDoor {
   onPerson: (next: PersonAsk) => void;
   /** Opens the print dialog on the screening report (S21). */
   onExport: () => void;
+  /** One blue button at a time: Save is the blue one only when nothing comes before it. */
+  blue: boolean;
 }
 
 export default function NavRail({
   context,
   onTyped,
   save,
+  onInterest,
   drawer,
 }: {
   context: VisitContext;
   onTyped: (field: 'name' | 'place', value: string) => void;
   save: SaveDoor;
+  /** Opens the Register your interest form (16 Nov 2026). */
+  onInterest?: () => void;
   /** On a phone: the rail is a sliding panel, open or shut by the shell. */
   drawer?: { open: boolean; onClose: () => void };
 }) {
@@ -278,6 +285,30 @@ export default function NavRail({
 
       <div style={{ flex: 1 }} />
 
+      {/* REGISTER YOUR INTEREST — pinned to the foot of the rail, just above
+          waterbots.ai and below everything else, the maintainer's word of
+          16 Nov 2026 on #175. It stands out a little as BRAND.md §7's tinted
+          panel in Tide (a light fill, a keyline, Tide text, a small icon) and
+          is never a solid blue fill, so one blue button holds
+          (src/lib/blue.ts). The record above scrolls; this stays put. With the
+          rail collapsed it is the icon alone, as waterbots.ai is. */}
+      {onInterest && (
+        <a
+          className={open ? 'wb-interest-cta' : 'wb-interest-cta is-collapsed'}
+          href={pathForInterest()}
+          title={open ? undefined : 'Register your interest'}
+          aria-label={open ? undefined : 'Register your interest'}
+          onClick={(e) => {
+            if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            e.preventDefault();
+            onInterest();
+          }}
+        >
+          <InterestIcon />
+          {open && 'Register your interest'}
+        </a>
+      )}
+
       {/* The production site this console is linked from, and where saving
           happens. The reverse link is the marketing site's to make. */}
       <a
@@ -337,7 +368,7 @@ function SaveBlock({ save }: { save: SaveDoor }) {
 
       <button
         type="button"
-        className="wb-save-button"
+        className={save.blue ? 'wb-save-button' : 'wb-save-button is-quiet'}
         onClick={save.onSeal}
         disabled={busy}
         aria-busy={sealing.kind === 'sealing' || undefined}
@@ -438,6 +469,16 @@ function RecordRow({
         </div>
       )}
     </div>
+  );
+}
+
+/** A small envelope, in the link's own colour. */
+function InterestIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden style={{ flex: 'none' }}>
+      <rect x="2" y="3.5" width="12" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+      <path d="m2.5 4.5 5.5 4 5.5-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 

@@ -56,30 +56,9 @@ export default function Desk({
     <AgentScreen
       host={WELLINGTON}
       tabs={{
-        chat: (
-          <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
-            {/* The build note — one honest line in the maintainer's words, her ruling of
-                23 Sep 2026: the site is under build, and Wellington carries a dated
-                build-update fact he phrases when asked. Item S11. */}
-            <p
-              className="t-caption"
-              style={{
-                maxWidth: SCREEN_COLUMN,
-                width: '100%',
-                margin: '0 auto',
-                padding: '10px var(--gutter) 0',
-                fontSize: 12,
-                lineHeight: 1.5,
-                color: 'var(--ink-2)',
-              }}
-            >
-              This site is under build. Look around: the agents and the free screening are being
-              built so a visitor can find out whether their project is a good fit for impact
-              funding. Ask Wellington for a build update.
-            </p>
-            <ScreenChat host={WELLINGTON} chat={chat} composerId="wb-desk-composer" />
-          </div>
-        ),
+        /* The build note that stood here (item S11, 23 Sep 2026) is the one-line
+           banner under the site menu from 16 Nov 2026, on every page (W28). */
+        chat: <ScreenChat host={WELLINGTON} chat={chat} composerId="wb-desk-composer" />,
         pack: (
           <QuietTab heading={`${WELLINGTON.name}'s Knowledge Pack`}>
             {WELLINGTON.name} carries no Knowledge Pack. He works from what the crew can do and

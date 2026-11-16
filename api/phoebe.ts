@@ -29,7 +29,17 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 import { recordAbstention } from './_abstentions.js';
-import { MIN_REPLY_CHARS, PHOEBE_REPLY_LIMIT, cardWordsIn, isDegenerateReply, isLongReply, replyLength } from './_reply.js';
+import {
+  MIN_REPLY_CHARS,
+  PHOEBE_REPLY_LIMIT,
+  READING_GRADE,
+  cardWordsIn,
+  isDegenerateReply,
+  isHardReply,
+  isLongReply,
+  readingGrade,
+  replyLength,
+} from './_reply.js';
 import { needCardsSoFar, replySoFar } from './_replyStream.js';
 import { PHOEBE, countOneMessage, timeUntilReset } from './_cap.js';
 import { readHandBack, type HandBack } from './_handBack.js';
@@ -649,6 +659,13 @@ export async function POST(req: Request): Promise<Response> {
      the measured walk fails on one. See CARD_WORDS in api/_reply.ts. */
   const cardWords = cardWordsIn(answer.reply);
   if (cardWords.length) console.log(`phoebe: reply used card words — ${cardWords.join(', ')}`);
+
+  /* READING LEVEL (V1, 16 Nov 2026): 3rd- to 6th-grade English. A reply above
+     grade 6 is logged, never blocked; the measured walks fail on the bars.
+     See readingGrade in api/_reply.ts. */
+  if (isHardReply(answer.reply)) {
+    console.log(`phoebe: reply read above grade ${READING_GRADE.average} — grade ${readingGrade(answer.reply)}`);
+  }
 
   const doneAt = Date.now();
   /* SPEED, WRITTEN DOWN — added 14 Nov 2026, when the platform's log showed

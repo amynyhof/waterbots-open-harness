@@ -88,6 +88,13 @@ export const HANDOFF_DAILY_CAP = 10;
  */
 export const CARRIED_DAILY_CAP = 10;
 
+/**
+ * The interest form's cap — the maintainer's plan of 14 Nov 2026, approved
+ * 16 Nov 2026: three sign-ups a day per visitor, under their own counter. A
+ * person signs up once; three leaves room for a typo and refuses a flood.
+ */
+export const INTEREST_DAILY_CAP = 3;
+
 export const PHOEBE: CapAgent = { name: 'phoebe', cap: DAILY_CAP };
 export const WELLINGTON: CapAgent = { name: 'wellington', cap: WELLINGTON_DAILY_CAP };
 export const BRIDGET: CapAgent = { name: 'bridget', cap: BRIDGET_DAILY_CAP };
@@ -95,6 +102,8 @@ export const BRIDGET: CapAgent = { name: 'bridget', cap: BRIDGET_DAILY_CAP };
 export const HANDOFF: CapAgent = { name: 'handoff', cap: HANDOFF_DAILY_CAP };
 /** Not an agent either. The key prefix is "carried". */
 export const CARRIED: CapAgent = { name: 'carried', cap: CARRIED_DAILY_CAP };
+/** Not an agent either. The key prefix is "interest". */
+export const INTEREST: CapAgent = { name: 'interest', cap: INTEREST_DAILY_CAP };
 
 export type CapDecision =
   /** Counted. Call `refund` if no answer is delivered. */
