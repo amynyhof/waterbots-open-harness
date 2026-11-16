@@ -2045,7 +2045,8 @@ button.wb-info {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 18px 0 14px;
+  flex: none;
+  margin: 10px 12px;
   padding: 9px 12px;
   border: 1px solid color-mix(in oklab, var(--tide-ui) 25%, transparent);
   border-radius: var(--r-md);
@@ -2060,6 +2061,11 @@ button.wb-info {
 .wb-interest-cta:hover {
   background: color-mix(in oklab, var(--tide-ui) 9%, transparent);
   border-color: color-mix(in oklab, var(--tide-ui) 40%, transparent);
+}
+.wb-interest-cta.is-collapsed {
+  justify-content: center;
+  margin: 10px 8px;
+  padding: 8px 0;
 }
 .wb-interest-cta:focus-visible {
   outline: 2px solid var(--tide-ui);

@@ -264,26 +264,6 @@ export default function NavRail({
             editable={{ value: context.place, onChange: (v) => onTyped('place', v), placeholder: 'or type it' }}
             last
           />
-
-          {/* REGISTER YOUR INTEREST — at the foot of the rail, below the
-              record, the maintainer's word of 16 Nov 2026 on #175. It stands
-              out a little as BRAND.md §7's tinted panel in Tide (a light fill,
-              a keyline, Tide text, a small icon) and is never a solid blue
-              fill, so the one-blue-button rule holds (src/lib/blue.ts). */}
-          {onInterest && (
-            <a
-              className="wb-interest-cta"
-              href={pathForInterest()}
-              onClick={(e) => {
-                if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-                e.preventDefault();
-                onInterest();
-              }}
-            >
-              <InterestIcon />
-              Register your interest
-            </a>
-          )}
         </div>
       ) : (
         <div
@@ -304,6 +284,30 @@ export default function NavRail({
       )}
 
       <div style={{ flex: 1 }} />
+
+      {/* REGISTER YOUR INTEREST — pinned to the foot of the rail, just above
+          waterbots.ai and below everything else, the maintainer's word of
+          16 Nov 2026 on #175. It stands out a little as BRAND.md §7's tinted
+          panel in Tide (a light fill, a keyline, Tide text, a small icon) and
+          is never a solid blue fill, so one blue button holds
+          (src/lib/blue.ts). The record above scrolls; this stays put. With the
+          rail collapsed it is the icon alone, as waterbots.ai is. */}
+      {onInterest && (
+        <a
+          className={open ? 'wb-interest-cta' : 'wb-interest-cta is-collapsed'}
+          href={pathForInterest()}
+          title={open ? undefined : 'Register your interest'}
+          aria-label={open ? undefined : 'Register your interest'}
+          onClick={(e) => {
+            if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            e.preventDefault();
+            onInterest();
+          }}
+        >
+          <InterestIcon />
+          {open && 'Register your interest'}
+        </a>
+      )}
 
       {/* The production site this console is linked from, and where saving
           happens. The reverse link is the marketing site's to make. */}

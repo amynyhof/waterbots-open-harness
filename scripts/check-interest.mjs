@@ -184,10 +184,12 @@ const shelf = readFileSync(join('src', 'components', 'CommonsShelf.tsx'), 'utf8'
   const css = readFileSync(join('src', 'styles', 'base.css'), 'utf8');
   const rule = (css.match(/\.wb-interest-cta \{([^}]*)\}/) ?? [])[1] ?? '';
   expect(
-    'the left rail has the link at its foot, below the record',
+    'the left rail has the link pinned at its foot, below the record and just above waterbots.ai',
     /Register your interest/.test(rail) && /wb-interest-cta/.test(rail) &&
-      rail.indexOf('className="wb-interest-cta"') > rail.indexOf('label="Where it is"'),
-    'the link is missing, or above the record'
+      rail.indexOf("'wb-interest-cta'") > rail.indexOf('<div style={{ flex: 1 }} />') &&
+      rail.indexOf("'wb-interest-cta'") < rail.indexOf('href={SITE_URL}') &&
+      rail.indexOf('<div style={{ flex: 1 }} />') > rail.indexOf('label="Where it is"'),
+    'the link is missing, or not between the spacer and waterbots.ai'
   );
   expect(
     'it stands out as a tinted, outlined box, never a solid blue fill',
