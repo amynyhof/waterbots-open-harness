@@ -178,7 +178,25 @@ expect('the form shows the keeping line', /\{KEEPING_LINE\}/.test(form), 'KEEPIN
 console.log('\n  The ways in, and the counting');
 const rail = readFileSync(join('src', 'components', 'NavRail.tsx'), 'utf8');
 const shelf = readFileSync(join('src', 'components', 'CommonsShelf.tsx'), 'utf8');
-expect('the left rail has the quiet link', /Register your interest/.test(rail) && /wb-quiet-link/.test(rail), 'no link in the rail');
+{
+  /* Her word of 16 Nov 2026 on #175: at the foot of the rail, below the record;
+     a tinted, outlined box with a small icon, never a solid blue fill. */
+  const css = readFileSync(join('src', 'styles', 'base.css'), 'utf8');
+  const rule = (css.match(/\.wb-interest-cta \{([^}]*)\}/) ?? [])[1] ?? '';
+  expect(
+    'the left rail has the link at its foot, below the record',
+    /Register your interest/.test(rail) && /wb-interest-cta/.test(rail) &&
+      rail.indexOf('className="wb-interest-cta"') > rail.indexOf('label="Where it is"'),
+    'the link is missing, or above the record'
+  );
+  expect(
+    'it stands out as a tinted, outlined box, never a solid blue fill',
+    /border: 1px solid color-mix\(in oklab, var\(--tide-ui\) 25%, transparent\)/.test(rule) &&
+      /background: color-mix\(in oklab, var\(--tide-ui\) 5%, transparent\)/.test(rule) &&
+      !/background: var\(--tide-ui\)/.test(rule) && /<InterestIcon \/>/.test(rail),
+    rule.replace(/\s+/g, ' ')
+  );
+}
 expect('a Commons "Coming soon" row opens the form with its module', /Coming soon ·/.test(shelf) && /pathForInterest\(card\.slug\)/.test(shelf), 'no link on the Commons');
 expect('/interest is served by the page', /"source": "\/interest"/.test(readFileSync('vercel.json', 'utf8')), 'no rewrite for /interest');
 const counter = readFileSync(join('scripts', 'count-interest.mjs'), 'utf8');

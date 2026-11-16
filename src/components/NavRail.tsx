@@ -212,24 +212,6 @@ export default function NavRail({
 
           {save.show && <SaveBlock save={save} />}
 
-          {/* REGISTER YOUR INTEREST — approved 16 Nov 2026: a quiet link under
-              "Export screening report", and under the project card before
-              anything is on the record. */}
-          {onInterest && (
-            <a
-              className="wb-quiet-link"
-              href={pathForInterest()}
-              onClick={(e) => {
-                if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-                e.preventDefault();
-                onInterest();
-              }}
-              style={{ display: 'block', margin: '10px 4px 0', fontSize: 12.5 }}
-            >
-              Register your interest
-            </a>
-          )}
-
           {/* THE RECORD his interview populates. Four rows; a dash until he
               has heard it. The explainer sits behind the (i). */}
           <div
@@ -282,6 +264,26 @@ export default function NavRail({
             editable={{ value: context.place, onChange: (v) => onTyped('place', v), placeholder: 'or type it' }}
             last
           />
+
+          {/* REGISTER YOUR INTEREST — at the foot of the rail, below the
+              record, the maintainer's word of 16 Nov 2026 on #175. It stands
+              out a little as BRAND.md §7's tinted panel in Tide (a light fill,
+              a keyline, Tide text, a small icon) and is never a solid blue
+              fill, so the one-blue-button rule holds (src/lib/blue.ts). */}
+          {onInterest && (
+            <a
+              className="wb-interest-cta"
+              href={pathForInterest()}
+              onClick={(e) => {
+                if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                e.preventDefault();
+                onInterest();
+              }}
+            >
+              <InterestIcon />
+              Register your interest
+            </a>
+          )}
         </div>
       ) : (
         <div
@@ -463,6 +465,16 @@ function RecordRow({
         </div>
       )}
     </div>
+  );
+}
+
+/** A small envelope, in the link's own colour. */
+function InterestIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden style={{ flex: 'none' }}>
+      <rect x="2" y="3.5" width="12" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+      <path d="m2.5 4.5 5.5 4 5.5-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 
