@@ -35,7 +35,8 @@
  */
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { pathForInterest } from '../lib/pages';
+import { SUPPORTERS_PATH, pathForInterest } from '../lib/pages';
+import { SUPPORTERS_LINK } from '../lib/supporters';
 import {
   PLANNED,
   SEEKING,
@@ -93,10 +94,13 @@ const EYEBROW = {
 export default function CommonsShelf({
   onOpen,
   onInterest,
+  onSupporters,
 }: {
   onOpen: (card: ShelfCard) => void;
   /** Opens the interest form with this module chosen (16 Nov 2026). */
   onInterest?: (card: ShelfCard) => void;
+  /** Opens the supporters page (16 Nov 2026, #176). */
+  onSupporters?: () => void;
 }) {
   return (
     /* The scrollbar's room is kept on both edges, so the centred page sits
@@ -147,6 +151,20 @@ export default function CommonsShelf({
             >
               Explore the agents, review their methods, test their outputs, and see exactly where every
               answer comes from. Community ratings coming soon.
+            </p>
+            {/* SUPPORTERS — one quiet line under the intro, approved 16 Nov 2026 on #176. */}
+            <p className="t-caption" style={{ margin: '8px 0 0', fontSize: 13 }}>
+              <a
+                className="wb-quiet-link"
+                href={SUPPORTERS_PATH}
+                onClick={(e) => {
+                  if (!onSupporters || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                  e.preventDefault();
+                  onSupporters();
+                }}
+              >
+                {SUPPORTERS_LINK}
+              </a>
             </p>
           </div>
           <a

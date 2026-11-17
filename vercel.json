@@ -2,6 +2,7 @@
   "rewrites": [
     { "source": "/commons", "destination": "/index.html" },
     { "source": "/commons/:path*", "destination": "/index.html" },
-    { "source": "/interest", "destination": "/index.html" }
+    { "source": "/interest", "destination": "/index.html" },
+    { "source": "/supporters", "destination": "/index.html" }
   ]
 }

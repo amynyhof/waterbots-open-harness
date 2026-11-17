@@ -506,7 +506,7 @@ function RecordRow({
 }
 
 /** A small envelope, in the link's own colour. */
-function InterestIcon() {
+export function InterestIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden style={{ flex: 'none' }}>
       <rect x="2" y="3.5" width="12" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.4" />

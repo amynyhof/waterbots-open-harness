@@ -7,6 +7,8 @@
  * Run on the maintainer's machine with the store's keys in the environment —
  * KV_REST_API_URL and KV_REST_API_TOKEN (or the UPSTASH_REDIS_REST_* pair),
  * the same keys the site's daily caps use. The keys never enter the repository.
+ * From 16 Nov 2026 (#176) they are read from .env.local when not already set
+ * (scripts/_local-store.mjs).
  *
  * IT NEVER PRINTS A NAME OR AN EMAIL. Counting prints the number of sign-ups,
  * the number of distinct organisations, and the count for each interest and
@@ -15,41 +17,21 @@
  * REMOVAL IS THE ONLY WAY A SIGN-UP LEAVES — the maintainer's ruling of
  * 16 Nov 2026: kept until the person asks to be removed, nothing deletes on
  * its own. `--remove` takes every entry with that email address out of the
- * list and prints how many went, not whose.
+ * list and prints how many went, not whose. From 16 Nov 2026 (#176) it also
+ * takes that person off the supporters page, whatever state their entry is in.
  */
+
+import { localStore, run } from './_local-store.mjs';
 
 const KEY = 'interest:signups';
 
-function config() {
-  for (const [u, t] of [
-    ['KV_REST_API_URL', 'KV_REST_API_TOKEN'],
-    ['UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN'],
-  ]) {
-    if (process.env[u] && process.env[t]) return { url: process.env[u].replace(/\/+$/, ''), token: process.env[t] };
-  }
-  return null;
-}
-
-async function run(store, commands) {
-  const response = await fetch(`${store.url}/pipeline`, {
-    method: 'POST',
-    headers: { authorization: `Bearer ${store.token}`, 'content-type': 'application/json' },
-    body: JSON.stringify(commands),
-    signal: AbortSignal.timeout(10_000),
-  });
-  if (!response.ok) throw new Error(`the store answered ${response.status}`);
-  const results = await response.json();
-  return results.map((r, i) => {
-    if (r && typeof r.error === 'string') throw new Error(`${commands[i][0]} was refused: ${r.error}`);
-    return r?.result;
-  });
-}
-
-const store = config();
-if (!store) {
-  console.error('No store keys in the environment: set KV_REST_API_URL and KV_REST_API_TOKEN, then run this again.');
+const local = localStore();
+if (local.problem) {
+  console.error(local.problem);
   process.exit(1);
 }
+const store = local.store;
+const SUPPORTERS = ['supporters:waiting', 'supporters:shown', 'supporters:declined'];
 
 const [entries] = await run(store, [['LRANGE', KEY, 0, -1]]);
 const list = Array.isArray(entries) ? entries.filter((e) => typeof e === 'string') : [];
@@ -70,11 +52,18 @@ if (removeAt !== -1) {
   }
   const matching = parsed.filter((p) => p.entry && String(p.entry.email).toLowerCase() === email);
   let removed = 0;
+  let offThePage = 0;
   for (const p of matching) {
     const [n] = await run(store, [['LREM', KEY, 0, p.raw]]);
     removed += typeof n === 'number' ? n : 0;
+    /* Their supporter entry goes too, from wherever it is. */
+    if (typeof p.entry.supporter === 'string' && p.entry.supporter) {
+      const gone = await run(store, SUPPORTERS.map((k) => ['HDEL', k, p.entry.supporter]));
+      offThePage += gone.reduce((sum, g) => sum + (typeof g === 'number' ? g : 0), 0);
+    }
   }
   console.log(`Removed ${removed} sign-up${removed === 1 ? '' : 's'} for that address. ${list.length - removed} remain.`);
+  if (offThePage) console.log(`Their supporter entry was removed too.`);
   process.exit(0);
 }
 

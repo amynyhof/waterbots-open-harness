@@ -7,7 +7,7 @@
 > to prove."** Approving an entry is **one simple command she can paste into PowerShell** (section 4).
 > Where the text below differs, her answers stand.
 
-~~**Written 16 Nov 2026 for the maintainer. Proposal only: nothing is built.**~~ **Written 16 Nov 2026 for the maintainer.** It answers her message of
+~~**Written 16 Nov 2026 for the maintainer. Proposal only: nothing is built.**~~ **Written 16 Nov 2026 for the maintainer. Built the same day, after #174 merged.** It answers her message of
 16 Nov 2026: a public supporters view for Register your interest, with an opt-in box "Show my support
 publicly", optional comment, title and company, a role from a closed list, and **every public entry
 waiting for her approval before it shows. Nothing shows or deletes on its own.**

@@ -18,7 +18,14 @@
  * reads the hello@waterbots.ai inbox. Nothing shows on the site, and nothing
  * goes to the paid site. scripts/count-interest.mjs counts sign-ups and
  * organisations and never prints a name or an email.
+ *
+ * SUPPORTERS, from 16 Nov 2026 (#176): a sign-up may also tick "Show my support
+ * publicly", with a role, a title and a comment. That public part waits for the
+ * maintainer's approval in its own place (api/_supporters.ts), never with the
+ * email; the sign-up keeps the supporter's id so a removal finds both.
  */
+
+import { readSupport, type SupportFields } from './_supporters.js';
 
 /** The store's one list for sign-ups. No expiry, never trimmed: her ruling. */
 export const INTEREST_KEY = 'interest:signups';
@@ -47,11 +54,13 @@ export interface InterestBody {
   email: string;
   interests: string[];
   module: string;
+  /** The public part, only when the box to show support is ticked. */
+  support: SupportFields | null;
 }
 
 export type InterestReading = { signup: InterestBody } | { robot: true } | { problem: string };
 
-const KEYS = ['name', 'organisation', 'email', 'interests', 'module', 'consent', 'website'];
+const KEYS = ['name', 'organisation', 'email', 'interests', 'module', 'consent', 'website', 'public', 'role', 'title', 'comment'];
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MODULE = /^[a-z0-9-]{1,40}$/;
 
@@ -95,16 +104,23 @@ export function readInterest(body: unknown): InterestReading {
   /* The box must be ticked: exactly true, never a truthy something. */
   if (b.consent !== true) return { problem: 'the box to keep these details is not ticked' };
 
-  return { signup: { name, organisation, email: email.toLowerCase(), interests, module } };
+  const reading = readSupport(b);
+  if ('problem' in reading) return reading;
+
+  return { signup: { name, organisation, email: email.toLowerCase(), interests, module, support: reading.support } };
 }
 
-/** The entry kept in the store: the sign-up, the date, and the consent words it agreed to. */
-export function interestEntry(signup: InterestBody, now: Date): string {
-  return JSON.stringify({ at: now.toISOString(), ...signup, consent: CONSENT_WORDS });
+/**
+ * The entry kept in the store: the sign-up, the date, and the consent words it agreed to. A sign-up
+ * that asked to show support keeps the supporter's id, and nothing public beyond what it already holds.
+ */
+export function interestEntry(signup: InterestBody, now: Date, supporter?: string): string {
+  const { support, ...kept } = signup;
+  return JSON.stringify({ at: now.toISOString(), ...kept, consent: CONSENT_WORDS, ...(support && supporter ? { supporter } : {}) });
 }
 
 /** The copy to hello@waterbots.ai, in plain words. */
-export function composeInterestMail(signup: InterestBody, now: Date): { subject: string; text: string } {
+export function composeInterestMail(signup: InterestBody, now: Date, supporter?: string): { subject: string; text: string } {
   const labels = signup.interests.map((id) => INTERESTS.find((i) => i.id === id)?.label ?? id);
   const lines = [
     'Someone registered their interest on open.waterbots.ai.',
@@ -118,6 +134,14 @@ export function composeInterestMail(signup: InterestBody, now: Date): { subject:
     '',
     `They agreed to: "${CONSENT_WORDS}"`,
     '',
+    ...(signup.support && supporter
+      ? [
+          'They also asked to show their support publicly. It is waiting for your approval and is not on the',
+          'supporters page until you approve it. To see what is waiting, run this in the repository folder:',
+          '  npm run supporters',
+          '',
+        ]
+      : []),
     'This sign-up is kept in the site store until they ask to be removed. To remove it, run scripts/count-interest.mjs --remove <their email>.',
   ];
   return { subject: `Registered interest: ${signup.organisation}`, text: lines.join('\n') };

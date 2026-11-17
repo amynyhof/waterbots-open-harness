@@ -18,7 +18,8 @@
 
 import { INTEREST, countOneMessage, timeUntilReset } from './_cap.js';
 import { INTEREST_KEY, MAX_INTEREST_BYTES, composeInterestMail, interestEntry, readInterest } from './_interest.js';
-import { StoreError, appendKept, storeConfig } from './_store.js';
+import { StoreError, appendKept, appendKeptWith, storeConfig } from './_store.js';
+import { SUPPORTER_KEYS, supporterEntry, supporterId } from './_supporters.js';
 import { TEAM_ADDRESS, TEAM_MAIL_FROM, TeamMailError, sendTeamMail, teamMailKey } from './_teamMail.js';
 
 export async function GET(): Promise<Response> {
@@ -75,8 +76,20 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   const now = new Date();
+  const signup = reading.signup;
+  /* A sign-up that asks to show support: its public part waits for the
+     maintainer's approval (api/_supporters.ts), written in the same
+     transaction as the sign-up, so it is kept whole or not at all. */
+  const supporter = signup.support ? supporterId() : undefined;
   try {
-    await appendKept(store, INTEREST_KEY, interestEntry(reading.signup, now));
+    if (signup.support && supporter) {
+      const waiting = supporterEntry(supporter, signup.name, signup.organisation, signup.support, now);
+      await appendKeptWith(store, INTEREST_KEY, interestEntry(signup, now, supporter), [
+        ['HSET', SUPPORTER_KEYS.waiting, supporter, JSON.stringify(waiting)],
+      ]);
+    } else {
+      await appendKept(store, INTEREST_KEY, interestEntry(signup, now));
+    }
   } catch (error) {
     if (decision.kind === 'allowed') await decision.refund();
     console.error(`interest: the sign-up could not be written — ${error instanceof StoreError ? error.message : String(error)}`);
@@ -91,7 +104,7 @@ export async function POST(req: Request): Promise<Response> {
     console.error('interest: RESEND_API_KEY is not set, so no copy went to the team inbox; the sign-up is kept');
   } else {
     try {
-      const mail = composeInterestMail(reading.signup, now);
+      const mail = composeInterestMail(signup, now, supporter);
       await sendTeamMail(key, { to: TEAM_ADDRESS, from: TEAM_MAIL_FROM, ...mail });
       mailed = true;
     } catch (error) {
@@ -101,7 +114,7 @@ export async function POST(req: Request): Promise<Response> {
     }
   }
 
-  return json(200, { kept: true, mailed });
+  return json(200, { kept: true, mailed, ...(supporter ? { waiting: true } : {}) });
 }
 
 function json(status: number, payload: unknown, headers?: Record<string, string>): Response {

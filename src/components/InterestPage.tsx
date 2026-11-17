@@ -14,6 +14,12 @@
  *
  * HONEST STATES. Nothing is said to be kept until the server says it was; a
  * failure says it was not kept and what to do. No pretend progress.
+ *
+ * SHOW MY SUPPORT PUBLICLY — approved 16 Nov 2026, the maintainer's word on
+ * #176. A second box, unticked, below the one that keeps the details. Ticked,
+ * it opens a role (required, from the list), a title and a comment (both
+ * optional). The name as typed and the organisation are the form's own fields.
+ * The entry waits for her approval before it shows on /supporters.
  */
 
 import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
@@ -27,6 +33,8 @@ import {
   sendInterest,
   type InterestForm,
 } from '../lib/interest';
+import { PUBLIC_OPENING, PUBLIC_WORDS, ROLES, SUPPORT_LIMITS, SUPPORTERS_LINK, WAITING_LINE } from '../lib/supporters';
+import { SUPPORTERS_PATH } from '../lib/pages';
 
 const EMPTY: InterestForm = {
   name: '',
@@ -36,9 +44,13 @@ const EMPTY: InterestForm = {
   module: '',
   consent: false,
   website: '',
+  public: false,
+  role: '',
+  title: '',
+  comment: '',
 };
 
-type SendState = { kind: 'idle' } | { kind: 'sending' } | { kind: 'kept' } | { kind: 'failed'; message: string };
+type SendState = { kind: 'idle' } | { kind: 'sending' } | { kind: 'kept'; waiting: boolean } | { kind: 'failed'; message: string };
 
 /** The module named in the address, if it is one on the Commons shelf. */
 function moduleFromSearch(search: string): string {
@@ -46,7 +58,7 @@ function moduleFromSearch(search: string): string {
   return SHELF.some((card) => card.slug === slug) ? slug : '';
 }
 
-export default function InterestPage({ shown }: { shown: boolean }) {
+export default function InterestPage({ shown, onSupporters }: { shown: boolean; onSupporters?: () => void }) {
   const [form, setForm] = useState<InterestForm>(EMPTY);
   const [state, setState] = useState<SendState>({ kind: 'idle' });
 
@@ -69,7 +81,8 @@ export default function InterestPage({ shown }: { shown: boolean }) {
     form.organisation.trim() !== '' &&
     form.email.trim() !== '' &&
     form.interests.length > 0 &&
-    form.consent;
+    form.consent &&
+    (!form.public || form.role !== '');
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -77,7 +90,7 @@ export default function InterestPage({ shown }: { shown: boolean }) {
     setState({ kind: 'sending' });
     try {
       await sendInterest(form);
-      setState({ kind: 'kept' });
+      setState({ kind: 'kept', waiting: form.public });
     } catch (error) {
       setState({
         kind: 'failed',
@@ -101,10 +114,14 @@ export default function InterestPage({ shown }: { shown: boolean }) {
         <p className="t-body" style={{ margin: '0 0 20px', fontSize: 14.5, lineHeight: 1.55, color: 'var(--ink-2)' }}>
           Tell us who you are and what you would like to hear about. The WaterBots team will be in touch.
         </p>
+        <p className="t-caption" style={{ margin: '-12px 0 20px', fontSize: 13 }}>
+          <SupportersLink onSupporters={onSupporters} />
+        </p>
 
         {state.kind === 'kept' ? (
           <p role="status" className="t-body" style={{ margin: 0, fontSize: 14.5, lineHeight: 1.55 }}>
             Thank you. Your details were kept. To be removed, write to hello@waterbots.ai.
+            {state.waiting && <> {WAITING_LINE}</>}
           </p>
         ) : (
           <form onSubmit={onSubmit} noValidate>
@@ -189,6 +206,64 @@ export default function InterestPage({ shown }: { shown: boolean }) {
               {CONSENT_WORDS}
             </label>
 
+            <label className="wb-form-check" style={{ alignItems: 'flex-start', marginBottom: form.public ? 10 : 16 }}>
+              <input
+                type="checkbox"
+                checked={form.public}
+                disabled={busy}
+                onChange={(e) => setForm({ ...form, public: e.target.checked })}
+                style={{ marginTop: 3 }}
+              />
+              <span>
+                <strong style={{ fontWeight: 600 }}>{PUBLIC_OPENING}</strong>
+                {PUBLIC_WORDS.slice(PUBLIC_OPENING.length)}
+              </span>
+            </label>
+
+            {form.public && (
+              <div className="wb-support-fields">
+                <fieldset style={{ border: 0, margin: '0 0 12px', padding: 0 }}>
+                  <legend className="wb-form-label">Your role</legend>
+                  <div className="wb-role-grid">
+                    {ROLES.map((role) => (
+                      <label key={role.id} className="wb-form-check">
+                        <input
+                          type="radio"
+                          name="wb-support-role"
+                          checked={form.role === role.id}
+                          disabled={busy}
+                          onChange={() => setForm({ ...form, role: role.id })}
+                        />
+                        {role.label}
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+                <Field label="Title (optional)">
+                  <input
+                    className="wb-form-input"
+                    type="text"
+                    autoComplete="organization-title"
+                    value={form.title}
+                    maxLength={SUPPORT_LIMITS.title}
+                    disabled={busy}
+                    onChange={(e) => setForm({ ...form, title: e.target.value })}
+                  />
+                </Field>
+                <Field label={`Comment (optional, up to ${SUPPORT_LIMITS.comment} characters, no links)`}>
+                  <textarea
+                    className="wb-form-input"
+                    rows={3}
+                    value={form.comment}
+                    maxLength={SUPPORT_LIMITS.comment}
+                    disabled={busy}
+                    onChange={(e) => setForm({ ...form, comment: e.target.value })}
+                    style={{ resize: 'vertical' }}
+                  />
+                </Field>
+              </div>
+            )}
+
             <button type="submit" className="btn btn-primary wb-form-send" disabled={!ready || busy} aria-busy={busy || undefined}>
               {busy ? 'Sending…' : 'Send'}
             </button>
@@ -205,6 +280,23 @@ export default function InterestPage({ shown }: { shown: boolean }) {
         )}
       </div>
     </div>
+  );
+}
+
+/** The quiet link to the supporters page. */
+function SupportersLink({ onSupporters }: { onSupporters?: () => void }) {
+  return (
+    <a
+      className="wb-quiet-link"
+      href={SUPPORTERS_PATH}
+      onClick={(e) => {
+        if (!onSupporters || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        onSupporters();
+      }}
+    >
+      {SUPPORTERS_LINK}
+    </a>
   );
 }
 

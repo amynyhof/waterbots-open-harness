@@ -71,10 +71,15 @@ export function storeConfig(): StoreConfig | null {
  * half-applied change is worse than a refused one, because the caller would
  * have no way to tell which half happened.
  */
-async function run(config: StoreConfig, commands: (string | number)[][]): Promise<unknown[]> {
+async function run(
+  config: StoreConfig,
+  commands: (string | number)[][],
+  /* 'multi-exec' runs the commands as one transaction: sent as one, run one after another with nothing between. */
+  endpoint: 'pipeline' | 'multi-exec' = 'pipeline'
+): Promise<unknown[]> {
   let response: Response;
   try {
-    response = await fetch(`${config.url}/pipeline`, {
+    response = await fetch(`${config.url}/${endpoint}`, {
       method: 'POST',
       headers: {
         authorization: `Bearer ${config.token}`,
@@ -221,6 +226,28 @@ export async function takeOnce(config: StoreConfig, key: string): Promise<string
  */
 export async function appendKept(config: StoreConfig, key: string, entry: string): Promise<void> {
   await run(config, [['LPUSH', key, entry]]);
+}
+
+/**
+ * A KEPT ENTRY AND THE WRITES THAT GO WITH IT, IN ONE TRANSACTION. For a
+ * sign-up that asks to show support publicly (16 Nov 2026): the sign-up and
+ * its waiting supporter entry are sent and run as one, so a visitor is not
+ * told "kept" when the store refused either half (an error on either fails the call).
+ */
+export async function appendKeptWith(
+  config: StoreConfig,
+  key: string,
+  entry: string,
+  also: (string | number)[][]
+): Promise<void> {
+  await run(config, [['LPUSH', key, entry], ...also], 'multi-exec');
+}
+
+/** Every value in a hash, in no particular order. */
+export async function hashValues(config: StoreConfig, key: string): Promise<string[]> {
+  const [items] = await run(config, [['HVALS', key]]);
+  if (!Array.isArray(items)) throw new StoreError('the store did not return a list');
+  return items.filter((item): item is string => typeof item === 'string');
 }
 
 /** Read a capped list back, newest first. */

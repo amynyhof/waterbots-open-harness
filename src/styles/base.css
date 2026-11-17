@@ -2097,6 +2097,48 @@ button.wb-info {
   outline-offset: 2px;
 }
 
+/* SUPPORTERS — approved 16 Nov 2026 on #176. The form's public fields sit
+   indented under their box; the page's cards are two across on a laptop and
+   one on a phone; a role is a small outlined chip with no colour of its own,
+   because roles are not agents and wear no accent. */
+.wb-support-fields {
+  margin: 0 0 16px 26px;
+}
+.wb-role-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 16px;
+}
+.wb-supporter-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+@media (max-width: 720px) {
+  .wb-supporter-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.wb-supporter-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+}
+.wb-role-chip {
+  flex: none;
+  font-size: 11.5px;
+  line-height: 1.3;
+  padding: 2px 9px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
 /* Save at the foot of the left rail, just above Register your interest — her
    word of 16 Nov 2026 on #174. Full width, normal text size; still the one
    blue button when nothing comes before it. Collapsed, a small icon button. */

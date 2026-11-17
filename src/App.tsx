@@ -82,6 +82,7 @@ import type { CarbonFigure } from './lib/visit';
 import type { AgentTurn } from './chat/evidence';
 import Commons from './components/Commons';
 import InterestPage from './components/InterestPage';
+import SupportersPage from './components/SupportersPage';
 import {
   HandoffError,
   NO_PERSON,
@@ -183,6 +184,7 @@ export default function App() {
   const onConsole = page === 'console';
   const onCommons = page === 'commons';
   const onInterest = page === 'interest';
+  const onSupporters = page === 'supporters';
 
   /* ON A PHONE the left rail and the crew are panels that slide over the
      page, one at a time, opened from the row under the journey bar — the
@@ -675,7 +677,18 @@ export default function App() {
         style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden', visibility: onInterest ? 'visible' : 'hidden' }}
         aria-hidden={!onInterest}
       >
-        <InterestPage shown={onInterest} />
+        <InterestPage shown={onInterest} onSupporters={() => navigate(pathForPage('supporters'))} />
+      </main>
+
+      {/* SUPPORTERS — a fourth page at /supporters, approved 16 Nov 2026 on
+          #176: only entries the maintainer approved, reached from the Commons
+          and the interest form. Like them it holds no visit. */}
+      <main
+        className={onSupporters ? 'wb-page wb-page-commons' : 'wb-page wb-page-commons is-off'}
+        style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden', visibility: onSupporters ? 'visible' : 'hidden' }}
+        aria-hidden={!onSupporters}
+      >
+        <SupportersPage shown={onSupporters} onInterest={() => navigate(pathForInterest())} />
       </main>
       </div>
 
