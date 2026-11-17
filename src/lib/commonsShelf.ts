@@ -143,7 +143,27 @@ const PHOEBE_CARD: ShelfCard = {
 /* The carbon packs are in expert review and the water pack is proposed, the
    maintainer's word of 28 Oct 2026; the registry's own category says which
    they are. */
-const CALVIN_CARDS: ShelfCard[] = livePacks().map((pack) => {
+/* FROM 14 NOV 2026 CARBON IS THE OPEN CORE'S CALCULATOR, one card for both
+   versions: @waterbots/calvin, from the release calvin-v0.3.0. Its stage and
+   owner are the carbon packs' of 28 Oct 2026, unchanged. */
+const CALVIN_CARBON_CARD: ShelfCard = {
+  key: 'pack-calvin-carbon',
+  slug: 'calvin-carbon',
+  holder: crewMember('Calvin'),
+  title: 'Carbon credits from safe drinking water',
+  line:
+    'A first estimate of the carbon credits a safe drinking water project could earn, under Gold ' +
+    "Standard's methodology, versions 1.0 and 2.0.",
+  tag: 'Gold Standard SDWS',
+  tagHref: 'https://globalgoals.goldstandard.org/429-ee-sws-emission-reductions-from-safe-drinking-water-supply/',
+  packKey: 'calvin-carbon',
+  opens: false,
+  stage: 'Expert review',
+  owner: 'WaterBots + partner (to be named)',
+  grade: null,
+};
+
+const CALVIN_CARDS: ShelfCard[] = [CALVIN_CARBON_CARD, ...livePacks().map((pack): ShelfCard => {
   const carbon = pack.category === 'Carbon';
   return {
     key: `pack-${pack.key}`,
@@ -159,7 +179,7 @@ const CALVIN_CARDS: ShelfCard[] = livePacks().map((pack) => {
     owner: carbon ? 'WaterBots + partner (to be named)' : 'WaterBots',
     grade: null,
   };
-});
+})];
 
 const BRIDGET_CARD: ShelfCard = {
   key: 'bridget-map-datasets',

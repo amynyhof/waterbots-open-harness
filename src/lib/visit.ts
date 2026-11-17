@@ -685,8 +685,21 @@ export function pathStatus(visit: Visit, sheet: Sheet, pack: string): 'likely' |
   return looked || pathwayState(sheet, pack, context) === 'applies' ? 'more to find out' : 'not started';
 }
 
+/** Calvin's carbon headline, from the open core's engine, once the visitor has opened Quantify. */
+export interface CarbonFigure {
+  /** Emission reductions, tCO₂e a year, as the engine returned them. */
+  er: number;
+  /** "legacy" (V1.0) or "paa" (V2.0). */
+  version: string;
+}
+
 /** One line per crew member, keyed by the step each one opens. */
-export function crewStatus(visit: Visit, sheet: Sheet, packs: MethodPack[]): Record<Surface, string> {
+export function crewStatus(
+  visit: Visit,
+  sheet: Sheet,
+  packs: MethodPack[],
+  carbon: CarbonFigure | null = null
+): Record<Surface, string> {
   const c = visit.context;
   const asked = [c.does, c.type, c.stage, c.place.trim(), ...(WATER_SUPPLY_TYPES.includes(c.type) ? [c.served ? 'x' : ''] : [])];
   const known = asked.filter(Boolean).length;
@@ -702,16 +715,16 @@ export function crewStatus(visit: Visit, sheet: Sheet, packs: MethodPack[]): Rec
 
   const bridget = visit.pin ? `basin pinned · ${visit.pin.stressLabel.toLowerCase()} water stress` : 'not done yet';
 
-  let calvin = 'not done yet';
+  let calvin = carbon ? 'carbon estimate ready' : 'not done yet';
   for (const pack of packs) {
     const values = visit.packValues[pack.key];
     if (!values) continue;
     const result = pack.compute(values);
     if (result.kind === 'complete') {
-      calvin = 'estimate ready';
+      calvin = carbon ? 'carbon and water estimates ready' : 'water estimate ready';
       break;
     }
-    if (result.kind === 'incomplete') calvin = 'part-way';
+    if (result.kind === 'incomplete' && !carbon) calvin = 'part-way';
   }
   return { desk: wellington, eligibility: phoebe, map: bridget, quantification: calvin };
 }

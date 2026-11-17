@@ -425,8 +425,8 @@ expect(
 const { METHOD_PACKS } = require_(join(out, 'methodPacks.js'));
 
 expect(
-  'the strip shows more than one pack, so the family is visible',
-  METHOD_PACKS.length >= 2,
+  'the strip shows the water pack alone; carbon is the open core’s calculator beside it (14 Nov 2026)',
+  METHOD_PACKS.length === 1,
   `got ${METHOD_PACKS.length}`
 );
 expect(

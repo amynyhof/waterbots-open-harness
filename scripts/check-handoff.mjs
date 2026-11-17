@@ -744,6 +744,8 @@ const compileLib = spawnSync(
     join('node_modules', 'typescript', 'bin', 'tsc'),
     join('src', 'lib', 'handoff.ts'),
     join('src', 'lib', 'methodPacks.ts'),
+    /* Compiled by name from 14 Nov 2026: the registry no longer imports it. */
+    join('src', 'lib', 'gsSdws.ts'),
     '--outDir', libOut,
     '--module', 'commonjs',
     '--moduleResolution', 'node',
@@ -768,7 +770,12 @@ const { livePacks } = requireLib(join(libOut, 'methodPacks.js'));
 const { EMPTY_VISIT, typedContext, learnedContext, pinnedContext } = requireLib(join(libOut, 'visit.js'));
 const { pathwayKind } = requireLib(join(libOut, 'projectTypes.generated.js'));
 
-const packs = livePacks();
+/* THE SEAL'S WORKED-EXAMPLE FLAG IS STILL HELD, ON A PACK THAT HAS ONE. From
+   14 Nov 2026 the only live pack, water, carries no worked example (carbon is
+   the open core's calculator), so the old carbon pack, still in the tree until
+   it retires, stands in for one here. The seal reads whatever packs it is given. */
+const { GS_SDWS_PAA_V2 } = requireLib(join(libOut, 'gsSdws.js'));
+const packs = [...livePacks(), GS_SDWS_PAA_V2];
 const examplePack = packs.find((p) => p.example !== undefined);
 const pin = { hybasId: 1040041430, pfafId: 1, level: 4, stressLabel: 'Arid and Low Water Use', subAreaKm2: 87466 };
 let context = typedContext(EMPTY_VISIT.context, 'name', 'Test spring');
