@@ -190,6 +190,18 @@ expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSy
   renderToString(createElement(DaysProbe));
   expect('opened with the facts, a community system starts below 365 days, at its slider start', days[0] < 365, `days ${days[0]}`);
 }
+/* 8. The layout from her tablet walk of 16 Nov 2026: one column, the lens above, one scroll, and the
+      core's summary block does not stick over the rows. */
+{
+  const holder = readFileSync(join('src', 'components', 'CalvinCalculator.tsx'), 'utf8');
+  const css = readFileSync(join('src', 'styles', 'calvin.css'), 'utf8');
+  expect(
+    'the calculator is one column: the lens above, the work full width below, in one scroll',
+    /className="wb-calvin wb-calvin-stack"/.test(holder) && !/width: 320/.test(holder) && /className="wb-calvin-lens"/.test(holder),
+    'the side column is back'
+  );
+  expect('the core\'s summary block scrolls with the rows here', /\.wb-calvin \.sticky \{\s*position: static;/.test(css), 'no override');
+}
 expect('.gitattributes keeps no carried/ rule', !/^carried\//m.test(readFileSync('.gitattributes', 'utf8')), 'a carried/ line is left');
 
 console.log(failures ? `\nFAILED — ${failures} of ${passes + failures} checks did not hold.\n` : `\nPASSED — ${passes} checks: the release, the lockfile and the package's own cases.\n`);

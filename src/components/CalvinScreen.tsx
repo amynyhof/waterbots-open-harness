@@ -97,7 +97,7 @@ export function CalvinTool({
   const [which, setWhich] = useState<'carbon' | 'water'>(opensOn);
   return (
     <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-      <div role="tablist" aria-label="Which calculator" style={{ display: 'flex', gap: 8, padding: '10px 18px', borderBottom: '1px solid var(--line)', flex: 'none' }}>
+      <div role="tablist" aria-label="Which calculator" style={{ display: 'flex', gap: 8, padding: '6px 18px', borderBottom: '1px solid var(--line)', flex: 'none' }}>
         {(['carbon', 'water'] as const).map((key) => (
           <button
             key={key}

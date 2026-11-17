@@ -40,3 +40,13 @@
 .wb-calvin .eyebrow::before {
   content: none;
 }
+
+/* THE FIGURE TILES DO NOT STICK HERE — the maintainer's word of 16 Nov 2026 on
+   #174: on her tablet the stuck headers covered the calculator. The core pins
+   its summary block (the figure tiles and the fNRB line, class "sticky") to the
+   top of the scroll; under this site's own fixed menu, steps and tabs it hid
+   most of the rows at tablet and laptop heights. Here it scrolls with the rest.
+   Asked of the open core as an option (Session C), so this line can go. */
+.wb-calvin .sticky {
+  position: static;
+}

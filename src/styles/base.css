@@ -2088,3 +2088,34 @@ button.wb-info {
   outline: 2px solid var(--tide-ui);
   outline-offset: 2px;
 }
+
+/* Save at the foot of the left rail, just above Register your interest — her
+   word of 16 Nov 2026 on #174. Full width, normal text size; still the one
+   blue button when nothing comes before it. Collapsed, a small icon button. */
+.wb-rail-save-foot {
+  flex: none;
+  margin: 10px 12px 0;
+}
+.wb-rail-save-foot .wb-save-button {
+  display: block;
+  width: 100%;
+  font-size: 13.5px;
+  padding: 9px 12px;
+}
+.wb-save-button.is-collapsed {
+  flex: none;
+  display: grid;
+  place-items: center;
+  margin: 10px 8px 0;
+  padding: 8px 0;
+}
+
+/* THE CREW COLUMN NARROWS BETWEEN PHONE AND WIDE LAPTOP — the maintainer's
+   tablet walk of #174, 16 Nov 2026: at 1024px the calculator had 428px beside
+   the open left rail and a 372px crew column. The crew is a quiet list now
+   (W27), so 248px holds a face, a name and one status line. */
+@media (min-width: 901px) and (max-width: 1279px) {
+  :root {
+    --chat-rail: 248px;
+  }
+}

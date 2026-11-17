@@ -210,7 +210,14 @@ export default function NavRail({
             </div>
           </div>
 
-          {save.show && <SaveBlock save={save} />}
+          {/* S21 — the screening report, under the project. Quiet: blue is for
+              the one main next step. The save button left this spot for the
+              foot of the rail on 16 Nov 2026 (her walk of #174, on a tablet). */}
+          {save.show && (
+            <button type="button" className="wb-report-button" onClick={save.onExport} style={{ marginTop: 10 }}>
+              Export screening report
+            </button>
+          )}
 
           {/* THE RECORD his interview populates. Four rows; a dash until he
               has heard it. The explainer sits behind the (i). */}
@@ -285,6 +292,14 @@ export default function NavRail({
 
       <div style={{ flex: 1 }} />
 
+      {/* SAVE, AT THE FOOT OF THE RAIL, just above Register your interest —
+          the maintainer's word of 16 Nov 2026 on #174. Still the one blue
+          button when nothing comes before it (src/lib/blue.ts), at normal
+          text size; the box to send the project to the team stays with it,
+          because it goes with the save. The record above scrolls; this stays
+          put. With the rail collapsed it is a small button with an icon. */}
+      {save.show && <SaveFoot save={save} open={open} />}
+
       {/* REGISTER YOUR INTEREST — pinned to the foot of the rail, just above
           waterbots.ai and below everything else, the maintainer's word of
           16 Nov 2026 on #175. It stands out a little as BRAND.md §7's tinted
@@ -326,12 +341,26 @@ export default function NavRail({
   );
 }
 
-/** The save button, the team-review box above it when a path is ruled out, and the report under it. */
-function SaveBlock({ save }: { save: SaveDoor }) {
+/** The save button at the foot of the rail, with the team-review box above it when a path is ruled out. */
+function SaveFoot({ save, open }: { save: SaveDoor; open: boolean }) {
   const { sealing, person, onPerson } = save;
   const busy = sealing.kind === 'sealing' || sealing.kind === 'sealed';
+  if (!open) {
+    return (
+      <button
+        type="button"
+        className={save.blue ? 'wb-save-button is-collapsed' : 'wb-save-button is-quiet is-collapsed'}
+        onClick={save.onSeal}
+        disabled={busy}
+        title="Save this project and sign up"
+        aria-label="Save this project and sign up"
+      >
+        <SaveIcon />
+      </button>
+    );
+  }
   return (
-    <div className="wb-rail-save" style={{ marginTop: 10 }}>
+    <div className="wb-rail-save wb-rail-save-foot">
       {/* THE DOOR TO A PERSON — item A18, 26 Sep 2026; from 14 Nov 2026 shown
           whenever a path is ruled out, Blocked or not applying (the ruling of
           23 Sep 2026), and never offered in chat. Nothing is sent until the
@@ -382,13 +411,17 @@ function SaveBlock({ save }: { save: SaveDoor }) {
           {sealing.message}
         </p>
       )}
-
-      {/* S21 — the screening report, printed or saved as a PDF. A quiet
-          button: blue is for the one main next step. */}
-      <button type="button" className="wb-report-button" onClick={save.onExport}>
-        Export screening report
-      </button>
     </div>
+  );
+}
+
+/** An arrow into a tray: saving the project to take it on. */
+function SaveIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden style={{ display: 'block' }}>
+      <path d="M8 2.5v7M5 6.5l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M2.5 10.5v2a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
   );
 }
 

@@ -45,22 +45,21 @@ export default function CalvinCalculator({
   project: CalvinProject;
   header?: ReactNode;
 }) {
+  /* ONE COLUMN, ONE SCROLL — the maintainer's word of 16 Nov 2026 on #174,
+     after her tablet walk: the side column squeezed the figures to about
+     100px at tablet width. The core's lens (where the facts come from, its
+     note, Export report) sits above the calculator, full width, and scrolls
+     away with it; the work surface takes the whole width below. */
   return (
-    <div className="wb-calvin" style={{ position: 'absolute', inset: 0, display: 'flex', minHeight: 0, background: 'var(--paper)' }}>
-      <aside
+    <div className="wb-calvin wb-calvin-stack" style={{ position: 'absolute', inset: 0, overflowY: 'auto', background: 'var(--paper)' }}>
+      <section
         aria-label="The calculator's project facts and controls"
-        style={{
-          width: 320,
-          flex: 'none',
-          overflowY: 'auto',
-          borderRight: '1px solid var(--line)',
-          background: 'var(--card)',
-          padding: '14px 14px 18px',
-        }}
+        className="wb-calvin-lens"
+        style={{ background: 'var(--card)', borderBottom: '1px solid var(--line)', padding: '12px 18px 14px' }}
       >
         <CalculatorLens calc={calc} header={header} />
-      </aside>
-      <div style={{ flex: 1, minWidth: 0, overflowY: 'auto', padding: '14px 18px 24px' }}>
+      </section>
+      <div style={{ padding: '14px 18px 24px', maxWidth: 980 }}>
         <CalculatorWork calc={calc} project={project} appVersion={CALVIN_PACKAGE_VERSION} tab="calculator" />
       </div>
     </div>
