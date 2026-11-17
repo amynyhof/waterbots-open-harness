@@ -1,6 +1,13 @@
 # Proposal — a public supporters page for Register your interest
 
-**Written 16 Nov 2026 for the maintainer. Proposal only: nothing is built.** It answers her message of
+> **Approved as proposed, 16 Nov 2026, the maintainer's word on #176; built after #174.** Her answers:
+> the **full name as typed** shows; **company is the form's existing organisation field**, shown
+> publicly, not a new field; **role is required** when the box is ticked; **`/supporters`** and
+> **"Supporters"** are right; the intro line is **"People who want water impact to be faster and fairer
+> to prove."** Approving an entry is **one simple command she can paste into PowerShell** (section 4).
+> Where the text below differs, her answers stand.
+
+~~**Written 16 Nov 2026 for the maintainer. Proposal only: nothing is built.**~~ **Written 16 Nov 2026 for the maintainer.** It answers her message of
 16 Nov 2026: a public supporters view for Register your interest, with an opt-in box "Show my support
 publicly", optional comment, title and company, a role from a closed list, and **every public entry
 waiting for her approval before it shows. Nothing shows or deletes on its own.**
@@ -27,19 +34,20 @@ that form already keeps or how long: a sign-up is kept until the person asks to 
 
 Below the box that keeps their details (which stays required), a second box, **unticked**:
 
-> **Show my support publicly.** My name, title, company, role and comment appear on the supporters
+> **Show my support publicly.** My name, title, organisation, role and comment appear on the supporters
 > page once the WaterBots team approves them. My email never does.
 
-Ticking it opens four more fields. Unticked, they stay hidden and nothing public is sent.
+Ticking it opens ~~four~~ **three** more fields (her answer: company is the organisation the form
+already asks for). Unticked, they stay hidden and nothing public is sent.
 
 | Field | Required when ticked? | Limit | Shown publicly |
 |---|---|---|---|
 | Role | yes, one of: Developer, Standard body, Consultant, Auditor, Funder, Other | closed list | yes |
 | Title | no | 80 characters | yes |
-| Company | no | 120 characters | yes |
+| ~~Company~~ Organisation | the form's existing field, required as today | 120 characters | yes, as the company |
 | Comment | no | 280 characters, no links | yes |
 
-The name comes from the form's existing name field. **The email is never shown, never sent to the
+The name comes from the form's existing name field, **shown in full, as typed**. **The email is never shown, never sent to the
 page and never in the public list.**
 
 ```
@@ -51,7 +59,7 @@ page and never in the public list.**
  │      …(required, as today)                                │
  │                                                           │
  │  [ ] Show my support publicly.                            │
- │      My name, title, company, role and comment appear on  │
+ │      My name, title, organisation, role and comment appear│
  │      the supporters page once the WaterBots team approves │
  │      them. My email never does.                           │
  │   ┌ when ticked ───────────────────────────────────────┐  │
@@ -59,7 +67,6 @@ page and never in the public list.**
  │   │           ( ) Consultant  ( ) Auditor              │  │
  │   │           ( ) Funder      ( ) Other                │  │
  │   │ Title     [______________________]  optional       │  │
- │   │ Company   [______________________]  optional       │  │
  │   │ Comment   [______________________]  optional, 280  │  │
  │   └────────────────────────────────────────────────────┘  │
  │  [ Send ]   ← the page's one blue button, as today        │
@@ -76,14 +83,14 @@ page and never in the public list.**
  ├───────────────────────────────────────────────────────────────────────┤
  │                                                                         │
  │   Supporters                                                            │
- │   People and organisations who back open tools for water projects.      │
+ │   People who want water impact to be faster and fairer to prove.        │
  │   Each entry is shown with the person's permission.                     │
  │                                                                         │
  │   All · Developer · Standard body · Consultant · Auditor · Funder · Other│
  │                                                                         │
  │   ┌──────────────────────────────┐  ┌──────────────────────────────┐    │
  │   │ [Name]                [Role] │  │ [Name]                [Role] │    │
- │   │ [Title] · [Company]          │  │ [Company]                    │    │
+ │   │ [Title] · [Organisation]     │  │ [Organisation]               │    │
  │   │ "[Comment]"                  │  │                              │    │
  │   │ Joined [month year]          │  │ Joined [month year]          │    │
  │   └──────────────────────────────┘  └──────────────────────────────┘    │
@@ -118,12 +125,25 @@ Three states for a public entry, and only one of them is ever on the page:
 | **Shown** | she approves it | yes |
 | **Not shown** | she declines it, or the person asks to come off | no |
 
-- **How she approves:** a script on her machine, the way `count-interest.mjs` works, with the store's
-  keys:
-  - `node scripts/supporters.mjs` lists what is waiting: the public fields only, never the email;
-  - `--approve <id>` shows it;
-  - `--decline <id>` keeps it off the page;
-  - `--hide <id>` takes a shown entry off.
+- **How she approves: one command, pasted into PowerShell** (her word of 16 Nov 2026). In the
+  repository folder:
+
+  ```powershell
+  npm run supporters
+  ```
+
+  lists what is waiting, the public fields only and never the email, and under each entry prints the
+  exact line to paste, for example:
+
+  ```powershell
+  npm run supporters -- approve k3f9
+  ```
+
+  The id is a short random code. `decline <id>` keeps an entry off the page, and `hide <id>` takes a
+  shown one off; each is printed the same way, ready to paste. Every command says in one line what it
+  did. **The store's keys are read from `.env.local`** (gitignored, on her machine only) when they
+  are not already set, so there is nothing to type before the command; the first run says plainly if
+  the file or a key is missing. `count-interest.mjs` reads them the same way.
 - **The copy to hello@** says when someone asked to show their support, so she knows something is waiting.
 - **Nothing deletes on its own.**
   - Declining or hiding keeps the entry off the page and keeps the sign-up.
@@ -166,12 +186,10 @@ Three states for a public entry, and only one of them is ever on the page:
 
 ---
 
-## Questions for her
+## Questions for her — answered 16 Nov 2026
 
-1. **Name on the page:** the full name as typed, or first name and last initial?
-2. **Company and organisation:** the form already asks for an organisation. Should "company" be that
-   field shown publicly (one field), or a separate optional field as written above?
-3. **Role:** required when the public box is ticked, as proposed, or optional?
-4. **The page's address and title:** `/supporters` and "Supporters", or other words?
-5. **The intro line** ("People and organisations who back open tools for water projects."): her words
-   welcome.
+1. **Name on the page:** the full name as typed.
+2. **Company and organisation:** the existing organisation field, shown publicly. No new field.
+3. **Role:** required when the public box is ticked.
+4. **The page's address and title:** `/supporters` and "Supporters".
+5. **The intro line:** "People who want water impact to be faster and fairer to prove."
