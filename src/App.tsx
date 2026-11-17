@@ -76,7 +76,7 @@ import JourneyBar from './components/JourneyBar';
 import Desk from './components/Desk';
 import CrewRail from './components/CrewRail';
 import ScreeningReport from './components/ScreeningReport';
-import { useCalculatorState } from '@waterbots/calvin/screen';
+import { NO_SUMMARY, type CalvinSummary } from './components/CalvinCalculator';
 import { calvinProject } from './lib/calvinProject';
 import type { CarbonFigure } from './lib/visit';
 import type { AgentTurn } from './chat/evidence';
@@ -371,42 +371,22 @@ export default function App() {
     void askReturned();
   }, [surface, visit.stage, askReturned]);
 
-  /* CALVIN'S CARBON CALCULATOR IS THE OPEN CORE'S — @waterbots/calvin 0.2.0,
-     the maintainer's word of 14 Nov 2026. Its state is held here, like
-     Wellington's conversation, so the calculator, the crew panel and the
-     screening report read one thing. The project comes from the visit's record
-     alone (src/lib/calvinProject.ts); the engine does every sum. Its figure is
+  /* CALVIN'S CARBON CALCULATOR IS THE OPEN CORE'S — @waterbots/calvin 0.3.0
+     from 16 Nov 2026 (0.2.0 from 14 Nov), the maintainer's word. The project
+     comes from the visit's record alone (src/lib/calvinProject.ts); the engine
+     does every sum. ITS STATE LIVES WITH THE CALCULATOR from 16 Nov 2026
+     (CalvinCarbon in src/components/CalvinCalculator.tsx), which opens again
+     once the record names the technology, so every starting value is the
+     package's own; the shell keeps only what it reads back: the figure the
+     calculator's screen shows, and the facts still needed. The figure is
      shown elsewhere only once the visitor has opened Quantify. */
   const project = useMemo(() => calvinProject(visit.context), [visit.context]);
-  const calc = useCalculatorState(project, { exAnteOnly: true });
-  /* THE COUNT FOLLOWS THE RECORD. The core re-reads the technology, the
-     country and people-or-households whenever the project changes, but takes
-     the number served only when it first opens — and here it opens with the
-     page, before Wellington has heard anything. So when the record's count
-     changes, it is handed on, the way a record save reaches a seat already
-     open. Found on the first look, 14 Nov 2026. */
-  const patchCalc = calc.patch;
-  const servedOnRecord = project.population?.served ?? null;
-  const lastServed = useRef<number | null>(null);
-  useEffect(() => {
-    if (servedOnRecord === lastServed.current) return;
-    lastServed.current = servedOnRecord;
-    if (servedOnRecord !== null) patchCalc({ populationCount: servedOnRecord });
-  }, [servedOnRecord, patchCalc]);
+  const [calvinSummary, setCalvinSummary] = useState<CalvinSummary>(NO_SUMMARY);
   const [seenQuantify, setSeenQuantify] = useState(false);
   useEffect(() => {
     if (surface === 'quantification') setSeenQuantify(true);
   }, [surface]);
-  /* Only a figure the calculator's own screen shows: every fact present, an
-     official fNRB, and — in calvin 0.2.0, whose work surface is the transition
-     seat — the project's filed V1.0 fNRB. Without it the screen shows the
-     core's request and no figure, so nothing here claims one either. */
-  const shown =
-    seenQuantify && calc.result && calc.missingFacts.length === 0 && !calc.fnrbRefusal && !calc.filedFnrbRefusal;
-  const carbon: CarbonFigure | null = useMemo(
-    () => (shown && calc.result ? { er: calc.result.result.ER, version: calc.result.version } : null),
-    [shown, calc.result]
-  );
+  const carbon: CarbonFigure | null = seenQuantify ? calvinSummary.figure : null;
 
   /* WELLINGTON COMES TO YOU — the maintainer's ruling of 14 Nov 2026. When an
      agent's step is done he joins the visitor in that agent's chat with the
@@ -646,9 +626,8 @@ export default function App() {
                 aria-hidden={!onQuantification}
               >
                 <CalvinScreen
-                  calc={calc}
                   project={project}
-                  missingFacts={calc.missingFacts.map((fact) => fact.label)}
+                  onSummary={setCalvinSummary}
                   activeKey={activePack}
                   onSelect={setActivePack}
                   allValues={visit.packValues}

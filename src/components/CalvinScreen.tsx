@@ -39,7 +39,7 @@
  */
 
 import { useState, type ReactNode } from 'react';
-import type { CalculatorState, CalvinProject } from '@waterbots/calvin/screen';
+import type { CalvinProject } from '@waterbots/calvin/screen';
 import { GS4GG_CALCULATOR_VERSION } from '@waterbots/calvin/engine';
 import calvinPortrait from '../../brand/assets/bots/calvin.svg';
 import type { AgentHost } from '../chat/evidence';
@@ -50,7 +50,7 @@ import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, { type PackView } from '../screen/KnowledgePackTab';
 import NotLiveChat from '../screen/NotLiveChat';
 import QuantificationWorksheet from './QuantificationWorksheet';
-import CalvinCalculator, { RecordFacts } from './CalvinCalculator';
+import { CalvinCarbon, RecordFacts, type CalvinSummary } from './CalvinCalculator';
 import { CALVIN_PACKAGE_VERSION, CALVIN_RELEASE } from '../lib/calvinProject';
 import { GS_SDWS_LEGACY_V1, GS_SDWS_PAA_V2 } from '../lib/gsSdws';
 
@@ -70,24 +70,24 @@ export const CALVIN_NOT_LIVE_LINE =
 
 /**
  * THE TOOL TAB HOLDS TWO CALCULATORS FROM 14 NOV 2026. Carbon credits are the
- * open core's calculator (CalvinCalculator.tsx), installed from calvin-v0.2.0
+ * open core's calculator (CalvinCalculator.tsx), installed from calvin-v0.3.0
  * and locked to ex-ante. Water benefits stay this site's own VWBA D-3
  * worksheet until Violet's module arrives from the open core (proposal step 5),
  * so the step has two looks until then (proposal section 8, B).
  */
 export function CalvinTool({
-  calc,
   project,
   header,
+  onSummary,
   activeKey,
   onSelect,
   allValues,
   onChange,
   opensOn = 'carbon',
 }: {
-  calc: CalculatorState;
   project: CalvinProject;
-  header?: ReactNode;
+  header?: (missing: string[]) => ReactNode;
+  onSummary?: (summary: CalvinSummary) => void;
   activeKey: string;
   onSelect: (key: string) => void;
   allValues: Record<string, PackValues>;
@@ -114,7 +114,7 @@ export function CalvinTool({
       </div>
       <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
         <div style={{ position: 'absolute', inset: 0, visibility: which === 'carbon' ? undefined : 'hidden' }} aria-hidden={which !== 'carbon'}>
-          <CalvinCalculator calc={calc} project={project} header={header} />
+          <CalvinCarbon project={project} header={header} onSummary={onSummary} />
         </div>
         <div style={{ position: 'absolute', inset: 0, display: 'flex', visibility: which === 'water' ? undefined : 'hidden' }} aria-hidden={which !== 'water'}>
           <QuantificationWorksheet activeKey={activeKey} onSelect={onSelect} allValues={allValues} onChange={onChange} />
@@ -125,19 +125,16 @@ export function CalvinTool({
 }
 
 export default function CalvinScreen({
-  calc,
   project,
-  missingFacts,
+  onSummary,
   activeKey,
   onSelect,
   allValues,
   onChange,
 }: {
-  /** The open core's calculator state, held by the shell so the record, the panel and the report read it. */
-  calc: CalculatorState;
   project: CalvinProject;
-  /** The facts the calculator still needs, in a visitor's words. */
-  missingFacts: string[];
+  /** The figure and the facts still needed, handed to the shell so the crew panel and the report read them. */
+  onSummary: (summary: CalvinSummary) => void;
   activeKey: string;
   onSelect: (key: string) => void;
   allValues: Record<string, PackValues>;
@@ -151,9 +148,9 @@ export default function CalvinScreen({
         chat: <NotLiveChat host={CALVIN} line={CALVIN_NOT_LIVE_LINE} />,
         tool: (
           <CalvinTool
-            calc={calc}
             project={project}
-            header={<RecordFacts missing={missingFacts} />}
+            header={(missing) => <RecordFacts missing={missing} />}
+            onSummary={onSummary}
             activeKey={activeKey}
             onSelect={onSelect}
             allValues={allValues}

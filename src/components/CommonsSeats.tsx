@@ -37,7 +37,7 @@
  */
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useCalculatorState, type CalvinProject } from '@waterbots/calvin/screen';
+import type { CalvinProject } from '@waterbots/calvin/screen';
 import { COUNTRIES } from '@waterbots/calvin/engine';
 import type { AgentTurn, AskMeta } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
@@ -230,17 +230,9 @@ export function CalvinCommonsSeat({ packKey }: { packKey: string | null }) {
       ...(served > 0 ? { population: { mode: facts.unit, served } } : {}),
     };
   }, [facts]);
-  const calc = useCalculatorState(project, { exAnteOnly: true });
-  /* The core takes the number served only when it first opens, so a count
-     typed afterwards is handed on, as on the console (App.tsx). */
-  const patchCalc = calc.patch;
-  const served = project.population?.served ?? null;
-  const lastServed = useRef<number | null>(null);
-  useEffect(() => {
-    if (served === lastServed.current) return;
-    lastServed.current = served;
-    if (served !== null) patchCalc({ populationCount: served });
-  }, [served, patchCalc]);
+  /* The calculator holds its own state and opens again once a technology is
+     chosen, as on the console (CalvinCarbon, 16 Nov 2026); the count typed
+     afterwards is handed on there. */
 
   return (
     <AgentScreen
@@ -252,9 +244,8 @@ export function CalvinCommonsSeat({ packKey }: { packKey: string | null }) {
         tool: (
           <CalvinTool
             key={opensOn}
-            calc={calc}
             project={project}
-            header={<CommonsFactsForm facts={facts} onChange={setFacts} />}
+            header={() => <CommonsFactsForm facts={facts} onChange={setFacts} />}
             activeKey={activeKey}
             onSelect={setActiveKey}
             allValues={values}
