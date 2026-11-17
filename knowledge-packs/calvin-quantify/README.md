@@ -1,11 +1,12 @@
 # calvin-quantify — screening method packs (open)
 
-**Version 0.2.0.** Calvin staffs Quantify. One tool per way of working a number
+**Version 0.2.1.** Calvin staffs Quantify. One tool per way of working a number
 out. The live registry is [`src/lib/methodPacks.ts`](../../src/lib/methodPacks.ts).
 This pack is not wired. Folder names for live tools match that registry’s keys.
 
-**Carbon is the open core's calculator from 14 Nov 2026**: `@waterbots/calvin` 0.2.0, engine
-gs4gg-carbon 0.19.0, from the release `calvin-v0.2.0`, locked to ex-ante. The two `gs-sdws-*`
+**Carbon is the open core's calculator from 14 Nov 2026**: `@waterbots/calvin` 0.3.0 from 16 Nov
+2026 (0.2.0 before), engine gs4gg-carbon 0.19.0, from the release `calvin-v0.3.0`, locked to ex-ante,
+and every project gets its V2.0-only view until item A29 passes `creditedUnderV1`. The two `gs-sdws-*`
 folders below describe this site's own carbon screening, which is no longer registered; they
 retire with `src/lib/gsSdws.ts`.
 
@@ -20,7 +21,7 @@ Chat is not live. The calculator is.
 | Tool id | Live module |
 |---|---|
 | [vwba-2.0-d3-volume-provided](./tools/vwba-2.0-d3-volume-provided/) | [`src/lib/vwbaD3.ts`](../../src/lib/vwbaD3.ts) |
-| Carbon, V1.0 and V2.0 | `@waterbots/calvin` 0.2.0, from the open core |
+| Carbon, V1.0 and V2.0 | `@waterbots/calvin` 0.3.0, from the open core |
 | ~~[gs-sdws-legacy-v1](./tools/gs-sdws-legacy-v1/)~~ | ~~[`src/lib/gsSdws.ts`](../../src/lib/gsSdws.ts)~~ not registered from 14 Nov 2026 |
 | ~~[gs-sdws-paa-v2](./tools/gs-sdws-paa-v2/)~~ | ~~same module, second variant~~ not registered from 14 Nov 2026 |
 

@@ -1,5 +1,15 @@
 # Changelog — calvin-quantify
 
+## 0.2.1 — 16 Nov 2026
+
+- **Carbon moves to `@waterbots/calvin` 0.3.0 and `@waterbots/core` 0.1.1**, from the release
+  `calvin-v0.3.0`, engine gs4gg-carbon 0.19.0 unchanged. The maintainer's word of 16 Nov 2026.
+- `creditedUnderV1` is left unset until item A29, so every project gets the V2.0-only view: one
+  V2.0 figure, no V1.0 figure, no transition and no ask for a V1.0 filing.
+- Fixed: the calculator now opens again once the record names the technology, so its starting
+  values are the package's own. Before, the days stayed at 365 under a slider that said
+  "starts at 347 d", and the figure ran about 5% high.
+
 ## 0.2.0 — 14 Nov 2026
 
 - **Carbon is the open core's calculator**: `@waterbots/calvin` 0.2.0 and `@waterbots/core` 0.1.0,

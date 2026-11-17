@@ -1,6 +1,10 @@
 /**
  * Calvin from the open core — proof P1 of docs/proposals/calvin-from-open-core.md, built
- * 14 Nov 2026 when the site installed @waterbots/calvin 0.2.0 from the release calvin-v0.2.0.
+ * 14 Nov 2026 when the site installed @waterbots/calvin 0.2.0 from the release calvin-v0.2.0, and moved
+ * to calvin-v0.3.0 (@waterbots/calvin 0.3.0, @waterbots/core 0.1.1) on 16 Nov 2026, her word.
+ *   6. The project the site hands Calvin leaves `creditedUnderV1` unset until item A29 sets it
+ *      from Phoebe's question, so every project gets 0.3.0's V2.0-only view, with no V1.0 figure,
+ *      no transition and no ask for a V1.0 filing (her word of 16 Nov 2026).
  *
  * WHAT IT HOLDS.
  *   1. The two release files in vendor/waterbots/ are the release's, byte for byte: their
@@ -24,19 +28,19 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const RELEASE = 'calvin-v0.2.0';
+const RELEASE = 'calvin-v0.3.0';
 const FILES = {
   '@waterbots/calvin': {
-    file: 'vendor/waterbots/waterbots-calvin-0.2.0.tgz',
-    version: '0.2.0',
-    sha256: '622f3bf0aba50d628cc8010258ee845b68652db85434481da6778043b6f7b7f2',
-    integrity: 'sha512-OqyknqB8anuqDUrC1qOwo0Xx5OditXIF0C2UP/OIZbdqLSMRnS0mUW3uPJBBk44zFKNyHR5gYH5qloSr1tDnrA==',
+    file: 'vendor/waterbots/waterbots-calvin-0.3.0.tgz',
+    version: '0.3.0',
+    sha256: '74a8b0d2ec88a0ea977fa8d73cbbbf90194b9177b241d799a8c651042cf6c9c1',
+    integrity: 'sha512-Sf5Bfy3QdlCNVLRjETDt730afJw6a/wS6cu+GnAds2ALkwptzHDIQrbkPSyG6cQ+oodCVXzCsxZCkJE59fEpCQ==',
   },
   '@waterbots/core': {
-    file: 'vendor/waterbots/waterbots-core-0.1.0.tgz',
-    version: '0.1.0',
-    sha256: 'beff9f45cc2aae2b705fe399ff62c55a3b150e582016d8773948295b9672aa1b',
-    integrity: 'sha512-u8KwjPhVNPkEKHyIpZxHjIYXQ7qa97lJaka2VUiCcoGqDa6o8xFGH6MJx6hhCQ4x67NDdc+pFB2ZfrGSIDQoeg==',
+    file: 'vendor/waterbots/waterbots-core-0.1.1.tgz',
+    version: '0.1.1',
+    sha256: '4e9be07073bd55c765611a459fa15d41fec5482bbf8665cb56c4f80a446f6b5a',
+    integrity: 'sha512-wP8ZFabCBzxAh4nvRVIuG0qrwfmxQx9u0wSHbbnjTfhv6QRmjOVrXZkXmE5tHwpkb//hcteYDOSfsEGOLlK3jg==',
   },
 };
 const ENGINE_VERSION = '0.19.0';
@@ -125,6 +129,67 @@ expect(`both fNRB cases give exactly the recorded answers`, caseFailures.length 
 
 /* 5. The old sealed copy is gone. */
 expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSync('carried'), 'carried/ still exists');
+/* 6. creditedUnderV1 stays unset until A29 (her word of 16 Nov 2026). */
+{
+  const adapter = readFileSync(join('src', 'lib', 'calvinProject.ts'), 'utf8');
+  const code = adapter.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+  expect(
+    'the site leaves creditedUnderV1 unset, so every project gets the V2.0-only view until A29',
+    !/creditedUnderV1/.test(code),
+    'src/lib/calvinProject.ts sets creditedUnderV1'
+  );
+  /* The installed hook itself, rendered once on the server with a made-up project: without
+     the field it is the V2.0-only view with a figure; with it, the transition and the ask. */
+  const { createElement } = await import('react');
+  const { renderToString } = await import('react-dom/server');
+  const { useCalculatorState } = await import('@waterbots/calvin/screen');
+  const seen = [];
+  const Probe = ({ project }) => {
+    const c = useCalculatorState(project, { exAnteOnly: true });
+    seen.push({ transition: c.transition, version: c.result?.version, er: c.result?.result?.ER, legacy: c.legacyResult, filed: c.filedFnrbRefusal });
+    return null;
+  };
+  const madeUp = { name: 'Made-up probe', standards: ['carbon'], technology: 'CWS', country: 'KEN', population: { mode: 'people', served: 1600 } };
+  renderToString(createElement(Probe, { project: madeUp }));
+  renderToString(createElement(Probe, { project: { ...madeUp, creditedUnderV1: true } }));
+  const [fresh, credited] = seen;
+  expect(
+    'without it, 0.3.0 gives the V2.0-only view: a V2.0 figure, no V1.0 figure, no ask for a V1.0 filing',
+    fresh?.transition === false && fresh.version === 'paa' && Number.isFinite(fresh.er) && fresh.legacy === null && fresh.filed === null,
+    JSON.stringify(fresh)
+  );
+  expect(
+    'with it set true, 0.3.0 asks for the filed V1.0 fNRB before the transition (what A29 will turn on)',
+    credited?.transition === true && credited.filed !== null,
+    JSON.stringify(credited)
+  );
+}
+/* 7. The calculator opens again once the technology is known, so its starting values are the
+      package's own (found on the 0.3.0 walk, 16 Nov 2026: days stayed at 365 under a slider
+      that said "starts at 347 d"). Only CalvinCarbon holds the state, keyed by the technology. */
+{
+  const holder = readFileSync(join('src', 'components', 'CalvinCalculator.tsx'), 'utf8');
+  const callers = ['src/App.tsx', 'src/components/CommonsSeats.tsx', 'src/components/CalvinScreen.tsx'].filter((f) =>
+    /useCalculatorState\(/.test(readFileSync(f, 'utf8'))
+  );
+  expect(
+    'the calculator state lives in CalvinCarbon alone, keyed by the technology, so it opens again with the facts',
+    /<CalvinCarbonState key=\{project\.technology \?\? 'none'\}/.test(holder) && (holder.match(/useCalculatorState\(/g) ?? []).length === 1 && callers.length === 0,
+    callers.length ? `also called in ${callers.join(', ')}` : 'the key is missing'
+  );
+  /* And the reason, measured: opened with the facts, a made-up community project's days start at
+     the slider's own starting value, not the seed's 365. */
+  const { createElement } = await import('react');
+  const { renderToString } = await import('react-dom/server');
+  const { useCalculatorState } = await import('@waterbots/calvin/screen');
+  const days = [];
+  const DaysProbe = () => {
+    days.push(useCalculatorState({ name: 'Made-up probe', standards: ['carbon'], technology: 'CWS', country: 'KEN', population: { mode: 'people', served: 1600 } }, { exAnteOnly: true }).state.operationalDays);
+    return null;
+  };
+  renderToString(createElement(DaysProbe));
+  expect('opened with the facts, a community system starts below 365 days, at its slider start', days[0] < 365, `days ${days[0]}`);
+}
 expect('.gitattributes keeps no carried/ rule', !/^carried\//m.test(readFileSync('.gitattributes', 'utf8')), 'a carried/ line is left');
 
 console.log(failures ? `\nFAILED — ${failures} of ${passes + failures} checks did not hold.\n` : `\nPASSED — ${passes} checks: the release, the lockfile and the package's own cases.\n`);
