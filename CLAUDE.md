@@ -495,7 +495,10 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   47 made-up cases (proof P1). It is locked to ex-ante (`exAnteOnly`, sliders on), on Quantify and on
   the Commons; its state lives with the calculator (`CalvinCarbon`), which opens again once the record
   names the technology, so every starting value is the package's own; the facts come from the record through `src/lib/calvinProject.ts`, and its classes are
-  scoped under `.wb-calvin` (`scripts/build-calvin-css.mjs`, `src/styles/calvin.css`). A new version
+  scoped under `.wb-calvin` (`scripts/build-calvin-css.mjs`, `src/styles/calvin.css`). **One export
+  during a screening, from 16 Nov 2026, her word:** on Quantify his own "Export report (PDF)" is
+  hidden, and "Export screening report" in the left rail carries his figure and his full working; the
+  Commons keeps his export. A new version
   comes in only on her word. Proposal: `docs/proposals/calvin-from-open-core.md`.
 - **The free-site fixes of 30 Sep 2026 are live, #134 to #138**, and the demo ran on `main` at
   #138. The wordmark at the top left goes to waterbots.ai from 28 Oct 2026, as the main site's

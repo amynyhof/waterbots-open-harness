@@ -24,10 +24,12 @@
  * with it, so its report prints.
  */
 
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { createPortal, flushSync } from 'react-dom';
 import {
   CalculatorLens,
   CalculatorWork,
+  ReportView,
   useCalculatorState,
   type CalculatorState,
   type CalvinProject,
@@ -36,14 +38,26 @@ import '@waterbots/calvin/styles.css';
 import '../styles/calvin.css';
 import { CALVIN_PACKAGE_VERSION } from '../lib/calvinProject';
 
+/**
+ * WHERE CALVIN'S WORKING GOES IN THE SCREENING REPORT — the maintainer's word of
+ * 16 Nov 2026 on #174. During a screening the one export is "Export screening
+ * report" in the left rail, and it carries Calvin's figure and his full working.
+ * The screening report (ScreeningReport.tsx) holds an empty place with this id;
+ * the calculator on Quantify draws the package's own report into it.
+ */
+export const SCREENING_WORKING_SLOT = 'wb-report-calvin-working';
+
 export default function CalvinCalculator({
   calc,
   project,
   header,
+  screening = false,
 }: {
   calc: CalculatorState;
   project: CalvinProject;
   header?: ReactNode;
+  /** On the console's Quantify step: Calvin's own export is hidden; the left rail's report is the one export. */
+  screening?: boolean;
 }) {
   /* ONE COLUMN, ONE SCROLL — the maintainer's word of 16 Nov 2026 on #174,
      after her tablet walk: the side column squeezed the figures to about
@@ -51,7 +65,7 @@ export default function CalvinCalculator({
      note, Export report) sits above the calculator, full width, and scrolls
      away with it; the work surface takes the whole width below. */
   return (
-    <div className="wb-calvin wb-calvin-stack" style={{ position: 'absolute', inset: 0, overflowY: 'auto', background: 'var(--paper)' }}>
+    <div className={screening ? 'wb-calvin wb-calvin-stack wb-calvin-screening' : 'wb-calvin wb-calvin-stack'} style={{ position: 'absolute', inset: 0, overflowY: 'auto', background: 'var(--paper)' }}>
       <section
         aria-label="The calculator's project facts and controls"
         className="wb-calvin-lens"
@@ -93,23 +107,30 @@ export function CalvinCarbon({
   project,
   header,
   onSummary,
+  screening = false,
 }: {
   project: CalvinProject;
   /** The host's top of the lens, given the facts still needed. */
   header?: (missing: string[]) => ReactNode;
   onSummary?: (summary: CalvinSummary) => void;
+  /** On the console's Quantify step: no export of his own, and his working goes into the screening report. */
+  screening?: boolean;
 }) {
-  return <CalvinCarbonState key={project.technology ?? 'none'} project={project} header={header} onSummary={onSummary} />;
+  return (
+    <CalvinCarbonState key={project.technology ?? 'none'} project={project} header={header} onSummary={onSummary} screening={screening} />
+  );
 }
 
 function CalvinCarbonState({
   project,
   header,
   onSummary,
+  screening,
 }: {
   project: CalvinProject;
   header?: (missing: string[]) => ReactNode;
   onSummary?: (summary: CalvinSummary) => void;
+  screening: boolean;
 }) {
   const calc = useCalculatorState(project, { exAnteOnly: true });
   /* THE COUNT FOLLOWS THE RECORD. The core reads the number served only when
@@ -136,7 +157,49 @@ function CalvinCarbonState({
     onSummary?.({ figure: er === null ? null : { er, version }, missing: JSON.parse(missingKey) as string[] });
   }, [er, version, missingKey, onSummary]);
 
-  return <CalvinCalculator calc={calc} project={project} header={header?.(missing)} />;
+  return (
+    <>
+      <CalvinCalculator calc={calc} project={project} header={header?.(missing)} screening={screening} />
+      {screening && shown && <WorkingInReport calc={calc} project={project} />}
+    </>
+  );
+}
+
+/**
+ * CALVIN'S FULL WORKING, IN THE SCREENING REPORT. The package's own ReportView,
+ * given the same values its CalculatorWork gives it, drawn into the screening
+ * report's place for it: print-only, like the rest of that report. A new project
+ * has no V1.0 side, so the transition sections stay out, as on his screen.
+ */
+function WorkingInReport({ calc, project }: { calc: CalculatorState; project: CalvinProject }) {
+  const [slot, setSlot] = useState<HTMLElement | null>(null);
+  useEffect(() => setSlot(document.getElementById(SCREENING_WORKING_SLOT)), []);
+  /* The time it is printed, set as the print dialog opens. */
+  const [printedAt, setPrintedAt] = useState(() => new Date().toLocaleString('en-GB'));
+  useEffect(() => {
+    const before = () => flushSync(() => setPrintedAt(new Date().toLocaleString('en-GB')));
+    window.addEventListener('beforeprint', before);
+    return () => window.removeEventListener('beforeprint', before);
+  }, []);
+  if (!slot || !calc.result || !calc.paaResult) return null;
+  const legacy = calc.transition && calc.legacyResult && calc.waterfall ? calc.legacyResult : null;
+  return createPortal(
+    <ReportView
+      project={project}
+      state={calc.state}
+      result={calc.result}
+      legacyER={legacy ? legacy.result.ER : undefined}
+      paaER={calc.paaResult.result.ER}
+      waterfall={legacy && calc.waterfall ? calc.waterfall : undefined}
+      warning={calc.warning}
+      generatedAt={printedAt}
+      appVersion={CALVIN_PACKAGE_VERSION}
+      canonPopulation={project.population?.served}
+      creditingPeriodYears={calc.creditingPeriodYears}
+      tables={calc.tables}
+    />,
+    slot,
+  );
 }
 
 /** The console's header: where the facts come from, in a visitor's words. */

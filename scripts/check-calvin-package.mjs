@@ -197,10 +197,44 @@ expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSy
   const css = readFileSync(join('src', 'styles', 'calvin.css'), 'utf8');
   expect(
     'the calculator is one column: the lens above, the work full width below, in one scroll',
-    /className="wb-calvin wb-calvin-stack"/.test(holder) && !/width: 320/.test(holder) && /className="wb-calvin-lens"/.test(holder),
+    /'wb-calvin wb-calvin-stack/.test(holder) && !/width: 320/.test(holder) && /className="wb-calvin-lens"/.test(holder),
     'the side column is back'
   );
   expect('the core\'s summary block scrolls with the rows here', /\.wb-calvin \.sticky \{\s*position: static;/.test(css), 'no override');
+}
+/* 9. One export during a screening, her word of 16 Nov 2026 on #174: on Quantify Calvin's own
+      "Export report (PDF)" is hidden and the left rail's screening report carries his figure and his
+      full working; the Commons keeps his export. */
+{
+  const holder = readFileSync(join('src', 'components', 'CalvinCalculator.tsx'), 'utf8');
+  const screen = readFileSync(join('src', 'components', 'CalvinScreen.tsx'), 'utf8');
+  const commons = readFileSync(join('src', 'components', 'CommonsSeats.tsx'), 'utf8');
+  const report = readFileSync(join('src', 'components', 'ScreeningReport.tsx'), 'utf8');
+  const css = readFileSync(join('src', 'styles', 'calvin.css'), 'utf8');
+  const base = readFileSync(join('src', 'styles', 'base.css'), 'utf8');
+  const core = readFileSync(join('node_modules', '@waterbots', 'calvin', 'dist', 'screen.js'), 'utf8');
+  expect(
+    'the core\'s export button still carries the title this site hides it by',
+    /title: "Export the report[^"]*",\s*children: "Export report \(PDF\)"/.test(core),
+    'the title changed in the package: the button would show again on Quantify'
+  );
+  expect(
+    'on Quantify, and only there, Calvin\'s own export is hidden',
+    /\.wb-calvin-screening button\[title\^="Export the report"\]/.test(css) &&
+      /<CalvinTool[\s\S]*?onSummary=\{onSummary\}\s*screening\s/.test(screen) &&
+      !/screening/.test(commons.match(/<CalvinTool[\s\S]*?\/>/)?.[0] ?? 'screening'),
+    'the switch is missing, or the Commons has it too'
+  );
+  expect(
+    'the screening report holds a place for his working, beside the figure, and his own report is drawn into it',
+    /id=\{SCREENING_WORKING_SLOT\}/.test(report) && /createPortal\(\s*<ReportView/.test(holder) && /screening && shown && <WorkingInReport/.test(holder),
+    'no working in the screening report'
+  );
+  expect(
+    'the working prints with the screening report, in the flow of the page',
+    /body\.wb-print-screening \.wb-report \.print-report \{\s*display: block !important;\s*position: static !important;/.test(base),
+    'the print rule is missing'
+  );
 }
 expect('.gitattributes keeps no carried/ rule', !/^carried\//m.test(readFileSync('.gitattributes', 'utf8')), 'a carried/ line is left');
 

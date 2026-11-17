@@ -9,8 +9,11 @@
 - Fixed: the calculator now opens again once the record names the technology, so its starting
   values are the package's own. Before, the days stayed at 365 under a slider that said
   "starts at 347 d", and the figure ran about 5% high.
-- The calculator is one column from her tablet walk: where the facts come from and Export report sit
+- The calculator is one column from her tablet walk: where the facts come from ~~and Export report~~ sit
   above it, the figures take the full width, and the summary block scrolls with the rows.
+- One export during a screening, her word the same day: on Quantify Calvin's own "Export report
+  (PDF)" is hidden, and "Export screening report" in the left rail carries his figure and his full
+  working, the package's own report. The Commons keeps his export.
 
 ## 0.2.0 — 14 Nov 2026
 

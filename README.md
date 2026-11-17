@@ -32,7 +32,7 @@ first, then six phases, of which Eligibility, Partners and Quantify open this si
 the desk opens first. **Wellington's desk** holds the visit's project context and rows that derive
 from the visit and are never invented: Phoebe's eligibility result, the basin pinned on the map,
 Calvin's screening figure, and ~~always, last,~~ **at the foot of the right rail, in view at laptop
-height from the look pass of 8 Sep 2026,** *Save this project and sign up*. ~~That opens
+height from the look pass of 8 Sep 2026,** ~~*Save this project and sign up*~~ *Save and sign up*, its words from 16 Nov 2026, at the foot of the left rail. ~~That opens
 waterbots.ai and carries nothing across.~~ **From 8 Sep 2026 that button is the bridge to the paid
 site**: a button with one line under it saying what goes with the visitor — what they said about
 the project, the basin they pinned, where each eligibility criterion stands, and the numbers they

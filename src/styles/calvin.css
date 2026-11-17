@@ -50,3 +50,14 @@
 .wb-calvin .sticky {
   position: static;
 }
+
+/* ONE EXPORT DURING A SCREENING — the maintainer's word of 16 Nov 2026 on #174.
+   On Quantify the only export is "Export screening report" in the left rail,
+   which carries Calvin's figure and his full working; his own "Export report
+   (PDF)" is hidden there, with the strip it sits in. The Commons, where there is
+   no screening, keeps it. The core has no switch for it yet, so this line finds
+   the button by its title; asked of the open core (Session C), so it can go. */
+.wb-calvin-screening button[title^="Export the report"],
+.wb-calvin-screening div:has(> button[title^="Export the report"]:only-child) {
+  display: none;
+}

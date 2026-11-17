@@ -15,7 +15,7 @@
  *      citation, which path looks plausible, and how to reach a person;
  *   3. Bridget's basin and its water-stress reading, with the attribution the
  *      datasets require, or "Not done yet";
- *   4. Calvin's screening figures, or "Not done yet".
+ *   4. Calvin's screening figures and his full working, or "Not done yet".
  * Nothing is kept: the report is the visit as it stands, printed.
  */
 
@@ -29,6 +29,7 @@ import { contextFor, stateOf, type Sheet } from '../lib/worksheetState';
 import { deskRows, pathStatus, servedWords, WATER_SUPPLY_TYPES, type CarbonFigure, type Visit } from '../lib/visit';
 import { GS4GG_CALCULATOR_VERSION } from '@waterbots/calvin/engine';
 import { CALVIN_PACKAGE_VERSION } from '../lib/calvinProject';
+import { SCREENING_WORKING_SLOT } from './CalvinCalculator';
 
 const AWAITING = 'awaiting user project input';
 const FIRST_SCREENING = 'This is a first screening, not an official decision.';
@@ -224,9 +225,14 @@ export default function ScreeningReport({
         <Row
           k="Carbon credits, first estimate (ex-ante)"
           v={`${carbon.er.toLocaleString('en-GB', { maximumFractionDigits: 1 })} tCO₂e a year`}
-          note={`Gold Standard's safe drinking water methodology, ${carbon.version === 'paa' ? 'version 2.0' : 'version 1.0'}. Worked out by the open core's engine, gs4gg-carbon ${GS4GG_CALCULATOR_VERSION}, in @waterbots/calvin ${CALVIN_PACKAGE_VERSION}. The full working prints from the calculator itself.`}
+          note={`Gold Standard's safe drinking water methodology, ${carbon.version === 'paa' ? 'version 2.0' : 'version 1.0'}. Worked out by the open core's engine, gs4gg-carbon ${GS4GG_CALCULATOR_VERSION}, in @waterbots/calvin ${CALVIN_PACKAGE_VERSION}. Calvin's full working follows.`}
         />
       )}
+      {/* Calvin's full working, the package's own report, drawn here by the
+          calculator on Quantify (CalvinCalculator.tsx, SCREENING_WORKING_SLOT).
+          Shown only beside the figure. Inside .wb-calvin, so the core's own
+          classes, scoped there (calvin.css), lay it out. */}
+      <div id={SCREENING_WORKING_SLOT} className="wb-calvin wb-report-working" style={carbon ? undefined : { display: 'none' }} />
       {calvin.map((row) => (
         <Row key={row.key} k="Water benefits, first estimate" v="" note={row.sentence} />
       ))}

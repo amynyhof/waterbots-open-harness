@@ -84,6 +84,7 @@ export function CalvinTool({
   allValues,
   onChange,
   opensOn = 'carbon',
+  screening = false,
 }: {
   project: CalvinProject;
   header?: (missing: string[]) => ReactNode;
@@ -93,6 +94,8 @@ export function CalvinTool({
   allValues: Record<string, PackValues>;
   onChange: (key: string, values: PackValues) => void;
   opensOn?: 'carbon' | 'water';
+  /** On the console's Quantify step, not the Commons: the left rail's screening report is the one export. */
+  screening?: boolean;
 }) {
   const [which, setWhich] = useState<'carbon' | 'water'>(opensOn);
   return (
@@ -114,7 +117,7 @@ export function CalvinTool({
       </div>
       <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
         <div style={{ position: 'absolute', inset: 0, visibility: which === 'carbon' ? undefined : 'hidden' }} aria-hidden={which !== 'carbon'}>
-          <CalvinCarbon project={project} header={header} onSummary={onSummary} />
+          <CalvinCarbon project={project} header={header} onSummary={onSummary} screening={screening} />
         </div>
         <div style={{ position: 'absolute', inset: 0, display: 'flex', visibility: which === 'water' ? undefined : 'hidden' }} aria-hidden={which !== 'water'}>
           <QuantificationWorksheet activeKey={activeKey} onSelect={onSelect} allValues={allValues} onChange={onChange} />
@@ -151,6 +154,7 @@ export default function CalvinScreen({
             project={project}
             header={(missing) => <RecordFacts missing={missing} />}
             onSummary={onSummary}
+            screening
             activeKey={activeKey}
             onSelect={onSelect}
             allValues={allValues}

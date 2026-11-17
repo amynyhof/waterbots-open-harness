@@ -352,8 +352,8 @@ function SaveFoot({ save, open }: { save: SaveDoor; open: boolean }) {
         className={save.blue ? 'wb-save-button is-collapsed' : 'wb-save-button is-quiet is-collapsed'}
         onClick={save.onSeal}
         disabled={busy}
-        title="Save this project and sign up"
-        aria-label="Save this project and sign up"
+        title="Save and sign up"
+        aria-label="Save and sign up"
       >
         <SaveIcon />
       </button>
@@ -404,7 +404,7 @@ function SaveFoot({ save, open }: { save: SaveDoor; open: boolean }) {
       >
         {sealing.kind === 'sealing' && 'Saving your project…'}
         {sealing.kind === 'sealed' && 'Saved. Taking you to waterbots.ai…'}
-        {(sealing.kind === 'idle' || sealing.kind === 'failed') && 'Save this project and sign up'}
+        {(sealing.kind === 'idle' || sealing.kind === 'failed') && 'Save and sign up'}
       </button>
       {sealing.kind === 'failed' && (
         <p role="alert" style={{ margin: '8px 0 0', fontSize: 12, lineHeight: 1.5, color: 'var(--state-pending)' }}>

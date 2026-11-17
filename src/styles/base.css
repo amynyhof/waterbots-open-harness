@@ -1972,6 +1972,14 @@ button.wb-info {
   body.wb-print-screening .print-report {
     display: none !important;
   }
+  /* Calvin's full working is the one report of his that does print with it:
+     drawn inside the screening report, in its own place in section 4, and in
+     the flow of the page rather than over it (16 Nov 2026, #174). */
+  body.wb-print-screening .wb-report .print-report {
+    display: block !important;
+    position: static !important;
+    margin-top: 10px;
+  }
   body.wb-print-screening .wb-report,
   body.wb-print-screening .wb-report * {
     visibility: visible !important;
@@ -2101,6 +2109,8 @@ button.wb-info {
   width: 100%;
   font-size: 13.5px;
   padding: 9px 12px;
+  /* "Save and sign up", on one line at every width (16 Nov 2026). */
+  white-space: nowrap;
 }
 .wb-save-button.is-collapsed {
   flex: none;
