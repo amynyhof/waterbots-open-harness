@@ -7,9 +7,11 @@
  *   node scripts/check-names.mjs --added <base>     the lines and file names `git diff <base>...HEAD` adds
  *
  * WHERE THE LIST IS. The WB_NAMES_LIST setting holds the list's full path. There is no default path in the
- * code, and the list is read in place: never copied, never printed, never logged. It cannot run in GitHub's
+ * code, and the list is read in place: ~~never copied,~~ never printed, never logged. ~~It cannot run in GitHub's
  * checks, because the list is private; every pull request runs it here before pushing (PROCESS_RULES_for_ShellB.md,
- * *The name scan runs before every push*).
+ * *The name scan runs before every push*).~~
+ * **From 16 Nov 2026 it also runs in GitHub's checks** (#177, .github/workflows/names.yml), from the
+ * repository secret NAMES_TO_BLOCK, written to a temporary file for the scan and removed after it.
  *
  * THE LIST. One entry per line. `#` starts a comment; blank lines are skipped. An entry may end in
  * `| allowed on copyright and licence lines` (with or without a closing "only", either spelling of licence): it

@@ -35,8 +35,8 @@ jobs:
           done
           node scripts/build-prompt-modules.mjs --check
           node scripts/build-calvin-css.mjs --check
-      # The name scan itself needs the private list, so it runs on the engineer's machine before every push
-      # (PROCESS_RULES_for_ShellB.md). Its tests use made-up names only, so they run here.
+      # The name scan itself runs in its own workflow, names.yml, from the secret NAMES_TO_BLOCK, so the
+      # secret reaches that one job only (16 Nov 2026, #177). Its tests use made-up names only, so they run here.
       - name: Name scan tests
         run: node --test scripts/check-names.test.mjs
       - name: Build

@@ -1,0 +1,62 @@
+# The name scan in GitHub's checks — approved 16 Nov 2026, the maintainer's word on #177
+# (docs/proposals/name-scan-in-ci-2026-11-16.md).
+#
+# The list is the repository secret NAMES_TO_BLOCK, the same name as the paid site's. It is written
+# to a temporary file, scanned against, and deleted. It is never printed: the scan prints file, line
+# and kind only (scripts/check-names.mjs).
+#
+#   pull request      the lines and file names the pull request adds (--added origin/<base>)
+#   push to main      every tracked file and file name (her word on #177)
+#   by hand           every tracked file and file name
+#
+# FAILS CLOSED. A missing or empty secret, which is also what a pull request from a fork gets, ends
+# the run with "cannot run" and exit 2: the check fails, never passes unscanned. The scan's own exit
+# 2 (a list it cannot read, a diff git cannot give) fails it the same way, and exit 1 is a finding.
+#
+# Nothing but the checkout and Node runs beside the secret: no npm ci, because the scan uses Node's
+# own modules only. Never pull_request_target, which would hand the secret to code from a fork.
+name: Name scan
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  names:
+    name: names
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Name scan (the list is never printed)
+        env:
+          NAMES_TO_BLOCK: ${{ secrets.NAMES_TO_BLOCK }}
+          BASE: ${{ github.base_ref }}
+        run: |
+          set -eu
+          if [ -z "${NAMES_TO_BLOCK:-}" ]; then
+            echo "name scan: cannot run (the NAMES_TO_BLOCK secret is not set or not available). No result."
+            exit 2
+          fi
+          umask 077
+          list="$RUNNER_TEMP/names.txt"
+          printf '%s\n' "$NAMES_TO_BLOCK" > "$list"
+          unset NAMES_TO_BLOCK
+          if [ -n "${BASE:-}" ]; then
+            WB_NAMES_LIST="$list" node scripts/check-names.mjs --added "origin/$BASE"
+          else
+            WB_NAMES_LIST="$list" node scripts/check-names.mjs
+          fi
+      - name: Remove the list
+        if: always()
+        run: rm -f "$RUNNER_TEMP/names.txt"

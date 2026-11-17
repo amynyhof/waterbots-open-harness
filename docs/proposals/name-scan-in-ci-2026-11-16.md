@@ -1,6 +1,11 @@
 # Proposal: the name scan in GitHub's checks
 
-**Status: proposed, 16 Nov 2026. Nothing is built.** Asked for by the maintainer the same day: run
+> **Approved 16 Nov 2026, the maintainer's word on #177, and built the same day.** Her answers: the secret
+> is **`NAMES_TO_BLOCK`**, the same name as the paid site's, not `NAME_SCAN_LIST`; **yes, every tracked file
+> is scanned on each push to main**; **yes, `names` becomes a required check** on main; the process rule is
+> **amended in place**. Where the text below differs, her answers stand.
+
+~~**Status: proposed, 16 Nov 2026. Nothing is built.**~~ **Status: approved and built, 16 Nov 2026.** Asked for by the maintainer the same day: run
 the name scan in this repository's GitHub checks with a repository secret, as the paid site does. It
 must fail closed and never print a name.
 
