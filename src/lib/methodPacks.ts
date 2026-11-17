@@ -25,7 +25,6 @@
 
 import type { Citation } from './citation';
 import { VWBA_D3 } from './vwbaD3';
-import { GS_SDWS_LEGACY_V1, GS_SDWS_PAA_V2 } from './gsSdws';
 
 /**
  * How confident a pack's output is allowed to sound.
@@ -301,7 +300,28 @@ export type RegisteredPack = MethodPack | PlannedPack;
  * live from 2 Sep 2026 and the planned placeholder they replace is gone with
  * them. The water pack keeps the first tab.
  */
-export const METHOD_PACKS: RegisteredPack[] = [VWBA_D3, GS_SDWS_LEGACY_V1, GS_SDWS_PAA_V2];
+/* ~~Two carbon packs are live~~ — FROM 14 NOV 2026 CARBON IS THE OPEN CORE'S
+   CALCULATOR, @waterbots/calvin 0.3.0 (src/components/CalvinCalculator.tsx), on
+   the maintainer's word. This site's own carbon screening, src/lib/gsSdws.ts, is
+   no longer registered: it stays only as the "before" side of the proposal's
+   proof P3, checked by scripts/check-gs-sdws.mjs, until it retires. The water
+   pack stays until Violet's module arrives (proposal step 5). */
+export const METHOD_PACKS: RegisteredPack[] = [VWBA_D3];
+
+/**
+ * THE CALCULATORS FROM THE OPEN CORE, beside the site's own packs — 14 Nov 2026.
+ * They are not method packs here (they bring their own screens), but the
+ * agents' primer lists what is fitted to Quantify, so each says, in one clause,
+ * what it measures. scripts/build-prompt-modules.mjs reads this list with the
+ * live packs; it is never typed into the primer.
+ */
+export const CORE_CALCULATORS: { name: string; primerLine: string }[] = [
+  {
+    name: 'Carbon · V1.0 and V2.0, the open core’s calculator',
+    primerLine:
+      'the carbon reduction a safe-drinking-water project screens at under the Gold Standard method, legacy and Paris-aligned, ex-ante',
+  },
+];
 
 /** The packs that can answer, in tab order. */
 export function livePacks(): MethodPack[] {
@@ -335,17 +355,9 @@ export interface PackComparison {
   note: string;
 }
 
-export const PACK_COMPARISONS: PackComparison[] = [
-  {
-    key: 'carbon-transition',
-    title: 'Transition delta (PAA − Legacy)',
-    minuendKey: GS_SDWS_PAA_V2.key,
-    subtrahendKey: GS_SDWS_LEGACY_V1.key,
-    note:
-      'Difference attributable to the methodology transition, computed on identical project data. ' +
-      'Here the whole difference is the non-renewable share of biomass; nothing else moves.',
-  },
-];
+/* The carbon transition delta left with the carbon packs on 14 Nov 2026: the
+   open core's calculator draws its own, worked out by its engine. */
+export const PACK_COMPARISONS: PackComparison[] = [];
 
 /** Litres to cubic metres. The result is shown in both. */
 export const cubicMetres = (litres: number): number => litres / 1000;

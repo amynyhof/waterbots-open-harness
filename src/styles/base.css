@@ -1953,27 +1953,52 @@ button.wb-info {
 }
 
 /* THE SCREENING REPORT (S21) is print-only, as the paid calculator's export is:
-   hidden on screen, and the only thing printed. */
+   hidden on screen, and the only thing printed.
+
+   TWO EXPORTS TAKE TURNS, from 14 Nov 2026, when Calvin's calculator came from the
+   open core with its own report and print rules (@waterbots/calvin/styles.css),
+   which hide everything but its .print-report. "Export screening report" marks
+   the page with .wb-print-screening while it prints: then only this report
+   prints and Calvin's stays hidden. Unmarked, Calvin's own export prints his,
+   and only the one on the page in view. */
 .wb-report {
   display: none;
 }
 @media print {
-  html,
-  body,
-  #root {
+  .wb-page.is-off .print-report,
+  .wb-module-page.is-off .print-report {
+    display: none !important;
+  }
+  body.wb-print-screening .print-report {
+    display: none !important;
+  }
+  /* Calvin's full working is the one report of his that does print with it:
+     drawn inside the screening report, in its own place in section 4, and in
+     the flow of the page rather than over it (16 Nov 2026, #174). */
+  body.wb-print-screening .wb-report .print-report {
+    display: block !important;
+    position: static !important;
+    margin-top: 10px;
+  }
+  body.wb-print-screening .wb-report,
+  body.wb-print-screening .wb-report * {
+    visibility: visible !important;
+  }
+  body.wb-print-screening,
+  body.wb-print-screening #root {
     height: auto !important;
     overflow: visible !important;
     background: #ffffff;
   }
-  .wb-app {
+  body.wb-print-screening .wb-app {
     height: auto !important;
     display: block !important;
     background: #ffffff !important;
   }
-  .wb-app > :not(.wb-report) {
+  body.wb-print-screening .wb-app > :not(.wb-report) {
     display: none !important;
   }
-  .wb-report {
+  body.wb-print-screening .wb-report {
     display: block;
     color: var(--ink);
     font-family: var(--font-sans);
@@ -2070,4 +2095,37 @@ button.wb-info {
 .wb-interest-cta:focus-visible {
   outline: 2px solid var(--tide-ui);
   outline-offset: 2px;
+}
+
+/* Save at the foot of the left rail, just above Register your interest — her
+   word of 16 Nov 2026 on #174. Full width, normal text size; still the one
+   blue button when nothing comes before it. Collapsed, a small icon button. */
+.wb-rail-save-foot {
+  flex: none;
+  margin: 10px 12px 0;
+}
+.wb-rail-save-foot .wb-save-button {
+  display: block;
+  width: 100%;
+  font-size: 13.5px;
+  padding: 9px 12px;
+  /* "Save and sign up", on one line at every width (16 Nov 2026). */
+  white-space: nowrap;
+}
+.wb-save-button.is-collapsed {
+  flex: none;
+  display: grid;
+  place-items: center;
+  margin: 10px 8px 0;
+  padding: 8px 0;
+}
+
+/* THE CREW COLUMN NARROWS BETWEEN PHONE AND WIDE LAPTOP — the maintainer's
+   tablet walk of #174, 16 Nov 2026: at 1024px the calculator had 428px beside
+   the open left rail and a 372px crew column. The crew is a quiet list now
+   (W27), so 248px holds a face, a name and one status line. */
+@media (min-width: 901px) and (max-width: 1279px) {
+  :root {
+    --chat-rail: 248px;
+  }
 }

@@ -239,9 +239,10 @@ function fittedPackSentence() {
       );
     }
     writeFileSync(join(out, 'package.json'), '{"type":"commonjs"}');
-    const { METHOD_PACKS } = createRequire(import.meta.url)(join(out, 'methodPacks.js'));
+    const { METHOD_PACKS, CORE_CALCULATORS = [] } = createRequire(import.meta.url)(join(out, 'methodPacks.js'));
 
-    const live = METHOD_PACKS.filter((p) => p.state === 'live');
+    /* The site's own live packs, then the open core's calculators (14 Nov 2026). */
+    const live = [...METHOD_PACKS.filter((p) => p.state === 'live'), ...CORE_CALCULATORS];
     if (live.length === 0) return 'No pack is fitted to the step yet.';
 
     const missing = live.find((p) => !p.primerLine);

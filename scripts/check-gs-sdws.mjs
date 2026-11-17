@@ -60,6 +60,10 @@ const compile = spawnSync(
   [
     join('node_modules', 'typescript', 'bin', 'tsc'),
     join('src', 'lib', 'methodPacks.ts'),
+    /* From 14 Nov 2026 the registry no longer imports gsSdws.ts — carbon is the
+       open core's calculator — so the module is compiled by name: it stays as
+       proof P3's "before" until it retires. */
+    join('src', 'lib', 'gsSdws.ts'),
     '--outDir',
     out,
     '--module',
@@ -321,10 +325,13 @@ expect(
   Math.round(((paaUga - legacyUga) / legacyUga) * 1000) / 10 === -49.2,
   `got ${((paaUga - legacyUga) / legacyUga) * 100}`
 );
+/* From 14 Nov 2026 the carbon packs are not registered: carbon is the open
+   core's calculator, which draws its own transition delta. */
 expect(
-  'the registry pairs the two carbon packs, PAA minus Legacy',
-  PACK_COMPARISONS.some((c) => c.minuendKey === PAA.key && c.subtrahendKey === LEGACY.key),
-  'no comparison is registered'
+  'the registry no longer pairs these carbon packs, nor lists them live (14 Nov 2026)',
+  !PACK_COMPARISONS.some((c) => c.minuendKey === PAA.key || c.subtrahendKey === LEGACY.key) &&
+    !METHOD_PACKS.some((p) => p.key === PAA.key || p.key === LEGACY.key),
+  'an old carbon pack is still registered'
 );
 expect(
   'both packs offer the same worked example, so the delta can be shown',
@@ -470,7 +477,7 @@ for (const p of [LEGACY, PAA]) {
 }
 expect('the PAA tab cites the MoFuSS shares by name and vintage', PAA.alsoCites?.[0] === CITE_MOFUSS && /2024/.test(CITE_MOFUSS.version), 'MoFuSS is not cited');
 expect('the PAA tab says which v2.0 adjustments it does not apply', PAA.method.lines({}).some((l) => /Not applied/.test(l)), 'the simplification is unstated');
-expect('three packs are live', METHOD_PACKS.filter((p) => p.state === 'live').length === 3, `got ${METHOD_PACKS.filter((p) => p.state === 'live').length}`);
+expect('one of this site’s own packs is live, the water pack', METHOD_PACKS.filter((p) => p.state === 'live').length === 1, `got ${METHOD_PACKS.filter((p) => p.state === 'live').length}`);
 expect('no planned placeholder remains', !METHOD_PACKS.some((p) => p.state === 'planned'), 'a planned pack is still registered');
 expect('the MoFuSS shares in the pack match Table 5', COUNTRIES.every((c) => [0.06, 0.3, 0.35, 0.49, 0.51, 0.6].includes(c.mofuss)), 'a share drifted');
 

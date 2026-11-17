@@ -6,7 +6,7 @@
  * At most one solid blue button is on the screen. The one next step wins, in
  * her order:
  *   1. "Meet <name>", while it is under the latest turn on the step in view;
- *   2. otherwise "Save this project and sign up", once something is on the record;
+ *   2. otherwise "Save and sign up" (shortened 16 Nov 2026), once something is on the record;
  *   3. otherwise "Sign up" in the site menu.
  * On the interest form's own page its Send button is the next step, so it is
  * the blue one there and Sign up is quiet.

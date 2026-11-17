@@ -719,7 +719,7 @@ expect(
 );
 expect(
   'W27: the right panel is the crew, one plain status line each, with no next-step rows (14 Nov 2026)',
-  /crewStatus\(visit, sheet, LIVE_PACKS\)/.test(appSource) && /status=\{crew\}/.test(appSource) && !/nextStepRows/.test(appSource),
+  /crewStatus\(visit, sheet, LIVE_PACKS, carbon\)/.test(appSource) && /status=\{crew\}/.test(appSource) && !/nextStepRows/.test(appSource),
   'the right panel still draws next-step rows'
 );
 expect(
@@ -728,10 +728,14 @@ expect(
   'the composer does not grow'
 );
 expect(
-  'W27, S21: the save door sits in the left rail under the project, the report under it, and the crew rail draws neither',
-  /\{save\.show && <SaveBlock save=\{save\} \/>\}/.test(readFileSync('src/components/NavRail.tsx', 'utf8')) &&
+  'W27, S21: the save door sits in the left rail (at its foot above Register your interest from 16 Nov 2026), the report under the project, and the crew rail draws neither',
+  (() => {
+    const rail = readFileSync('src/components/NavRail.tsx', 'utf8');
+    const foot = rail.indexOf('{save.show && <SaveFoot save={save} open={open} />}');
+    return foot > rail.indexOf('<div style={{ flex: 1 }} />') && foot < rail.indexOf("'wb-interest-cta'");
+  })() &&
     /Export screening report/.test(readFileSync('src/components/NavRail.tsx', 'utf8')) &&
-    /onExport: \(\) => window\.print\(\)/.test(appSource) &&
+    /onExport: printScreeningReport/.test(appSource) && /body\.classList\.add\('wb-print-screening'\)/.test(appSource) &&
     !/wb-save-button|Next steps|TOOLS_LINE/.test(railSource),
   'the save door or the report is not in the left rail'
 );

@@ -28,12 +28,13 @@ jobs:
       - name: Confirm outputs, one script at a time
         run: |
           set -e
-          for c in basins stress palette cards api-exports visitor-id cap reply-guard vwba-d3 gs-sdws wellington roster lanes blue interest; do
+          for c in basins stress palette cards api-exports visitor-id cap reply-guard vwba-d3 gs-sdws calvin-package wellington roster lanes blue interest; do
             echo "::group::check-$c"
             node "scripts/check-$c.mjs"
             echo "::endgroup::"
           done
           node scripts/build-prompt-modules.mjs --check
+          node scripts/build-calvin-css.mjs --check
       # The name scan itself needs the private list, so it runs on the engineer's machine before every push
       # (PROCESS_RULES_for_ShellB.md). Its tests use made-up names only, so they run here.
       - name: Name scan tests

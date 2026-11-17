@@ -38,6 +38,9 @@
  * (src/styles/tokens.css).
  */
 
+import { useState, type ReactNode } from 'react';
+import type { CalvinProject } from '@waterbots/calvin/screen';
+import { GS4GG_CALCULATOR_VERSION } from '@waterbots/calvin/engine';
 import calvinPortrait from '../../brand/assets/bots/calvin.svg';
 import type { AgentHost } from '../chat/evidence';
 import { livePacks, type PackValues } from '../lib/methodPacks';
@@ -47,6 +50,9 @@ import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, { type PackView } from '../screen/KnowledgePackTab';
 import NotLiveChat from '../screen/NotLiveChat';
 import QuantificationWorksheet from './QuantificationWorksheet';
+import { CalvinCarbon, RecordFacts, type CalvinSummary } from './CalvinCalculator';
+import { CALVIN_PACKAGE_VERSION, CALVIN_RELEASE } from '../lib/calvinProject';
+import { GS_SDWS_LEGACY_V1, GS_SDWS_PAA_V2 } from '../lib/gsSdws';
 
 export const CALVIN: AgentHost = {
   name: 'Calvin',
@@ -60,14 +66,78 @@ export const CALVIN: AgentHost = {
 
 /** The one plain line — ruling 1, 9 Sep 2026. A visitor's words. */
 export const CALVIN_NOT_LIVE_LINE =
-  'Calvin is not answering here yet. The calculator works: pick a method and type in what you know.';
+  'Calvin is not answering here yet. The calculator works: pick carbon credits or water benefits, and type in what you know.';
+
+/**
+ * THE TOOL TAB HOLDS TWO CALCULATORS FROM 14 NOV 2026. Carbon credits are the
+ * open core's calculator (CalvinCalculator.tsx), installed from calvin-v0.3.0
+ * and locked to ex-ante. Water benefits stay this site's own VWBA D-3
+ * worksheet until Violet's module arrives from the open core (proposal step 5),
+ * so the step has two looks until then (proposal section 8, B).
+ */
+export function CalvinTool({
+  project,
+  header,
+  onSummary,
+  activeKey,
+  onSelect,
+  allValues,
+  onChange,
+  opensOn = 'carbon',
+  screening = false,
+}: {
+  project: CalvinProject;
+  header?: (missing: string[]) => ReactNode;
+  onSummary?: (summary: CalvinSummary) => void;
+  activeKey: string;
+  onSelect: (key: string) => void;
+  allValues: Record<string, PackValues>;
+  onChange: (key: string, values: PackValues) => void;
+  opensOn?: 'carbon' | 'water';
+  /** On the console's Quantify step, not the Commons: the left rail's screening report is the one export. */
+  screening?: boolean;
+}) {
+  const [which, setWhich] = useState<'carbon' | 'water'>(opensOn);
+  return (
+    <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+      <div role="tablist" aria-label="Which calculator" style={{ display: 'flex', gap: 8, padding: '6px 18px', borderBottom: '1px solid var(--line)', flex: 'none' }}>
+        {(['carbon', 'water'] as const).map((key) => (
+          <button
+            key={key}
+            type="button"
+            role="tab"
+            aria-selected={which === key}
+            className="wb-chip"
+            onClick={() => setWhich(key)}
+            style={which === key ? { color: 'var(--ink)', borderColor: 'var(--bot-calvin)', background: 'var(--card)' } : undefined}
+          >
+            {key === 'carbon' ? 'Carbon credits' : 'Water benefits'}
+          </button>
+        ))}
+      </div>
+      <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
+        <div style={{ position: 'absolute', inset: 0, visibility: which === 'carbon' ? undefined : 'hidden' }} aria-hidden={which !== 'carbon'}>
+          <CalvinCarbon project={project} header={header} onSummary={onSummary} screening={screening} />
+        </div>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', visibility: which === 'water' ? undefined : 'hidden' }} aria-hidden={which !== 'water'}>
+          <QuantificationWorksheet activeKey={activeKey} onSelect={onSelect} allValues={allValues} onChange={onChange} />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function CalvinScreen({
+  project,
+  onSummary,
   activeKey,
   onSelect,
   allValues,
   onChange,
 }: {
+  project: CalvinProject;
+  /** The figure and the facts still needed, handed to the shell so the crew panel and the report read them. */
+  onSummary: (summary: CalvinSummary) => void;
   activeKey: string;
   onSelect: (key: string) => void;
   allValues: Record<string, PackValues>;
@@ -80,14 +150,16 @@ export default function CalvinScreen({
       tabs={{
         chat: <NotLiveChat host={CALVIN} line={CALVIN_NOT_LIVE_LINE} />,
         tool: (
-          <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
-            <QuantificationWorksheet
-              activeKey={activeKey}
-              onSelect={onSelect}
-              allValues={allValues}
-              onChange={onChange}
-            />
-          </div>
+          <CalvinTool
+            project={project}
+            header={(missing) => <RecordFacts missing={missing} />}
+            onSummary={onSummary}
+            screening
+            activeKey={activeKey}
+            onSelect={onSelect}
+            allValues={allValues}
+            onChange={onChange}
+          />
         ),
         pack: <KnowledgePackTab view={CALVIN_PACK} />,
         credentials: <CredentialsTab host={CALVIN} />,
@@ -112,15 +184,36 @@ export const CALVIN_PACK: PackView = {
       version: null,
       source: (
         <>
-          Calvin carries no rule cards. He works from {PACKS.length} method packs, one tool per way of
-          working a number out, each read from its published method and cited beneath. Everything a
-          pack produces is a screening estimate: anticipated, not delivered. This is a first
-          screening, not an official decision.
+          Calvin carries no rule cards. His carbon calculator is the open core&rsquo;s, @waterbots/calvin{' '}
+          {CALVIN_PACKAGE_VERSION} from the release {CALVIN_RELEASE}, with its engine, gs4gg-carbon{' '}
+          {GS4GG_CALCULATOR_VERSION}, which does every sum; here it shows the ex-ante view only. His water
+          calculator is this site&rsquo;s own method pack until Violet&rsquo;s arrives. Everything they
+          produce is a screening estimate: anticipated, not delivered. This is a first screening, not an
+          official decision.
         </>
       ),
       sets: [
         {
-          label: `METHOD PACKS · ${PACKS.length} LIVE`,
+          label: 'CARBON · THE OPEN CORE’S CALCULATOR',
+          approved: null,
+          rows: [GS_SDWS_LEGACY_V1, GS_SDWS_PAA_V2].map((p, i) => ({
+            id: `core-${p.key}`,
+            badge: i === 0 ? 'V1' : 'V2',
+            title: p.name,
+            tag: `calvin ${CALVIN_PACKAGE_VERSION}`,
+            layers: [
+              { heading: 'What it measures', text: p.measures },
+              { heading: 'What it covers', text: p.scope },
+              {
+                heading: 'Where the numbers come from',
+                text: `The open core's engine, gs4gg-carbon ${GS4GG_CALCULATOR_VERSION}, installed from the release ${CALVIN_RELEASE} and checked against its fingerprint. This site computes none of it.`,
+              },
+            ],
+            citation: p.citation,
+          })),
+        },
+        {
+          label: `WATER · ${PACKS.length} METHOD ${PACKS.length === 1 ? 'PACK' : 'PACKS'}`,
           approved: null,
           rows: PACKS.map((p) => ({
             id: `pack-${p.key}`,

@@ -237,7 +237,9 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   Standard's safe-drinking-water methodology in its legacy and its
   Paris-aligned versions, one module differing in one cited input, with
   the transition delta between them. **Blank is never zero on any pack**,
-  and a default with no source asks instead.
+  and a default with no source asks instead. **From 14 Nov 2026 carbon is the open core's
+  calculator** (both versions, its own tabs and report, ex-ante only); this site's two carbon packs
+  are no longer registered, and `src/lib/gsSdws.ts` stays only as proof P3's "before" until it retires.
 - **The free desk, the fourth surface, from 2 Sep 2026 — and the console
   in the production shape.** A journey bar of six phases across the top
   of the centre, ~~four tabs beneath it~~ **one row from 7 Sep 2026**, the desk first. **Wellington,
@@ -482,11 +484,22 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   shared plain-words list, and 26,136 when he came to the agents' chats, all 14 Nov 2026, and 26,158
   with the reading level in his voice card, 16 Nov 2026 (his opening note rides beside the prompt,
   as his notes for joining a chat do), against the unchanged gate of 26,199.
-- **The engine bundle is tracked at `carried/`, from 27 Sep 2026**, placed by the maintainer's
-  hand and merged on `main` as it stands (#132), tagged `engine-carry-2026-09-27`. **It was replaced
-  on 3 Oct 2026 by v0.16.1**, the paid site's `calculator-seal-2026-10-03`: 34 files, 34 hashes
-  verified, the filing's figures gone (#147), tagged `engine-carry-2026-10-04`. `carried/** -text` keeps its bytes. `HOW-TO-CALL.md` went with the old bundle; the
-  manifest at `carried/MANIFEST.md` says what is in it. Nothing edits it here. Calvin's brief reads it.
+- ~~**The engine bundle is tracked at `carried/`, from 27 Sep 2026**~~ (#132, replaced on 3 Oct 2026
+  by v0.16.1, #147; tags `engine-carry-2026-09-27` and `engine-carry-2026-10-04`). **`carried/` is
+  deleted on 14 Nov 2026, V1, required, the maintainer's word.** **Calvin's carbon calculator is the
+  open core's from the same day**: ~~`@waterbots/calvin` 0.2.0 and `@waterbots/core` 0.1.0 from the
+  release `calvin-v0.2.0`~~ **`@waterbots/calvin` 0.3.0 and `@waterbots/core` 0.1.1 from the release
+  `calvin-v0.3.0`, from 16 Nov 2026**, with `creditedUnderV1` left unset until item A29, so every
+  project gets the V2.0-only view; vendored in `vendor/waterbots/` and checked against the release's SHA-256
+  and the lockfile's SHA-512 by `scripts/check-calvin-package.mjs`, which also re-runs the package's
+  47 made-up cases (proof P1). It is locked to ex-ante (`exAnteOnly`, sliders on), on Quantify and on
+  the Commons; its state lives with the calculator (`CalvinCarbon`), which opens again once the record
+  names the technology, so every starting value is the package's own; the facts come from the record through `src/lib/calvinProject.ts`, and its classes are
+  scoped under `.wb-calvin` (`scripts/build-calvin-css.mjs`, `src/styles/calvin.css`). **One export
+  during a screening, from 16 Nov 2026, her word:** on Quantify his own "Export report (PDF)" is
+  hidden, and "Export screening report" in the left rail carries his figure and his full working; the
+  Commons keeps his export. A new version
+  comes in only on her word. Proposal: `docs/proposals/calvin-from-open-core.md`.
 - **The free-site fixes of 30 Sep 2026 are live, #134 to #138**, and the demo ran on `main` at
   #138. The wordmark at the top left goes to waterbots.ai from 28 Oct 2026, as the main site's
   menu does; until then it started a fresh visit at the landing. Every chat box grows to three lines, then
@@ -500,8 +513,8 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   desk opens on her own greeting, without a copy of his routing message (display only), and the
   Done-later section of her Tool tab is collapsed by default. **When her reply ends in a question,
   that last sentence is bold, chips included**: display only, no prompt or relay change; the
-  Commons shows the same Phoebe, so it is bold there too. **Calvin's brief has its bundle**,
-  carried 3 Oct 2026.
+  Commons shows the same Phoebe, so it is bold there too. ~~**Calvin's brief has its bundle**,
+  carried 3 Oct 2026.~~ The bundle is gone; Calvin's calculator is the open core's (14 Nov 2026).
 - **Bridget's chat is live, her map on its own tab, from 31 Oct 2026 (item A22, #167)**, by the
   maintainer's three rulings of that day. Her screen has the other agents' tab layout: Chat, Map,
   Knowledge pack, Credentials, opening on Chat, the map at full width on its tab. The Map tab opens
