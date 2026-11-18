@@ -291,16 +291,24 @@ auto-merge job, which is off, could ever write to the repository.
 
 **Maintainer's ruling, 30 Oct 2026.** Every pull request runs the name scan, `scripts/check-names.mjs`, on
 the engineer's machine before its branch is pushed, and again before each later push to it. It checks text
-and file names against a private list of names, matching whole words. **It cannot run in GitHub's checks,
-because the list is private**; only its tests, which use made-up names, run there.
+and file names against a private list of names, matching whole words. ~~**It cannot run in GitHub's checks,
+because the list is private**; only its tests, which use made-up names, run there.~~ **It runs in GitHub's
+checks too, from 16 Nov 2026, the maintainer's word on #177**: the check `names`
+(`.github/workflows/names.yml`), a required check on main, reads the list from the repository secret
+`NAMES_TO_BLOCK`, the same name as the paid site's. On a pull request it scans the added lines and file names;
+on a push to main, every tracked file. Both stay: the scan on the machine before every push, and the check.
 
 - **Where the list is.** The `WB_NAMES_LIST` setting on the machine holds the list's full path. No path is
-  written in the code or in this repository. The list is never copied, printed or logged.
+  written in the code or in this repository. ~~The list is never copied, printed or logged.~~ **The list is in
+  two places from 16 Nov 2026: the maintainer's file and the secret `NAMES_TO_BLOCK`, and she changes both
+  together.** In the check the secret is written to a temporary file for the scan and removed after it. The
+  list is never printed or logged, in either place.
 - **What runs.** `node scripts/check-names.mjs --added origin/main` checks the lines and file names the pull
   request adds. `node scripts/check-names.mjs` alone checks every tracked file and file name.
 - **What it says.** File, line and kind only, then a count per kind; never a name. A path that holds a name
   shows as "(path hidden)". Exit 0 is clean, 1 is a finding, 2 is "could not run".
-- **It fails closed.** No setting, or a list that is missing or empty, is exit 2, never a pass. A push waits
+- **It fails closed.** No setting, or a list that is missing or empty, is exit 2, never a pass. In the check, a
+  missing or empty secret (which is also what a pull request from a fork gets) fails it with "cannot run". A push waits
   until the scan runs clean; a finding is fixed or put to the maintainer, never pushed past.
 - **The pull request says it ran**, under *What I ran*, with the count.
 
