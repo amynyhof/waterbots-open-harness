@@ -25,7 +25,7 @@
  * email; the sign-up keeps the supporter's id so a removal finds both.
  */
 
-import { readSupport, type SupportFields } from './_supporters.js';
+import { NEWSLETTER_WORDS, SHOW_WORDS, readSupport, type SupportFields } from './_supporters.js';
 
 /** The store's one list for sign-ups. No expiry, never trimmed: her ruling. */
 export const INTEREST_KEY = 'interest:signups';
@@ -45,6 +45,16 @@ export const INTEREST_LIMITS = { name: 80, organisation: 120, email: 254 } as co
 export const CONSENT_WORDS =
   'Keep my details so the WaterBots team can contact me about this site. I can ask to be removed at any time by writing to hello@waterbots.ai.';
 
+/**
+ * THE SUPPORTERS PAGE'S OWN FORM, from 18 Nov 2026, the maintainer's word on #176. It saves to the
+ * same list as Register your interest, marked `source: 'supporters'`, and asks less: a name, an email,
+ * an organisation if they like, a short comment, and two boxes, both unticked: "Show my name and
+ * comment on this page" and "Send me the WaterBots newsletter". No interests and no consent box; the
+ * thank-you line says how to change or remove the entry. A public entry still waits for her approval.
+ */
+export const SOURCES = ['interest', 'supporters'] as const;
+export type Source = (typeof SOURCES)[number];
+
 /** One body is small; anything larger is not a sign-up. */
 export const MAX_INTEREST_BYTES = 2000;
 
@@ -54,13 +64,19 @@ export interface InterestBody {
   email: string;
   interests: string[];
   module: string;
+  /** Which form sent it: Register your interest, or the supporters page (18 Nov 2026). */
+  source: Source;
+  /** The supporters page's comment, kept with the sign-up whether or not it is shown. */
+  comment: string;
+  /** The newsletter box, ticked. Only the supporters page asks it. */
+  newsletter: boolean;
   /** The public part, only when the box to show support is ticked. */
   support: SupportFields | null;
 }
 
 export type InterestReading = { signup: InterestBody } | { robot: true } | { problem: string };
 
-const KEYS = ['name', 'organisation', 'email', 'interests', 'module', 'consent', 'website', 'public', 'role', 'title', 'comment'];
+const KEYS = ['name', 'organisation', 'email', 'interests', 'module', 'consent', 'website', 'public', 'role', 'title', 'comment', 'source', 'newsletter'];
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MODULE = /^[a-z0-9-]{1,40}$/;
 
@@ -82,18 +98,25 @@ export function readInterest(body: unknown): InterestReading {
   /* The hidden field: a person never sees it, so a filled one is a robot. */
   if (typeof b.website === 'string' && b.website.trim() !== '') return { robot: true };
 
+  if (b.source !== undefined && !(SOURCES as readonly unknown[]).includes(b.source)) return { problem: "the form is not one of this site's forms" };
+  const source: Source = b.source === 'supporters' ? 'supporters' : 'interest';
+  const page = source === 'supporters';
+
   const name = text(b.name, 'name', INTEREST_LIMITS.name, true);
   if (typeof name !== 'string') return name;
-  const organisation = text(b.organisation, 'organisation', INTEREST_LIMITS.organisation, true);
+  /* The supporters page asks the organisation as optional. */
+  const organisation = text(b.organisation, 'organisation', INTEREST_LIMITS.organisation, !page);
   if (typeof organisation !== 'string') return organisation;
   const email = text(b.email, 'email', INTEREST_LIMITS.email, true);
   if (typeof email !== 'string') return email;
   if (!EMAIL.test(email)) return { problem: 'email is not an email address' };
 
-  if (!Array.isArray(b.interests) || b.interests.length === 0) return { problem: 'no interest is chosen' };
+  /* The supporters page asks no interests; Register your interest asks at least one. */
+  if (page && b.interests !== undefined && !(Array.isArray(b.interests) && b.interests.length === 0)) return { problem: 'this form asks no interests' };
+  if (!page && (!Array.isArray(b.interests) || b.interests.length === 0)) return { problem: 'no interest is chosen' };
   const ids: readonly string[] = INTERESTS.map((i) => i.id);
   const interests: string[] = [];
-  for (const id of b.interests) {
+  for (const id of page ? [] : (b.interests as unknown[])) {
     if (typeof id !== 'string' || !ids.includes(id)) return { problem: 'an interest is not one on the list' };
     if (!interests.includes(id)) interests.push(id);
   }
@@ -101,13 +124,31 @@ export function readInterest(body: unknown): InterestReading {
   const module = b.module === undefined || b.module === '' ? '' : typeof b.module === 'string' && MODULE.test(b.module) ? b.module : null;
   if (module === null) return { problem: 'module is not a module' };
 
-  /* The box must be ticked: exactly true, never a truthy something. */
-  if (b.consent !== true) return { problem: 'the box to keep these details is not ticked' };
+  /* Register your interest: the box must be ticked, exactly true, never a truthy something. The
+     supporters page has no such box; sending it is the ask, and its thank-you says how to change or remove. */
+  if (!page && b.consent !== true) return { problem: 'the box to keep these details is not ticked' };
+  if (page && b.consent !== undefined) return { problem: 'this form has no box to keep details' };
 
-  const reading = readSupport(b);
+  if (b.newsletter !== undefined && typeof b.newsletter !== 'boolean') return { problem: 'the newsletter box is not a yes or a no' };
+  if (!page && b.newsletter === true) return { problem: 'this form does not ask about the newsletter' };
+  const newsletter = b.newsletter === true;
+
+  const reading = readSupport(b, source);
   if ('problem' in reading) return reading;
 
-  return { signup: { name, organisation, email: email.toLowerCase(), interests, module, support: reading.support } };
+  return {
+    signup: {
+      name,
+      organisation,
+      email: email.toLowerCase(),
+      interests,
+      module,
+      source,
+      comment: reading.comment,
+      newsletter,
+      support: reading.support,
+    },
+  };
 }
 
 /**
@@ -116,27 +157,40 @@ export function readInterest(body: unknown): InterestReading {
  */
 export function interestEntry(signup: InterestBody, now: Date, supporter?: string): string {
   const { support, ...kept } = signup;
-  return JSON.stringify({ at: now.toISOString(), ...kept, consent: CONSENT_WORDS, ...(support && supporter ? { supporter } : {}) });
+  /* What they agreed to, in the words the form showed: the box on Register your interest, the boxes they ticked on the supporters page. */
+  const consent = signup.source === 'supporters' ? pageFormWords(signup) : CONSENT_WORDS;
+  return JSON.stringify({ at: now.toISOString(), ...kept, consent, ...(support && supporter ? { supporter } : {}) });
+}
+
+/** What a supporters-page sign-up agreed to: the page's form, and the words of each box it ticked. */
+function pageFormWords(signup: InterestBody): string {
+  const ticked = [signup.support ? SHOW_WORDS : '', signup.newsletter ? NEWSLETTER_WORDS : ''].filter(Boolean);
+  return `Sent from the form on the supporters page.${ticked.length ? ` Ticked: ${ticked.map((w) => `"${w}"`).join(', ')}.` : ''}`;
 }
 
 /** The copy to hello@waterbots.ai, in plain words. */
 export function composeInterestMail(signup: InterestBody, now: Date, supporter?: string): { subject: string; text: string } {
   const labels = signup.interests.map((id) => INTERESTS.find((i) => i.id === id)?.label ?? id);
+  const page = signup.source === 'supporters';
   const lines = [
-    'Someone registered their interest on open.waterbots.ai.',
+    page ? 'Someone sent the form on the supporters page of open.waterbots.ai.' : 'Someone registered their interest on open.waterbots.ai.',
     '',
     `Name: ${signup.name}`,
-    `Organisation: ${signup.organisation}`,
+    `Organisation: ${signup.organisation || '(not given)'}`,
     `Email: ${signup.email}`,
-    `Interested in: ${labels.join(', ')}`,
+    ...(page
+      ? [`Comment: ${signup.comment || '(none)'}`, `Newsletter: ${signup.newsletter ? 'yes, please send it' : 'no'}`]
+      : [`Interested in: ${labels.join(', ')}`]),
     ...(signup.module ? [`From the Agent Commons module: ${signup.module}`] : []),
     `When: ${now.toISOString().slice(0, 16).replace('T', ' ')} UTC`,
     '',
-    `They agreed to: "${CONSENT_WORDS}"`,
+    ...(page ? [] : [`They agreed to: "${CONSENT_WORDS}"`]),
     '',
     ...(signup.support && supporter
       ? [
-          'They also asked to show their support publicly. It is waiting for your approval and is not on the',
+          page
+            ? 'They asked to show their name and comment on the supporters page. It is waiting for your approval and is not on the'
+            : 'They also asked to show their support publicly. It is waiting for your approval and is not on the',
           'supporters page until you approve it. To see what is waiting, run this in the repository folder:',
           '  npm run supporters',
           '',
@@ -144,5 +198,5 @@ export function composeInterestMail(signup: InterestBody, now: Date, supporter?:
       : []),
     'This sign-up is kept in the site store until they ask to be removed. To remove it, run scripts/count-interest.mjs --remove <their email>.',
   ];
-  return { subject: `Registered interest: ${signup.organisation}`, text: lines.join('\n') };
+  return { subject: page ? `Supporters page: ${signup.name}` : `Registered interest: ${signup.organisation}`, text: lines.join('\n') };
 }

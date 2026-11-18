@@ -462,7 +462,8 @@ export default function App() {
     ((onDesk && meetShowing(chat.turns)) || (onEligibility && meetOn.eligibility) || (onMap && meetOn.map));
   /* On a phone the save button is inside the project panel, so it counts only while that panel is open. */
   const saveInView = onConsole && somethingOnRecord(visit) && (!phone || drawer === 'project');
-  const blue = blueButton({ meet: meetInView, save: saveInView, form: onInterest });
+  /* A page with a form of its own — the interest form, and the supporters page from 18 Nov 2026 — makes its Send the blue one. */
+  const blue = blueButton({ meet: meetInView, save: saveInView, form: onInterest || onSupporters });
 
   return (
     <div
@@ -688,7 +689,7 @@ export default function App() {
         style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden', visibility: onSupporters ? 'visible' : 'hidden' }}
         aria-hidden={!onSupporters}
       >
-        <SupportersPage shown={onSupporters} onInterest={() => navigate(pathForInterest())} />
+        <SupportersPage shown={onSupporters} />
       </main>
       </div>
 

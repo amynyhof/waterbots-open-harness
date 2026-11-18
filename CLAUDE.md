@@ -483,7 +483,13 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   line on the Commons and on the form, never the menu; ~~empty, the page says "No supporters are shown yet."~~
   **From 18 Nov 2026, her word, the four agents are the board's first entries**, each with the crew's icon, a
   "WaterBots agent" tag and one line in its own voice (`src/lib/supporters.ts`), and the reclining Wellington
-  sits beside the heading; with no approved person yet, the page says "No people are shown yet."
+  sits beside the heading; ~~with no approved person yet, the page says "No people are shown yet."~~ **From the
+  same day the form is on the page**, in place of the Register your interest box: name and email (required),
+  organization (optional), a short comment, and two unticked boxes, "Show my name and comment on this page"
+  and "Send me the WaterBots newsletter". It saves where Register your interest saves (`/api/interest`, the
+  store's `interest:signups`, marked `source: 'supporters'`); a ticked "show" box sends the name and comment
+  alone to wait for her approval. The thank-you says to write to hello@waterbots.ai to change or remove the
+  entry. The permission line, the empty line and the "taken off this page" line are gone, by her word.
 - **Wellington reads back what Phoebe found, and asks people served, from 26–27 Sep 2026 (items A17
   and A16, #128 and #130).** Each ask carries her worksheet as row ids and states only; he greets a
   visitor coming back from her knowing each pathway's read, never her sentences, and routes to

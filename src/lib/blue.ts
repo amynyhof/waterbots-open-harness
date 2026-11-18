@@ -26,7 +26,7 @@ export interface BlueState {
   meet: boolean;
   /** The save button shows: something is on the record, on the console. */
   save: boolean;
-  /** The page in view is the interest form, whose Send is its next step. */
+  /** The page in view has a form of its own — the interest form, or the supporters page from 18 Nov 2026 — whose Send is its next step. */
   form?: boolean;
 }
 

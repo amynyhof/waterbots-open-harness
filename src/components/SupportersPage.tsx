@@ -12,17 +12,28 @@
  * voice (src/lib/supporters.ts). They are tagged so no one takes them for a person's entry, and the
  * reclining Wellington from her concept note sits beside the heading, as on the Commons.
  *
- * HONEST STATES. With no approved person yet, the people's part says "No people are shown yet." — no
- * sample cards, no placeholder names, ever. A list that cannot be read says so; it is never shown as empty.
+ * HONEST STATES. No sample cards and no placeholder names, ever: a person shows only once approved. A
+ * list that cannot be read says so; it is never shown as empty.
  *
- * NO BLUE BUTTON OF ITS OWN (src/lib/blue.ts): the page has no next step, so the menu's Sign up stays
- * the blue one. The Register your interest box is the rail's tinted one.
+ * THE FORM IS ON THE PAGE, from 18 Nov 2026, her word on #176, in place of the Register your interest
+ * box: name, email, organisation (optional), a short comment, and two boxes, both unticked. It saves
+ * where Register your interest saves (src/lib/supporters.ts, sendPageForm). The lines "Each person's
+ * entry is shown with their permission", "No people are shown yet" and "To be taken off this page"
+ * are gone by the same word; the thank-you says how to change or remove an entry.
+ *
+ * ONE BLUE BUTTON (src/lib/blue.ts): the form's Send is the page's next step, so it is the blue one and
+ * the menu's Sign up is quiet, as on the interest form.
  */
 
-import { useEffect, useMemo, useState } from 'react';
-import { pathForInterest } from '../lib/pages';
+import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
 import {
-  OFF_THE_PAGE_LINE,
+  NEWSLETTER_WORDS,
+  SHOWN_AFTER_LOOK_LINE,
+  SHOW_WORDS,
+  SUPPORT_LIMITS,
+  THANKS_LINE,
+  sendPageForm,
+  type PageForm,
   ROLES,
   SUPPORTERS_INTRO,
   fetchSupporters,
@@ -31,7 +42,6 @@ import {
   type ShownSupporter,
   type SupportersReading,
 } from '../lib/supporters';
-import { InterestIcon } from './NavRail';
 import { Portrait } from './CommonsShelf';
 import WellingtonLeaning from './WellingtonLeaning';
 import { crewMember } from '../lib/crew';
@@ -39,7 +49,7 @@ import { AGENT_SUPPORTERS, AGENT_TAG } from '../lib/supporters';
 
 type Loading = { kind: 'loading' };
 
-export default function SupportersPage({ shown, onInterest }: { shown: boolean; onInterest?: () => void }) {
+export default function SupportersPage({ shown }: { shown: boolean }) {
   const [reading, setReading] = useState<SupportersReading | Loading>({ kind: 'loading' });
   const [role, setRole] = useState<string>('all');
 
@@ -66,11 +76,8 @@ export default function SupportersPage({ shown, onInterest }: { shown: boolean; 
         <div style={{ position: 'relative' }}>
           <div className="wb-supporters-head" style={{ minWidth: 0 }}>
             <h1 style={{ fontSize: 24, margin: '0 0 6px', letterSpacing: '-0.015em', lineHeight: 1.25 }}>Supporters</h1>
-            <p className="t-body" style={{ margin: 0, fontSize: 14.5, lineHeight: 1.55, color: 'var(--ink-2)' }}>
+            <p className="t-body" style={{ margin: '0 0 18px', fontSize: 14.5, lineHeight: 1.55, color: 'var(--ink-2)' }}>
               {SUPPORTERS_INTRO}
-            </p>
-            <p className="t-caption" style={{ margin: '4px 0 18px', fontSize: 12.5, color: 'var(--ink-3)' }}>
-              Each person's entry is shown with their permission.
             </p>
           </div>
           {/* Wellington, reclining — the figure from her concept note, as on the Commons
@@ -113,30 +120,98 @@ export default function SupportersPage({ shown, onInterest }: { shown: boolean; 
             {reading.message}
           </p>
         )}
-        {reading.kind === 'list' && supporters.length === 0 && (
-          <p className="t-body" style={{ fontSize: 14, color: 'var(--ink-2)', margin: '14px 0 0' }}>
-            No people are shown yet.
-          </p>
-        )}
 
-        <a
-          className="wb-interest-cta"
-          href={pathForInterest()}
-          style={{ display: 'inline-flex', margin: '24px 0 10px' }}
-          onClick={(e) => {
-            if (!onInterest || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-            e.preventDefault();
-            onInterest();
-          }}
-        >
-          <InterestIcon />
-          Register your interest
-        </a>
-        <p className="t-caption" style={{ margin: 0, fontSize: 12.5, color: 'var(--ink-3)' }}>
-          {OFF_THE_PAGE_LINE}
-        </p>
+        <SupportForm />
       </div>
     </div>
+  );
+}
+
+const EMPTY: PageForm = { name: '', email: '', organisation: '', comment: '', show: false, newsletter: false, website: '' };
+
+type SendState = { kind: 'idle' } | { kind: 'sending' } | { kind: 'kept'; shown: boolean } | { kind: 'failed'; message: string };
+
+/** The form, on the page. Nothing is said to be kept until the server says it was. */
+function SupportForm() {
+  const [form, setForm] = useState<PageForm>(EMPTY);
+  const [state, setState] = useState<SendState>({ kind: 'idle' });
+  const busy = state.kind === 'sending';
+  const ready = form.name.trim() !== '' && form.email.trim() !== '';
+
+  async function onSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (!ready || busy) return;
+    setState({ kind: 'sending' });
+    try {
+      await sendPageForm(form);
+      setState({ kind: 'kept', shown: form.show });
+    } catch (error) {
+      setState({ kind: 'failed', message: error instanceof Error ? error.message : 'That was not kept. Try again.' });
+    }
+  }
+
+  return (
+    <section className="wb-support-form" aria-label="Add your support">
+      <h2 style={{ fontSize: 17, margin: '0 0 12px', lineHeight: 1.3 }}>Add your support</h2>
+      {state.kind === 'kept' ? (
+        <p role="status" className="t-body" style={{ margin: 0, fontSize: 14.5, lineHeight: 1.55 }}>
+          {THANKS_LINE}
+          {state.shown && <> {SHOWN_AFTER_LOOK_LINE}</>}
+        </p>
+      ) : (
+        <form onSubmit={onSubmit} noValidate>
+          <div className="wb-support-form-grid">
+            <Field label="Name">
+              <input className="wb-form-input" type="text" autoComplete="name" value={form.name} maxLength={80} disabled={busy} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+            </Field>
+            <Field label="Email">
+              <input className="wb-form-input" type="email" autoComplete="email" value={form.email} maxLength={254} disabled={busy} required onChange={(e) => setForm({ ...form, email: e.target.value })} />
+            </Field>
+            <Field label="Organization (optional)">
+              <input className="wb-form-input" type="text" autoComplete="organization" value={form.organisation} maxLength={120} disabled={busy} onChange={(e) => setForm({ ...form, organisation: e.target.value })} />
+            </Field>
+          </div>
+          <Field label={`A short comment (up to ${SUPPORT_LIMITS.comment} characters, no links)`}>
+            <textarea className="wb-form-input" rows={3} value={form.comment} maxLength={SUPPORT_LIMITS.comment} disabled={busy} onChange={(e) => setForm({ ...form, comment: e.target.value })} style={{ resize: 'vertical' }} />
+          </Field>
+
+          {/* The hidden field: off the screen and out of the tab order, so a person never fills it. */}
+          <div aria-hidden style={{ position: 'absolute', left: -10000, width: 1, height: 1, overflow: 'hidden' }}>
+            <label>
+              Website
+              <input type="text" tabIndex={-1} autoComplete="off" value={form.website} onChange={(e) => setForm({ ...form, website: e.target.value })} />
+            </label>
+          </div>
+
+          <label className="wb-form-check">
+            <input type="checkbox" checked={form.show} disabled={busy} onChange={(e) => setForm({ ...form, show: e.target.checked })} />
+            {SHOW_WORDS}
+          </label>
+          <label className="wb-form-check" style={{ marginBottom: 16 }}>
+            <input type="checkbox" checked={form.newsletter} disabled={busy} onChange={(e) => setForm({ ...form, newsletter: e.target.checked })} />
+            {NEWSLETTER_WORDS}
+          </label>
+
+          <button type="submit" className="btn btn-primary wb-form-send" disabled={!ready || busy} aria-busy={busy || undefined}>
+            {busy ? 'Sending…' : 'Send'}
+          </button>
+          {state.kind === 'failed' && (
+            <p role="alert" style={{ margin: '10px 0 0', fontSize: 13, lineHeight: 1.5, color: 'var(--state-pending)' }}>
+              {state.message}
+            </p>
+          )}
+        </form>
+      )}
+    </section>
+  );
+}
+
+function Field({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <label style={{ display: 'block', marginBottom: 14 }}>
+      <span className="wb-form-label">{label}</span>
+      {children}
+    </label>
   );
 }
 
@@ -175,7 +250,7 @@ function SupporterCard({ supporter: s }: { supporter: ShownSupporter }) {
     <li className="wb-supporter-card">
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
         <span style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.35, overflowWrap: 'anywhere' }}>{s.name}</span>
-        <span className="wb-role-chip">{roleLabel(s.role)}</span>
+        {roleLabel(s.role) && <span className="wb-role-chip">{roleLabel(s.role)}</span>}
       </div>
       {line && <div style={{ fontSize: 13, color: 'var(--ink-2)', marginTop: 2, overflowWrap: 'anywhere' }}>{line}</div>}
       {s.comment && (

@@ -83,7 +83,9 @@ export async function POST(req: Request): Promise<Response> {
   const supporter = signup.support ? supporterId() : undefined;
   try {
     if (signup.support && supporter) {
-      const waiting = supporterEntry(supporter, signup.name, signup.organisation, signup.support, now);
+      /* From the supporters page the public part is the name and comment alone (18 Nov 2026). */
+      const shownOrganisation = signup.source === 'supporters' ? '' : signup.organisation;
+      const waiting = supporterEntry(supporter, signup.name, shownOrganisation, signup.support, now, signup.source);
       await appendKeptWith(store, INTEREST_KEY, interestEntry(signup, now, supporter), [
         ['HSET', SUPPORTER_KEYS.waiting, supporter, JSON.stringify(waiting)],
       ]);

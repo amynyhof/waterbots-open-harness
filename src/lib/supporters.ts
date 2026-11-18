@@ -34,8 +34,63 @@ export const SUPPORTERS_LINK = 'See who supports this work';
 /** Said after sending, to someone who ticked the public box. */
 export const WAITING_LINE = 'Your support will show on the supporters page once the WaterBots team has looked at it.';
 
-/** The page's way off it. */
-export const OFF_THE_PAGE_LINE = 'To be taken off this page, write to hello@waterbots.ai.';
+/**
+ * THE PAGE'S OWN FORM — the maintainer's word of 18 Nov 2026 on #176, in place of the Register your
+ * interest box. It saves where that form saves (POST /api/interest, the store's `interest:signups`
+ * list), marked as sent from this page. Name and email are needed; organisation and comment are not;
+ * both boxes start unticked. A ticked "show" box sends the name and comment to wait for her approval,
+ * like every public entry. The box words are the server's (api/_supporters.ts), word for word.
+ */
+export const SHOW_WORDS = 'Show my name and comment on this page';
+export const NEWSLETTER_WORDS = 'Send me the WaterBots newsletter';
+
+/** The thank-you, after the form is kept. */
+export const THANKS_LINE = 'Thank you. To change or remove your entry, write to hello@waterbots.ai.';
+/** Added to the thank-you when the "show" box was ticked, so no one waits for an entry that is waiting on a person. */
+export const SHOWN_AFTER_LOOK_LINE = 'Your name and comment will show here once the WaterBots team has looked at them.';
+
+export interface PageForm {
+  name: string;
+  email: string;
+  organisation: string;
+  comment: string;
+  show: boolean;
+  newsletter: boolean;
+  /** The hidden field only a robot fills. */
+  website: string;
+}
+
+/** Send the page's form. Resolves when it was kept; throws an Error whose message is fit for a reader. */
+export async function sendPageForm(form: PageForm, signal?: AbortSignal): Promise<void> {
+  let response: Response;
+  try {
+    response = await fetch('/api/interest', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        source: 'supporters',
+        name: form.name,
+        email: form.email,
+        ...(form.organisation.trim() ? { organisation: form.organisation } : {}),
+        ...(form.comment.trim() ? { comment: form.comment } : {}),
+        public: form.show,
+        newsletter: form.newsletter,
+        ...(form.website ? { website: form.website } : {}),
+      }),
+      signal,
+    });
+  } catch {
+    throw new Error('The form could not reach the site. Check your connection and try again. Nothing was kept.');
+  }
+  if (response.ok) return;
+  let message = '';
+  try {
+    message = ((await response.json()) as { error?: string }).error ?? '';
+  } catch {
+    /* fall through to the plain line */
+  }
+  throw new Error(message || 'That was not kept. Try again.');
+}
 
 /**
  * THE AGENTS ARE THE BOARD'S FIRST ENTRIES — the maintainer's word of 18 Nov 2026 on #176. Each is
@@ -98,7 +153,7 @@ export async function fetchSupporters(signal?: AbortSignal): Promise<SupportersR
     };
   }
   const supporters = (payload.supporters as ShownSupporter[]).filter(
-    (s) => s && typeof s.name === 'string' && s.name.trim() !== '' && roleLabel(s.role) !== ''
+    (s) => s && typeof s.name === 'string' && s.name.trim() !== '' && (s.role === '' || roleLabel(s.role) !== '')
   );
   return { kind: 'list', supporters };
 }

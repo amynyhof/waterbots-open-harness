@@ -239,6 +239,68 @@ expect(
 );
 expect('nothing in the store is given an expiry for supporters', !/EXPIRE[^\n]*supporters|supporters[^\n]*EXPIRE/.test(readFileSync(join('api', 'interest.ts'), 'utf8')), 'an expiry on supporters');
 
+console.log('\n  The page\'s own form (18 Nov 2026)');
+{
+  /* Her word of 18 Nov 2026 on #176: the form on /supporters, saving where Register your interest saves. */
+  const pageForm = { source: 'supporters', name: 'Page Made-up', email: 'Page@Example.org' };
+  const count = () => (lists.get('interest:signups') ?? []).length;
+  let before = count();
+  res = await post(pageForm);
+  body = await res.json();
+  let kept = JSON.parse((lists.get('interest:signups') ?? [])[0] ?? '{}');
+  expect(
+    'a name and an email are enough: no organisation, no interests, no box, and it lands in the same list as Register your interest',
+    res.status === 200 && count() === before + 1 && kept.source === 'supporters' && kept.email === 'page@example.org' && kept.organisation === '' &&
+      kept.interests.length === 0 && kept.newsletter === false && !kept.supporter,
+    `${res.status} ${JSON.stringify(body)} ${JSON.stringify(kept)}`
+  );
+  before = waiting().length;
+  res = await post({ ...pageForm, organisation: 'Example Org', comment: 'A made-up comment kept private.', newsletter: true });
+  kept = JSON.parse((lists.get('interest:signups') ?? [])[0] ?? '{}');
+  expect(
+    'the comment, the organisation and the newsletter box are kept with the sign-up, and nothing waits to show unless the box is ticked',
+    res.status === 200 && kept.comment === 'A made-up comment kept private.' && kept.organisation === 'Example Org' && kept.newsletter === true &&
+      waiting().length === before && /Send me the WaterBots newsletter/.test(kept.consent),
+    JSON.stringify(kept)
+  );
+  res = await post({ ...pageForm, name: 'Shown Made-up', organisation: 'Hidden Org', comment: 'Made-up words to show.', public: true });
+  body = await res.json();
+  const entry = waiting().find((e) => e.name === 'Shown Made-up');
+  expect(
+    'ticked "Show my name and comment on this page", the name and comment wait for her approval, and nothing else does',
+    res.status === 200 && body.waiting === true && entry?.comment === 'Made-up words to show.' && entry?.organisation === '' &&
+      entry?.role === '' && entry?.title === '' && entry?.agreed === sup.SHOW_WORDS && (await shownList()).every((s) => s.name !== 'Shown Made-up'),
+    JSON.stringify(entry)
+  );
+  expect('still no email in any supporter entry', !/example\.org/i.test(everything()), everything());
+  run = await script('scripts/supporters.mjs', ['approve', entry.id], { env: storeEnv });
+  const shownNow = (await shownList()).find((s) => s.name === 'Shown Made-up');
+  expect(
+    'approved, it shows the name and the comment, with no role or organisation',
+    run.code === 0 && shownNow?.comment === 'Made-up words to show.' && shownNow?.role === '' && shownNow?.organisation === '',
+    `${run.text} ${JSON.stringify(shownNow)}`
+  );
+  expect('the copy to hello@ says it came from the supporters page, with the newsletter answer', /supporters page/.test(mailed.at(-1)?.text ?? '') && /Newsletter: no/.test(mailed.at(-1)?.text ?? ''), mailed.at(-1)?.text);
+  for (const [label, change] of [
+    ['no email', { email: '' }],
+    ['no name', { name: ' ' }],
+    ['a role, which this form does not ask', { role: 'funder' }],
+    ['interests, which this form does not ask', { interests: ['carbon'] }],
+    ['a consent box, which this form does not have', { consent: true }],
+    ['a newsletter box that is not a yes or a no', { newsletter: 'yes' }],
+    ['a comment with a link', { comment: 'see www.example.org' }],
+    ['a form name that is not one of the site\'s', { source: 'other' }],
+  ]) {
+    before = count();
+    res = await post({ ...pageForm, ...change });
+    body = await res.json();
+    expect(`${label} is refused, named, and nothing kept`, res.status === 400 && /not kept/.test(body.error) && count() === before, `${res.status} ${body.error}`);
+  }
+  before = count();
+  res = await post({ name: 'Old Form', email: 'old@example.org', interests: ['carbon'], consent: true, organisation: 'Org', newsletter: true });
+  expect('Register your interest still asks its own questions, and no newsletter', res.status === 400 && count() === before, String(res.status));
+}
+
 globalThis.fetch = realFetch;
 server.close();
 rmSync(out, { recursive: true, force: true });
@@ -255,7 +317,7 @@ expect('the intro line is hers, word for word', /SUPPORTERS_INTRO = 'People who 
 const form = readFileSync(join('src', 'components', 'InterestPage.tsx'), 'utf8');
 expect('the public box starts unticked', /public: false/.test(form), 'the form does not start with public false');
 const page = readFileSync(join('src', 'components', 'SupportersPage.tsx'), 'utf8');
-expect('with no approved person, the page says so, with no sample cards', /No people are shown yet\./.test(page) && !/sample|placeholder name|Lorem/i.test(page.replace(/\/\*[\s\S]*?\*\//g, '')), 'empty state missing');
+expect('no sample cards or placeholder names on the page', !/sample|placeholder name|Lorem/i.test(page.replace(/\/\*[\s\S]*?\*\//g, '')), 'a sample on the page');
 {
   /* The agents as the first entries, her word of 18 Nov 2026 on #176. */
   const crew = readFileSync(join('src', 'lib', 'crew.ts'), 'utf8');
@@ -274,7 +336,33 @@ expect('with no approved person, the page says so, with no sample cards', /No pe
   expect('the reclining Wellington from her concept note is on the page', /<WellingtonLeaning/.test(page), 'no Wellington');
 }
 expect('a list that cannot be read is said, never shown as empty', /reading\.kind === 'failed'/.test(page), 'no failed state');
-expect('the page has no blue button of its own', !/btn-primary|wb-save-button/.test(page), 'a blue button on the page');
+{
+  /* Her word of 18 Nov 2026 on #176: three lines off the page, the form on it, the thank-you. */
+  const app = readFileSync(join('src', 'App.tsx'), 'utf8');
+  /* What a visitor can read: the files without their comments, which name the removed lines on purpose. */
+  const bare = (src) => src.replace(/\{\s*\/\*[\s\S]*?\*\/\s*\}/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
+  expect(
+    'the three lines are gone from the page',
+    !/Each person's entry is shown with their permission|No people are shown yet|No supporters are shown yet|To be taken off this page/.test(bare(page) + bare(client)),
+    'a removed line is still there'
+  );
+  expect('the Register your interest box is gone from the page, and the form is in its place', !/wb-interest-cta|Register your interest/.test(bare(page)) && /<SupportForm \/>/.test(page), 'the box is still there');
+  expect(
+    'the form asks name, email (required), organization (optional), a short comment and two unticked boxes',
+    /label="Name"/.test(page) && /label="Email"[\s\S]{0,200}required/.test(page) && /label="Organization \(optional\)"/.test(page) &&
+      /A short comment/.test(page) && /show: false, newsletter: false/.test(page) &&
+      /SHOW_WORDS = 'Show my name and comment on this page'/.test(client) && /NEWSLETTER_WORDS = 'Send me the WaterBots newsletter'/.test(client),
+    'a field or a box is missing'
+  );
+  expect('the boxes say what the server keeps, word for word', pick(client, 'SHOW_WORDS') === pick(serverSide, 'SHOW_WORDS') && pick(client, 'NEWSLETTER_WORDS') === pick(serverSide, 'NEWSLETTER_WORDS'), 'the words differ');
+  expect('it saves where Register your interest saves', /fetch\('\/api\/interest'/.test(client) && /source: 'supporters'/.test(client), 'another address');
+  expect(
+    'after sending, the thank-you says to write to hello@waterbots.ai to change or remove the entry',
+    /THANKS_LINE = 'Thank you\. To change or remove your entry, write to hello@waterbots\.ai\.'/.test(client) && /\{THANKS_LINE\}/.test(page),
+    'the thank-you is missing'
+  );
+  expect('the form\'s Send is the page\'s one blue button, and the menu\'s Sign up goes quiet', /btn-primary wb-form-send/.test(page) && /form: onInterest \|\| onSupporters/.test(app), 'the blue rule is not kept');
+}
 expect('/supporters is served by the page', /"source": "\/supporters"/.test(readFileSync('vercel.json', 'utf8')), 'no rewrite');
 expect(
   'the ways in: one quiet line on the Commons and on the form',

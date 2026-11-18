@@ -78,6 +78,9 @@ for (const { entry } of good) {
 
 console.log(`Sign-ups: ${good.length}${parsed.length > good.length ? ` (and ${parsed.length - good.length} unreadable)` : ''}`);
 console.log(`Distinct organisations: ${organisations.size}`);
+/* From 18 Nov 2026 the supporters page's form saves here too, with a newsletter box. Counts only. */
+console.log(`From the supporters page: ${good.filter((p) => p.entry.source === 'supporters').length}`);
+console.log(`Asked for the newsletter: ${good.filter((p) => p.entry.newsletter === true).length}`);
 console.log('By interest:');
 for (const [id, n] of Object.entries(byInterest).sort((a, b) => b[1] - a[1])) console.log(`  ${id}: ${n}`);
 if (Object.keys(byModule).length) {

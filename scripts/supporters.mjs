@@ -41,7 +41,9 @@ function parse(raw) {
 
 /** One entry, its public fields only, in a few plain lines. */
 export function describe(e) {
-  const lines = [`  ${e.name}  ·  ${ROLES[e.role] ?? e.role}`];
+  /* An entry from the supporters page's own form has no role (18 Nov 2026). */
+  const role = e.role ? ROLES[e.role] ?? e.role : '';
+  const lines = [`  ${e.name}${role ? `  ·  ${role}` : ''}`];
   const line = [e.title, e.organisation].filter(Boolean).join(' · ');
   if (line) lines.push(`  ${line}`);
   if (e.comment) lines.push(`  "${e.comment}"`);

@@ -39,6 +39,10 @@ export const SUPPORT_LIMITS = { title: 80, comment: 280 } as const;
 export const PUBLIC_WORDS =
   'Show my support publicly. My name, title, organisation, role and comment appear on the supporters page once the WaterBots team approves them. My email never does.';
 
+/** The supporters page's two boxes, exactly as the page shows them (18 Nov 2026, #176). */
+export const SHOW_WORDS = 'Show my name and comment on this page';
+export const NEWSLETTER_WORDS = 'Send me the WaterBots newsletter';
+
 /** A comment carries no links: an address, a "www." or a bare domain is refused, not cut. */
 const LINK = /(https?:\/\/|www\.|\b[a-z0-9-]+\.(?:com|org|net|io|ai|co|info|biz|uk|de|fr|in|ke|ug|tz|ly|me|app|dev)\b)/i;
 
@@ -88,14 +92,31 @@ function text(value: unknown, field: string, max: number): string | { problem: s
 /**
  * The public part of a form, read only when the public box is ticked. Unticked, any of the three
  * fields with something in it is refused: nothing public is ever sent by accident.
+ *
+ * THE SUPPORTERS PAGE'S FORM (18 Nov 2026, #176) asks a comment whether or not the box is ticked,
+ * and no role or title. Its comment comes back as `comment`, kept with the sign-up; ticked, the
+ * public part is the name and that comment alone, with no role, title or organisation.
  */
-export function readSupport(b: Record<string, unknown>): { support: SupportFields | null } | { problem: string } {
+export function readSupport(
+  b: Record<string, unknown>,
+  source: 'interest' | 'supporters' = 'interest'
+): { support: SupportFields | null; comment: string } | { problem: string } {
+  if (source === 'supporters') {
+    for (const key of ['role', 'title']) {
+      if (b[key] !== undefined && b[key] !== '') return { problem: `this form has no ${key}` };
+    }
+    if (b.public !== undefined && typeof b.public !== 'boolean') return { problem: 'the box to show your name is not a yes or a no' };
+    const comment = text(b.comment, 'comment', SUPPORT_LIMITS.comment);
+    if (typeof comment !== 'string') return comment;
+    if (LINK.test(comment)) return { problem: 'the comment carries a link, and links are not shown' };
+    return { support: b.public === true ? { role: '', title: '', comment } : null, comment };
+  }
   if (b.public !== true) {
     if (b.public !== undefined && b.public !== false) return { problem: 'the box to show support is not a yes or a no' };
     for (const key of ['role', 'title', 'comment']) {
       if (b[key] !== undefined && b[key] !== '') return { problem: `${key} came without the box to show support ticked` };
     }
-    return { support: null };
+    return { support: null, comment: '' };
   }
   const roleIds: readonly string[] = ROLES.map((r) => r.id);
   if (typeof b.role !== 'string' || !roleIds.includes(b.role)) return { problem: 'a role from the list is needed to show support' };
@@ -104,7 +125,7 @@ export function readSupport(b: Record<string, unknown>): { support: SupportField
   const comment = text(b.comment, 'comment', SUPPORT_LIMITS.comment);
   if (typeof comment !== 'string') return comment;
   if (LINK.test(comment)) return { problem: 'the comment carries a link, and links are not shown' };
-  return { support: { role: b.role, title, comment } };
+  return { support: { role: b.role, title, comment }, comment: '' };
 }
 
 /** A short random id: five letters and digits, lower case. */
@@ -115,8 +136,15 @@ export function supporterId(): string {
 }
 
 /** The waiting entry for a sign-up that asked to show support. */
-export function supporterEntry(id: string, name: string, organisation: string, support: SupportFields, now: Date): SupporterEntry {
-  return { id, at: now.toISOString(), name, organisation, ...support, agreed: PUBLIC_WORDS };
+export function supporterEntry(
+  id: string,
+  name: string,
+  organisation: string,
+  support: SupportFields,
+  now: Date,
+  source: 'interest' | 'supporters' = 'interest'
+): SupporterEntry {
+  return { id, at: now.toISOString(), name, organisation, ...support, agreed: source === 'supporters' ? SHOW_WORDS : PUBLIC_WORDS };
 }
 
 /** The shown entries, as the page gets them: newest approved first, public fields only. */
@@ -134,7 +162,7 @@ export function shownForPage(values: string[]): ShownSupporter[] {
   return entries.map((e) => ({
     name: e.name,
     organisation: e.organisation ?? '',
-    role: e.role,
+    role: e.role ?? '',
     title: e.title ?? '',
     comment: e.comment ?? '',
     joined: (e.approvedAt ?? '').slice(0, 7),
