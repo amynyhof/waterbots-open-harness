@@ -402,7 +402,7 @@ function PlannedRow({ planned, seeking = false }: { planned: PlannedModule; seek
 }
 
 /** A tinted square in the agent's accent; an empty, quiet one where there is no agent. */
-function Portrait({ token, children }: { token?: string; children?: ReactNode }) {
+export function Portrait({ token, children }: { token?: string; children?: ReactNode }) {
   return (
     <span
       aria-hidden

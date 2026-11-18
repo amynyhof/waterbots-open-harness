@@ -37,6 +37,22 @@ export const WAITING_LINE = 'Your support will show on the supporters page once 
 /** The page's way off it. */
 export const OFF_THE_PAGE_LINE = 'To be taken off this page, write to hello@waterbots.ai.';
 
+/**
+ * THE AGENTS ARE THE BOARD'S FIRST ENTRIES — the maintainer's word of 18 Nov 2026 on #176. Each is
+ * one of the crew (src/lib/crew.ts), shown with its icon, its name, a small "WaterBots agent" tag
+ * and one line in its own voice on why water impact should be faster and fairer to prove. They are
+ * the site's own words, written for her to read and approve, and tagged so no one takes them for a
+ * person's entry. They wait for no one's approval and come from no store.
+ */
+export const AGENT_TAG = 'WaterBots agent';
+
+export const AGENT_SUPPORTERS: { name: 'Wellington' | 'Phoebe' | 'Bridget' | 'Calvin'; comment: string }[] = [
+  { name: 'Wellington', comment: 'Good water projects should not have to wait years to show they help people.' },
+  { name: 'Phoebe', comment: 'Clear rules mean every project gets a fair check, not just the big ones.' },
+  { name: 'Bridget', comment: 'A small village should get the same fair look as a big city.' },
+  { name: 'Calvin', comment: 'When the math is open, anyone can check it, and the proof comes faster.' },
+];
+
 export interface ShownSupporter {
   name: string;
   organisation: string;

@@ -255,7 +255,24 @@ expect('the intro line is hers, word for word', /SUPPORTERS_INTRO = 'People who 
 const form = readFileSync(join('src', 'components', 'InterestPage.tsx'), 'utf8');
 expect('the public box starts unticked', /public: false/.test(form), 'the form does not start with public false');
 const page = readFileSync(join('src', 'components', 'SupportersPage.tsx'), 'utf8');
-expect('empty, the page says so, with no sample cards', /No supporters are shown yet\./.test(page) && !/sample|placeholder name|Lorem/i.test(page.replace(/\/\*[\s\S]*?\*\//g, '')), 'empty state missing');
+expect('with no approved person, the page says so, with no sample cards', /No people are shown yet\./.test(page) && !/sample|placeholder name|Lorem/i.test(page.replace(/\/\*[\s\S]*?\*\//g, '')), 'empty state missing');
+{
+  /* The agents as the first entries, her word of 18 Nov 2026 on #176. */
+  const crew = readFileSync(join('src', 'lib', 'crew.ts'), 'utf8');
+  const agents = [...client.matchAll(/\{ name: '([A-Za-z]+)', comment: '([^']+)' \}/g)].map((m) => ({ name: m[1], comment: m[2] }));
+  expect(
+    'the board opens with the four agents, each one of the crew, each with one short line',
+    agents.map((a) => a.name).join() === 'Wellington,Phoebe,Bridget,Calvin' &&
+      agents.every((a) => new RegExp(`name: '${a.name}'`).test(crew) && a.comment.length <= 100 && (a.comment.match(/[.!?]/g) ?? []).length === 1),
+    JSON.stringify(agents)
+  );
+  expect(
+    'each agent wears the crew\'s own icon and the "WaterBots agent" tag, so no one takes it for a person',
+    /AGENT_TAG = 'WaterBots agent'/.test(client) && /crewMember\(name\)/.test(page) && /agent\.portrait/.test(page) && /\{AGENT_TAG\}/.test(page),
+    'the icon or the tag is missing'
+  );
+  expect('the reclining Wellington from her concept note is on the page', /<WellingtonLeaning/.test(page), 'no Wellington');
+}
 expect('a list that cannot be read is said, never shown as empty', /reading\.kind === 'failed'/.test(page), 'no failed state');
 expect('the page has no blue button of its own', !/btn-primary|wb-save-button/.test(page), 'a blue button on the page');
 expect('/supporters is served by the page', /"source": "\/supporters"/.test(readFileSync('vercel.json', 'utf8')), 'no rewrite');

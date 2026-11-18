@@ -105,7 +105,7 @@ page and never in the public list.**
 
 - **The words in brackets are slots, not entries.** Nothing on the page is drawn until a real,
   approved entry exists.
-- **Empty, it says so:** "No supporters are shown yet." and the Register your interest box. No
+- ~~**Empty, it says so:** "No supporters are shown yet."~~ **From 18 Nov 2026, her word on #176:** the four agents are the first entries, tagged "WaterBots agent", and with no approved person the page says "No people are shown yet." and the Register your interest box. No
   sample cards, no placeholder names, ever.
 - **Cards** are two across on a laptop, one on a phone. Title and company show only when given; a card
   with neither shows the name and role alone. The comment is in quotes, as written, never edited.
