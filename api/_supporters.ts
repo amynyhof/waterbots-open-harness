@@ -9,7 +9,9 @@
  *   - ~~A ticked "Show my name and comment on this page" goes on the board at once (18 Nov 2026).~~
  *     From 19 Nov 2026 there is no box: **writing a comment and pressing Post, then Post again in the
  *     pop-up, puts the name and comment on the board at once**, after the filter in
- *     api/_postFilter.ts. The pop-up's words are kept with the entry.
+ *     api/_postFilter.ts. The pop-up's words are kept with the entry. The same day, her word: a title
+ *     and the organisation (both optional) and a role (required, one of six) show on the card too,
+ *     and every one of them passes the filter.
  *   - **The poster can edit and delete their own post** (19 Nov 2026): each post has a private key,
  *     sent once to the poster's browser and in an email link, never stored here. The store keeps only
  *     its SHA-256 (`editKey`), which never leaves the server. Edits pass the same filter.
@@ -32,17 +34,21 @@ export const SUPPORTER_KEYS = {
   declined: 'supporters:declined',
 } as const;
 
-/** The roles of entries approved before 19 Nov 2026. No form asks one now; the page still labels them. */
+/**
+ * The role a poster picks, one, required — her list of 19 Nov 2026 on #176. "developer" keeps its id
+ * from the first list, so an entry from before reads "Project developer"; "standard-body" is off the
+ * list and only ever labelled, never taken (src/lib/supporters.ts).
+ */
 export const ROLES = [
-  { id: 'developer', label: 'Developer' },
-  { id: 'standard-body', label: 'Standard body' },
+  { id: 'developer', label: 'Project developer' },
   { id: 'consultant', label: 'Consultant' },
-  { id: 'auditor', label: 'Auditor' },
   { id: 'funder', label: 'Funder' },
+  { id: 'auditor', label: 'Auditor' },
+  { id: 'researcher', label: 'Researcher' },
   { id: 'other', label: 'Other' },
 ] as const;
 
-export const SUPPORT_LIMITS = { name: 80, comment: 280 } as const;
+export const SUPPORT_LIMITS = { name: 80, title: 80, organisation: 120, comment: 280 } as const;
 
 /** The pop-up's words before a post goes on the page, exactly as it shows them; kept with each post. */
 export const CONFIRM_WORDS = 'Your name and comment will show on this page. Your email stays private.';
@@ -107,15 +113,28 @@ export function oneLine(value: unknown, field: string, max: number, required: bo
 
 const NOT_HERE = 'this form does not post to the supporters page; post on the supporters page itself';
 
+/** A role from the list, or what is wrong with it. */
+export function readRole(value: unknown): string | { problem: string } {
+  if (value === undefined || value === '') return { problem: 'a post needs a role' };
+  if (typeof value !== 'string' || !ROLES.some((r) => r.id === value)) return { problem: 'the role is not one on the list' };
+  return value;
+}
+
+/** The fields a post shows, with no link in any of them. */
+export function linkIn(fields: Record<string, string>): string | null {
+  for (const [field, value] of Object.entries(fields)) if (LINK.test(value)) return field;
+  return null;
+}
+
 /**
  * The post in a form, if there is one.
  *
  * REGISTER YOUR INTEREST posts nothing from 19 Nov 2026: a public box, a role, a title or a comment
  * is refused, named.
  *
- * THE SUPPORTERS PAGE posts every time: a comment is needed, with no link. A page left open from
- * before 19 Nov 2026 may still send its old box; unticked (`public: false`) it is honoured and nothing
- * posts, since that visitor never saw the pop-up.
+ * THE SUPPORTERS PAGE posts every time: a comment and a role are needed, a title is not, and none
+ * carries a link. A page left open from before 19 Nov 2026 may still send its old box; unticked
+ * (`public: false`) it is honoured and nothing posts, since that visitor never saw the pop-up.
  */
 export function readSupport(
   b: Record<string, unknown>,
@@ -128,14 +147,17 @@ export function readSupport(
     }
     return { support: null, comment: '' };
   }
-  for (const key of ['role', 'title']) {
-    if (b[key] !== undefined && b[key] !== '') return { problem: `this form has no ${key}` };
-  }
   if (b.public !== undefined && typeof b.public !== 'boolean') return { problem: 'the old box to show your name is not a yes or a no' };
   const comment = oneLine(b.comment, 'comment', SUPPORT_LIMITS.comment, true);
   if (typeof comment !== 'string') return { problem: comment.problem === 'comment is empty' ? 'a post needs a comment' : comment.problem };
   if (LINK.test(comment)) return { problem: 'the comment carries a link, and links are not shown' };
-  return { support: b.public === false ? null : { role: '', title: '', comment }, comment };
+  if (b.public === false) return { support: null, comment };
+  const title = oneLine(b.title, 'title', SUPPORT_LIMITS.title, false);
+  if (typeof title !== 'string') return title;
+  if (LINK.test(title)) return { problem: 'the title carries a link, and links are not shown' };
+  const role = readRole(b.role);
+  if (typeof role !== 'string') return role;
+  return { support: { role, title, comment }, comment };
 }
 
 /** A short random id: five letters and digits, lower case. */
@@ -162,10 +184,10 @@ export async function editKeyOf(token: string): Promise<string> {
   return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-/** The post from the supporters page: on the page at once, the name and comment alone. */
-export function supporterEntry(id: string, name: string, support: SupportFields, now: Date, editKey: string): SupporterEntry {
+/** The post from the supporters page, on the page at once: the name, title, organisation, role and comment. */
+export function supporterEntry(id: string, name: string, organisation: string, support: SupportFields, now: Date, editKey: string): SupporterEntry {
   const at = now.toISOString();
-  return { id, at, name, organisation: '', role: '', title: '', comment: support.comment, agreed: CONFIRM_WORDS, shownAt: at, editKey };
+  return { id, at, name, organisation, role: support.role, title: support.title, comment: support.comment, agreed: CONFIRM_WORDS, shownAt: at, editKey };
 }
 
 /** When an entry went on the page: approved by her, or shown straight from the page's form. */

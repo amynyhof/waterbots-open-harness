@@ -11,9 +11,11 @@
  * over HTTP on this machine, so the approval command and the removal script run as she runs them, in
  * their own processes. What is checked:
  *   - Register your interest posts nothing, and says where to post;
- *   - a post: its rules, the filter, the card and the key in the answer, the key's hash alone kept,
+ *   - a post: its rules (a role from her six, a title and an organisation that may be empty), the
+ *     filter on every field shown, the card and the key in the answer, the key's hash alone kept,
  *     the email to the poster with the private link, and no email in any supporter entry;
- *   - edit and delete with the post's own key, through the same rules; another key changes nothing;
+ *   - edit and delete with the post's own key, through the same rules, the role, title and
+ *     organisation among what an edit changes; another key changes nothing;
  *   - hide keeps a post off and keeps the sign-up; a person's removal takes their post off too;
  *   - the command reads the store keys from .env.local, with nothing to type first;
  *   - the page's words are the server's and hers, word for word, and the page is as she said.
@@ -180,14 +182,14 @@ for (const [label, extra] of [
 }
 
 console.log('\n  Posting on the supporters page');
-const pageForm = { source: 'supporters', name: 'Page Made-up', email: 'Page@Example.org', comment: 'Made-up words to show.' };
+const pageForm = { source: 'supporters', name: 'Page Made-up', email: 'Page@Example.org', role: 'funder', comment: 'Made-up words to show.' };
 const mailsBefore = mailed.length;
-res = await post({ ...pageForm, organisation: 'Hidden Org', newsletter: true });
+res = await post({ ...pageForm, title: 'Made-up Title', organisation: 'Made-up Org', newsletter: true });
 body = await res.json();
 const posted = body;
 const entry = JSON.parse(shownHash().get(posted.edit?.id) ?? '{}');
 expect(
-  'a name, an email and a comment post: on the page at once, with no box and no approval',
+  'a name, an email, a role and a comment post: on the page at once, with no box and no approval',
   res.status === 200 && posted.shown?.name === 'Page Made-up' && posted.shown?.comment === 'Made-up words to show.' &&
     (await shownList()).some((s) => s.id === posted.edit?.id && s.comment === 'Made-up words to show.') && waiting().length === 0,
   JSON.stringify(body)
@@ -195,7 +197,7 @@ expect(
 expect(
   'the answer carries the card (public fields and id only) and the private key, once',
   JSON.stringify(Object.keys(posted.shown ?? {}).sort()) === JSON.stringify(['comment', 'id', 'joined', 'name', 'organisation', 'role', 'title']) &&
-    posted.shown.organisation === '' && /^[A-Za-z0-9_-]{43}$/.test(posted.edit?.token ?? '') && posted.edit?.id === posted.shown.id,
+    /^[A-Za-z0-9_-]{43}$/.test(posted.edit?.token ?? '') && posted.edit?.id === posted.shown.id,
   JSON.stringify(body)
 );
 expect(
@@ -203,9 +205,20 @@ expect(
   entry.editKey === (await sup.editKeyOf(posted.edit.token)) && !everything().includes(posted.edit.token) && entry.agreed === sup.CONFIRM_WORDS,
   JSON.stringify(entry)
 );
+expect(
+  'the card shows the title, the organisation and the role, as given',
+  posted.shown?.title === 'Made-up Title' && posted.shown?.organisation === 'Made-up Org' && posted.shown?.role === 'funder' &&
+    (await shownList()).some((s) => s.id === posted.edit?.id && s.title === 'Made-up Title' && s.organisation === 'Made-up Org' && s.role === 'funder'),
+  JSON.stringify(posted.shown)
+);
+{
+  res = await post({ ...pageForm, name: 'Plain Made-up', role: 'researcher' });
+  const plain = (await res.json()).shown;
+  expect('a title and an organisation may be left empty', res.status === 200 && plain?.title === '' && plain?.organisation === '' && plain?.role === 'researcher', JSON.stringify(plain));
+}
 expect('the page\'s list never carries the key or its hash', !JSON.stringify(await shownList()).includes(entry.editKey) && !JSON.stringify(await shownList()).includes(posted.edit.token), 'a key on the page');
 expect('no email in any supporter entry, nor on the card', !/example\.org/i.test(everything()) && !/example\.org/i.test(JSON.stringify(posted.shown)), everything());
-const kept = signupsNow()[0];
+const kept = signupsNow().find((s) => s.supporter === posted.edit?.id) ?? {};
 expect(
   'the sign-up lands in the same list as Register your interest, with the supporter id, the newsletter answer and the pop-up\'s words',
   kept.source === 'supporters' && kept.supporter === posted.edit.id && kept.email === 'page@example.org' && kept.newsletter === true &&
@@ -222,8 +235,8 @@ expect(
   toPoster?.text
 );
 expect(
-  'the copy to hello@ says it is on the page and gives the line to take it off, and never carries the key',
-  /on the supporters page now/.test(toTeam?.text ?? '') && (toTeam?.text ?? '').includes(`npm run supporters -- hide ${posted.edit.id}`) && !(toTeam?.text ?? '').includes(posted.edit.token),
+  'the copy to hello@ says it is on the page, with the title and role, gives the line to take it off, and never carries the key',
+  /on the supporters page now/.test(toTeam?.text ?? '') && /Title: Made-up Title/.test(toTeam?.text ?? '') && /Role: Funder/.test(toTeam?.text ?? '') &&(toTeam?.text ?? '').includes(`npm run supporters -- hide ${posted.edit.id}`) && !(toTeam?.text ?? '').includes(posted.edit.token),
   toTeam?.text
 );
 expect(
@@ -237,7 +250,11 @@ for (const [label, extra] of [
   ['no comment', { comment: '' }],
   ['no email', { email: '' }],
   ['no name', { name: ' ' }],
-  ['a role, which this form does not ask', { role: 'funder' }],
+  ['no role', { role: '' }],
+  ['a role that is not on her list', { role: 'standard-body' }],
+  ['a title with a link', { title: 'see www.example.org' }],
+  ['an organisation with a link', { organisation: 'madeup.org' }],
+  ['a title past 80 characters', { title: 'x'.repeat(81) }],
   ['interests, which this form does not ask', { interests: ['carbon'] }],
   ['a consent box, which this form does not have', { consent: true }],
   ['a newsletter box that is not a yes or a no', { newsletter: 'yes' }],
@@ -266,6 +283,8 @@ for (const [label, extra] of [
   ['a phone number', { comment: 'Call +254 712 345 678 today' }],
   ['an email address', { comment: 'write to deals@mailbox.xyz' }],
   ['a rude name', { name: 'Shit Head' }],
+  ['a rude title', { title: 'Chief sh1t officer' }],
+  ['a sexual word in the organisation', { organisation: 'Porn Water Ltd' }],
 ]) {
   const before = count();
   const shownBefore = shownHash().size;
@@ -280,16 +299,17 @@ for (const ok of ['Our stopcock fix brought 1 000 000 litres to Scunthorpe.', 'S
 
 console.log('\n  The poster edits and deletes their own post');
 const own = { id: posted.edit.id, key: posted.edit.token };
-res = await change({ action: 'edit', ...own, name: 'Page Made-up, edited', comment: 'Edited made-up words.' });
+res = await change({ action: 'edit', ...own, name: 'Page Made-up, edited', title: 'New Made-up Title', organisation: '', role: 'auditor', comment: 'Edited made-up words.' });
 body = await res.json();
 expect(
-  'with the post\'s own key, an edit changes the name and comment on the page at once',
-  res.status === 200 && body.shown?.comment === 'Edited made-up words.' && (await shownList()).some((s) => s.id === own.id && s.name === 'Page Made-up, edited') &&
+  'with the post\'s own key, an edit changes the name, title, organisation, role and comment on the page at once',
+  res.status === 200 && body.shown?.comment === 'Edited made-up words.' && body.shown?.title === 'New Made-up Title' && body.shown?.organisation === '' && body.shown?.role === 'auditor' &&
+    (await shownList()).some((s) => s.id === own.id && s.name === 'Page Made-up, edited' && s.role === 'auditor') &&
     typeof JSON.parse(shownHash().get(own.id)).editedAt === 'string' && JSON.parse(shownHash().get(own.id)).editKey === entry.editKey,
   JSON.stringify(body)
 );
 const otherKey = 'A'.repeat(43);
-res = await change({ action: 'edit', id: own.id, key: otherKey, name: 'Taken', comment: 'Taken over.' });
+res = await change({ action: 'edit', id: own.id, key: otherKey, name: 'Taken', role: 'other', comment: 'Taken over.' });
 body = await res.json();
 expect('another key changes nothing, and says so', res.status === 403 && /does not match/.test(body.error) && JSON.parse(shownHash().get(own.id)).comment === 'Edited made-up words.', `${res.status} ${body.error}`);
 for (const [label, extra, status] of [
@@ -297,17 +317,24 @@ for (const [label, extra, status] of [
   ['an edit with a link', { comment: 'see https://example.org' }, 400],
   ['an edit with no comment', { comment: ' ' }, 400],
   ['an edit past 280 characters', { comment: 'x'.repeat(281) }, 400],
+  ['a rude title in an edit', { title: 'sh1t title' }, 422],
+  ['a rude organisation in an edit', { organisation: 'xxx water' }, 422],
+  ['an organisation with a link in an edit', { organisation: 'www.example.org' }, 400],
+  ['an edit with no role', { role: '' }, 400],
+  ['an edit with a role not on her list', { role: 'standard-body' }, 400],
 ]) {
-  res = await change({ action: 'edit', ...own, name: 'Page Made-up', ...extra });
+  res = await change({ action: 'edit', ...own, name: 'Page Made-up', role: 'funder', comment: 'Fine made-up words.', ...extra });
   body = await res.json();
-  expect(`${label} is refused through the same rules, and the post is unchanged`, res.status === status && /not changed|Nothing changed/i.test(body.error) && JSON.parse(shownHash().get(own.id)).comment === 'Edited made-up words.', `${res.status} ${body.error}`);
+  expect(`${label} is refused through the same rules, and the post is unchanged`, res.status === status && /not changed|Nothing changed/i.test(body.error) && JSON.parse(shownHash().get(own.id)).comment === 'Edited made-up words.' && JSON.parse(shownHash().get(own.id)).role === 'auditor', `${res.status} ${body.error}`);
 }
-res = await change({ action: 'edit', id: own.id, key: 'short', name: 'x', comment: 'y' });
+res = await change({ action: 'edit', id: own.id, key: 'short', name: 'x', role: 'other', comment: 'y' });
 expect('a link cut short is refused plainly', res.status === 400 && /not complete/.test((await res.json()).error), String(res.status));
 res = await change({ action: 'delete', id: 'zzzzz', key: otherKey });
 expect('a post that is not there says so', res.status === 404 && /no longer on the page/.test((await res.json()).error), String(res.status));
 res = await change({ action: 'delete', ...own, comment: 'x' });
 expect('a delete carries nothing else', res.status === 400, String(res.status));
+res = await change({ action: 'delete', ...own, role: 'funder' });
+expect('a delete carries no role either', res.status === 400 && shownHash().has(own.id), String(res.status));
 res = await change({ action: 'delete', id: own.id, key: otherKey });
 expect('another key cannot delete it', res.status === 403 && shownHash().has(own.id), String(res.status));
 
@@ -319,7 +346,7 @@ expect(
 );
 run = await script('scripts/supporters.mjs', ['hide', own.id], { env: storeEnv });
 expect('she can take one off: hide, and the sign-up is kept', run.code === 0 && /^Hidden: /.test(run.text) && !shownHash().has(own.id) && hash(sup.SUPPORTER_KEYS.declined).has(own.id), run.text);
-res = await change({ action: 'edit', ...own, name: 'Back', comment: 'Back on.' });
+res = await change({ action: 'edit', ...own, name: 'Back', role: 'other', comment: 'Back on.' });
 expect('a post she took off cannot be edited back on', res.status === 409 && !shownHash().has(own.id), String(res.status));
 res = await change({ action: 'delete', ...own });
 expect('its poster can still delete it', res.status === 200 && !hash(sup.SUPPORTER_KEYS.declined).has(own.id) && !shownHash().has(own.id), String(res.status));
@@ -435,6 +462,33 @@ expect('a list that cannot be read is said, never shown as empty', /reading\.kin
     /label="Name"[\s\S]{0,260}required/.test(page) && /label="Email"[\s\S]{0,260}required/.test(page) && /label="Organization \(optional\)"/.test(page) &&
       /A short comment/.test(page) && /newsletter: false/.test(page) && /form\.comment\.trim\(\) !== ''/.test(page) && (page.match(/type="checkbox"/g) ?? []).length === 1,
     'a field or the box is wrong'
+  );
+  expect(
+    'the form asks a title (optional) and a role (one, required, from her six), and Post waits for the role',
+    /label="Title \(optional\)"/.test(page) && /label="Your role \(pick one\)"/.test(page) && /<select[^>]*required/.test(page) && /form\.role !== ''/.test(page) &&
+      pick(client, 'ROLES') === "[ { id: 'developer', label: 'Project developer' }, { id: 'consultant', label: 'Consultant' }, { id: 'funder', label: 'Funder' }, { id: 'auditor', label: 'Auditor' }, { id: 'researcher', label: 'Researcher' }, { id: 'other', label: 'Other' }, ] as const",
+    pick(client, 'ROLES')
+  );
+  expect(
+    'under the name the card shows "Title, Organization", whichever is filled in',
+    /\[s\.title, s\.organisation\]\.filter\(\(part\) => part\.trim\(\) !== ''\)\.join\(', '\)/.test(page),
+    'the line under the name is not "Title, Organization"'
+  );
+  {
+    const tokens = readFileSync(join('src', 'styles', 'tokens.css'), 'utf8');
+    const hues = ['developer', 'consultant', 'funder', 'auditor', 'researcher'].map((r) => (tokens.match(new RegExp(`--supporter-${r}: var\\(--([a-z-]+)\\)`)) ?? [])[1]);
+    expect(
+      'each role wears its own colour, a brand hue that no agent on the page wears and none that reads as a state; "Other" and the agents\' tag stay plain',
+      hues.every(Boolean) && new Set(hues).size === 5 && !hues.some((h) => ['tide', 'anemone', 'surf', 'reef', 'mint', 'amber', 'coral', 'iris'].includes(h)) &&
+        ['developer', 'consultant', 'funder', 'auditor', 'researcher'].every((r) => css.includes(`.wb-role-chip[data-role='${r}'] { --chip-hue: var(--supporter-${r}); }`)) &&
+        !/data-role='other'/.test(css) && /data-role=\{role\}/.test(page) && !/AGENT_TAG\}[\s\S]{0,40}data-role|data-role[\s\S]{0,80}\{AGENT_TAG\}/.test(page),
+      JSON.stringify(hues)
+    );
+  }
+  expect(
+    'an edit changes the title, organisation and role too',
+    /label="Title \(optional\)"[\s\S]*label="Title \(optional\)"/.test(page) && /setFields\(\{ \.\.\.fields, role \}\)/.test(page) && /editPost\(own, fields\)/.test(page) && /\.\.\.fields \}\)/.test(client),
+    'an edit does not reach every field'
   );
   expect('it saves where Register your interest saves', /fetch\('\/api\/interest'/.test(client) && /source: 'supporters'/.test(client), 'another address');
   expect('the button says "Post"', />\s*Post\s*<\/button>/.test(page) && !/'Send'|>\s*Send\s*</.test(bare(page)), 'the button is not Post');

@@ -497,12 +497,17 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   the heading on a laptop and right under it on a phone; the thank-you is a heading with a mint check.
   ~~Register your interest's own public box still waits for approval.~~ **From 19 Nov 2026, her word: the
   supporters page is the one place to post**, and Register your interest has no public box. There is no box
-  to tick either: name, email and a comment, then **Post**, opens a pop-up with Wellington's icon ("Your name
+  to tick either: name, email, a role and a comment, then **Post**, opens a pop-up with Wellington's icon ("Your name
   and comment will show on this page. Your email stays private.", "Post" and "Go back"), and Post puts it on
   the board at once. **The poster can edit and delete their own post**: their browser remembers it and shows
   Edit and Delete on their card, and an email carries a private link (the key after the #, its SHA-256 alone
   in the store) to do the same later (`api/supporter-post.ts`); edits pass the same filter. "Questions?
-  hello@waterbots.ai" sits at the foot of the page.
+  hello@waterbots.ai" sits at the foot of the page. **The same day, her word: a title (optional), the
+  organization shown, and a role (required, one of Project developer, Consultant, Funder, Auditor,
+  Researcher, Other)**; the card reads "Title, Organization" under the name, whichever is filled in, and
+  the role is a small tag in its own colour (`--supporter-*` in tokens.css: brand hues no agent on the page
+  wears, a knowing exception to the book's fixed roles, raised with her; "Other" plain). An edit changes
+  them too, through the same filter on every text field.
 - **Wellington reads back what Phoebe found, and asks people served, from 26–27 Sep 2026 (items A17
   and A16, #128 and #130).** Each ask carries her worksheet as row ids and states only; he greets a
   visitor coming back from her knowing each pathway's read, never her sentences, and routes to

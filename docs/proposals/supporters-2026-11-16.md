@@ -17,6 +17,12 @@
 > your interest has no public box. No box to tick: a comment and **Post**, then **Post** again in a pop-up
 > with Wellington's icon, puts it on the board. The poster can edit and delete their own post, from their
 > browser or from a private link in an email. "Questions? hello@waterbots.ai" at the foot of the page.
+>
+> **And later the same day, her word on #176.** A title (optional) and the organization (optional) show on
+> the card, under the name, as "Title, Organization", whichever is filled in. A role is required, one of
+> **Project developer, Consultant, Funder, Auditor, Researcher, Other**, shown as a small tag in its own
+> colour; the agents keep their "WaterBots agent" tag. An edit changes the title, organization and role too,
+> and every text field passes the same filter. Section 3's "the role wears no accent" is changed by this.
 
 ~~**Written 16 Nov 2026 for the maintainer. Proposal only: nothing is built.**~~ **Written 16 Nov 2026 for the maintainer. Built the same day, after #174 merged.** It answers her message of
 16 Nov 2026: a public supporters view for Register your interest, with an opt-in box "Show my support

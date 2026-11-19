@@ -26,13 +26,15 @@ import { fileURLToPath } from 'node:url';
 import { localStore, run } from './_local-store.mjs';
 
 export const KEYS = { waiting: 'supporters:waiting', shown: 'supporters:shown', declined: 'supporters:declined' };
+/* Her list of 19 Nov 2026 (api/_supporters.ts), and "standard-body" from the first list, still labelled. */
 const ROLES = {
-  developer: 'Developer',
-  'standard-body': 'Standard body',
+  developer: 'Project developer',
   consultant: 'Consultant',
-  auditor: 'Auditor',
   funder: 'Funder',
+  auditor: 'Auditor',
+  researcher: 'Researcher',
   other: 'Other',
+  'standard-body': 'Standard body',
 };
 const ID = /^[a-z0-9]{3,12}$/;
 
@@ -49,7 +51,7 @@ export function describe(e) {
   /* An entry from the supporters page's own form has no role (18 Nov 2026). */
   const role = e.role ? ROLES[e.role] ?? e.role : '';
   const lines = [`  ${e.name}${role ? `  ·  ${role}` : ''}`];
-  const line = [e.title, e.organisation].filter(Boolean).join(' · ');
+  const line = [e.title, e.organisation].filter(Boolean).join(', ');
   if (line) lines.push(`  ${line}`);
   if (e.comment) lines.push(`  "${e.comment}"`);
   const since = e.approvedAt ?? e.shownAt;

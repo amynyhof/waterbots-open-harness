@@ -14,17 +14,24 @@
  * private link in their email. Nothing deletes on its own.
  */
 
-/** The roles of entries approved before 19 Nov 2026. No form asks one now; the page still labels them. */
+/**
+ * The role a poster picks, one, required — her list of 19 Nov 2026 on #176. Each wears its own colour
+ * on the card (src/styles/base.css, .wb-role-chip[data-role]). "developer" keeps its id from the first
+ * list, so an entry from before reads "Project developer".
+ */
 export const ROLES = [
-  { id: 'developer', label: 'Developer' },
-  { id: 'standard-body', label: 'Standard body' },
+  { id: 'developer', label: 'Project developer' },
   { id: 'consultant', label: 'Consultant' },
-  { id: 'auditor', label: 'Auditor' },
   { id: 'funder', label: 'Funder' },
+  { id: 'auditor', label: 'Auditor' },
+  { id: 'researcher', label: 'Researcher' },
   { id: 'other', label: 'Other' },
 ] as const;
 
-export const SUPPORT_LIMITS = { name: 80, comment: 280 } as const;
+/** A role from the first list, off the new one: labelled on an entry from before, never offered. */
+const EARLIER_ROLES: Record<string, string> = { 'standard-body': 'Standard body' };
+
+export const SUPPORT_LIMITS = { name: 80, title: 80, organisation: 120, comment: 280 } as const;
 
 /** The page's intro line, the maintainer's words of 16 Nov 2026. */
 export const SUPPORTERS_INTRO = 'People who want water impact to be faster and fairer to prove.';
@@ -32,7 +39,8 @@ export const SUPPORTERS_INTRO = 'People who want water impact to be faster and f
 /** The quiet link to the page, on the Commons and the interest form. */
 export const SUPPORTERS_LINK = 'See who supports this work';
 
-/** The pop-up's words before a post goes on the page, her words of 19 Nov 2026. The server keeps them with each post. */
+/** The pop-up's words before a post goes on the page, her words of 19 Nov 2026. The server keeps them with each post.
+    Unchanged when the title, organization and role joined the card (19 Nov 2026): the words are hers. */
 export const CONFIRM_WORDS = 'Your name and comment will show on this page. Your email stays private.';
 
 /** The page's one box, unticked. */
@@ -52,7 +60,10 @@ export const THANKS_NO_MAIL_LINE =
 export interface PageForm {
   name: string;
   email: string;
+  title: string;
   organisation: string;
+  /** One of ROLES, by id; empty until picked. */
+  role: string;
   comment: string;
   newsletter: boolean;
   /** The hidden field only a robot fills. */
@@ -97,7 +108,9 @@ export async function sendPageForm(form: PageForm, signal?: AbortSignal): Promis
         source: 'supporters',
         name: form.name,
         email: form.email,
+        ...(form.title.trim() ? { title: form.title } : {}),
         ...(form.organisation.trim() ? { organisation: form.organisation } : {}),
+        role: form.role,
         comment: form.comment,
         newsletter: form.newsletter,
         ...(form.website ? { website: form.website } : {}),
@@ -120,14 +133,23 @@ export async function sendPageForm(form: PageForm, signal?: AbortSignal): Promis
   return { shown: body.shown, own: { id: body.edit.id, key: body.edit.token }, mailed: body.posterMailed === true };
 }
 
-/** Change the name and comment of one's own post. Resolves with the changed card. */
-export async function editPost(own: OwnPost, name: string, comment: string): Promise<ShownSupporter> {
+/** What a poster can change on their own post: everything the card shows. */
+export interface PostFields {
+  name: string;
+  title: string;
+  organisation: string;
+  role: string;
+  comment: string;
+}
+
+/** Change one's own post. Resolves with the changed card. */
+export async function editPost(own: OwnPost, fields: PostFields): Promise<ShownSupporter> {
   let response: Response;
   try {
     response = await fetch('/api/supporter-post', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ action: 'edit', id: own.id, key: own.key, name, comment }),
+      body: JSON.stringify({ action: 'edit', id: own.id, key: own.key, ...fields }),
     });
   } catch {
     throw new Error('The site could not be reached. Check your connection and try again. Nothing changed.');
@@ -227,9 +249,9 @@ export interface ShownSupporter {
 
 export type SupportersReading = { kind: 'list'; supporters: ShownSupporter[] } | { kind: 'failed'; message: string };
 
-/** The role's label, or nothing for an id that is not on the list. */
+/** The role's label, or nothing for an id that is on neither list. */
 export function roleLabel(id: string): string {
-  return ROLES.find((r) => r.id === id)?.label ?? '';
+  return ROLES.find((r) => r.id === id)?.label ?? EARLIER_ROLES[id] ?? '';
 }
 
 /** "November 2026" from "2026-11". */

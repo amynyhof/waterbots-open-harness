@@ -80,15 +80,15 @@ export async function POST(req: Request): Promise<Response> {
   const now = new Date();
   const signup = reading.signup;
   /* A post from the supporters page: written in the same transaction as the
-     sign-up, so it is kept whole or not at all, and on the page at once, the
-     name and comment alone (19 Nov 2026, her word on #176). Its private edit
+     sign-up, so it is kept whole or not at all, and on the page at once: the
+     name, title, organisation, role and comment (19 Nov 2026, her word on #176). Its private edit
      key goes back to the poster once and by email; the store keeps its hash. */
   const supporter = signup.support ? supporterId() : undefined;
   const token = supporter ? editToken() : undefined;
   let shown: ReturnType<typeof forPage> | undefined;
   try {
     if (signup.support && supporter && token) {
-      const entry = supporterEntry(supporter, signup.name, signup.support, now, await editKeyOf(token));
+      const entry = supporterEntry(supporter, signup.name, signup.organisation, signup.support, now, await editKeyOf(token));
       await appendKeptWith(store, INTEREST_KEY, interestEntry(signup, now, supporter), [
         ['HSET', SUPPORTER_KEYS.shown, supporter, JSON.stringify(entry)],
       ]);

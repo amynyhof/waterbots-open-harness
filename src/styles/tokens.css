@@ -41,6 +41,21 @@
   /* Admin is reached through --role-admin, never the raw hex. */
   --role-admin: var(--seagrass);
 
+  /* SUPPORTERS' ROLES — the maintainer's word of 19 Nov 2026 on #176: a small tag on each person's
+     card, "each role its own colour". BRAND.md carries no colours for these, so none is invented:
+     each is a brand hue that no agent on the supporters page wears (not Tide, Anemone, Surf or Reef),
+     and none that reads as a state (not Mint, Amber, Coral, nor Iris, which owns verification).
+     Seagrass is also the admin colour; Slate, Plum and Orchid are crew hues of agents not on this
+     site; Driftwood is the recorded spare. A KNOWING EXCEPTION TO §2.1 "roles are fixed", raised with
+     her, not settled. "Other" has no hue: the plain outlined tag.
+     As TYPE these fail on their own tint (Seagrass 4.25:1, Driftwood 3.94:1, Orchid 3.70:1 at 12%),
+     so the tag's words are --ink and the hue is the fill and the keyline only. */
+  --supporter-developer: var(--seagrass);
+  --supporter-consultant: var(--slate);
+  --supporter-funder: var(--plum);
+  --supporter-auditor: var(--orchid);
+  --supporter-researcher: var(--driftwood);
+
   /* --- Type -------------------------------------------------------------- */
   --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'DM Mono', ui-monospace, 'SFMono-Regular', monospace;

@@ -13,14 +13,17 @@
  * THE FORM, beside the heading on a laptop and right under it on a phone, so it is seen without
  * scrolling (18 Nov 2026). FROM 19 NOV 2026, HER WORD ON #176, the supporters page is the one place to
  * post, and there is no box to tick:
- *   - name, email and a comment are needed; organisation and the newsletter box (unticked) are not;
+ *   - name, email, a role and a comment are needed; a title, the organisation and the newsletter box
+ *     (unticked) are not. The role is one of six, picked once, each with its own colour on the card;
+ *     under the name the card shows "Title, Organization", whichever is filled in (19 Nov 2026);
  *   - the button is "Post", and it opens a pop-up with Wellington's icon and her words, "Your name and
  *     comment will show on this page. Your email stays private.", with "Post" and "Go back". Post
  *     puts it on the board at once, after the server's filter (api/_postFilter.ts);
  *   - the poster can edit and delete their own post: this browser remembers it and shows Edit and
  *     Delete on their card, and an email carries a private link that does the same from anywhere.
  *     The link's key rides after the #, so it never reaches a server log; the page reads it, keeps it
- *     in this browser, and takes it out of the address. Edits pass the same filter.
+ *     in this browser, and takes it out of the address. An edit can change every field the card shows,
+ *     the role among them, and passes the same filter.
  *   - "Questions? hello@waterbots.ai" at the foot of the page.
  *
  * ONE BLUE BUTTON (src/lib/blue.ts): the form's Post is the page's next step; in a pop-up, the pop-up's
@@ -53,6 +56,7 @@ import {
   sendPageForm,
   type OwnPost,
   type PageForm,
+  type PostFields,
   type Posted,
   type ShownSupporter,
   type SupportersReading,
@@ -207,7 +211,7 @@ export default function SupportersPage({ shown }: { shown: boolean }) {
   );
 }
 
-const EMPTY: PageForm = { name: '', email: '', organisation: '', comment: '', newsletter: false, website: '' };
+const EMPTY: PageForm = { name: '', email: '', title: '', organisation: '', role: '', comment: '', newsletter: false, website: '' };
 
 type PostState =
   | { kind: 'idle' }
@@ -223,7 +227,7 @@ function SupportForm({ onPosted }: { onPosted: (posted: Posted) => void }) {
   const thanks = useRef<HTMLDivElement>(null);
   const postButton = useRef<HTMLButtonElement>(null);
   const busy = state.kind === 'sending';
-  const ready = form.name.trim() !== '' && form.email.trim() !== '' && form.comment.trim() !== '';
+  const ready = form.name.trim() !== '' && form.email.trim() !== '' && form.role !== '' && form.comment.trim() !== '';
 
   /* The thank-you is brought into view and given focus, so it is seen and read out. */
   useEffect(() => {
@@ -276,8 +280,16 @@ function SupportForm({ onPosted }: { onPosted: (posted: Posted) => void }) {
               <input className="wb-form-input" type="email" autoComplete="email" value={form.email} maxLength={254} disabled={busy} required onChange={(e) => setForm({ ...form, email: e.target.value })} />
             </Field>
           </div>
-          <Field label="Organization (optional)">
-            <input className="wb-form-input" type="text" autoComplete="organization" value={form.organisation} maxLength={120} disabled={busy} onChange={(e) => setForm({ ...form, organisation: e.target.value })} />
+          <div className="wb-support-form-grid">
+            <Field label="Title (optional)">
+              <input className="wb-form-input" type="text" autoComplete="organization-title" value={form.title} maxLength={SUPPORT_LIMITS.title} disabled={busy} onChange={(e) => setForm({ ...form, title: e.target.value })} />
+            </Field>
+            <Field label="Organization (optional)">
+              <input className="wb-form-input" type="text" autoComplete="organization" value={form.organisation} maxLength={SUPPORT_LIMITS.organisation} disabled={busy} onChange={(e) => setForm({ ...form, organisation: e.target.value })} />
+            </Field>
+          </div>
+          <Field label="Your role (pick one)">
+            <RolePick value={form.role} disabled={busy} onChange={(role) => setForm({ ...form, role })} />
           </Field>
           <Field label={`A short comment (up to ${SUPPORT_LIMITS.comment} characters, no links)`}>
             <textarea className="wb-form-input" rows={2} value={form.comment} maxLength={SUPPORT_LIMITS.comment} disabled={busy} required onChange={(e) => setForm({ ...form, comment: e.target.value })} style={{ resize: 'vertical' }} />
@@ -405,6 +417,32 @@ function Confirm({
   );
 }
 
+/** The role, one of six, required: a list to pick from, empty until a role is picked. */
+function RolePick({ value, disabled, onChange }: { value: string; disabled: boolean; onChange: (role: string) => void }) {
+  return (
+    <select className="wb-form-input" value={value} disabled={disabled} required onChange={(e) => onChange(e.target.value)}>
+      <option value="" disabled>
+        Choose a role
+      </option>
+      {ROLES.map((r) => (
+        <option key={r.id} value={r.id}>
+          {r.label}
+        </option>
+      ))}
+    </select>
+  );
+}
+
+/** A person's role, as a small tag in the role's own colour (base.css, .wb-role-chip[data-role]). */
+function RoleTag({ role }: { role: string }) {
+  const label = roleLabel(role);
+  return label ? (
+    <span className="wb-role-chip" data-role={role}>
+      {label}
+    </span>
+  ) : null;
+}
+
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label style={{ display: 'block', marginBottom: 14 }}>
@@ -457,10 +495,18 @@ function SupporterCard({
   onDeleted: () => void;
 }) {
   const [state, setState] = useState<CardState>({ kind: 'view' });
-  const [name, setName] = useState(s.name);
-  const [comment, setComment] = useState(s.comment);
+  const fromCard = (): PostFields => ({
+    name: s.name,
+    title: s.title,
+    organisation: s.organisation,
+    /* A role from the first list that is not on the new one is picked again. */
+    role: ROLES.some((r) => r.id === s.role) ? s.role : '',
+    comment: s.comment,
+  });
+  const [fields, setFields] = useState<PostFields>(fromCard);
   const [message, setMessage] = useState('');
-  const line = [s.title, s.organisation].filter((part) => part.trim() !== '').join(' · ');
+  /* Under the name: "Title, Organization", whichever is filled in. */
+  const line = [s.title, s.organisation].filter((part) => part.trim() !== '').join(', ');
   const joined = joinedWords(s.joined);
   const editing = state.kind === 'edit' || state.kind === 'saving';
 
@@ -469,7 +515,7 @@ function SupporterCard({
     setState({ kind: 'saving' });
     setMessage('');
     try {
-      onEdited(await editPost(own, name, comment));
+      onEdited(await editPost(own, fields));
       setState({ kind: 'view' });
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'That did not change. Try again.');
@@ -495,13 +541,22 @@ function SupporterCard({
       {editing ? (
         <div>
           <Field label="Name">
-            <input className="wb-form-input" type="text" value={name} maxLength={SUPPORT_LIMITS.name} disabled={state.kind === 'saving'} onChange={(e) => setName(e.target.value)} />
+            <input className="wb-form-input" type="text" value={fields.name} maxLength={SUPPORT_LIMITS.name} disabled={state.kind === 'saving'} onChange={(e) => setFields({ ...fields, name: e.target.value })} />
+          </Field>
+          <Field label="Title (optional)">
+            <input className="wb-form-input" type="text" value={fields.title} maxLength={SUPPORT_LIMITS.title} disabled={state.kind === 'saving'} onChange={(e) => setFields({ ...fields, title: e.target.value })} />
+          </Field>
+          <Field label="Organization (optional)">
+            <input className="wb-form-input" type="text" value={fields.organisation} maxLength={SUPPORT_LIMITS.organisation} disabled={state.kind === 'saving'} onChange={(e) => setFields({ ...fields, organisation: e.target.value })} />
+          </Field>
+          <Field label="Your role (pick one)">
+            <RolePick value={fields.role} disabled={state.kind === 'saving'} onChange={(role) => setFields({ ...fields, role })} />
           </Field>
           <Field label={`Comment (up to ${SUPPORT_LIMITS.comment} characters, no links)`}>
-            <textarea className="wb-form-input" rows={3} value={comment} maxLength={SUPPORT_LIMITS.comment} disabled={state.kind === 'saving'} onChange={(e) => setComment(e.target.value)} style={{ resize: 'vertical' }} />
+            <textarea className="wb-form-input" rows={3} value={fields.comment} maxLength={SUPPORT_LIMITS.comment} disabled={state.kind === 'saving'} onChange={(e) => setFields({ ...fields, comment: e.target.value })} style={{ resize: 'vertical' }} />
           </Field>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button type="button" className="btn wb-own-button" disabled={state.kind === 'saving' || !name.trim() || !comment.trim()} onClick={() => void save()}>
+            <button type="button" className="btn wb-own-button" disabled={state.kind === 'saving' || !fields.name.trim() || !fields.role || !fields.comment.trim()} onClick={() => void save()}>
               {state.kind === 'saving' ? 'Saving…' : 'Save'}
             </button>
             <button
@@ -509,8 +564,7 @@ function SupporterCard({
               className="btn wb-own-button"
               disabled={state.kind === 'saving'}
               onClick={() => {
-                setName(s.name);
-                setComment(s.comment);
+                setFields(fromCard());
                 setMessage('');
                 setState({ kind: 'view' });
               }}
@@ -523,7 +577,7 @@ function SupporterCard({
         <>
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
             <span style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.35, overflowWrap: 'anywhere' }}>{s.name}</span>
-            {roleLabel(s.role) && <span className="wb-role-chip">{roleLabel(s.role)}</span>}
+            <RoleTag role={s.role} />
           </div>
           {line && <div style={{ fontSize: 13, color: 'var(--ink-2)', marginTop: 2, overflowWrap: 'anywhere' }}>{line}</div>}
           {s.comment && <p style={{ margin: '10px 0 0', fontSize: 13.5, lineHeight: 1.55, overflowWrap: 'anywhere' }}>“{s.comment}”</p>}
@@ -536,8 +590,7 @@ function SupporterCard({
                   className="btn wb-own-button"
                   disabled={state.kind === 'deleting'}
                   onClick={() => {
-                    setName(s.name);
-                    setComment(s.comment);
+                    setFields(fromCard());
                     setMessage('');
                     setState({ kind: 'edit' });
                   }}

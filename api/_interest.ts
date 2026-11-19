@@ -27,7 +27,7 @@
  */
 
 import { BLOCKED_LINE, blockedPost } from './_postFilter.js';
-import { CONFIRM_WORDS, LINK, NEWSLETTER_WORDS, readSupport, type SupportFields } from './_supporters.js';
+import { CONFIRM_WORDS, LINK, NEWSLETTER_WORDS, ROLES, readSupport, type SupportFields } from './_supporters.js';
 
 /** The store's one list for sign-ups. No expiry, never trimmed: her ruling. */
 export const INTEREST_KEY = 'interest:signups';
@@ -141,10 +141,11 @@ export function readInterest(body: unknown): InterestReading {
   if ('problem' in reading) return reading;
 
   /* What goes on the board passes the filter, or the whole send is refused (18 Nov 2026, #176).
-     The name is shown too, so it carries no link either. */
+     The name, title and organisation are shown too (19 Nov 2026), so none carries a link either. */
   if (reading.support) {
     if (LINK.test(name)) return { problem: 'the name carries a link, and links are not shown' };
-    if (blockedPost([name, reading.support.comment])) return { blocked: BLOCKED_LINE };
+    if (LINK.test(organisation)) return { problem: 'the organisation carries a link, and links are not shown' };
+    if (blockedPost([name, reading.support.title, organisation, reading.support.comment])) return { blocked: BLOCKED_LINE };
   }
 
   return {
@@ -191,7 +192,11 @@ export function composeInterestMail(signup: InterestBody, now: Date, supporter?:
     `Organisation: ${signup.organisation || '(not given)'}`,
     `Email: ${signup.email}`,
     ...(page
-      ? [`Comment: ${signup.comment || '(none)'}`, `Newsletter: ${signup.newsletter ? 'yes, please send it' : 'no'}`]
+      ? [
+          ...(signup.support ? [`Title: ${signup.support.title || '(not given)'}`, `Role: ${ROLES.find((r) => r.id === signup.support?.role)?.label ?? '(none)'}`] : []),
+          `Comment: ${signup.comment || '(none)'}`,
+          `Newsletter: ${signup.newsletter ? 'yes, please send it' : 'no'}`,
+        ]
       : [`Interested in: ${labels.join(', ')}`]),
     ...(signup.module ? [`From the Agent Commons module: ${signup.module}`] : []),
     `When: ${now.toISOString().slice(0, 16).replace('T', ' ')} UTC`,
@@ -200,7 +205,7 @@ export function composeInterestMail(signup: InterestBody, now: Date, supporter?:
     '',
     ...(signup.support && supporter
       ? [
-          'Their name and comment are on the supporters page now. They can edit or delete the post themselves.',
+          'Their post is on the supporters page now. They can edit or delete it themselves.',
           'To take it off, run this in the repository folder:',
           `  npm run supporters -- hide ${supporter}`,
           '',

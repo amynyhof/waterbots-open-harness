@@ -2227,6 +2227,23 @@ button.wb-info {
   color: var(--ink-2);
   white-space: nowrap;
 }
+/* A person's role in its own colour (19 Nov 2026, her word on #176; the hues and why are in
+   tokens.css, --supporter-*): a light fill and a keyline of the hue, the words in --ink. "Other",
+   and the agents' "WaterBots agent" tag, keep the plain outline. */
+.wb-role-chip[data-role='developer'] { --chip-hue: var(--supporter-developer); }
+.wb-role-chip[data-role='consultant'] { --chip-hue: var(--supporter-consultant); }
+.wb-role-chip[data-role='funder'] { --chip-hue: var(--supporter-funder); }
+.wb-role-chip[data-role='auditor'] { --chip-hue: var(--supporter-auditor); }
+.wb-role-chip[data-role='researcher'] { --chip-hue: var(--supporter-researcher); }
+.wb-role-chip[data-role='developer'],
+.wb-role-chip[data-role='consultant'],
+.wb-role-chip[data-role='funder'],
+.wb-role-chip[data-role='auditor'],
+.wb-role-chip[data-role='researcher'] {
+  background: color-mix(in srgb, var(--chip-hue) 14%, var(--card));
+  border-color: color-mix(in srgb, var(--chip-hue) 55%, var(--card));
+  color: var(--ink);
+}
 
 /* Save at the foot of the left rail, just above Register your interest — her
    word of 16 Nov 2026 on #174. Full width, normal text size; still the one
