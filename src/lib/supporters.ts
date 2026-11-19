@@ -1,17 +1,20 @@
 /**
- * Supporters, as the page holds them — the words the form's public box shows, the roles, and the
- * one call that reads the shown list. Approved 16 Nov 2026, the maintainer's word on #176
- * (docs/proposals/supporters-2026-11-16.md).
+ * Supporters, as the page holds them — the words the form and the pop-up show, the calls that post,
+ * read, edit and delete, and the posts this browser remembers. Approved 16 Nov 2026, the maintainer's
+ * word on #176 (docs/proposals/supporters-2026-11-16.md), changed by her word since.
  *
- * The server's own copy of the roles, the limits and the box's words is api/_supporters.ts;
- * scripts/check-supporters.mjs holds the two to one another, word for word.
+ * The server's own copy of the limits and the words is api/_supporters.ts; scripts/check-supporters.mjs
+ * holds the two to one another, word for word.
  *
  * ~~Every public entry waits for her approval before it shows. Nothing shows or deletes on its own.~~
- * From 18 Nov 2026, her word on #176: an entry from the supporters page's own form shows at once,
- * after the server's filter (api/_postFilter.ts); Register your interest's public box still waits for
- * her approval. Nothing deletes on its own.
+ * ~~From 18 Nov 2026 a ticked box shows an entry at once.~~ FROM 19 NOV 2026, HER WORD ON #176: the
+ * supporters page is the one place to post. There is no box: a comment and Post, then Post again in
+ * the pop-up, puts the name and comment on the board at once, after the server's filter
+ * (api/_postFilter.ts). The poster can edit and delete their own post, from this browser or from the
+ * private link in their email. Nothing deletes on its own.
  */
 
+/** The roles of entries approved before 19 Nov 2026. No form asks one now; the page still labels them. */
 export const ROLES = [
   { id: 'developer', label: 'Developer' },
   { id: 'standard-body', label: 'Standard body' },
@@ -21,56 +24,70 @@ export const ROLES = [
   { id: 'other', label: 'Other' },
 ] as const;
 
-export const SUPPORT_LIMITS = { title: 80, comment: 280 } as const;
-
-/** The public box's words: its bold opening, then the rest. Kept with each entry, so they change only with the server's. */
-export const PUBLIC_WORDS =
-  'Show my support publicly. My name, title, organisation, role and comment appear on the supporters page once the WaterBots team approves them. My email never does.';
-export const PUBLIC_OPENING = 'Show my support publicly.';
+export const SUPPORT_LIMITS = { name: 80, comment: 280 } as const;
 
 /** The page's intro line, the maintainer's words of 16 Nov 2026. */
 export const SUPPORTERS_INTRO = 'People who want water impact to be faster and fairer to prove.';
 
-/** The quiet link to the page, on the Commons and the form. */
+/** The quiet link to the page, on the Commons and the interest form. */
 export const SUPPORTERS_LINK = 'See who supports this work';
 
-/** Said after sending, to someone who ticked the public box. */
-export const WAITING_LINE = 'Your support will show on the supporters page once the WaterBots team has looked at it.';
+/** The pop-up's words before a post goes on the page, her words of 19 Nov 2026. The server keeps them with each post. */
+export const CONFIRM_WORDS = 'Your name and comment will show on this page. Your email stays private.';
 
-/**
- * THE PAGE'S OWN FORM — the maintainer's word of 18 Nov 2026 on #176, in place of the Register your
- * interest box. It saves where that form saves (POST /api/interest, the store's `interest:signups`
- * list), marked as sent from this page. Name and email are needed; organisation and comment are not;
- * both boxes start unticked. ~~A ticked "show" box sends the name and comment to wait for her approval,
- * like every public entry.~~ A ticked "show" box puts the name and comment on the board at once (18 Nov
- * 2026), and the server sends the card back so the sender sees it straight away. The box words are
- * the server's (api/_supporters.ts), word for word.
- */
-export const SHOW_WORDS = 'Show my name and comment on this page';
+/** The page's one box, unticked. */
 export const NEWSLETTER_WORDS = 'Send me the WaterBots newsletter';
 
-/** The thank-you, after the form is kept: a heading a visitor cannot miss, then how to change or remove. */
-export const THANKS_HEAD = 'Thank you. Your note is sent.';
-export const THANKS_LINE = 'To change or remove your entry, write to hello@waterbots.ai.';
-/** Added to the thank-you when the "show" box was ticked: the card is on the board now. */
-export const SHOWN_NOW_LINE = 'Your name and comment are now on this page.';
+/** The line at the foot of the page, her words of 19 Nov 2026. */
+export const QUESTIONS_WORDS = 'Questions?';
+export const QUESTIONS_ADDRESS = 'hello@waterbots.ai';
+
+/** The thank-you, after a post: a heading a visitor cannot miss, then how to edit or delete. */
+export const THANKS_HEAD = 'Thank you. Your post is on this page.';
+export const THANKS_EDIT_LINE = 'To edit or delete it, use the buttons on your card, or the private link in the email we sent you.';
+/** When the email with the private link did not go: said plainly, never hidden. */
+export const THANKS_NO_MAIL_LINE =
+  'To edit or delete it, use the buttons on your card. The email with your private link did not go; write to hello@waterbots.ai if you need it.';
 
 export interface PageForm {
   name: string;
   email: string;
   organisation: string;
   comment: string;
-  show: boolean;
   newsletter: boolean;
   /** The hidden field only a robot fills. */
   website: string;
 }
 
+/** A post this browser made, or opened from its email link: the id and the private key. */
+export interface OwnPost {
+  id: string;
+  key: string;
+}
+
+export interface Posted {
+  shown: ShownSupporter;
+  own: OwnPost;
+  /** Whether the email with the private link went. */
+  mailed: boolean;
+}
+
+/** An Error whose message is fit for a reader. */
+async function refusal(response: Response, fallback: string): Promise<Error> {
+  try {
+    const message = ((await response.json()) as { error?: string }).error;
+    if (message) return new Error(message);
+  } catch {
+    /* fall through to the plain line */
+  }
+  return new Error(fallback);
+}
+
 /**
- * Send the page's form. Resolves when it was kept, with the card when it went on the board; throws an
- * Error whose message is fit for a reader, the filter's plain line among them.
+ * Post the page's form, after the pop-up. Resolves with the card, its private key and whether the
+ * email went; throws an Error whose message is fit for a reader, the filter's plain line among them.
  */
-export async function sendPageForm(form: PageForm, signal?: AbortSignal): Promise<{ shown?: ShownSupporter }> {
+export async function sendPageForm(form: PageForm, signal?: AbortSignal): Promise<Posted> {
   let response: Response;
   try {
     response = await fetch('/api/interest', {
@@ -81,8 +98,7 @@ export async function sendPageForm(form: PageForm, signal?: AbortSignal): Promis
         name: form.name,
         email: form.email,
         ...(form.organisation.trim() ? { organisation: form.organisation } : {}),
-        ...(form.comment.trim() ? { comment: form.comment } : {}),
-        public: form.show,
+        comment: form.comment,
         newsletter: form.newsletter,
         ...(form.website ? { website: form.website } : {}),
       }),
@@ -91,22 +107,95 @@ export async function sendPageForm(form: PageForm, signal?: AbortSignal): Promis
   } catch {
     throw new Error('The form could not reach the site. Check your connection and try again. Nothing was kept.');
   }
-  if (response.ok) {
-    try {
-      const body = (await response.json()) as { shown?: ShownSupporter };
-      return body.shown && typeof body.shown.name === 'string' ? { shown: body.shown } : {};
-    } catch {
-      return {};
-    }
-  }
-  let message = '';
+  if (!response.ok) throw await refusal(response, 'That was not kept. Try again.');
+  let body: { shown?: ShownSupporter; edit?: { id?: string; token?: string }; posterMailed?: boolean } = {};
   try {
-    message = ((await response.json()) as { error?: string }).error ?? '';
+    body = await response.json();
   } catch {
-    /* fall through to the plain line */
+    /* checked below */
   }
-  throw new Error(message || 'That was not kept. Try again.');
+  if (!body.shown || typeof body.shown.name !== 'string' || typeof body.edit?.id !== 'string' || typeof body.edit?.token !== 'string') {
+    throw new Error('The site answered, but not with your post. Reload the page to see whether it is there.');
+  }
+  return { shown: body.shown, own: { id: body.edit.id, key: body.edit.token }, mailed: body.posterMailed === true };
 }
+
+/** Change the name and comment of one's own post. Resolves with the changed card. */
+export async function editPost(own: OwnPost, name: string, comment: string): Promise<ShownSupporter> {
+  let response: Response;
+  try {
+    response = await fetch('/api/supporter-post', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ action: 'edit', id: own.id, key: own.key, name, comment }),
+    });
+  } catch {
+    throw new Error('The site could not be reached. Check your connection and try again. Nothing changed.');
+  }
+  if (!response.ok) throw await refusal(response, 'That did not change. Try again.');
+  const body = (await response.json().catch(() => ({}))) as { shown?: ShownSupporter };
+  if (!body.shown) throw new Error('The site answered, but not with your post. Reload the page to see it.');
+  return body.shown;
+}
+
+/** Delete one's own post. */
+export async function deletePost(own: OwnPost): Promise<void> {
+  let response: Response;
+  try {
+    response = await fetch('/api/supporter-post', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ action: 'delete', id: own.id, key: own.key }),
+    });
+  } catch {
+    throw new Error('The site could not be reached. Check your connection and try again. Nothing changed.');
+  }
+  if (!response.ok) throw await refusal(response, 'That was not deleted. Try again.');
+}
+
+/**
+ * THE POSTS THIS BROWSER REMEMBERS — her word of 19 Nov 2026: "their browser remembers the post and
+ * shows Edit and Delete on their card". Kept in this browser's own storage, nowhere else. Storage that
+ * is blocked or cleared only means the buttons do not show; the email link still works.
+ */
+const OWN_KEY = 'wb-supporter-posts';
+const OWN_ID = /^[a-z0-9]{3,12}$/;
+const OWN_SECRET = /^[A-Za-z0-9_-]{43}$/;
+
+export function ownPosts(): OwnPost[] {
+  try {
+    const list: unknown = JSON.parse(window.localStorage.getItem(OWN_KEY) ?? '[]');
+    return Array.isArray(list)
+      ? list.filter((p): p is OwnPost => !!p && typeof p.id === 'string' && OWN_ID.test(p.id) && typeof p.key === 'string' && OWN_SECRET.test(p.key))
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+export function rememberPost(own: OwnPost): void {
+  try {
+    const list = ownPosts().filter((p) => p.id !== own.id);
+    window.localStorage.setItem(OWN_KEY, JSON.stringify([own, ...list].slice(0, 20)));
+  } catch {
+    /* storage blocked: the email link still works */
+  }
+}
+
+export function forgetPost(id: string): void {
+  try {
+    window.localStorage.setItem(OWN_KEY, JSON.stringify(ownPosts().filter((p) => p.id !== id)));
+  } catch {
+    /* nothing to forget */
+  }
+}
+
+/** The private link's part after the #: "edit=<id>.<key>". Anything else is ignored, with no error. */
+export function ownPostFromHash(hash: string): OwnPost | null {
+  const match = /^#edit=([a-z0-9]{3,12})\.([A-Za-z0-9_-]{43})$/.exec(hash);
+  return match ? { id: match[1], key: match[2] } : null;
+}
+
 
 /**
  * THE AGENTS ARE THE BOARD'S FIRST ENTRIES — the maintainer's word of 18 Nov 2026 on #176. Each is
@@ -125,12 +214,14 @@ export const AGENT_SUPPORTERS: { name: 'Wellington' | 'Phoebe' | 'Bridget' | 'Ca
 ];
 
 export interface ShownSupporter {
+  /** The post's id: how its poster's browser finds its card. */
+  id: string;
   name: string;
   organisation: string;
   role: string;
   title: string;
   comment: string;
-  /** "YYYY-MM", the month it was approved. */
+  /** "YYYY-MM", the month it went on the page. */
   joined: string;
 }
 
@@ -169,7 +260,7 @@ export async function fetchSupporters(signal?: AbortSignal): Promise<SupportersR
     };
   }
   const supporters = (payload.supporters as ShownSupporter[]).filter(
-    (s) => s && typeof s.name === 'string' && s.name.trim() !== '' && (s.role === '' || roleLabel(s.role) !== '')
+    (s) => s && typeof s.id === 'string' && typeof s.name === 'string' && s.name.trim() !== '' && (s.role === '' || roleLabel(s.role) !== '')
   );
   return { kind: 'list', supporters };
 }

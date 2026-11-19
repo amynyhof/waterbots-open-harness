@@ -11,7 +11,12 @@
 > has its own form beside the heading (a laptop) or right under it (a phone). **That form has no
 > approval step:** a ticked "Show my name and comment on this page" goes on the board at once, after a
 > filter for rude, sexual and spam words (`api/_postFilter.ts`); she takes one off with
-> `npm run supporters -- hide <id>`. Register your interest's own public box still waits for approval.
+> `npm run supporters -- hide <id>`. ~~Register your interest's own public box still waits for approval.~~
+>
+> **Changed again 19 Nov 2026, her word on #176.** The supporters page is the one place to post; Register
+> your interest has no public box. No box to tick: a comment and **Post**, then **Post** again in a pop-up
+> with Wellington's icon, puts it on the board. The poster can edit and delete their own post, from their
+> browser or from a private link in an email. "Questions? hello@waterbots.ai" at the foot of the page.
 
 ~~**Written 16 Nov 2026 for the maintainer. Proposal only: nothing is built.**~~ **Written 16 Nov 2026 for the maintainer. Built the same day, after #174 merged.** It answers her message of
 16 Nov 2026: a public supporters view for Register your interest, with an opt-in box "Show my support

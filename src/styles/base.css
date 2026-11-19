@@ -2097,18 +2097,10 @@ button.wb-info {
   outline-offset: 2px;
 }
 
-/* SUPPORTERS — approved 16 Nov 2026 on #176. The form's public fields sit
-   indented under their box; the page's cards are two across on a laptop and
-   one on a phone; a role is a small outlined chip with no colour of its own,
-   because roles are not agents and wear no accent. */
-.wb-support-fields {
-  margin: 0 0 16px 26px;
-}
-.wb-role-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 16px;
-}
+/* SUPPORTERS — approved 16 Nov 2026 on #176. The page's cards are two across
+   on a laptop and one on a phone; a role (on entries from before 19 Nov 2026)
+   is a small outlined chip with no colour of its own, because roles are not
+   agents and wear no accent. The interest form's public fields are gone (19 Nov 2026). */
 .wb-supporter-grid {
   list-style: none;
   margin: 0;
@@ -2172,6 +2164,40 @@ button.wb-info {
   .wb-support-form-grid {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+/* The pop-up before a post goes on, and before a post is deleted (19 Nov 2026): a card over a veil. */
+.wb-confirm-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: rgba(11, 20, 40, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.wb-confirm {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 20px 20px 18px;
+  box-shadow: var(--shadow-lg);
+}
+/* Edit and Delete on one's own card, and Save and Cancel while editing: quiet, small. */
+.wb-own-button {
+  font-size: 12.5px;
+  padding: 4px 10px;
+}
+/* The line at the foot of the page. */
+.wb-supporters-foot {
+  margin: 32px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 13.5px;
+  color: var(--ink-2);
+  text-align: center;
 }
 /* The thank-you, in the form's place: a mint keyline and check (BRAND.md §2.1, Mint for success; §2.6,
    the form carries the meaning, so the words stay ink). */

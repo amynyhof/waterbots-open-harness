@@ -1,26 +1,29 @@
 /**
- * Supporters — the public part of Register your interest.
+ * Supporters — the board on /supporters.
  *
- * APPROVED 16 Nov 2026, the maintainer's word on #176 (docs/proposals/supporters-2026-11-16.md).
- * A person who sends the interest form may tick "Show my support publicly". Their name as typed,
- * their organisation, a role from a closed list, and an optional title and comment then wait for
- * her approval. ~~**Nothing shows on its own and nothing deletes on its own.**~~
- *
- * **NO APPROVAL STEP ON THE SUPPORTERS PAGE'S OWN FORM, from 18 Nov 2026, her word on #176.** A
- * visitor who ticks "Show my name and comment on this page" goes straight into supporters:shown,
- * stamped `shownAt`, once the filter in api/_postFilter.ts lets it through. She takes one off with
- * `npm run supporters -- hide <id>`. Register your interest's own box is unchanged and still waits.
- * Nothing deletes on its own.
+ * APPROVED 16 Nov 2026, the maintainer's word on #176 (docs/proposals/supporters-2026-11-16.md),
+ * and changed by her word since:
+ *   - ~~A person who sends the interest form may tick "Show my support publicly" ... then wait for her
+ *     approval.~~ From 19 Nov 2026 Register your interest has no public box: **the supporters page is
+ *     the one place to post.**
+ *   - ~~A ticked "Show my name and comment on this page" goes on the board at once (18 Nov 2026).~~
+ *     From 19 Nov 2026 there is no box: **writing a comment and pressing Post, then Post again in the
+ *     pop-up, puts the name and comment on the board at once**, after the filter in
+ *     api/_postFilter.ts. The pop-up's words are kept with the entry.
+ *   - **The poster can edit and delete their own post** (19 Nov 2026): each post has a private key,
+ *     sent once to the poster's browser and in an email link, never stored here. The store keeps only
+ *     its SHA-256 (`editKey`), which never leaves the server. Edits pass the same filter.
+ * She takes a post off with `npm run supporters -- hide <id>`. Nothing deletes on its own: a post goes
+ * only when its poster deletes it, or when the person asks for their sign-up to be removed.
  *
  * THREE STATES, three hashes in the store, keyed by a short random id:
- *   supporters:waiting   sent, not yet looked at — never on the page
- *   supporters:shown     she approved it, or it came from the page's own form — the only state on the page
+ *   supporters:shown     on the page
+ *   supporters:waiting   from before 19 Nov 2026 only: sent from Register your interest, not yet approved
  *   supporters:declined  she declined it, or hid it — never on the page
- * No expiry, never trimmed. An entry moves only by her command (scripts/supporters.mjs), and leaves
- * only when the person asks for their sign-up to be removed (scripts/count-interest.mjs --remove).
  *
- * THE EMAIL IS NEVER HERE. A supporter entry holds the public fields and the dates. The sign-up in
- * `interest:signups` holds the email and the supporter id, which is how a removal finds both.
+ * THE EMAIL IS NEVER HERE. A supporter entry holds the public fields, the dates and the edit key's
+ * hash. The sign-up in `interest:signups` holds the email and the supporter id, which is how a
+ * removal finds both.
  */
 
 export const SUPPORTER_KEYS = {
@@ -29,7 +32,7 @@ export const SUPPORTER_KEYS = {
   declined: 'supporters:declined',
 } as const;
 
-/** The closed list of roles, in the form's order. The ids are what is kept. */
+/** The roles of entries approved before 19 Nov 2026. No form asks one now; the page still labels them. */
 export const ROLES = [
   { id: 'developer', label: 'Developer' },
   { id: 'standard-body', label: 'Standard body' },
@@ -39,17 +42,15 @@ export const ROLES = [
   { id: 'other', label: 'Other' },
 ] as const;
 
-export const SUPPORT_LIMITS = { title: 80, comment: 280 } as const;
+export const SUPPORT_LIMITS = { name: 80, comment: 280 } as const;
 
-/** The public box's words, exactly as the form shows them; kept with each entry. */
-export const PUBLIC_WORDS =
-  'Show my support publicly. My name, title, organisation, role and comment appear on the supporters page once the WaterBots team approves them. My email never does.';
+/** The pop-up's words before a post goes on the page, exactly as it shows them; kept with each post. */
+export const CONFIRM_WORDS = 'Your name and comment will show on this page. Your email stays private.';
 
-/** The supporters page's two boxes, exactly as the page shows them (18 Nov 2026, #176). */
-export const SHOW_WORDS = 'Show my name and comment on this page';
+/** The supporters page's one box, exactly as the page shows it. */
 export const NEWSLETTER_WORDS = 'Send me the WaterBots newsletter';
 
-/** A comment carries no links: an address, a "www." or a bare domain is refused, not cut. */
+/** Nothing shown carries a link: an address, a "www." or a bare domain is refused, not cut. */
 export const LINK = /(https?:\/\/|www\.|\b[a-z0-9-]+\.(?:com|org|net|io|ai|co|info|biz|uk|de|fr|in|ke|ug|tz|ly|me|app|dev)\b)/i;
 
 export interface SupportFields {
@@ -68,18 +69,23 @@ export interface SupporterEntry {
   role: string;
   title: string;
   comment: string;
-  /** The box's words they agreed to. */
+  /** The words they agreed to: the pop-up's, or, before 19 Nov 2026, a box's. */
   agreed: string;
-  /** Set when she approves it. */
+  /** Set when she approved it (before 19 Nov 2026). */
   approvedAt?: string;
-  /** Set when it went on the page straight from the page's own form, with no approval (18 Nov 2026). */
+  /** Set when it went on the page straight from the page's own form. */
   shownAt?: string;
+  /** Set when its poster last edited it. */
+  editedAt?: string;
   /** Set when she declines or hides it. */
   declinedAt?: string;
+  /** The SHA-256 of the post's private edit key, as hex. Never sent to the page. */
+  editKey?: string;
 }
 
-/** What the page is given: the shown entries' public fields, and the month they were approved. */
+/** What the page is given: the shown entries' public fields, the id, and the month they went on the page. */
 export interface ShownSupporter {
+  id: string;
   name: string;
   organisation: string;
   role: string;
@@ -89,51 +95,47 @@ export interface ShownSupporter {
   joined: string;
 }
 
-function text(value: unknown, field: string, max: number): string | { problem: string } {
-  if (value === undefined) return '';
+/** One line of text: spaces folded, ends trimmed, within its limit. */
+export function oneLine(value: unknown, field: string, max: number, required: boolean): string | { problem: string } {
+  if (value === undefined && !required) return '';
   if (typeof value !== 'string') return { problem: `${field} is not text` };
   const clean = value.replace(/\s+/g, ' ').trim();
+  if (required && !clean) return { problem: `${field} is empty` };
   if (clean.length > max) return { problem: `${field} is longer than ${max} characters` };
   return clean;
 }
 
+const NOT_HERE = 'this form does not post to the supporters page; post on the supporters page itself';
+
 /**
- * The public part of a form, read only when the public box is ticked. Unticked, any of the three
- * fields with something in it is refused: nothing public is ever sent by accident.
+ * The post in a form, if there is one.
  *
- * THE SUPPORTERS PAGE'S FORM (18 Nov 2026, #176) asks a comment whether or not the box is ticked,
- * and no role or title. Its comment comes back as `comment`, kept with the sign-up; ticked, the
- * public part is the name and that comment alone, with no role, title or organisation.
+ * REGISTER YOUR INTEREST posts nothing from 19 Nov 2026: a public box, a role, a title or a comment
+ * is refused, named.
+ *
+ * THE SUPPORTERS PAGE posts every time: a comment is needed, with no link. A page left open from
+ * before 19 Nov 2026 may still send its old box; unticked (`public: false`) it is honoured and nothing
+ * posts, since that visitor never saw the pop-up.
  */
 export function readSupport(
   b: Record<string, unknown>,
   source: 'interest' | 'supporters' = 'interest'
 ): { support: SupportFields | null; comment: string } | { problem: string } {
-  if (source === 'supporters') {
-    for (const key of ['role', 'title']) {
-      if (b[key] !== undefined && b[key] !== '') return { problem: `this form has no ${key}` };
-    }
-    if (b.public !== undefined && typeof b.public !== 'boolean') return { problem: 'the box to show your name is not a yes or a no' };
-    const comment = text(b.comment, 'comment', SUPPORT_LIMITS.comment);
-    if (typeof comment !== 'string') return comment;
-    if (LINK.test(comment)) return { problem: 'the comment carries a link, and links are not shown' };
-    return { support: b.public === true ? { role: '', title: '', comment } : null, comment };
-  }
-  if (b.public !== true) {
-    if (b.public !== undefined && b.public !== false) return { problem: 'the box to show support is not a yes or a no' };
+  if (source === 'interest') {
+    if (b.public !== undefined && b.public !== false) return { problem: NOT_HERE };
     for (const key of ['role', 'title', 'comment']) {
-      if (b[key] !== undefined && b[key] !== '') return { problem: `${key} came without the box to show support ticked` };
+      if (b[key] !== undefined && b[key] !== '') return { problem: NOT_HERE };
     }
     return { support: null, comment: '' };
   }
-  const roleIds: readonly string[] = ROLES.map((r) => r.id);
-  if (typeof b.role !== 'string' || !roleIds.includes(b.role)) return { problem: 'a role from the list is needed to show support' };
-  const title = text(b.title, 'title', SUPPORT_LIMITS.title);
-  if (typeof title !== 'string') return title;
-  const comment = text(b.comment, 'comment', SUPPORT_LIMITS.comment);
-  if (typeof comment !== 'string') return comment;
+  for (const key of ['role', 'title']) {
+    if (b[key] !== undefined && b[key] !== '') return { problem: `this form has no ${key}` };
+  }
+  if (b.public !== undefined && typeof b.public !== 'boolean') return { problem: 'the old box to show your name is not a yes or a no' };
+  const comment = oneLine(b.comment, 'comment', SUPPORT_LIMITS.comment, true);
+  if (typeof comment !== 'string') return { problem: comment.problem === 'comment is empty' ? 'a post needs a comment' : comment.problem };
   if (LINK.test(comment)) return { problem: 'the comment carries a link, and links are not shown' };
-  return { support: { role: b.role, title, comment }, comment: '' };
+  return { support: b.public === false ? null : { role: '', title: '', comment }, comment };
 }
 
 /** A short random id: five letters and digits, lower case. */
@@ -143,18 +145,27 @@ export function supporterId(): string {
   return Array.from(bytes, (b) => alphabet[b % alphabet.length]).join('');
 }
 
-/** The entry for a sign-up that asked to show support: waiting, or, from the page's own form, shown at once. */
-export function supporterEntry(
-  id: string,
-  name: string,
-  organisation: string,
-  support: SupportFields,
-  now: Date,
-  source: 'interest' | 'supporters' = 'interest'
-): SupporterEntry {
+export const ID_SHAPE = /^[a-z0-9]{3,12}$/;
+export const KEY_SHAPE = /^[A-Za-z0-9_-]{43}$/;
+
+/** A post's private edit key: 32 random bytes, as base64url (43 characters). Given out once, never kept. */
+export function editToken(): string {
+  const bytes = crypto.getRandomValues(new Uint8Array(32));
+  let text = '';
+  for (const b of bytes) text += String.fromCharCode(b);
+  return btoa(text).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+/** What the store keeps of a key: its SHA-256, as hex. */
+export async function editKeyOf(token: string): Promise<string> {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(token));
+  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+/** The post from the supporters page: on the page at once, the name and comment alone. */
+export function supporterEntry(id: string, name: string, support: SupportFields, now: Date, editKey: string): SupporterEntry {
   const at = now.toISOString();
-  if (source === 'supporters') return { id, at, name, organisation, ...support, agreed: SHOW_WORDS, shownAt: at };
-  return { id, at, name, organisation, ...support, agreed: PUBLIC_WORDS };
+  return { id, at, name, organisation: '', role: '', title: '', comment: support.comment, agreed: CONFIRM_WORDS, shownAt: at, editKey };
 }
 
 /** When an entry went on the page: approved by her, or shown straight from the page's form. */
@@ -162,9 +173,10 @@ function onPageSince(e: SupporterEntry): string {
   return e.approvedAt ?? e.shownAt ?? '';
 }
 
-/** One shown entry, as the page gets it: public fields only. */
+/** One shown entry, as the page gets it: public fields only, never the edit key. */
 export function forPage(e: SupporterEntry): ShownSupporter {
   return {
+    id: e.id,
     name: e.name,
     organisation: e.organisation ?? '',
     role: e.role ?? '',
@@ -180,11 +192,27 @@ export function shownForPage(values: string[]): ShownSupporter[] {
   for (const raw of values) {
     try {
       const e = JSON.parse(raw) as SupporterEntry;
-      if (e && typeof e.name === 'string' && onPageSince(e) !== '') entries.push(e);
+      if (e && typeof e.name === 'string' && typeof e.id === 'string' && onPageSince(e) !== '') entries.push(e);
     } catch {
       /* An unreadable entry is not shown. */
     }
   }
   entries.sort((a, b) => onPageSince(b).localeCompare(onPageSince(a)));
   return entries.map(forPage);
+}
+
+/** Where a private edit link points: this site, or its preview, never an address a request made up. */
+export function editLink(requestUrl: string, id: string, token: string): string {
+  let origin = 'https://open.waterbots.ai';
+  try {
+    const url = new URL(requestUrl);
+    const host = url.hostname;
+    if (host === 'open.waterbots.ai' || host === 'localhost' || host === '127.0.0.1' || /^waterbots-open-harness[a-z0-9-]*\.vercel\.app$/.test(host)) {
+      origin = url.origin;
+    }
+  } catch {
+    /* keep the site's own address */
+  }
+  /* The key rides after the #, so it is never sent to a server or kept in a log. */
+  return `${origin}/supporters#edit=${id}.${token}`;
 }

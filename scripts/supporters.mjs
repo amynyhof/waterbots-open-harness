@@ -1,20 +1,21 @@
 /**
- * Approving supporters — the maintainer's one command, pasted into PowerShell in the repository
+ * The supporters board — the maintainer's one command, pasted into PowerShell in the repository
  * folder. Approved 16 Nov 2026, her word on #176 (docs/proposals/supporters-2026-11-16.md).
  *
  *   npm run supporters                     what is on the page, each with its hide line, then anything waiting
- *   npm run supporters -- approve <id>     show it on the supporters page
- *   npm run supporters -- decline <id>     keep it off the page
- *   npm run supporters -- hide <id>        take a shown one off the page
+ *   npm run supporters -- hide <id>        take a post off the page
  *   npm run supporters -- shown            what is on the page now, each with its hide line
+ *   npm run supporters -- approve <id>     show an entry left waiting from before 19 Nov 2026
+ *   npm run supporters -- decline <id>     keep such an entry off the page
  *
- * FROM 18 NOV 2026, HER WORD ON #176: the supporters page's own form shows an entry at once, with no
- * approval, so the first thing this prints is what is on the page, each with the line that takes it
- * off. Register your interest's public box still waits for approve or decline.
+ * FROM 18 NOV 2026, HER WORD ON #176, a post goes on the page at once, with no approval, so the first
+ * thing this prints is what is on the page, each with the line that takes it off. From 19 Nov 2026
+ * the supporters page is the one place to post, and its poster can edit or delete it; nothing new
+ * waits, and approve and decline are kept only for anything left waiting from before.
  *
  * ~~NOTHING SHOWS OR DELETES ON ITS OWN.~~ NOTHING DELETES ON ITS OWN. An entry moves only by one of these commands. Declining or
  * hiding keeps it, off the page, and keeps the sign-up; only the person's own request removes them
- * (scripts/count-interest.mjs --remove). She approves an entry as written: there is no edit.
+ * (scripts/count-interest.mjs --remove), or its poster deleting it. She does not edit a post; its poster can.
  *
  * IT NEVER PRINTS AN EMAIL. A supporter entry holds none (api/_supporters.ts). It prints the public
  * fields, which are what she is approving. The store's keys come from .env.local (scripts/_local-store.mjs).

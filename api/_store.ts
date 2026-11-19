@@ -243,6 +243,17 @@ export async function appendKeptWith(
   await run(config, [['LPUSH', key, entry], ...also], 'multi-exec');
 }
 
+/** One field from each hash named, in order; null where it is not there (19 Nov 2026, a post's own edit). */
+export async function hashFields(config: StoreConfig, wanted: [hash: string, field: string][]): Promise<(string | null)[]> {
+  const results = await run(config, wanted.map(([hash, field]) => ['HGET', hash, field]));
+  return results.map((item) => (typeof item === 'string' ? item : null));
+}
+
+/** HSET and HDEL commands on hashes, run as one transaction (19 Nov 2026, a post's own edit or delete). */
+export async function hashWrites(config: StoreConfig, commands: (['HSET', string, string, string] | ['HDEL', string, string])[]): Promise<void> {
+  await run(config, commands, 'multi-exec');
+}
+
 /** Every value in a hash, in no particular order. */
 export async function hashValues(config: StoreConfig, key: string): Promise<string[]> {
   const [items] = await run(config, [['HVALS', key]]);

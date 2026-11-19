@@ -19,14 +19,15 @@
  * goes to the paid site. scripts/count-interest.mjs counts sign-ups and
  * organisations and never prints a name or an email.
  *
- * SUPPORTERS, from 16 Nov 2026 (#176): a sign-up may also tick "Show my support
- * publicly", with a role, a title and a comment. That public part waits for the
- * maintainer's approval in its own place (api/_supporters.ts), never with the
- * email; the sign-up keeps the supporter's id so a removal finds both.
+ * SUPPORTERS, from 16 Nov 2026 (#176): ~~a sign-up may also tick "Show my support
+ * publicly", with a role, a title and a comment, which waits for the maintainer's
+ * approval.~~ From 19 Nov 2026, her word, Register your interest posts nothing: the
+ * supporters page is the one place to post (api/_supporters.ts). A post never holds
+ * the email; the sign-up keeps the supporter's id so a removal finds both.
  */
 
 import { BLOCKED_LINE, blockedPost } from './_postFilter.js';
-import { LINK, NEWSLETTER_WORDS, SHOW_WORDS, readSupport, type SupportFields } from './_supporters.js';
+import { CONFIRM_WORDS, LINK, NEWSLETTER_WORDS, readSupport, type SupportFields } from './_supporters.js';
 
 /** The store's one list for sign-ups. No expiry, never trimmed: her ruling. */
 export const INTEREST_KEY = 'interest:signups';
@@ -139,12 +140,11 @@ export function readInterest(body: unknown): InterestReading {
   const reading = readSupport(b, source);
   if ('problem' in reading) return reading;
 
-  /* What would go on the board passes the filter, or the whole send is refused (18 Nov 2026, #176).
+  /* What goes on the board passes the filter, or the whole send is refused (18 Nov 2026, #176).
      The name is shown too, so it carries no link either. */
   if (reading.support) {
     if (LINK.test(name)) return { problem: 'the name carries a link, and links are not shown' };
-    const shown = page ? [name, reading.support.comment] : [name, organisation, reading.support.title, reading.support.comment];
-    if (blockedPost(shown)) return { blocked: BLOCKED_LINE };
+    if (blockedPost([name, reading.support.comment])) return { blocked: BLOCKED_LINE };
   }
 
   return {
@@ -168,15 +168,16 @@ export function readInterest(body: unknown): InterestReading {
  */
 export function interestEntry(signup: InterestBody, now: Date, supporter?: string): string {
   const { support, ...kept } = signup;
-  /* What they agreed to, in the words the form showed: the box on Register your interest, the boxes they ticked on the supporters page. */
+  /* What they agreed to, in the words the form showed: the box on Register your interest; on the supporters page, the pop-up and the newsletter box. */
   const consent = signup.source === 'supporters' ? pageFormWords(signup) : CONSENT_WORDS;
   return JSON.stringify({ at: now.toISOString(), ...kept, consent, ...(support && supporter ? { supporter } : {}) });
 }
 
-/** What a supporters-page sign-up agreed to: the page's form, and the words of each box it ticked. */
+/** What a supporters-page sign-up agreed to: the pop-up's words when it posted, and the newsletter box if ticked. */
 function pageFormWords(signup: InterestBody): string {
-  const ticked = [signup.support ? SHOW_WORDS : '', signup.newsletter ? NEWSLETTER_WORDS : ''].filter(Boolean);
-  return `Sent from the form on the supporters page.${ticked.length ? ` Ticked: ${ticked.map((w) => `"${w}"`).join(', ')}.` : ''}`;
+  const posted = signup.support ? ` Posted after the pop-up: "${CONFIRM_WORDS}"` : '';
+  const ticked = signup.newsletter ? ` Ticked: "${NEWSLETTER_WORDS}".` : '';
+  return `Sent from the form on the supporters page.${posted}${ticked}`;
 }
 
 /** The copy to hello@waterbots.ai, in plain words. */
@@ -199,21 +200,35 @@ export function composeInterestMail(signup: InterestBody, now: Date, supporter?:
     '',
     ...(signup.support && supporter
       ? [
-          ...(page
-            ? [
-                'They asked to show their name and comment on the supporters page, and it is on the page now.',
-                'To take it off, run this in the repository folder:',
-                `  npm run supporters -- hide ${supporter}`,
-              ]
-            : [
-                'They also asked to show their support publicly. It is waiting for your approval and is not on the',
-                'supporters page until you approve it. To see what is waiting, run this in the repository folder:',
-                '  npm run supporters',
-              ]),
+          'Their name and comment are on the supporters page now. They can edit or delete the post themselves.',
+          'To take it off, run this in the repository folder:',
+          `  npm run supporters -- hide ${supporter}`,
           '',
         ]
       : []),
     'This sign-up is kept in the site store until they ask to be removed. To remove it, run scripts/count-interest.mjs --remove <their email>.',
   ];
   return { subject: page ? `Supporters page: ${signup.name}` : `Registered interest: ${signup.organisation}`, text: lines.join('\n') };
+}
+
+/**
+ * The email to the poster, with the private link to edit or delete their post (19 Nov 2026, her word
+ * on #176). Plain words; the link is theirs alone, so the email says to keep it to themselves.
+ */
+export function composePosterMail(signup: InterestBody, link: string): { subject: string; text: string } {
+  const lines = [
+    `Hello ${signup.name},`,
+    '',
+    'Thank you for posting on the WaterBots supporters page. This is your post:',
+    '',
+    `  "${signup.support?.comment ?? signup.comment}"`,
+    '',
+    'To edit or delete it, open this private link:',
+    link,
+    '',
+    'Keep this link to yourself. Anyone who has it can change your post.',
+    '',
+    'Questions? Write to hello@waterbots.ai.',
+  ];
+  return { subject: 'Your post on the WaterBots supporters page', text: lines.join('\n') };
 }

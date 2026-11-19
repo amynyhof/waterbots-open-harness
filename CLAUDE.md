@@ -495,7 +495,14 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   with a plain line and keeps nothing; text only, no links, 280 characters. She takes one off with
   `npm run supporters -- hide <id>`, which `npm run supporters` prints under each card. The form sits beside
   the heading on a laptop and right under it on a phone; the thank-you is a heading with a mint check.
-  Register your interest's own public box still waits for approval.
+  ~~Register your interest's own public box still waits for approval.~~ **From 19 Nov 2026, her word: the
+  supporters page is the one place to post**, and Register your interest has no public box. There is no box
+  to tick either: name, email and a comment, then **Post**, opens a pop-up with Wellington's icon ("Your name
+  and comment will show on this page. Your email stays private.", "Post" and "Go back"), and Post puts it on
+  the board at once. **The poster can edit and delete their own post**: their browser remembers it and shows
+  Edit and Delete on their card, and an email carries a private link (the key after the #, its SHA-256 alone
+  in the store) to do the same later (`api/supporter-post.ts`); edits pass the same filter. "Questions?
+  hello@waterbots.ai" sits at the foot of the page.
 - **Wellington reads back what Phoebe found, and asks people served, from 26–27 Sep 2026 (items A17
   and A16, #128 and #130).** Each ask carries her worksheet as row ids and states only; he greets a
   visitor coming back from her knowing each pathway's read, never her sentences, and routes to

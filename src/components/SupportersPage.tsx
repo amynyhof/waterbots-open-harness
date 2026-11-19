@@ -1,74 +1,92 @@
 /**
  * Supporters — a page at /supporters, under the site menu. Approved 16 Nov 2026, the maintainer's
- * word on #176 (docs/proposals/supporters-2026-11-16.md).
+ * word on #176 (docs/proposals/supporters-2026-11-16.md), and changed by her word since.
  *
- * ONLY WHAT SHE APPROVED. The page reads the shown list (api/supporters.ts) and draws a card for each
- * real, approved entry: the name as typed, the role, the title and organisation when given, the
- * comment in quotes as written, and the month it was approved. Nothing waiting or declined is ever
- * read, and no email is ever sent to the page.
+ * THE BOARD. The agents come first (18 Nov 2026): Wellington, Phoebe, Bridget and Calvin, each with
+ * the crew's own icon, a "WaterBots agent" tag and one line in their voice (src/lib/supporters.ts).
+ * Then the people's posts, newest first, read from the shown list (api/supporters.ts): the name as
+ * typed, the comment in quotes as written, and the month it went on. No email ever reaches the page.
  *
- * THE AGENTS COME FIRST, from 18 Nov 2026, the maintainer's word on #176: Wellington, Phoebe,
- * Bridget and Calvin, each with the crew's own icon, a "WaterBots agent" tag and one line in their
- * voice (src/lib/supporters.ts). They are tagged so no one takes them for a person's entry, and the
- * reclining Wellington from her concept note sits beside the heading, as on the Commons.
+ * HONEST STATES. No sample cards and no placeholder names, ever. A list that cannot be read says so;
+ * it is never shown as empty.
  *
- * HONEST STATES. No sample cards and no placeholder names, ever: a person shows only once approved. A
- * list that cannot be read says so; it is never shown as empty.
+ * THE FORM, beside the heading on a laptop and right under it on a phone, so it is seen without
+ * scrolling (18 Nov 2026). FROM 19 NOV 2026, HER WORD ON #176, the supporters page is the one place to
+ * post, and there is no box to tick:
+ *   - name, email and a comment are needed; organisation and the newsletter box (unticked) are not;
+ *   - the button is "Post", and it opens a pop-up with Wellington's icon and her words, "Your name and
+ *     comment will show on this page. Your email stays private.", with "Post" and "Go back". Post
+ *     puts it on the board at once, after the server's filter (api/_postFilter.ts);
+ *   - the poster can edit and delete their own post: this browser remembers it and shows Edit and
+ *     Delete on their card, and an email carries a private link that does the same from anywhere.
+ *     The link's key rides after the #, so it never reaches a server log; the page reads it, keeps it
+ *     in this browser, and takes it out of the address. Edits pass the same filter.
+ *   - "Questions? hello@waterbots.ai" at the foot of the page.
  *
- * THE FORM IS ON THE PAGE, from 18 Nov 2026, her word on #176, in place of the Register your interest
- * box: name, email, organisation (optional), a short comment, and two boxes, both unticked. It saves
- * where Register your interest saves (src/lib/supporters.ts, sendPageForm). The lines "Each person's
- * entry is shown with their permission", "No people are shown yet" and "To be taken off this page"
- * are gone by the same word; the thank-you says how to change or remove an entry.
- *
- * ONE BLUE BUTTON (src/lib/blue.ts): the form's Send is the page's next step, so it is the blue one and
- * the menu's Sign up is quiet, as on the interest form.
- *
- * THE SECOND ROUND OF 18 NOV 2026, her word on #176:
- *   - the form is seen without scrolling: beside the heading on a laptop, right under it on a phone,
- *     with the cards below;
- *   - no approval step: a ticked "show" box puts the name and comment on the board at once, and the
- *     server sends the card back, so the sender sees it there straight away;
- *   - a clear thank-you: a heading with a mint check, in the form's own place, brought into view and
- *     given focus, so it is seen and read out. Before this it was one small line where the form had
- *     been, and the board did not change, so a send looked like nothing had happened;
- *   - a post the filter blocks (api/_postFilter.ts) says so in plain words under Send, nothing kept.
+ * ONE BLUE BUTTON (src/lib/blue.ts): the form's Post is the page's next step; in a pop-up, the pop-up's
+ * own yes is the blue one.
  */
 
 import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from 'react';
 import {
+  AGENT_SUPPORTERS,
+  AGENT_TAG,
+  CONFIRM_WORDS,
   NEWSLETTER_WORDS,
-  SHOWN_NOW_LINE,
-  SHOW_WORDS,
-  SUPPORT_LIMITS,
-  THANKS_HEAD,
-  THANKS_LINE,
-  sendPageForm,
-  type PageForm,
+  QUESTIONS_ADDRESS,
+  QUESTIONS_WORDS,
   ROLES,
   SUPPORTERS_INTRO,
+  SUPPORT_LIMITS,
+  THANKS_EDIT_LINE,
+  THANKS_HEAD,
+  THANKS_NO_MAIL_LINE,
+  deletePost,
+  editPost,
   fetchSupporters,
+  forgetPost,
   joinedWords,
+  ownPostFromHash,
+  ownPosts,
+  rememberPost,
   roleLabel,
+  sendPageForm,
+  type OwnPost,
+  type PageForm,
+  type Posted,
   type ShownSupporter,
   type SupportersReading,
 } from '../lib/supporters';
 import { Portrait } from './CommonsShelf';
 import WellingtonLeaning from './WellingtonLeaning';
 import { crewMember } from '../lib/crew';
-import { AGENT_SUPPORTERS, AGENT_TAG } from '../lib/supporters';
 
 type Loading = { kind: 'loading' };
 
 export default function SupportersPage({ shown }: { shown: boolean }) {
   const [reading, setReading] = useState<SupportersReading | Loading>({ kind: 'loading' });
   const [role, setRole] = useState<string>('all');
-  /* Cards sent from this page in this visit, shown at once, before the next read of the list. */
+  /* Posts made in this visit, on the board at once, before the next read of the list. */
   const [added, setAdded] = useState<ShownSupporter[]>([]);
+  /* Posts this visitor edited or deleted in this visit. */
+  const [edited, setEdited] = useState<Record<string, ShownSupporter>>({});
+  const [removed, setRemoved] = useState<string[]>([]);
+  /* The posts this browser remembers, with their private keys. */
+  const [own, setOwn] = useState<OwnPost[]>([]);
+  /* A post opened from its email link, to bring into view once the list is read. */
+  const [opened, setOpened] = useState<string | null>(null);
+  const [openedNote, setOpenedNote] = useState('');
 
-  /* Read the list each time the page is opened, so an approval shows on the next visit. */
+  /* Read the list each time the page is opened; read this browser's posts and any link from an email. */
   useEffect(() => {
     if (!shown) return;
+    const fromLink = ownPostFromHash(window.location.hash);
+    if (fromLink) {
+      rememberPost(fromLink);
+      window.history.replaceState(window.history.state, '', window.location.pathname + window.location.search);
+      setOpened(fromLink.id);
+    }
+    setOwn(ownPosts());
     const controller = new AbortController();
     setReading((r) => (r.kind === 'list' ? r : { kind: 'loading' }));
     void fetchSupporters(controller.signal).then((next) => {
@@ -77,17 +95,47 @@ export default function SupportersPage({ shown }: { shown: boolean }) {
     return () => controller.abort();
   }, [shown]);
 
-  const read = reading.kind === 'list' ? reading.supporters : [];
-  const same = (a: ShownSupporter, b: ShownSupporter) => a.name === b.name && a.comment === b.comment && a.joined === b.joined;
-  const supporters = [...added.filter((a) => !read.some((r) => same(a, r))), ...read];
+  const supporters = useMemo(() => {
+    const read = reading.kind === 'list' ? reading.supporters : [];
+    return [...added.filter((a) => !read.some((r) => r.id === a.id)), ...read]
+      .filter((s) => !removed.includes(s.id))
+      .map((s) => edited[s.id] ?? s);
+  }, [reading, added, edited, removed]);
+
+  /* The post from the email link, brought into view; or a plain line when it is not on the page. */
+  useEffect(() => {
+    if (!opened || reading.kind !== 'list') return;
+    const card = document.querySelector(`[data-post="${opened}"]`);
+    if (card) {
+      card.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      setOpenedNote('');
+    } else {
+      setOpenedNote('The post from your link is no longer on this page.');
+    }
+    setOpened(null);
+  }, [opened, reading.kind]);
+
   /* A role shows in the filter only when an entry on the page has it; no counts. */
   const roles = useMemo(() => ROLES.filter((r) => supporters.some((s) => s.role === r.id)), [supporters]);
   const filter = roles.some((r) => r.id === role) ? role : 'all';
   const visible = filter === 'all' ? supporters : supporters.filter((s) => s.role === filter);
 
+  function onPosted(posted: Posted) {
+    rememberPost(posted.own);
+    /* Held here too, so Edit and Delete show even where the browser's storage is blocked. */
+    setOwn((list) => [posted.own, ...list.filter((p) => p.id !== posted.own.id)]);
+    setAdded((list) => [posted.shown, ...list]);
+  }
+
+  function onDeleted(id: string) {
+    forgetPost(id);
+    setOwn((list) => list.filter((p) => p.id !== id));
+    setRemoved((list) => [...list, id]);
+  }
+
   return (
     <div className="wb-supporters" style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
-      <div style={{ maxWidth: 880, margin: '0 auto', padding: '28px var(--gutter) 40px' }}>
+      <div style={{ maxWidth: 880, margin: '0 auto', padding: '28px var(--gutter) 32px' }}>
         {/* The heading and the form side by side on a laptop, the form right under the heading on a
             phone, so the form is seen without scrolling. The cards come below. */}
         <div className="wb-supporters-top">
@@ -100,7 +148,7 @@ export default function SupportersPage({ shown }: { shown: boolean }) {
                 (WellingtonLeaning.tsx). Decoration only; hidden on a phone, where the form needs the room. */}
             <WellingtonLeaning className="wb-supporters-wellington" style={{ marginTop: 18, width: 128, height: 144, opacity: 0.35 }} />
           </div>
-          <SupportForm onShown={(card) => setAdded((list) => [card, ...list])} />
+          <SupportForm onPosted={onPosted} />
         </div>
 
         {roles.length > 1 && (
@@ -120,11 +168,23 @@ export default function SupportersPage({ shown }: { shown: boolean }) {
           </div>
         )}
 
+        {openedNote && (
+          <p role="status" className="t-body" style={{ fontSize: 14, color: 'var(--ink-2)', margin: '0 0 14px' }}>
+            {openedNote}
+          </p>
+        )}
+
         <ul className="wb-supporter-grid">
           {/* The agents first, on "All"; a role filter shows people only. */}
           {filter === 'all' && AGENT_SUPPORTERS.map((a) => <AgentCard key={a.name} name={a.name} comment={a.comment} />)}
-          {visible.map((s, i) => (
-            <SupporterCard key={`${s.name}-${s.joined}-${i}`} supporter={s} />
+          {visible.map((s) => (
+            <SupporterCard
+              key={s.id}
+              supporter={s}
+              own={own.find((p) => p.id === s.id)}
+              onEdited={(card) => setEdited((map) => ({ ...map, [card.id]: card }))}
+              onDeleted={() => onDeleted(s.id)}
+            />
           ))}
         </ul>
 
@@ -139,22 +199,31 @@ export default function SupportersPage({ shown }: { shown: boolean }) {
           </p>
         )}
 
+        <p className="wb-supporters-foot">
+          {QUESTIONS_WORDS} <a href={`mailto:${QUESTIONS_ADDRESS}`}>{QUESTIONS_ADDRESS}</a>
+        </p>
       </div>
     </div>
   );
 }
 
-const EMPTY: PageForm = { name: '', email: '', organisation: '', comment: '', show: false, newsletter: false, website: '' };
+const EMPTY: PageForm = { name: '', email: '', organisation: '', comment: '', newsletter: false, website: '' };
 
-type SendState = { kind: 'idle' } | { kind: 'sending' } | { kind: 'kept'; shown: boolean } | { kind: 'failed'; message: string };
+type PostState =
+  | { kind: 'idle' }
+  | { kind: 'confirm' }
+  | { kind: 'sending' }
+  | { kind: 'kept'; mailed: boolean }
+  | { kind: 'failed'; message: string };
 
-/** The form, on the page. Nothing is said to be kept until the server says it was. */
-function SupportForm({ onShown }: { onShown: (card: ShownSupporter) => void }) {
+/** The form, on the page. Nothing is said to be posted until the server says it was. */
+function SupportForm({ onPosted }: { onPosted: (posted: Posted) => void }) {
   const [form, setForm] = useState<PageForm>(EMPTY);
-  const [state, setState] = useState<SendState>({ kind: 'idle' });
+  const [state, setState] = useState<PostState>({ kind: 'idle' });
   const thanks = useRef<HTMLDivElement>(null);
+  const postButton = useRef<HTMLButtonElement>(null);
   const busy = state.kind === 'sending';
-  const ready = form.name.trim() !== '' && form.email.trim() !== '';
+  const ready = form.name.trim() !== '' && form.email.trim() !== '' && form.comment.trim() !== '';
 
   /* The thank-you is brought into view and given focus, so it is seen and read out. */
   useEffect(() => {
@@ -163,14 +232,18 @@ function SupportForm({ onShown }: { onShown: (card: ShownSupporter) => void }) {
     thanks.current.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }, [state.kind]);
 
-  async function onSubmit(e: FormEvent) {
+  function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (!ready || busy) return;
+    setState({ kind: 'confirm' });
+  }
+
+  async function post() {
     setState({ kind: 'sending' });
     try {
-      const { shown } = await sendPageForm(form);
-      if (shown) onShown(shown);
-      setState({ kind: 'kept', shown: Boolean(shown) });
+      const posted = await sendPageForm(form);
+      onPosted(posted);
+      setState({ kind: 'kept', mailed: posted.mailed });
     } catch (error) {
       setState({ kind: 'failed', message: error instanceof Error ? error.message : 'That was not kept. Try again.' });
     }
@@ -190,15 +263,14 @@ function SupportForm({ onShown }: { onShown: (card: ShownSupporter) => void }) {
             <span style={{ fontSize: 17, fontWeight: 600, lineHeight: 1.35 }}>{THANKS_HEAD}</span>
           </div>
           <p className="t-body" style={{ margin: '10px 0 0', fontSize: 14.5, lineHeight: 1.55 }}>
-            {state.shown && <>{SHOWN_NOW_LINE} </>}
-            {THANKS_LINE}
+            {state.mailed ? THANKS_EDIT_LINE : THANKS_NO_MAIL_LINE}
           </p>
         </div>
       ) : (
         <form onSubmit={onSubmit} noValidate>
           <div className="wb-support-form-grid">
             <Field label="Name">
-              <input className="wb-form-input" type="text" autoComplete="name" value={form.name} maxLength={80} disabled={busy} required onChange={(e) => setForm({ ...form, name: e.target.value })} />
+              <input className="wb-form-input" type="text" autoComplete="name" value={form.name} maxLength={SUPPORT_LIMITS.name} disabled={busy} required onChange={(e) => setForm({ ...form, name: e.target.value })} />
             </Field>
             <Field label="Email">
               <input className="wb-form-input" type="email" autoComplete="email" value={form.email} maxLength={254} disabled={busy} required onChange={(e) => setForm({ ...form, email: e.target.value })} />
@@ -208,7 +280,7 @@ function SupportForm({ onShown }: { onShown: (card: ShownSupporter) => void }) {
             <input className="wb-form-input" type="text" autoComplete="organization" value={form.organisation} maxLength={120} disabled={busy} onChange={(e) => setForm({ ...form, organisation: e.target.value })} />
           </Field>
           <Field label={`A short comment (up to ${SUPPORT_LIMITS.comment} characters, no links)`}>
-            <textarea className="wb-form-input" rows={2} value={form.comment} maxLength={SUPPORT_LIMITS.comment} disabled={busy} onChange={(e) => setForm({ ...form, comment: e.target.value })} style={{ resize: 'vertical' }} />
+            <textarea className="wb-form-input" rows={2} value={form.comment} maxLength={SUPPORT_LIMITS.comment} disabled={busy} required onChange={(e) => setForm({ ...form, comment: e.target.value })} style={{ resize: 'vertical' }} />
           </Field>
 
           {/* The hidden field: off the screen and out of the tab order, so a person never fills it. */}
@@ -219,17 +291,13 @@ function SupportForm({ onShown }: { onShown: (card: ShownSupporter) => void }) {
             </label>
           </div>
 
-          <label className="wb-form-check">
-            <input type="checkbox" checked={form.show} disabled={busy} onChange={(e) => setForm({ ...form, show: e.target.checked })} />
-            {SHOW_WORDS}
-          </label>
           <label className="wb-form-check" style={{ marginBottom: 14 }}>
             <input type="checkbox" checked={form.newsletter} disabled={busy} onChange={(e) => setForm({ ...form, newsletter: e.target.checked })} />
             {NEWSLETTER_WORDS}
           </label>
 
-          <button type="submit" className="btn btn-primary wb-form-send" disabled={!ready || busy} aria-busy={busy || undefined}>
-            {busy ? 'Sending…' : 'Send'}
+          <button ref={postButton} type="submit" className="btn btn-primary wb-form-send" disabled={!ready || busy} aria-busy={busy || undefined}>
+            Post
           </button>
           {state.kind === 'failed' && (
             <p role="alert" style={{ margin: '10px 0 0', fontSize: 13, lineHeight: 1.5, color: 'var(--state-pending)' }}>
@@ -238,7 +306,102 @@ function SupportForm({ onShown }: { onShown: (card: ShownSupporter) => void }) {
           )}
         </form>
       )}
+
+      {(state.kind === 'confirm' || state.kind === 'sending') && (
+        <Confirm
+          words={CONFIRM_WORDS}
+          yes="Post"
+          busyYes="Posting…"
+          busy={busy}
+          onYes={() => void post()}
+          onNo={() => {
+            setState({ kind: 'idle' });
+            postButton.current?.focus();
+          }}
+        />
+      )}
     </section>
+  );
+}
+
+/**
+ * The pop-up: Wellington's icon, the words, a "Go back" and a yes. The yes takes the focus; Escape and
+ * "Go back" close it; Tab stays inside it while it is open.
+ */
+function Confirm({
+  words,
+  yes,
+  busyYes,
+  busy,
+  onYes,
+  onNo,
+}: {
+  words: string;
+  yes: string;
+  busyYes: string;
+  busy: boolean;
+  onYes: () => void;
+  onNo: () => void;
+}) {
+  const wellington = crewMember('Wellington');
+  const box = useRef<HTMLDivElement>(null);
+  const yesButton = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    yesButton.current?.focus();
+  }, []);
+
+  return (
+    <div
+      className="wb-confirm-backdrop"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget && !busy) onNo();
+      }}
+    >
+      <div
+        ref={box}
+        className="wb-confirm"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="wb-confirm-words"
+        onKeyDown={(e) => {
+          if (e.key === 'Escape' && !busy) {
+            e.preventDefault();
+            onNo();
+          }
+          if (e.key === 'Tab' && box.current) {
+            const buttons = [...box.current.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')];
+            if (buttons.length === 0) return;
+            const first = buttons[0];
+            const last = buttons[buttons.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+              e.preventDefault();
+              last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+              e.preventDefault();
+              first.focus();
+            }
+          }
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+          <Portrait token={wellington.token}>
+            <img src={wellington.portrait} alt="Wellington" width={24} height={24} style={{ display: 'block' }} />
+          </Portrait>
+          <p id="wb-confirm-words" style={{ margin: '2px 0 0', fontSize: 15, lineHeight: 1.55 }}>
+            {words}
+          </p>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, marginTop: 18 }}>
+          <button type="button" className="btn" disabled={busy} onClick={onNo}>
+            Go back
+          </button>
+          <button ref={yesButton} type="button" className="btn btn-primary" disabled={busy} aria-busy={busy || undefined} onClick={onYes}>
+            {busy ? busyYes : yes}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -279,20 +442,131 @@ function AgentCard({ name, comment }: { name: string; comment: string }) {
   );
 }
 
-function SupporterCard({ supporter: s }: { supporter: ShownSupporter }) {
+type CardState = { kind: 'view' } | { kind: 'edit' } | { kind: 'saving' } | { kind: 'confirm-delete' } | { kind: 'deleting' };
+
+/** A person's post. Its own poster sees Edit and Delete on it. */
+function SupporterCard({
+  supporter: s,
+  own,
+  onEdited,
+  onDeleted,
+}: {
+  supporter: ShownSupporter;
+  own?: OwnPost;
+  onEdited: (card: ShownSupporter) => void;
+  onDeleted: () => void;
+}) {
+  const [state, setState] = useState<CardState>({ kind: 'view' });
+  const [name, setName] = useState(s.name);
+  const [comment, setComment] = useState(s.comment);
+  const [message, setMessage] = useState('');
   const line = [s.title, s.organisation].filter((part) => part.trim() !== '').join(' · ');
   const joined = joinedWords(s.joined);
+  const editing = state.kind === 'edit' || state.kind === 'saving';
+
+  async function save() {
+    if (!own) return;
+    setState({ kind: 'saving' });
+    setMessage('');
+    try {
+      onEdited(await editPost(own, name, comment));
+      setState({ kind: 'view' });
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'That did not change. Try again.');
+      setState({ kind: 'edit' });
+    }
+  }
+
+  async function remove() {
+    if (!own) return;
+    setState({ kind: 'deleting' });
+    setMessage('');
+    try {
+      await deletePost(own);
+      onDeleted();
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'That was not deleted. Try again.');
+      setState({ kind: 'view' });
+    }
+  }
+
   return (
-    <li className="wb-supporter-card">
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
-        <span style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.35, overflowWrap: 'anywhere' }}>{s.name}</span>
-        {roleLabel(s.role) && <span className="wb-role-chip">{roleLabel(s.role)}</span>}
-      </div>
-      {line && <div style={{ fontSize: 13, color: 'var(--ink-2)', marginTop: 2, overflowWrap: 'anywhere' }}>{line}</div>}
-      {s.comment && (
-        <p style={{ margin: '10px 0 0', fontSize: 13.5, lineHeight: 1.55, overflowWrap: 'anywhere' }}>“{s.comment}”</p>
+    <li className="wb-supporter-card" data-post={s.id}>
+      {editing ? (
+        <div>
+          <Field label="Name">
+            <input className="wb-form-input" type="text" value={name} maxLength={SUPPORT_LIMITS.name} disabled={state.kind === 'saving'} onChange={(e) => setName(e.target.value)} />
+          </Field>
+          <Field label={`Comment (up to ${SUPPORT_LIMITS.comment} characters, no links)`}>
+            <textarea className="wb-form-input" rows={3} value={comment} maxLength={SUPPORT_LIMITS.comment} disabled={state.kind === 'saving'} onChange={(e) => setComment(e.target.value)} style={{ resize: 'vertical' }} />
+          </Field>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button type="button" className="btn wb-own-button" disabled={state.kind === 'saving' || !name.trim() || !comment.trim()} onClick={() => void save()}>
+              {state.kind === 'saving' ? 'Saving…' : 'Save'}
+            </button>
+            <button
+              type="button"
+              className="btn wb-own-button"
+              disabled={state.kind === 'saving'}
+              onClick={() => {
+                setName(s.name);
+                setComment(s.comment);
+                setMessage('');
+                setState({ kind: 'view' });
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
+            <span style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.35, overflowWrap: 'anywhere' }}>{s.name}</span>
+            {roleLabel(s.role) && <span className="wb-role-chip">{roleLabel(s.role)}</span>}
+          </div>
+          {line && <div style={{ fontSize: 13, color: 'var(--ink-2)', marginTop: 2, overflowWrap: 'anywhere' }}>{line}</div>}
+          {s.comment && <p style={{ margin: '10px 0 0', fontSize: 13.5, lineHeight: 1.55, overflowWrap: 'anywhere' }}>“{s.comment}”</p>}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
+            {joined && <span style={{ fontSize: 12, color: 'var(--ink-3)' }}>Joined {joined}</span>}
+            {own && (
+              <span style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
+                <button
+                  type="button"
+                  className="btn wb-own-button"
+                  disabled={state.kind === 'deleting'}
+                  onClick={() => {
+                    setName(s.name);
+                    setComment(s.comment);
+                    setMessage('');
+                    setState({ kind: 'edit' });
+                  }}
+                >
+                  Edit
+                </button>
+                <button type="button" className="btn wb-own-button" disabled={state.kind === 'deleting'} onClick={() => setState({ kind: 'confirm-delete' })}>
+                  Delete
+                </button>
+              </span>
+            )}
+          </div>
+        </>
       )}
-      {joined && <div style={{ fontSize: 12, color: 'var(--ink-3)', marginTop: 10 }}>Joined {joined}</div>}
+      {message && (
+        <p role="alert" style={{ margin: '10px 0 0', fontSize: 13, lineHeight: 1.5, color: 'var(--state-pending)' }}>
+          {message}
+        </p>
+      )}
+      {(state.kind === 'confirm-delete' || state.kind === 'deleting') && (
+        <Confirm
+          words="Delete your post? It comes off this page and cannot be brought back."
+          yes="Delete"
+          busyYes="Deleting…"
+          busy={state.kind === 'deleting'}
+          onYes={() => void remove()}
+          onNo={() => setState({ kind: 'view' })}
+        />
+      )}
     </li>
   );
 }

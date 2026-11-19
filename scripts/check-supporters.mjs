@@ -1,23 +1,22 @@
 /**
  * Confirms the supporters page — approved 16 Nov 2026, the maintainer's word on #176
- * (docs/proposals/supporters-2026-11-16.md): every public entry waits for her approval before it
- * shows, nothing shows or deletes on its own, and the email never reaches the page.
+ * (docs/proposals/supporters-2026-11-16.md), as changed by her word on 18 and 19 Nov 2026: the
+ * supporters page is the one place to post; a name, an email and a comment, then Post in the pop-up,
+ * put the post on the board at once, past the filter; the poster edits and deletes it with its own
+ * private key; she takes one off with hide; and the email never reaches the page.
  *
  *   node scripts/check-supporters.mjs
  *
  * Compiles api/ as the platform does and runs the real endpoints against a store in memory, served
  * over HTTP on this machine, so the approval command and the removal script run as she runs them, in
  * their own processes. What is checked:
- *   - the form's public fields: only with the box ticked, a role from the list, no links, the limits;
- *   - a waiting entry is never in the public list, and no entry anywhere holds the email;
- *   - only approve puts an entry on the page; decline and hide keep it off and keep the sign-up;
- *   - a person's removal takes their entry off the page too;
+ *   - Register your interest posts nothing, and says where to post;
+ *   - a post: its rules, the filter, the card and the key in the answer, the key's hash alone kept,
+ *     the email to the poster with the private link, and no email in any supporter entry;
+ *   - edit and delete with the post's own key, through the same rules; another key changes nothing;
+ *   - hide keeps a post off and keeps the sign-up; a person's removal takes their post off too;
  *   - the command reads the store keys from .env.local, with nothing to type first;
- *   - the page's words and roles are the server's, word for word, and the page is reachable.
- *
- * FROM 18 NOV 2026, her word on #176, the supporters page's own form has no approval step: a ticked
- * "show" box goes on the page at once, the filter (api/_postFilter.ts) refuses rude, sexual and spam
- * posts with a plain line, and the form sits beside the heading. Register your interest still waits.
+ *   - the page's words are the server's and hers, word for word, and the page is as she said.
  */
 
 import { spawn, spawnSync } from 'node:child_process';
@@ -157,202 +156,218 @@ function script(file, args, { cwd = process.cwd(), env = {} } = {}) {
 }
 const storeEnv = { KV_REST_API_URL: STORE_URL, KV_REST_API_TOKEN: TOKEN };
 
-console.log('Supporters (16 Nov 2026, #176)\n');
-console.log('  The form');
+console.log('Supporters (16 Nov 2026, #176; posting from 19 Nov 2026)\n');
+const { POST: CHANGE } = await import(pathToFileURL(join(out, 'supporter-post.js')).href);
+const change = (body) => CHANGE(new Request('https://open.test/api/supporter-post', { method: 'POST', body: JSON.stringify(body) }));
+const shownHash = () => hash(sup.SUPPORTER_KEYS.shown);
+const signupsNow = () => (lists.get('interest:signups') ?? []).map((x) => JSON.parse(x));
+const count = () => (lists.get('interest:signups') ?? []).length;
+
+console.log('  Register your interest posts nothing');
 let res = await post(base);
 let body = await res.json();
-expect('a sign-up without the box sends nothing public', res.status === 200 && !body.waiting && waiting().length === 0, JSON.stringify(body));
-
-res = await post({ ...base, public: true, role: 'funder', title: 'Made-up title', comment: 'A made-up comment for the check.' });
-body = await res.json();
-const [w] = waiting();
-expect('with the box ticked and a role, the entry waits and the visitor is told so', res.status === 200 && body.waiting === true && w?.role === 'funder', JSON.stringify(body));
-expect(
-  'the waiting entry holds the name as typed, the organisation, role, title and comment, and the box\'s words',
-  w?.name === 'Made-up Supporter' && w?.organisation === 'Example Water Trust' && w?.title === 'Made-up title' &&
-    w?.comment === 'A made-up comment for the check.' && w?.agreed === sup.PUBLIC_WORDS && /^[a-z0-9]{5}$/.test(w?.id ?? ''),
-  JSON.stringify(w)
-);
-const signups = (lists.get('interest:signups') ?? []).map((x) => JSON.parse(x));
-expect('the sign-up keeps the supporter\'s id, so a removal finds both', signups[0]?.supporter === w?.id && signups[0]?.email === 'supporter@example.org', JSON.stringify(signups[0]));
-expect('no supporter entry holds the email, in any state', !/example\.org/i.test(everything()), everything());
-expect('the copy to hello@ says something is waiting and how to see it', /waiting for your approval/.test(mailed.at(-1)?.text ?? '') && /npm run supporters/.test(mailed.at(-1)?.text ?? ''), mailed.at(-1)?.text);
-expect('waiting is never on the page', (await shownList()).length === 0, JSON.stringify(await shownList()));
-
-for (const [label, change] of [
-  ['a role without the box ticked', { role: 'funder' }],
-  ['a comment without the box ticked', { comment: 'hello' }],
-  ['the box ticked with no role', { public: true }],
-  ['a role off the list', { public: true, role: 'investor' }],
-  ['a comment with a link', { public: true, role: 'other', comment: 'see https://example.org' }],
-  ['a comment with a bare domain', { public: true, role: 'other', comment: 'see example.com for more' }],
-  ['a comment past 280 characters', { public: true, role: 'other', comment: 'x'.repeat(281) }],
-  ['a title past 80 characters', { public: true, role: 'other', title: 'x'.repeat(81) }],
+expect('a sign-up is kept, and nothing goes to the board', res.status === 200 && !body.shown && !body.edit && shownHash().size === 0 && waiting().length === 0, JSON.stringify(body));
+for (const [label, extra] of [
+  ['the old public box', { public: true, role: 'funder' }],
+  ['a role', { role: 'funder' }],
+  ['a title', { title: 'Made-up title' }],
+  ['a comment', { comment: 'hello' }],
 ]) {
-  const before = waiting().length;
-  res = await post({ ...base, ...change });
+  const before = count();
+  res = await post({ ...base, ...extra });
   body = await res.json();
-  expect(`${label} is refused, named, and nothing kept`, res.status === 400 && /not kept/.test(body.error) && waiting().length === before, `${res.status} ${body.error}`);
+  expect(`${label} on Register your interest is refused, pointing to the supporters page, and nothing kept`, res.status === 400 && /supporters page/.test(body.error) && count() === before, `${res.status} ${body.error}`);
 }
 
-console.log('\n  Her approval: nothing shows on its own');
-const id = w.id;
+console.log('\n  Posting on the supporters page');
+const pageForm = { source: 'supporters', name: 'Page Made-up', email: 'Page@Example.org', comment: 'Made-up words to show.' };
+const mailsBefore = mailed.length;
+res = await post({ ...pageForm, organisation: 'Hidden Org', newsletter: true });
+body = await res.json();
+const posted = body;
+const entry = JSON.parse(shownHash().get(posted.edit?.id) ?? '{}');
+expect(
+  'a name, an email and a comment post: on the page at once, with no box and no approval',
+  res.status === 200 && posted.shown?.name === 'Page Made-up' && posted.shown?.comment === 'Made-up words to show.' &&
+    (await shownList()).some((s) => s.id === posted.edit?.id && s.comment === 'Made-up words to show.') && waiting().length === 0,
+  JSON.stringify(body)
+);
+expect(
+  'the answer carries the card (public fields and id only) and the private key, once',
+  JSON.stringify(Object.keys(posted.shown ?? {}).sort()) === JSON.stringify(['comment', 'id', 'joined', 'name', 'organisation', 'role', 'title']) &&
+    posted.shown.organisation === '' && /^[A-Za-z0-9_-]{43}$/.test(posted.edit?.token ?? '') && posted.edit?.id === posted.shown.id,
+  JSON.stringify(body)
+);
+expect(
+  'the store keeps the key\'s SHA-256 only, never the key, and the pop-up\'s words',
+  entry.editKey === (await sup.editKeyOf(posted.edit.token)) && !everything().includes(posted.edit.token) && entry.agreed === sup.CONFIRM_WORDS,
+  JSON.stringify(entry)
+);
+expect('the page\'s list never carries the key or its hash', !JSON.stringify(await shownList()).includes(entry.editKey) && !JSON.stringify(await shownList()).includes(posted.edit.token), 'a key on the page');
+expect('no email in any supporter entry, nor on the card', !/example\.org/i.test(everything()) && !/example\.org/i.test(JSON.stringify(posted.shown)), everything());
+const kept = signupsNow()[0];
+expect(
+  'the sign-up lands in the same list as Register your interest, with the supporter id, the newsletter answer and the pop-up\'s words',
+  kept.source === 'supporters' && kept.supporter === posted.edit.id && kept.email === 'page@example.org' && kept.newsletter === true &&
+    kept.consent.includes(sup.CONFIRM_WORDS) && kept.consent.includes('Send me the WaterBots newsletter'),
+  JSON.stringify(kept)
+);
+const newMail = mailed.slice(mailsBefore);
+const toPoster = newMail.find((m) => m.to?.[0] === 'page@example.org');
+const toTeam = newMail.find((m) => m.to?.[0] === 'hello@waterbots.ai');
+expect(
+  'the poster gets an email with the private link, the key after the #, and is told to keep it to themselves',
+  posted.posterMailed === true && toPoster?.text?.includes(`https://open.waterbots.ai/supporters#edit=${posted.edit.id}.${posted.edit.token}`) &&
+    /Keep this link to yourself/.test(toPoster?.text ?? '') && /hello@waterbots\.ai/.test(toPoster?.text ?? ''),
+  toPoster?.text
+);
+expect(
+  'the copy to hello@ says it is on the page and gives the line to take it off, and never carries the key',
+  /on the supporters page now/.test(toTeam?.text ?? '') && (toTeam?.text ?? '').includes(`npm run supporters -- hide ${posted.edit.id}`) && !(toTeam?.text ?? '').includes(posted.edit.token),
+  toTeam?.text
+);
+expect(
+  'the private link points at this site or its preview, never at an address a request made up',
+  sup.editLink('https://waterbots-open-harness-git-x-water-bots-ai.vercel.app/api/interest', 'abcde', 'k').startsWith('https://waterbots-open-harness-git-x-water-bots-ai.vercel.app/supporters#edit=') &&
+    sup.editLink('https://evil.example/api/interest', 'abcde', 'k').startsWith('https://open.waterbots.ai/supporters#edit=') &&
+    sup.editLink('https://open.waterbots.ai/api/interest', 'abcde', 'k') === 'https://open.waterbots.ai/supporters#edit=abcde.k',
+  'a link to somewhere else'
+);
+for (const [label, extra] of [
+  ['no comment', { comment: '' }],
+  ['no email', { email: '' }],
+  ['no name', { name: ' ' }],
+  ['a role, which this form does not ask', { role: 'funder' }],
+  ['interests, which this form does not ask', { interests: ['carbon'] }],
+  ['a consent box, which this form does not have', { consent: true }],
+  ['a newsletter box that is not a yes or a no', { newsletter: 'yes' }],
+  ['a comment with a link', { comment: 'see www.example.org' }],
+  ['a name with a link', { name: 'Made-up www.example.com' }],
+  ['a comment past 280 characters', { comment: 'x'.repeat(281) }],
+  ['a form name that is not one of the site\'s', { source: 'other' }],
+]) {
+  const before = count();
+  res = await post({ ...pageForm, ...extra });
+  body = await res.json();
+  expect(`${label} is refused, named, and nothing kept`, res.status === 400 && /not kept/.test(body.error) && count() === before, `${res.status} ${body.error}`);
+}
+{
+  const before = shownHash().size;
+  res = await post({ ...pageForm, name: 'Old Page Made-up', public: false });
+  expect('a page left open from before, with the old box unticked, is kept and posts nothing', res.status === 200 && shownHash().size === before, String(res.status));
+}
+
+/* The filter, her word of 18 Nov 2026: rude, sexual and spam posts are blocked with a plain line. */
+for (const [label, extra] of [
+  ['a rude word, letters swapped', { comment: 'This is sh1t work' }],
+  ['a sexually explicit word', { comment: 'hot porn here' }],
+  ['a rude word spelled out', { comment: 'f u c k it' }],
+  ['spam words', { comment: 'Click here to buy now' }],
+  ['a phone number', { comment: 'Call +254 712 345 678 today' }],
+  ['an email address', { comment: 'write to deals@mailbox.xyz' }],
+  ['a rude name', { name: 'Shit Head' }],
+]) {
+  const before = count();
+  const shownBefore = shownHash().size;
+  res = await post({ ...pageForm, ...extra });
+  body = await res.json();
+  expect(`${label} is blocked with the plain line, and nothing kept`, res.status === 422 && body.error === BLOCKED && count() === before && shownHash().size === shownBefore, `${res.status} ${body.error}`);
+}
+for (const ok of ['Our stopcock fix brought 1 000 000 litres to Scunthorpe.', 'Sanitation and women\'s safety at the water point matter.']) {
+  res = await post({ ...pageForm, comment: ok });
+  expect(`ordinary water words pass the filter: "${ok}"`, res.status === 200, String(res.status));
+}
+
+console.log('\n  The poster edits and deletes their own post');
+const own = { id: posted.edit.id, key: posted.edit.token };
+res = await change({ action: 'edit', ...own, name: 'Page Made-up, edited', comment: 'Edited made-up words.' });
+body = await res.json();
+expect(
+  'with the post\'s own key, an edit changes the name and comment on the page at once',
+  res.status === 200 && body.shown?.comment === 'Edited made-up words.' && (await shownList()).some((s) => s.id === own.id && s.name === 'Page Made-up, edited') &&
+    typeof JSON.parse(shownHash().get(own.id)).editedAt === 'string' && JSON.parse(shownHash().get(own.id)).editKey === entry.editKey,
+  JSON.stringify(body)
+);
+const otherKey = 'A'.repeat(43);
+res = await change({ action: 'edit', id: own.id, key: otherKey, name: 'Taken', comment: 'Taken over.' });
+body = await res.json();
+expect('another key changes nothing, and says so', res.status === 403 && /does not match/.test(body.error) && JSON.parse(shownHash().get(own.id)).comment === 'Edited made-up words.', `${res.status} ${body.error}`);
+for (const [label, extra, status] of [
+  ['a rude edit', { comment: 'what the f*ck' }, 422],
+  ['an edit with a link', { comment: 'see https://example.org' }, 400],
+  ['an edit with no comment', { comment: ' ' }, 400],
+  ['an edit past 280 characters', { comment: 'x'.repeat(281) }, 400],
+]) {
+  res = await change({ action: 'edit', ...own, name: 'Page Made-up', ...extra });
+  body = await res.json();
+  expect(`${label} is refused through the same rules, and the post is unchanged`, res.status === status && /not changed|Nothing changed/i.test(body.error) && JSON.parse(shownHash().get(own.id)).comment === 'Edited made-up words.', `${res.status} ${body.error}`);
+}
+res = await change({ action: 'edit', id: own.id, key: 'short', name: 'x', comment: 'y' });
+expect('a link cut short is refused plainly', res.status === 400 && /not complete/.test((await res.json()).error), String(res.status));
+res = await change({ action: 'delete', id: 'zzzzz', key: otherKey });
+expect('a post that is not there says so', res.status === 404 && /no longer on the page/.test((await res.json()).error), String(res.status));
+res = await change({ action: 'delete', ...own, comment: 'x' });
+expect('a delete carries nothing else', res.status === 400, String(res.status));
+res = await change({ action: 'delete', id: own.id, key: otherKey });
+expect('another key cannot delete it', res.status === 403 && shownHash().has(own.id), String(res.status));
+
 let run = await script('scripts/supporters.mjs', [], { env: storeEnv });
 expect(
-  'the command lists what is waiting, with the exact line to paste, and never an email',
-  run.code === 0 && run.text.includes(`npm run supporters -- approve ${id}`) && run.text.includes(`npm run supporters -- decline ${id}`) &&
-    run.text.includes('Made-up Supporter') && !/@/.test(run.text),
+  'npm run supporters lists what is on the page first, each with its line to take it off, and never an email',
+  run.code === 0 && run.text.includes(`npm run supporters -- hide ${own.id}`) && run.text.includes('on the supporters page') && !/@/.test(run.text),
   run.text
 );
-run = await script('scripts/supporters.mjs', ['approve', id], { env: storeEnv });
-let shown = await shownList();
-expect('approve puts it on the page, and says so in one line', run.code === 0 && /^Approved: /.test(run.text) && shown.length === 1, run.text);
-expect(
-  'the page gets the public fields and the month approved, nothing more',
-  JSON.stringify(Object.keys(shown[0] ?? {}).sort()) === JSON.stringify(['comment', 'joined', 'name', 'organisation', 'role', 'title']) &&
-    /^\d{4}-\d{2}$/.test(shown[0]?.joined ?? ''),
-  JSON.stringify(shown[0])
-);
-run = await script('scripts/supporters.mjs', ['hide', id], { env: storeEnv });
-expect('hide takes it off the page and keeps the sign-up', run.code === 0 && /^Hidden: /.test(run.text) && (await shownList()).length === 0 && (lists.get('interest:signups') ?? []).length === 2, run.text);
+run = await script('scripts/supporters.mjs', ['hide', own.id], { env: storeEnv });
+expect('she can take one off: hide, and the sign-up is kept', run.code === 0 && /^Hidden: /.test(run.text) && !shownHash().has(own.id) && hash(sup.SUPPORTER_KEYS.declined).has(own.id), run.text);
+res = await change({ action: 'edit', ...own, name: 'Back', comment: 'Back on.' });
+expect('a post she took off cannot be edited back on', res.status === 409 && !shownHash().has(own.id), String(res.status));
+res = await change({ action: 'delete', ...own });
+expect('its poster can still delete it', res.status === 200 && !hash(sup.SUPPORTER_KEYS.declined).has(own.id) && !shownHash().has(own.id), String(res.status));
+{
+  res = await post({ ...pageForm, name: 'Delete Made-up', email: 'delete@example.org', comment: 'Made-up words to delete.' });
+  const d = await res.json();
+  const signupsBefore = count();
+  res = await change({ action: 'delete', id: d.edit.id, key: d.edit.token });
+  expect(
+    'deleting one\'s own post takes it off the page at once, and keeps the sign-up',
+    res.status === 200 && !(await shownList()).some((s) => s.id === d.edit.id) && count() === signupsBefore,
+    String(res.status)
+  );
+}
+
+console.log('\n  The commands and the removal');
 run = await script('scripts/supporters.mjs', ['approve', 'zzzzz'], { env: storeEnv });
 expect('an id that is not there changes nothing and says so', run.code === 1 && /Nothing changed/.test(run.text), run.text);
-
-await post({ ...base, name: 'Second Made-up', email: 'second@example.org', public: true, role: 'auditor' });
-const second = waiting().find((e) => e.name === 'Second Made-up');
-run = await script('scripts/supporters.mjs', ['decline', second.id], { env: storeEnv });
-expect('decline keeps it off the page and keeps the sign-up', run.code === 0 && /^Declined: /.test(run.text) && (await shownList()).length === 0 && hash(sup.SUPPORTER_KEYS.declined).has(second.id), run.text);
-
+{
+  /* An entry from before 19 Nov 2026, still waiting: approve and decline still work for it. Made up. */
+  const old = { id: 'old23', at: '2026-11-17T10:00:00.000Z', name: 'Old Made-up', organisation: 'Org', role: 'funder', title: '', comment: 'Old words.', agreed: 'old box' };
+  shownHash();
+  hash(sup.SUPPORTER_KEYS.waiting).set(old.id, JSON.stringify(old));
+  run = await script('scripts/supporters.mjs', ['approve', old.id], { env: storeEnv });
+  expect('an entry waiting from before is approved with the old command', run.code === 0 && /^Approved: /.test(run.text) && (await shownList()).some((s) => s.id === old.id && s.role === 'funder'), run.text);
+}
 {
   /* .env.local, with nothing set first: her one paste. A folder of its own holds a made-up .env.local. */
   const folder = mkdtempSync(join(tmpdir(), 'wb-envlocal-'));
   writeFileSync(join(folder, '.env.local'), `# made up\nKV_REST_API_URL="${STORE_URL}"\nKV_REST_API_TOKEN=${TOKEN}\nOTHER=ignored\n`);
-  run = await script('scripts/supporters.mjs', ['approve', second.id], { cwd: folder });
-  expect('the command reads the store keys from .env.local, with nothing to type first', run.code === 0 && /^Approved: /.test(run.text) && (await shownList()).length === 1, run.text);
+  run = await script('scripts/supporters.mjs', ['shown'], { cwd: folder });
+  expect('the command reads the store keys from .env.local, with nothing to type first', run.code === 0 && /on the supporters page/.test(run.text), run.text);
   rmSync(join(folder, '.env.local'));
   run = await script('scripts/supporters.mjs', [], { cwd: folder });
   expect('with no .env.local and no keys it says so plainly and changes nothing', run.code === 1 && /no \.env\.local/i.test(run.text), run.text);
   rmSync(folder, { recursive: true, force: true });
 }
-
-console.log('\n  Removal: only the person\'s own request');
-run = await script('scripts/count-interest.mjs', ['--remove', 'second@example.org'], { env: storeEnv });
-expect(
-  'removing a person\'s sign-up takes them off the page too, and prints no name or email',
-  run.code === 0 && (await shownList()).length === 0 && !hash(sup.SUPPORTER_KEYS.shown).has(second.id) && !/Second|example\.org/.test(run.text),
-  run.text
-);
-expect('nothing in the store is given an expiry for supporters', !/EXPIRE[^\n]*supporters|supporters[^\n]*EXPIRE/.test(readFileSync(join('api', 'interest.ts'), 'utf8')), 'an expiry on supporters');
-
-console.log('\n  The page\'s own form (18 Nov 2026)');
 {
-  /* Her word of 18 Nov 2026 on #176: the form on /supporters, saving where Register your interest saves. */
-  const pageForm = { source: 'supporters', name: 'Page Made-up', email: 'Page@Example.org' };
-  const count = () => (lists.get('interest:signups') ?? []).length;
-  let before = count();
-  res = await post(pageForm);
-  body = await res.json();
-  let kept = JSON.parse((lists.get('interest:signups') ?? [])[0] ?? '{}');
+  res = await post({ ...pageForm, name: 'Second Made-up', email: 'second@example.org', comment: 'Made-up second words.' });
+  const second = (await res.json()).edit.id;
+  run = await script('scripts/count-interest.mjs', ['--remove', 'second@example.org'], { env: storeEnv });
   expect(
-    'a name and an email are enough: no organisation, no interests, no box, and it lands in the same list as Register your interest',
-    res.status === 200 && count() === before + 1 && kept.source === 'supporters' && kept.email === 'page@example.org' && kept.organisation === '' &&
-      kept.interests.length === 0 && kept.newsletter === false && !kept.supporter,
-    `${res.status} ${JSON.stringify(body)} ${JSON.stringify(kept)}`
-  );
-  before = waiting().length;
-  res = await post({ ...pageForm, organisation: 'Example Org', comment: 'A made-up comment kept private.', newsletter: true });
-  kept = JSON.parse((lists.get('interest:signups') ?? [])[0] ?? '{}');
-  expect(
-    'the comment, the organisation and the newsletter box are kept with the sign-up, and nothing waits to show unless the box is ticked',
-    res.status === 200 && kept.comment === 'A made-up comment kept private.' && kept.organisation === 'Example Org' && kept.newsletter === true &&
-      waiting().length === before && /Send me the WaterBots newsletter/.test(kept.consent),
-    JSON.stringify(kept)
-  );
-  before = waiting().length;
-  res = await post({ ...pageForm, name: 'Shown Made-up', organisation: 'Hidden Org', comment: 'Made-up words to show.', public: true });
-  body = await res.json();
-  const entry = [...hash(sup.SUPPORTER_KEYS.shown).values()].map((x) => JSON.parse(x)).find((e) => e.name === 'Shown Made-up');
-  const shownNow = (await shownList()).find((s) => s.name === 'Shown Made-up');
-  expect(
-    'ticked "Show my name and comment on this page", the name and comment go on the page at once, with no approval, and nothing waits',
-    res.status === 200 && !body.waiting && waiting().length === before && entry?.comment === 'Made-up words to show.' && entry?.organisation === '' &&
-      entry?.role === '' && entry?.title === '' && entry?.agreed === sup.SHOW_WORDS && typeof entry?.shownAt === 'string' &&
-      shownNow?.comment === 'Made-up words to show.' && shownNow?.organisation === '' && /^\d{4}-\d{2}$/.test(shownNow?.joined ?? ''),
-    `${JSON.stringify(body)} ${JSON.stringify(entry)}`
-  );
-  expect(
-    'the answer carries the card, its public fields only, so the sender sees it at once',
-    body.shown?.name === 'Shown Made-up' && body.shown?.comment === 'Made-up words to show.' &&
-      JSON.stringify(Object.keys(body.shown ?? {}).sort()) === JSON.stringify(['comment', 'joined', 'name', 'organisation', 'role', 'title']),
-    JSON.stringify(body)
-  );
-  expect('still no email in any supporter entry, nor in the answer', !/example\.org/i.test(everything()) && !/example\.org/i.test(JSON.stringify(body)), everything());
-  expect(
-    'the copy to hello@ says it came from the supporters page, that it is on the page now, and the line to take it off',
-    /supporters page/.test(mailed.at(-1)?.text ?? '') && /Newsletter: no/.test(mailed.at(-1)?.text ?? '') && /on the page now/.test(mailed.at(-1)?.text ?? '') &&
-      (mailed.at(-1)?.text ?? '').includes(`npm run supporters -- hide ${entry?.id}`),
-    mailed.at(-1)?.text
-  );
-  run = await script('scripts/supporters.mjs', [], { env: storeEnv });
-  expect(
-    'npm run supporters lists what is on the page first, each with its line to take it off, and never an email',
-    run.code === 0 && run.text.includes(`npm run supporters -- hide ${entry?.id}`) && (run.text.indexOf('waiting') === -1 || run.text.indexOf('on the supporters page') < run.text.indexOf('waiting')) && !/@/.test(run.text),
+    'removing a person\'s sign-up takes their post off the page too, and prints no name or email',
+    run.code === 0 && !shownHash().has(second) && !/Second|example\.org/.test(run.text),
     run.text
   );
-  run = await script('scripts/supporters.mjs', ['hide', entry.id], { env: storeEnv });
-  expect(
-    'she can take one off: hide, and the sign-up is kept',
-    run.code === 0 && /^Hidden: /.test(run.text) && (await shownList()).every((s) => s.name !== 'Shown Made-up') && hash(sup.SUPPORTER_KEYS.declined).has(entry.id),
-    run.text
-  );
-
-  /* The filter, her word of 18 Nov 2026: rude, sexual and spam posts are blocked with a plain line. */
-  for (const [label, change] of [
-    ['a rude word, letters swapped', { comment: 'This is sh1t work' }],
-    ['a sexually explicit word', { comment: 'hot porn here' }],
-    ['a rude word spelled out', { comment: 'f u c k it' }],
-    ['spam words', { comment: 'Click here to buy now' }],
-    ['a phone number', { comment: 'Call +254 712 345 678 today' }],
-    ['an email address', { comment: 'write to deals@mailbox.xyz' }],
-    ['a rude name', { name: 'Shit Head' }],
-  ]) {
-    before = count();
-    const shownBefore = hash(sup.SUPPORTER_KEYS.shown).size;
-    res = await post({ ...pageForm, comment: 'Fine words.', ...change, public: true });
-    body = await res.json();
-    expect(
-      `${label} on a post is blocked with the plain line, and nothing kept`,
-      res.status === 422 && body.error === BLOCKED && count() === before && hash(sup.SUPPORTER_KEYS.shown).size === shownBefore,
-      `${res.status} ${body.error}`
-    );
-  }
-  before = count();
-  res = await post({ ...pageForm, name: 'Made-up www.example.com', public: true });
-  body = await res.json();
-  expect('a name with a link is refused when it would show', res.status === 400 && /link/.test(body.error) && count() === before, `${res.status} ${body.error}`);
-  for (const ok of ['Our stopcock fix brought 1 000 000 litres to Scunthorpe.', 'Sanitation and women\'s safety at the water point matter.']) {
-    res = await post({ ...pageForm, comment: ok, public: true });
-    expect(`ordinary water words pass the filter: "${ok}"`, res.status === 200, String(res.status));
-  }
-  for (const [label, change] of [
-    ['no email', { email: '' }],
-    ['no name', { name: ' ' }],
-    ['a role, which this form does not ask', { role: 'funder' }],
-    ['interests, which this form does not ask', { interests: ['carbon'] }],
-    ['a consent box, which this form does not have', { consent: true }],
-    ['a newsletter box that is not a yes or a no', { newsletter: 'yes' }],
-    ['a comment with a link', { comment: 'see www.example.org' }],
-    ['a form name that is not one of the site\'s', { source: 'other' }],
-  ]) {
-    before = count();
-    res = await post({ ...pageForm, ...change });
-    body = await res.json();
-    expect(`${label} is refused, named, and nothing kept`, res.status === 400 && /not kept/.test(body.error) && count() === before, `${res.status} ${body.error}`);
-  }
-  before = count();
-  res = await post({ name: 'Old Form', email: 'old@example.org', interests: ['carbon'], consent: true, organisation: 'Org', newsletter: true });
-  expect('Register your interest still asks its own questions, and no newsletter', res.status === 400 && count() === before, String(res.status));
 }
+expect('nothing in the store is given an expiry for supporters', !/EXPIRE[^\n]*supporters|supporters[^\n]*EXPIRE/.test(readFileSync(join('api', 'interest.ts'), 'utf8') + readFileSync(join('api', 'supporter-post.ts'), 'utf8')), 'an expiry on supporters');
 
 globalThis.fetch = realFetch;
 server.close();
@@ -362,17 +377,23 @@ console.log('\n  The page says what the server keeps');
 const pick = (src, name) => (src.match(new RegExp(`export const ${name} =([\\s\\S]*?);\\n`)) ?? [])[1]?.replace(/\s+/g, ' ').trim();
 const client = readFileSync(join('src', 'lib', 'supporters.ts'), 'utf8');
 const serverSide = readFileSync(join('api', '_supporters.ts'), 'utf8');
-for (const name of ['ROLES', 'SUPPORT_LIMITS', 'PUBLIC_WORDS']) {
+for (const name of ['ROLES', 'SUPPORT_LIMITS', 'CONFIRM_WORDS', 'NEWSLETTER_WORDS']) {
   expect(`${name} is the same on the page and the server`, pick(client, name) && pick(client, name) === pick(serverSide, name), `${pick(client, name)} | ${pick(serverSide, name)}`);
 }
-expect('the roles are her six, in her order', /Developer[\s\S]*Standard body[\s\S]*Consultant[\s\S]*Auditor[\s\S]*Funder[\s\S]*Other/.test(pick(client, 'ROLES') ?? ''), pick(client, 'ROLES'));
+expect('the pop-up\'s words are hers, word for word', pick(client, 'CONFIRM_WORDS') === "'Your name and comment will show on this page. Your email stays private.'", pick(client, 'CONFIRM_WORDS'));
 expect('the intro line is hers, word for word', /SUPPORTERS_INTRO = 'People who want water impact to be faster and fairer to prove\.'/.test(client), 'intro changed');
+/* What a visitor can read: the files without their comments, which name removed things on purpose. */
+const bare = (src) => src.replace(/\{\s*\/\*[\s\S]*?\*\/\s*\}/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
 const form = readFileSync(join('src', 'components', 'InterestPage.tsx'), 'utf8');
-expect('the public box starts unticked', /public: false/.test(form), 'the form does not start with public false');
+const interestLib = readFileSync(join('src', 'lib', 'interest.ts'), 'utf8');
+expect(
+  'Register your interest has no public box, no role, title or comment: the supporters page is the one place to post',
+  !/Show my support publicly|PUBLIC_WORDS|wb-support-role|form\.public|form\.role|form\.comment/.test(bare(form)) && !/public|role:|title:|comment/.test(bare(interestLib).replace(/export const [A-Z_]+ =[\s\S]*?;\n/g, '')),
+  'a public field is still on Register your interest'
+);
 const page = readFileSync(join('src', 'components', 'SupportersPage.tsx'), 'utf8');
-expect('no sample cards or placeholder names on the page', !/sample|placeholder name|Lorem/i.test(page.replace(/\/\*[\s\S]*?\*\//g, '')), 'a sample on the page');
+expect('no sample cards or placeholder names on the page', !/sample|placeholder name|Lorem/i.test(bare(page)), 'a sample on the page');
 {
-  /* The agents as the first entries, her word of 18 Nov 2026 on #176. */
   const crew = readFileSync(join('src', 'lib', 'crew.ts'), 'utf8');
   const agents = [...client.matchAll(/\{ name: '([A-Za-z]+)', comment: '([^']+)' \}/g)].map((m) => ({ name: m[1], comment: m[2] }));
   expect(
@@ -390,13 +411,10 @@ expect('no sample cards or placeholder names on the page', !/sample|placeholder 
 }
 expect('a list that cannot be read is said, never shown as empty', /reading\.kind === 'failed'/.test(page), 'no failed state');
 {
-  /* Her word of 18 Nov 2026 on #176: three lines off the page, the form on it, the thank-you. */
   const app = readFileSync(join('src', 'App.tsx'), 'utf8');
-  /* What a visitor can read: the files without their comments, which name the removed lines on purpose. */
-  const bare = (src) => src.replace(/\{\s*\/\*[\s\S]*?\*\/\s*\}/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
   expect(
-    'the three lines are gone from the page',
-    !/Each person's entry is shown with their permission|No people are shown yet|No supporters are shown yet|To be taken off this page/.test(bare(page) + bare(client)),
+    'the removed lines are gone from the page, and so is the box to show a name',
+    !/Each person's entry is shown with their permission|No people are shown yet|No supporters are shown yet|To be taken off this page|Show my name and comment on this page|SHOW_WORDS/.test(bare(page) + bare(client)),
     'a removed line is still there'
   );
   expect('the Register your interest box is gone from the page, and the form is in its place', !/wb-interest-cta|Register your interest/.test(bare(page)) && /<SupportForm /.test(page), 'the box is still there');
@@ -413,35 +431,56 @@ expect('a list that cannot be read is said, never shown as empty', /reading\.kin
     'the layout rule is missing'
   );
   expect(
-    'the form asks name, email (required), organization (optional), a short comment and two unticked boxes',
-    /label="Name"/.test(page) && /label="Email"[\s\S]{0,200}required/.test(page) && /label="Organization \(optional\)"/.test(page) &&
-      /A short comment/.test(page) && /show: false, newsletter: false/.test(page) &&
-      /SHOW_WORDS = 'Show my name and comment on this page'/.test(client) && /NEWSLETTER_WORDS = 'Send me the WaterBots newsletter'/.test(client),
-    'a field or a box is missing'
+    'the form asks name and email (required), organization (optional), a comment (needed to post), and one newsletter box, unticked',
+    /label="Name"[\s\S]{0,260}required/.test(page) && /label="Email"[\s\S]{0,260}required/.test(page) && /label="Organization \(optional\)"/.test(page) &&
+      /A short comment/.test(page) && /newsletter: false/.test(page) && /form\.comment\.trim\(\) !== ''/.test(page) && (page.match(/type="checkbox"/g) ?? []).length === 1,
+    'a field or the box is wrong'
   );
-  expect('the boxes say what the server keeps, word for word', pick(client, 'SHOW_WORDS') === pick(serverSide, 'SHOW_WORDS') && pick(client, 'NEWSLETTER_WORDS') === pick(serverSide, 'NEWSLETTER_WORDS'), 'the words differ');
   expect('it saves where Register your interest saves', /fetch\('\/api\/interest'/.test(client) && /source: 'supporters'/.test(client), 'another address');
+  expect('the button says "Post"', />\s*Post\s*<\/button>/.test(page) && !/'Send'|>\s*Send\s*</.test(bare(page)), 'the button is not Post');
   expect(
-    'after sending, the thank-you says to write to hello@waterbots.ai to change or remove the entry',
-    /THANKS_HEAD = 'Thank you\./.test(client) && /THANKS_LINE = 'To change or remove your entry, write to hello@waterbots\.ai\.'/.test(client) &&
-      /\{THANKS_HEAD\}/.test(page) && /\{THANKS_LINE\}/.test(page),
+    'Post opens a pop-up with Wellington\'s icon, her words, and "Post" and "Go back"; only the pop-up\'s Post sends',
+    /role="dialog"/.test(page) && /aria-modal="true"/.test(page) && /crewMember\('Wellington'\)/.test(page) && /words=\{CONFIRM_WORDS\}/.test(page) &&
+      /yes="Post"/.test(page) && />\s*Go back\s*</.test(page) && /setState\(\{ kind: 'confirm' \}\)/.test(page) && /onYes=\{\(\) => void post\(\)\}/.test(page),
+    'the pop-up is not as she said'
+  );
+  expect(
+    'the poster\'s browser remembers the post and shows Edit and Delete on their card only',
+    /localStorage/.test(client) && /rememberPost\(/.test(page) && /\{own && \(/.test(page) && />\s*Edit\s*</.test(page) && />\s*Delete\s*</.test(page),
+    'Edit and Delete are not tied to the poster'
+  );
+  expect(
+    'the email link opens the post: its key is read after the #, kept in the browser, and taken out of the address',
+    /ownPostFromHash\(window\.location\.hash\)/.test(page) && /replaceState/.test(page) && /#edit=/.test(client),
+    'the link is not read'
+  );
+  expect('edits and deletes go to their own address, served in development too', /'\/api\/supporter-post'/.test(client) && /flat\('supporter-post'\)/.test(readFileSync('vite.config.ts', 'utf8')), 'no address');
+  expect(
+    'the thank-you says the post is on the page and how to edit or delete it, and says so when the email did not go',
+    /THANKS_HEAD = 'Thank you\. Your post is on this page\.'/.test(client) && /\{THANKS_HEAD\}/.test(page) && /THANKS_EDIT_LINE/.test(page) && /THANKS_NO_MAIL_LINE/.test(page),
     'the thank-you is missing'
   );
   expect(
-    'the thank-you is seen: it takes the form\'s place, is brought into view and given focus, and a shown card joins the board at once',
-    /role="status" tabIndex=\{-1\}/.test(page) && /scrollIntoView/.test(page) && /\.focus\(/.test(page) && /onShown\(shown\)/.test(page) && /setAdded/.test(page),
+    'the thank-you is seen: it takes the form\'s place, is brought into view and given focus, and the card joins the board at once',
+    /role="status" tabIndex=\{-1\}/.test(page) && /scrollIntoView/.test(page) && /\.focus\(/.test(page) && /setAdded/.test(page),
     'the thank-you or the card is not shown'
   );
+  expect(
+    '"Questions? hello@waterbots.ai" is at the foot of the page',
+    /QUESTIONS_WORDS = 'Questions\?'/.test(client) && /QUESTIONS_ADDRESS = 'hello@waterbots\.ai'/.test(client) && /mailto:\$\{QUESTIONS_ADDRESS\}/.test(page) &&
+      page.lastIndexOf('wb-supporters-foot') > page.lastIndexOf('wb-supporter-grid'),
+    'the line is missing'
+  );
   expect('the list is cached for thirty seconds, so others see a new card soon', /s-maxage=30'/.test(readFileSync(join('api', 'supporters.ts'), 'utf8')), 'the cache is longer');
-  expect('the form\'s Send is the page\'s one blue button, and the menu\'s Sign up goes quiet', /btn-primary wb-form-send/.test(page) && /form: onInterest \|\| onSupporters/.test(app), 'the blue rule is not kept');
+  expect('the form\'s Post is the page\'s one blue button, and the menu\'s Sign up goes quiet', /btn-primary wb-form-send/.test(page) && /form: onInterest \|\| onSupporters/.test(app), 'the blue rule is not kept');
 }
 expect('/supporters is served by the page', /"source": "\/supporters"/.test(readFileSync('vercel.json', 'utf8')), 'no rewrite');
 expect(
-  'the ways in: one quiet line on the Commons and on the form',
+  'the ways in: one quiet line on the Commons and on the interest form',
   /SUPPORTERS_LINK/.test(readFileSync(join('src', 'components', 'CommonsShelf.tsx'), 'utf8')) && /<SupportersLink/.test(form),
   'a way in is missing'
 );
-expect('approving is one npm command', JSON.parse(readFileSync('package.json', 'utf8')).scripts?.supporters === 'node scripts/supporters.mjs', 'no npm script');
+expect('her command is one npm script', JSON.parse(readFileSync('package.json', 'utf8')).scripts?.supporters === 'node scripts/supporters.mjs', 'no npm script');
 
 if (problems.length) {
   console.error(`\nFAILED — ${problems.length} problem${problems.length === 1 ? '' : 's'}:\n`);
