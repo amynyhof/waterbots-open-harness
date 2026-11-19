@@ -6,7 +6,10 @@
  * The server's own copy of the roles, the limits and the box's words is api/_supporters.ts;
  * scripts/check-supporters.mjs holds the two to one another, word for word.
  *
- * Every public entry waits for her approval before it shows. Nothing shows or deletes on its own.
+ * ~~Every public entry waits for her approval before it shows. Nothing shows or deletes on its own.~~
+ * From 18 Nov 2026, her word on #176: an entry from the supporters page's own form shows at once,
+ * after the server's filter (api/_postFilter.ts); Register your interest's public box still waits for
+ * her approval. Nothing deletes on its own.
  */
 
 export const ROLES = [
@@ -38,16 +41,19 @@ export const WAITING_LINE = 'Your support will show on the supporters page once 
  * THE PAGE'S OWN FORM — the maintainer's word of 18 Nov 2026 on #176, in place of the Register your
  * interest box. It saves where that form saves (POST /api/interest, the store's `interest:signups`
  * list), marked as sent from this page. Name and email are needed; organisation and comment are not;
- * both boxes start unticked. A ticked "show" box sends the name and comment to wait for her approval,
- * like every public entry. The box words are the server's (api/_supporters.ts), word for word.
+ * both boxes start unticked. ~~A ticked "show" box sends the name and comment to wait for her approval,
+ * like every public entry.~~ A ticked "show" box puts the name and comment on the board at once (18 Nov
+ * 2026), and the server sends the card back so the sender sees it straight away. The box words are
+ * the server's (api/_supporters.ts), word for word.
  */
 export const SHOW_WORDS = 'Show my name and comment on this page';
 export const NEWSLETTER_WORDS = 'Send me the WaterBots newsletter';
 
-/** The thank-you, after the form is kept. */
-export const THANKS_LINE = 'Thank you. To change or remove your entry, write to hello@waterbots.ai.';
-/** Added to the thank-you when the "show" box was ticked, so no one waits for an entry that is waiting on a person. */
-export const SHOWN_AFTER_LOOK_LINE = 'Your name and comment will show here once the WaterBots team has looked at them.';
+/** The thank-you, after the form is kept: a heading a visitor cannot miss, then how to change or remove. */
+export const THANKS_HEAD = 'Thank you. Your note is sent.';
+export const THANKS_LINE = 'To change or remove your entry, write to hello@waterbots.ai.';
+/** Added to the thank-you when the "show" box was ticked: the card is on the board now. */
+export const SHOWN_NOW_LINE = 'Your name and comment are now on this page.';
 
 export interface PageForm {
   name: string;
@@ -60,8 +66,11 @@ export interface PageForm {
   website: string;
 }
 
-/** Send the page's form. Resolves when it was kept; throws an Error whose message is fit for a reader. */
-export async function sendPageForm(form: PageForm, signal?: AbortSignal): Promise<void> {
+/**
+ * Send the page's form. Resolves when it was kept, with the card when it went on the board; throws an
+ * Error whose message is fit for a reader, the filter's plain line among them.
+ */
+export async function sendPageForm(form: PageForm, signal?: AbortSignal): Promise<{ shown?: ShownSupporter }> {
   let response: Response;
   try {
     response = await fetch('/api/interest', {
@@ -82,7 +91,14 @@ export async function sendPageForm(form: PageForm, signal?: AbortSignal): Promis
   } catch {
     throw new Error('The form could not reach the site. Check your connection and try again. Nothing was kept.');
   }
-  if (response.ok) return;
+  if (response.ok) {
+    try {
+      const body = (await response.json()) as { shown?: ShownSupporter };
+      return body.shown && typeof body.shown.name === 'string' ? { shown: body.shown } : {};
+    } catch {
+      return {};
+    }
+  }
   let message = '';
   try {
     message = ((await response.json()) as { error?: string }).error ?? '';

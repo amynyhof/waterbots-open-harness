@@ -4,7 +4,10 @@
  *
  * THE SHOWN LIST ONLY. Waiting and declined entries are never read here, and no email is ever in a
  * supporter entry (api/_supporters.ts). Each entry goes out as its public fields and the month it
- * was approved. Cached at the edge for five minutes, so an approval shows within five minutes.
+ * went on the page. ~~Cached at the edge for five minutes, so an approval shows within five minutes.~~
+ * Cached at the edge for thirty seconds from 18 Nov 2026, when the page's own form began to show an
+ * entry at once (her word on #176): the sender sees their card straight away, everyone else within
+ * thirty seconds, and a hide comes off as fast.
  *
  * Honest states: no store on a test copy says so; a store that fails says it is a problem on our
  * side. An empty list is an empty list, and the page says no supporters are shown yet.
@@ -26,7 +29,7 @@ export async function GET(): Promise<Response> {
     const values = await hashValues(store, SUPPORTER_KEYS.shown);
     return new Response(JSON.stringify({ supporters: shownForPage(values) }), {
       status: 200,
-      headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=0, s-maxage=300' },
+      headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=0, s-maxage=30' },
     });
   } catch (error) {
     console.error(`supporters: the list could not be read — ${error instanceof StoreError ? error.message : String(error)}`);

@@ -2,13 +2,17 @@
  * Approving supporters — the maintainer's one command, pasted into PowerShell in the repository
  * folder. Approved 16 Nov 2026, her word on #176 (docs/proposals/supporters-2026-11-16.md).
  *
- *   npm run supporters                     what is waiting, each with the lines to paste
+ *   npm run supporters                     what is on the page, each with its hide line, then anything waiting
  *   npm run supporters -- approve <id>     show it on the supporters page
  *   npm run supporters -- decline <id>     keep it off the page
  *   npm run supporters -- hide <id>        take a shown one off the page
  *   npm run supporters -- shown            what is on the page now, each with its hide line
  *
- * NOTHING SHOWS OR DELETES ON ITS OWN. An entry moves only by one of these commands. Declining or
+ * FROM 18 NOV 2026, HER WORD ON #176: the supporters page's own form shows an entry at once, with no
+ * approval, so the first thing this prints is what is on the page, each with the line that takes it
+ * off. Register your interest's public box still waits for approve or decline.
+ *
+ * ~~NOTHING SHOWS OR DELETES ON ITS OWN.~~ NOTHING DELETES ON ITS OWN. An entry moves only by one of these commands. Declining or
  * hiding keeps it, off the page, and keeps the sign-up; only the person's own request removes them
  * (scripts/count-interest.mjs --remove). She approves an entry as written: there is no edit.
  *
@@ -47,7 +51,8 @@ export function describe(e) {
   const line = [e.title, e.organisation].filter(Boolean).join(' · ');
   if (line) lines.push(`  ${line}`);
   if (e.comment) lines.push(`  "${e.comment}"`);
-  lines.push(`  Sent ${String(e.at ?? '').slice(0, 10)}${e.approvedAt ? `, shown since ${e.approvedAt.slice(0, 10)}` : ''}`);
+  const since = e.approvedAt ?? e.shownAt;
+  lines.push(`  Sent ${String(e.at ?? '').slice(0, 10)}${since ? `, shown since ${since.slice(0, 10)}` : ''}`);
   return lines.join('\n');
 }
 
@@ -84,14 +89,24 @@ export async function main(argv, out = console.log, err = console.error, env = p
     return 1;
   }
   const store = local.store;
-  const [command = 'waiting', id = ''] = argv;
+  const [command = 'list', id = ''] = argv;
+
+  /* With nothing typed after it: what is on the page first, then anything waiting. */
+  if (command === 'list') {
+    const shownCode = await main(['shown'], out, err, env);
+    out('');
+    const [values] = await run(store, [['HVALS', KEYS.waiting]]);
+    if (Array.isArray(values) && values.length > 0) return Math.max(shownCode, await main(['waiting'], out, err, env));
+    return shownCode;
+  }
 
   if (command === 'waiting' || command === 'shown') {
     const [values] = await run(store, [['HVALS', KEYS[command]]]);
     const entries = (Array.isArray(values) ? values : []).map(parse).filter((e) => e && e.id);
-    entries.sort((a, b) => String(a.at).localeCompare(String(b.at)));
+    /* Waiting: oldest first, as a queue. On the page: newest first, as the page shows them. */
+    entries.sort((a, b) => (command === 'waiting' ? String(a.at).localeCompare(String(b.at)) : String(b.at).localeCompare(String(a.at))));
     if (entries.length === 0) {
-      out(command === 'waiting' ? 'Nothing is waiting.' : 'No supporters are shown yet.');
+      out(command === 'waiting' ? 'Nothing is waiting.' : 'No people are on the supporters page yet.');
       return 0;
     }
     out(command === 'waiting' ? `${entries.length} waiting for you:\n` : `${entries.length} on the supporters page:\n`);
@@ -109,7 +124,7 @@ export async function main(argv, out = console.log, err = console.error, env = p
   }
 
   if (!['approve', 'decline', 'hide'].includes(command)) {
-    err(`"${command}" is not a command here. Use approve, decline, hide or shown, or nothing to see what is waiting.`);
+    err(`"${command}" is not a command here. Use hide, shown, waiting, approve or decline, or nothing to see what is on the page.`);
     return 1;
   }
   if (!ID.test(id)) {
@@ -132,7 +147,7 @@ export async function main(argv, out = console.log, err = console.error, env = p
     const { declinedAt, ...entry } = found.entry;
     void declinedAt;
     await move(store, id, found.from, 'shown', entry, { approvedAt: now });
-    out(`Approved: ${who} will show on the supporters page within five minutes.`);
+    out(`Approved: ${who} will show on the supporters page within a minute.`);
     return 0;
   }
   if (command === 'decline') {
@@ -149,10 +164,11 @@ export async function main(argv, out = console.log, err = console.error, env = p
     out(`${who} is not on the supporters page. Nothing changed.`);
     return 0;
   }
-  const { approvedAt, ...entry } = found.entry;
+  const { approvedAt, shownAt, ...entry } = found.entry;
   void approvedAt;
+  void shownAt;
   await move(store, id, 'shown', 'declined', entry, { declinedAt: now });
-  out(`Hidden: ${who} comes off the supporters page within five minutes. The sign-up is kept.`);
+  out(`Hidden: ${who} comes off the supporters page within a minute. The sign-up is kept.`);
   return 0;
 }
 

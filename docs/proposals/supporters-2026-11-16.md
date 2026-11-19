@@ -6,6 +6,12 @@
 > **"Supporters"** are right; the intro line is **"People who want water impact to be faster and fairer
 > to prove."** Approving an entry is **one simple command she can paste into PowerShell** (section 4).
 > Where the text below differs, her answers stand.
+>
+> **Changed 18 Nov 2026, her word on #176, and where this text differs, the change stands.** The page
+> has its own form beside the heading (a laptop) or right under it (a phone). **That form has no
+> approval step:** a ticked "Show my name and comment on this page" goes on the board at once, after a
+> filter for rude, sexual and spam words (`api/_postFilter.ts`); she takes one off with
+> `npm run supporters -- hide <id>`. Register your interest's own public box still waits for approval.
 
 ~~**Written 16 Nov 2026 for the maintainer. Proposal only: nothing is built.**~~ **Written 16 Nov 2026 for the maintainer. Built the same day, after #174 merged.** It answers her message of
 16 Nov 2026: a public supporters view for Register your interest, with an opt-in box "Show my support

@@ -4,11 +4,17 @@
  * APPROVED 16 Nov 2026, the maintainer's word on #176 (docs/proposals/supporters-2026-11-16.md).
  * A person who sends the interest form may tick "Show my support publicly". Their name as typed,
  * their organisation, a role from a closed list, and an optional title and comment then wait for
- * her approval. **Nothing shows on its own and nothing deletes on its own.**
+ * her approval. ~~**Nothing shows on its own and nothing deletes on its own.**~~
+ *
+ * **NO APPROVAL STEP ON THE SUPPORTERS PAGE'S OWN FORM, from 18 Nov 2026, her word on #176.** A
+ * visitor who ticks "Show my name and comment on this page" goes straight into supporters:shown,
+ * stamped `shownAt`, once the filter in api/_postFilter.ts lets it through. She takes one off with
+ * `npm run supporters -- hide <id>`. Register your interest's own box is unchanged and still waits.
+ * Nothing deletes on its own.
  *
  * THREE STATES, three hashes in the store, keyed by a short random id:
  *   supporters:waiting   sent, not yet looked at — never on the page
- *   supporters:shown     she approved it — the only state on the page
+ *   supporters:shown     she approved it, or it came from the page's own form — the only state on the page
  *   supporters:declined  she declined it, or hid it — never on the page
  * No expiry, never trimmed. An entry moves only by her command (scripts/supporters.mjs), and leaves
  * only when the person asks for their sign-up to be removed (scripts/count-interest.mjs --remove).
@@ -44,7 +50,7 @@ export const SHOW_WORDS = 'Show my name and comment on this page';
 export const NEWSLETTER_WORDS = 'Send me the WaterBots newsletter';
 
 /** A comment carries no links: an address, a "www." or a bare domain is refused, not cut. */
-const LINK = /(https?:\/\/|www\.|\b[a-z0-9-]+\.(?:com|org|net|io|ai|co|info|biz|uk|de|fr|in|ke|ug|tz|ly|me|app|dev)\b)/i;
+export const LINK = /(https?:\/\/|www\.|\b[a-z0-9-]+\.(?:com|org|net|io|ai|co|info|biz|uk|de|fr|in|ke|ug|tz|ly|me|app|dev)\b)/i;
 
 export interface SupportFields {
   role: string;
@@ -66,6 +72,8 @@ export interface SupporterEntry {
   agreed: string;
   /** Set when she approves it. */
   approvedAt?: string;
+  /** Set when it went on the page straight from the page's own form, with no approval (18 Nov 2026). */
+  shownAt?: string;
   /** Set when she declines or hides it. */
   declinedAt?: string;
 }
@@ -77,7 +85,7 @@ export interface ShownSupporter {
   role: string;
   title: string;
   comment: string;
-  /** "YYYY-MM", the month it was approved. Never the day. */
+  /** "YYYY-MM", the month it went on the page. Never the day. */
   joined: string;
 }
 
@@ -135,7 +143,7 @@ export function supporterId(): string {
   return Array.from(bytes, (b) => alphabet[b % alphabet.length]).join('');
 }
 
-/** The waiting entry for a sign-up that asked to show support. */
+/** The entry for a sign-up that asked to show support: waiting, or, from the page's own form, shown at once. */
 export function supporterEntry(
   id: string,
   name: string,
@@ -144,27 +152,39 @@ export function supporterEntry(
   now: Date,
   source: 'interest' | 'supporters' = 'interest'
 ): SupporterEntry {
-  return { id, at: now.toISOString(), name, organisation, ...support, agreed: source === 'supporters' ? SHOW_WORDS : PUBLIC_WORDS };
+  const at = now.toISOString();
+  if (source === 'supporters') return { id, at, name, organisation, ...support, agreed: SHOW_WORDS, shownAt: at };
+  return { id, at, name, organisation, ...support, agreed: PUBLIC_WORDS };
 }
 
-/** The shown entries, as the page gets them: newest approved first, public fields only. */
-export function shownForPage(values: string[]): ShownSupporter[] {
-  const entries: SupporterEntry[] = [];
-  for (const raw of values) {
-    try {
-      const e = JSON.parse(raw) as SupporterEntry;
-      if (e && typeof e.name === 'string' && typeof e.approvedAt === 'string') entries.push(e);
-    } catch {
-      /* An unreadable entry is not shown. */
-    }
-  }
-  entries.sort((a, b) => (b.approvedAt ?? '').localeCompare(a.approvedAt ?? ''));
-  return entries.map((e) => ({
+/** When an entry went on the page: approved by her, or shown straight from the page's form. */
+function onPageSince(e: SupporterEntry): string {
+  return e.approvedAt ?? e.shownAt ?? '';
+}
+
+/** One shown entry, as the page gets it: public fields only. */
+export function forPage(e: SupporterEntry): ShownSupporter {
+  return {
     name: e.name,
     organisation: e.organisation ?? '',
     role: e.role ?? '',
     title: e.title ?? '',
     comment: e.comment ?? '',
-    joined: (e.approvedAt ?? '').slice(0, 7),
-  }));
+    joined: onPageSince(e).slice(0, 7),
+  };
+}
+
+/** The shown entries, as the page gets them: newest first, public fields only. */
+export function shownForPage(values: string[]): ShownSupporter[] {
+  const entries: SupporterEntry[] = [];
+  for (const raw of values) {
+    try {
+      const e = JSON.parse(raw) as SupporterEntry;
+      if (e && typeof e.name === 'string' && onPageSince(e) !== '') entries.push(e);
+    } catch {
+      /* An unreadable entry is not shown. */
+    }
+  }
+  entries.sort((a, b) => onPageSince(b).localeCompare(onPageSince(a)));
+  return entries.map(forPage);
 }

@@ -19,7 +19,7 @@
 import { INTEREST, countOneMessage, timeUntilReset } from './_cap.js';
 import { INTEREST_KEY, MAX_INTEREST_BYTES, composeInterestMail, interestEntry, readInterest } from './_interest.js';
 import { StoreError, appendKept, appendKeptWith, storeConfig } from './_store.js';
-import { SUPPORTER_KEYS, supporterEntry, supporterId } from './_supporters.js';
+import { SUPPORTER_KEYS, forPage, supporterEntry, supporterId } from './_supporters.js';
 import { TEAM_ADDRESS, TEAM_MAIL_FROM, TeamMailError, sendTeamMail, teamMailKey } from './_teamMail.js';
 
 export async function GET(): Promise<Response> {
@@ -49,6 +49,8 @@ export async function POST(req: Request): Promise<Response> {
   if ('problem' in reading) {
     return problem(400, `That was not kept: ${reading.problem}.`);
   }
+  /* The filter refused what would go on the supporters board: said plainly, nothing kept. */
+  if ('blocked' in reading) return problem(422, reading.blocked);
 
   const store = storeConfig();
   if (!store) {
@@ -77,18 +79,21 @@ export async function POST(req: Request): Promise<Response> {
 
   const now = new Date();
   const signup = reading.signup;
-  /* A sign-up that asks to show support: its public part waits for the
-     maintainer's approval (api/_supporters.ts), written in the same
-     transaction as the sign-up, so it is kept whole or not at all. */
+  /* A sign-up that asks to show support: its public part is written in the
+     same transaction as the sign-up, so it is kept whole or not at all. From
+     Register your interest it waits for the maintainer's approval; from the
+     supporters page's own form it goes on the page at once (18 Nov 2026, her
+     word on #176), the name and comment alone. */
   const supporter = signup.support ? supporterId() : undefined;
+  const page = signup.source === 'supporters';
+  let shown: ReturnType<typeof forPage> | undefined;
   try {
     if (signup.support && supporter) {
-      /* From the supporters page the public part is the name and comment alone (18 Nov 2026). */
-      const shownOrganisation = signup.source === 'supporters' ? '' : signup.organisation;
-      const waiting = supporterEntry(supporter, signup.name, shownOrganisation, signup.support, now, signup.source);
+      const entry = supporterEntry(supporter, signup.name, page ? '' : signup.organisation, signup.support, now, signup.source);
       await appendKeptWith(store, INTEREST_KEY, interestEntry(signup, now, supporter), [
-        ['HSET', SUPPORTER_KEYS.waiting, supporter, JSON.stringify(waiting)],
+        ['HSET', page ? SUPPORTER_KEYS.shown : SUPPORTER_KEYS.waiting, supporter, JSON.stringify(entry)],
       ]);
+      if (page) shown = forPage(entry);
     } else {
       await appendKept(store, INTEREST_KEY, interestEntry(signup, now));
     }
@@ -116,7 +121,8 @@ export async function POST(req: Request): Promise<Response> {
     }
   }
 
-  return json(200, { kept: true, mailed, ...(supporter ? { waiting: true } : {}) });
+  /* The page's own form gets its card back, so the visitor sees it on the board at once. */
+  return json(200, { kept: true, mailed, ...(shown ? { shown } : supporter ? { waiting: true } : {}) });
 }
 
 function json(status: number, payload: unknown, headers?: Record<string, string>): Response {

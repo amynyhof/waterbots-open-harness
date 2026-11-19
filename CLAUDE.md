@@ -488,8 +488,14 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   organization (optional), a short comment, and two unticked boxes, "Show my name and comment on this page"
   and "Send me the WaterBots newsletter". It saves where Register your interest saves (`/api/interest`, the
   store's `interest:signups`, marked `source: 'supporters'`); a ticked "show" box sends the name and comment
-  alone to wait for her approval. The thank-you says to write to hello@waterbots.ai to change or remove the
+  alone ~~to wait for her approval~~. The thank-you says to write to hello@waterbots.ai to change or remove the
   entry. The permission line, the empty line and the "taken off this page" line are gone, by her word.
+  **Later the same day, her word: no approval step on this form.** A ticked "show" box puts the name and
+  comment on the board at once, after a filter (`api/_postFilter.ts`) that blocks rude, sexual and spam posts
+  with a plain line and keeps nothing; text only, no links, 280 characters. She takes one off with
+  `npm run supporters -- hide <id>`, which `npm run supporters` prints under each card. The form sits beside
+  the heading on a laptop and right under it on a phone; the thank-you is a heading with a mint check.
+  Register your interest's own public box still waits for approval.
 - **Wellington reads back what Phoebe found, and asks people served, from 26–27 Sep 2026 (items A17
   and A16, #128 and #130).** Each ask carries her worksheet as row ids and states only; he greets a
   visitor coming back from her knowing each pathway's read, never her sentences, and routes to

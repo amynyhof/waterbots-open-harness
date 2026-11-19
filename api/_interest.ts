@@ -25,7 +25,8 @@
  * email; the sign-up keeps the supporter's id so a removal finds both.
  */
 
-import { NEWSLETTER_WORDS, SHOW_WORDS, readSupport, type SupportFields } from './_supporters.js';
+import { BLOCKED_LINE, blockedPost } from './_postFilter.js';
+import { LINK, NEWSLETTER_WORDS, SHOW_WORDS, readSupport, type SupportFields } from './_supporters.js';
 
 /** The store's one list for sign-ups. No expiry, never trimmed: her ruling. */
 export const INTEREST_KEY = 'interest:signups';
@@ -50,7 +51,9 @@ export const CONSENT_WORDS =
  * same list as Register your interest, marked `source: 'supporters'`, and asks less: a name, an email,
  * an organisation if they like, a short comment, and two boxes, both unticked: "Show my name and
  * comment on this page" and "Send me the WaterBots newsletter". No interests and no consent box; the
- * thank-you line says how to change or remove the entry. A public entry still waits for her approval.
+ * thank-you line says how to change or remove the entry. ~~A public entry still waits for her approval.~~
+ * From the same day, her word, a public entry goes on the page at once, after the filter
+ * (api/_postFilter.ts); a blocked one is refused whole, with BLOCKED_LINE, and nothing is kept.
  */
 export const SOURCES = ['interest', 'supporters'] as const;
 export type Source = (typeof SOURCES)[number];
@@ -74,7 +77,7 @@ export interface InterestBody {
   support: SupportFields | null;
 }
 
-export type InterestReading = { signup: InterestBody } | { robot: true } | { problem: string };
+export type InterestReading = { signup: InterestBody } | { robot: true } | { problem: string } | { blocked: string };
 
 const KEYS = ['name', 'organisation', 'email', 'interests', 'module', 'consent', 'website', 'public', 'role', 'title', 'comment', 'source', 'newsletter'];
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -136,6 +139,14 @@ export function readInterest(body: unknown): InterestReading {
   const reading = readSupport(b, source);
   if ('problem' in reading) return reading;
 
+  /* What would go on the board passes the filter, or the whole send is refused (18 Nov 2026, #176).
+     The name is shown too, so it carries no link either. */
+  if (reading.support) {
+    if (LINK.test(name)) return { problem: 'the name carries a link, and links are not shown' };
+    const shown = page ? [name, reading.support.comment] : [name, organisation, reading.support.title, reading.support.comment];
+    if (blockedPost(shown)) return { blocked: BLOCKED_LINE };
+  }
+
   return {
     signup: {
       name,
@@ -188,11 +199,17 @@ export function composeInterestMail(signup: InterestBody, now: Date, supporter?:
     '',
     ...(signup.support && supporter
       ? [
-          page
-            ? 'They asked to show their name and comment on the supporters page. It is waiting for your approval and is not on the'
-            : 'They also asked to show their support publicly. It is waiting for your approval and is not on the',
-          'supporters page until you approve it. To see what is waiting, run this in the repository folder:',
-          '  npm run supporters',
+          ...(page
+            ? [
+                'They asked to show their name and comment on the supporters page, and it is on the page now.',
+                'To take it off, run this in the repository folder:',
+                `  npm run supporters -- hide ${supporter}`,
+              ]
+            : [
+                'They also asked to show their support publicly. It is waiting for your approval and is not on the',
+                'supporters page until you approve it. To see what is waiting, run this in the repository folder:',
+                '  npm run supporters',
+              ]),
           '',
         ]
       : []),

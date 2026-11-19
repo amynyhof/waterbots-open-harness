@@ -2132,22 +2132,31 @@ button.wb-info {
   border-radius: var(--r-md);
   padding: 14px 16px;
 }
-/* Room on the right of the heading for the reclining Wellington, above a phone's width. */
-.wb-supporters-head {
-  padding-right: 150px;
-  /* As tall as he is, so the cards always start below his feet. */
-  min-height: 136px;
+/* The heading and the form, side by side on a laptop and stacked on a phone, the form right under the
+   heading, so it is seen without scrolling (18 Nov 2026, her word on #176). The cards come below. */
+.wb-supporters-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 470px);
+  gap: 28px;
+  align-items: start;
+  margin-bottom: 24px;
 }
-@media (max-width: 720px) {
-  .wb-supporters-head {
-    padding-right: 0;
-    min-height: 0;
+.wb-supporters-wellington {
+  display: block;
+}
+@media (max-width: 760px) {
+  .wb-supporters-top {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  /* Stacked, the form comes right under the heading, so the reclining Wellington steps out. */
+  .wb-supporters-top .wb-supporters-wellington {
+    display: none;
   }
 }
-/* The supporters page's own form (18 Nov 2026): a card below the board, name, email and organisation
-   side by side on a laptop and stacked on a phone. */
+/* The supporters page's own form: name and email side by side, then the rest. */
 .wb-support-form {
-  margin-top: 28px;
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--r-md);
@@ -2156,13 +2165,31 @@ button.wb-info {
 }
 .wb-support-form-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 12px;
 }
-@media (max-width: 720px) {
+@media (max-width: 340px) {
   .wb-support-form-grid {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+/* The thank-you, in the form's place: a mint keyline and check (BRAND.md §2.1, Mint for success; §2.6,
+   the form carries the meaning, so the words stay ink). */
+.wb-support-thanks {
+  border-left: 3px solid var(--state-approved);
+  padding: 4px 0 4px 14px;
+  outline: none;
+}
+.wb-support-thanks-mark {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--r-pill);
+  background: var(--state-approved);
+  color: #fff;
 }
 .wb-role-chip {
   flex: none;

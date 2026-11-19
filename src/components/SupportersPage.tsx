@@ -23,14 +23,25 @@
  *
  * ONE BLUE BUTTON (src/lib/blue.ts): the form's Send is the page's next step, so it is the blue one and
  * the menu's Sign up is quiet, as on the interest form.
+ *
+ * THE SECOND ROUND OF 18 NOV 2026, her word on #176:
+ *   - the form is seen without scrolling: beside the heading on a laptop, right under it on a phone,
+ *     with the cards below;
+ *   - no approval step: a ticked "show" box puts the name and comment on the board at once, and the
+ *     server sends the card back, so the sender sees it there straight away;
+ *   - a clear thank-you: a heading with a mint check, in the form's own place, brought into view and
+ *     given focus, so it is seen and read out. Before this it was one small line where the form had
+ *     been, and the board did not change, so a send looked like nothing had happened;
+ *   - a post the filter blocks (api/_postFilter.ts) says so in plain words under Send, nothing kept.
  */
 
-import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from 'react';
 import {
   NEWSLETTER_WORDS,
-  SHOWN_AFTER_LOOK_LINE,
+  SHOWN_NOW_LINE,
   SHOW_WORDS,
   SUPPORT_LIMITS,
+  THANKS_HEAD,
   THANKS_LINE,
   sendPageForm,
   type PageForm,
@@ -52,6 +63,8 @@ type Loading = { kind: 'loading' };
 export default function SupportersPage({ shown }: { shown: boolean }) {
   const [reading, setReading] = useState<SupportersReading | Loading>({ kind: 'loading' });
   const [role, setRole] = useState<string>('all');
+  /* Cards sent from this page in this visit, shown at once, before the next read of the list. */
+  const [added, setAdded] = useState<ShownSupporter[]>([]);
 
   /* Read the list each time the page is opened, so an approval shows on the next visit. */
   useEffect(() => {
@@ -64,8 +77,10 @@ export default function SupportersPage({ shown }: { shown: boolean }) {
     return () => controller.abort();
   }, [shown]);
 
-  const supporters = reading.kind === 'list' ? reading.supporters : [];
-  /* A role shows in the filter only when an approved entry has it; no counts. */
+  const read = reading.kind === 'list' ? reading.supporters : [];
+  const same = (a: ShownSupporter, b: ShownSupporter) => a.name === b.name && a.comment === b.comment && a.joined === b.joined;
+  const supporters = [...added.filter((a) => !read.some((r) => same(a, r))), ...read];
+  /* A role shows in the filter only when an entry on the page has it; no counts. */
   const roles = useMemo(() => ROLES.filter((r) => supporters.some((s) => s.role === r.id)), [supporters]);
   const filter = roles.some((r) => r.id === role) ? role : 'all';
   const visible = filter === 'all' ? supporters : supporters.filter((s) => s.role === filter);
@@ -73,16 +88,19 @@ export default function SupportersPage({ shown }: { shown: boolean }) {
   return (
     <div className="wb-supporters" style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
       <div style={{ maxWidth: 880, margin: '0 auto', padding: '28px var(--gutter) 40px' }}>
-        <div style={{ position: 'relative' }}>
+        {/* The heading and the form side by side on a laptop, the form right under the heading on a
+            phone, so the form is seen without scrolling. The cards come below. */}
+        <div className="wb-supporters-top">
           <div className="wb-supporters-head" style={{ minWidth: 0 }}>
             <h1 style={{ fontSize: 24, margin: '0 0 6px', letterSpacing: '-0.015em', lineHeight: 1.25 }}>Supporters</h1>
-            <p className="t-body" style={{ margin: '0 0 18px', fontSize: 14.5, lineHeight: 1.55, color: 'var(--ink-2)' }}>
+            <p className="t-body" style={{ margin: 0, fontSize: 14.5, lineHeight: 1.55, color: 'var(--ink-2)' }}>
               {SUPPORTERS_INTRO}
             </p>
+            {/* Wellington, reclining — the figure from her concept note, as on the Commons
+                (WellingtonLeaning.tsx). Decoration only; hidden on a phone, where the form needs the room. */}
+            <WellingtonLeaning className="wb-supporters-wellington" style={{ marginTop: 18, width: 128, height: 144, opacity: 0.35 }} />
           </div>
-          {/* Wellington, reclining — the figure from her concept note, as on the Commons
-              (WellingtonLeaning.tsx). Decoration only; hidden on a phone, where the words need the room. */}
-          <WellingtonLeaning className="wb-supporters-wellington" style={{ position: 'absolute', right: 0, top: -14, width: 128, height: 144, opacity: 0.35 }} />
+          <SupportForm onShown={(card) => setAdded((list) => [card, ...list])} />
         </div>
 
         {roles.length > 1 && (
@@ -121,7 +139,6 @@ export default function SupportersPage({ shown }: { shown: boolean }) {
           </p>
         )}
 
-        <SupportForm />
       </div>
     </div>
   );
@@ -132,19 +149,28 @@ const EMPTY: PageForm = { name: '', email: '', organisation: '', comment: '', sh
 type SendState = { kind: 'idle' } | { kind: 'sending' } | { kind: 'kept'; shown: boolean } | { kind: 'failed'; message: string };
 
 /** The form, on the page. Nothing is said to be kept until the server says it was. */
-function SupportForm() {
+function SupportForm({ onShown }: { onShown: (card: ShownSupporter) => void }) {
   const [form, setForm] = useState<PageForm>(EMPTY);
   const [state, setState] = useState<SendState>({ kind: 'idle' });
+  const thanks = useRef<HTMLDivElement>(null);
   const busy = state.kind === 'sending';
   const ready = form.name.trim() !== '' && form.email.trim() !== '';
+
+  /* The thank-you is brought into view and given focus, so it is seen and read out. */
+  useEffect(() => {
+    if (state.kind !== 'kept' || !thanks.current) return;
+    thanks.current.focus({ preventScroll: true });
+    thanks.current.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }, [state.kind]);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (!ready || busy) return;
     setState({ kind: 'sending' });
     try {
-      await sendPageForm(form);
-      setState({ kind: 'kept', shown: form.show });
+      const { shown } = await sendPageForm(form);
+      if (shown) onShown(shown);
+      setState({ kind: 'kept', shown: Boolean(shown) });
     } catch (error) {
       setState({ kind: 'failed', message: error instanceof Error ? error.message : 'That was not kept. Try again.' });
     }
@@ -154,25 +180,35 @@ function SupportForm() {
     <section className="wb-support-form" aria-label="Add your support">
       <h2 style={{ fontSize: 17, margin: '0 0 12px', lineHeight: 1.3 }}>Add your support</h2>
       {state.kind === 'kept' ? (
-        <p role="status" className="t-body" style={{ margin: 0, fontSize: 14.5, lineHeight: 1.55 }}>
-          {THANKS_LINE}
-          {state.shown && <> {SHOWN_AFTER_LOOK_LINE}</>}
-        </p>
+        <div ref={thanks} role="status" tabIndex={-1} className="wb-support-thanks">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span className="wb-support-thanks-mark" aria-hidden>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M3.5 8.5l3 3 6-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            <span style={{ fontSize: 17, fontWeight: 600, lineHeight: 1.35 }}>{THANKS_HEAD}</span>
+          </div>
+          <p className="t-body" style={{ margin: '10px 0 0', fontSize: 14.5, lineHeight: 1.55 }}>
+            {state.shown && <>{SHOWN_NOW_LINE} </>}
+            {THANKS_LINE}
+          </p>
+        </div>
       ) : (
         <form onSubmit={onSubmit} noValidate>
           <div className="wb-support-form-grid">
             <Field label="Name">
-              <input className="wb-form-input" type="text" autoComplete="name" value={form.name} maxLength={80} disabled={busy} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+              <input className="wb-form-input" type="text" autoComplete="name" value={form.name} maxLength={80} disabled={busy} required onChange={(e) => setForm({ ...form, name: e.target.value })} />
             </Field>
             <Field label="Email">
               <input className="wb-form-input" type="email" autoComplete="email" value={form.email} maxLength={254} disabled={busy} required onChange={(e) => setForm({ ...form, email: e.target.value })} />
             </Field>
-            <Field label="Organization (optional)">
-              <input className="wb-form-input" type="text" autoComplete="organization" value={form.organisation} maxLength={120} disabled={busy} onChange={(e) => setForm({ ...form, organisation: e.target.value })} />
-            </Field>
           </div>
+          <Field label="Organization (optional)">
+            <input className="wb-form-input" type="text" autoComplete="organization" value={form.organisation} maxLength={120} disabled={busy} onChange={(e) => setForm({ ...form, organisation: e.target.value })} />
+          </Field>
           <Field label={`A short comment (up to ${SUPPORT_LIMITS.comment} characters, no links)`}>
-            <textarea className="wb-form-input" rows={3} value={form.comment} maxLength={SUPPORT_LIMITS.comment} disabled={busy} onChange={(e) => setForm({ ...form, comment: e.target.value })} style={{ resize: 'vertical' }} />
+            <textarea className="wb-form-input" rows={2} value={form.comment} maxLength={SUPPORT_LIMITS.comment} disabled={busy} onChange={(e) => setForm({ ...form, comment: e.target.value })} style={{ resize: 'vertical' }} />
           </Field>
 
           {/* The hidden field: off the screen and out of the tab order, so a person never fills it. */}
@@ -187,7 +223,7 @@ function SupportForm() {
             <input type="checkbox" checked={form.show} disabled={busy} onChange={(e) => setForm({ ...form, show: e.target.checked })} />
             {SHOW_WORDS}
           </label>
-          <label className="wb-form-check" style={{ marginBottom: 16 }}>
+          <label className="wb-form-check" style={{ marginBottom: 14 }}>
             <input type="checkbox" checked={form.newsletter} disabled={busy} onChange={(e) => setForm({ ...form, newsletter: e.target.checked })} />
             {NEWSLETTER_WORDS}
           </label>

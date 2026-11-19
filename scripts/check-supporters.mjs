@@ -14,6 +14,10 @@
  *   - a person's removal takes their entry off the page too;
  *   - the command reads the store keys from .env.local, with nothing to type first;
  *   - the page's words and roles are the server's, word for word, and the page is reachable.
+ *
+ * FROM 18 NOV 2026, her word on #176, the supporters page's own form has no approval step: a ticked
+ * "show" box goes on the page at once, the filter (api/_postFilter.ts) refuses rude, sexual and spam
+ * posts with a plain line, and the form sits beside the heading. Register your interest still waits.
  */
 
 import { spawn, spawnSync } from 'node:child_process';
@@ -48,6 +52,7 @@ writeFileSync(join(out, 'package.json'), '{"type":"module"}');
 const sup = await import(pathToFileURL(join(out, '_supporters.js')).href);
 const { POST } = await import(pathToFileURL(join(out, 'interest.js')).href);
 const { GET } = await import(pathToFileURL(join(out, 'supporters.js')).href);
+const { BLOCKED_LINE: BLOCKED } = await import(pathToFileURL(join(out, '_postFilter.js')).href);
 
 /* THE STORE, IN MEMORY, OVER HTTP — answering /pipeline and /multi-exec the way the real one does. */
 const lists = new Map();
@@ -263,24 +268,72 @@ console.log('\n  The page\'s own form (18 Nov 2026)');
       waiting().length === before && /Send me the WaterBots newsletter/.test(kept.consent),
     JSON.stringify(kept)
   );
+  before = waiting().length;
   res = await post({ ...pageForm, name: 'Shown Made-up', organisation: 'Hidden Org', comment: 'Made-up words to show.', public: true });
   body = await res.json();
-  const entry = waiting().find((e) => e.name === 'Shown Made-up');
-  expect(
-    'ticked "Show my name and comment on this page", the name and comment wait for her approval, and nothing else does',
-    res.status === 200 && body.waiting === true && entry?.comment === 'Made-up words to show.' && entry?.organisation === '' &&
-      entry?.role === '' && entry?.title === '' && entry?.agreed === sup.SHOW_WORDS && (await shownList()).every((s) => s.name !== 'Shown Made-up'),
-    JSON.stringify(entry)
-  );
-  expect('still no email in any supporter entry', !/example\.org/i.test(everything()), everything());
-  run = await script('scripts/supporters.mjs', ['approve', entry.id], { env: storeEnv });
+  const entry = [...hash(sup.SUPPORTER_KEYS.shown).values()].map((x) => JSON.parse(x)).find((e) => e.name === 'Shown Made-up');
   const shownNow = (await shownList()).find((s) => s.name === 'Shown Made-up');
   expect(
-    'approved, it shows the name and the comment, with no role or organisation',
-    run.code === 0 && shownNow?.comment === 'Made-up words to show.' && shownNow?.role === '' && shownNow?.organisation === '',
-    `${run.text} ${JSON.stringify(shownNow)}`
+    'ticked "Show my name and comment on this page", the name and comment go on the page at once, with no approval, and nothing waits',
+    res.status === 200 && !body.waiting && waiting().length === before && entry?.comment === 'Made-up words to show.' && entry?.organisation === '' &&
+      entry?.role === '' && entry?.title === '' && entry?.agreed === sup.SHOW_WORDS && typeof entry?.shownAt === 'string' &&
+      shownNow?.comment === 'Made-up words to show.' && shownNow?.organisation === '' && /^\d{4}-\d{2}$/.test(shownNow?.joined ?? ''),
+    `${JSON.stringify(body)} ${JSON.stringify(entry)}`
   );
-  expect('the copy to hello@ says it came from the supporters page, with the newsletter answer', /supporters page/.test(mailed.at(-1)?.text ?? '') && /Newsletter: no/.test(mailed.at(-1)?.text ?? ''), mailed.at(-1)?.text);
+  expect(
+    'the answer carries the card, its public fields only, so the sender sees it at once',
+    body.shown?.name === 'Shown Made-up' && body.shown?.comment === 'Made-up words to show.' &&
+      JSON.stringify(Object.keys(body.shown ?? {}).sort()) === JSON.stringify(['comment', 'joined', 'name', 'organisation', 'role', 'title']),
+    JSON.stringify(body)
+  );
+  expect('still no email in any supporter entry, nor in the answer', !/example\.org/i.test(everything()) && !/example\.org/i.test(JSON.stringify(body)), everything());
+  expect(
+    'the copy to hello@ says it came from the supporters page, that it is on the page now, and the line to take it off',
+    /supporters page/.test(mailed.at(-1)?.text ?? '') && /Newsletter: no/.test(mailed.at(-1)?.text ?? '') && /on the page now/.test(mailed.at(-1)?.text ?? '') &&
+      (mailed.at(-1)?.text ?? '').includes(`npm run supporters -- hide ${entry?.id}`),
+    mailed.at(-1)?.text
+  );
+  run = await script('scripts/supporters.mjs', [], { env: storeEnv });
+  expect(
+    'npm run supporters lists what is on the page first, each with its line to take it off, and never an email',
+    run.code === 0 && run.text.includes(`npm run supporters -- hide ${entry?.id}`) && (run.text.indexOf('waiting') === -1 || run.text.indexOf('on the supporters page') < run.text.indexOf('waiting')) && !/@/.test(run.text),
+    run.text
+  );
+  run = await script('scripts/supporters.mjs', ['hide', entry.id], { env: storeEnv });
+  expect(
+    'she can take one off: hide, and the sign-up is kept',
+    run.code === 0 && /^Hidden: /.test(run.text) && (await shownList()).every((s) => s.name !== 'Shown Made-up') && hash(sup.SUPPORTER_KEYS.declined).has(entry.id),
+    run.text
+  );
+
+  /* The filter, her word of 18 Nov 2026: rude, sexual and spam posts are blocked with a plain line. */
+  for (const [label, change] of [
+    ['a rude word, letters swapped', { comment: 'This is sh1t work' }],
+    ['a sexually explicit word', { comment: 'hot porn here' }],
+    ['a rude word spelled out', { comment: 'f u c k it' }],
+    ['spam words', { comment: 'Click here to buy now' }],
+    ['a phone number', { comment: 'Call +254 712 345 678 today' }],
+    ['an email address', { comment: 'write to deals@mailbox.xyz' }],
+    ['a rude name', { name: 'Shit Head' }],
+  ]) {
+    before = count();
+    const shownBefore = hash(sup.SUPPORTER_KEYS.shown).size;
+    res = await post({ ...pageForm, comment: 'Fine words.', ...change, public: true });
+    body = await res.json();
+    expect(
+      `${label} on a post is blocked with the plain line, and nothing kept`,
+      res.status === 422 && body.error === BLOCKED && count() === before && hash(sup.SUPPORTER_KEYS.shown).size === shownBefore,
+      `${res.status} ${body.error}`
+    );
+  }
+  before = count();
+  res = await post({ ...pageForm, name: 'Made-up www.example.com', public: true });
+  body = await res.json();
+  expect('a name with a link is refused when it would show', res.status === 400 && /link/.test(body.error) && count() === before, `${res.status} ${body.error}`);
+  for (const ok of ['Our stopcock fix brought 1 000 000 litres to Scunthorpe.', 'Sanitation and women\'s safety at the water point matter.']) {
+    res = await post({ ...pageForm, comment: ok, public: true });
+    expect(`ordinary water words pass the filter: "${ok}"`, res.status === 200, String(res.status));
+  }
   for (const [label, change] of [
     ['no email', { email: '' }],
     ['no name', { name: ' ' }],
@@ -346,7 +399,19 @@ expect('a list that cannot be read is said, never shown as empty', /reading\.kin
     !/Each person's entry is shown with their permission|No people are shown yet|No supporters are shown yet|To be taken off this page/.test(bare(page) + bare(client)),
     'a removed line is still there'
   );
-  expect('the Register your interest box is gone from the page, and the form is in its place', !/wb-interest-cta|Register your interest/.test(bare(page)) && /<SupportForm \/>/.test(page), 'the box is still there');
+  expect('the Register your interest box is gone from the page, and the form is in its place', !/wb-interest-cta|Register your interest/.test(bare(page)) && /<SupportForm /.test(page), 'the box is still there');
+  expect(
+    'the form sits with the heading, before the cards, so it is seen without scrolling',
+    /className="wb-supporters-top"[\s\S]*?<h1[\s\S]*?<SupportForm [\s\S]*?className="wb-supporter-grid"/.test(bare(page)),
+    'the form is not beside the heading'
+  );
+  const css = readFileSync(join('src', 'styles', 'base.css'), 'utf8');
+  expect(
+    'on a laptop the heading and the form are side by side; on a phone the form is right under the heading',
+    /\.wb-supporters-top \{[^}]*grid-template-columns: minmax\(0, 1fr\) minmax\(0, 470px\)/.test(css) &&
+      /@media \(max-width: 760px\) \{\s*\.wb-supporters-top \{[^}]*grid-template-columns: minmax\(0, 1fr\);/.test(css),
+    'the layout rule is missing'
+  );
   expect(
     'the form asks name, email (required), organization (optional), a short comment and two unticked boxes',
     /label="Name"/.test(page) && /label="Email"[\s\S]{0,200}required/.test(page) && /label="Organization \(optional\)"/.test(page) &&
@@ -358,9 +423,16 @@ expect('a list that cannot be read is said, never shown as empty', /reading\.kin
   expect('it saves where Register your interest saves', /fetch\('\/api\/interest'/.test(client) && /source: 'supporters'/.test(client), 'another address');
   expect(
     'after sending, the thank-you says to write to hello@waterbots.ai to change or remove the entry',
-    /THANKS_LINE = 'Thank you\. To change or remove your entry, write to hello@waterbots\.ai\.'/.test(client) && /\{THANKS_LINE\}/.test(page),
+    /THANKS_HEAD = 'Thank you\./.test(client) && /THANKS_LINE = 'To change or remove your entry, write to hello@waterbots\.ai\.'/.test(client) &&
+      /\{THANKS_HEAD\}/.test(page) && /\{THANKS_LINE\}/.test(page),
     'the thank-you is missing'
   );
+  expect(
+    'the thank-you is seen: it takes the form\'s place, is brought into view and given focus, and a shown card joins the board at once',
+    /role="status" tabIndex=\{-1\}/.test(page) && /scrollIntoView/.test(page) && /\.focus\(/.test(page) && /onShown\(shown\)/.test(page) && /setAdded/.test(page),
+    'the thank-you or the card is not shown'
+  );
+  expect('the list is cached for thirty seconds, so others see a new card soon', /s-maxage=30'/.test(readFileSync(join('api', 'supporters.ts'), 'utf8')), 'the cache is longer');
   expect('the form\'s Send is the page\'s one blue button, and the menu\'s Sign up goes quiet', /btn-primary wb-form-send/.test(page) && /form: onInterest \|\| onSupporters/.test(app), 'the blue rule is not kept');
 }
 expect('/supporters is served by the page', /"source": "\/supporters"/.test(readFileSync('vercel.json', 'utf8')), 'no rewrite');
