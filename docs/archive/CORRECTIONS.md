@@ -17,6 +17,18 @@ before 3 Oct 2026 link to an OPEN_ITEMS.md that has since been retired to this f
 
 ---
 
+## 21 Nov 2026 — CLAUDE.md: "Not given yet" in place of "awaiting user project input"
+
+**Why.** The maintainer's word of 21 Nov 2026: a project detail the visitor has not given yet is said
+in plain words. The screening report was the one place the old words showed.
+
+**Old wording, whole — CLAUDE.md — Where every value comes from, the project facts line:**
+
+> - Project facts (the project record): the user gives them at intake, and Wellington collects them. Until then, the field shows 'awaiting user project input'. Never guessed.
+
+**Where the current text is:** [CLAUDE.md](../../CLAUDE.md), *Where every value comes from*. The phone
+menu's change the same day is written into CLAUDE.md directly, with no entry here, by her word.
+
 ## 21 Nov 2026 — CLAUDE.md and PROCESS_RULES_for_ShellB.md: reference projects settled, and CLAUDE.md brought up to date
 
 **Why.** The maintainer's word of 21 Nov 2026. Her rule on reference projects goes at the top of CLAUDE.md, word for

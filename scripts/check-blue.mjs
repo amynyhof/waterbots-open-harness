@@ -135,6 +135,18 @@ expect(
   'the step is not in the history'
 );
 
+console.log('\n  The phone menu (21 Nov 2026)');
+expect(
+  'on a phone, Save is in the menu\'s top row, and is the blue one only while no panel covers the menu',
+  /const saveInView = onConsole && somethingOnRecord\(visit\) && \(!phone \|\| drawer === null\);/.test(app) && /save=\{phone && onConsole && saveDoor\.show \? <MenuSave/.test(app),
+  'Save is not in the menu, or it counts as in view under an open panel'
+);
+expect(
+  'the menu\'s top row never wraps on a phone: a grid, the right-hand group on one line',
+  /@media \(max-width: 900px\) \{\s*\.wb-site-menu-band \{\s*display: grid;/.test(css) && /\.wb-site-menu-end \{\s*order: 1;\s*flex-wrap: nowrap;/.test(css),
+  'the top row can wrap'
+);
+
 if (problems.length) {
   console.error(`\nFAILED — ${problems.length} problem${problems.length === 1 ? '' : 's'}:\n`);
   for (const p of problems) console.error(`  - ${p}`);

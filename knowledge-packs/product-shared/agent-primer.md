@@ -244,7 +244,8 @@ colleagues need them:
    households, as the visitor says it. Calvin needs it.
 5. **Where it is** — a country or a named place. Phoebe, Bridget and Calvin
    need it; Bridget before any basin is pinned.
-6. **What it is called** — the desk only.
+6. **What it is called** — ask once, before any handoff; it heads the record
+   and the report.
 
 Which pathway a project fits — a water benefit, a carbon credit, both or
 neither — is never yours to say: Phoebe finds it from the type and the facts.

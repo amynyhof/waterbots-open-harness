@@ -210,7 +210,7 @@ Every value shown to a user says where it came from. It never credits a ruling o
 - Derived: worked out from other values. It shows the source of its formula.
 - Assumed: expected project performance, starting from a cited value.
 Three kinds of value (Calvin carbon modules):
-- Project facts (the project record): the user gives them at intake, and Wellington collects them. Until then, the field shows 'awaiting user project input'. Never guessed.
+- Project facts (the project record): the user gives them at intake, and Wellington collects them. Until then, the field shows 'Not given yet'. Never guessed.
 - Method defaults: at screening, the site fills them in from cited sources, chosen by the user's project facts.
 - Anticipated performance (screening and ex-ante): starts at a labelled 'assumed' value. Calvin encourages the user to adjust it to their planned project.
 This is settled. Do not raise it again.
@@ -300,8 +300,8 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
 - **The look pass of 8 Sep 2026, and four canon rules the same day.** Wellington
   opens warmly and names the next step in words; the project name shows once,
   in the card; the record has three rows and an (i); the save button sits
-  in the right panel, under the crew, from 21 Nov 2026, and is a bar above the chat box on a phone
-  (only once something is on the record; until then the site menu's Sign up, beside Sign in, is the door); the phase names show at laptop width; ~~next steps
+  in the right panel, under the crew, from 21 Nov 2026, and on a phone in the site menu's top row
+  beside Sign in and Sign up (only once something is on the record; until then the site menu's Sign up, beside Sign in, is the door); the phase names show at laptop width; ~~next steps
   live in the right rail only~~ **every handoff's button sits in the chat from 14 Nov 2026**; the map's line is one plain sentence; no intro
   paragraph above the conversation. **Every agent keeps four rules on pace and
   posture** — short, one question at a time, ends with the next step; "I don't
@@ -539,7 +539,7 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   13 Nov 2026, after the maintainer's three walks of them, 24,581 with the primer's line on Phoebe's tab, 25,943 after her fourth walk, 26,145 after her fifth, 26,148 with the voice card and the
   shared plain-words list, and 26,136 when he came to the agents' chats, all 14 Nov 2026, and 26,158
   with the reading level in his voice card, 16 Nov 2026 (his opening note rides beside the prompt,
-  as his notes for joining a chat do), 26,072 measured 21 Nov 2026, and 26,111 the same day with the crew as the navigation, against the unchanged gate
+  as his notes for joining a chat do), 26,072 measured 21 Nov 2026, 26,111 the same day with the crew as the navigation, and 26,165 the same day when he asks the project's name, against the unchanged gate
   of 26,199.
 - ~~**The engine bundle is tracked at `carried/`, from 27 Sep 2026**~~ (#132, replaced on 3 Oct 2026
   by v0.16.1, #147; tags `engine-carry-2026-09-27` and `engine-carry-2026-10-04`). **`carried/` is
@@ -602,6 +602,12 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   landing. Wellington's desk opens on his chat alone; "About Wellington" beside his name brings back his
   Knowledge pack and Credentials. On a phone the rings and the row under them are one row: Project,
   the step by name with a dot per step, Crew.
+- **The project name and the phone's menu, 21 Nov 2026, the maintainer's word.** Wellington asks the
+  project's name once, before any handoff, because it heads the record and the screening report; no
+  name yet is an answer. The project card has a clear place to type it, a "Project name" label over a
+  box. A detail the visitor has not given reads "Not given yet" in the report. On a phone the site
+  menu has two rows: the wordmark with Sign in, Sign up and, once something is on the record, "Save
+  and sign up" on the first, which never wraps (it fits from 360px); the three links on the second.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material

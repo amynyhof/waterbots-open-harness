@@ -99,7 +99,7 @@ import CalvinScreen from './components/CalvinScreen';
 import SiteMenu from './components/SiteMenu';
 import { usePhone } from './lib/phone';
 import { blueButton, meetShowing } from './lib/blue';
-import { PhoneSaveBar, type SaveDoor } from './components/SaveDoor';
+import { MenuSave, MenuSaveFailed, type SaveDoor } from './components/SaveDoor';
 import { Reached } from './chat/reached';
 import { DEFAULT_SURFACE, type Surface } from './lib/surfaces';
 import { useConversation } from './chat/useConversation';
@@ -504,14 +504,14 @@ export default function App() {
     onConsole &&
     !(phone && drawer !== null) &&
     ((onDesk && meetShowing(chat.turns, reached)) || (onEligibility && meetOn.eligibility) || (onMap && meetOn.map));
-  /* On a phone Save is the bar at the bottom of the screen (21 Nov 2026), so it counts only while no panel covers it. */
+  /* On a phone Save is in the site menu's top row (21 Nov 2026). An open panel covers the menu, so it counts only while no panel is open. */
   const saveInView = onConsole && somethingOnRecord(visit) && (!phone || drawer === null);
   /* A page with a form of its own — the interest form, and the supporters page from 18 Nov 2026 — makes its Send the blue one. */
   const blue = blueButton({ meet: meetInView, save: saveInView, form: onInterest || onSupporters });
 
   /* THE ONE SAVE DOOR — the maintainer's word of 21 Nov 2026
      (src/components/SaveDoor.tsx): under the crew in the right panel on a
-     laptop, a bar above the chat box on a phone; with the team box. */
+     laptop, in the site menu's top row on a phone; with the team box. */
   const saveDoor: SaveDoor = {
     show: somethingOnRecord(visit),
     sealing,
@@ -540,6 +540,8 @@ export default function App() {
         page={page}
         onPage={goTo}
         signupBlue={blue === 'signup'}
+        save={phone && onConsole && saveDoor.show ? <MenuSave save={saveDoor} /> : undefined}
+        saveFailed={phone && onConsole && saveDoor.show ? <MenuSaveFailed save={saveDoor} /> : undefined}
         readout={
           /* The layer readout describes the map, so it only shows on the map. */
           onConsole && onMap && mapTabOpen && status && (
@@ -574,7 +576,6 @@ export default function App() {
           map. The rail collapses instead, and the map holds a zoom floor so it
           stays readable rather than shrinking to a postage stamp. */}
       <Reached.Provider value={reached}>
-      <PhoneSaveBar.Provider value={phone ? saveDoor : null}>
       <div
         className={onConsole ? 'wb-page wb-page-console' : 'wb-page wb-page-console is-off'}
         style={{ position: 'absolute', inset: 0, display: 'flex', overflow: 'hidden', visibility: onConsole ? 'visible' : 'hidden' }}
@@ -702,7 +703,6 @@ export default function App() {
         {/* The shade behind an open panel on a phone; a tap on it closes the panel. */}
         {phone && drawer !== null && <div className="wb-scrim" aria-hidden onClick={closeDrawer} />}
       </div>
-      </PhoneSaveBar.Provider>
       </Reached.Provider>
 
       {/* THE AGENT COMMONS (item S18, slices 2 and 3): the shelf, and a pack

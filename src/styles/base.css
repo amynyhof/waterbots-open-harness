@@ -869,6 +869,33 @@ body {
   color: var(--ink-3);
   font-weight: 600;
 }
+/* THE NAME BOX — the maintainer's word of 21 Nov 2026: a clear place to type
+   the project's name, a label over a box, as the site's other inputs are. */
+.wb-rail-name-label {
+  font-size: 11.5px;
+  color: var(--ink-2);
+}
+.wb-rail-name-box {
+  display: block;
+  width: 100%;
+  margin-top: 7px;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.4;
+  padding: 7px 9px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  outline: none;
+  transition: border-color var(--dur) var(--ease);
+}
+.wb-rail-name-box:focus {
+  border-color: var(--tide-ui);
+}
+.wb-rail-name-box::placeholder {
+  color: var(--ink-3);
+  font-weight: 400;
+}
 
 /* The (i) beside the record's eyebrow. Its explainer is the title, on hover
    and on focus, and the accessible label carries the same words. */
@@ -1366,6 +1393,11 @@ body {
 /* The map's one line in the menu: at the left of Sign in on a laptop. */
 .wb-site-menu-readout {
   display: inline-flex;
+  margin-left: auto;
+  margin-right: 20px;
+}
+.wb-site-menu-readout + .wb-site-menu-end {
+  margin-left: 0;
 }
 
 /* THE PHONE PASS, 21 Nov 2026. On a phone the map's credits wrap to two lines,
@@ -1925,22 +1957,70 @@ button.wb-info {
   }
 }
 
-/* THE MENU ON A PHONE takes the live waterbots.ai page's three rows, as read
-   on 29 Oct 2026: the wordmark, the three links, then Sign in at the right.
-   Its links are 44px places to tap; the look is the live page's. 430px, not
-   414: the live page keeps its three rows up to the largest phones (430px),
-   where Sign up beside Sign in pushes them to a row of their own. */
-@media (max-width: 430px) {
-  .wb-site-menu-end {
-    flex-basis: 100%;
+/* THE MENU ON A PHONE, TWO ROWS — the maintainer's word of 21 Nov 2026. The
+   top row is the wordmark with Sign in, Sign up and, once something is on the
+   record, "Save and sign up" (src/components/SiteMenu.tsx). It is a grid, so the
+   top row never wraps, and the type and the gaps narrow with the screen so all
+   four fit from 360px. The three links take the row under it. At the site's
+   phone width, 900px. */
+@media (max-width: 900px) {
+  .wb-site-menu-band {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 10px 16px;
   }
-  /* The map's line takes its own row under Sign in and Sign up (21 Nov 2026),
-     so the two keep their place and the line is not squeezed beside them. */
+  .wb-site-menu-alert,
+  .wb-site-menu-links,
   .wb-site-menu-readout {
-    flex-basis: 100%;
-    order: 3;
-    justify-content: flex-end;
+    grid-column: 1 / -1;
   }
+  .wb-site-menu-wordmark {
+    order: 0;
+    font-size: clamp(15px, 4.2vw, 18px);
+  }
+  .wb-site-menu-end {
+    order: 1;
+    flex-wrap: nowrap;
+    justify-self: end;
+    column-gap: clamp(6px, 2.2vw, 16px);
+    padding-left: 6px;
+  }
+  .wb-site-menu-end .wb-site-menu-link {
+    font-size: clamp(12px, 3.4vw, 13px);
+  }
+  .wb-site-menu-signup {
+    padding: 5px clamp(8px, 2.4vw, 14px);
+  }
+  .wb-site-menu-end .wb-save-button {
+    font-size: clamp(12px, 3.4vw, 13px);
+    line-height: 1.5;
+    padding: 5px clamp(8px, 2.4vw, 14px);
+    white-space: nowrap;
+  }
+  /* If saving failed, what went wrong, on its own line under the top row. */
+  .wb-site-menu-alert {
+    order: 2;
+    text-align: right;
+  }
+  .wb-site-menu-links {
+    order: 3;
+    margin-top: 2px;
+  }
+  /* The map's line takes its own row under the links (21 Nov 2026), so the top
+     row keeps its place and the line is not squeezed beside it. */
+  .wb-site-menu-readout {
+    order: 4;
+    justify-content: flex-end;
+    margin: 0;
+  }
+  .wb-site-menu-readout + .wb-site-menu-end {
+    margin-left: auto;
+  }
+}
+
+/* The menu's links are 44px places to tap on the smallest phones; the look is
+   the live page's (29 Oct 2026). */
+@media (max-width: 430px) {
   .wb-site-menu-link {
     position: relative;
   }
@@ -2274,25 +2354,13 @@ button.wb-info {
   flex: none;
   margin: 0 18px 18px;
 }
-.wb-crew-save .wb-save-button,
-.wb-save-bar .wb-save-button {
+.wb-crew-save .wb-save-button {
   display: block;
   width: 100%;
   font-size: 13.5px;
   padding: 9px 12px;
   /* "Save and sign up", on one line at every width (16 Nov 2026). */
   white-space: nowrap;
-}
-/* On a phone, a bar across the bottom of the screen, just above the chat box. */
-.wb-save-bar {
-  flex: none;
-  padding: 10px 16px;
-  border-top: 1px solid var(--line);
-  border-bottom: 0;
-}
-.wb-save-bar .wb-save-button {
-  font-size: 15px;
-  padding: 11px 12px;
 }
 
 /* THE CREW COLUMN NARROWS BETWEEN PHONE AND WIDE LAPTOP — the maintainer's

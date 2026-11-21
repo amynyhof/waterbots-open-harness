@@ -20,20 +20,22 @@
  * The map's one plain line rides at the right, before Sign in, on the map
  * only; it is the map's readout, not a menu item.
  *
- * ON A PHONE, THE LIVE PAGE'S THREE ROWS — the maintainer's word of 29 Oct
- * 2026, read from waterbots.ai at 375px and 414px that day: it has no
- * collapsed menu; the wordmark, then the three links, then Sign in at the
- * right, each on its own row. At 430px and narrower this menu takes the same
- * three rows (base.css). Its height is told to the page as --menu-h, so a
- * phone's screening fills the screen below it (src/lib/phone.ts).
+ * ON A PHONE, TWO ROWS — the maintainer's word of 21 Nov 2026. The top row is
+ * the wordmark with Sign in, Sign up and, once something is on the record,
+ * "Save and sign up", never wrapped onto a second line; the three links take
+ * the row under it. At 900px and narrower (the site's phone width,
+ * src/lib/phone.ts), in base.css. Until that day a phone had the live page's
+ * three rows, as read on 29 Oct 2026, and Save was a bar above the chat box.
+ * Its height is told to the page as --menu-h, so a phone's screening fills the
+ * screen below it.
  *
  * NO BUILD BANNER UNDER IT FROM 21 NOV 2026 — the maintainer's word. Its one
  * line (W28) is gone; a small "beta" sits beside
  * waterbots.ai at the foot of the left rail instead (NavRail.tsx).
  *
  * THE READOUT — the map's one line — rides at the left of Sign in on a laptop,
- * and on its own line under Sign in and Sign up on a phone (base.css), so the
- * two keep their words and place on every page.
+ * and on its own line under the links on a phone (base.css), so the top row
+ * keeps its words and place on every page.
  */
 
 import { useLayoutEffect, useRef, type MouseEvent, type ReactNode } from 'react';
@@ -45,12 +47,18 @@ export default function SiteMenu({
   onPage,
   readout,
   signupBlue = true,
+  save,
+  saveFailed,
 }: {
   page: Page;
   onPage: (page: Page) => void;
   readout?: ReactNode;
   /** One blue button at a time (src/lib/blue.ts): quiet when another is the next step. */
   signupBlue?: boolean;
+  /** On a phone, the one "Save and sign up", after Sign up in the top row (21 Nov 2026). */
+  save?: ReactNode;
+  /** What went wrong if saving failed, on its own line under the top row. */
+  saveFailed?: ReactNode;
 }) {
   const open = (link: MenuLink) => (e: MouseEvent<HTMLAnchorElement>) => {
     if (!link.page) return;
@@ -90,8 +98,8 @@ export default function SiteMenu({
             </a>
           ))}
         </nav>
+        {readout && <span className="wb-site-menu-readout">{readout}</span>}
         <div className="wb-site-menu-end">
-          {readout && <span className="wb-site-menu-readout">{readout}</span>}
           <a className="wb-site-menu-link wb-site-menu-quiet" href={MENU_SIGN_IN.href}>
             {MENU_SIGN_IN.label}
           </a>
@@ -101,7 +109,9 @@ export default function SiteMenu({
           >
             {MENU_SIGN_UP.label}
           </a>
+          {save}
         </div>
+        {saveFailed}
       </div>
     </header>
   );

@@ -729,24 +729,26 @@ expect(
   'the composer does not grow'
 );
 expect(
-  'S21, and Save from 21 Nov 2026: the report under the project in the left rail; one Save, under the crew in the right panel with the team box, a bar above the chat box on a phone',
+  "S21, and Save from 21 Nov 2026: the report under the project in the left rail; one Save, under the crew in the right panel with the team box, in the site menu's top row on a phone",
   (() => {
     const left = readFileSync('src/components/NavRail.tsx', 'utf8');
     const door = readFileSync('src/components/SaveDoor.tsx', 'utf8');
     const chatBox = readFileSync('src/screen/ScreenChat.tsx', 'utf8');
+    const menu = readFileSync('src/components/SiteMenu.tsx', 'utf8');
     const crewList = railSource.indexOf('{CREW.map(');
     const save = railSource.indexOf('<SaveDoorPanel save={save} />');
     return (
       /Export screening report/.test(left) && !/wb-save-button|Save and sign up|Send my project to the WaterBots team/.test(left) &&
       crewList > 0 && save > crewList &&
       /Send my project to the WaterBots team/.test(door) && (door.match(/'Save and sign up'/g) ?? []).length === 1 &&
-      chatBox.indexOf('<SaveBarSlot />') > 0 && chatBox.indexOf('<SaveBarSlot />') < chatBox.indexOf('<textarea') &&
-      /PhoneSaveBar\.Provider value=\{phone \? saveDoor : null\}/.test(appSource)
+      !/SaveBarSlot|PhoneSaveBar/.test(chatBox + door + appSource) &&
+      menu.indexOf('{save}') > menu.indexOf('{MENU_SIGN_UP.label}') && menu.indexOf('{save}') < menu.indexOf('{saveFailed}') &&
+      /save=\{phone && onConsole && saveDoor\.show \? <MenuSave save=\{saveDoor\} \/> : undefined\}/.test(appSource)
     );
   })() &&
     /onExport: printScreeningReport/.test(appSource) && /body\.classList\.add\('wb-print-screening'\)/.test(appSource) &&
     !/Next steps|TOOLS_LINE/.test(railSource),
-  'the report is not in the left rail, or Save is not under the crew, or the phone bar is not above the chat box'
+  "the report is not in the left rail, or Save is not under the crew, or a phone's Save is not in the menu's top row"
 );
 expect(
   'his prompt names the screening loop and forbids a fake live chat',

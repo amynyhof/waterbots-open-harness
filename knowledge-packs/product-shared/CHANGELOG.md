@@ -1,4 +1,12 @@
 # Changelog — product-shared
+## 0.6.7 — 21 Nov 2026
+
+- `agent-primer.md`, Wellington's region only: **he asks the project's name**, the maintainer's word of
+  21 Nov 2026. He asks once, before any handoff, because the name heads the record and the screening
+  report; his prompt already says that no name yet is an answer. Old wording:
+
+  > 6. **What it is called** — the desk only.
+
 ## 0.6.6 — 21 Nov 2026
 
 - `agent-primer.md`, the roster region: **the agents lead**, the maintainer's word of 21 Nov 2026. A visitor
