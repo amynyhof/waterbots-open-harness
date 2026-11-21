@@ -17,6 +17,55 @@ before 3 Oct 2026 link to an OPEN_ITEMS.md that has since been retired to this f
 
 ---
 
+## 21 Nov 2026 — BUILD_PLAN.md: facts that had gone out of date
+
+**Why.** The maintainer's word of 21 Nov 2026: fix any facts in the plan that are out of date (versions, merged
+pull requests, what is live). Each was checked against the repository on 21 Nov 2026 before it was replaced:
+Calvin's carbon calculator is the open core's from 14 Nov 2026 (calvin 0.4.0 from #178); the save door and the
+next steps moved on 14 Nov 2026; React 19 merged in #164 and Bridget's chat in #167, the report's first version
+in #173; Wellington's prompt measures 26,072 characters; the build prints the page script at 1,200.69 kB; and
+`npm audit` lists nine findings, Vite's own among them.
+
+**Old wording, whole — BUILD_PLAN.md — Direction, step 3's row:**
+
+> | 3 | **Ex-ante quantification** — what benefit would this project produce? | Free | Built 1 Sep 2026, three screening packs; Calvin's chat is item A21 |
+
+**Old wording, whole — BUILD_PLAN.md — Direction, the desk:**
+
+> **The desk sits in front of all four**: Wellington's, where the visit's next steps collect and the save
+> door stands.
+
+**Old wording, whole — BUILD_PLAN.md — Road to v1, its opening paragraph's second sentence:**
+
+> Nothing on it is built yet.
+
+**Old wording, whole — BUILD_PLAN.md — Road to v1, the prompt line:**
+
+> - **Wellington's prompt is 26,136 characters against a gate of 26,199** (A26, 14 Nov 2026, when he came to the agents' chats; 24,581 the day before). The gate moves only on her word.
+
+**Old wording, whole — BUILD_PLAN.md — item A26, its prompt sentence:**
+
+> His prompt is 26,136, from 26,079.
+
+**Old wording, whole — BUILD_PLAN.md — item S21, its last sentence:**
+
+> Calvin's figures fill it once he has them.
+
+**Old wording, whole — BUILD_PLAN.md — item O17, its title and its earlier figure:**
+
+> **O17 · The first page weighs 776 kB.**
+
+> (795 kB on #167, with the country boxes)
+
+**Old wording, whole — BUILD_PLAN.md — item SP2, its title and the Vite clause:**
+
+> **SP2 · The eight `npm audit` findings.**
+
+> one through Vite (`source-map-js`);
+
+**Where the current text is:** [BUILD_PLAN.md](../../BUILD_PLAN.md): Direction, Road to v1, and items A26, S21,
+O17 and SP2.
+
 ## 30 Oct 2026, second correction — docs/proposals/calvin-from-open-core.md: Violet's screen, and questions counted
 
 **Why it changed.** The maintainer ruled on 30 Oct 2026, on pull request #156: Violet's module brings both her D-3

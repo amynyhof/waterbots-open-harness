@@ -64,11 +64,11 @@ an action here (rule zero).
 |---|---|---|---|
 | 1 | **Eligibility** — can this project generate a countable benefit? | Free | Worksheet built; Phoebe live, on both pathways from 26 Sep 2026 |
 | 2 | **Basin map / Partners** — where is the water stress, and who else is working there? | Free | Map built; the partner layer is item D1 |
-| 3 | **Ex-ante quantification** — what benefit would this project produce? | Free | Built 1 Sep 2026, three screening packs; Calvin's chat is item A21 |
+| 3 | **Ex-ante quantification** — what benefit would this project produce? | Free | Built 1 Sep 2026; from 14 Nov 2026 the water pack (VWBA D-3) and the open core's carbon calculator, calvin 0.4.0 from 21 Nov; Calvin's chat is item A21 |
 | 4 | **Project management** — running the project after it starts | Paid | Not in this repository |
 
-**The desk sits in front of all four**: Wellington's, where the visit's next steps collect and the save
-door stands. **The free tier ends where step 4 begins**, and the theme turns from Frost to Deep Marine
+**The desk sits in front of all four**: Wellington's, where the visit starts. From 14 Nov 2026 his next steps
+come in the chat and the save door is in the left rail. **The free tier ends where step 4 begins**, and the theme turns from Frost to Deep Marine
 there. Nothing of the paid platform is built, described or linked from here.
 
 **Shell B is heading toward compatibility with the production console.** Someone who steps up to the paid
@@ -109,7 +109,7 @@ The finish line is the fence above and nothing else. These are the conditions ea
 
 ## Road to v1 — this repository's work, in order (30 Oct 2026)
 
-Only the work here that the finish line needs, in the engineer's order, for her to move. Nothing on it is built yet. It rests on #156,
+Only the work here that the finish line needs, in the engineer's order, for her to move. Step 1 is done (#164); steps 2, 3, 6 and 7 have work built, each recorded in its item; steps 4, 5, 8 and 9 are not built. It rests on #156,
 the proposal to install Calvin from the open core, merged with her word on its open points. The old step numbers (1 to 8) stay on items as names; old steps 1 to 3 are done, 24–26 Sep 2026, in the log.
 
 | # | Step, in one line | Depends on | Done when |
@@ -126,7 +126,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 
 **After v1, not needed for the finish line:** A23, Calvin's VWBA row becomes Violet's; A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
-- **Wellington's prompt is 26,136 characters against a gate of 26,199** (A26, 14 Nov 2026, when he came to the agents' chats; 24,581 the day before). The gate moves only on her word.
+- **Wellington's prompt is 26,072 characters against a gate of 26,199** (A26, measured 21 Nov 2026). The gate moves only on her word.
 - **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull request; a measured run after any prompt change; the build-update fact refreshed at every full close-out.
 
 ---
@@ -158,7 +158,7 @@ back to Wellington, as built in A22. The visit stays at Partners after the pin, 
 the cards and the lists reach the relays as generated copies (`scripts/build-prompt-modules.mjs`), written by hand; CI's
 `--check` fails a stale copy, but nothing refreshes one. Done is a copy that cannot ship stale and needs no hand. Proposal first.
 
-**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved (docs/proposals/wellington-rewrite-2026-10-31.md); her walks' fixes, the voice card and "Wellington comes to you" 12–14 Nov 2026. His prompt is 26,136, from 26,079. Waiting on one measured run.
+**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved (docs/proposals/wellington-rewrite-2026-10-31.md); her walks' fixes, the voice card and "Wellington comes to you" 12–14 Nov 2026. His prompt is 26,072, measured 21 Nov 2026. Waiting on one measured run.
 
 **A27 · Agent door bug.** v1 · BONES. Her word of 12 Nov 2026: in the Agent Commons, Phoebe tells visitors to go to Wellington. In the Commons,
 every agent works alone and asks for what she needs herself; on the sites, she hands back to Wellington. Each module must know which door it is at (see the plug-in contract).
@@ -188,7 +188,7 @@ What a visitor sees and works with. Her browser review is the gate.
 
 **S21 · The screening report exports free.** Step 8 · v1. Her word of 23 Sep 2026: every tool, with or
 without answers, exportable as an easy-to-read, properly cited document. The screening report is the first
-export, in the phase-tags shape. **A first version is built on her word of 14 Nov 2026 (#173)**: print-only, from the left rail, growing with the visit, in the feel of the core's ReportView. Calvin's figures fill it once he has them.
+export, in the phase-tags shape. **A first version is built on her word of 14 Nov 2026 (#173)**: print-only, from the left rail, growing with the visit, in the feel of the core's ReportView. From 16 Nov 2026 (#174) it is the one export on Quantify, and it carries Calvin's figure and his full working.
 
 **S25 · Tap size on phones.** v1 · WALKTHROUGH. Her word of 31 Oct 2026, after her preview check of #167. Every control a
 visitor taps, measured at phone width against a size she rules; S24's 44px for the main site's menu is the same question
@@ -282,8 +282,8 @@ the bundle. Nothing is due until there is usage. Route C, a custom vector basema
 **O12 · The map page is heavy.** After v1 · WALKTHROUGH. A pin at world view redraws 1,342 basins and
 stalls the page. Look at whether the pin redraws every polygon, and whether the hidden map keeps drawing.
 
-**O17 · The first page weighs 776 kB.** After v1 · WALKTHROUGH. v2, her word of 31 Oct 2026. The site's one script
-file, past the build's own 500 kB warning (795 kB on #167, with the country boxes). Done is a measured figure she rules on, and what was cut. With O12.
+**O17 · The first page weighs 1,201 kB.** After v1 · WALKTHROUGH. v2, her word of 31 Oct 2026. The site's one script
+file, past the build's own 500 kB warning (776 kB when logged, 795 kB on #167 with the country boxes, 1,200.69 kB measured 21 Nov 2026). Done is a measured figure she rules on, and what was cut. With O12.
 
 **O13 · Banned words in old code.** After v1 · BONES. `validate()` in `api/_wellingtonAnswer.ts` and its
 callers, and "console" in Bridget's and Calvin's dock copy. One hygiene pass; no behaviour changes.
@@ -360,9 +360,9 @@ cannot merge, enforced by branch protection (only the maintainer's account may m
 rules in session settings are a fence a session could edit away, branch protection is not. Needs her to
 create the account and set the rule; a proposal comes first.
 
-**SP2 · The eight `npm audit` findings.** PARK. All are in build-time tools, none in the live site's own
+**SP2 · The nine `npm audit` findings.** PARK. All are in build-time tools, none in the live site's own
 dependencies: seven come through `mapshaper` (`adm-zip`, `@xmldom/xmldom`, `fflate`, `file-type`, `image-size`
-and two that depend on them), one through Vite (`source-map-js`); `geographiclib`, deprecated, is mapshaper's too.
+and two that depend on them), one through Vite (`source-map-js`), and from 21 Nov 2026 Vite itself; `geographiclib`, deprecated, is mapshaper's too.
 Plan: `npm audit fix` without force on a throwaway branch; all checks and the build; rebuild the basins,
 byte-identical; upgrade `mapshaper` if a release drops `geographiclib`. Lane 3; proposal first; the paused
 install scripts for `better-sqlite3` and `esbuild` stay paused.
