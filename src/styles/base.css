@@ -1929,12 +1929,8 @@ button.wb-info {
   }
 }
 
-/* THE SAVE DOOR IN THE LEFT RAIL — the maintainer's word of 14 Nov 2026 (W27):
-   under the project, full width; the report button under it is quiet (S21),
-   because blue is for the one main next step. */
-.wb-rail-save .wb-save-button {
-  width: 100%;
-}
+/* THE REPORT BUTTON in the left rail, under the project (S21): quiet, because
+   blue is for the one main next step. */
 .wb-report-button {
   display: block;
   width: 100%;
@@ -2244,14 +2240,16 @@ button.wb-info {
   color: var(--ink);
 }
 
-/* Save at the foot of the left rail, just above Register your interest — her
-   word of 16 Nov 2026 on #174. Full width, normal text size; still the one
-   blue button when nothing comes before it. Collapsed, a small icon button. */
-.wb-rail-save-foot {
+/* THE ONE SAVE DOOR — the maintainer's word of 21 Nov 2026
+   (src/components/SaveDoor.tsx). On a laptop, under the crew in the right
+   panel, the team box above it; full width, normal text size; still the one
+   blue button only when nothing comes before it. */
+.wb-crew-save {
   flex: none;
-  margin: 10px 12px 0;
+  margin: 0 18px 18px;
 }
-.wb-rail-save-foot .wb-save-button {
+.wb-crew-save .wb-save-button,
+.wb-save-bar .wb-save-button {
   display: block;
   width: 100%;
   font-size: 13.5px;
@@ -2259,12 +2257,16 @@ button.wb-info {
   /* "Save and sign up", on one line at every width (16 Nov 2026). */
   white-space: nowrap;
 }
-.wb-save-button.is-collapsed {
+/* On a phone, a bar across the bottom of the screen, just above the chat box. */
+.wb-save-bar {
   flex: none;
-  display: grid;
-  place-items: center;
-  margin: 10px 8px 0;
-  padding: 8px 0;
+  padding: 10px 16px;
+  border-top: 1px solid var(--line);
+  border-bottom: 0;
+}
+.wb-save-bar .wb-save-button {
+  font-size: 15px;
+  padding: 11px 12px;
 }
 
 /* THE CREW COLUMN NARROWS BETWEEN PHONE AND WIDE LAPTOP — the maintainer's

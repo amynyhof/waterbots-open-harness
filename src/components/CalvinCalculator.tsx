@@ -19,7 +19,7 @@
  * derivation, the version tabs, the tags).
  *
  * NO SAVE BUTTON. The core draws Save only when a host passes `onSave`, and
- * this site passes none: the save door is this site's, in the left rail.
+ * this site passes none: the save door is this site's, under the crew in the right panel.
  *
  * THE HOST'S HEADER. The lens takes the host's own top. On the console it says
  * where the facts come from — the project record on the left — and on the

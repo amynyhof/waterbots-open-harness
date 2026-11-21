@@ -74,16 +74,16 @@ expect('quiet chips alone are not a blue button', meetShowing([chipTurn]) === fa
 console.log('\n  Each button draws what the rule says');
 const app = readFileSync(join('src', 'App.tsx'), 'utf8');
 const menu = readFileSync(join('src', 'components', 'SiteMenu.tsx'), 'utf8');
-const rail = readFileSync(join('src', 'components', 'NavRail.tsx'), 'utf8');
+const door = readFileSync(join('src', 'components', 'SaveDoor.tsx'), 'utf8');
 const css = readFileSync(join('src', 'styles', 'base.css'), 'utf8');
 expect('the shell asks the rule once', (app.match(/blueButton\(/g) ?? []).length === 1, 'blueButton is not called exactly once in App.tsx');
 expect(
-  'the menu, the rail and the form are each told from it',
+  'the menu, the save door and the form are each told from it',
   /signupBlue=\{blue === 'signup'\}/.test(app) && /blue: blue === 'save'/.test(app),
-  'App.tsx does not pass the rule to the menu and the rail'
+  'App.tsx does not pass the rule to the menu and the save door'
 );
 expect('the menu draws Sign up quiet when told', /signupBlue \? '' : ' is-quiet'/.test(menu) && /\.wb-site-menu-signup\.is-quiet \{[^}]*background: transparent/.test(css), 'no quiet Sign up');
-expect('the rail draws Save quiet when told', /save\.blue \? 'wb-save-button' : 'wb-save-button is-quiet'/.test(rail) && /\.wb-save-button\.is-quiet \{[^}]*background: transparent/.test(css), 'no quiet Save');
+expect('the save door draws Save quiet when told', /save\.blue \? 'wb-save-button' : 'wb-save-button is-quiet'/.test(door) && /\.wb-save-button\.is-quiet \{[^}]*background: transparent/.test(css), 'no quiet Save');
 expect(
   "Phoebe's and Bridget's screens tell the shell when Meet is under their latest turn",
   ['PhoebeScreen', 'BridgetScreen'].every((f) => /onMeet\?\.\(meet\)/.test(readFileSync(join('src', 'components', `${f}.tsx`), 'utf8'))) &&
@@ -105,7 +105,7 @@ const walk = (dir) => {
 };
 walk('src');
 const users = files.filter((f) => /btn-primary|wb-save-button|wb-site-menu-signup|wb-form-send|primary: true/.test(readFileSync(f, 'utf8'))).map((f) => f.replace(/\\/g, '/')).sort();
-const allowed = ['src/chat/Transcript.tsx', 'src/components/InterestPage.tsx', 'src/components/NavRail.tsx', 'src/components/SupportersPage.tsx', 'src/components/SiteMenu.tsx', 'src/lib/visit.ts', 'src/lib/wellington.ts'];
+const allowed = ['src/chat/Transcript.tsx', 'src/components/InterestPage.tsx', 'src/components/SaveDoor.tsx', 'src/components/SupportersPage.tsx', 'src/components/SiteMenu.tsx', 'src/lib/visit.ts', 'src/lib/wellington.ts'];
 expect(
   'no other file draws a solid blue button',
   users.every((f) => allowed.includes(f)),

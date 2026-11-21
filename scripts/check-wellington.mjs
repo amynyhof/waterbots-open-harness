@@ -728,16 +728,24 @@ expect(
   'the composer does not grow'
 );
 expect(
-  'W27, S21: the save door sits in the left rail (at its foot above Register your interest from 16 Nov 2026), the report under the project, and the crew rail draws neither',
+  'S21, and Save from 21 Nov 2026: the report under the project in the left rail; one Save, under the crew in the right panel with the team box, a bar above the chat box on a phone',
   (() => {
-    const rail = readFileSync('src/components/NavRail.tsx', 'utf8');
-    const foot = rail.indexOf('{save.show && <SaveFoot save={save} open={open} />}');
-    return foot > rail.indexOf('<div style={{ flex: 1 }} />') && foot < rail.indexOf("'wb-interest-cta'");
+    const left = readFileSync('src/components/NavRail.tsx', 'utf8');
+    const door = readFileSync('src/components/SaveDoor.tsx', 'utf8');
+    const chatBox = readFileSync('src/screen/ScreenChat.tsx', 'utf8');
+    const crewList = railSource.indexOf('{CREW.map(');
+    const save = railSource.indexOf('<SaveDoorPanel save={save} />');
+    return (
+      /Export screening report/.test(left) && !/wb-save-button|Save and sign up|Send my project to the WaterBots team/.test(left) &&
+      crewList > 0 && save > crewList &&
+      /Send my project to the WaterBots team/.test(door) && (door.match(/'Save and sign up'/g) ?? []).length === 1 &&
+      chatBox.indexOf('<SaveBarSlot />') > 0 && chatBox.indexOf('<SaveBarSlot />') < chatBox.indexOf('<textarea') &&
+      /PhoneSaveBar\.Provider value=\{phone \? saveDoor : null\}/.test(appSource)
+    );
   })() &&
-    /Export screening report/.test(readFileSync('src/components/NavRail.tsx', 'utf8')) &&
     /onExport: printScreeningReport/.test(appSource) && /body\.classList\.add\('wb-print-screening'\)/.test(appSource) &&
-    !/wb-save-button|Next steps|TOOLS_LINE/.test(railSource),
-  'the save door or the report is not in the left rail'
+    !/Next steps|TOOLS_LINE/.test(railSource),
+  'the report is not in the left rail, or Save is not under the crew, or the phone bar is not above the chat box'
 );
 expect(
   'his prompt names the screening loop and forbids a fake live chat',
