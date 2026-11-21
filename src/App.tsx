@@ -373,8 +373,8 @@ export default function App() {
     void askReturned();
   }, [surface, visit.stage, askReturned]);
 
-  /* CALVIN'S CARBON CALCULATOR IS THE OPEN CORE'S — @waterbots/calvin 0.3.0
-     from 16 Nov 2026 (0.2.0 from 14 Nov), the maintainer's word. The project
+  /* CALVIN'S CARBON CALCULATOR IS THE OPEN CORE'S — @waterbots/calvin 0.4.0
+     from 21 Nov 2026 (0.3.0 from 16 Nov, 0.2.0 from 14 Nov), the maintainer's word. The project
      comes from the visit's record alone (src/lib/calvinProject.ts); the engine
      does every sum. ITS STATE LIVES WITH THE CALCULATOR from 16 Nov 2026
      (CalvinCarbon in src/components/CalvinCalculator.tsx), which opens again

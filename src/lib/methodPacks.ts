@@ -301,7 +301,7 @@ export type RegisteredPack = MethodPack | PlannedPack;
  * them. The water pack keeps the first tab.
  */
 /* ~~Two carbon packs are live~~ — FROM 14 NOV 2026 CARBON IS THE OPEN CORE'S
-   CALCULATOR, @waterbots/calvin 0.3.0 (src/components/CalvinCalculator.tsx), on
+   CALCULATOR, @waterbots/calvin 0.4.0 (src/components/CalvinCalculator.tsx), on
    the maintainer's word. This site's own carbon screening, src/lib/gsSdws.ts, is
    no longer registered: it stays only as the "before" side of the proposal's
    proof P3, checked by scripts/check-gs-sdws.mjs, until it retires. The water

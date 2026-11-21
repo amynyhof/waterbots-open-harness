@@ -1,9 +1,10 @@
 /**
  * Calvin from the open core — proof P1 of docs/proposals/calvin-from-open-core.md, built
  * 14 Nov 2026 when the site installed @waterbots/calvin 0.2.0 from the release calvin-v0.2.0, and moved
- * to calvin-v0.3.0 (@waterbots/calvin 0.3.0, @waterbots/core 0.1.1) on 16 Nov 2026, her word.
+ * to calvin-v0.3.0 (@waterbots/calvin 0.3.0, @waterbots/core 0.1.1) on 16 Nov 2026, and to calvin-v0.4.0
+ * (@waterbots/calvin 0.4.0, the same core 0.1.1) on 21 Nov 2026, her word.
  *   6. The project the site hands Calvin leaves `creditedUnderV1` unset until item A29 sets it
- *      from Phoebe's question, so every project gets 0.3.0's V2.0-only view, with no V1.0 figure,
+ *      from Phoebe's question, so every project gets the V2.0-only view, with no V1.0 figure,
  *      no transition and no ask for a V1.0 filing (her word of 16 Nov 2026).
  *
  * WHAT IT HOLDS.
@@ -28,13 +29,13 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const RELEASE = 'calvin-v0.3.0';
+const RELEASE = 'calvin-v0.4.0';
 const FILES = {
   '@waterbots/calvin': {
-    file: 'vendor/waterbots/waterbots-calvin-0.3.0.tgz',
-    version: '0.3.0',
-    sha256: '74a8b0d2ec88a0ea977fa8d73cbbbf90194b9177b241d799a8c651042cf6c9c1',
-    integrity: 'sha512-Sf5Bfy3QdlCNVLRjETDt730afJw6a/wS6cu+GnAds2ALkwptzHDIQrbkPSyG6cQ+oodCVXzCsxZCkJE59fEpCQ==',
+    file: 'vendor/waterbots/waterbots-calvin-0.4.0.tgz',
+    version: '0.4.0',
+    sha256: '3321a72cbc134552406bea4571d7c7346e5bb4783ec7f1fb175ecfbafbb866de',
+    integrity: 'sha512-a/NB8aBxEbXQyg6Hb7+ydF9RB2UkhycwBKXWKFixy4vOdBBAA2bJpNXJII50KwRh2czlIJ6fjh12wsCS0luKBw==',
   },
   '@waterbots/core': {
     file: 'vendor/waterbots/waterbots-core-0.1.1.tgz',
@@ -154,12 +155,12 @@ expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSy
   renderToString(createElement(Probe, { project: { ...madeUp, creditedUnderV1: true } }));
   const [fresh, credited] = seen;
   expect(
-    'without it, 0.3.0 gives the V2.0-only view: a V2.0 figure, no V1.0 figure, no ask for a V1.0 filing',
+    'without it, the package gives the V2.0-only view: a V2.0 figure, no V1.0 figure, no ask for a V1.0 filing',
     fresh?.transition === false && fresh.version === 'paa' && Number.isFinite(fresh.er) && fresh.legacy === null && fresh.filed === null,
     JSON.stringify(fresh)
   );
   expect(
-    'with it set true, 0.3.0 asks for the filed V1.0 fNRB before the transition (what A29 will turn on)',
+    'with it set true, the package asks for the filed V1.0 fNRB before the transition (what A29 will turn on)',
     credited?.transition === true && credited.filed !== null,
     JSON.stringify(credited)
   );
@@ -197,14 +198,20 @@ expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSy
   const css = readFileSync(join('src', 'styles', 'calvin.css'), 'utf8');
   expect(
     'the calculator is one column: the lens above, the work full width below, in one scroll',
-    /'wb-calvin wb-calvin-stack/.test(holder) && !/width: 320/.test(holder) && /className="wb-calvin-lens"/.test(holder),
+    /["']wb-calvin wb-calvin-stack/.test(holder) && !/width: 320/.test(holder) && /className="wb-calvin-lens"/.test(holder),
     'the side column is back'
   );
-  expect('the core\'s summary block scrolls with the rows here', /\.wb-calvin \.sticky \{\s*position: static;/.test(css), 'no override');
+  /* From 0.4.0 the package's own switch, unpinFigureBlock, does it (her word of 21 Nov 2026); the CSS override is gone. */
+  expect(
+    'the core\'s summary block scrolls with the rows here, by the package\'s own switch, and no CSS override is left',
+    /useCalculatorState\(project, \{ exAnteOnly: true, unpinFigureBlock: true, hideExportButton: screening \}\)/.test(holder) && !/\.sticky\s*\{/.test(css),
+    'the switch is not passed, or the old override is back'
+  );
 }
 /* 9. One export during a screening, her word of 16 Nov 2026 on #174: on Quantify Calvin's own
       "Export report (PDF)" is hidden and the left rail's screening report carries his figure and his
-      full working; the Commons keeps his export. */
+      full working; the Commons keeps his export. From 0.4.0 by the package's switch, hideExportButton,
+      passed only where `screening` is set (her word of 21 Nov 2026). */
 {
   const holder = readFileSync(join('src', 'components', 'CalvinCalculator.tsx'), 'utf8');
   const screen = readFileSync(join('src', 'components', 'CalvinScreen.tsx'), 'utf8');
@@ -212,15 +219,9 @@ expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSy
   const report = readFileSync(join('src', 'components', 'ScreeningReport.tsx'), 'utf8');
   const css = readFileSync(join('src', 'styles', 'calvin.css'), 'utf8');
   const base = readFileSync(join('src', 'styles', 'base.css'), 'utf8');
-  const core = readFileSync(join('node_modules', '@waterbots', 'calvin', 'dist', 'screen.js'), 'utf8');
   expect(
-    'the core\'s export button still carries the title this site hides it by',
-    /title: "Export the report[^"]*",\s*children: "Export report \(PDF\)"/.test(core),
-    'the title changed in the package: the button would show again on Quantify'
-  );
-  expect(
-    'on Quantify, and only there, Calvin\'s own export is hidden',
-    /\.wb-calvin-screening button\[title\^="Export the report"\]/.test(css) &&
+    'on Quantify, and only there, Calvin\'s own export is hidden, by the package\'s switch, with no CSS hiding it by its title',
+    /hideExportButton: screening/.test(holder) && !/Export the report/.test(css) &&
       /<CalvinTool[\s\S]*?onSummary=\{onSummary\}\s*screening\s/.test(screen) &&
       !/screening/.test(commons.match(/<CalvinTool[\s\S]*?\/>/)?.[0] ?? 'screening'),
     'the switch is missing, or the Commons has it too'
@@ -235,6 +236,27 @@ expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSy
     /body\.wb-print-screening \.wb-report \.print-report \{\s*display: block !important;\s*position: static !important;/.test(base),
     'the print rule is missing'
   );
+}
+/* 10. The two switches of 0.4.0, rendered once on the server with a made-up project: with them the
+       figure block is not pinned and no export button is drawn; without them (the Commons) the
+       export button is drawn. */
+{
+  const { createElement } = await import('react');
+  const { renderToString } = await import('react-dom/server');
+  const { useCalculatorState, CalculatorLens, CalculatorWork } = await import('@waterbots/calvin/screen');
+  const madeUp = { name: 'Made-up probe', standards: ['carbon'], technology: 'CWS', country: 'KEN', population: { mode: 'people', served: 1600 } };
+  const Seat = ({ hide }) => {
+    const calc = useCalculatorState(madeUp, { exAnteOnly: true, unpinFigureBlock: true, hideExportButton: hide });
+    return createElement('div', null, createElement(CalculatorLens, { calc }), createElement(CalculatorWork, { calc, project: madeUp, appVersion: 'probe', tab: 'calculator' }));
+  };
+  const quantify = renderToString(createElement(Seat, { hide: true }));
+  const commons = renderToString(createElement(Seat, { hide: false }));
+  expect(
+    'on Quantify the figure block scrolls with the page and neither export button is drawn',
+    /data-figure-block="scrolls"/.test(quantify) && !/data-figure-block="pinned"/.test(quantify) && !/Export report \(PDF\)|Export \(PDF\)/.test(quantify),
+    'pinned, or an export button drawn'
+  );
+  expect('on the Commons his export button is still drawn', /Export report \(PDF\)/.test(commons) && /data-figure-block="scrolls"/.test(commons), 'no export button');
 }
 expect('.gitattributes keeps no carried/ rule', !/^carried\//m.test(readFileSync('.gitattributes', 'utf8')), 'a carried/ line is left');
 

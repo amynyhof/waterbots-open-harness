@@ -529,8 +529,9 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   by v0.16.1, #147; tags `engine-carry-2026-09-27` and `engine-carry-2026-10-04`). **`carried/` is
   deleted on 14 Nov 2026, V1, required, the maintainer's word.** **Calvin's carbon calculator is the
   open core's from the same day**: ~~`@waterbots/calvin` 0.2.0 and `@waterbots/core` 0.1.0 from the
-  release `calvin-v0.2.0`~~ **`@waterbots/calvin` 0.3.0 and `@waterbots/core` 0.1.1 from the release
-  `calvin-v0.3.0`, from 16 Nov 2026**, with `creditedUnderV1` left unset until item A29, so every
+  release `calvin-v0.2.0`~~ ~~`@waterbots/calvin` 0.3.0 and `@waterbots/core` 0.1.1 from the release
+  `calvin-v0.3.0`, from 16 Nov 2026~~ **`@waterbots/calvin` 0.4.0 and the same `@waterbots/core` 0.1.1 from the
+  release `calvin-v0.4.0`, from 21 Nov 2026, her word**, with `creditedUnderV1` left unset until item A29, so every
   project gets the V2.0-only view; vendored in `vendor/waterbots/` and checked against the release's SHA-256
   and the lockfile's SHA-512 by `scripts/check-calvin-package.mjs`, which also re-runs the package's
   47 made-up cases (proof P1). It is locked to ex-ante (`exAnteOnly`, sliders on), on Quantify and on
@@ -539,7 +540,9 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   scoped under `.wb-calvin` (`scripts/build-calvin-css.mjs`, `src/styles/calvin.css`). **One export
   during a screening, from 16 Nov 2026, her word:** on Quantify his own "Export report (PDF)" is
   hidden, and "Export screening report" in the left rail carries his figure and his full working; the
-  Commons keeps his export. A new version
+  Commons keeps his export. **From 0.4.0 the package's own switches do it** (21 Nov 2026, her word):
+  `hideExportButton` on Quantify only, and `unpinFigureBlock` everywhere, so the block of headline
+  figures scrolls with the rows; the two CSS stopgaps of 16 Nov are gone. A new version
   comes in only on her word. Proposal: `docs/proposals/calvin-from-open-core.md`.
 - **The free-site fixes of 30 Sep 2026 are live, #134 to #138**, and the demo ran on `main` at
   #138. The wordmark at the top left goes to waterbots.ai from 28 Oct 2026, as the main site's

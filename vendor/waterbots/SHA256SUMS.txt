@@ -1,2 +1,2 @@
-74a8b0d2ec88a0ea977fa8d73cbbbf90194b9177b241d799a8c651042cf6c9c1 *waterbots-calvin-0.3.0.tgz
+3321a72cbc134552406bea4571d7c7346e5bb4783ec7f1fb175ecfbafbb866de *waterbots-calvin-0.4.0.tgz
 4e9be07073bd55c765611a459fa15d41fec5482bbf8665cb56c4f80a446f6b5a *waterbots-core-0.1.1.tgz

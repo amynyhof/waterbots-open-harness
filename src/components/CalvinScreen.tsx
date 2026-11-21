@@ -70,7 +70,7 @@ export const CALVIN_NOT_LIVE_LINE =
 
 /**
  * THE TOOL TAB HOLDS TWO CALCULATORS FROM 14 NOV 2026. Carbon credits are the
- * open core's calculator (CalvinCalculator.tsx), installed from calvin-v0.3.0
+ * open core's calculator (CalvinCalculator.tsx), installed from calvin-v0.4.0
  * and locked to ex-ante. Water benefits stay this site's own VWBA D-3
  * worksheet until Violet's module arrives from the open core (proposal step 5),
  * so the step has two looks until then (proposal section 8, B).

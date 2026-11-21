@@ -1,12 +1,19 @@
 /**
  * Calvin's carbon calculator — the open core's, installed from the release
- * calvin-v0.3.0 (@waterbots/calvin 0.3.0, core 0.1.1, engine gs4gg-carbon 0.19.0) from
- * 16 Nov 2026; first calvin-v0.2.0, on the maintainer's word of 14 Nov 2026 (proposal docs/proposals/calvin-from-open-core.md,
+ * calvin-v0.4.0 (@waterbots/calvin 0.4.0, core 0.1.1, engine gs4gg-carbon 0.19.0) from
+ * 21 Nov 2026; calvin-v0.3.0 from 16 Nov 2026; first calvin-v0.2.0, on the maintainer's word of 14 Nov 2026 (proposal docs/proposals/calvin-from-open-core.md,
  * step 2).
  *
  * THE SAME CALCULATOR AND LOOK AS THE PAID SITE, LOCKED TO EX-ANTE. The state
  * hook is given `exAnteOnly: true`: every run is ex-ante, a saved ex-post
- * analysis would open as ex-ante, and the sliders are on. The engine does every
+ * analysis would open as ex-ante, and the sliders are on.
+ *
+ * TWO SWITCHES FROM 0.4.0, the maintainer's word of 21 Nov 2026. `unpinFigureBlock`
+ * everywhere: the block of headline figures scrolls with the rows, as her tablet walk
+ * of 16 Nov 2026 asked (it was a CSS override until then). `hideExportButton` on
+ * Quantify: the left rail's "Export screening report" is the one export there, and it
+ * carries his figure and full working; the Commons, which has no screening report,
+ * keeps his export, as ruled on 16 Nov 2026 (it was hidden by its title until then). The engine does every
  * sum; this file draws nothing but the frame around the core's two zones —
  * the lens (the project facts and the controls) and the work surface (the
  * derivation, the version tabs, the tags).
@@ -51,13 +58,10 @@ export default function CalvinCalculator({
   calc,
   project,
   header,
-  screening = false,
 }: {
   calc: CalculatorState;
   project: CalvinProject;
   header?: ReactNode;
-  /** On the console's Quantify step: Calvin's own export is hidden; the left rail's report is the one export. */
-  screening?: boolean;
 }) {
   /* ONE COLUMN, ONE SCROLL — the maintainer's word of 16 Nov 2026 on #174,
      after her tablet walk: the side column squeezed the figures to about
@@ -65,7 +69,7 @@ export default function CalvinCalculator({
      note, Export report) sits above the calculator, full width, and scrolls
      away with it; the work surface takes the whole width below. */
   return (
-    <div className={screening ? 'wb-calvin wb-calvin-stack wb-calvin-screening' : 'wb-calvin wb-calvin-stack'} style={{ position: 'absolute', inset: 0, overflowY: 'auto', background: 'var(--paper)' }}>
+    <div className="wb-calvin wb-calvin-stack" style={{ position: 'absolute', inset: 0, overflowY: 'auto', background: 'var(--paper)' }}>
       <section
         aria-label="The calculator's project facts and controls"
         className="wb-calvin-lens"
@@ -132,7 +136,7 @@ function CalvinCarbonState({
   onSummary?: (summary: CalvinSummary) => void;
   screening: boolean;
 }) {
-  const calc = useCalculatorState(project, { exAnteOnly: true });
+  const calc = useCalculatorState(project, { exAnteOnly: true, unpinFigureBlock: true, hideExportButton: screening });
   /* THE COUNT FOLLOWS THE RECORD. The core reads the number served only when
      it opens, so a count said afterwards is handed on, the way a record save
      reaches a seat already open. Found on the first look, 14 Nov 2026. */
@@ -159,7 +163,7 @@ function CalvinCarbonState({
 
   return (
     <>
-      <CalvinCalculator calc={calc} project={project} header={header?.(missing)} screening={screening} />
+      <CalvinCalculator calc={calc} project={project} header={header?.(missing)} />
       {screening && shown && <WorkingInReport calc={calc} project={project} />}
     </>
   );

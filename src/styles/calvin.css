@@ -1,4 +1,4 @@
-/* Calvin's calculator, from the open core (@waterbots/calvin 0.3.0; 0.2.0 from 14 Nov 2026) — the colour and shape names its
+/* Calvin's calculator, from the open core (@waterbots/calvin 0.4.0 from 21 Nov 2026; 0.3.0 from 16 Nov, 0.2.0 from 14 Nov) — the colour and shape names its
    screens use, mapped to this site's tokens. Built 14 Nov 2026 (proposal
    docs/proposals/calvin-from-open-core.md, step 2: "the colour names the screens use, mapped to
    this site's tokens in one stylesheet").
@@ -41,23 +41,7 @@
   content: none;
 }
 
-/* THE FIGURE TILES DO NOT STICK HERE — the maintainer's word of 16 Nov 2026 on
-   #174: on her tablet the stuck headers covered the calculator. The core pins
-   its summary block (the figure tiles and the fNRB line, class "sticky") to the
-   top of the scroll; under this site's own fixed menu, steps and tabs it hid
-   most of the rows at tablet and laptop heights. Here it scrolls with the rest.
-   Asked of the open core as an option (Session C), so this line can go. */
-.wb-calvin .sticky {
-  position: static;
-}
-
-/* ONE EXPORT DURING A SCREENING — the maintainer's word of 16 Nov 2026 on #174.
-   On Quantify the only export is "Export screening report" in the left rail,
-   which carries Calvin's figure and his full working; his own "Export report
-   (PDF)" is hidden there, with the strip it sits in. The Commons, where there is
-   no screening, keeps it. The core has no switch for it yet, so this line finds
-   the button by its title; asked of the open core (Session C), so it can go. */
-.wb-calvin-screening button[title^="Export the report"],
-.wb-calvin-screening div:has(> button[title^="Export the report"]:only-child) {
-  display: none;
-}
+/* ~~The figure tiles do not stick here (a ".wb-calvin .sticky" override), and Calvin's own export is
+   hidden on Quantify by its title~~ — both rules of 16 Nov 2026 on #174 are gone from 21 Nov 2026: the
+   open core's 0.4.0 has a switch for each, `unpinFigureBlock` and `hideExportButton`, and the site
+   passes them to the calculator (src/components/CalvinCalculator.tsx), her word. */
