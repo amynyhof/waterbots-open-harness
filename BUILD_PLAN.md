@@ -266,7 +266,7 @@ when its receiver reads them, and that receiver is not fixed, Shell A item #243)
 ten-line contract; Q11; the paid-site tools line; the transition module; the one-row shape; the agent
 screen's file list; open.waterbots.ai for the landing box, the claim and the menu (28 Oct 2026). **To the brand book:** typing dots §5, the agent screen §7. **To this site:** the
 sign-up address, the confirmed roster columns. `roster.yaml` without the maintainer's name: carried 2 Nov 2026, version 0.3.1, `product-shared@0.6.3`. **To the grader:**
-three rig changes. **To Vercel:** Web Analytics on for this project. It is built (#179, 21 Nov 2026): cookie-free page views with the path only, no other tracking, and it counts nothing until it is on.
+three rig changes. **To Vercel:** Web Analytics: done, built #179 and on in Vercel 21 Nov 2026; cookie-free page views with the path only, no other tracking.
 
 **O1 · Revisit the daily cap against real usage.** After v1 · PARK. Thirty a day per visitor is live
 (`DAILY_CAP` in `api/_cap.ts`); it is a starting point, not a figure from usage. Looked at with A5, O9
