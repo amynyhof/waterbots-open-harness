@@ -32,10 +32,10 @@ import { foldPlace } from './placeBox';
 import type { VisitContext } from './visit';
 
 /** The installed package's version, held to the lockfile by scripts/check-calvin-package.mjs. */
-export const CALVIN_PACKAGE_VERSION = '0.4.0';
+export const CALVIN_PACKAGE_VERSION = '0.4.1';
 
 /** The release tag it came from. */
-export const CALVIN_RELEASE = 'calvin-v0.4.0';
+export const CALVIN_RELEASE = 'calvin-v0.4.1';
 
 /** The ISO 3166-1 alpha-3 code of the one country the place names, or null. */
 export function countryIsoFor(place: string): string | null {

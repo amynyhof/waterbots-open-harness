@@ -2,7 +2,8 @@
  * Calvin from the open core — proof P1 of docs/proposals/calvin-from-open-core.md, built
  * 14 Nov 2026 when the site installed @waterbots/calvin 0.2.0 from the release calvin-v0.2.0, and moved
  * to calvin-v0.3.0 (@waterbots/calvin 0.3.0, @waterbots/core 0.1.1) on 16 Nov 2026, and to calvin-v0.4.0
- * (@waterbots/calvin 0.4.0, the same core 0.1.1) on 21 Nov 2026, her word.
+ * (@waterbots/calvin 0.4.0, the same core 0.1.1) on 21 Nov 2026, her word, and to calvin-v0.4.1
+ * (@waterbots/calvin 0.4.1, the same core 0.1.1) the same day, her word.
  *   6. The project the site hands Calvin leaves `creditedUnderV1` unset until item A29 sets it
  *      from Phoebe's question, so every project gets the V2.0-only view, with no V1.0 figure,
  *      no transition and no ask for a V1.0 filing (her word of 16 Nov 2026).
@@ -29,13 +30,13 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const RELEASE = 'calvin-v0.4.0';
+const RELEASE = 'calvin-v0.4.1';
 const FILES = {
   '@waterbots/calvin': {
-    file: 'vendor/waterbots/waterbots-calvin-0.4.0.tgz',
-    version: '0.4.0',
-    sha256: '3321a72cbc134552406bea4571d7c7346e5bb4783ec7f1fb175ecfbafbb866de',
-    integrity: 'sha512-a/NB8aBxEbXQyg6Hb7+ydF9RB2UkhycwBKXWKFixy4vOdBBAA2bJpNXJII50KwRh2czlIJ6fjh12wsCS0luKBw==',
+    file: 'vendor/waterbots/waterbots-calvin-0.4.1.tgz',
+    version: '0.4.1',
+    sha256: '0b8d725ce4d1b86e49d0e43130623d5d6d2ea0aa229d7298c6eff43c2d76f919',
+    integrity: 'sha512-RdBhbZEXwyC9NMWVupQS9A5Kd3CAgqabgHxPklctd5to8RSTbxlRd6JtDaHEnbcuRFm1zoeWc7GUfwUBdFkt3Q==',
   },
   '@waterbots/core': {
     file: 'vendor/waterbots/waterbots-core-0.1.1.tgz',

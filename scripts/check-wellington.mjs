@@ -268,9 +268,10 @@ expect(
 {
   const wellingtonLib = readFileSync(join('src', 'lib', 'wellington.ts'), 'utf8');
   expect(
-    'W17, P24: a route to a colleague draws "Meet <name>" (blue) and "Keep chatting" (a quiet chip) under his message, from the field alone',
+    'W17, P24: a route to a colleague draws "Meet <name>" (blue, quiet once that step is reached, 21 Nov 2026) and "Keep chatting" (a quiet chip) under his message, from the field alone',
     /Meet \$\{/.test(wellingtonLib) && /'Keep chatting'/.test(wellingtonLib) && /actionsFor\(answer\.route/.test(wellingtonLib) &&
-      /button\.primary \? 'btn btn-primary' : 'wb-chip'/.test(readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8')) &&
+      /const blue = button\.primary && !\(button\.reaches && reached\.has\(button\.reaches\)\)/.test(readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8')) &&
+      /blue \? 'btn btn-primary' : 'wb-chip'/.test(readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8')) &&
       /\.wb-chip \{[^}]*background: transparent;/.test(readFileSync(join('src', 'styles', 'base.css'), 'utf8')),
     'the two buttons are not built from the route field'
   );
@@ -1014,8 +1015,8 @@ console.log('\n  People served\n');
   const phoebe = readFileSync('src/lib/phoebeClient.ts', 'utf8');
   const rail = readFileSync('src/components/NavRail.tsx', 'utf8');
   const seal = readFileSync('src/lib/handoff.ts', 'utf8');
-  expect('it travels to him, to Phoebe, to the rail and on the seal', /served: visit\.context\.served/.test(client) && /served: context\.served/.test(phoebe) && /label="People served"/.test(rail) && /value: String\(context\.served\.count\), unit: context\.served\.unit/.test(seal), 'a carrier is missing');
-  expect('the rail row sits after the stage and before the place', rail.indexOf('label="Stage"') < rail.indexOf('label="People served"') && rail.indexOf('label="People served"') < rail.indexOf('label="Where it is"'), 'the row is out of order');
+  expect('it travels to him, to Phoebe, to the rail and on the seal', /served: visit\.context\.served/.test(client) && /served: context\.served/.test(phoebe) && /label: 'People served'/.test(rail) && /value: String\(context\.served\.count\), unit: context\.served\.unit/.test(seal), 'a carrier is missing');
+  expect('the rail row sits after the stage and before the place', rail.indexOf("label: 'Stage'") < rail.indexOf("label: 'People served'") && rail.indexOf("label: 'People served'") < rail.indexOf("label: 'Where it is'"), 'the row is out of order');
 }
 
 /* ---------------------------------------------------------------------------

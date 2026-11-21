@@ -35,7 +35,8 @@
  * on the live chats; the hero chat (S12) stays parked.
  */
 
-import { type CSSProperties } from 'react';
+import { useContext, type CSSProperties } from 'react';
+import { Reached } from './reached';
 import AnswerBody from './AnswerBody';
 import type { AgentHost, AgentTurn, Turn } from './evidence';
 
@@ -165,20 +166,25 @@ function HostBubble({ host, turn, latest = false }: { host: AgentHost; turn: Age
  * buttons do not stay on the thread as if they were still the next step.
  */
 function TurnButtons({ turn }: { turn: AgentTurn }) {
+  /* A Meet button whose agent this visit has reached is drawn quiet (21 Nov 2026). */
+  const reached = useContext(Reached);
   if (!turn.buttons?.length) return null;
   return (
     <div style={{ marginTop: 10, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-      {turn.buttons.map((button) => (
-        <button
-          key={button.label}
-          type="button"
-          className={button.primary ? 'btn btn-primary' : 'wb-chip'}
-          style={button.primary ? { padding: '6px 14px', fontSize: 13 } : undefined}
-          onClick={button.go}
-        >
-          {button.label}
-        </button>
-      ))}
+      {turn.buttons.map((button) => {
+        const blue = button.primary && !(button.reaches && reached.has(button.reaches));
+        return (
+          <button
+            key={button.label}
+            type="button"
+            className={blue ? 'btn btn-primary' : 'wb-chip'}
+            style={blue ? { padding: '6px 14px', fontSize: 13 } : undefined}
+            onClick={button.go}
+          >
+            {button.label}
+          </button>
+        );
+      })}
     </div>
   );
 }

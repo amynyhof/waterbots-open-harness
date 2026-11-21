@@ -17,6 +17,69 @@ before 3 Oct 2026 link to an OPEN_ITEMS.md that has since been retired to this f
 
 ---
 
+## 21 Nov 2026 — CLAUDE.md and PROCESS_RULES_for_ShellB.md: reference projects settled, and CLAUDE.md brought up to date
+
+**Why.** The maintainer's word of 21 Nov 2026. Her rule on reference projects goes at the top of CLAUDE.md, word for
+word, and its older versions go. And CLAUDE.md is brought up to what shipped: Save under the crew in the right panel
+(#184), the build line gone and "beta" beside waterbots.ai alone (#185), Calvin 0.4.1, and the agents leading the
+navigation, with a lighter first screen, in the same pull request as this entry.
+
+**Old wording, whole — CLAUDE.md — Non-negotiables, the name-scan bullet (replaced by the rule at the top):**
+
+> - **The name scan is the one check for public material, from 21 Nov 2026 (the maintainer's
+>   ruling).** It reads her private list of names and project IDs. No calculation figure is blocked;
+>   the number gate is retired, and nothing waits on it. The rule is in PROCESS_RULES_for_ShellB.md,
+>   *The name scan runs before every push*.
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — The name scan runs before every push, the paragraph on the one check (replaced by the rule at the top of CLAUDE.md):**
+
+> **It is the one check for public material, from 21 Nov 2026**, the maintainer's ruling. No calculation figure is
+> blocked: the number gate (`scan-diff.mjs --numbers` and its terms file) is retired, and nothing waits on it.
+>
+
+**Old wording, whole — CLAUDE.md — Scope, the build-line bullet:**
+
+> - **The desk says the site is under build, from 23 Sep 2026.** ~~One line in the maintainer's words
+>   above Wellington's chat~~ **From 16 Nov 2026 (W28) one line under the site menu on every page, in
+>   her words: "This site is still being built."**, and a dated build-update fact he phrases when asked, refreshed at every
+>   full close-out (the ritual's step 8). Item S11. The "first screening, not an official decision"
+>   note stays beside the figures and in the report, never in the banner.
+
+**Old wording, whole — CLAUDE.md — Scope, the desk plan bullet:**
+
+> the order the seats need; **one row is the navigation and the tab row is
+>   gone**;
+
+**Old wording, whole — CLAUDE.md — Scope, the look pass bullet:**
+
+> the save button sits at
+>   ~~the foot of the right rail~~ **the left rail, under the project, from 14 Nov 2026** (from 13 Nov 2026 only once something is on the record; until then
+>   the site menu's Sign up, beside Sign in, is the door);
+
+**Old wording, whole — CLAUDE.md — Scope, Wellington comes to you:**
+
+> The right rail is
+>   the crew with one status line each ("water likely · carbon ruled out"); the save door, the box to
+>   send the project to the team (whenever a path is ruled out) and **Export screening report** (S21,
+>   print-only, growing with the visit) sit in the left rail under the project.
+
+**Old wording, whole — CLAUDE.md — Scope, the queued round:**
+
+> **W28:** the build banner above.
+
+**Old wording, whole — CLAUDE.md — Scope, Calvin from the open core:**
+
+> **`@waterbots/calvin` 0.4.0 and the same `@waterbots/core` 0.1.1 from the
+>   release `calvin-v0.4.0`, from 21 Nov 2026, her word**,
+
+**Old wording, whole — CLAUDE.md — Scope, the end of the list (a new bullet before it):**
+
+> - WaterBots branding per the brand book. Standalone deploy. No login.
+
+**Where the current text is:** [CLAUDE.md](../../CLAUDE.md), its first lines and *Scope — v1*;
+[PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *The name scan runs before every push*. The primer's
+old line is in `knowledge-packs/product-shared/CHANGELOG.md`, 0.6.6, under the pack's own rule.
+
 ## 21 Nov 2026 — CLAUDE.md, PROCESS_RULES_for_ShellB.md, BUILD_PLAN.md and the merge lanes: the handoff folder, and the number gate retired
 
 **Why.** The maintainer's rulings of 21 Nov 2026. Carries between this repository and any other cross through one

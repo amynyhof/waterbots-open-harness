@@ -100,6 +100,7 @@ import SiteMenu from './components/SiteMenu';
 import { usePhone } from './lib/phone';
 import { blueButton, meetShowing } from './lib/blue';
 import { PhoneSaveBar, type SaveDoor } from './components/SaveDoor';
+import { Reached } from './chat/reached';
 import { DEFAULT_SURFACE, type Surface } from './lib/surfaces';
 import { useConversation } from './chat/useConversation';
 import { WELLINGTON, wellingtonAsk } from './lib/wellington';
@@ -117,6 +118,7 @@ import {
   applyEligibilityProgress,
   applyWellingtonRoute,
   crewStatus,
+  crewNews,
   journeyProgress,
   learnedContext,
   openedEligibility,
@@ -152,8 +154,27 @@ export default function App() {
   const [status, setStatus] = useState<MapStatus | null>(null);
   const onStatus = useCallback((s: MapStatus) => setStatus(s), []);
 
-  const [surface, setSurface] = useState<Surface>(DEFAULT_SURFACE);
-  const openMap = useCallback(() => setSurface('map'), []);
+  /* BACK GOES BACK A STEP — the maintainer's word of 21 Nov 2026. Every move
+     to another step pushes a history entry at the same address, carrying the
+     step, and the browser's Back button returns to the step before. Nothing
+     else about the visit is kept in the history, and a reload still starts
+     the visit over. */
+  const [surface, setSurfaceOnly] = useState<Surface>(DEFAULT_SURFACE);
+  const surfaceRef = useRef<Surface>(DEFAULT_SURFACE);
+  const setSurface = useCallback((next: Surface) => {
+    if (next === surfaceRef.current) return;
+    window.history.pushState({ ...(window.history.state ?? {}), wbStep: next }, '', window.location.pathname);
+    surfaceRef.current = next;
+    setSurfaceOnly(next);
+  }, []);
+  const openMap = useCallback(() => setSurface('map'), [setSurface]);
+
+  /* THE STEPS THIS VISIT HAS REACHED, by any way — a crew card, a Meet
+     button, Back. A Meet button to a reached step is drawn quiet (21 Nov 2026). */
+  const [reached, setReached] = useState<ReadonlySet<Surface>>(() => new Set([DEFAULT_SURFACE]));
+  useEffect(() => {
+    setReached((r) => (r.has(surface) ? r : new Set([...r, surface])));
+  }, [surface]);
 
   /* WHICH PAGE — the console or the Agent Commons — read from the address on
      arrival and written back to it on every move, so a reload, a shared link
@@ -170,15 +191,26 @@ export default function App() {
      browser walk. A move to the address already shown does nothing. */
   const navigate = useCallback((next: string, options?: { replace?: boolean }) => {
     if (next === window.location.pathname) return;
-    if (options?.replace) window.history.replaceState(null, '', next);
-    else window.history.pushState(null, '', next);
+    /* The step rides along, so Back across a page change lands on the step the visitor left. */
+    const state = { wbStep: surfaceRef.current };
+    if (options?.replace) window.history.replaceState(state, '', next);
+    else window.history.pushState(state, '', next);
     setPath(next);
   }, []);
   /* The menu's links: "Agent Commons" on a module's page returns to the list,
      because the list's address differs from the module's. */
   const goTo = useCallback((next: Page) => navigate(pathForPage(next)), [navigate]);
   useEffect(() => {
-    const onPop = () => setPath(window.location.pathname);
+    /* The first entry carries the opening step, so Back from the first move lands on it. */
+    window.history.replaceState({ ...(window.history.state ?? {}), wbStep: surfaceRef.current }, '', window.location.pathname);
+    const onPop = (e: PopStateEvent) => {
+      setPath(window.location.pathname);
+      const step = (e.state as { wbStep?: Surface } | null)?.wbStep;
+      if (step) {
+        surfaceRef.current = step;
+        setSurfaceOnly(step);
+      }
+    };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
   }, []);
@@ -374,7 +406,7 @@ export default function App() {
     void askReturned();
   }, [surface, visit.stage, askReturned]);
 
-  /* CALVIN'S CARBON CALCULATOR IS THE OPEN CORE'S — @waterbots/calvin 0.4.0
+  /* CALVIN'S CARBON CALCULATOR IS THE OPEN CORE'S — @waterbots/calvin 0.4.1
      from 21 Nov 2026 (0.3.0 from 16 Nov, 0.2.0 from 14 Nov), the maintainer's word. The project
      comes from the visit's record alone (src/lib/calvinProject.ts); the engine
      does every sum. ITS STATE LIVES WITH THE CALCULATOR from 16 Nov 2026
@@ -409,7 +441,16 @@ export default function App() {
   /* THE RIGHT PANEL IS A QUIET LIST — W27, 14 Nov 2026: the crew, each with
      one plain line on where their part stands. Every handoff's button sits in
      the chat (W26). */
-  const crew = useMemo(() => crewStatus(visit, sheet, LIVE_PACKS, carbon), [visit, sheet, carbon]);
+  /* FEWER LINES UNTIL THERE IS NEWS — the maintainer's word of 21 Nov 2026:
+     a member's line shows once it says what they found, or while their step
+     is in view; until then the card is the face, the name and the role. */
+  const crewAll = useMemo(() => crewStatus(visit, sheet, LIVE_PACKS, carbon), [visit, sheet, carbon]);
+  const crew = useMemo(() => {
+    const news = crewNews(crewAll);
+    const shown: Partial<Record<Surface, string>> = {};
+    for (const key of Object.keys(crewAll) as Surface[]) if (news[key] || key === surface) shown[key] = crewAll[key];
+    return shown;
+  }, [crewAll, surface]);
   const progress = useMemo(() => journeyProgress(visit, sheet, LIVE_PACKS), [visit, sheet]);
 
   /* THE BRIDGE (item S7, built 8 Sep 2026). The click seals the visit as it
@@ -462,7 +503,7 @@ export default function App() {
   const meetInView =
     onConsole &&
     !(phone && drawer !== null) &&
-    ((onDesk && meetShowing(chat.turns)) || (onEligibility && meetOn.eligibility) || (onMap && meetOn.map));
+    ((onDesk && meetShowing(chat.turns, reached)) || (onEligibility && meetOn.eligibility) || (onMap && meetOn.map));
   /* On a phone Save is the bar at the bottom of the screen (21 Nov 2026), so it counts only while no panel covers it. */
   const saveInView = onConsole && somethingOnRecord(visit) && (!phone || drawer === null);
   /* A page with a form of its own — the interest form, and the supporters page from 18 Nov 2026 — makes its Send the blue one. */
@@ -532,6 +573,7 @@ export default function App() {
           sideways, and a horizontal scrollbar is a worse failure than a narrow
           map. The rail collapses instead, and the map holds a zoom floor so it
           stays readable rather than shrinking to a postage stamp. */}
+      <Reached.Provider value={reached}>
       <PhoneSaveBar.Provider value={phone ? saveDoor : null}>
       <div
         className={onConsole ? 'wb-page wb-page-console' : 'wb-page wb-page-console is-off'}
@@ -550,12 +592,7 @@ export default function App() {
           <JourneyBar
             active={surface}
             progress={progress}
-            onNavigate={setSurface}
-            phone={
-              phone
-                ? { onProject: () => setDrawer('project'), onCrew: () => setDrawer('crew'), steps: 0 }
-                : undefined
-            }
+            phone={phone ? { onProject: () => setDrawer('project'), onCrew: () => setDrawer('crew') } : undefined}
           />
 
           <div style={{ flex: 1, minHeight: 0, display: 'flex', overflow: 'hidden' }}>
@@ -666,6 +703,7 @@ export default function App() {
         {phone && drawer !== null && <div className="wb-scrim" aria-hidden onClick={closeDrawer} />}
       </div>
       </PhoneSaveBar.Provider>
+      </Reached.Provider>
 
       {/* THE AGENT COMMONS (item S18, slices 2 and 3): the shelf, and a pack
           opened on its holder's screen, alone. No left rail, no journey bar,

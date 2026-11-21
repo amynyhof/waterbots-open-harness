@@ -34,5 +34,11 @@ export const JOURNEY: JourneyPhase[] = [
   { key: 'communicate', label: 'Communicate', surface: null },
 ];
 
-/** What a gated phase says when asked. One sentence, stated, never simulated. */
-export const GATED_NOTE = 'Opens with a saved project.';
+/**
+ * PLAN, MONITOR AND COMMUNICATE FOLD INTO ONE MARK — the maintainer's word of
+ * 21 Nov 2026. They open on waterbots.ai once a project is saved, never on this
+ * site; the note says so plainly, where "Opens with a saved project" promised
+ * something this site never did.
+ */
+export const AFTER_SAVE_LABEL = 'After you save';
+export const AFTER_SAVE_NOTE = 'Plan, Monitor and Communicate, on waterbots.ai once you save your project.';

@@ -69,7 +69,7 @@ export function actionsFor(
   const meet = MEET[route];
   if (!meet || !onNavigate) return undefined;
   return [
-    { label: `Meet ${meet.name}`, primary: true, go: () => onNavigate(meet.surface) },
+    { label: `Meet ${meet.name}`, primary: true, reaches: meet.surface, go: () => onNavigate(meet.surface) },
     { label: 'Keep chatting', go: () => document.getElementById(composerId)?.focus() },
   ];
 }

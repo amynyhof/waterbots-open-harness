@@ -1,5 +1,9 @@
 # CLAUDE.md — WaterBots Open Harness
 
+REFERENCE PROJECTS — SETTLED, DO NOT ASK AGAIN (ruled 21 Nov 2026)
+
+Never put a reference project's name, ID or documents into code, comments, tests or anything public. The name scan on the private names-to-block list (names and project IDs) is the only check. There is no rule or check on calculation figures. Every older rule about project numbers, figures or a number gate is retired. Do not raise this topic again; if anything seems to conflict, this rule wins. When a new reference project is used, stop and tell the maintainer to add its name and ID to names-to-block and update the three secrets.
+
 This file is the rulebook for AI engineering work in this repository.
 Read it fully before doing anything.
 
@@ -104,10 +108,6 @@ The rule is in PROCESS_RULES_for_ShellB.md, *Carries through the handoff folder*
   no list is lane 3. **Nothing merges without her**: lane 1's auto-merge is built but OFF until her
   word. A session opens the pull request and never merges it. The rule is in
   PROCESS_RULES_for_ShellB.md, *Merge lanes*.
-- **The name scan is the one check for public material, from 21 Nov 2026 (the maintainer's
-  ruling).** It reads her private list of names and project IDs. No calculation figure is blocked;
-  the number gate is retired, and nothing waits on it. The rule is in PROCESS_RULES_for_ShellB.md,
-  *The name scan runs before every push*.
 - **Atomic commits.** Subjects lead with the action taken —
   `Built:`, `Fixed:`, `Docs amended:`, `Proposal written:` — never
   the topic alone.
@@ -270,19 +270,18 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   are taken from saved production pages brought in by the maintainer's
   hand, and none of their data, composers, organisations, roles or
   saving.
-- **The desk says the site is under build, from 23 Sep 2026.** ~~One line in the maintainer's words
-  above Wellington's chat~~ **From 16 Nov 2026 (W28) one line under the site menu on every page, in
-  her words: "This site is still being built."**, and a dated build-update fact he phrases when asked, refreshed at every
-  full close-out (the ritual's step 8). Item S11. The "first screening, not an official decision"
-  note stays beside the figures and in the report, never in the banner.
+- **The site says it is early in one place, from 21 Nov 2026, the maintainer's word: a small "beta"
+  beside waterbots.ai at the foot of the left rail.** The line under the site menu (W28, 16 Nov 2026)
+  is gone, and no agent or module wears a beta tag. Wellington keeps a dated build-update fact he
+  phrases when asked, refreshed at every full close-out (the ritual's step 8). Item S11. The "first
+  screening, not an official decision" note stays beside the figures and in the report.
 - **Agents phrase the roster's facts themselves, from 3 Sep 2026.** An
   agent is given facts and rules and writes its own two or three plain
   sentences; the maintainer approves rules, not wording, and no prompt
   says word for word. The rule lives in AGENT_RULES.md.
 - **The desk plan's three slices landed 5–7 Sep 2026.** The desk is the
   conversation and the rail is the record Wellington's interview fills, in
-  the order the seats need; **one row is the navigation and the tab row is
-  gone**; Bridget's row asks for the pin once a place is known; **the
+  the order the seats need; **the tab row is gone**; Bridget's row asks for the pin once a place is known; **the
   record goes to Phoebe with every ask and her verdicts come back to her
   row.** Agents say the six phase names as written, point at the step and
   never at a tab, and speak plain words — never "seat", "console",
@@ -300,9 +299,9 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   "seal", "ticket", "store" or "claim"; maintainer's ruling, 8 Sep 2026.
 - **The look pass of 8 Sep 2026, and four canon rules the same day.** Wellington
   opens warmly and names the next step in words; the project name shows once,
-  in the card; the record has three rows and an (i); the save button sits at
-  ~~the foot of the right rail~~ **the left rail, under the project, from 14 Nov 2026** (from 13 Nov 2026 only once something is on the record; until then
-  the site menu's Sign up, beside Sign in, is the door); the phase names show at laptop width; ~~next steps
+  in the card; the record has three rows and an (i); the save button sits
+  in the right panel, under the crew, from 21 Nov 2026, and is a bar above the chat box on a phone
+  (only once something is on the record; until then the site menu's Sign up, beside Sign in, is the door); the phase names show at laptop width; ~~next steps
   live in the right rail only~~ **every handoff's button sits in the chat from 14 Nov 2026**; the map's line is one plain sentence; no intro
   paragraph above the conversation. **Every agent keeps four rules on pace and
   posture** — short, one question at a time, ends with the next step; "I don't
@@ -470,13 +469,13 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   his own conversation, so his desk holds it too. No agent sends the visitor back to him. A path
   Phoebe rules out in chat is saved the same turn, through a required `closes` field (W25: on the
   maintainer's walk carbon was said ruled out and saved as "not enough known"). The right rail is
-  the crew with one status line each ("water likely · carbon ruled out"); the save door, the box to
-  send the project to the team (whenever a path is ruled out) and **Export screening report** (S21,
-  print-only, growing with the visit) sit in the left rail under the project. Bridget has a voice
+  the crew with one status line each; the save door and the box to send the project to the team
+  (whenever a path is ruled out) sit under it from 21 Nov 2026, and **Export screening report** (S21,
+  print-only, growing with the visit) sits in the left rail under the project. Bridget has a voice
   card and a short opening (B1), and the map zooms to the country as soon as the place is known
   (B2). Calvin's chat is not built, so Wellington does not yet come to it.
 - **The queued round, 16 Nov 2026, the maintainer's word on #175** (the proposal is
-  docs/proposals/queued-round-2026-11-16.md). **W28:** the build banner above. **W29:** Wellington
+  docs/proposals/queued-round-2026-11-16.md). **W28:** the build banner, retired 21 Nov 2026. **W29:** Wellington
   speaks first on the desk, one opened turn in his own words, unless a question was carried in.
   **V1:** every agent speaks 3rd- to 6th-grade English (AGENT_RULES.md and every voice card); a
   reading-grade count in `api/_reply.ts` logs a reply above grade 6, and a measured walk fails when
@@ -540,15 +539,16 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   13 Nov 2026, after the maintainer's three walks of them, 24,581 with the primer's line on Phoebe's tab, 25,943 after her fourth walk, 26,145 after her fifth, 26,148 with the voice card and the
   shared plain-words list, and 26,136 when he came to the agents' chats, all 14 Nov 2026, and 26,158
   with the reading level in his voice card, 16 Nov 2026 (his opening note rides beside the prompt,
-  as his notes for joining a chat do), and 26,072 measured 21 Nov 2026, against the unchanged gate
+  as his notes for joining a chat do), 26,072 measured 21 Nov 2026, and 26,111 the same day with the crew as the navigation, against the unchanged gate
   of 26,199.
 - ~~**The engine bundle is tracked at `carried/`, from 27 Sep 2026**~~ (#132, replaced on 3 Oct 2026
   by v0.16.1, #147; tags `engine-carry-2026-09-27` and `engine-carry-2026-10-04`). **`carried/` is
   deleted on 14 Nov 2026, V1, required, the maintainer's word.** **Calvin's carbon calculator is the
   open core's from the same day**: ~~`@waterbots/calvin` 0.2.0 and `@waterbots/core` 0.1.0 from the
   release `calvin-v0.2.0`~~ ~~`@waterbots/calvin` 0.3.0 and `@waterbots/core` 0.1.1 from the release
-  `calvin-v0.3.0`, from 16 Nov 2026~~ **`@waterbots/calvin` 0.4.0 and the same `@waterbots/core` 0.1.1 from the
-  release `calvin-v0.4.0`, from 21 Nov 2026, her word**, with `creditedUnderV1` left unset until item A29, so every
+  `calvin-v0.3.0`, from 16 Nov 2026~~ **`@waterbots/calvin` 0.4.1 and the same `@waterbots/core` 0.1.1 from the
+  release `calvin-v0.4.1`, from 21 Nov 2026, her word** (0.4.0 earlier the same day; 0.4.1 labels each
+  monitoring value "Assumed" ex-ante, and no sum changed), with `creditedUnderV1` left unset until item A29, so every
   project gets the V2.0-only view; vendored in `vendor/waterbots/` and checked against the release's SHA-256
   and the lockfile's SHA-512 by `scripts/check-calvin-package.mjs`, which also re-runs the package's
   47 made-up cases (proof P1). It is locked to ex-ante (`exAnteOnly`, sliders on), on Quantify and on
@@ -589,6 +589,19 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   except the 'Back to Wellington' link when no pathway goes on to Quantify, the same hand-back Phoebe
   uses.~~ and says Wellington will join with the next step (14 Nov 2026). Thirty messages a day, under her own counter. She never guesses, never names a project,
   partner, funder or place the visitor did not type, and never says she checks anything.
+- **The agents lead, 21 Nov 2026, the maintainer's word.** A visitor moves by clicking an agent in the
+  crew on the right, which opens that agent's screen, or by Wellington's "Meet …" button. The journey
+  bar is a progress line that does not click, "you are here" its strongest mark, and Plan, Monitor and
+  Communicate fold into one "After you save" mark: they open on waterbots.ai once a project is saved.
+  Each move to a step is a history entry, so the browser's Back button goes back a step; a reload still
+  starts the visit over. A "Meet …" button goes quiet once its agent is reached (`src/chat/reached.ts`).
+  Each crew line says what the agent is ready to do, then what they found ("Ready to check funding",
+  "Water: likely · Carbon: ruled out"), and shows only once it is news or while that agent's step is in
+  view (`crewStatus`, `crewNews`). The project record starts collapsed, its heading counting the rows
+  it holds, and shows only rows with a value, replacing her 13 Nov 2026 ruling that it opens on
+  landing. Wellington's desk opens on his chat alone; "About Wellington" beside his name brings back his
+  Knowledge pack and Credentials. On a phone the rings and the row under them are one row: Project,
+  the step by name with a dot per step, Crew.
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material

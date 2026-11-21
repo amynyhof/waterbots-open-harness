@@ -15,7 +15,7 @@
     "@anthropic-ai/sdk": "^0.120.0",
     "@types/leaflet": "^1.9.22",
     "@vercel/analytics": "2.0.1",
-    "@waterbots/calvin": "file:vendor/waterbots/waterbots-calvin-0.4.0.tgz",
+    "@waterbots/calvin": "file:vendor/waterbots/waterbots-calvin-0.4.1.tgz",
     "@waterbots/core": "file:vendor/waterbots/waterbots-core-0.1.1.tgz",
     "leaflet": "^1.9.4",
     "react": "19.3.1",

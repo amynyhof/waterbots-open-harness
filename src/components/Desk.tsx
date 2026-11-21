@@ -55,6 +55,7 @@ export default function Desk({
   return (
     <AgentScreen
       host={WELLINGTON}
+      chatOnly
       tabs={{
         /* The build note that stood here (item S11, 23 Sep 2026) is the one-line
            banner under the site menu from 16 Nov 2026, on every page (W28). */

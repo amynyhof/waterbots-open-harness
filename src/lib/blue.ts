@@ -18,6 +18,7 @@
  */
 
 import type { Turn } from '../chat/evidence';
+import type { Surface } from './surfaces';
 
 export type Blue = 'meet' | 'save' | 'signup' | 'send';
 
@@ -39,11 +40,16 @@ export function blueButton(state: BlueState): Blue {
 }
 
 /**
- * Whether a thread's latest turn carries a primary button — "Meet <name>".
- * Only the latest turn draws its buttons (src/chat/Transcript.tsx), so this
- * is exactly whether one is on the screen for that chat.
+ * Whether a thread's latest turn carries a primary button — "Meet <name>" —
+ * that is still the next step. Only the latest turn draws its buttons
+ * (src/chat/Transcript.tsx). From 21 Nov 2026 a Meet button whose agent the
+ * visitor has already reached is drawn quiet, so it does not count.
  */
-export function meetShowing(turns: readonly Turn[]): boolean {
+export function meetShowing(turns: readonly Turn[], reached: ReadonlySet<Surface> = new Set()): boolean {
   const last = turns[turns.length - 1];
-  return last !== undefined && last.role === 'agent' && (last.buttons ?? []).some((button) => button.primary);
+  return (
+    last !== undefined &&
+    last.role === 'agent' &&
+    (last.buttons ?? []).some((button) => button.primary && !(button.reaches && reached.has(button.reaches)))
+  );
 }

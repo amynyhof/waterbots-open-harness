@@ -33,7 +33,7 @@ import { useEffect, useState } from 'react';
 import { SITE_LABEL, SITE_URL } from '../lib/site';
 import { pathForInterest } from '../lib/pages';
 import { PROJECT_STAGES, projectType } from '../lib/projectTypes.generated';
-import { WATER_SUPPLY_TYPES, servedWords, type Provenance, type VisitContext } from '../lib/visit';
+import { servedWords, type Provenance, type VisitContext } from '../lib/visit';
 
 const EXPANDED = 224;
 const COLLAPSED = 52;
@@ -106,6 +106,23 @@ export default function NavRail({
   }, [touched]);
 
   const name = context.name.trim() || UNNAMED;
+
+  /* The record starts collapsed (21 Nov 2026). */
+  const [recordOpen, setRecordOpen] = useState(false);
+
+  /* THE ORDER IS THE SEATS' — ruled 5 Sep 2026: what it does (Phoebe,
+     Calvin), what type and the stage (Phoebe, Calvin), people served (a water
+     supply project, ruling R4 of 27 Sep 2026, households kept as households),
+     where it is (Phoebe, Bridget before any pin, Calvin). Wellington asks in
+     this order. Only a row with a value shows (21 Nov 2026). */
+  const stage = PROJECT_STAGES.find((s) => s.id === context.stage);
+  const rows: { label: string; value: string; hint?: string; provenance: Provenance }[] = [
+    { label: 'What it does', value: context.does, provenance: context.provenance.does },
+    { label: 'What type', value: typeWords(context), hint: typeHint(context), provenance: context.provenance.type },
+    { label: 'Stage', value: stage?.words ?? '', hint: stage?.plain, provenance: context.provenance.stage },
+    { label: 'People served', value: context.served ? servedWords(context.served) : '', provenance: context.provenance.served },
+    { label: 'Where it is', value: context.place.trim(), provenance: context.provenance.place },
+  ].filter((row) => row.value !== '');
 
   return (
     <nav
@@ -208,58 +225,36 @@ export default function NavRail({
             </button>
           )}
 
-          {/* THE RECORD his interview populates. Four rows; a dash until he
-              has heard it. The explainer sits behind the (i). */}
-          <div
-            className="eyebrow"
-            style={{ margin: '18px 0 6px', paddingLeft: 4, display: 'flex', alignItems: 'center', gap: 6 }}
-          >
-            Project record
-            <span
-              className="wb-info"
-              role="img"
-              tabIndex={0}
-              aria-label={RECORD_EXPLAINER}
-              title={RECORD_EXPLAINER}
+          {/* THE RECORD his interview populates — from 21 Nov 2026, the
+              maintainer's word, it starts collapsed and shows only the rows
+              that hold a value (this replaces her 13 Nov ruling that it opens
+              on landing). Collapsed, its heading still counts what he has
+              heard, so the visitor sees it filling. The explainer sits behind
+              the (i). */}
+          <div style={{ margin: '18px 0 6px', paddingLeft: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
+            <button
+              type="button"
+              className="eyebrow wb-record-toggle"
+              onClick={() => setRecordOpen((v) => !v)}
+              aria-expanded={recordOpen}
             >
+              Project record
+              {rows.length > 0 && <span className="wb-record-count">{rows.length}</span>}
+              <RecordCaret open={recordOpen} />
+            </button>
+            <span className="wb-info" role="img" tabIndex={0} aria-label={RECORD_EXPLAINER} title={RECORD_EXPLAINER}>
               i
             </span>
           </div>
 
-          {/* THE ORDER IS THE SEATS' — ruled 5 Sep 2026: what it
-              does (Phoebe, Calvin), what type and the stage (Phoebe, Calvin),
-              where it is (Phoebe, Bridget before any pin, Calvin), what it is
-              called (the desk only). Wellington asks in this order. */}
-          <RecordRow label="What it does" value={context.does} provenance={context.provenance.does} />
-          <RecordRow
-            label="What type"
-            value={typeWords(context)}
-            hint={typeHint(context)}
-            provenance={context.provenance.type}
-          />
-          <RecordRow
-            label="Stage"
-            value={PROJECT_STAGES.find((s) => s.id === context.stage)?.words ?? ''}
-            hint={PROJECT_STAGES.find((s) => s.id === context.stage)?.plain}
-            provenance={context.provenance.stage}
-          />
-          {/* PEOPLE SERVED — 27 Sep 2026, ruling R4: a row in the same shape,
-              after the stage, as Wellington asks it. Only for a water supply
-              project, or once said; households stay households. */}
-          {(context.served || WATER_SUPPLY_TYPES.includes(context.type)) && (
-            <RecordRow
-              label="People served"
-              value={context.served ? servedWords(context.served) : ''}
-              provenance={context.provenance.served}
-            />
-          )}
-          <RecordRow
-            label="Where it is"
-            value={context.place}
-            provenance={context.provenance.place}
-            editable={{ value: context.place, onChange: (v) => onTyped('place', v), placeholder: 'or type it' }}
-            last
-          />
+          {recordOpen &&
+            (rows.length === 0 ? (
+              <p className="t-caption" style={{ margin: '4px 4px 0', fontSize: 11.5, lineHeight: 1.5, color: 'var(--ink-3)' }}>
+                Nothing yet. Wellington fills this in as you talk.
+              </p>
+            ) : (
+              rows.map((row, i) => <RecordRow key={row.label} {...row} last={i === rows.length - 1} />)
+            ))}
         </div>
       ) : (
         <div
@@ -425,6 +420,15 @@ function ExternalIcon() {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+    </svg>
+  );
+}
+
+/** The record's caret: pointing down when open, right when collapsed. */
+function RecordCaret({ open }: { open: boolean }) {
+  return (
+    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden style={{ flex: 'none', transform: open ? 'rotate(-90deg)' : 'rotate(180deg)', transition: `transform var(--dur) var(--ease)` }}>
+      <path d="M10 3.5 5.5 8l4.5 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

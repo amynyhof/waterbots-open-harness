@@ -141,7 +141,7 @@ const PHOEBE_CARD: ShelfCard = {
    maintainer's word of 28 Oct 2026; the registry's own category says which
    they are. */
 /* FROM 14 NOV 2026 CARBON IS THE OPEN CORE'S CALCULATOR, one card for both
-   versions: @waterbots/calvin, from the release calvin-v0.4.0 (21 Nov 2026). Its stage and
+   versions: @waterbots/calvin, from the release calvin-v0.4.1 (21 Nov 2026). Its stage and
    owner are the carbon packs' of 28 Oct 2026, unchanged. */
 const CALVIN_CARBON_CARD: ShelfCard = {
   key: 'pack-calvin-carbon',

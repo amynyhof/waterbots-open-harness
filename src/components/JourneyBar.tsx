@@ -1,74 +1,68 @@
 /**
  * The journey bar — the one row at the top of the centre, on every surface.
  *
- * ONE ROW, NOT TWO. Maintainer's ruling, 7 Sep 2026: the journey bar is the
- * navigation, and the tab row that sat beneath it is gone. The row reads
- * Dispatches | Eligibility · Partners · Quantify · Plan · Monitor · Communicate.
- * Dispatches sits first with a hairline after it — the desk, not a phase.
- * Eligibility, Partners and Quantify click and open the screening tools:
- * Phoebe's screen, the map, the calculator. The phase names stay canon, and no
- * tool name sits on this row. Item S15 offers the shape to production, later.
+ * A PROGRESS LINE, NOT A MENU — the maintainer's word of 21 Nov 2026: the
+ * agents lead. The crew on the right is how a visitor moves (a click on a face
+ * opens that agent's screen), and Wellington's "Meet …" button in the chat;
+ * this row only shows where the visit stands. Nothing on it clicks. Until
+ * 21 Nov 2026 it was the navigation (ruling of 7 Sep 2026).
  *
- * THE LOOK IS STILL THE PRODUCTION CONSOLE'S, from the saved desk the
- * maintainer brought in by hand on 2 Sep 2026: phase markers joined by
- * hairlines, production's measure. The tab row's Tide rule left with the tab
- * row; the bar keeps its own hairline. The look is taken; nothing else is.
+ * THE ROW READS Dispatches | Eligibility · Partners · Quantify · After you save.
+ * Dispatches sits first with a hairline after it — the desk, not a phase. The
+ * phase names stay canon. Plan, Monitor and Communicate fold into one quiet
+ * mark, "After you save", because they open on waterbots.ai once the project is
+ * saved, never on this site; their names are in the mark's title.
  *
- * PHASES 4 TO 6 ARE GATED, AND SAY SO IN WORDS. They render quieter, they do
- * not click, and their title states plainly that they open with a saved
- * project. No caption — ruling 2a, 5 Sep 2026. A phase that looked clickable
- * and did nothing would be a false success state; a phase hidden altogether
- * would hide the road.
- *
- * A PHASE MARKER IS A HOLLOW DOT UNTIL THE VISIT HAS SOMETHING FOR IT. It is
- * a status, so it obeys BRAND.md §2.6 — a dot, never a portrait. What fills
- * it derives from the visit (src/lib/visit.ts): a criterion moved, a basin
- * pinned, a pack with a figure. A filled dot means "something is here", never
- * "done" — this console certifies nothing, and a phase does not pass.
+ * "YOU ARE HERE" IS THE STRONGEST MARK. The step in view has a solid dot and a
+ * bold name; a step with something from this visit has a ring in Tide; one with
+ * nothing yet, a quiet ring. Until 21 Nov 2026 progress filled the dot solid
+ * and the step in view had only a wash, so a step left behind read as current.
+ * A ring in Tide means "something is here", never "done" — this console
+ * certifies nothing, and a phase does not pass.
  *
  * THE BAR NEVER SCROLLS — ruling 2b, 5 Sep 2026. When the labels no longer
- * fit, each phase collapses to its number in a ring, (1) to (6), and the label
- * moves to the title. Dispatches keeps its own mark: a ring holding a dot, not
- * a number, because the desk has no number on the road.
+ * fit, each phase collapses to its number in a ring, and the label moves to
+ * the title. Dispatches keeps its own mark: a ring holding a dot.
  *
- * ON A PHONE, A SECOND ROW — the maintainer's word of 29 Oct 2026. A phone
- * shows no title on hover, so the rings alone said nothing: the current
- * step's name sits under them, between "Project", which opens the record,
- * and "Crew", which opens the crew with the next steps and the save button.
- * Every ring is a 44px place to tap, and all seven fit at 375px (base.css).
+ * ON A PHONE, ONE ROW — the maintainer's word of 21 Nov 2026: the rings and
+ * the row under them became one. "Project" at the left opens the record,
+ * "Crew" at the right opens the crew; between them, the step in view by name,
+ * with a small dot for each step beside it.
  */
 
-import { useEffect, useRef, useState } from 'react';
-import { GATED_NOTE, JOURNEY } from '../lib/journey';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { AFTER_SAVE_LABEL, AFTER_SAVE_NOTE, JOURNEY } from '../lib/journey';
 import { DESK_LABEL, type Surface } from '../lib/surfaces';
 
 /**
- * Below this many pixels of bar, Dispatches and the six labels no longer fit
- * and the bar collapses to marks rather than scrolling. Measured on the
- * labels' own width at their type size, with the joining hairlines at their
- * minimum, plus the desk's word and its hairline.
+ * Below this many pixels of bar, the labels no longer fit and the bar
+ * collapses to marks rather than scrolling (look pass, 8 Sep 2026).
  */
-/* Was 1080 until the look pass of 8 Sep 2026. */
-/**
- * Look pass, 8 Sep 2026: the names must show at laptop width. With the left
- * rail open the bar is about 1,056px on a 1,280px laptop, which the old
- * 1,080 turned into rings. The seven labels with their dots and their
- * minimum hairlines fit in well under 900; the collapse point moves there.
- */
-const COMPACT_BELOW = 880;
+const COMPACT_BELOW = 760;
+
+/** The open phases: the ones this site has a step for. */
+const OPEN = JOURNEY.filter((phase) => phase.surface !== null);
+
+type Mark = 'here' | 'has' | 'none';
+
+/** A mark's look: "here" solid, "has" a Tide ring, "none" a quiet ring. */
+function markStyle(mark: Mark): CSSProperties {
+  return {
+    borderColor: mark === 'none' ? 'var(--ink-4)' : 'var(--tide-ui)',
+    background: mark === 'here' ? 'var(--tide-ui)' : 'transparent',
+  };
+}
 
 export default function JourneyBar({
   active,
   progress,
-  onNavigate,
   phone,
 }: {
   active: Surface;
   /** Which open phases have something from this visit, keyed by phase key. */
   progress: Record<string, boolean>;
-  onNavigate: (surface: Surface) => void;
-  /** On a phone: the row under the rings, and what its two buttons open. */
-  phone?: { onProject: () => void; onCrew: () => void; steps: number };
+  /** On a phone: the one row, and what its two buttons open. */
+  phone?: { onProject: () => void; onCrew: () => void };
 }) {
   const bar = useRef<HTMLElement>(null);
   const [compact, setCompact] = useState(false);
@@ -83,18 +77,39 @@ export default function JourneyBar({
   }, []);
 
   const onDesk = active === 'desk';
-  const step = JOURNEY.findIndex((phase) => phase.surface === active);
-  const stepName = step < 0 ? DESK_LABEL : `${step + 1} · ${JOURNEY[step].label}`;
+  const markOf = (key: string, surface: Surface | null): Mark =>
+    surface === active ? 'here' : progress[key] ? 'has' : 'none';
+  const step = OPEN.findIndex((phase) => phase.surface === active);
+  const stepName = step < 0 ? DESK_LABEL : `${step + 1} · ${OPEN[step].label}`;
+
+  if (phone) {
+    return (
+      <div className="chrome wb-phone-bar" style={{ flex: 'none' }}>
+        <button type="button" className="wb-phone-bar-button" onClick={phone.onProject}>
+          <span aria-hidden>‹ </span>Project
+        </button>
+        <span className="wb-phone-bar-name" aria-live="polite">
+          <span className="wb-phone-bar-dots" aria-hidden>
+            <span className="wb-phase-dot" style={markStyle(onDesk ? 'here' : 'none')} />
+            {OPEN.map((phase) => (
+              <span key={phase.key} className="wb-phase-dot" style={markStyle(markOf(phase.key, phase.surface))} />
+            ))}
+          </span>
+          {stepName}
+        </span>
+        <button type="button" className="wb-phone-bar-button" onClick={phone.onCrew}>
+          Crew<span aria-hidden> ›</span>
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="chrome" style={{ flex: 'none' }}>
-      {/* Production's measure, from the saved console: 12px labels, 7px hollow
-          dots, hairlines that stretch to fill, 8px of vertical padding, and a
-          hairline under the row. Look pass, 2 Sep 2026. */}
       <nav
         ref={bar}
         className="wb-journey"
-        aria-label="Journey"
+        aria-label="Where this screening stands"
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -104,177 +119,60 @@ export default function JourneyBar({
           overflow: 'hidden',
         }}
       >
-        {/* DISPATCHES, FIRST, THEN A HAIRLINE — the desk on one side of the
-            line, the journey on the other. It is not a phase: no dot, no
-            number, and it never fills, because the desk is where the visit
-            starts rather than a step it gets through. */}
-        <button
-          type="button"
-          className="wb-phase"
-          title={compact ? DESK_LABEL : undefined}
-          onClick={() => onNavigate('desk')}
-          aria-current={onDesk ? 'page' : undefined}
-          style={{ flex: 'none' }}
-        >
+        {/* DISPATCHES, FIRST, THEN A HAIRLINE — the desk, not a phase. */}
+        <span className="wb-phase" aria-current={onDesk ? 'step' : undefined} title={compact ? DESK_LABEL : undefined} style={{ flex: 'none' }}>
           {compact ? (
-            <span
-              className="wb-phase-number"
-              aria-label={DESK_LABEL}
-              style={{
-                borderColor: onDesk ? 'var(--tide-ui)' : 'var(--ink-4)',
-                background: onDesk ? 'color-mix(in oklab, var(--tide-ui) 18%, transparent)' : 'transparent',
-              }}
-            >
-              <span
-                aria-hidden
-                style={{
-                  width: 5,
-                  height: 5,
-                  borderRadius: 'var(--r-pill)',
-                  background: onDesk ? 'var(--tide-ui)' : 'var(--ink-3)',
-                }}
-              />
+            <span className="wb-phase-number" aria-label={DESK_LABEL} style={markStyle(onDesk ? 'here' : 'none')}>
+              <span aria-hidden style={{ width: 5, height: 5, borderRadius: 'var(--r-pill)', background: onDesk ? '#ffffff' : 'var(--ink-3)' }} />
             </span>
           ) : (
-            <span
-              style={{
-                fontSize: 12,
-                fontWeight: onDesk ? 600 : 500,
-                color: onDesk ? 'var(--tide-text)' : 'var(--ink-2)',
-                whiteSpace: 'nowrap',
-              }}
-            >
+            <span style={{ fontSize: 12, fontWeight: onDesk ? 600 : 500, color: onDesk ? 'var(--tide-text)' : 'var(--ink-2)', whiteSpace: 'nowrap' }}>
               {DESK_LABEL}
             </span>
           )}
-        </button>
-        <span
-          aria-hidden
-          className="wb-journey-sep"
-          style={{ width: 1, height: 14, background: 'var(--line)', flex: 'none', margin: '0 14px 0 8px' }}
-        />
+        </span>
+        <span aria-hidden className="wb-journey-sep" style={{ width: 1, height: 14, background: 'var(--line)', flex: 'none', margin: '0 14px 0 8px' }} />
 
-        {/* The six phases. */}
-        {JOURNEY.map((phase, i) => {
-          const gated = phase.surface === null;
-          const current = phase.surface !== null && phase.surface === active;
-          const has = Boolean(progress[phase.key]);
-          const inner = compact ? (
-            <span
-              className="wb-phase-number t-mono"
-              aria-label={phase.label}
-              style={{
-                borderColor: current || has ? 'var(--tide-ui)' : 'var(--ink-4)',
-                background: has
-                  ? 'var(--tide-ui)'
-                  : current
-                    ? 'color-mix(in oklab, var(--tide-ui) 18%, transparent)'
-                    : 'transparent',
-                color: has ? '#ffffff' : gated ? 'var(--ink-4)' : current ? 'var(--tide-text)' : 'var(--ink-3)',
-              }}
-            >
-              {i + 1}
-            </span>
-          ) : (
-            <>
-              <span
-                aria-hidden
-                className="wb-phase-dot"
-                style={{
-                  borderColor: current || has ? 'var(--tide-ui)' : 'var(--ink-4)',
-                  /* Something from the visit fills the dot solid; the current
-                     phase with nothing in it yet takes only a wash. */
-                  background: has
-                    ? 'var(--tide-ui)'
-                    : current
-                      ? 'color-mix(in oklab, var(--tide-ui) 18%, transparent)'
-                      : 'transparent',
-                }}
-              />
-              <span
-                style={{
-                  fontSize: 12,
-                  fontWeight: current ? 600 : 400,
-                  color: gated ? 'var(--ink-4)' : current ? 'var(--tide-text)' : 'var(--ink-3)',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {phase.label}
-              </span>
-            </>
-          );
+        {/* The three open phases. */}
+        {OPEN.map((phase, i) => {
+          const mark = markOf(phase.key, phase.surface);
           return (
-            <div
-              key={phase.key}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                /* Each phase keeps its own width; only the hairline between
-                   phases stretches. Squeezed past the labels' width, the bar
-                   collapses to marks rather than scrolling. */
-                flex: i < JOURNEY.length - 1 ? '1 1 auto' : 'none',
-                minWidth: 'max-content',
-              }}
-            >
-              {gated ? (
-                <span
-                  className="wb-phase"
-                  title={`${phase.label} — ${GATED_NOTE}`}
-                  aria-disabled
-                  style={{ cursor: 'default' }}
-                >
-                  {inner}
-                </span>
-              ) : (
-                <button
-                  type="button"
-                  className="wb-phase"
-                  title={compact ? phase.label : undefined}
-                  onClick={() => phase.surface && onNavigate(phase.surface)}
-                  aria-current={current ? 'page' : undefined}
-                >
-                  {inner}
-                </button>
-              )}
-              {/* The joining hairline. It is the same hairline everywhere; a
-                  phase does not colour the road behind it. */}
-              {i < JOURNEY.length - 1 && (
-                <span
-                  aria-hidden
-                  className="wb-journey-join"
-                  style={{
-                    flex: '1 1 8px',
-                    minWidth: 8,
-                    height: 1,
-                    background: 'var(--line)',
-                    margin: '0 8px',
-                  }}
-                />
-              )}
+            <div key={phase.key} style={{ display: 'flex', alignItems: 'center', flex: '1 1 auto', minWidth: 'max-content' }}>
+              <span className="wb-phase" aria-current={mark === 'here' ? 'step' : undefined} title={compact ? phase.label : undefined}>
+                {compact ? (
+                  <span
+                    className="wb-phase-number t-mono"
+                    aria-label={phase.label}
+                    style={{ ...markStyle(mark), color: mark === 'here' ? '#ffffff' : mark === 'has' ? 'var(--tide-text)' : 'var(--ink-3)' }}
+                  >
+                    {i + 1}
+                  </span>
+                ) : (
+                  <>
+                    <span aria-hidden className="wb-phase-dot" style={markStyle(mark)} />
+                    <span
+                      style={{
+                        fontSize: 12,
+                        fontWeight: mark === 'here' ? 600 : 400,
+                        color: mark === 'here' ? 'var(--tide-text)' : mark === 'has' ? 'var(--ink-2)' : 'var(--ink-3)',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {phase.label}
+                    </span>
+                  </>
+                )}
+              </span>
+              <span aria-hidden className="wb-journey-join" style={{ flex: '1 1 8px', minWidth: 8, height: 1, background: 'var(--line)', margin: '0 8px' }} />
             </div>
           );
         })}
-      </nav>
 
-      {phone && (
-        <div className="wb-phone-bar">
-          <button type="button" className="wb-phone-bar-button" onClick={phone.onProject}>
-            <span aria-hidden>‹ </span>Project
-          </button>
-          <span className="wb-phone-bar-name" aria-live="polite">
-            {stepName}
-          </span>
-          <button type="button" className="wb-phone-bar-button" onClick={phone.onCrew}>
-            Crew
-            {phone.steps > 0 && (
-              <span className="wb-phone-bar-count" aria-label={`, ${phone.steps} next ${phone.steps === 1 ? 'step' : 'steps'}`}>
-                {phone.steps}
-              </span>
-            )}
-            <span aria-hidden> ›</span>
-          </button>
-        </div>
-      )}
+        {/* PLAN, MONITOR, COMMUNICATE — one quiet mark (21 Nov 2026). */}
+        <span className="wb-phase wb-phase-later" title={AFTER_SAVE_NOTE} aria-label={`${AFTER_SAVE_LABEL}: ${AFTER_SAVE_NOTE}`} style={{ flex: 'none' }}>
+          <span style={{ fontSize: compact ? 11 : 12, color: 'var(--ink-4)', whiteSpace: 'nowrap' }}>{AFTER_SAVE_LABEL}</span>
+        </span>
+      </nav>
     </div>
   );
 }

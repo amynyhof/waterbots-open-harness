@@ -298,8 +298,7 @@ checks too, from 16 Nov 2026, the maintainer's word on #177**: the check `names`
 `NAMES_TO_BLOCK`, the same name as the paid site's. On a pull request it scans the added lines and file names;
 on a push to main, every tracked file. Both stay: the scan on the machine before every push, and the check.
 
-**It is the one check for public material, from 21 Nov 2026**, the maintainer's ruling. No calculation figure is
-blocked: the number gate (`scan-diff.mjs --numbers` and its terms file) is retired, and nothing waits on it.
+**What it is for is settled at the top of CLAUDE.md**, *Reference projects*, the maintainer's ruling of 21 Nov 2026.
 
 - **Where the list is.** The `WB_NAMES_LIST` setting on the machine holds the list's full path. No path is
   written in the code or in this repository. ~~The list is never copied, printed or logged.~~ **The list is in

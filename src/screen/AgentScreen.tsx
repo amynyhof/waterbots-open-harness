@@ -38,7 +38,7 @@
  * screen's — one conversation per agent, held above this component.
  */
 
-import { useState, type CSSProperties, type ReactNode } from 'react';
+import { createContext, useState, type CSSProperties, type ReactNode } from 'react';
 import type { AgentHost } from '../chat/evidence';
 import { SaveBarSlot } from '../components/SaveDoor';
 
@@ -59,6 +59,14 @@ const LABELS: Record<ScreenTab, string> = {
   credentials: 'Credentials',
 };
 
+/**
+ * CHAT ONLY UNTIL ASKED — Wellington's desk, the maintainer's word of 21 Nov
+ * 2026: the desk opens on his chat with no tab row, and a quiet "About
+ * Wellington" link beside his name brings the row back on his Knowledge pack.
+ * The link reaches the chat's header through this; anywhere else it is null.
+ */
+export const ScreenMore = createContext<(() => void) | null>(null);
+
 export default function AgentScreen({
   host,
   tabs,
@@ -68,6 +76,7 @@ export default function AgentScreen({
   active: heldActive,
   onActiveChange,
   dots,
+  chatOnly = false,
 }: {
   host: AgentHost;
   tabs: ScreenTabs;
@@ -100,7 +109,10 @@ export default function AgentScreen({
    * The consumer decides when; the screen only draws.
    */
   dots?: Partial<Record<ScreenTab, boolean>>;
+  /** The screen opens on its chat alone; "About <name>" brings the tab row back (21 Nov 2026). */
+  chatOnly?: boolean;
 }) {
+  const [tabsShown, setTabsShown] = useState(!chatOnly);
   const [ownActive, setOwnActive] = useState<ScreenTab>(opensOn);
   const active = heldActive ?? ownActive;
   const setActive = (tab: ScreenTab) => {
@@ -117,7 +129,9 @@ export default function AgentScreen({
   const accent = { '--screen-accent': `var(${host.colourToken})` } as CSSProperties;
 
   return (
+    <ScreenMore.Provider value={tabsShown ? null : () => { setTabsShown(true); setActive('pack'); }}>
     <div className="wb-screen" style={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      {tabsShown && (
       <div role="tablist" aria-label={`${host.name}'s screen`} className="wb-tabs" style={accent}>
         {order.map((tab) => (
           <button
@@ -136,6 +150,7 @@ export default function AgentScreen({
         ))}
 
       </div>
+      )}
 
       {/* THE PANELS STACK, and the one you are not on is hidden, not
           unmounted and not display:none — slice 4, 9 Sep 2026, when the map
@@ -176,5 +191,6 @@ export default function AgentScreen({
           Chat tab draws it itself, just above its chat box. */}
       {active !== 'chat' && <SaveBarSlot />}
     </div>
+    </ScreenMore.Provider>
   );
 }
