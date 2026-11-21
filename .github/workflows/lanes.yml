@@ -2,9 +2,9 @@
 # changes. Nothing else decides a lane: not the session, not a person, not the description.
 #
 # AUTO-MERGE IS OFF (the maintainer's ruling, 19 Oct 2026). The `automerge` job below is switched off
-# by default and, even when switched on, refuses to run while the number gate has no
-# patterns. It is to be switched on only after the keyed-fingerprint number gate ships
-# (BUILD_PLAN, Safety pass, SP3). Do not enable it before.
+# by default. It is switched on only on her word (BUILD_PLAN, Safety pass, SP3). The number gate it
+# once waited on is retired (21 Nov 2026): the name scan, a required check, is the one check for
+# public material, and GitHub waits for every required check before an auto-merge lands.
 #
 # Why pull_request_target: it runs THIS file and the scripts from main, never the pull
 # request's own copy, so a pull request cannot rewrite the rule that judges it. It checks
@@ -71,7 +71,7 @@ jobs:
       - name: Say where auto-merge stands
         run: |
           if [ "${{ vars.LANE1_AUTOMERGE }}" = "on" ]; then
-            echo "Auto-merge variable is ON; the automerge job still refuses while the number gate is inactive." | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "Auto-merge variable is ON; a lane 1 pull request with a clean secrets scan merges once every required check is green." | tee -a "$GITHUB_STEP_SUMMARY"
           else
             echo "Auto-merge is OFF. Nothing merges from here; a person merges every lane." | tee -a "$GITHUB_STEP_SUMMARY"
           fi
@@ -99,7 +99,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Guard — scan the added lines; refuse unless both come back clean and the gate is active
+      - name: Guard — scan the added lines; refuse unless the secrets scan comes back clean
         id: guard
         run: |
           set +e
@@ -109,9 +109,8 @@ jobs:
           fi
           gh pr diff "$PR" --repo "$REPO" > pr.diff || { echo "Could not read the diff: not merged." | tee -a "$GITHUB_STEP_SUMMARY"; exit 0; }
           node scripts/scan-diff.mjs --secrets < pr.diff; S=$?
-          node scripts/scan-diff.mjs --numbers < pr.diff; N=$?
-          if [ "$S" -ne 0 ] || [ "$N" -ne 0 ]; then
-            echo "Secrets scan exit $S, number gate exit $N (2 means the gate has no patterns). Not merged." | tee -a "$GITHUB_STEP_SUMMARY"; exit 0
+          if [ "$S" -ne 0 ]; then
+            echo "Secrets scan exit $S. Not merged." | tee -a "$GITHUB_STEP_SUMMARY"; exit 0
           fi
           echo "go=true" >> "$GITHUB_OUTPUT"
       - name: Switch on auto-merge (squash); GitHub waits for the required checks

@@ -17,6 +17,123 @@ before 3 Oct 2026 link to an OPEN_ITEMS.md that has since been retired to this f
 
 ---
 
+## 21 Nov 2026 — CLAUDE.md, PROCESS_RULES_for_ShellB.md, BUILD_PLAN.md and the merge lanes: the handoff folder, and the number gate retired
+
+**Why.** The maintainer's rulings of 21 Nov 2026. Carries between this repository and any other cross through one
+folder outside every repository, `%USERPROFILE%\GitHub\handoff\`, in either direction, each only when she names it;
+fingerprints against the packing list and the name scan on every carry, logged in BUILD_LOG.md at the session's
+close. And the number gate is retired: the name scan, reading her private list of names and project IDs, is the one
+check for public material, and no calculation figure is blocked. Her list was found that day to hold none of the
+real-project figures the 3 Oct 2026 sweep had recorded, so a gate pointed at it would have blocked none of them.
+
+**Old wording, whole — CLAUDE.md — What this repo is, its third paragraph:**
+
+> platform, but shares no repository with it. The maintainer carries
+> any shared material across by hand; the engineer never fetches it.
+
+**Old wording, whole — CLAUDE.md — Rule zero, its first paragraph:**
+
+> You work in this repository and nowhere else. You never read, write,
+> or reference any other repository, working tree, or dev server, except
+> the open core below.
+
+**Old wording, whole — CLAUDE.md — Non-negotiables, the merge lanes bullet, its last sentences:**
+
+> no list is lane 3. **Nothing merges without her**: lane 1's auto-merge is built but OFF until the
+>   keyed-fingerprint number gate exists. A session opens the pull request and never merges it. The rule
+>   is in PROCESS_RULES_for_ShellB.md, *Merge lanes*.
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — Merge lanes, lane 1, its last three sentences:**
+
+>    `.github/`, secrets or anything a visitor sees. **Lane 1 is meant to merge on its own, but that is OFF
+>    (ruling of 19 Oct 2026, after the second reader's read).** It stays off until the keyed-fingerprint number gate
+>    exists (BUILD_PLAN, Safety pass); until then the maintainer merges lane 1 too. The job that would do it is
+>    guarded so it cannot run while the number gate has no patterns.
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — Merge lanes, Rules, its third sentence:**
+
+> **Only lane 1 may ever auto-merge, only once the number gate exists, and only after every required
+> check is green.
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — The name scan runs before every push, its first paragraph, the list it checks against:**
+
+> the engineer's machine before its branch is pushed, and again before each later push to it. It checks text
+> and file names against a private list of names, matching whole words.
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — Standing rules, rule zero, its first sentences:**
+
+> - **Rule zero:** this repo sees only this repo, except the open core:
+>   this site may install its packages, and the engineer may read
+>   `waterbots-open-core-modules`, under the maintainer's GitHub account, on GitHub only, never clone or
+>   write to it (CLAUDE.md, *Rule zero*; the maintainer's ruling, 27 Oct 2026). The
+>   engineer never fetches, guesses at, or imitates the private platform.
+
+**Old wording, whole — BUILD_PLAN.md — the head, Tags on an item, its last sentence:**
+
+> v1 order. **Shell A is the paid site; Shell B is this repository.** A carry to Shell A is her hand, never
+> an action here (rule zero).
+
+**Old wording, whole — BUILD_PLAN.md — Sprint 3, its opening line:**
+
+> The deploy, the repository, settings and limits. Step 7 is the carry, by her hand.
+
+**Old wording, whole — BUILD_PLAN.md — item O14, whole:**
+
+> **O14 · Carries owed by her hand — listed once.** Step 7 · PARK. **To Shell A:** the seal's contract
+> (`type`, `gsClass`, `stage`, rows and a read per pathway, `wantsHuman`, `record.served`; `kind` retires
+> when its receiver reads them, and that receiver is not fixed, Shell A item #243); `project-types.md`; the
+> ten-line contract; Q11; the paid-site tools line; the transition module; the one-row shape; the agent
+> screen's file list; open.waterbots.ai for the landing box, the claim and the menu (28 Oct 2026). **To the brand book:** typing dots §5, the agent screen §7. **To this site:** the
+> sign-up address, the confirmed roster columns. `roster.yaml` without the maintainer's name: carried 2 Nov 2026, version 0.3.1, `product-shared@0.6.3`. **To the grader:**
+> three rig changes. **To Vercel:** Web Analytics: done, built #179 and on in Vercel 21 Nov 2026; cookie-free page views with the path only, no other tracking.
+
+**Old wording, whole — BUILD_PLAN.md — item SP3, whole:**
+
+> **SP3 · Switch lane 1 auto-merge on.** PARK. The job is built and off (`LANE1_AUTOMERGE` unset in the
+> repository's variables, and guarded on the number gate having patterns). Switch it on only once the
+> keyed-fingerprint number gate ships, in the open core work; then flip Allow auto-merge and branch protection by hand.
+
+**Old wording, whole — .github/workflows/lanes.yml — .github/workflows/lanes.yml, its head comment on auto-merge:**
+
+> # AUTO-MERGE IS OFF (the maintainer's ruling, 19 Oct 2026). The `automerge` job below is switched off
+> # by default and, even when switched on, refuses to run while the number gate has no
+> # patterns. It is to be switched on only after the keyed-fingerprint number gate ships
+> # (BUILD_PLAN, Safety pass, SP3). Do not enable it before.
+
+**Old wording, whole — scripts/scan-diff.mjs — scripts/scan-diff.mjs, its head comment:**
+
+>  *   node scripts/scan-diff.mjs --secrets < pr.diff
+>  *   node scripts/scan-diff.mjs --numbers < pr.diff
+>  *
+>  * --secrets  fails if an added line looks like a key, a token or a private key.
+>  *            It looks for a name followed by a long value, never for the name alone.
+>  * --numbers  the number gate. It fails if an added line matches any pattern in
+>  *            .github/number-gate-terms.txt, one regular expression a line, the
+>  *            maintainer's list of project figures and identifying words.
+>  *
+>  * Exit 0: nothing found. Exit 1: found. Exit 2: the gate has no patterns, so it
+>  * cannot say anything is clean; the merge lanes treat that as not clean.
+
+**Old wording, whole — .github/number-gate-terms.txt, the whole file (removed):**
+
+> # The number gate's patterns — the maintainer's list. One regular expression per line,
+> # matched without regard to case against every line a pull request ADDS.
+> #
+> # What belongs here: a real project's figure, a demo project's figure, or a word that
+> # names a real project or organisation, anything that must never reach a public page
+> # through a plain notes-or-docs pull request.
+> #
+> # THIS FILE HAS NO PATTERNS YET. The paid site's gate (carry-number-gate) is not in this
+> # repository and its list is not the engineer's to write or guess. Until the maintainer
+> # adds patterns, the number gate reports "inactive" and a pull request in lane 1 is NOT
+> # merged automatically; it waits for a person. That is on purpose: a gate with nothing in
+> # it must not say "clean".
+
+**Where the current text is:** [CLAUDE.md](../../CLAUDE.md), *What this repo is*, *Rule zero* and the merge lanes and
+name scan bullets; [PROCESS_RULES_for_ShellB.md](../../PROCESS_RULES_for_ShellB.md), *Merge lanes*, *The name scan runs
+before every push*, *Carries through the handoff folder* and the standing rule zero; [BUILD_PLAN.md](../../BUILD_PLAN.md),
+the head, Sprint 3, O14 and SP3; `.github/workflows/lanes.yml`; `scripts/scan-diff.mjs`.
+
 ## 30 Oct 2026, second correction — docs/proposals/calvin-from-open-core.md: Violet's screen, and questions counted
 
 **Why it changed.** The maintainer ruled on 30 Oct 2026, on pull request #156: Violet's module brings both her D-3

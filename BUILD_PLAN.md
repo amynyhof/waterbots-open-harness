@@ -25,8 +25,8 @@ the item's number. Items closed before 3 Oct 2026 are in
 **Tags on an item.** Its v1 step or "After v1", then its bucket, her five of 18 Sep 2026: BONES (agent
 structure, packs, debt that trips agents or engineers), WALKTHROUGH (a simple VWBA path into the paid
 site), PARTNER (the Commons or a partner demo), PARK (real, not now), and "v1" for an item moved onto the
-v1 order. **Shell A is the paid site; Shell B is this repository.** A carry to Shell A is her hand, never
-an action here (rule zero).
+v1 order. **Shell A is the paid site; Shell B is this repository.** A carry, in or out, goes through the
+handoff folder and starts only when she names it (CLAUDE.md, Rule zero).
 
 ---
 
@@ -258,15 +258,14 @@ the brand book's §2.5 has no stopped state that is not an error. A raise for th
 
 ### Sprint 3 — Operations: the carry to the paid site (step 7)
 
-The deploy, the repository, settings and limits. Step 7 is the carry, by her hand.
+The deploy, the repository, settings and limits. Step 7 is the carry, through the handoff folder on her word.
 
-**O14 · Carries owed by her hand — listed once.** Step 7 · PARK. **To Shell A:** the seal's contract
-(`type`, `gsClass`, `stage`, rows and a read per pathway, `wantsHuman`, `record.served`; `kind` retires
-when its receiver reads them, and that receiver is not fixed, Shell A item #243); `project-types.md`; the
-ten-line contract; Q11; the paid-site tools line; the transition module; the one-row shape; the agent
-screen's file list; open.waterbots.ai for the landing box, the claim and the menu (28 Oct 2026). **To the brand book:** typing dots §5, the agent screen §7. **To this site:** the
-sign-up address, the confirmed roster columns. `roster.yaml` without the maintainer's name: carried 2 Nov 2026, version 0.3.1, `product-shared@0.6.3`. **To the grader:**
-three rig changes. **To Vercel:** Web Analytics: done, built #179 and on in Vercel 21 Nov 2026; cookie-free page views with the path only, no other tracking.
+**O14 · Carries owed — listed once.** Step 7 · PARK. From 21 Nov 2026 a carry goes through the handoff folder, only when she names it.
+**Through the folder, to Shell A:** the seal's contract (`type`, `gsClass`, `stage`, rows and a read per pathway, `wantsHuman`, `record.served`; `kind` retires
+when its receiver reads them, and that receiver is not fixed, Shell A item #243); `project-types.md`; the ten-line contract; Q11; the paid-site tools line; the
+transition module; the one-row shape; the agent screen's file list; open.waterbots.ai for the landing box, the claim and the menu (28 Oct 2026). **Through the folder,
+to this site:** the sign-up address, the confirmed roster columns. **Route not yet ruled:** the brand book (typing dots §5, the agent screen §7); the grader (three rig changes).
+**Done:** `roster.yaml` without the maintainer's name, carried 2 Nov 2026, version 0.3.1, `product-shared@0.6.3`; Web Analytics, built #179 and on in Vercel 21 Nov 2026.
 
 **O1 · Revisit the daily cap against real usage.** After v1 · PARK. Thirty a day per visitor is live
 (`DAILY_CAP` in `api/_cap.ts`); it is a starting point, not a figure from usage. Looked at with A5, O9
@@ -368,8 +367,8 @@ byte-identical; upgrade `mapshaper` if a release drops `geographiclib`. Lane 3; 
 install scripts for `better-sqlite3` and `esbuild` stay paused.
 
 **SP3 · Switch lane 1 auto-merge on.** PARK. The job is built and off (`LANE1_AUTOMERGE` unset in the
-repository's variables, and guarded on the number gate having patterns). Switch it on only once the
-keyed-fingerprint number gate ships, in the open core work; then flip Allow auto-merge and branch protection by hand.
+repository's variables). The number gate it waited on is retired (21 Nov 2026), so it waits on her word
+alone; then flip Allow auto-merge and branch protection by hand.
 
 **SP4 · Pin every GitHub Action by full commit hash instead of tag.** BONES. `actions/checkout`, `actions/setup-node`,
 `gitleaks/gitleaks-action` and any others in `.github/workflows/`, per the second reader's re-attack on #152. A tag can be moved to
