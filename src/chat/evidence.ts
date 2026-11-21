@@ -133,8 +133,6 @@ export interface AgentHost {
   portrait: string;
   /** The identity colour token name, e.g. "--bot-phoebe". Read, never re-typed. */
   colourToken: string;
-  /** Beta is stated in words where it is true, not tucked away. */
-  beta?: boolean;
   /** Composer placeholder and the standing note beneath it; no note, no line. */
   composerPlaceholder: string;
   composerNote?: string;

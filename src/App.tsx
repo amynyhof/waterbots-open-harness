@@ -456,6 +456,8 @@ export default function App() {
      else Save once something is on the record, else the menu's Sign up. */
   const [meetOn, setMeetOn] = useState({ eligibility: false, map: false });
   const onPhoebeMeet = useCallback((showing: boolean) => setMeetOn((m) => (m.eligibility === showing ? m : { ...m, eligibility: showing })), []);
+  /* The map's line in the menu shows only while Bridget's Map tab is in view (21 Nov 2026). */
+  const [mapTabOpen, setMapTabOpen] = useState(false);
   const onBridgetMeet = useCallback((showing: boolean) => setMeetOn((m) => (m.map === showing ? m : { ...m, map: showing })), []);
   const meetInView =
     onConsole &&
@@ -499,7 +501,7 @@ export default function App() {
         signupBlue={blue === 'signup'}
         readout={
           /* The layer readout describes the map, so it only shows on the map. */
-          onConsole && onMap && status && (
+          onConsole && onMap && mapTabOpen && status && (
             <span className="t-mono" style={{ fontSize: 11, color: 'var(--ink-3)' }}>
               {status.stressError ? (
                 <span style={{ color: 'var(--state-warn-text)' }}>
@@ -599,6 +601,7 @@ export default function App() {
                   invite={visit.partnersInvite}
                   onWellington={wellingtonComes}
                   onMeet={onBridgetMeet}
+                  onMapTab={setMapTabOpen}
                 />
               </div>
 

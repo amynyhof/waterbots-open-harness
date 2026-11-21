@@ -33,10 +33,8 @@
  * an empty conversation; the desk lost its intro paragraph on 8 Sep 2026 and
  * the screen follows the desk. What that paragraph said now lives where it
  * belongs: the record is on the left rail, what she reads from is on the
- * Knowledge pack tab, and beta is beside her name.
- *
- * SHE IS BETA, and it is stated in words rather than tucked away — early
- * access, shaped with founding users.
+ * Knowledge pack tab. The beta tag beside her name is gone from 21 Nov 2026,
+ * the maintainer's word: the site says it is early once, beside waterbots.ai.
  */
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
@@ -85,7 +83,6 @@ export const PHOEBE: AgentHost = {
   role: 'Eligibility and Feasibility',
   portrait: phoebePortrait,
   colourToken: '--bot-phoebe',
-  beta: true,
   composerPlaceholder: 'Tell her about your project, or ask her a question.',
   /* No line under her chat box, the maintainer's word of 13 Nov 2026, as Wellington's
      went on 12 Nov: the daily cap still says so when it is reached. */

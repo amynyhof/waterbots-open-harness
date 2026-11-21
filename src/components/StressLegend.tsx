@@ -59,7 +59,7 @@ export default function StressLegend({
   return (
     <div
       ref={root}
-      className="card wb-panel"
+      className="card wb-panel wb-stress-legend"
       style={{
         /* The map is Bridget's surface, so its legend carries her accent at the
            book's 5% — BRAND.md §7. A container, not an emphasis, and never a

@@ -22,8 +22,7 @@
  *
  * PLAIN TEXT, NOT CHIPS: method and grade are plain text from 28 Oct 2026,
  * her word; a method is a link where she has given one. The stage is its
- * name and a small bar, from her later word the same day, with "Beta" a tag
- * beside it on a module open to try.
+ * name and a small bar, from her later word the same day.
  *
  * EVERY GRADE READS "NOT YET GRADED", and will until a real card from the one
  * public exam exists — the maintainer's ONE GRADER and REAL ONLY rulings of
@@ -261,7 +260,7 @@ function ModuleRow({ card, onOpen, onInterest }: { card: ShelfCard; onOpen: () =
         <Method text={card.tag} href={card.tagHref} />
       </Cell>
       <Cell label="Stage">
-        <Stage stage={card.stage} beta={card.beta} />
+        <Stage stage={card.stage} />
       </Cell>
       <Cell label="Owner">{card.owner}</Cell>
       <Cell label="Grade">not yet graded</Cell>
@@ -478,18 +477,16 @@ export function Method({ text, href }: { text: string; href?: string }) {
 
 /**
  * THE STAGE — the maintainer's word of 28 Oct 2026: its name, and a small bar
- * of six steps beneath it. "Beta" rides beside the name as a tag on a module
- * open to try; it is not a stage. A module seeking partners links its stage to
- * the team's inbox, as its chip did before.
+ * of six steps beneath it. A module seeking partners links its stage to the
+ * team's inbox, as its chip did before. The "Beta" tag that rode beside it is
+ * gone from 21 Nov 2026, the maintainer's word.
  */
 export function Stage({
   stage,
-  beta = false,
   href,
   hrefLabel,
 }: {
   stage: ModuleStage;
-  beta?: boolean;
   href?: string;
   hrefLabel?: string;
 }) {
@@ -502,11 +499,6 @@ export function Stage({
           </a>
         ) : (
           <span style={{ whiteSpace: 'nowrap' }}>{stage}</span>
-        )}
-        {beta && (
-          <span className="tag" style={{ fontSize: 10, padding: '1px 6px' }}>
-            Beta
-          </span>
         )}
       </span>
       <StageBar stage={stage} />

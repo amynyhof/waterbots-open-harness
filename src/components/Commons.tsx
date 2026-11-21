@@ -178,7 +178,7 @@ function AboutModule({ card }: { card: ShelfCard }) {
   const facts: { label: string; value: React.ReactNode }[] = [
     { label: 'Method', value: <Method text={card.tag} href={card.tagHref} /> },
     { label: 'Owner', value: card.owner },
-    { label: 'Stage', value: <Stage stage={card.stage} beta={card.beta} /> },
+    { label: 'Stage', value: <Stage stage={card.stage} /> },
     { label: 'Community rating', value: <Rating /> },
   ];
   return (
