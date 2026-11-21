@@ -11,7 +11,10 @@
  */
 
 import { loadLists, laneOfPullRequest } from './lane-classify.mjs';
-import { scanSecrets, scanNumbers } from './scan-diff.mjs';
+import { readFileSync, existsSync } from 'node:fs';
+import * as scanDiff from './scan-diff.mjs';
+
+const { scanSecrets } = scanDiff;
 
 const lists = loadLists();
 const failures = [];
@@ -56,8 +59,14 @@ expect('a key-shaped added line is caught', scanSecrets(diff(`token ${fakeKey}`)
 expect('a named secret with a long value is caught', scanSecrets(diff('RESEND_API_KEY=' + 'x'.repeat(30))).length === 1, 'a named secret was not caught');
 expect('a secret\'s name alone is not caught', scanSecrets(diff('Set RESEND_API_KEY and BRIDGE_KEY in the hosting settings.')).length === 0, 'a name with no value was flagged');
 expect('only added lines are scanned', scanSecrets(`-RESEND_API_KEY=${'x'.repeat(30)}\n`).length === 0, 'a removed line was scanned');
-expect('the number gate catches a term on an added line', scanNumbers(diff('the figure is 1234 alpha'), [/alpha/i]).length === 1, 'a gate pattern did not match');
-expect('the number gate is quiet when nothing matches', scanNumbers(diff('plain words'), [/alpha/i]).length === 0, 'a gate pattern matched nothing it should');
+/* The number gate is retired, 21 Nov 2026, her ruling: no mode, no terms file, and the auto-merge guard
+   no longer runs it. The name scan is the one check for public material. */
+expect(
+  'the number gate is retired: no numbers mode, no terms file, and the lanes workflow does not run it',
+  !('scanNumbers' in scanDiff) && !existsSync('.github/number-gate-terms.txt') &&
+    !/--numbers|number-gate-terms/.test(readFileSync('.github/workflows/lanes.yml', 'utf8')),
+  'a part of the number gate is still here'
+);
 
 if (failures.length) {
   console.log(`\nFAILED — ${failures.length} case(s):`);

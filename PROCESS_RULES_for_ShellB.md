@@ -267,9 +267,9 @@ holds the cases that prove them. It labels the pull request `lane-1`, `lane-2` o
    files are lane 3). It never touches the engine or calculator files, package files, rules files (this
    file, CLAUDE.md, AGENT_RULES.md, CITATIONS.md, anything CARRY-related, the lane rule itself),
    `.github/`, secrets or anything a visitor sees. **Lane 1 is meant to merge on its own, but that is OFF
-   (ruling of 19 Oct 2026, after the second reader's read).** It stays off until the keyed-fingerprint number gate
-   exists (BUILD_PLAN, Safety pass); until then the maintainer merges lane 1 too. The job that would do it is
-   guarded so it cannot run while the number gate has no patterns.
+   (ruling of 19 Oct 2026, after the second reader's read).** It stays off until the maintainer's word (BUILD_PLAN,
+   Safety pass, SP3); until then she merges lane 1 too. The job that would do it runs only when the repository
+   variable `LANE1_AUTOMERGE` is on, and only when the secrets scan of the added lines comes back clean.
 2. **Lane 2 — the maintainer looks.** Anything that changes what a visitor sees or reads: screens, copy, the
    README, captures, brand files. She checks in the browser, then merges.
 3. **Lane 3 — the maintainer and the second reader.** Calculator and engine numbers, security, packages, data files, rules files,
@@ -280,8 +280,8 @@ holds the cases that prove them. It labels the pull request `lane-1`, `lane-2` o
 
 **Rules.** A file on no list is lane 3. A pull request takes its highest file's lane. A pull request
 that changes the lane rule is lane 3, and a file moved out of a lane 3 place still counts as lane 3.
-**Only lane 1 may ever auto-merge, only once the number gate exists, and only after every required
-check is green. Sessions never merge any lane** — `gh pr merge`, a push to `main`, a force push and
+**Only lane 1 may ever auto-merge, only once the maintainer switches it on, and only after every required
+check is green, the name scan among them. Sessions never merge any lane** — `gh pr merge`, a push to `main`, a force push and
 `git reset --hard` are denied in the session's settings — and a session never changes repository
 settings. Every pull request also runs gitleaks, a second secrets scan, as a required check. The
 workflow asks GitHub for the least it needs: the lane job reads files and writes labels; only the
@@ -291,12 +291,15 @@ auto-merge job, which is off, could ever write to the repository.
 
 **Maintainer's ruling, 30 Oct 2026.** Every pull request runs the name scan, `scripts/check-names.mjs`, on
 the engineer's machine before its branch is pushed, and again before each later push to it. It checks text
-and file names against a private list of names, matching whole words. ~~**It cannot run in GitHub's checks,
+and file names against a private list of names and project IDs, matching whole words. ~~**It cannot run in GitHub's checks,
 because the list is private**; only its tests, which use made-up names, run there.~~ **It runs in GitHub's
 checks too, from 16 Nov 2026, the maintainer's word on #177**: the check `names`
 (`.github/workflows/names.yml`), a required check on main, reads the list from the repository secret
 `NAMES_TO_BLOCK`, the same name as the paid site's. On a pull request it scans the added lines and file names;
 on a push to main, every tracked file. Both stay: the scan on the machine before every push, and the check.
+
+**It is the one check for public material, from 21 Nov 2026**, the maintainer's ruling. No calculation figure is
+blocked: the number gate (`scan-diff.mjs --numbers` and its terms file) is retired, and nothing waits on it.
 
 - **Where the list is.** The `WB_NAMES_LIST` setting on the machine holds the list's full path. No path is
   written in the code or in this repository. ~~The list is never copied, printed or logged.~~ **The list is in
@@ -311,6 +314,21 @@ on a push to main, every tracked file. Both stay: the scan on the machine before
   missing or empty secret (which is also what a pull request from a fork gets) fails it with "cannot run". A push waits
   until the scan runs clean; a finding is fixed or put to the maintainer, never pushed past.
 - **The pull request says it ran**, under *What I ran*, with the count.
+
+#### Carries through the handoff folder
+
+**Maintainer's ruling, 21 Nov 2026.** Shared material crosses between this repository and any other, in either
+direction, only through one folder outside every repository: `%USERPROFILE%\GitHub\handoff\`.
+
+- **It starts only on her word.** A carry, in or out, starts only when the maintainer names it ("take the bundle
+  in handoff\X"), never because a bundle is waiting there.
+- **What the engineer may touch.** That folder, to read and to write, and nothing else outside this repository
+  beyond the open core (CLAUDE.md, *Rule zero*). Never another session's repository, working tree or dev server.
+- **The checks, every carry.** Each file's fingerprint (SHA-256) matches the bundle's packing list, and the name
+  scan runs on what comes in before it is committed, or on what goes out before it is left in the folder. A
+  mismatch or a finding stops the carry and goes to her.
+- **The log.** Each carry is written in BUILD_LOG.md at the session's close, under the rule that the log is
+  written once a session: what crossed, which way, the packing list's fingerprints, and the scan's count.
 
 #### Every description opens with a block for the maintainer
 
@@ -534,10 +552,12 @@ those gets the light close (*Two kinds of close*). **A ritual with a skipped ste
 
 ## Standing rules that govern everything above
 
-- **Rule zero:** this repo sees only this repo, except the open core:
-  this site may install its packages, and the engineer may read
+- **Rule zero:** this repo sees only this repo, except the open core and the handoff folder:
+  this site may install the open core's packages, and the engineer may read
   `waterbots-open-core-modules`, under the maintainer's GitHub account, on GitHub only, never clone or
-  write to it (CLAUDE.md, *Rule zero*; the maintainer's ruling, 27 Oct 2026). The
+  write to it (the maintainer's ruling, 27 Oct 2026); and the engineer may read and write
+  `%USERPROFILE%\GitHub\handoff\` for a carry she has named (*Carries through the handoff folder*; her
+  ruling, 21 Nov 2026). See CLAUDE.md, *Rule zero*. The
   engineer never fetches, guesses at, or imitates the private platform.
   Rules arrive as extracted rule files like this one, brought by the maintainer.
 - **No fabricated data, ever.** Not in tests, not in demos, not as

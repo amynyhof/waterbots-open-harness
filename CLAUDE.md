@@ -46,8 +46,9 @@ in the WaterBots style.
 
 It deploys standalone and is linked from waterbots.ai. It shares
 WaterBots branding, agent design, and agent knowledge with the main
-platform, but shares no repository with it. The maintainer carries
-any shared material across by hand; the engineer never fetches it.
+platform, but shares no repository with it. Shared material crosses
+only through the handoff folder, and only when the maintainer names a
+carry (Rule zero, below); the engineer never fetches it from anywhere else.
 
 **The site is deployed and live at https://open.waterbots.ai**, its address
 from 28 Oct 2026 by the maintainer's word; the old map.waterbots.ai forwards
@@ -59,7 +60,7 @@ waterbots.ai menu; the links live once, in `src/lib/site.ts`.
 
 You work in this repository and nowhere else. You never read, write,
 or reference any other repository, working tree, or dev server, except
-the open core below. If a task appears to require something outside
+the open core and the handoff folder below. If a task appears to require something outside
 this repo, stop and say so. It becomes a written proposal for the
 maintainer to carry elsewhere — never an action here.
 
@@ -71,6 +72,17 @@ pull request there. What the open core needs is made by its own
 session in its own repository. The paid site's repository stays
 outside, as before. The proposal is
 [docs/proposals/calvin-from-open-core.md](./docs/proposals/calvin-from-open-core.md).
+
+**The handoff folder is the second exception, from 21 Nov 2026, by the
+maintainer's ruling.** Carries between this repository and any other, in
+either direction, cross through one folder outside every repository:
+`%USERPROFILE%\GitHub\handoff\`. The engineer may read and write that
+folder, and nothing else outside this repository beyond the open core
+above; never another session's repository. **A carry starts only when the
+maintainer names it** ("take the bundle in handoff\X"), in or out. Every
+carry checks each file's fingerprint against the bundle's packing list and
+runs the name scan, and is logged in BUILD_LOG.md at the session's close.
+The rule is in PROCESS_RULES_for_ShellB.md, *Carries through the handoff folder*.
 
 ## Non-negotiables
 
@@ -89,9 +101,13 @@ outside, as before. The proposal is
   plain writing only (BUILD_PLAN.md, BUILD_LOG.md, `.md` under `docs/`); **lane 2**, anything a
   visitor sees or reads, which she checks in the browser; **lane 3**, engine and calculator numbers,
   security, packages, data, rules files, CI and the lane rule itself, which she reads with the second reader. A file on
-  no list is lane 3. **Nothing merges without her**: lane 1's auto-merge is built but OFF until the
-  keyed-fingerprint number gate exists. A session opens the pull request and never merges it. The rule
-  is in PROCESS_RULES_for_ShellB.md, *Merge lanes*.
+  no list is lane 3. **Nothing merges without her**: lane 1's auto-merge is built but OFF until her
+  word. A session opens the pull request and never merges it. The rule is in
+  PROCESS_RULES_for_ShellB.md, *Merge lanes*.
+- **The name scan is the one check for public material, from 21 Nov 2026 (the maintainer's
+  ruling).** It reads her private list of names and project IDs. No calculation figure is blocked;
+  the number gate is retired, and nothing waits on it. The rule is in PROCESS_RULES_for_ShellB.md,
+  *The name scan runs before every push*.
 - **Atomic commits.** Subjects lead with the action taken —
   `Built:`, `Fixed:`, `Docs amended:`, `Proposal written:` — never
   the topic alone.
@@ -524,7 +540,8 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   13 Nov 2026, after the maintainer's three walks of them, 24,581 with the primer's line on Phoebe's tab, 25,943 after her fourth walk, 26,145 after her fifth, 26,148 with the voice card and the
   shared plain-words list, and 26,136 when he came to the agents' chats, all 14 Nov 2026, and 26,158
   with the reading level in his voice card, 16 Nov 2026 (his opening note rides beside the prompt,
-  as his notes for joining a chat do), against the unchanged gate of 26,199.
+  as his notes for joining a chat do), and 26,072 measured 21 Nov 2026, against the unchanged gate
+  of 26,199.
 - ~~**The engine bundle is tracked at `carried/`, from 27 Sep 2026**~~ (#132, replaced on 3 Oct 2026
   by v0.16.1, #147; tags `engine-carry-2026-09-27` and `engine-carry-2026-10-04`). **`carried/` is
   deleted on 14 Nov 2026, V1, required, the maintainer's word.** **Calvin's carbon calculator is the

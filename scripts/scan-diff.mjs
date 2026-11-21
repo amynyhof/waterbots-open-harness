@@ -2,25 +2,21 @@
  * Reads a pull request's diff on stdin and looks only at the lines it adds.
  *
  *   node scripts/scan-diff.mjs --secrets < pr.diff
- *   node scripts/scan-diff.mjs --numbers < pr.diff
  *
  * --secrets  fails if an added line looks like a key, a token or a private key.
  *            It looks for a name followed by a long value, never for the name alone.
- * --numbers  the number gate. It fails if an added line matches any pattern in
- *            .github/number-gate-terms.txt, one regular expression a line, the
- *            maintainer's list of project figures and identifying words.
  *
- * Exit 0: nothing found. Exit 1: found. Exit 2: the gate has no patterns, so it
- * cannot say anything is clean; the merge lanes treat that as not clean.
+ * THE NUMBER GATE IS RETIRED, 21 Nov 2026, the maintainer's ruling: the `--numbers` mode and its
+ * terms file are gone. The name scan (scripts/check-names.mjs), reading her private list of names
+ * and project IDs, is the one check for public material; no calculation figure is blocked.
+ *
+ * Exit 0: nothing found. Exit 1: found.
  *
  * Output names the kind and the line's place in the diff. It never prints the
  * line, because the line is what must not leak.
  */
 
-import { readFileSync, existsSync } from 'node:fs';
-import path from 'node:path';
-
-const TERMS_FILE = path.resolve(import.meta.dirname, '..', '.github', 'number-gate-terms.txt');
+import { readFileSync } from 'node:fs';
 
 export const SECRET_PATTERNS = [
   ['an Anthropic key', /sk-ant-[A-Za-z0-9_-]{20,}/],
@@ -49,25 +45,6 @@ export function scanSecrets(diff) {
   return hits;
 }
 
-export function loadTerms(file = TERMS_FILE) {
-  if (!existsSync(file)) return [];
-  return readFileSync(file, 'utf8')
-    .split('\n')
-    .map((l) => l.trim())
-    .filter((l) => l && !l.startsWith('#'))
-    .map((l) => new RegExp(l, 'i'));
-}
-
-export function scanNumbers(diff, terms) {
-  const hits = [];
-  for (const { n, text } of addedLines(diff)) {
-    terms.forEach((re, k) => {
-      if (re.test(text)) hits.push({ n, kind: `number-gate pattern ${k + 1}` });
-    });
-  }
-  return hits;
-}
-
 if (process.argv[1] === import.meta.filename) {
   const mode = process.argv[2];
   const diff = readFileSync(0, 'utf8');
@@ -76,18 +53,8 @@ if (process.argv[1] === import.meta.filename) {
     for (const h of hits) console.log(`Secrets scan: ${h.kind} on diff line ${h.n}`);
     console.log(hits.length ? 'FAILED — something looks like a secret.' : 'Secrets scan: nothing found in the added lines.');
     process.exit(hits.length ? 1 : 0);
-  } else if (mode === '--numbers') {
-    const terms = loadTerms();
-    if (!terms.length) {
-      console.log('Number gate: INACTIVE — .github/number-gate-terms.txt has no patterns, so it cannot say a diff is clean.');
-      process.exit(2);
-    }
-    const hits = scanNumbers(diff, terms);
-    for (const h of hits) console.log(`Number gate: ${h.kind} on diff line ${h.n}`);
-    console.log(hits.length ? 'FAILED — an added line matches the number gate.' : `Number gate: ${terms.length} patterns, nothing found.`);
-    process.exit(hits.length ? 1 : 0);
   } else {
-    console.log('Usage: node scripts/scan-diff.mjs --secrets | --numbers  (diff on stdin)');
+    console.log('Usage: node scripts/scan-diff.mjs --secrets  (diff on stdin). The number gate is retired.');
     process.exit(64);
   }
 }
