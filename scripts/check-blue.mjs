@@ -105,7 +105,7 @@ const walk = (dir) => {
 };
 walk('src');
 const users = files.filter((f) => /btn-primary|wb-save-button|wb-site-menu-signup|wb-form-send|primary: true/.test(readFileSync(f, 'utf8'))).map((f) => f.replace(/\\/g, '/')).sort();
-const allowed = ['src/chat/Transcript.tsx', 'src/components/InterestPage.tsx', 'src/components/NavRail.tsx', 'src/components/SiteMenu.tsx', 'src/lib/visit.ts', 'src/lib/wellington.ts'];
+const allowed = ['src/chat/Transcript.tsx', 'src/components/InterestPage.tsx', 'src/components/NavRail.tsx', 'src/components/SupportersPage.tsx', 'src/components/SiteMenu.tsx', 'src/lib/visit.ts', 'src/lib/wellington.ts'];
 expect(
   'no other file draws a solid blue button',
   users.every((f) => allowed.includes(f)),

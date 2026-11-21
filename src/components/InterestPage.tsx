@@ -14,6 +14,11 @@
  *
  * HONEST STATES. Nothing is said to be kept until the server says it was; a
  * failure says it was not kept and what to do. No pretend progress.
+ *
+ * ~~SHOW MY SUPPORT PUBLICLY — approved 16 Nov 2026, the maintainer's word on
+ * #176. A second box, unticked, with a role, a title and a comment, waiting for
+ * her approval.~~ Removed 19 Nov 2026, her word on #176: the supporters page is
+ * the one place to post. The quiet link to it stays under the title.
  */
 
 import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
@@ -27,6 +32,8 @@ import {
   sendInterest,
   type InterestForm,
 } from '../lib/interest';
+import { SUPPORTERS_LINK } from '../lib/supporters';
+import { SUPPORTERS_PATH } from '../lib/pages';
 
 const EMPTY: InterestForm = {
   name: '',
@@ -46,7 +53,7 @@ function moduleFromSearch(search: string): string {
   return SHELF.some((card) => card.slug === slug) ? slug : '';
 }
 
-export default function InterestPage({ shown }: { shown: boolean }) {
+export default function InterestPage({ shown, onSupporters }: { shown: boolean; onSupporters?: () => void }) {
   const [form, setForm] = useState<InterestForm>(EMPTY);
   const [state, setState] = useState<SendState>({ kind: 'idle' });
 
@@ -100,6 +107,9 @@ export default function InterestPage({ shown }: { shown: boolean }) {
         </h1>
         <p className="t-body" style={{ margin: '0 0 20px', fontSize: 14.5, lineHeight: 1.55, color: 'var(--ink-2)' }}>
           Tell us who you are and what you would like to hear about. The WaterBots team will be in touch.
+        </p>
+        <p className="t-caption" style={{ margin: '-12px 0 20px', fontSize: 13 }}>
+          <SupportersLink onSupporters={onSupporters} />
         </p>
 
         {state.kind === 'kept' ? (
@@ -205,6 +215,23 @@ export default function InterestPage({ shown }: { shown: boolean }) {
         )}
       </div>
     </div>
+  );
+}
+
+/** The quiet link to the supporters page. */
+function SupportersLink({ onSupporters }: { onSupporters?: () => void }) {
+  return (
+    <a
+      className="wb-quiet-link"
+      href={SUPPORTERS_PATH}
+      onClick={(e) => {
+        if (!onSupporters || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        onSupporters();
+      }}
+    >
+      {SUPPORTERS_LINK}
+    </a>
   );
 }
 

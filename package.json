@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "node scripts/check-roster.mjs && tsc -b && vite build",
     "roster:check": "node scripts/check-roster.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "supporters": "node scripts/supporters.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",

@@ -60,6 +60,8 @@ const RELAYS: Relay[] = [
   flat('wellington'),
   flat('bridget'),
   flat('interest'),
+  flat('supporters'),
+  flat('supporter-post'),
   {
     name: 'handoff',
     path: '/api/handoff',

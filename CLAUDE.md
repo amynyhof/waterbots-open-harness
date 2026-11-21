@@ -472,6 +472,43 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   hello@waterbots.ai, three a day per visitor; `scripts/count-interest.mjs` counts and removes and
   never prints a name or an email. **A29** (Phoebe asks "already earning Gold Standard credits?",
   passed to Calvin as `creditedUnderV1`) waits on Calvin 0.3.0.
+- **Supporters at `/supporters`, 16 Nov 2026, the maintainer's word on #176** (the proposal is
+  docs/proposals/supporters-2026-11-16.md). The interest form has a second box, unticked, "Show my
+  support publicly": a role from six (required when ticked), a title and a comment (no links); the name
+  as typed and the organisation are the form's own. **Every public entry waits for her approval; nothing
+  shows or deletes on its own**, and no supporter entry holds an email (`api/_supporters.ts`). She
+  approves with one paste, `npm run supporters`, which prints each waiting entry's line
+  (`npm run supporters -- approve <id>`, `decline`, `hide`), reading the store keys from `.env.local`.
+  A person's removal (`count-interest.mjs --remove`) takes them off the page too. Reached from one quiet
+  line on the Commons and on the form, never the menu; ~~empty, the page says "No supporters are shown yet."~~
+  **From 18 Nov 2026, her word, the four agents are the board's first entries**, each with the crew's icon, a
+  "WaterBots agent" tag and one line in its own voice (`src/lib/supporters.ts`), and the reclining Wellington
+  sits beside the heading; ~~with no approved person yet, the page says "No people are shown yet."~~ **From the
+  same day the form is on the page**, in place of the Register your interest box: name and email (required),
+  organization (optional), a short comment, and two unticked boxes, "Show my name and comment on this page"
+  and "Send me the WaterBots newsletter". It saves where Register your interest saves (`/api/interest`, the
+  store's `interest:signups`, marked `source: 'supporters'`); a ticked "show" box sends the name and comment
+  alone ~~to wait for her approval~~. The thank-you says to write to hello@waterbots.ai to change or remove the
+  entry. The permission line, the empty line and the "taken off this page" line are gone, by her word.
+  **Later the same day, her word: no approval step on this form.** A ticked "show" box puts the name and
+  comment on the board at once, after a filter (`api/_postFilter.ts`) that blocks rude, sexual and spam posts
+  with a plain line and keeps nothing; text only, no links, 280 characters. She takes one off with
+  `npm run supporters -- hide <id>`, which `npm run supporters` prints under each card. The form sits beside
+  the heading on a laptop and right under it on a phone; the thank-you is a heading with a mint check.
+  ~~Register your interest's own public box still waits for approval.~~ **From 19 Nov 2026, her word: the
+  supporters page is the one place to post**, and Register your interest has no public box. There is no box
+  to tick either: name, email, a role and a comment, then **Post**, opens a pop-up with Wellington's icon ("Everything
+  except your email will show on this page.", her words of 21 Nov 2026, "Post" and "Go back"; the site's one
+  modal style, the brand book's floating plane as the map's Data & licences panel wears it), and Post puts it on
+  the board at once. **The poster can edit and delete their own post**: their browser remembers it and shows
+  Edit and Delete on their card, and an email carries a private link (the key after the #, its SHA-256 alone
+  in the store) to do the same later (`api/supporter-post.ts`); edits pass the same filter. "Questions?
+  hello@waterbots.ai" sits at the foot of the page. **The same day, her word: a title (optional), the
+  organization shown, and a role (required, one of Project developer, Consultant, Funder, Auditor,
+  Researcher, Other)**; the card reads "Title, Organization" under the name, whichever is filled in, and
+  the role is a small tag in its own colour (`--supporter-*` in tokens.css: brand hues no agent on the page
+  wears, a knowing exception to the book's fixed roles, raised with her; "Other" plain). An edit changes
+  them too, through the same filter on every text field.
 - **Wellington reads back what Phoebe found, and asks people served, from 26–27 Sep 2026 (items A17
   and A16, #128 and #130).** Each ask carries her worksheet as row ids and states only; he greets a
   visitor coming back from her knowing each pathway's read, never her sentences, and routes to

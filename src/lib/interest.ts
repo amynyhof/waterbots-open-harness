@@ -36,6 +36,8 @@ export interface InterestForm {
   consent: boolean;
   /** The hidden field only a robot fills. */
   website: string;
+  /* ~~The box to show support publicly (16 Nov 2026, #176).~~ Gone from 19 Nov 2026, her word on #176:
+     the supporters page is the one place to post. */
 }
 
 /** Thrown with a message already fit for a reader. */

@@ -2097,6 +2097,153 @@ button.wb-info {
   outline-offset: 2px;
 }
 
+/* SUPPORTERS — approved 16 Nov 2026 on #176. The page's cards are two across
+   on a laptop and one on a phone; a role (on entries from before 19 Nov 2026)
+   is a small outlined chip with no colour of its own, because roles are not
+   agents and wear no accent. The interest form's public fields are gone (19 Nov 2026). */
+.wb-supporter-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+@media (max-width: 720px) {
+  .wb-supporter-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* The reclining Wellington beside the heading goes on a phone, where the words need the room. */
+  .wb-supporters-wellington {
+    display: none;
+  }
+}
+.wb-supporter-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+}
+/* The heading and the form, side by side on a laptop and stacked on a phone, the form right under the
+   heading, so it is seen without scrolling (18 Nov 2026, her word on #176). The cards come below. */
+.wb-supporters-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 470px);
+  gap: 28px;
+  align-items: start;
+  margin-bottom: 24px;
+}
+.wb-supporters-wellington {
+  display: block;
+}
+@media (max-width: 760px) {
+  .wb-supporters-top {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  /* Stacked, the form comes right under the heading, so the reclining Wellington steps out. */
+  .wb-supporters-top .wb-supporters-wellington {
+    display: none;
+  }
+}
+/* The supporters page's own form: name and email side by side, then the rest. */
+.wb-support-form {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 18px 20px 20px;
+  position: relative;
+}
+.wb-support-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 12px;
+}
+@media (max-width: 340px) {
+  .wb-support-form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* The pop-up before a post goes on, and before a post is deleted (19 Nov 2026). From 21 Nov 2026, her
+   word on #176, it wears the site's one modal style: the floating plane of BRAND.md §2.3 (.card
+   .card-document: --card, the --line hairline, --r-lg, --pad-card) with §4's modal shadow, over the
+   veil the map's Data & licences panel uses (LicencePanel.tsx). The book carries no veil of its own. */
+.wb-confirm-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: color-mix(in srgb, var(--ink) 26%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.wb-confirm {
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow-lg);
+}
+/* Edit and Delete on one's own card, and Save and Cancel while editing: quiet, small. */
+.wb-own-button {
+  font-size: 12.5px;
+  padding: 4px 10px;
+}
+/* The line at the foot of the page. */
+.wb-supporters-foot {
+  margin: 32px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 13.5px;
+  color: var(--ink-2);
+  text-align: center;
+}
+/* The thank-you, in the form's place: a mint keyline and check (BRAND.md §2.1, Mint for success; §2.6,
+   the form carries the meaning, so the words stay ink). */
+.wb-support-thanks {
+  border-left: 3px solid var(--state-approved);
+  padding: 4px 0 4px 14px;
+  outline: none;
+}
+.wb-support-thanks-mark {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--r-pill);
+  background: var(--state-approved);
+  color: #fff;
+}
+.wb-role-chip {
+  flex: none;
+  font-size: 11.5px;
+  line-height: 1.3;
+  padding: 2px 9px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+/* A person's role in its own colour (19 Nov 2026, her word on #176; the hues and why are in
+   tokens.css, --supporter-*): a light fill and a keyline of the hue, the words in --ink. "Other",
+   and the agents' "WaterBots agent" tag, keep the plain outline. */
+.wb-role-chip[data-role='developer'] { --chip-hue: var(--supporter-developer); }
+.wb-role-chip[data-role='consultant'] { --chip-hue: var(--supporter-consultant); }
+.wb-role-chip[data-role='funder'] { --chip-hue: var(--supporter-funder); }
+.wb-role-chip[data-role='auditor'] { --chip-hue: var(--supporter-auditor); }
+.wb-role-chip[data-role='researcher'] { --chip-hue: var(--supporter-researcher); }
+.wb-role-chip[data-role='developer'],
+.wb-role-chip[data-role='consultant'],
+.wb-role-chip[data-role='funder'],
+.wb-role-chip[data-role='auditor'],
+.wb-role-chip[data-role='researcher'] {
+  background: color-mix(in srgb, var(--chip-hue) 14%, var(--card));
+  border-color: color-mix(in srgb, var(--chip-hue) 55%, var(--card));
+  color: var(--ink);
+}
+
 /* Save at the foot of the left rail, just above Register your interest — her
    word of 16 Nov 2026 on #174. Full width, normal text size; still the one
    blue button when nothing comes before it. Collapsed, a small icon button. */

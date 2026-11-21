@@ -27,7 +27,7 @@
  * step away and back.
  */
 
-export type Page = 'console' | 'commons' | 'interest';
+export type Page = 'console' | 'commons' | 'interest' | 'supporters';
 
 /**
  * THE INTEREST FORM AT "/interest" — Register your interest, the maintainer's
@@ -35,6 +35,13 @@ export type Page = 'console' | 'commons' | 'interest';
  * menu; `?module=<slug>` opens it with a Commons module already chosen.
  */
 export const INTEREST_PATH = '/interest';
+
+/**
+ * THE SUPPORTERS PAGE AT "/supporters" — approved 16 Nov 2026, the maintainer's word on #176. A
+ * fourth page under the same menu, reached from the Commons and the interest form, never from the
+ * menu itself, which is the main site's.
+ */
+export const SUPPORTERS_PATH = '/supporters';
 
 /** The Commons' address, without a host. */
 export const COMMONS_PATH = '/commons';
@@ -50,6 +57,7 @@ export function pageFromPath(address: string): Page {
   /* A move to the form may carry ?module=; the page is the path alone. */
   const pathname = address.split('?')[0];
   if (pathname === INTEREST_PATH || pathname === `${INTEREST_PATH}/`) return 'interest';
+  if (pathname === SUPPORTERS_PATH || pathname === `${SUPPORTERS_PATH}/`) return 'supporters';
   return pathname === COMMONS_PATH || pathname.startsWith(`${COMMONS_PATH}/`) ? 'commons' : 'console';
 }
 
@@ -71,5 +79,6 @@ export function pathForModule(slug: string): string {
 
 /** The path the shell writes into the address when a visitor moves. */
 export function pathForPage(page: Page): string {
+  if (page === 'supporters') return SUPPORTERS_PATH;
   return page === 'commons' ? COMMONS_PATH : page === 'interest' ? INTEREST_PATH : '/';
 }

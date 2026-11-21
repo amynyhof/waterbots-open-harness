@@ -17,8 +17,9 @@
  */
 
 import { INTEREST, countOneMessage, timeUntilReset } from './_cap.js';
-import { INTEREST_KEY, MAX_INTEREST_BYTES, composeInterestMail, interestEntry, readInterest } from './_interest.js';
-import { StoreError, appendKept, storeConfig } from './_store.js';
+import { INTEREST_KEY, MAX_INTEREST_BYTES, composeInterestMail, composePosterMail, interestEntry, readInterest } from './_interest.js';
+import { StoreError, appendKept, appendKeptWith, storeConfig } from './_store.js';
+import { SUPPORTER_KEYS, editKeyOf, editLink, editToken, forPage, supporterEntry, supporterId } from './_supporters.js';
 import { TEAM_ADDRESS, TEAM_MAIL_FROM, TeamMailError, sendTeamMail, teamMailKey } from './_teamMail.js';
 
 export async function GET(): Promise<Response> {
@@ -48,6 +49,8 @@ export async function POST(req: Request): Promise<Response> {
   if ('problem' in reading) {
     return problem(400, `That was not kept: ${reading.problem}.`);
   }
+  /* The filter refused what would go on the supporters board: said plainly, nothing kept. */
+  if ('blocked' in reading) return problem(422, reading.blocked);
 
   const store = storeConfig();
   if (!store) {
@@ -75,8 +78,24 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   const now = new Date();
+  const signup = reading.signup;
+  /* A post from the supporters page: written in the same transaction as the
+     sign-up, so it is kept whole or not at all, and on the page at once: the
+     name, title, organisation, role and comment (19 Nov 2026, her word on #176). Its private edit
+     key goes back to the poster once and by email; the store keeps its hash. */
+  const supporter = signup.support ? supporterId() : undefined;
+  const token = supporter ? editToken() : undefined;
+  let shown: ReturnType<typeof forPage> | undefined;
   try {
-    await appendKept(store, INTEREST_KEY, interestEntry(reading.signup, now));
+    if (signup.support && supporter && token) {
+      const entry = supporterEntry(supporter, signup.name, signup.organisation, signup.support, now, await editKeyOf(token));
+      await appendKeptWith(store, INTEREST_KEY, interestEntry(signup, now, supporter), [
+        ['HSET', SUPPORTER_KEYS.shown, supporter, JSON.stringify(entry)],
+      ]);
+      shown = forPage(entry);
+    } else {
+      await appendKept(store, INTEREST_KEY, interestEntry(signup, now));
+    }
   } catch (error) {
     if (decision.kind === 'allowed') await decision.refund();
     console.error(`interest: the sign-up could not be written — ${error instanceof StoreError ? error.message : String(error)}`);
@@ -91,7 +110,7 @@ export async function POST(req: Request): Promise<Response> {
     console.error('interest: RESEND_API_KEY is not set, so no copy went to the team inbox; the sign-up is kept');
   } else {
     try {
-      const mail = composeInterestMail(reading.signup, now);
+      const mail = composeInterestMail(signup, now, supporter);
       await sendTeamMail(key, { to: TEAM_ADDRESS, from: TEAM_MAIL_FROM, ...mail });
       mailed = true;
     } catch (error) {
@@ -101,7 +120,20 @@ export async function POST(req: Request): Promise<Response> {
     }
   }
 
-  return json(200, { kept: true, mailed });
+  /* The poster's own email, with the private link to edit or delete. The post
+     is already on the page; an email that does not go is said in the answer. */
+  let posterMailed = false;
+  if (shown && supporter && token && key) {
+    try {
+      await sendTeamMail(key, { to: signup.email, from: TEAM_MAIL_FROM, ...composePosterMail(signup, editLink(req.url, supporter, token)) });
+      posterMailed = true;
+    } catch (error) {
+      console.error(`interest: the poster's email with the edit link did not go; the post is kept — ${error instanceof TeamMailError ? error.message : String(error)}`);
+    }
+  }
+
+  /* The page gets its card back, and the key once, so the poster's browser can edit and delete it. */
+  return json(200, { kept: true, mailed, ...(shown && supporter && token ? { shown, edit: { id: supporter, token }, posterMailed } : {}) });
 }
 
 function json(status: number, payload: unknown, headers?: Record<string, string>): Response {
