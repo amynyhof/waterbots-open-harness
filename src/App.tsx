@@ -99,6 +99,7 @@ import CalvinScreen from './components/CalvinScreen';
 import SiteMenu from './components/SiteMenu';
 import { usePhone } from './lib/phone';
 import { blueButton, meetShowing } from './lib/blue';
+import { PhoneSaveBar, type SaveDoor } from './components/SaveDoor';
 import { DEFAULT_SURFACE, type Surface } from './lib/surfaces';
 import { useConversation } from './chat/useConversation';
 import { WELLINGTON, wellingtonAsk } from './lib/wellington';
@@ -460,10 +461,23 @@ export default function App() {
     onConsole &&
     !(phone && drawer !== null) &&
     ((onDesk && meetShowing(chat.turns)) || (onEligibility && meetOn.eligibility) || (onMap && meetOn.map));
-  /* On a phone the save button is inside the project panel, so it counts only while that panel is open. */
-  const saveInView = onConsole && somethingOnRecord(visit) && (!phone || drawer === 'project');
+  /* On a phone Save is the bar at the bottom of the screen (21 Nov 2026), so it counts only while no panel covers it. */
+  const saveInView = onConsole && somethingOnRecord(visit) && (!phone || drawer === null);
   /* A page with a form of its own — the interest form, and the supporters page from 18 Nov 2026 — makes its Send the blue one. */
   const blue = blueButton({ meet: meetInView, save: saveInView, form: onInterest || onSupporters });
+
+  /* THE ONE SAVE DOOR — the maintainer's word of 21 Nov 2026
+     (src/components/SaveDoor.tsx): under the crew in the right panel on a
+     laptop, a bar above the chat box on a phone; with the team box. */
+  const saveDoor: SaveDoor = {
+    show: somethingOnRecord(visit),
+    sealing,
+    onSeal,
+    showPerson,
+    person,
+    onPerson: setPerson,
+    blue: blue === 'save',
+  };
 
   return (
     <div
@@ -516,6 +530,7 @@ export default function App() {
           sideways, and a horizontal scrollbar is a worse failure than a narrow
           map. The rail collapses instead, and the map holds a zoom floor so it
           stays readable rather than shrinking to a postage stamp. */}
+      <PhoneSaveBar.Provider value={phone ? saveDoor : null}>
       <div
         className={onConsole ? 'wb-page wb-page-console' : 'wb-page wb-page-console is-off'}
         style={{ position: 'absolute', inset: 0, display: 'flex', overflow: 'hidden', visibility: onConsole ? 'visible' : 'hidden' }}
@@ -524,16 +539,7 @@ export default function App() {
         <NavRail
           context={visit.context}
           onTyped={onTyped}
-          save={{
-            show: somethingOnRecord(visit),
-            sealing,
-            onSeal,
-            showPerson,
-            person,
-            onPerson: setPerson,
-            onExport: printScreeningReport,
-            blue: blue === 'save',
-          }}
+          report={{ show: somethingOnRecord(visit), onExport: printScreeningReport }}
           onInterest={() => navigate(pathForInterest())}
           drawer={phone ? { open: drawer === 'project', onClose: closeDrawer } : undefined}
         />
@@ -639,15 +645,15 @@ export default function App() {
               </div>
             </main>
 
-            {/* The right column is the crew on every step, with the save
-                button at its foot, so saving is reachable from every step —
-                item S16, complete on 9 Sep 2026 with slice 4. The host docks
-                that stood here on the map and on quantification are retired;
-                each agent's screen holds its own chat in the centre. */}
+            {/* The right column is the crew on every step, with Save under
+                it from 21 Nov 2026, so saving is reachable from every step.
+                The host docks that stood here on the map and on quantification
+                are retired; each agent's screen holds its own chat in the centre. */}
             <CrewRail
               active={surface}
               status={crew}
               onNavigate={setSurface}
+              save={saveDoor}
               drawer={phone ? { open: drawer === 'crew', onClose: closeDrawer } : undefined}
             />
           </div>
@@ -656,6 +662,7 @@ export default function App() {
         {/* The shade behind an open panel on a phone; a tap on it closes the panel. */}
         {phone && drawer !== null && <div className="wb-scrim" aria-hidden onClick={closeDrawer} />}
       </div>
+      </PhoneSaveBar.Provider>
 
       {/* THE AGENT COMMONS (item S18, slices 2 and 3): the shelf, and a pack
           opened on its holder's screen, alone. No left rail, no journey bar,

@@ -40,6 +40,7 @@
 
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import type { AgentHost } from '../chat/evidence';
+import { SaveBarSlot } from '../components/SaveDoor';
 
 export type ScreenTab = 'chat' | 'tool' | 'pack' | 'credentials';
 
@@ -169,6 +170,11 @@ export default function AgentScreen({
           </div>
         ))}
       </div>
+
+      {/* On a phone, Save's bar at the foot of a tab with no chat box — the
+          Tool, Map, Knowledge pack and Credentials tabs (21 Nov 2026). The
+          Chat tab draws it itself, just above its chat box. */}
+      {active !== 'chat' && <SaveBarSlot />}
     </div>
   );
 }

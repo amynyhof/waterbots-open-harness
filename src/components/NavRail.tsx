@@ -30,7 +30,6 @@
  */
 
 import { useEffect, useState } from 'react';
-import { MAX_HUMAN_NOTE_CHARS, type PersonAsk, type SealState } from '../lib/handoff';
 import { SITE_LABEL, SITE_URL } from '../lib/site';
 import { pathForInterest } from '../lib/pages';
 import { PROJECT_STAGES, projectType } from '../lib/projectTypes.generated';
@@ -63,37 +62,28 @@ const RECORD_EXPLAINER =
   'Wellington asks for these in the chat, and what you tell him lands here. Phoebe reads them, and the eligibility verdicts she reaches with you show on her step and in the next steps. Nothing is kept between visits.';
 
 /**
- * THE SAVE DOOR AND THE REPORT, under the project — the maintainer's word of
- * 14 Nov 2026 (W27, S21). The save button left the foot of the crew column
- * for here, with the box that sends the project to the team for review, and
- * "Export screening report" sits under it. Save is blue only when it is the
- * one next step (src/lib/blue.ts, 16 Nov 2026); otherwise it is drawn quiet.
+ * THE REPORT, under the project — the maintainer's word of 14 Nov 2026 (S21).
+ * "Export screening report" shows once something is on the record. The save
+ * door that sat in this rail moved to the right panel, under the crew, on
+ * 21 Nov 2026 (src/components/SaveDoor.tsx).
  */
-export interface SaveDoor {
-  /** Something is on the record, so there is a project to save and report. */
+export interface ReportDoor {
+  /** Something is on the record, so there is a project to report. */
   show: boolean;
-  sealing: SealState;
-  onSeal: () => void;
-  /** A path is ruled out: the box to send the project to the team shows. */
-  showPerson: boolean;
-  person: PersonAsk;
-  onPerson: (next: PersonAsk) => void;
   /** Opens the print dialog on the screening report (S21). */
   onExport: () => void;
-  /** One blue button at a time: Save is the blue one only when nothing comes before it. */
-  blue: boolean;
 }
 
 export default function NavRail({
   context,
   onTyped,
-  save,
+  report,
   onInterest,
   drawer,
 }: {
   context: VisitContext;
   onTyped: (field: 'name' | 'place', value: string) => void;
-  save: SaveDoor;
+  report: ReportDoor;
   /** Opens the Register your interest form (16 Nov 2026). */
   onInterest?: () => void;
   /** On a phone: the rail is a sliding panel, open or shut by the shell. */
@@ -211,10 +201,9 @@ export default function NavRail({
           </div>
 
           {/* S21 — the screening report, under the project. Quiet: blue is for
-              the one main next step. The save button left this spot for the
-              foot of the rail on 16 Nov 2026 (her walk of #174, on a tablet). */}
-          {save.show && (
-            <button type="button" className="wb-report-button" onClick={save.onExport} style={{ marginTop: 10 }}>
+              the one main next step. */}
+          {report.show && (
+            <button type="button" className="wb-report-button" onClick={report.onExport} style={{ marginTop: 10 }}>
               Export screening report
             </button>
           )}
@@ -292,14 +281,6 @@ export default function NavRail({
 
       <div style={{ flex: 1 }} />
 
-      {/* SAVE, AT THE FOOT OF THE RAIL, just above Register your interest —
-          the maintainer's word of 16 Nov 2026 on #174. Still the one blue
-          button when nothing comes before it (src/lib/blue.ts), at normal
-          text size; the box to send the project to the team stays with it,
-          because it goes with the save. The record above scrolls; this stays
-          put. With the rail collapsed it is a small button with an icon. */}
-      {save.show && <SaveFoot save={save} open={open} />}
-
       {/* REGISTER YOUR INTEREST — pinned to the foot of the rail, just above
           waterbots.ai and below everything else, the maintainer's word of
           16 Nov 2026 on #175. It stands out a little as BRAND.md §7's tinted
@@ -338,90 +319,6 @@ export default function NavRail({
         {open && <span>{SITE_LABEL}</span>}
       </a>
     </nav>
-  );
-}
-
-/** The save button at the foot of the rail, with the team-review box above it when a path is ruled out. */
-function SaveFoot({ save, open }: { save: SaveDoor; open: boolean }) {
-  const { sealing, person, onPerson } = save;
-  const busy = sealing.kind === 'sealing' || sealing.kind === 'sealed';
-  if (!open) {
-    return (
-      <button
-        type="button"
-        className={save.blue ? 'wb-save-button is-collapsed' : 'wb-save-button is-quiet is-collapsed'}
-        onClick={save.onSeal}
-        disabled={busy}
-        title="Save and sign up"
-        aria-label="Save and sign up"
-      >
-        <SaveIcon />
-      </button>
-    );
-  }
-  return (
-    <div className="wb-rail-save wb-rail-save-foot">
-      {/* THE DOOR TO A PERSON — item A18, 26 Sep 2026; from 14 Nov 2026 shown
-          whenever a path is ruled out, Blocked or not applying (the ruling of
-          23 Sep 2026), and never offered in chat. Nothing is sent until the
-          save button below is pressed, and then only with it. */}
-      {save.showPerson && (
-        <div style={{ margin: '0 2px 10px' }}>
-          <label
-            style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12.5, lineHeight: 1.45, color: 'var(--ink)', cursor: 'pointer' }}
-          >
-            <input
-              type="checkbox"
-              checked={person.wanted}
-              disabled={busy}
-              onChange={(e) => onPerson({ ...person, wanted: e.target.checked })}
-              style={{ marginTop: 3, accentColor: 'var(--tide-ui)', flex: 'none' }}
-            />
-            Send my project to the WaterBots team so a person can look at it
-          </label>
-          {person.wanted && (
-            <textarea
-              className="wb-rail-input"
-              value={person.note}
-              disabled={busy}
-              onChange={(e) => onPerson({ ...person, note: e.target.value })}
-              placeholder="A note for them, if you like"
-              aria-label="A note for the WaterBots team"
-              maxLength={MAX_HUMAN_NOTE_CHARS}
-              rows={2}
-              style={{ resize: 'none', marginTop: 6 }}
-            />
-          )}
-        </div>
-      )}
-
-      <button
-        type="button"
-        className={save.blue ? 'wb-save-button' : 'wb-save-button is-quiet'}
-        onClick={save.onSeal}
-        disabled={busy}
-        aria-busy={sealing.kind === 'sealing' || undefined}
-      >
-        {sealing.kind === 'sealing' && 'Saving your project…'}
-        {sealing.kind === 'sealed' && 'Saved. Taking you to waterbots.ai…'}
-        {(sealing.kind === 'idle' || sealing.kind === 'failed') && 'Save and sign up'}
-      </button>
-      {sealing.kind === 'failed' && (
-        <p role="alert" style={{ margin: '8px 0 0', fontSize: 12, lineHeight: 1.5, color: 'var(--state-pending)' }}>
-          {sealing.message}
-        </p>
-      )}
-    </div>
-  );
-}
-
-/** An arrow into a tray: saving the project to take it on. */
-function SaveIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden style={{ display: 'block' }}>
-      <path d="M8 2.5v7M5 6.5l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M2.5 10.5v2a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
   );
 }
 

@@ -26,6 +26,7 @@ import { useEffect, useLayoutEffect, useRef } from 'react';
 import Transcript from '../chat/Transcript';
 import type { AgentHost } from '../chat/evidence';
 import type { Conversation } from '../chat/useConversation';
+import { SaveBarSlot } from '../components/SaveDoor';
 
 /** Shared chat column: 816px. */
 export const SCREEN_COLUMN = 816;
@@ -78,6 +79,10 @@ export default function ScreenChat({
           />
         </div>
       </div>
+
+      {/* On a phone, Save's bar sits just above the chat box — the
+          maintainer's word of 21 Nov 2026. Nothing on a laptop or the Commons. */}
+      <SaveBarSlot />
 
       {/* The one composer, at the bottom of the centre. Strip 16/12 around
           the 816 column; the textarea and the button on one baseline. The

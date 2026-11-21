@@ -15,6 +15,7 @@
 
 import type { AgentHost } from '../chat/evidence';
 import { HostHeader, SCREEN_COLUMN } from './ScreenChat';
+import { SaveBarSlot } from '../components/SaveDoor';
 
 export default function NotLiveChat({
   host,
@@ -27,6 +28,7 @@ export default function NotLiveChat({
   note?: string;
 }) {
   return (
+    <>
     <div style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
       <div style={{ maxWidth: SCREEN_COLUMN, margin: '0 auto', padding: '24px 16px' }}>
         <HostHeader host={host} />
@@ -40,5 +42,8 @@ export default function NotLiveChat({
         )}
       </div>
     </div>
+    {/* On a phone, Save's bar at the foot (21 Nov 2026); nothing elsewhere. */}
+    <SaveBarSlot />
+    </>
   );
 }
