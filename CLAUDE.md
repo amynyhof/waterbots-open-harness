@@ -509,6 +509,10 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   the role is a small tag in its own colour (`--supporter-*` in tokens.css: brand hues no agent on the page
   wears, a knowing exception to the book's fixed roles, raised with her; "Other" plain). An edit changes
   them too, through the same filter on every text field.
+- **Vercel Web Analytics, from 21 Nov 2026, the maintainer's word: cookie-free page views, and no
+  other tracking.** `@vercel/analytics` 2.0.1, mounted once in `src/main.tsx`; every page view is cut
+  to the site and the path (`src/lib/analytics.ts`), so a carried `?question=` and a supporter's
+  `#edit=` key never leave the page. It counts only once she turns Web Analytics on for the project in Vercel.
 - **Wellington reads back what Phoebe found, and asks people served, from 26–27 Sep 2026 (items A17
   and A16, #128 and #130).** Each ask carries her worksheet as row ids and states only; he greets a
   visitor coming back from her knowing each pathway's read, never her sentences, and routes to
