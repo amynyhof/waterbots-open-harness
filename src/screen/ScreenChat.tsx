@@ -23,11 +23,12 @@
  * site says it is early once, beside waterbots.ai in the left rail.
  */
 
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import Transcript from '../chat/Transcript';
 import type { AgentHost } from '../chat/evidence';
 import type { Conversation } from '../chat/useConversation';
 import { SaveBarSlot } from '../components/SaveDoor';
+import { ScreenMore } from './AgentScreen';
 
 /** Shared chat column: 816px. */
 export const SCREEN_COLUMN = 816;
@@ -144,6 +145,8 @@ export default function ScreenChat({
  * Name uses the book's H3 token. Role as an eyebrow.
  */
 export function HostHeader({ host }: { host: AgentHost }) {
+  /* On a screen that opens on its chat alone, the way to its other tabs. */
+  const more = useContext(ScreenMore);
   return (
     <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 18 }}>
       <span
@@ -175,6 +178,11 @@ export function HostHeader({ host }: { host: AgentHost }) {
           >
             {host.name}
           </h1>
+          {more && (
+            <button type="button" className="wb-row-action wb-about-link" onClick={more}>
+              About {host.name}
+            </button>
+          )}
         </div>
         <div
           className="t-mono"

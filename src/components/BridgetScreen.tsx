@@ -53,11 +53,12 @@
  * never text, so her name is set in ink, as everywhere else.
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import bridgetPortrait from '../../brand/assets/bots/bridget.svg';
 import type { AgentHost, AgentTurn } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
 import { meetShowing } from '../lib/blue';
+import { Reached } from '../chat/reached';
 import { askBridget } from '../lib/bridgetClient';
 import {
   AQUEDUCT_CITATION,
@@ -166,7 +167,8 @@ export default function BridgetScreen({
   const chat = useConversation(ask, BRIDGET.name);
   /* ONE BLUE BUTTON (16 Nov 2026): the shell decides which button is blue, so
      it is told whether Wellington's "Meet <name>" is the latest thing here. */
-  const meet = meetShowing(chat.turns);
+  const reached = useContext(Reached);
+  const meet = meetShowing(chat.turns, reached);
   useEffect(() => {
     onMeet?.(meet);
   }, [meet, onMeet]);

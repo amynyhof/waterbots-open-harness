@@ -693,6 +693,27 @@ export interface CarbonFigure {
   version: string;
 }
 
+/**
+ * THE WORDS, FROM 21 NOV 2026 — the maintainer's word: each line says what
+ * the agent is ready to do, then what they found, so it never reads as if the
+ * visitor had fallen behind ("not started", "not done yet" are gone). The
+ * "ready" line is the agent's offer; anything else is news.
+ */
+const READY: Record<Surface, string> = {
+  desk: 'Ready to hear about your project',
+  eligibility: 'Ready to check funding',
+  map: 'Ready to find your basin',
+  quantification: 'Ready to estimate',
+};
+
+/** A funding path's state, as the crew line says it. */
+const PATH_WORDS: Record<ReturnType<typeof pathStatus>, string> = {
+  likely: 'likely',
+  'ruled out': 'ruled out',
+  'more to find out': 'more to learn',
+  'not started': 'next',
+};
+
 /** One line per crew member, keyed by the step each one opens. */
 export function crewStatus(
   visit: Visit,
@@ -703,28 +724,42 @@ export function crewStatus(
   const c = visit.context;
   const asked = [c.does, c.type, c.stage, c.place.trim(), ...(WATER_SUPPLY_TYPES.includes(c.type) ? [c.served ? 'x' : ''] : [])];
   const known = asked.filter(Boolean).length;
-  const wellington = known === 0 ? 'getting to know your project' : `${known} of ${asked.length} project details`;
+  const wellington = known === 0 ? READY.desk : known === asked.length ? 'Has your project' : `Knows ${known} of ${asked.length} details`;
 
   const paths = HER_PACKS.filter((pack) => section(pack) !== undefined).map((pack) => ({
     name: SHORT_PATH[section(pack)!.sectionId] ?? section(pack)!.sectionName,
     status: pathStatus(visit, sheet, pack),
   }));
   const phoebe = paths.every((p) => p.status === 'not started')
-    ? 'not started'
-    : paths.map((p) => `${p.name} ${p.status}`).join(' · ');
+    ? READY.eligibility
+    : paths.map((p) => `${p.name[0].toUpperCase() + p.name.slice(1)}: ${PATH_WORDS[p.status]}`).join(" · ");
 
-  const bridget = visit.pin ? `basin pinned · ${visit.pin.stressLabel.toLowerCase()} water stress` : 'not done yet';
+  const bridget = visit.pin ? `Basin found: ${visit.pin.stressLabel.toLowerCase()} water stress` : READY.map;
 
-  let calvin = carbon ? 'carbon estimate ready' : 'not done yet';
+  let calvin = carbon ? 'Carbon estimate ready' : READY.quantification;
   for (const pack of packs) {
     const values = visit.packValues[pack.key];
     if (!values) continue;
     const result = pack.compute(values);
     if (result.kind === 'complete') {
-      calvin = carbon ? 'carbon and water estimates ready' : 'water estimate ready';
+      calvin = carbon ? 'Carbon and water estimates ready' : 'Water estimate ready';
       break;
     }
-    if (result.kind === 'incomplete' && !carbon) calvin = 'part-way';
+    if (result.kind === 'incomplete' && !carbon) calvin = 'Estimate started';
   }
   return { desk: wellington, eligibility: phoebe, map: bridget, quantification: calvin };
+}
+
+/**
+ * Which lines are news — anything but the agent's "ready" offer. The crew
+ * shows a member's line only when it is news or that member's step is in
+ * view, so the first screen is lighter (the maintainer's word, 21 Nov 2026).
+ */
+export function crewNews(status: Record<Surface, string>): Record<Surface, boolean> {
+  return {
+    desk: status.desk !== READY.desk,
+    eligibility: status.eligibility !== READY.eligibility,
+    map: status.map !== READY.map,
+    quantification: status.quantification !== READY.quantification,
+  };
 }

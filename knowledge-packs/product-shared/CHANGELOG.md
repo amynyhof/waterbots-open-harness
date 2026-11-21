@@ -1,4 +1,13 @@
 # Changelog — product-shared
+## 0.6.6 — 21 Nov 2026
+
+- `agent-primer.md`, the roster region: **the agents lead**, the maintainer's word of 21 Nov 2026. A visitor
+  moves by clicking an agent in the crew, and the journey bar only shows progress; it no longer clicks.
+  Old wording:
+
+  > **The journey bar is the navigation**: Dispatches first, the desk, then
+  > the six phases.
+
 ## 0.6.5 — 12 Nov 2026
 
 - `agent-primer.md`, the roster region: the rule that an agent never points at a tab gains its second

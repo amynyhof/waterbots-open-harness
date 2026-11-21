@@ -37,11 +37,12 @@
  * the maintainer's word: the site says it is early once, beside waterbots.ai.
  */
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
 import type { AgentHost, AgentTurn, TurnButton } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
 import { meetShowing } from '../lib/blue';
+import { Reached } from '../chat/reached';
 import type { Citation } from '../lib/citation';
 import { worksheetCaption, contextFor, applyUpdates, type Sheet, type Verdicts } from '../lib/worksheetState';
 import { HER_PACKS } from '../lib/worksheet.generated';
@@ -245,7 +246,8 @@ export default function PhoebeScreen({
   const chat = useConversation(ask, PHOEBE.name);
   /* ONE BLUE BUTTON (16 Nov 2026): the shell decides which button is blue, so
      it is told whether Wellington's "Meet <name>" is the latest thing here. */
-  const meet = meetShowing(chat.turns);
+  const reached = useContext(Reached);
+  const meet = meetShowing(chat.turns, reached);
   useEffect(() => {
     onMeet?.(meet);
   }, [meet, onMeet]);

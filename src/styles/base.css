@@ -472,6 +472,35 @@ body {
   color: var(--ink-3);
   border: 1px solid var(--line);
 }
+/* The record's heading is its toggle (21 Nov 2026): it starts collapsed, and
+   its count says how many rows hold a value. */
+.wb-record-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 0;
+  white-space: nowrap;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+/* Narrower than the eyebrow above it, so the count, the caret and the (i) fit the rail. */
+.wb-record-toggle::before {
+  width: 10px;
+}
+.wb-record-toggle:hover {
+  color: var(--ink);
+}
+.wb-record-count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0;
+  padding: 0 5px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+}
 .wb-rail-link:hover {
   color: var(--tide-text);
   text-decoration: underline;
@@ -719,6 +748,7 @@ body {
    carries the meaning.
 --------------------------------------------------------------------------- */
 
+/* A progress line from 21 Nov 2026, not a menu: nothing on it clicks. */
 .wb-phase {
   display: inline-flex;
   align-items: center;
@@ -727,14 +757,7 @@ body {
   background: transparent;
   border: 0;
   font-family: var(--font-sans);
-  cursor: pointer;
-  transition: color var(--dur) var(--ease);
-}
-.wb-phase[aria-disabled='true'] {
   cursor: default;
-}
-button.wb-phase:hover span:last-child {
-  color: var(--ink);
 }
 
 .wb-phase-dot {
@@ -1690,26 +1713,8 @@ button.wb-info {
     cursor: pointer;
   }
 
-  /* THE JOURNEY BAR: every ring a 44px place to tap, all seven across. */
-  .wb-journey {
-    padding: 0 8px !important;
-  }
-  .wb-journey .wb-phase {
-    min-width: 44px;
-    min-height: 44px;
-    justify-content: center;
-    padding: 0;
-  }
-  .wb-journey-sep {
-    margin: 0 4px !important;
-  }
-  .wb-journey-join {
-    flex: 1 1 0 !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-  }
-
-  /* The row under it: the step's name between "Project" and "Crew". */
+  /* ONE ROW ON A PHONE (21 Nov 2026): the step's name, with a small dot for
+     each step, between "Project" and "Crew". The rings above it are gone. */
   .wb-phone-bar {
     display: flex;
     align-items: center;
@@ -1743,11 +1748,11 @@ button.wb-info {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .wb-phone-bar-count {
-    margin-left: 6px;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--ink-2);
+  .wb-phone-bar-dots {
+    display: inline-flex;
+    gap: 4px;
+    margin-right: 8px;
+    vertical-align: 1px;
   }
 
   /* An agent's tabs stay on one line: tighter, and the row slides sideways
@@ -2298,4 +2303,11 @@ button.wb-info {
   :root {
     --chat-rail: 248px;
   }
+}
+
+/* "About Wellington" beside his name on the desk, which opens on Chat alone
+   (21 Nov 2026): quiet, and the way to his Knowledge pack and Credentials. */
+.wb-about-link {
+  margin-left: 6px;
+  font-size: 12px;
 }

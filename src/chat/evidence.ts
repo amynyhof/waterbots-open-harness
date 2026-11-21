@@ -18,6 +18,8 @@
  * the thing producing citation text. See CITATIONS.md.
  */
 
+import type { Surface } from '../lib/surfaces';
+
 /**
  * A citation, broken into the parts CITATIONS.md renders.
  *
@@ -118,6 +120,8 @@ export interface TurnAction {
 export interface TurnButton {
   label: string;
   primary?: boolean;
+  /** The step this button opens, for a "Meet …" button: once that step is reached it is drawn quiet (21 Nov 2026). */
+  reaches?: Surface;
   /** Called on a tap. The layer knows no more than that. */
   go: () => void;
 }

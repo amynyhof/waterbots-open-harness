@@ -70,6 +70,10 @@ expect('an empty thread shows none', meetShowing([]) === false, 'it did');
 expect('a latest turn with Meet shows it', meetShowing([meetTurn]) === true, 'it did not');
 expect('once the visitor answers, it is gone', meetShowing([meetTurn, { role: 'user', text: 'ok' }]) === false, 'it stayed');
 expect('quiet chips alone are not a blue button', meetShowing([chipTurn]) === false, 'a chip counted');
+/* 21 Nov 2026, her word: a Meet button goes quiet once that agent is reached. */
+const meetPhoebe = { ...meetTurn, buttons: [{ label: 'Meet Phoebe', primary: true, reaches: 'eligibility', go() {} }] };
+expect('a Meet button to a step not yet reached is blue', meetShowing([meetPhoebe], new Set(['desk'])) === true, 'it was not');
+expect('a Meet button to a reached step is quiet', meetShowing([meetPhoebe], new Set(['desk', 'eligibility'])) === false, 'it stayed blue');
 
 console.log('\n  Each button draws what the rule says');
 const app = readFileSync(join('src', 'App.tsx'), 'utf8');
@@ -110,6 +114,25 @@ expect(
   'no other file draws a solid blue button',
   users.every((f) => allowed.includes(f)),
   `also in ${users.filter((f) => !allowed.includes(f)).join(', ')}`
+);
+
+console.log('\n  The agents lead (21 Nov 2026)');
+const journey = readFileSync(join('src', 'components', 'JourneyBar.tsx'), 'utf8');
+const transcript = readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8');
+expect(
+  'the steps on top are a progress line: only the phone row\'s Project and Crew click',
+  (journey.match(/<button/g) ?? []).length === 2 && !/onNavigate/.test(journey) && /AFTER_SAVE_LABEL/.test(journey) && !/GATED_NOTE/.test(journey),
+  'the bar still clicks, or Plan, Monitor and Communicate are not one mark'
+);
+expect(
+  'the transcript draws a reached Meet button quiet',
+  /const blue = button\.primary && !\(button\.reaches && reached\.has\(button\.reaches\)\)/.test(transcript) && /reaches: meet\.surface/.test(readFileSync(join('src', 'lib', 'wellington.ts'), 'utf8')),
+  'a reached Meet button is still drawn blue'
+);
+expect(
+  'Back goes back a step: every move pushes the step, and popstate restores it',
+  /pushState\(\{ \.\.\.\(window\.history\.state \?\? \{\}\), wbStep: next \}/.test(app) && /\.wbStep;\s*if \(step\)/.test(app),
+  'the step is not in the history'
 );
 
 if (problems.length) {

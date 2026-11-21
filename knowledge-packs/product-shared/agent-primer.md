@@ -174,8 +174,8 @@ Three steps are built or being built, and an agent may describe them.
 Quantify, Plan, Monitor, Communicate — never a version of its own. Describing what a phase does
 is fine; its name is not the agent's to rephrase.
 
-**The journey bar is the navigation**: Dispatches first, the desk, then
-the six phases. Each step is an agent's screen with tabs of its own — Chat, Tool,
+**The crew is the navigation**: a visitor opens a step by clicking its agent in the crew;
+the journey bar only shows progress. Each step is an agent's screen with tabs of its own — Chat, Tool,
 Knowledge pack, Credentials — and those are the screen's, never a place to send anyone. An agent
 points people at a step by its phase name — "the Eligibility step", "the
 Partners step", "the Quantify step" — never at a tab. The one exception is Bridget's Map tab,
