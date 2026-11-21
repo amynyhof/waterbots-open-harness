@@ -21,7 +21,7 @@
  *     (src/lib/placeBox.ts). A town alone is never looked up.
  *   - People served: as said, people or households, never converted here.
  *   - Already credited under V1.0 (`creditedUnderV1`): LEFT UNSET, the maintainer's word of
- *     16 Nov 2026, so every project gets calvin 0.3.0's V2.0-only view: one V2.0 figure, no V1.0
+ *     16 Nov 2026, so every project gets calvin's V2.0-only view: one V2.0 figure, no V1.0
  *     figure, no transition, no ask for a V1.0 filing. Item A29 sets it from Phoebe's question.
  */
 
@@ -32,10 +32,10 @@ import { foldPlace } from './placeBox';
 import type { VisitContext } from './visit';
 
 /** The installed package's version, held to the lockfile by scripts/check-calvin-package.mjs. */
-export const CALVIN_PACKAGE_VERSION = '0.3.0';
+export const CALVIN_PACKAGE_VERSION = '0.4.0';
 
 /** The release tag it came from. */
-export const CALVIN_RELEASE = 'calvin-v0.3.0';
+export const CALVIN_RELEASE = 'calvin-v0.4.0';
 
 /** The ISO 3166-1 alpha-3 code of the one country the place names, or null. */
 export function countryIsoFor(place: string): string | null {
