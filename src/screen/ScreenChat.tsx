@@ -19,7 +19,8 @@
  * outlined composer + Send; header 48 tile / 35 face / 10 corner, still.
  * Chat surface radii 10 / 14. No leftover 22 / 24 / 34.
  *
- * BETA IS STATED IN WORDS beside the name, where the host says it is true.
+ * NO BETA TAG beside the name from 21 Nov 2026 — the maintainer's word. The
+ * site says it is early once, beside waterbots.ai in the left rail.
  */
 
 import { useEffect, useLayoutEffect, useRef } from 'react';
@@ -140,8 +141,7 @@ export default function ScreenChat({
 
 /**
  * The host's header — 48px framed tile, 35px face, 10px corner, still.
- * Name uses the book's H3 token. Role as an eyebrow. Beta as a tag where
- * it is true.
+ * Name uses the book's H3 token. Role as an eyebrow.
  */
 export function HostHeader({ host }: { host: AgentHost }) {
   return (
@@ -175,7 +175,6 @@ export function HostHeader({ host }: { host: AgentHost }) {
           >
             {host.name}
           </h1>
-          {host.beta && <span className="tag">beta</span>}
         </div>
         <div
           className="t-mono"

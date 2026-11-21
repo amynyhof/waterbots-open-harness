@@ -27,14 +27,17 @@
  * three rows (base.css). Its height is told to the page as --menu-h, so a
  * phone's screening fills the screen below it (src/lib/phone.ts).
  *
- * THE BUILD BANNER RIDES UNDER IT, inside the same header — W28, 16 Nov 2026
- * (src/components/BuildBanner.tsx). Inside, so --menu-h counts it and a
- * phone's chat box is never pushed off the screen.
+ * NO BUILD BANNER UNDER IT FROM 21 NOV 2026 — the maintainer's word. Its one
+ * line (W28) is gone; a small "beta" sits beside
+ * waterbots.ai at the foot of the left rail instead (NavRail.tsx).
+ *
+ * THE READOUT — the map's one line — rides at the left of Sign in on a laptop,
+ * and on its own line under Sign in and Sign up on a phone (base.css), so the
+ * two keep their words and place on every page.
  */
 
 import { useLayoutEffect, useRef, type MouseEvent, type ReactNode } from 'react';
 import type { Page } from '../lib/pages';
-import BuildBanner from './BuildBanner';
 import { MENU_HOME, MENU_LINKS, MENU_SIGN_IN, MENU_SIGN_UP, type MenuLink } from '../lib/site';
 
 export default function SiteMenu({
@@ -88,7 +91,7 @@ export default function SiteMenu({
           ))}
         </nav>
         <div className="wb-site-menu-end">
-          {readout}
+          {readout && <span className="wb-site-menu-readout">{readout}</span>}
           <a className="wb-site-menu-link wb-site-menu-quiet" href={MENU_SIGN_IN.href}>
             {MENU_SIGN_IN.label}
           </a>
@@ -100,7 +103,6 @@ export default function SiteMenu({
           </a>
         </div>
       </div>
-      <BuildBanner />
     </header>
   );
 }

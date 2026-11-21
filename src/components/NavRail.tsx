@@ -306,7 +306,9 @@ export default function NavRail({
       )}
 
       {/* The production site this console is linked from, and where saving
-          happens. The reverse link is the marketing site's to make. */}
+          happens. The reverse link is the marketing site's to make. BETA
+          beside it, from 21 Nov 2026 — the maintainer's word: the one place
+          the site says it is early, in place of the line under the menu. */}
       <a
         className="wb-rail-link"
         href={SITE_URL}
@@ -317,6 +319,7 @@ export default function NavRail({
       >
         <ExternalIcon />
         {open && <span>{SITE_LABEL}</span>}
+        {open && <span className="tag wb-beta-tag">beta</span>}
       </a>
     </nav>
   );

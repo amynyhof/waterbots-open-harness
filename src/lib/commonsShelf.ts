@@ -43,7 +43,7 @@ import { CRITERIA } from './phoebeCards';
  * SIX STAGES, IN ORDER, from a later ruling the same day, replacing the status
  * phrases of earlier that day: a module moves from seeking partners to
  * graduated, and the list draws each stage as its name and a small bar of six
- * steps. "Beta" is not a stage: it is a tag on a module open to try. The one
+ * steps. The one
  * line on what each stage means is the engineer's draft for her approval,
  * shown behind the (i) beside the column.
  */
@@ -95,8 +95,6 @@ export interface ShelfCard {
    */
   opens: boolean;
   stage: ModuleStage;
-  /** "Beta": a tag on a module open to try, never a stage. */
-  beta?: boolean;
   owner: ModuleOwner;
   /**
    * The public grade. Null until a real card from the one public exam
@@ -135,7 +133,6 @@ const PHOEBE_CARD: ShelfCard = {
   tag: CRITERIA[0].citation.document,
   opens: true,
   stage: 'In development',
-  beta: true,
   owner: 'WaterBots',
   grade: null,
 };

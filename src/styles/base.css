@@ -464,6 +464,14 @@ body {
   border-top: 1px solid var(--line);
   transition: color var(--dur) var(--ease);
 }
+/* "beta" beside waterbots.ai — the maintainer's word of 21 Nov 2026: small,
+   quiet, the site's one note that it is early. */
+.wb-beta-tag {
+  font-size: 9.5px;
+  padding: 0 5px;
+  color: var(--ink-3);
+  border: 1px solid var(--line);
+}
 .wb-rail-link:hover {
   color: var(--tide-text);
   text-decoration: underline;
@@ -1332,16 +1340,22 @@ button.wb-phase:hover span:last-child {
 .wb-site-menu-quiet:hover {
   color: var(--ink);
 }
-/* The build banner — W28, 16 Nov 2026: one quiet line under the menu, on
-   every page, in her words. No colour of its own and no close button. */
-.wb-build-banner {
-  margin: 0;
-  padding: 4px 24px 5px;
-  border-top: 1px solid var(--line);
-  text-align: center;
-  font-size: 11.5px;
-  line-height: 1.4;
-  color: var(--ink-2);
+/* The map's one line in the menu: at the left of Sign in on a laptop. */
+.wb-site-menu-readout {
+  display: inline-flex;
+}
+
+/* THE PHONE PASS, 21 Nov 2026. On a phone the map's credits wrap to two lines,
+   and the water-stress legend sat half behind them: it rises above them. The
+   small chips under a reply and on Calvin's screen were 24px tall, too small
+   for a finger: they grow to about 32px. */
+@media (max-width: 900px) {
+  .wb-stress-legend {
+    bottom: 56px !important;
+  }
+  .wb-chip {
+    padding: 7px 12px;
+  }
 }
 
 /* Sign up — the main site's button beside Sign in, the maintainer's walk of
@@ -1914,6 +1928,13 @@ button.wb-info {
 @media (max-width: 430px) {
   .wb-site-menu-end {
     flex-basis: 100%;
+  }
+  /* The map's line takes its own row under Sign in and Sign up (21 Nov 2026),
+     so the two keep their place and the line is not squeezed beside them. */
+  .wb-site-menu-readout {
+    flex-basis: 100%;
+    order: 3;
+    justify-content: flex-end;
   }
   .wb-site-menu-link {
     position: relative;

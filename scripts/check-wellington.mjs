@@ -1161,21 +1161,26 @@ console.log('\n  Bridget\n');
 
 console.log('\n  W28, W29 and V1 — the queued round, 16 Nov 2026');
 {
-  const banner = readFileSync(join('src', 'components', 'BuildBanner.tsx'), 'utf8');
   const menu = readFileSync(join('src', 'components', 'SiteMenu.tsx'), 'utf8');
   const desk = readFileSync(join('src', 'components', 'Desk.tsx'), 'utf8');
+  const leftRail = readFileSync(join('src', 'components', 'NavRail.tsx'), 'utf8');
+  const chatHeader = readFileSync(join('src', 'screen', 'ScreenChat.tsx'), 'utf8');
+  const shelf = readFileSync(join('src', 'components', 'CommonsShelf.tsx'), 'utf8');
+  const { existsSync } = await import('node:fs');
   expect(
-    'W28: one line under the site menu, in her words, on every page; the desk paragraph is gone',
-    /BUILD_BANNER_LINE = 'This site is still being built\.'/.test(banner) &&
-      /<BuildBanner \/>\s*<\/header>/.test(menu) &&
+    'W28, retired 21 Nov 2026 (her word): no line under the site menu; the desk paragraph stays gone',
+    !existsSync(join('src', 'components', 'BuildBanner.tsx')) &&
+      !/BuildBanner|still being built|wb-build-banner/.test(menu) &&
+      !/wb-build-banner/.test(readFileSync(join('src', 'styles', 'base.css'), 'utf8')) &&
       !/under build|Ask Wellington for a build update/.test(desk),
-    'the banner is not her line under the menu, or the old paragraph remains'
+    'the build banner or the old desk paragraph is back'
   );
   expect(
-    'W28: the banner does not carry the first-screening note (her word: beside the figures and in the report)',
-    !/first screening|official decision/i.test((banner.match(/BUILD_BANNER_LINE = '([^']*)'/) ?? [])[1] ?? 'first screening') &&
-      /<p className="wb-build-banner t-caption" role="note">\s*\{BUILD_BANNER_LINE\}\s*<\/p>/.test(banner),
-    'the banner says the screening note'
+    'one small "beta", beside waterbots.ai at the foot of the left rail; no beta tag beside an agent or a module (21 Nov 2026)',
+    /\{open && <span>\{SITE_LABEL\}<\/span>\}\s*\{open && <span className="tag wb-beta-tag">beta<\/span>\}/.test(leftRail) &&
+      !/host\.beta|className="tag">beta/.test(chatHeader) &&
+      !/>\s*Beta\s*</.test(shelf),
+    'beta is not beside waterbots.ai, or a beta tag is still beside an agent or a module'
   );
   const relay = readFileSync(join('api', 'wellington.ts'), 'utf8');
   const app = readFileSync(join('src', 'App.tsx'), 'utf8');

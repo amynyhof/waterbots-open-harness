@@ -104,6 +104,7 @@ export default function BridgetScreen({
   invite = '',
   onWellington,
   onMeet,
+  onMapTab,
 }: {
   onStatus: (status: MapStatus) => void;
   pin: MapPin | null;
@@ -125,6 +126,8 @@ export default function BridgetScreen({
   onWellington?: (at: 'eligibility' | 'map', composerId: string) => Promise<AgentTurn | null>;
   /** Tells the shell whether "Meet <name>" is under her chat's latest turn (one blue button, 16 Nov 2026). */
   onMeet?: (showing: boolean) => void;
+  /** Tells the shell whether her Map tab is the one in view, so the map's line in the menu shows only with the map (21 Nov 2026). */
+  onMapTab?: (open: boolean) => void;
 }) {
   /* WELLINGTON COMES TO YOU — the maintainer's ruling of 14 Nov 2026. When her
      part is done (a basin reported, or a question not hers) he joins this chat
@@ -184,6 +187,9 @@ export default function BridgetScreen({
 
   /* The tab is held here, so a pin can bring the visitor back to Chat. */
   const [tab, setTab] = useState<ScreenTab>('chat');
+  useEffect(() => {
+    onMapTab?.(tab === 'tool');
+  }, [tab, onMapTab]);
 
   /* THE MAP ZOOMS TO THE COUNTRY BY ITSELF — the ruling of 31 Oct 2026, made
      firmer on 14 Nov 2026 (B2), after a walk where the visitor was asked to
