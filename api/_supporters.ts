@@ -50,8 +50,9 @@ export const ROLES = [
 
 export const SUPPORT_LIMITS = { name: 80, title: 80, organisation: 120, comment: 280 } as const;
 
-/** The pop-up's words before a post goes on the page, exactly as it shows them; kept with each post. */
-export const CONFIRM_WORDS = 'Your name and comment will show on this page. Your email stays private.';
+/** The pop-up's words before a post goes on the page, exactly as it shows them; kept with each post. Her words of
+    21 Nov 2026 on #176; posts from before keep the words they agreed to. */
+export const CONFIRM_WORDS = 'Everything except your email will show on this page.';
 
 /** The supporters page's one box, exactly as the page shows it. */
 export const NEWSLETTER_WORDS = 'Send me the WaterBots newsletter';

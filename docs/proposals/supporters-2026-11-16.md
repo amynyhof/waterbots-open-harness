@@ -23,6 +23,10 @@
 > **Project developer, Consultant, Funder, Auditor, Researcher, Other**, shown as a small tag in its own
 > colour; the agents keep their "WaterBots agent" tag. An edit changes the title, organization and role too,
 > and every text field passes the same filter. Section 3's "the role wears no accent" is changed by this.
+>
+> **21 Nov 2026, her word on #176.** The role colours are approved as picked. The pop-up says "Everything
+> except your email will show on this page." and wears the site's one modal style: the brand book's
+> floating plane (a card, its hairline, the modal shadow), as the map's Data & licences panel wears it.
 
 ~~**Written 16 Nov 2026 for the maintainer. Proposal only: nothing is built.**~~ **Written 16 Nov 2026 for the maintainer. Built the same day, after #174 merged.** It answers her message of
 16 Nov 2026: a public supporters view for Register your interest, with an opt-in box "Show my support

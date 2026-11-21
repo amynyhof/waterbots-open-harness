@@ -16,8 +16,8 @@
  *   - name, email, a role and a comment are needed; a title, the organisation and the newsletter box
  *     (unticked) are not. The role is one of six, picked once, each with its own colour on the card;
  *     under the name the card shows "Title, Organization", whichever is filled in (19 Nov 2026);
- *   - the button is "Post", and it opens a pop-up with Wellington's icon and her words, "Your name and
- *     comment will show on this page. Your email stays private.", with "Post" and "Go back". Post
+ *   - the button is "Post", and it opens a pop-up with Wellington's icon and her words, "Everything
+ *     except your email will show on this page." (21 Nov 2026), with "Post" and "Go back". Post
  *     puts it on the board at once, after the server's filter (api/_postFilter.ts);
  *   - the poster can edit and delete their own post: this browser remembers it and shows Edit and
  *     Delete on their card, and an email carries a private link that does the same from anywhere.
@@ -337,7 +337,9 @@ function SupportForm({ onPosted }: { onPosted: (posted: Posted) => void }) {
 }
 
 /**
- * The pop-up: Wellington's icon, the words, a "Go back" and a yes. The yes takes the focus; Escape and
+ * The pop-up: Wellington's icon, the words, a "Go back" and a yes. It wears the site's one modal style
+ * (21 Nov 2026, her word on #176): BRAND.md §2.3's floating plane, a card with its hairline and §4's
+ * modal shadow, as the map's Data & licences panel (LicencePanel.tsx) wears it, over the same veil. The yes takes the focus; Escape and
  * "Go back" close it; Tab stays inside it while it is open.
  */
 function Confirm({
@@ -372,7 +374,7 @@ function Confirm({
     >
       <div
         ref={box}
-        className="wb-confirm"
+        className="wb-confirm card card-document"
         role="dialog"
         aria-modal="true"
         aria-labelledby="wb-confirm-words"

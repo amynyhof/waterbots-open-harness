@@ -2165,12 +2165,15 @@ button.wb-info {
     grid-template-columns: minmax(0, 1fr);
   }
 }
-/* The pop-up before a post goes on, and before a post is deleted (19 Nov 2026): a card over a veil. */
+/* The pop-up before a post goes on, and before a post is deleted (19 Nov 2026). From 21 Nov 2026, her
+   word on #176, it wears the site's one modal style: the floating plane of BRAND.md §2.3 (.card
+   .card-document: --card, the --line hairline, --r-lg, --pad-card) with §4's modal shadow, over the
+   veil the map's Data & licences panel uses (LicencePanel.tsx). The book carries no veil of its own. */
 .wb-confirm-backdrop {
   position: fixed;
   inset: 0;
   z-index: 1100;
-  background: rgba(11, 20, 40, 0.28);
+  background: color-mix(in srgb, var(--ink) 26%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2179,10 +2182,6 @@ button.wb-info {
 .wb-confirm {
   width: 100%;
   max-width: 420px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--r-md);
-  padding: 20px 20px 18px;
   box-shadow: var(--shadow-lg);
 }
 /* Edit and Delete on one's own card, and Save and Cancel while editing: quiet, small. */

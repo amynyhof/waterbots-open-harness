@@ -407,7 +407,7 @@ const serverSide = readFileSync(join('api', '_supporters.ts'), 'utf8');
 for (const name of ['ROLES', 'SUPPORT_LIMITS', 'CONFIRM_WORDS', 'NEWSLETTER_WORDS']) {
   expect(`${name} is the same on the page and the server`, pick(client, name) && pick(client, name) === pick(serverSide, name), `${pick(client, name)} | ${pick(serverSide, name)}`);
 }
-expect('the pop-up\'s words are hers, word for word', pick(client, 'CONFIRM_WORDS') === "'Your name and comment will show on this page. Your email stays private.'", pick(client, 'CONFIRM_WORDS'));
+expect('the pop-up\'s words are hers, word for word', pick(client, 'CONFIRM_WORDS') === "'Everything except your email will show on this page.'", pick(client, 'CONFIRM_WORDS'));
 expect('the intro line is hers, word for word', /SUPPORTERS_INTRO = 'People who want water impact to be faster and fairer to prove\.'/.test(client), 'intro changed');
 /* What a visitor can read: the files without their comments, which name removed things on purpose. */
 const bare = (src) => src.replace(/\{\s*\/\*[\s\S]*?\*\/\s*\}/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
@@ -498,6 +498,17 @@ expect('a list that cannot be read is said, never shown as empty', /reading\.kin
       /yes="Post"/.test(page) && />\s*Go back\s*</.test(page) && /setState\(\{ kind: 'confirm' \}\)/.test(page) && /onYes=\{\(\) => void post\(\)\}/.test(page),
     'the pop-up is not as she said'
   );
+  {
+    const css = readFileSync(join('src', 'styles', 'base.css'), 'utf8');
+    const rule = (sel) => (css.match(new RegExp(sel.replace(/[.]/g, '\\.') + '\\s*\\{([^}]*)\\}')) ?? [])[1] ?? '';
+    expect(
+      'the pop-up wears the site\'s one modal style: a document card, the modal shadow, the Data & licences veil',
+      /className="wb-confirm card card-document"/.test(page) && /box-shadow:\s*var\(--shadow-lg\)/.test(rule('.wb-confirm')) &&
+        !/background|border|padding/.test(rule('.wb-confirm')) &&
+        /color-mix\(in srgb, var\(--ink\) 26%, transparent\)/.test(rule('.wb-confirm-backdrop')),
+      'the pop-up has a style of its own'
+    );
+  }
   expect(
     'the poster\'s browser remembers the post and shows Edit and Delete on their card only',
     /localStorage/.test(client) && /rememberPost\(/.test(page) && /\{own && \(/.test(page) && />\s*Edit\s*</.test(page) && />\s*Delete\s*</.test(page),

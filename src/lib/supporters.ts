@@ -39,9 +39,9 @@ export const SUPPORTERS_INTRO = 'People who want water impact to be faster and f
 /** The quiet link to the page, on the Commons and the interest form. */
 export const SUPPORTERS_LINK = 'See who supports this work';
 
-/** The pop-up's words before a post goes on the page, her words of 19 Nov 2026. The server keeps them with each post.
-    Unchanged when the title, organization and role joined the card (19 Nov 2026): the words are hers. */
-export const CONFIRM_WORDS = 'Your name and comment will show on this page. Your email stays private.';
+/** The pop-up's words before a post goes on the page, her words of 21 Nov 2026 on #176, once the title, organization
+    and role had joined the card. The server keeps them with each post. */
+export const CONFIRM_WORDS = 'Everything except your email will show on this page.';
 
 /** The page's one box, unticked. */
 export const NEWSLETTER_WORDS = 'Send me the WaterBots newsletter';

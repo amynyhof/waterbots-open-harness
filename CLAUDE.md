@@ -497,8 +497,9 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   the heading on a laptop and right under it on a phone; the thank-you is a heading with a mint check.
   ~~Register your interest's own public box still waits for approval.~~ **From 19 Nov 2026, her word: the
   supporters page is the one place to post**, and Register your interest has no public box. There is no box
-  to tick either: name, email, a role and a comment, then **Post**, opens a pop-up with Wellington's icon ("Your name
-  and comment will show on this page. Your email stays private.", "Post" and "Go back"), and Post puts it on
+  to tick either: name, email, a role and a comment, then **Post**, opens a pop-up with Wellington's icon ("Everything
+  except your email will show on this page.", her words of 21 Nov 2026, "Post" and "Go back"; the site's one
+  modal style, the brand book's floating plane as the map's Data & licences panel wears it), and Post puts it on
   the board at once. **The poster can edit and delete their own post**: their browser remembers it and shows
   Edit and Delete on their card, and an email carries a private link (the key after the #, its SHA-256 alone
   in the store) to do the same later (`api/supporter-post.ts`); edits pass the same filter. "Questions?
