@@ -35,7 +35,7 @@ expect('the README is lane 2', lane('README.md') === 2, 'README not lane 2');
 expect('a package change is lane 3', lane('package.json') === 3 && lane('package-lock.json') === 3, 'a package file not lane 3');
 expect('the relay is lane 3', lane('api/phoebe.ts') === 3, 'api not lane 3');
 expect('a data file is lane 3', lane('public/water_stress.json') === 3 && lane('knowledge-packs/phoebe-eligibility/vwba-2.0/cards/x.md') === 3, 'a data file not lane 3');
-expect('a rules file is lane 3', ['CLAUDE.md', 'PROCESS_RULES_for_ShellB.md', 'AGENT_RULES.md', 'CITATIONS.md'].every((p) => lane(p) === 3), 'a rules file not lane 3');
+expect('a rules file is lane 3', ['CLAUDE.md', 'AGENT_RULES.md', 'RULINGS.md', 'FAMILY_OPEN_CLOSE.md'].every((p) => lane(p) === 3), 'a rules file not lane 3');
 expect('a carry-related note is lane 3 even under docs', lane('docs/CARRY_NOTES.md') === 3, 'carry note slipped into lane 1');
 expect('CI and the lane rule itself are lane 3', lane('.github/workflows/lanes.yml') === 3 && lane('.github/lanes.json') === 3 && lane('scripts/lane-classify.mjs') === 3, 'the lane rule is not lane 3');
 expect('a file on no list is lane 3', lane('some-new-folder/thing.txt') === 3, 'an unlisted file did not default to lane 3');

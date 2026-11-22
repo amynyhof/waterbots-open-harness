@@ -41,10 +41,6 @@ per standard, and inside it:
 **Phoebe's pack is the first in it.** The other packs move one at a time, each on its
 own brief, and stay as they are until then.
 
-**Every seat pack README carries a section "The contract"**, from 20 Sep 2026: one line
-pointing at the specialist contract in [AGENT_RULES.md](../AGENT_RULES.md), and a ten-row
-table saying where that agent stands against it today. The contract has one home, the
-rulebook; the table is the per-agent state and lives on the pack.
 
 ~~Every seat pack — not Calvin only — follows this shape:~~ **Struck 17 Sep 2026.** The
 shape below is the old one. It still describes every pack but Phoebe's:
@@ -94,7 +90,7 @@ yet. That is Wellington today.
 
 ## Citations
 
-[CITATIONS.md](../CITATIONS.md) binds every cited line. A tool README names the
+Every cited line is cited and linked, never copied (RULINGS.md). A tool README names the
 document, its version, and the publisher’s link. It does not paste the PDF.
 
 Two datasets, two attributions — HydroSHEDS / HydroBASINS and WRI Aqueduct 4.0 —

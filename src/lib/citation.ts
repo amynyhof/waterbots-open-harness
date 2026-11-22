@@ -1,7 +1,7 @@
 /**
  * What a citation is, in one place.
  *
- * CITATIONS.md fixes the four-part shape every cited claim carries, and this
+ * CITATIONS.md (retired in #192) fixes the four-part shape every cited claim carries, and this
  * is that shape as the console holds it. It lives in its own module because
  * more than one kind of thing cites a source now: Phoebe's rule cards, and the
  * method packs inside the Quantification step. Two copies of this interface
@@ -18,7 +18,7 @@
  */
 
 /**
- * A citation broken into the parts CITATIONS.md renders as tags.
+ * A citation broken into the parts CITATIONS.md (retired in #192) renders as tags.
  *
  * `document` and `section` and `page` each become their own .tag — a value,
  * bordered and unfilled, never a .chip. Chips carry state; citations do not.

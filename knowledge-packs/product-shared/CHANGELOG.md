@@ -36,7 +36,7 @@
 ## 0.6.4 — 5 Nov 2026
 
 - `agent-primer.md`, Wellington's region only: **his shorter instructions**, item A26, as approved on
-  1 Nov 2026 in docs/proposals/wellington-rewrite-2026-10-31.md, which shows every line cut or
+  1 Nov 2026 in the rewrite proposal on #168, which shows every line cut or
   shortened and why. The region goes from 4,247 to 2,837 characters: what it repeated from his prompt
   is gone, and every rule keeps one home. The roster region, which every agent reads, is unchanged.
 - The same region, after the maintainer's first walk of it, 12 Nov 2026: the Quantify crew fact says

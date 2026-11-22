@@ -24,7 +24,7 @@ only once approved:
 | Eligibility | One card per basic eligibility requirement, one worksheet row each: seventeen from the methodology's own gate, two from the Paris-alignment framework, thirteen from the rules for every Gold Standard project. Each with a **Can it be fixed?** line; a miss is Fixable, Unknown or Blocked. | 32 | **All 32 approved 23 Sep 2026**, in [`cards/eligibility-cards-gs.md`](./cards/eligibility-cards-gs.md), each with a Phase line; read by nothing until the pack-keyed reader (proposal step 5) |
 
 Every card is a rewrite in plain words. No sentence is copied from a source. Every card
-carries the four-part citation from [CITATIONS.md](../../../CITATIONS.md) and the
+carries the four-part citation (from CITATIONS.md, retired in #192) and the
 publisher's canonical link, so each one stands alone. Where a card rests on a table of
 figures it says so and sends the reader to the link.
 
@@ -53,15 +53,6 @@ figures it says so and sends the reader to the link.
 - **Whether any credit was issued or verified.** Nothing here says so.
 - **Anything without a card.** She says she does not have a card for it, and each miss
   is written down for the maintainer to read.
-
-## The contract
-
-Every specialist keeps the ten lines of **the specialist contract** in
-[AGENT_RULES.md](../../../AGENT_RULES.md). Phoebe's ten-row table is on the pack that is
-live, [`vwba-2.0/README.md`](../vwba-2.0/README.md), because the contract binds the agent
-and not the pack. For this pack the honest line, 22 Sep 2026: **not live; nothing reads
-it; no line moves until the worksheet, the record and her prompt carry two pathways**
-(proposal steps 5 to 8).
 
 ## Route cards to draft after v1
 

@@ -1,7 +1,7 @@
 /**
  * Supporters, as the page holds them — the words the form and the pop-up show, the calls that post,
  * read, edit and delete, and the posts this browser remembers. Approved 16 Nov 2026, the maintainer's
- * word on #176 (docs/proposals/supporters-2026-11-16.md), changed by her word since.
+ * word on #176 (the supporters proposal on #176), changed by her word since.
  *
  * The server's own copy of the limits and the words is api/_supporters.ts; scripts/check-supporters.mjs
  * holds the two to one another, word for word.

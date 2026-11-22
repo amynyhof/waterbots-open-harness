@@ -1,6 +1,6 @@
 /**
  * Confirms the supporters page — approved 16 Nov 2026, the maintainer's word on #176
- * (docs/proposals/supporters-2026-11-16.md), as changed by her word on 18 and 19 Nov 2026: the
+ * (the supporters proposal on #176), as changed by her word on 18 and 19 Nov 2026: the
  * supporters page is the one place to post; a name, an email and a comment, then Post in the pop-up,
  * put the post on the board at once, past the filter; the poster edits and deletes it with its own
  * private key; she takes one off with hide; and the email never reaches the page.

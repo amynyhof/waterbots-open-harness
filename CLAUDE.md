@@ -37,8 +37,8 @@ Beside them:
   them when editing.
 - `legacy/` is gitignored reference material only. `sources-local/` is gitignored and holds source PDFs
   for local reading; they are never committed.
-- `captures/` holds pictures for pull requests. A picture is committed on the branch, named by date and
-  step, and embedded by its raw address at that commit.
+- Pictures for a pull request are never committed. They go to `handoff\reports\B-pictures\`, named by date and
+  step, and are sent to the maintainer in the app; the pull request names them.
 - `vendor/waterbots/` holds the open core's release files, pinned by fingerprint.
   `scripts/check-calvin-package.mjs` checks them against the release's SHA-256 and the lockfile's
   SHA-512, and re-runs the package's own test cases.
@@ -50,7 +50,8 @@ CHANGELOG. A tool is defined once, in `<pack>/tool/<tool-id>.yaml`, citing cards
 `scripts/check-roster.mjs` runs in front of every build and fails it, naming the line, when the site
 disagrees with it.
 
-**Before every push.**
+**Before every push.** A push that changes only docs (lane 1 files) runs the name scan alone; GitHub
+still runs everything. Any other push runs every check below and the full local check.
 - The name scan: `node scripts/check-names.mjs --added origin/main` checks the lines and file names a
   pull request adds; `node scripts/check-names.mjs` alone checks every tracked file. The machine
   setting `WB_NAMES_LIST` holds the list's path. The list is in two places, the maintainer's file and

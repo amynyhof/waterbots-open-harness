@@ -1,6 +1,6 @@
 /**
  * Supporters — a page at /supporters, under the site menu. Approved 16 Nov 2026, the maintainer's
- * word on #176 (docs/proposals/supporters-2026-11-16.md), and changed by her word since.
+ * word on #176 (the supporters proposal on #176), and changed by her word since.
  *
  * THE BOARD. The agents come first (18 Nov 2026): Wellington, Phoebe, Bridget and Calvin, each with
  * the crew's own icon, a "WaterBots agent" tag and one line in their voice (src/lib/supporters.ts).

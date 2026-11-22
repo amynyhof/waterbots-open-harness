@@ -1,6 +1,6 @@
 /**
  * Confirms Register your interest — approved 16 Nov 2026
- * (docs/proposals/queued-round-2026-11-16.md, item 5), with her ruling on
+ * (the queued-round proposal on #175, item 5), with her ruling on
  * keeping: no time limit, kept until the person asks to be removed, the form
  * says how to ask, and nothing deletes on its own.
  *

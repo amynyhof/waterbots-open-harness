@@ -42,4 +42,4 @@ are never read.
 Document, version, sections, and link are on each pack's README, once:
 [`vwba-2.0/README.md`](./vwba-2.0/README.md) for the water pathway and
 [`gs-paa-v2.0/README.md`](./gs-paa-v2.0/README.md) for the carbon one. The four-part
-shape for a cited claim is in [CITATIONS.md](../../CITATIONS.md).
+shape for a cited claim was in CITATIONS.md, retired in #192; the cards keep it.

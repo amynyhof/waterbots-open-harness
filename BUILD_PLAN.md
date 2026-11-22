@@ -354,10 +354,9 @@ Vercel does before a push, or a named guard per known difference. Never a second
 (RULINGS.md, section 7). The rule files lost theirs on 22 Nov 2026. Strikes still wait in the README and in the
 knowledge packs' READMEs and card files. Proposal first, with a count per document.
 
-**C2 · Pointers to the old agent rules.** After v1 · BONES. Found 22 Nov 2026, when the 19-rule page replaced the old
-`AGENT_RULES.md`. Pack READMEs still point at its "specialist contract" and "abstention ladder" (`knowledge-packs/README.md`,
-the `bridget-map`, `calvin-quantify`, `vwba-2.0` and `gs-paa-v2.0` READMEs), the shared primer's notes name "rung 2", and the
-sealed water eligibility cards point at its "Pace and posture" section. None reaches a prompt. One docs pass; the sealed cards on her word.
+**C2 · Two sealed cards point at retired pages.** After v1 · BONES. The water eligibility cards point at "Pace and
+posture" in the old `AGENT_RULES.md`, and the carbon eligibility cards at `CITATIONS.md` (retired in #192). Card text reaches
+Phoebe's prompt, so the sealed cards change only on her word. Every other old pointer was fixed on 22 Nov 2026.
 
 **SP1 · A separate GitHub account for sessions.** After v1 · BONES. A second account that can open pull requests but
 cannot merge, enforced by branch protection (only the maintainer's account may merge). First on this list: the deny

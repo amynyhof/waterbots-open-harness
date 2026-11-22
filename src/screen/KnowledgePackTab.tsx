@@ -10,7 +10,7 @@
  * per pack, each with its tags, its version, one source line and its sets of
  * rows, each set with its own approval chip. A row opens to its layers and
  * closes again; the layers are the card's own plain words, and the citation
- * beneath them is the four-part shape CITATIONS.md fixes, drawn by CiteLine
+ * beneath them is the four-part shape CITATIONS.md (retired in #192) fixes, drawn by CiteLine
  * and nowhere else.
  *
  * EVERY WORD COMES FROM A COMMITTED CARD. Nothing here paraphrases a source;
@@ -34,7 +34,7 @@
  * component now draws every agent's Knowledge tab. An unlabelled section with
  * nothing to tag draws no tag strip at all.
  *
- * A TAG IS A VALUE, A CHIP IS A STATE — CITATIONS.md's own test. The
+ * A TAG IS A VALUE, A CHIP IS A STATE — the test from CITATIONS.md (retired in #192). The
  * document's short name, the version and the phase are tags; an approval
  * date and "Draft" are chips.
  */

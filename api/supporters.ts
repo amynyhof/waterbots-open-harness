@@ -1,6 +1,6 @@
 /**
  * GET /api/supporters — the supporters page's list. Approved 16 Nov 2026, the maintainer's word on
- * #176 (docs/proposals/supporters-2026-11-16.md).
+ * #176 (the supporters proposal on #176).
  *
  * THE SHOWN LIST ONLY. Waiting and declined entries are never read here, and no email is ever in a
  * supporter entry (api/_supporters.ts). Each entry goes out as its public fields and the month it

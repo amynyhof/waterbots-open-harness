@@ -40,7 +40,7 @@
  * impact funding are his from the same day (W18), from the facts written here.
  *
  * SHORTER FROM 5 NOV 2026, item A26, the maintainer's approval of 1 Nov of
- * docs/proposals/wellington-rewrite-2026-10-31.md as written. Every rule and
+ * the rewrite proposal on #168 as written. Every rule and
  * every step of his walk is kept; what went is text said twice, here and in his
  * region. Each rule now has one home: how he speaks and what he knows are here,
  * the six fields, the crew facts, the loop and three of his rules are in the

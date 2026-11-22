@@ -1,6 +1,6 @@
 /**
  * Confirms one blue button at a time — the maintainer's word of 16 Nov 2026,
- * approved from docs/proposals/queued-round-2026-11-16.md.
+ * approved from the queued-round proposal on #175.
  *
  *   node scripts/check-blue.mjs
  *

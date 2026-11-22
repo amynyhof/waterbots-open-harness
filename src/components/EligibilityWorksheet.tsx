@@ -585,7 +585,7 @@ function ConsiderationRow({ consideration }: { consideration: Consideration }) {
 ------------------------------------------------------------------------- */
 
 /**
- * The citation, rendered per CITATIONS.md.
+ * The citation, rendered per CITATIONS.md (retired in #192).
  *
  * A citation reference is a .tag — a value, 4px radius, hairline border, no
  * fill — and never a .chip, which carries state. The canonical link is the

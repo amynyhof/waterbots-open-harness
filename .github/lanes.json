@@ -11,9 +11,7 @@
     "package.json",
     "package-lock.json",
     "CLAUDE.md",
-    "PROCESS_RULES_for_ShellB.md",
     "AGENT_RULES.md",
-    "CITATIONS.md",
     "LICENSE",
     ".gitignore",
     ".gitattributes",
@@ -29,8 +27,7 @@
     "README.md",
     "index.html",
     "src/**",
-    "brand/**",
-    "captures/**"
+    "brand/**"
   ],
   "lane1": [
     "BUILD_PLAN.md",

@@ -2,9 +2,9 @@
  * Level 2, and the end of a citation on this site.
  *
  * ONE LINE AND NOTHING MORE — source · version · section · page → canonical
- * link. CITATIONS.md fixes both the contents and the order. There is no Level 3
+ * link. CITATIONS.md (retired in #192) fixes both the contents and the order. There is no Level 3
  * here: the pop-out with a verbatim source-text tab is a paid-platform feature
- * (item S3, docs/OPEN_ITEMS_ARCHIVE.md), and this repository holds no verbatim source text to put
+ * (item S3, the old items archive (in GitHub's history since #192)), and this repository holds no verbatim source text to put
  * in one.
  *
  * EVERY VALUE COMES FROM A COMMITTED CARD FILE, by way of the agent's adapter.
@@ -48,7 +48,7 @@ export default function CiteLine({ item, id }: { item: Evidence; id?: string }) 
 /**
  * The honest note for a rule that rests on figures.
  *
- * CITATIONS.md: a number-dense passage is sent to the source rather than
+ * CITATIONS.md (retired in #192): a number-dense passage is sent to the source rather than
  * paraphrased into prose that reads as precise and is not.
  */
 export function DataTableNote() {

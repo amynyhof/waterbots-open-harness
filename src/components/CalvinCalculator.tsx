@@ -1,7 +1,7 @@
 /**
  * Calvin's carbon calculator — the open core's, installed from the release
  * calvin-violet-v0.5.0 (@waterbots/calvin 0.5.0, core 0.1.1, engine gs4gg-carbon 0.19.0) from
- * 22 Nov 2026; calvin-v0.4.1 from 21 Nov 2026; calvin-v0.3.0 from 16 Nov 2026; first calvin-v0.2.0, on the maintainer's word of 14 Nov 2026 (proposal docs/proposals/calvin-from-open-core.md,
+ * 22 Nov 2026; calvin-v0.4.1 from 21 Nov 2026; calvin-v0.3.0 from 16 Nov 2026; first calvin-v0.2.0, on the maintainer's word of 14 Nov 2026 (proposal the open-core proposal on #156,
  * step 2).
  *
  * THE SAME CALCULATOR AND LOOK AS THE PAID SITE, LOCKED TO EX-ANTE. The state

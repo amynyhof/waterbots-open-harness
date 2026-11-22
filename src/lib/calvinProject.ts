@@ -1,6 +1,6 @@
 /**
  * Calvin's project, from this visit — the one adapter between the open site's
- * record and the open core's calculator (proposal docs/proposals/calvin-from-open-core.md,
+ * record and the open core's calculator (proposal the open-core proposal on #156,
  * step 2; built 14 Nov 2026 on the maintainer's word).
  *
  * THE CALCULATOR IS THE OPEN CORE'S, @waterbots/calvin, installed from its

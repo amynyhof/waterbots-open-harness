@@ -4,14 +4,13 @@
 its own sources can point at the colleague who does cover it instead of only
 abstaining.**
 
-This is item A3 in [OPEN_ITEMS_ARCHIVE.md](../../docs/OPEN_ITEMS_ARCHIVE.md), and it is the document
-[AGENT_RULES.md](../../AGENT_RULES.md) names as missing when it publishes rung 2 of
-the abstention ladder as *partly live*.
+This is item A3 (closed; the old items archive is in GitHub's history since #192). Agent rule 9
+sends a question to the colleague who covers it; this is the account it needs.
 
 **It is committed content, not a rulebook.** It sits in the same posture as the
 card sets — written, reviewed by the maintainer, then inherited by each agent's
-prompt. [AGENT_RULES.md](../../AGENT_RULES.md) owns *how* an agent hands off and
-still does; this file is only the roster that rung 2 needs. One home per rule.
+prompt. [AGENT_RULES.md](../../AGENT_RULES.md) owns *how* an agent hands off;
+this file is only the roster that rule 9 needs. One home per rule.
 
 ---
 
@@ -300,9 +299,8 @@ not permission to answer their question yourself. That rule is
 and are rendered by the console from its own committed copy. An agent does not
 place a citation marker on anything in this document.
 
-**If a question falls outside every entry here, that is an abstention.** The
-primer widens rung 2; it does not create a fourth outcome. A question no agent
-covers is still an honest gap, and saying so is still the right answer.
+**If a question falls outside every entry here, no agent covers it**, and the
+agent says so (agent rule 9).
 
 ---
 

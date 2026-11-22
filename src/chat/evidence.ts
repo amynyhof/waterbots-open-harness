@@ -15,19 +15,19 @@
  * THE AGENT NEVER WRITES CITATION TEXT. It names a card; the adapter looks that
  * card up in the committed file and fills in the citation here. A wrong page or
  * an invented link is not something an agent can produce, because it is never
- * the thing producing citation text. See CITATIONS.md.
+ * the thing producing citation text. See CITATIONS.md (retired in #192).
  */
 
 import type { Surface } from '../lib/surfaces';
 
 /**
- * A citation, broken into the parts CITATIONS.md renders.
+ * A citation, broken into the parts CITATIONS.md (retired in #192) renders.
  *
  * All four parts of the shape are present: the wording is a rewrite (in
  * `plainEnglish` on the evidence), the citation is `document` + `version` +
  * `section`, and `href` is the publisher's canonical page. There is no field
  * for verbatim source text, deliberately — this repository holds none, and
- * Level 3 is not built on the free site (see item S3, docs/OPEN_ITEMS_ARCHIVE.md).
+ * Level 3 is not built on the free site (see item S3, the old items archive (in GitHub's history since #192)).
  */
 export interface Citation {
   /** "VWBA 2.0" — the short document name. */
@@ -60,7 +60,7 @@ export interface Evidence {
   /** The rule in the card's own plain words. Never the source's words. */
   plainEnglish: string;
   /**
-   * True where the rule rests on a table or a set of figures. CITATIONS.md
+   * True where the rule rests on a table or a set of figures. CITATIONS.md (retired in #192)
    * requires an honest note rather than a paraphrase that reads as precise
    * and is not.
    */

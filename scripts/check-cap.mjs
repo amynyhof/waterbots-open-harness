@@ -15,7 +15,7 @@
  * THAT STAND-IN IS NOT FABRICATED DATA, and the distinction is the maintainer's
  * ruling of 25 Aug 2026: the no-fabricated-data rule protects what a visitor is
  * shown, and a test stand-in that never reaches a person is a different thing.
- * It is written into PROCESS_RULES_for_ShellB.md so it is not re-argued.
+ * It was written into the old process rules so it is not re-argued (sorted into RULINGS.md in #192).
  *
  * WHAT IT CANNOT CHECK. That the real store behaves like the stand-in. Nothing
  * local can check that, which is item S6 — the dev relay was kinder than

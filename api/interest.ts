@@ -2,7 +2,7 @@
  * POST /api/interest — Register your interest.
  *
  * The maintainer's plan of 14 Nov 2026, approved on 16 Nov 2026
- * (docs/proposals/queued-round-2026-11-16.md, item 5), with her ruling on
+ * (the queued-round proposal on #175, item 5), with her ruling on
  * keeping: no time limit; a sign-up is kept until the person asks to be
  * removed, and nothing deletes on its own. What a sign-up is lives in
  * api/_interest.ts.

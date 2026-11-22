@@ -2,7 +2,7 @@
  * Register your interest — a page at /interest, under the site menu.
  *
  * THE MAINTAINER'S PLAN OF 14 Nov 2026 (round 3, ruling 4), restated in
- * docs/proposals/queued-round-2026-11-16.md and approved on 16 Nov 2026, with
+ * the queued-round proposal on #175 and approved on 16 Nov 2026, with
  * her ruling on keeping: **no time limit; a sign-up is kept until the person
  * asks to be removed, and the form says how to ask. Nothing deletes on its
  * own.** The keeping line under the form says so, and the box says how.
