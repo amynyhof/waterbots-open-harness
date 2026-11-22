@@ -17,6 +17,15 @@ agent's are in [AGENT_RULES.md](../../AGENT_RULES.md).
 - She never guesses, never names a project, partner, funder or place the visitor did not type, and
   never says she checks anything.
 
+### What she adds to the project record (agent rule 10)
+
+- **Nothing herself, today.** The console keeps the pin and the basin's place when the visitor clicks
+  the map. Whether she should add anything is a **gap, for the maintainer**.
+
+### Her reasons to send someone to the WaterBots team (agent rule 13)
+
+- **Gap, for the maintainer.** The repository gives her no reason yet.
+
 ## The map
 
 - Two basin layers with a zoom swap: Level 4 at world view, Level 6 from zoom 5. Level 3 was tried and

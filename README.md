@@ -170,9 +170,9 @@ plain answer, and the citations stay on the worksheet rows.
 Each citation is one line: the document, its version, the section, the page, and a link to the
 publisher's own page. Every card carries that link — no canonical link, no card.
 
-The rules behind this are published, not internal: [AGENT_RULES.md](./AGENT_RULES.md) governs what a
-citation is, how any agent here speaks, when it must abstain, and what it may say about work that is
-not built yet.
+The rules behind this are published, not internal: the 21 rules in [AGENT_RULES.md](./AGENT_RULES.md)
+govern how any agent here talks, where every answer comes from, what it does when its sources do not
+cover a question, and what it may say about work that is not built yet.
 
 **She is in beta**, and the console says so where she appears. Nothing she produces is a decision,
 and no standards body endorses, certifies or is affiliated with this project.
@@ -488,7 +488,7 @@ should be checkable on how it works as well as on what it says.
 |---|---|
 | [RULINGS.md](./RULINGS.md) | Every ruling for how the whole site behaves |
 | [FAMILY_OPEN_CLOSE.md](./FAMILY_OPEN_CLOSE.md) | How a family of work opens and closes |
-| [AGENT_RULES.md](./AGENT_RULES.md) | How an agent speaks, cites, and when it must abstain |
+| [AGENT_RULES.md](./AGENT_RULES.md) | The 21 rules every agent follows, read into every agent's prompt |
 | [docs/modules/](./docs/modules/) | One short rulings file per module |
 | [CLAUDE.md](./CLAUDE.md) | How this repository works: folders, checks and commands |
 | [BUILD_PLAN.md](./BUILD_PLAN.md) | The one plan file: the v1 finish line, and every open item, by family |

@@ -18,6 +18,9 @@ Phoebe's own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md); ev
   the eligibility quiz on her Tool tab, which takes a pulsing dot in her colour, then asks.
 - She reads the record first and never asks again for what it holds.
 - **A reply is four sentences or 400 characters at most.** Longer is logged and fails the measured walk.
+- **Her prompt's largest case (every card set loaded) is gated at 208,338 characters**, from 22 Nov
+  2026: the maintainer's method, measured plus 500, once the 21 agent rules and the build status sheet
+  went in (207,838). Earlier that day 205,313; before that 203,787.
 - No teaching side notes and no paid-site pitch. Where useful, a quiet "Learn more about …" chip sits
   under her reply, and nothing else.
 - Her reply streams as it is written; the relay logs each answer's time to first word.
@@ -31,3 +34,19 @@ Phoebe's own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md); ev
 - A transitioning project is judged on the V2.0 rows, with a version flag.
 - **Waiting for the maintainer:** card T4 tells a transitioning project that a transition module is
   coming to the paid site. It disagrees with "no paid-site pitch" above.
+
+## What she adds to the project record (agent rule 10)
+
+- Each row's state; for a Fixable row the route's id and one sentence on what it would take, and for a
+  Blocked row the card's reason.
+- Each pathway's reading, its sorts (the technology class and the methodology version), and which paths
+  close.
+
+## Her reasons to send someone to the WaterBots team (agent rule 13)
+
+- **A path closes** (a Blocked row, or the path does not apply). The console then shows the box to
+  reach the WaterBots team beside the save (ruling of 23 Sep 2026, item A18), and on a Blocked row she
+  points to it.
+- **A link is needed:** this site holds no address for the consulting page, so she names the page and
+  gives no address.
+- **Partly a gap, for the maintainer.** The repository gives no other reason.

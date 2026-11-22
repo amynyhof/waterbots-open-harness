@@ -96,6 +96,10 @@ const loadApi = (name) => import(pathToFileURL(join(apiOut, name)).href);
 
 const { SYSTEM_PROMPT, RESPONSE_SCHEMA, cardsBlock, setsFor, CARD_SETS, ON_REQUEST } = await loadApi('_systemPrompt.js');
 const { PHOEBE_TOOL_MD } = await loadApi('_tool.generated.js');
+/* The 21 agent rules (AGENT_RULES.md, in force 22 Nov 2026; 20 and 21 added the same day) sit whole in her prompt. A rule they
+   carry is checked in them; a check on her own wording reads her prompt without them. */
+const { AGENT_RULES_MD } = await loadApi('_agentRules.generated.js');
+const own = (prompt) => prompt.replace(AGENT_RULES_MD, '');
 const {
   TOOL_SECTIONS,
   ROW_STATES,
@@ -442,11 +446,20 @@ expect(
    legitimately larger ceiling, and every number it has held is written here.
    The maintainer owns the one that stands: if she would rather the prompt came
    back under an earlier number, the sentences come out.
+
+   205,313 FROM 22 NOV 2026, the maintainer's ruling. The 19 agent rules
+   (AGENT_RULES.md) went into every prompt; once only the lines that repeat them
+   were cut, the largest case measured 204,813, plus 500. Nothing was cut from
+   her own rules to fit.
+
+   208,338 FROM 22 NOV 2026, the same method applied again: rules 1 to 21 with
+   their repeats cut, and the build status sheet (rule 16) read whole by every
+   agent. The largest case measured 207,838, plus 500.
 --------------------------------------------------------------------------- */
 
 console.log('\n  Her prompt’s size\n');
 
-const LARGEST = 203_787;
+const LARGEST = 208_338;
 const largest = SYSTEM_PROMPT.length + cardsBlock(CARD_SETS).length;
 expect(
   'the largest case is under the measured ceiling',
@@ -479,8 +492,8 @@ expect(
   'a field is named differently in the two places she reads'
 );
 expect(
-  'she is a guide, not a gate, and the five states are rules with what each carries',
-  /guide, not a gate/.test(SYSTEM_PROMPT) &&
+  'she is a guide, not a gate (agent rule 12), and the five states are rules with what each carries',
+  SYSTEM_PROMPT.includes(AGENT_RULES_MD) && /We are guides, not gates/.test(AGENT_RULES_MD) &&
     /Fixable is the ordinary "no"/.test(SYSTEM_PROMPT) &&
     /Unknown is not a fail/.test(SYSTEM_PROMPT) &&
     /Blocked is rare and it is the card's decision, not yours/.test(SYSTEM_PROMPT),
@@ -492,26 +505,25 @@ expect(
   'P18: what cannot be settled yet is one line, in her spirit, with no document named and no paid-site pitch',
   !/WaterBots is building tools and resources on the paid site/.test(SYSTEM_PROMPT) &&
     /in chat, one plain line on what would find it out and that we can help find tools for it, then your next question/.test(SYSTEM_PROMPT) &&
-    /Never name a document/.test(SYSTEM_PROMPT) &&
-    /never a document's name/.test(SYSTEM_PROMPT),
+    /Never name a document/.test(SYSTEM_PROMPT),
   'the paid-site line is back, or the one-line rule is missing'
 );
 /* THE DOOR TO A PERSON, item A18, 26 Sep 2026. Offered once, only on a
-   Blocked row, pointing at the box the save door shows; rung 3 still says
-   consultants are coming everywhere else, because everywhere else there is
-   still no way to reach one. */
+   Blocked row, pointing at the box the save door shows. From 22 Nov 2026 rule
+   13 says "the WaterBots team" and the consulting page, never "a
+   consultant"; this site holds no link to that page yet, and section 2 says so. */
 /* THE NEXT ROUND ON #173, the maintainer's word of 14 Nov 2026: a voice card
    at the top, the order of questions (P29, P31), a closed path said in one line
    (P30), and the shared plain-words list and before-and-after pairs. */
 {
   const { PLAIN_WORDS_MD, BEFORE_AFTER_MD } = await loadApi('_plainWords.generated.js');
-  const voice = SYSTEM_PROMPT.slice(0, SYSTEM_PROMPT.indexOf('# The base rules you inherit'));
+  const voice = SYSTEM_PROMPT.slice(0, SYSTEM_PROMPT.indexOf('# The rules every agent follows'));
   expect(
     'the voice card comes first: who she is, who she talks to, the principles',
     /^You are Phoebe[^\n]*\n\n# Your voice — read this first/.test(SYSTEM_PROMPT) &&
       /warm, clear and encouraging/.test(voice) &&
       /a newcomer who knows nothing about standards or methods/.test(voice) &&
-      /Answer what was asked first\. Respond to what the visitor actually said, then ask one follow-up related to it/.test(voice) &&
+      /\*\*How you talk:\*\* respond to what the visitor actually said, then ask one follow-up related to it\./.test(voice) &&
       /Say what it means for the visitor, not what the method says\. Never repeat something already said\. Never name a document or a method unless asked/.test(voice),
     'a part of the voice card is missing'
   );
@@ -550,23 +562,25 @@ expect(
   'Wellington comes to her chat: no "Back to Wellington" link, and she never sends the visitor back to him (14 Nov 2026)',
   !/Back to Wellington/.test(readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8')) &&
     /onWellington\('eligibility', 'wb-phoebe-composer'\)/.test(readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8')) &&
-    /he joins the visitor in this chat with the next step\. You never send them back to him\./.test(SYSTEM_PROMPT) &&
+    /Wellington joins the visitor in this chat with the next step\. You never send them back to him\./.test(SYSTEM_PROMPT) &&
     !/visitor goes back to him on Dispatches|send them back to Wellington on Dispatches/.test(SYSTEM_PROMPT),
   'a way back to Wellington survives'
 );
 expect(
-  'P30: on a Blocked row the offer of a person is in the right panel, never in chat, and she promises no reply',
-  /When you set a Blocked row, the console offers the visitor a person\*\*, beside the save button\. You do not make that offer in chat/.test(SYSTEM_PROMPT) &&
-    /Never offer the team's review in chat: the console shows that offer beside the save button/.test(SYSTEM_PROMPT) &&
+  'P30, rule 13 from 22 Nov 2026: on a Blocked row the box to reach the WaterBots team is in the right panel and she points to it; no reply time and no cost are rule 13\'s',
+  /When you set a Blocked row, the console shows the box to reach the WaterBots team\*\*, beside the save button; point to it\./.test(SYSTEM_PROMPT) &&
     !/tick the box beside the save button/.test(SYSTEM_PROMPT) &&
-    /never promise when or how anyone will reply/.test(SYSTEM_PROMPT),
+    /never promises a reply time and never talks about cost/i.test(AGENT_RULES_MD) &&
+    !/never promise when or how anyone will reply/.test(SYSTEM_PROMPT),
   'the door rule is missing a part'
 );
 expect(
-  'rung 3 still says consultants are coming, with the Blocked row as its one exception',
-  /Say that consultants are coming/.test(SYSTEM_PROMPT) &&
-    /A Blocked row is the exception: see section 3/.test(SYSTEM_PROMPT),
-  'rung 3 lost its default or its exception'
+  'rule 13 from 22 Nov 2026: section 2 says this site has no consulting-page link, and no prompt says "consultant" in the agent\'s own text',
+  /\*\*This site holds no link to the consulting page yet:\*\* name the page, never an address\./.test(SYSTEM_PROMPT) &&
+    !/consultants are coming|A consultant is not built|"That is coming" is the whole of it/.test(SYSTEM_PROMPT) &&
+    /see section 3/.test(SYSTEM_PROMPT) &&
+    !/\bconsultant\b/i.test(own(SYSTEM_PROMPT).replace(/overseen by trusted consultants/, '')),
+  'section 2 still says consultant, or lost the link line'
 );
 expect(
   'she asks the Eligibility rows only, one a turn, and shows the rest once',
@@ -678,7 +692,7 @@ expect(
 );
 expect(
   'P16, P19, P21: one thing a message, the registration question, no side notes, and the two buttons as fields',
-  /One thing per message: two or three short sentences, then one question/.test(SYSTEM_PROMPT) &&
+  /Every reply is two or three short sentences[^\n]*One question at a time\./.test(AGENT_RULES_MD) && SYSTEM_PROMPT.includes(AGENT_RULES_MD) &&
     /\*\*Registration:\*\* ask plainly whether the project is already registered with a standards body or would be new/.test(SYSTEM_PROMPT) &&
     /\*\*No teaching side notes during screening\.\*\*/.test(SYSTEM_PROMPT) &&
     /"Learn more about …" button/.test(SYSTEM_PROMPT) &&
@@ -691,9 +705,9 @@ expect(
   'a rule from the third round is missing, or a field is not in her answer'
 );
 expect(
-  'V1, 16 Nov 2026: her voice card and base rules say 3rd- to 6th-grade English, and the old wording is gone',
-  (SYSTEM_PROMPT.match(/3rd- to 6th-grade English/g) ?? []).length >= 2 && !/twelve-year-old/.test(SYSTEM_PROMPT),
-  'the reading level is missing from her prompt'
+  'her reading level is rule 1 of the agent rules, 6th grade (22 Nov 2026), and her own text carries no other',
+  SYSTEM_PROMPT.includes(AGENT_RULES_MD) && /at a 6th grade reading level/.test(AGENT_RULES_MD) && !/3rd- to 6th-grade|twelve-year-old/.test(SYSTEM_PROMPT),
+  'the rules are missing from her prompt, or an older reading level is back'
 );
 {
   const screen = readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8');
@@ -711,10 +725,10 @@ expect(
   );
 }
 expect(
-  'P9: the record is read first and nothing it holds is asked again, in any words',
+  'P9: the record is read first; not asking again for what it holds is agent rule 10 from 22 Nov 2026',
   /# Read the record first — a hard rule/.test(SYSTEM_PROMPT) &&
-    /Never ask for anything it holds, in any words/.test(SYSTEM_PROMPT) &&
-    /new source or cleaning water, stage, people or households served, place, name/.test(SYSTEM_PROMPT) &&
+    /asks only for what is missing/.test(AGENT_RULES_MD) && /the project record of rule 10/.test(SYSTEM_PROMPT) &&
+    /new source or cleaning water, stage, people or households served, place and name/.test(SYSTEM_PROMPT) &&
     SYSTEM_PROMPT.indexOf('# Your first two messages') < SYSTEM_PROMPT.indexOf('# Read the record first'),
   'the record-first rule is missing, or comes before her first two messages'
 );
@@ -745,7 +759,7 @@ expect(
     'P23: every tone example in her prompt passes the card-word check, and the relay and the walk use the same list',
     examples.length >= 1 && examples.length <= 2 && scripted.length === 0 &&
       dirty.length === 0 &&
-      /\*\*How you talk: like a person, not a script\.\*\*/.test(SYSTEM_PROMPT) &&
+      /\*\*How you talk:\*\*/.test(SYSTEM_PROMPT) && /never from a script/.test(AGENT_RULES_MD) &&
       /Providing safe water to a community has benefits that can be counted/.test(SYSTEM_PROMPT) &&
       /cardWordsIn\(answer\.reply\)/.test(relaySource) &&
       /cardWordsIn\(res\.reply\)/.test(readFileSync(join('scripts', 'measure-phoebe-walk.mjs'), 'utf8')),
@@ -754,8 +768,8 @@ expect(
 }
 expect(
   'P10: two or three short sentences, then one question, four at most and under 400 characters, and the relay counts a long one',
-  /two or three short sentences, then one question; four sentences and 400 characters at most/.test(SYSTEM_PROMPT) &&
-    /Two or three short sentences, then one question/.test(RESPONSE_SCHEMA.properties.reply.description) &&
+  /Every reply is two or three short sentences/.test(AGENT_RULES_MD) && /Four sentences and 400 characters at most\./.test(SYSTEM_PROMPT) &&
+    /Four sentences and 400 characters at most/.test(RESPONSE_SCHEMA.properties.reply.description) &&
     /isLongReply\(answer\.reply\)/.test(relaySource),
   'the length rule is missing from her prompt, her answer shape or the relay'
 );
@@ -782,8 +796,8 @@ expect(
   'a token in the cards’ own form would resolve to nothing'
 );
 expect(
-  'nothing in her prompt tells her to say anything word for word',
-  !/word for word/.test(SYSTEM_PROMPT),
+  'nothing in her prompt tells her to say anything word for word (rule 6 forbids it; the rules are read out first)',
+  !/word for word/.test(own(SYSTEM_PROMPT)),
   'a word-for-word rule appeared'
 );
 expect(
@@ -795,9 +809,10 @@ expect(
   'a block is unnamed in her prompt'
 );
 expect(
-  'her prompt says her level and who leads',
+  'her prompt says her level and her doors (rule 21); who leads is agent rule 19 from 22 Nov 2026',
   /you work at the \w+ level/.test(SYSTEM_PROMPT) &&
-    /Wellington is the Team Lead, and he leads the visit/.test(SYSTEM_PROMPT),
+    /At the Free site and the Agent Commons doors/.test(SYSTEM_PROMPT) &&
+    /^19\. Wellington leads\./m.test(AGENT_RULES_MD) && !/Wellington is the Team Lead, and he leads the visit/.test(SYSTEM_PROMPT),
   'her level sentence or her lead sentence is missing'
 );
 

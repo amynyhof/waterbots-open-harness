@@ -1,5 +1,11 @@
 # Changelog — wellington-host
 
+## 0.2.0 — 22 Nov 2026
+
+- `build-update.md` deleted, with its generated module. From 22 Nov 2026 every agent reads the one build
+  status sheet (`product-shared/BUILD_STATUS_SHEET.md`, agent rule 16), and a build update comes from its
+  "New lately" part. GitHub's history keeps the old file.
+
 ## 0.1.2 — 31 Oct 2026
 
 - `build-update.md`: Bridget's chat went live on the maintainer's ruling of 31 Oct 2026

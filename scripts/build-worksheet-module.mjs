@@ -634,7 +634,7 @@ function toolText(sections, seats) {
   }
   lines.push(
     '',
-    'They are facts about the project, never a verdict on any row. Any of them may be absent; ask only for what you need and what is missing. When no such block comes with the conversation, you are on the Agent Commons or at a cold start, and the conversation is the only project context.',
+    'They are facts about the project, never a verdict on any row. Any of them may be absent. When no such block comes with the conversation, you are at the Agent Commons door or at a cold start, and the conversation is the only project context.',
     ''
   );
   lines.push(

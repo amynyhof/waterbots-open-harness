@@ -73,8 +73,12 @@ const { WELLINGTON_SYSTEM_PROMPT, WELLINGTON_RESPONSE_SCHEMA } = await loadApi('
 const { AGENT_PRIMER_MD } = await loadApi('_primer.generated.js');
 const { WELLINGTON_PRIMER_MD } = await loadApi('_wellingtonPrimer.generated.js');
 const { PROJECT_TYPES_MD, PROJECT_TYPES, PROJECT_TYPE_IDS, GS_CLASS_IDS, PROJECT_STAGE_IDS, DRINKING_WATER_TYPE } = await loadApi('_projectTypes.generated.js');
-const { WELLINGTON_BUILD_UPDATE_MD } = await loadApi('_buildUpdate.generated.js');
+const { BUILD_STATUS_SHEET_MD } = await loadApi('_statusSheet.generated.js');
 const { SYSTEM_PROMPT: PHOEBE_PROMPT } = await loadApi('_systemPrompt.js');
+const { AGENT_RULES_MD } = await loadApi('_agentRules.generated.js');
+/* The 21 agent rules (AGENT_RULES.md, in force 22 Nov 2026; 20 and 21 added the same day) sit whole in every prompt. Checks on an
+   agent's own wording read the prompt without them, so a word the rules use is not counted as his. */
+const own = (prompt) => prompt.replace(AGENT_RULES_MD, '').replace(BUILD_STATUS_SHEET_MD, '');
 const { PLAIN_WORDS_MD, BEFORE_AFTER_MD } = await loadApi('_plainWords.generated.js');
 
 /* ---------------------------------------------------------------------------
@@ -174,11 +178,33 @@ expect('his region carries facts and rules, and no scripted line', /The facts ab
 expect('the roster names him for his colleagues', /Wellington — the desk/.test(AGENT_PRIMER_MD) && /Team Lead/.test(AGENT_PRIMER_MD), 'the roster has no Wellington');
 expect("Phoebe's prompt carries the roster but not his region", PHOEBE_PROMPT.includes('Wellington — the desk') && !PHOEBE_PROMPT.includes('The rules you keep'), 'his region leaked into her prompt, or the roster left it');
 expect('his prompt carries the roster and his region, and none of her cards', WELLINGTON_SYSTEM_PROMPT.includes(AGENT_PRIMER_MD.trim().slice(0, 200)) && WELLINGTON_SYSTEM_PROMPT.includes('The rules you keep') && !/Criterion 1/.test(WELLINGTON_SYSTEM_PROMPT), 'his prompt is mis-assembled');
-expect('no prompt tells any agent to say anything word for word — ruling 1, 3 Sep 2026', !/word for word/.test(WELLINGTON_SYSTEM_PROMPT) && !/word for word/.test(PHOEBE_PROMPT), 'a word-for-word rule survived');
-expect('his prompt carries the dated build update as facts he phrases, and the region is dated', WELLINGTON_SYSTEM_PROMPT.includes('# The build update, when asked') && WELLINGTON_SYSTEM_PROMPT.includes(WELLINGTON_BUILD_UPDATE_MD.trim().slice(0, 120)) && /^# The build, as of \d{1,2} \w+ \d{4}/m.test(WELLINGTON_BUILD_UPDATE_MD) && /Not live/.test(WELLINGTON_BUILD_UPDATE_MD) && !/^> "/m.test(WELLINGTON_BUILD_UPDATE_MD), 'the build update is missing, undated, or scripted');
+expect('no prompt tells any agent to say anything word for word — ruling 1, 3 Sep 2026; rule 6 forbids it, so the rules are read out first', !/word for word/.test(own(WELLINGTON_SYSTEM_PROMPT)) && !/word for word/.test(own(PHOEBE_PROMPT)), 'a word-for-word rule survived');
+{
+  /* Agent rule 16, 22 Nov 2026: the one build status sheet, an exact copy of the master, read whole by
+     every agent. A build update comes from its "New lately" part, dated in words. It replaced his own
+     build-update card, which is gone with its generated module. */
+  const { existsSync } = await import('node:fs');
+  const sheetFile = readFileSync(join('knowledge-packs', 'product-shared', 'BUILD_STATUS_SHEET.md'), 'utf8');
+  const { BRIDGET_SYSTEM_PROMPT: bridgetPrompt } = await loadApi('_bridgetPrompt.js');
+  expect(
+    'rule 16: every agent reads the whole build status sheet, byte for byte, and its "New lately" part is dated in words',
+    BUILD_STATUS_SHEET_MD === sheetFile &&
+      [WELLINGTON_SYSTEM_PROMPT, PHOEBE_PROMPT, bridgetPrompt].every((p) => p.includes(BUILD_STATUS_SHEET_MD)) &&
+      /^## New lately\n[\s\S]*?When someone asks for a build update, an agent answers from this part and gives the date in words\.\n- \d{1,2} [A-Z][a-z]+ \d{4}: /m.test(BUILD_STATUS_SHEET_MD),
+    'a prompt is missing the sheet, or the sheet differs from its file'
+  );
+  expect(
+    "the old build-update card is gone, and nothing reads it",
+    !existsSync(join('knowledge-packs', 'wellington-host', 'build-update.md')) &&
+      !existsSync(join('api', '_buildUpdate.generated.ts')) &&
+      !/# The build update, when asked|build-update/.test(WELLINGTON_SYSTEM_PROMPT) &&
+      !/_buildUpdate|wellington-host\/build-update/.test(readFileSync(join('scripts', 'build-prompt-modules.mjs'), 'utf8')),
+    'the old card or something that served it is still here'
+  );
+}
 expect('the roster gives facts, not quoted lines, for every colleague', !/^> "/m.test(AGENT_PRIMER_MD), 'a quoted colleague sentence is still live in the roster');
-expect('his voice card carries the reading level — 3rd- to 6th-grade English (V1, 16 Nov 2026)', /3rd- to 6th-grade English/.test(WELLINGTON_SYSTEM_PROMPT) && !/twelve-year-old/.test(WELLINGTON_SYSTEM_PROMPT), 'the reading level is missing from his prompt');
-expect('his prompt states the five things he never does', /quote no figure/.test(WELLINGTON_SYSTEM_PROMPT) && /never invent/i.test(WELLINGTON_SYSTEM_PROMPT) && /abstain and route/i.test(WELLINGTON_SYSTEM_PROMPT) && /Screening language only/.test(WELLINGTON_SYSTEM_PROMPT) && /never press a visitor to sign up/i.test(WELLINGTON_SYSTEM_PROMPT), 'a rule is missing');
+expect('his reading level is rule 1 of the agent rules, 6th grade (22 Nov 2026), and his own text carries no other', WELLINGTON_SYSTEM_PROMPT.includes(AGENT_RULES_MD) && /at a 6th grade reading level/.test(AGENT_RULES_MD) && !/3rd- to 6th-grade|twelve-year-old/.test(WELLINGTON_SYSTEM_PROMPT), 'the rules are missing from his prompt, or an older reading level is back');
+expect('his prompt states the five things he never does: his own three, and rules 5 and 15 for the sign-up and the promise', /quote no figure/.test(WELLINGTON_SYSTEM_PROMPT) && /never invent/i.test(WELLINGTON_SYSTEM_PROMPT) && /Outside every lane, abstain and stop/.test(WELLINGTON_SYSTEM_PROMPT) && /Never press anyone to sign up/.test(AGENT_RULES_MD) && /Never promise an outcome/.test(AGENT_RULES_MD), 'a rule is missing');
 /* The ceiling was 20,000 until 7 Sep 2026. Three rules the maintainer added
    that week — phase names, no tabs, plain words — each cost about a hundred
    characters, and trimming rules to fit a round number had started working
@@ -195,10 +221,10 @@ expect('his prompt states the five things he never does', /quote no figure/.test
    which holds her own ceiling, because from 25 Sep 2026 her prompt is staged
    and its size depends on how far a visit has gone. */
 expect(
-  "the maintainer's walk of 12 Nov 2026: he asks the class, says why he asks, introduces each colleague, always asks people served, and keeps to plain words",
+  "the maintainer's walk of 12 Nov 2026: he asks the class, says why he asks, introduces each colleague (agent rule 17 from 22 Nov 2026, so his own line went), always asks people served, and keeps to plain words",
     /ask in plain words whether it is a new water source or cleans water people already have/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /collect a few basics so you and the other agents can give a first, directional estimate/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /Introduce a colleague before you name them/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Wellington makes the introductions the first time a user meets an agent/.test(AGENT_RULES_MD) && !/Introduce a colleague before you name them/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /always ask how many people or households it will serve, right after the stage, and route nowhere until you have asked/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Never say "type" or "class" to the visitor/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /say how much carbon the project might avoid/.test(WELLINGTON_SYSTEM_PROMPT) &&
@@ -209,7 +235,7 @@ expect(
   "the maintainer's walk of 13 Nov 2026: a three-sentence welcome that never says free, and a handoff that names one next step",
   /three short sentences and no more/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Never say "free"/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    !/\bfree site\b|it is free\b/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    !/\bfree site\b|it is free\b/.test(own(WELLINGTON_SYSTEM_PROMPT)) &&
     /names one next step/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Never preview the steps after that one/.test(WELLINGTON_SYSTEM_PROMPT),
   'a rule from the walk is missing, or "free" is back'
@@ -220,16 +246,16 @@ expect(
    lines, two tone examples at most, a result never near (W23) and a real
    introduction on Phoebe's page (W24). */
 {
-  const voice = WELLINGTON_SYSTEM_PROMPT.slice(0, WELLINGTON_SYSTEM_PROMPT.indexOf('# The base rules you inherit'));
+  const voice = WELLINGTON_SYSTEM_PROMPT.slice(0, WELLINGTON_SYSTEM_PROMPT.indexOf('# The rules every agent follows'));
   const toneExamples = (WELLINGTON_SYSTEM_PROMPT.match(/For tone only, never copy:([^\n]*)/) ?? ['', ''])[1].match(/"[^"]+"/g) ?? [];
   expect(
     'W19–W24: the voice card comes first — who he is, who he talks to, the principles — with two tone examples at most',
     /^You are Wellington[^\n]*\n\n# Your voice — read this first/.test(WELLINGTON_SYSTEM_PROMPT) &&
       /a warm, friendly mentor/.test(voice) &&
       /a newcomer who knows nothing about standards or methods/.test(voice) &&
-      /Answer what was asked first\. Respond to what the visitor actually said, then ask one follow-up related to it\. One thing per message, in two or three short sentences/.test(voice) &&
+      /\*\*How you talk:\*\* respond to what the visitor actually said, then ask one follow-up related to it\./.test(voice) &&
       /Say what it means for the visitor, not what a method says\. Never repeat something already said\. Never name a document, a standard or a method unless asked/.test(voice) &&
-      /Never thank them for answering\. If they drift, answer briefly or say who covers it, then steer back kindly/.test(voice) &&
+      /Never thank them for answering\./.test(voice) && !/If they drift/.test(voice) &&
       toneExamples.length >= 1 && toneExamples.length <= 2 &&
       /answer what they said first, then who you are/.test(WELLINGTON_SYSTEM_PROMPT) &&
       !/Let me introduce you to Phoebe|that sounds like a new water source a community collects from|Tell me about your project\."/.test(WELLINGTON_SYSTEM_PROMPT),
@@ -252,12 +278,12 @@ expect(
 }
 /* HIS FOURTH WALK, the maintainer's word of 14 Nov 2026 (W14 to W18). */
 expect(
-  'W14–W18: the team line, the basics line first, words that settle the class, no invented detail, the two buttons, basic funding facts',
+  'W14–W18: the team line, the basics line first, words that settle the class, no invented detail (agent rule 10 from 22 Nov 2026), the two buttons, basic funding facts',
   /our team here matches water projects with funding they might qualify for/.test(WELLINGTON_SYSTEM_PROMPT) &&
     !/Our team helps you see if your water project/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /only then asks your first question, in the same message\. Never after the question/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /"borehole", "well" or "spring" is a new source \(CWS\); "filter" or "chlorine" cleans water/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /\*\*Never invent a detail\*\* the visitor did not say, such as a pump type/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Never guess a project fact\./.test(AGENT_RULES_MD) && !/Never invent a detail/.test(WELLINGTON_SYSTEM_PROMPT) &&
     !/Never work it out from a word such as "borehole"/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /"Meet Phoebe" and "Keep chatting" under it/.test(WELLINGTON_SYSTEM_PROMPT) &&
     /\*\*Basic questions about impact funding are yours\*\*/.test(WELLINGTON_SYSTEM_PROMPT) &&
@@ -276,7 +302,11 @@ expect(
     'the two buttons are not built from the route field'
   );
 }
-expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 26199 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
+// His gate: 32,001 from 22 Nov 2026, the maintainer's method of that day (measured plus 500), applied a
+// third time when the build status sheet came in for every agent and his build-update card went: 31,501.
+// Earlier the same day 29,896 (21 rules, measured 29,396) and 29,236 (19 rules); before that 26,199 from 24 Sep 2026.
+expect('the agent rules are 1 to 21, in order, and the notes for builders are not among them', (AGENT_RULES_MD.match(/^\d+\. /gm) ?? []).map((n) => parseInt(n, 10)).join(',') === Array.from({ length: 21 }, (_, i) => i + 1).join(',') && !/Notes for builders/.test(AGENT_RULES_MD), (AGENT_RULES_MD.match(/^\d+\. /gm) ?? []).join(' '));
+expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 32001 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
 
 /* ---------------------------------------------------------------------------
    The record the desk carries to Phoebe — slice 3, 7 Sep 2026.
@@ -315,7 +345,7 @@ const hisBlock = visitBlock(
   readRecord({ does: 'Boreholes for households', name: 'Walk Borehole', place: 'Turkana, Kenya', type: 'C-19', gsClass: 'CWS', stage: 'building' })
 );
 expect(
-  'with facts on the visit, the block lists them — including type, class and stage — and tells him not to re-ask',
+  'with facts on the visit, the block lists them — including type, class and stage; not re-asking is agent rule 10 from 22 Nov 2026',
   hisBlock.includes(VISIT_HEADING) &&
     hisBlock.includes('Boreholes for households') &&
     hisBlock.includes('Walk Borehole') &&
@@ -323,7 +353,7 @@ expect(
     /What type: Access to potable water supply/.test(hisBlock) &&
     /Which class of drinking-water project: Community water supply technologies/.test(hisBlock) &&
     /Stage: being built/.test(hisBlock) &&
-    /Do not ask for them again as if they were blank/.test(hisBlock) &&
+    /These fields are already on this visit/.test(hisBlock) && !/Do not ask for them again/.test(hisBlock) &&
     !/never a verdict/.test(hisBlock) &&
     !/only the cards decide/.test(hisBlock),
   hisBlock
@@ -339,12 +369,11 @@ expect(
 );
 expect('with an empty visit there is no block, so he may still ask', readRecord({}) === null && readRecord(null) === null, 'empty produced a record');
 expect(
-  'his prompt names the visit block, and the block tells him not to re-ask what it holds',
+  'his prompt names the visit block; not re-asking what it holds is agent rule 10, said once, in the rules (22 Nov 2026)',
   WELLINGTON_SYSTEM_PROMPT.includes(VISIT_HEADING) &&
-    /* The sentence lives in the block alone from 27 Sep 2026: his prompt's
-       copy was cut to make room for the people-served rule, her ruling. */
-    /Do not ask for them again as if they were blank/.test(visitBlock(readRecord({ does: 'wells' }))) &&
-    !/do not ask for them again as if they were blank/.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /asks only for what is missing/.test(AGENT_RULES_MD) &&
+    !/do not ask for them again as if they were blank/i.test(visitBlock(readRecord({ does: 'wells' }))) &&
+    !/do not ask for them again as if they were blank/i.test(WELLINGTON_SYSTEM_PROMPT) &&
     /Type, class and stage are never in a carried link/.test(WELLINGTON_SYSTEM_PROMPT),
   'the visit block is missing from his prompt'
 );
@@ -355,8 +384,8 @@ expect(
   'her block grew extra notes by default'
 );
 expect(
-  'a first-open note tells her to greet at screening and not invent a method',
-  /just opened Eligibility/.test(phoebeNotesBlock({ opened: true })) && /Do not invent a method/.test(phoebeNotesBlock({ opened: true })),
+  'a first-open note tells her to greet at screening; not inventing a method is agent rule 7 from 22 Nov 2026',
+  /just opened Eligibility/.test(phoebeNotesBlock({ opened: true })) && !/Do not invent a method/.test(phoebeNotesBlock({ opened: true })) && /never its own facts/.test(AGENT_RULES_MD),
   phoebeNotesBlock({ opened: true })
 );
 expect(
@@ -752,8 +781,10 @@ expect(
   'his prompt names the screening loop and forbids a fake live chat',
   /* Rule 2 carries it: the line in rule 4 that said it again was cut on
      26 Sep 2026, item A17, ruling R3. */
-  /Eligibility with Phoebe/.test(WELLINGTON_SYSTEM_PROMPT) && /Calvin's chat is not live/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /Bridget's is live, on Partners/.test(WELLINGTON_SYSTEM_PROMPT) && !/Bridget is not answering|Bridget's and Calvin's chats/.test(WELLINGTON_SYSTEM_PROMPT),
+  /* From 22 Nov 2026 what is live and coming is the status sheet's (rule 16), not his own lines. */
+  /Eligibility with Phoebe/.test(WELLINGTON_SYSTEM_PROMPT) && /Until Calvin's chat is live, pointing at him means pointing at his step\./.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Coming:\n- Calvin's chat\./.test(BUILD_STATUS_SHEET_MD) && /- Bridget's chat and the basin map/.test(BUILD_STATUS_SHEET_MD) &&
+    WELLINGTON_SYSTEM_PROMPT.includes(BUILD_STATUS_SHEET_MD) && !/Bridget is not answering|Bridget's and Calvin's chats/.test(WELLINGTON_SYSTEM_PROMPT),
   'the loop rule is missing from his prompt'
 );
 
@@ -958,7 +989,7 @@ console.log('\n  What Phoebe found\n');
   expect('nothing found yet is no block', phoebeFound(readSheet([{ pack: 'vwba-2.0', rows: [] }]), null) === null && phoebeFound(null, null) === null, 'a block came with no verdict');
 
   const allMet = phoebeFound(readSheet([{ pack: 'vwba-2.0', rows: water.map((r) => ({ id: r.id, state: 'met' })) }]), null);
-  expect('every row Met reads likely eligible', allMet?.reads[0] === 'likely-eligible' && /Likely eligible/.test(allMet.text) && allMet.text.startsWith(`# ${FOUND_HEADING}`), allMet?.text);
+  expect('every row Met reads likely eligible, said to him in rule 14\'s word "likely"', allMet?.reads[0] === 'likely-eligible' && /: likely\./.test(allMet.text) && !/ruled out/.test(allMet.text) && allMet.text.startsWith(`# ${FOUND_HEADING}`), allMet?.text);
 
   const blocked = phoebeFound(readSheet([{ pack: 'vwba-2.0', rows: [
     { id: first.id, state: 'blocked', because: secret },
@@ -973,14 +1004,14 @@ console.log('\n  What Phoebe found\n');
     { pack: 'vwba-2.0', rows: [{ id: first.id, state: 'blocked' }] },
     { pack: 'gs-paa-v2.0', rows: [] },
   ]), null);
-  expect('a pathway not looked at yet says so and reads not enough known', both?.reads.length === 2 && both.reads[1] === 'not-enough-known' && both.text.includes(`${carbon.sectionName}: Not enough known yet — not looked at yet.`), both?.text);
+  expect('a pathway not looked at yet says so and reads not enough known, said as "more to learn"', both?.reads.length === 2 && both.reads[1] === 'not-enough-known' && both.text.includes(`${carbon.sectionName}: more to learn — not looked at yet.`) && both.text.includes(': unlikely.') && !/ruled out/.test(both.text), both?.text);
 
   const q = { reply: 'The Quantify step can work out a screening figure.', route: 'quantification', abstained: false };
   expect('Quantify is "none" when every pathway reads likely not', validate(q, { reads: ['likely-not'] })?.route === 'none' && validate(q, { reads: ['likely-not', 'does-not-apply'] })?.route === 'none', 'the guard let Quantify through');
   expect('Quantify stands where a pathway is likely eligible or not enough known', validate(q, { reads: ['likely-not', 'not-enough-known'] })?.route === 'quantification' && validate(q, { reads: ['likely-eligible'] })?.route === 'quantification', 'the guard stopped a fit');
   expect('with nothing found, the route is untouched', validate(q, {})?.route === 'quantification' && validate(q, { reads: [] })?.route === 'quantification', 'the guard fired with no reads');
 
-  expect('his prompt names the block and the rule', WELLINGTON_SYSTEM_PROMPT.includes(`"${FOUND_HEADING}"`) && /never her sentences, never a row id/.test(WELLINGTON_SYSTEM_PROMPT) && /Invite Quantify only for a pathway likely eligible or not enough known yet/.test(WELLINGTON_SYSTEM_PROMPT), 'the rule is missing');
+  expect('his prompt names the block and the rule', WELLINGTON_SYSTEM_PROMPT.includes(`"${FOUND_HEADING}"`) && /never her sentences, never a row id/.test(WELLINGTON_SYSTEM_PROMPT) && /Invite Quantify only for a pathway that reads likely or more to learn/.test(WELLINGTON_SYSTEM_PROMPT), 'the rule is missing');
 
   const relay = readFileSync('api/wellington.ts', 'utf8');
   const client = readFileSync('src/lib/wellington.ts', 'utf8');
@@ -1049,7 +1080,7 @@ console.log('\n  Bridget\n');
   expect(
     'B1: a voice card first, and a short opening — who she is, why the basin matters, the pin question; still built only when asked',
     /^You are Bridget[^\n]*\n\n# Your voice — read this first/.test(BP) &&
-      /Your opening is short, like every reply: two or three sentences, one thing/.test(BP) &&
+      /# Your opening[\s\S]*Say who you are and why the basin matters/.test(BP) &&
       /funders and partners often work by river basin/.test(BP) &&
       /Being still built is said only when asked/.test(BP) &&
       !/Many funders choose projects by river basin|two short paragraphs/.test(BP),
@@ -1068,7 +1099,7 @@ console.log('\n  Bridget\n');
   );
   expect(
     'she never guesses, never names a real project, partner or place beyond what the visitor typed, and never says she validates',
-    /\*\*Never guess a fact\.\*\*/.test(BP) &&
+    /\*\*Everything you say about the basin comes from the block below\*\*, and nothing about it comes from general knowledge/.test(BP) &&
       /\*\*Never name a real project, partner, organisation, company, funder, river, basin or place\*\* beyond what the visitor typed/.test(BP) &&
       /\*\*Never say you validate, verify, confirm, approve or check anything\.\*\*/.test(BP),
     "one of the maintainer's five rules is missing"
@@ -1091,7 +1122,7 @@ console.log('\n  Bridget\n');
     'the relay does not hold her hand-back to who is next'
   );
   expect('her answer carries the hand-back as a closed field', BS.properties.handBack.enum.join(',') === 'none,wellington' && BS.required.includes('handBack'), JSON.stringify(BS.properties.handBack));
-  expect('her prompt says "validate" only to forbid it', (BP.match(/validat/gi) ?? []).length === 1, `${(BP.match(/validat/gi) ?? []).length} uses`);
+  expect('her prompt says "validate" only to forbid it; rule 15\'s outside validator is the rules\' word, not hers', (own(BP).match(/validat/gi) ?? []).length === 1, `${(own(BP).match(/validat/gi) ?? []).length} uses`);
 
   const categories = Object.values(JSON.parse(readFileSync('public/water_stress.json', 'utf8')).categories);
   const fallback = readFileSync('src/lib/stressPalette.ts', 'utf8').match(/UNKNOWN_STYLE: StressStyle = \{\s*label: '([^']+)'/)?.[1];
@@ -1199,9 +1230,24 @@ console.log('\n  W28, W29 and V1 — the queued round, 16 Nov 2026');
     'the opening turn is not sent once, or not held back for a carried question'
   );
 }
+{
+  const { BRIDGET_SYSTEM_PROMPT } = await loadApi('_bridgetPrompt.js');
+  expect(
+    'rule 13 from 22 Nov 2026: neither Wellington nor Bridget says "consultant" in their own text or the shared roster, and Wellington names the consulting page without an address',
+    !/\bconsultants?\b/i.test(own(WELLINGTON_SYSTEM_PROMPT)) && !/\bconsultants?\b/i.test(own(BRIDGET_SYSTEM_PROMPT)) &&
+      /This site holds no link to the consulting page yet: name the page, never an address\./.test(WELLINGTON_SYSTEM_PROMPT),
+    'a "consultant" line survived, or the consulting-page line is missing'
+  );
+}
 for (const [who, file] of [['Wellington', '_wellingtonPrompt.ts'], ['Bridget', '_bridgetPrompt.ts'], ['Phoebe', '_systemPrompt.ts']]) {
   const src = readFileSync(join('api', file), 'utf8');
-  expect(`V1: ${who}'s voice card says 3rd- to 6th-grade English`, /3rd- to 6th-grade English/.test(src) && !/twelve-year-old/.test(src), `api/${file}`);
+  expect(
+    `22 Nov 2026: ${who}'s prompt is built from the 21 agent rules, which set the reading level, and carries no older one`,
+    /import \{ AGENT_RULES_MD \} from '\.\/_agentRules\.generated\.js'/.test(src) &&
+      /\n# The rules every agent follows\n\nThey govern\. The rest of this prompt is only what is different for you\.\n\n\$\{AGENT_RULES_MD\}\n/.test(src) &&
+      !/3rd- to 6th-grade|twelve-year-old|# The base rules you inherit/.test(src),
+    `api/${file}`
+  );
 }
 
 /* ------------------------------------------------------------------------- */

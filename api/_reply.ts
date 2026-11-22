@@ -136,9 +136,10 @@ export function cardWordsIn(reply: string): string[] {
 }
 
 /* --------------------------------------------------------------------------
-   Reading level — V1, the maintainer's word of 16 Nov 2026: every agent
-   speaks 3rd- to 6th-grade English. The rule lives once, in AGENT_RULES.md,
-   and every voice card says it; this measures it.
+   Reading level — V1, the maintainer's word of 16 Nov 2026. From 22 Nov 2026
+   the rule is agent rule 1 in AGENT_RULES.md, "a 6th grade reading level",
+   carried whole into every prompt. The count below is kept as it was, on
+   the maintainer's word of the same day; this measures it.
    -------------------------------------------------------------------------- */
 
 /**
