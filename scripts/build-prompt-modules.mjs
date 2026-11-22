@@ -239,10 +239,11 @@ function fittedPackSentence() {
       );
     }
     writeFileSync(join(out, 'package.json'), '{"type":"commonjs"}');
-    const { METHOD_PACKS, CORE_CALCULATORS = [] } = createRequire(import.meta.url)(join(out, 'methodPacks.js'));
+    const { CORE_CALCULATORS = [] } = createRequire(import.meta.url)(join(out, 'methodPacks.js'));
 
-    /* The site's own live packs, then the open core's calculators (14 Nov 2026). */
-    const live = [...METHOD_PACKS.filter((p) => p.state === 'live'), ...CORE_CALCULATORS];
+    /* The open core's calculators: every one on Quantify from 22 Nov 2026, when
+       Violet's D-3 took the place of this site's own water pack (#189). */
+    const live = [...CORE_CALCULATORS];
     if (live.length === 0) return 'No pack is fitted to the step yet.';
 
     const missing = live.find((p) => !p.primerLine);

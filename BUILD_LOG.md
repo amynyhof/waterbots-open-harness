@@ -6270,3 +6270,32 @@ family's sprint.
 `handoff\shared-draft\B_audit.md`, 461 lines, SHA-256
 `ee6f3730911ea673a7b5acf96ffef1da4908f1f47f8a61791b2ef8f7ac0314ac`. The name scan on it: 1 file, 0 findings.
 There is no packing list for a file going out; the fingerprint above is the record.
+
+
+## 22 November 2026 — Road to v1 step 5: Violet's D-3 and Calvin 0.5.0 from the open core
+
+**Not a full close-out.** One build on the maintainer's word: #188 and #189 approved and merged, then #189's swap.
+
+**Her answers to #189's five questions, 22 Nov 2026, in her words.**
+- A. "(c). The Commons passes the facts typed into its own facts form as the record, as it does for Calvin."
+- B. "Leave it for the Agent orchestration sprint." Her rulings of 21 Nov 2026 for that sprint, filed under A30:
+  "the words are "likely", "more to learn", "unlikely"; never "ruled out". Likely: the host calls that pathway's
+  calculator agent and it shows. More to learn: the same, with a flag that information is missing. Unlikely: that
+  agent is not called and does not show in the screening; the visitor is told what would change it and may browse it
+  in the Commons. This replaces "the water calculator always shows". It is built from a shared spec on both sites,
+  not here alone."
+- C. "(b). Session C will ship her cases in the package in a later release. Step 5 stays open on that one line."
+- D. "Remove the empty pack seat and its checks."
+- E. "Yes for now. Violet becomes her own crew member on the v1 road (ruled 21 Nov 2026; A23 moves from After v1 to
+  v1), but through the shared spec with both sites. In this swap the chip stays under Calvin."
+
+**What was built.**
+- The release `calvin-violet-v0.5.0` installed from its own files: SHA-256 `0412d39b…` (calvin 0.5.0),
+  `b51f214c…` (violet 0.5.0), `4e9be070…` (core 0.1.1, byte for byte the file already here), each checked
+  against the release's `SHA256SUMS.txt`, and the lockfile's SHA-512 checked by `check-calvin-package` (41 checks).
+- Calvin's "Water benefits" chip mounts Violet's D-3 screen, locked to ex-ante, reading people served from the record
+  (on the Commons, from its facts form). Her result's status, "Draft — pending expert review", rides on the report row.
+- This site's own `src/lib/vwbaD3.ts`, `QuantificationWorksheet.tsx`, the empty pack seat in `methodPacks.ts` and
+  `check-vwba-d3` are gone. The save keeps the water entry's key and shape, filled from her inputs.
+- Calvin 0.5.0: the credit tiles stay pinned; his introduction is out of the header, which says only what the record
+  lacks; the Beta sticker is gone with the package's own change. Wellington's and Phoebe's prompts did not change.

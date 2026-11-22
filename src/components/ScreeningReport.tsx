@@ -24,7 +24,6 @@ import type { ReactNode } from 'react';
 import { cardFor, type Citation } from '../lib/phoebeCards';
 import { AQUEDUCT_CITATION, HYDROBASINS_CITATION, PRODUCT_NAME } from '../lib/licences';
 import { PROJECT_STAGES, projectType } from '../lib/projectTypes.generated';
-import type { MethodPack } from '../lib/methodPacks';
 import { HER_PACKS, section, verdictRows, pathwayRows } from '../lib/worksheet.generated';
 import { contextFor, stateOf, type Sheet } from '../lib/worksheetState';
 import { deskRows, pathStatus, servedWords, WATER_SUPPLY_TYPES, type CarbonFigure, type Visit } from '../lib/visit';
@@ -102,13 +101,11 @@ function Lines({ label, lines }: { label: string; lines: ReportLine[] }) {
 export default function ScreeningReport({
   visit,
   sheet,
-  packs,
   showPerson,
   carbon = null,
 }: {
   visit: Visit;
   sheet: Sheet;
-  packs: MethodPack[];
   /** Calvin's carbon headline from the open core's engine, once Quantify was opened. */
   carbon?: CarbonFigure | null;
   /** A path is ruled out, so the box to send the project to the team is offered. */
@@ -149,7 +146,7 @@ export default function ScreeningReport({
   const plausible = paths.filter((p) => p.status === 'likely' || p.status === 'more to find out').map((p) => p.name);
   const phoebeStarted = paths.some((p) => p.status !== 'not started');
 
-  const calvin = deskRows(visit, sheet, packs).filter((row) => row.from === 'calvin');
+  const calvin = deskRows(visit, sheet).filter((row) => row.from === 'calvin');
   const pin = visit.pin;
 
   return (

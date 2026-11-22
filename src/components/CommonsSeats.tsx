@@ -36,7 +36,7 @@
  * clicked.
  */
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import type { CalvinProject } from '@waterbots/calvin/screen';
 import { COUNTRIES } from '@waterbots/calvin/engine';
 import type { AgentTurn, AskMeta } from '../chat/evidence';
@@ -49,7 +49,7 @@ import {
   type Sheet,
 } from '../lib/worksheetState';
 import { HER_PACKS } from '../lib/worksheet.generated';
-import { fittedPack, type PackValues } from '../lib/methodPacks';
+import { WATER_METHOD_ID } from '../lib/visit';
 import { askPhoebe, carriedSheet } from '../lib/phoebeClient';
 import AgentScreen, { type ScreenTab } from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
@@ -212,13 +212,8 @@ function CommonsFactsForm({ facts, onChange }: { facts: CommonsFacts; onChange: 
 }
 
 export function CalvinCommonsSeat({ packKey }: { packKey: string | null }) {
-  const [activeKey, setActiveKey] = useState<string>(fittedPack()?.key ?? '');
-  /* A water card opens the water worksheet; the carbon card opens the core's calculator. */
-  const opensOn: 'carbon' | 'water' = packKey && packKey === fittedPack()?.key ? 'water' : 'carbon';
-  useEffect(() => {
-    if (opensOn === 'water' && packKey) setActiveKey(packKey);
-  }, [packKey, opensOn]);
-  const [values, setValues] = useState<Record<string, PackValues>>({});
+  /* A water card opens Violet's D-3 screen; the carbon card opens Calvin's calculator. */
+  const opensOn: 'carbon' | 'water' = packKey === WATER_METHOD_ID ? 'water' : 'carbon';
   const [facts, setFacts] = useState<CommonsFacts>({ country: '', technology: '', served: '', unit: 'people' });
   const project: CalvinProject = useMemo(() => {
     const served = Number(facts.served);
@@ -232,7 +227,9 @@ export function CalvinCommonsSeat({ packKey }: { packKey: string | null }) {
   }, [facts]);
   /* The calculator holds its own state and opens again once a technology is
      chosen, as on the console (CalvinCarbon, 16 Nov 2026); the count typed
-     afterwards is handed on there. */
+     afterwards is handed on there. Violet's water screen reads the same project,
+     so the people served typed into this form are her record too (ruling A,
+     22 Nov 2026), and it follows a count that changes. */
 
   return (
     <AgentScreen
@@ -246,10 +243,6 @@ export function CalvinCommonsSeat({ packKey }: { packKey: string | null }) {
             key={opensOn}
             project={project}
             header={() => <CommonsFactsForm facts={facts} onChange={setFacts} />}
-            activeKey={activeKey}
-            onSelect={setActiveKey}
-            allValues={values}
-            onChange={(key, next) => setValues((v) => ({ ...v, [key]: next }))}
             opensOn={opensOn}
           />
         ),

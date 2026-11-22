@@ -17,6 +17,26 @@ before 3 Oct 2026 link to an OPEN_ITEMS.md that has since been retired to this f
 
 ---
 
+## 22 Nov 2026 — CLAUDE.md: Calvin 0.5.0, and the water calculator from the open core
+
+**Why.** The maintainer's word on #189, 22 Nov 2026: the release `calvin-violet-v0.5.0` is installed, and
+Violet's D-3 screen takes the place of this site's own water calculator. Calvin 0.5.0 pins the credit tiles
+whatever `unpinFigureBlock` says.
+
+**Old wording, whole — CLAUDE.md — Scope, the bullet on the engine bundle and Calvin's calculator:**
+
+> **`@waterbots/calvin` 0.4.1 and the same `@waterbots/core` 0.1.1 from the
+> release `calvin-v0.4.1`, from 21 Nov 2026, her word** (0.4.0 earlier the same day; 0.4.1 labels each
+> monitoring value "Assumed" ex-ante, and no sum changed)
+
+> `hideExportButton` on Quantify only, and `unpinFigureBlock` everywhere, so the block of headline
+> figures scrolls with the rows;
+
+**Where the current text is:** [CLAUDE.md](../../CLAUDE.md), *Scope — v1*, the same bullet, which now also
+says the water calculator is Violet's.
+
+---
+
 ## 21 Nov 2026 — the nine families, and the plan file's limit raised to 450 lines
 
 **Why.** The maintainer's word of 21 Nov 2026: one set of nine families for all three repositories, and BUILD_PLAN.md's
