@@ -1,12 +1,13 @@
 # vwba-2.0-d3-volume-provided
 
-**Version 0.1.0.** Live `methodPacks` key: `vwba-2.0-d3-volume-provided`.
+**Version 0.2.0.** The save names the method by this folder's own name.
 
 Household and community water supply, ex-ante. Option 3 of Table D3.3. Screening
 tier. Consultant review.
 
-Live arithmetic stays in [`src/lib/vwbaD3.ts`](../../../../src/lib/vwbaD3.ts).
-This folder does not copy it and does not invent any.
+Live arithmetic is Violet's D-3 module from the open core, `@waterbots/violet` 0.5.0, installed
+from the release `calvin-violet-v0.5.0`. This site's own D-3 code is gone. This folder does not copy
+the arithmetic and does not invent any.
 
 A blank without-project volume is never read as zero.
 

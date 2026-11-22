@@ -547,9 +547,9 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   deleted on 14 Nov 2026, V1, required, the maintainer's word.** **Calvin's carbon calculator is the
   open core's from the same day**: ~~`@waterbots/calvin` 0.2.0 and `@waterbots/core` 0.1.0 from the
   release `calvin-v0.2.0`~~ ~~`@waterbots/calvin` 0.3.0 and `@waterbots/core` 0.1.1 from the release
-  `calvin-v0.3.0`, from 16 Nov 2026~~ **`@waterbots/calvin` 0.4.1 and the same `@waterbots/core` 0.1.1 from the
-  release `calvin-v0.4.1`, from 21 Nov 2026, her word** (0.4.0 earlier the same day; 0.4.1 labels each
-  monitoring value "Assumed" ex-ante, and no sum changed), with `creditedUnderV1` left unset until item A29, so every
+  `calvin-v0.3.0`, from 16 Nov 2026~~ **`@waterbots/calvin` 0.5.0 and the same `@waterbots/core` 0.1.1 from the
+  release `calvin-violet-v0.5.0`, from 22 Nov 2026, her word on #189** (0.4.1 from 21 Nov; 0.5.0 pins the
+  credit tiles at the top, and no sum changed), with `creditedUnderV1` left unset until item A29, so every
   project gets the V2.0-only view; vendored in `vendor/waterbots/` and checked against the release's SHA-256
   and the lockfile's SHA-512 by `scripts/check-calvin-package.mjs`, which also re-runs the package's
   47 made-up cases (proof P1). It is locked to ex-ante (`exAnteOnly`, sliders on), on Quantify and on
@@ -559,9 +559,15 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   during a screening, from 16 Nov 2026, her word:** on Quantify his own "Export report (PDF)" is
   hidden, and "Export screening report" in the left rail carries his figure and his full working; the
   Commons keeps his export. **From 0.4.0 the package's own switches do it** (21 Nov 2026, her word):
-  `hideExportButton` on Quantify only, and `unpinFigureBlock` everywhere, so the block of headline
-  figures scrolls with the rows; the two CSS stopgaps of 16 Nov are gone. A new version
-  comes in only on her word. Proposal: `docs/proposals/calvin-from-open-core.md`.
+  `hideExportButton` on Quantify only, and `unpinFigureBlock` everywhere, so the smaller figures
+  scroll with the rows (from 0.5.0 the credit tiles stay pinned either way); the two CSS stopgaps of 16 Nov are gone. A new version
+  comes in only on her word. Proposal: `docs/proposals/calvin-from-open-core.md`. **The water calculator is
+  the open core's too, from 22 Nov 2026, her word on #189** (Road to v1 step 5): Violet's D-3 screen,
+  `@waterbots/violet` 0.5.0 from the same release, checked the same way, under Calvin's "Water benefits"
+  chip until Violet joins the crew through the shared spec. People served come from the record (on the
+  Commons, its facts form), and every result says "Draft — pending expert review". This site's own
+  `src/lib/vwbaD3.ts`, its worksheet, the empty pack seat and `check-vwba-d3` are gone, and Calvin's header
+  says only what the record still lacks. Proposal: `docs/proposals/violet-d3-from-open-core-2026-11-21.md`.
 - **The free-site fixes of 30 Sep 2026 are live, #134 to #138**, and the demo ran on `main` at
   #138. The wordmark at the top left goes to waterbots.ai from 28 Oct 2026, as the main site's
   menu does; until then it started a fresh visit at the landing. Every chat box grows to three lines, then

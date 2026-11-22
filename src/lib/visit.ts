@@ -34,7 +34,6 @@ import {
   stateOf,
   type Sheet,
 } from './worksheetState';
-import type { MethodPack, PackValues } from './methodPacks';
 import { DRINKING_WATER_TYPE, type GsClassId, type ProjectStageId, type ProjectTypeId } from './projectTypes.generated';
 import type { Surface } from './surfaces';
 
@@ -241,11 +240,51 @@ export function describePin(pin: MapPin): string {
  */
 export type ScreeningStage = 'learn' | 'eligibility' | 'partners' | 'quantify';
 
+/**
+ * THE WATER ESTIMATE — Violet's D-3 screen, the open core's, from 22 Nov 2026
+ * (her word on #189). What the visitor set and what her engine gave back, kept
+ * as her screen hands it over; this site works none of it out. Null until the
+ * visitor changes something on her screen.
+ *
+ * ONLY THE PARTS THIS SITE READS are written here. Her package's own types,
+ * D3Input and D3Result in @waterbots/violet/engine, are wider and fit this
+ * shape; they are not imported, so the checks that compile this file alone,
+ * with plain Node resolution, need not reach the package.
+ */
+export interface WaterEstimate {
+  input: {
+    view: string;
+    option: string;
+    withoutProjectM3PerYear?: number;
+    accessLevel?: string;
+    meteredM3PerYear?: number;
+    flowM3PerHour?: number;
+    operatingHoursPerYear?: number;
+    litresPerPersonPerDay?: { value: number; source: string };
+    daysOfAccessPerYear?: number;
+    population?: { mode?: string; served?: number; householdSize?: number };
+  };
+  result: {
+    /** Her module's standing, "Draft — pending expert review". */
+    status: string;
+    /** The volumetric water benefit, m³ a year; null until every value it needs is known. */
+    vwbM3PerYear: number | null;
+    /** The labels of every value still awaited. */
+    awaiting: string[];
+  };
+}
+
+/** The method's name, as Calvin's water chip, the report and the save call it. */
+export const WATER_METHOD_NAME = 'VWBA 2.0 · D-3 Volume Provided';
+
+/** The method's key in the save, kept from this site's own pack so the paid site's receiver reads the same key. */
+export const WATER_METHOD_ID = 'vwba-2.0-d3-volume-provided';
+
 export interface Visit {
   context: VisitContext;
   pin: MapPin | null;
-  /** Each pack's answers, keyed by pack. Empty means nothing typed. */
-  packValues: Record<string, PackValues>;
+  /** The water estimate from Violet's screen, or null before the visitor touched it. */
+  water: WaterEstimate | null;
   stage: ScreeningStage;
   /** Wellington's real Eligibility invite, copied onto Phoebe's thread once. */
   eligibilityInvite: string;
@@ -260,7 +299,7 @@ export interface Visit {
 export const EMPTY_VISIT: Visit = {
   context: EMPTY_CONTEXT,
   pin: null,
-  packValues: {},
+  water: null,
   stage: 'learn',
   eligibilityInvite: '',
   partnersInvite: '',
@@ -359,19 +398,6 @@ export type RowAction =
   | { kind: 'surface'; label: string; surface: Surface }
   | { kind: 'link'; label: string; href: string };
 
-/**
- * Whether a pack's answers are exactly its worked example.
- *
- * Used by the desk row, which then says so first, and by the seal, which
- * flags it — a made-up figure must never travel looking like the visitor's
- * own. One test, two readers.
- */
-export function isWorkedExample(pack: MethodPack, values: PackValues): boolean {
-  if (pack.example === undefined) return false;
-  const example = pack.example.values;
-  return Object.keys({ ...values, ...example }).every((k) => (values[k] ?? '') === (example[k] ?? ''));
-}
-
 export interface DeskRow {
   key: string;
   from: RowSender;
@@ -409,7 +435,7 @@ const PLAIN_READ: Record<string, string> = {
  * because a row that named a number while the benefit was incomplete would be
  * claiming more than the worksheet does. The save row is always last.
  */
-export function deskRows(visit: Visit, sheet: Sheet, packs: MethodPack[]): DeskRow[] {
+export function deskRows(visit: Visit, sheet: Sheet): DeskRow[] {
   const rows: DeskRow[] = [];
 
   /* Phoebe — one row per pathway she has worked, and the pathway's own reading
@@ -483,30 +509,24 @@ export function deskRows(visit: Visit, sheet: Sheet, packs: MethodPack[]): DeskR
     });
   }
 
-  /* Calvin — each live pack that has produced a figure. The row reads the
-     pack's own headline and unit; it knows nothing about any method. */
-  for (const pack of packs) {
-    const values = visit.packValues[pack.key];
-    if (!values) continue;
-    const result = pack.compute(values);
-    /* A row built from a pack's worked example says so first. The example is
-       labelled on the worksheet; a row that dropped the label would put a
-       made-up figure on the desk looking like the visitor's own. */
-    const lead = isWorkedExample(pack, values) ? 'Example figures, not a real project: ' : '';
-    if (result.kind === 'complete') {
-      const h = result.headline;
-      const figure = h.value.toLocaleString('en-GB', { maximumFractionDigits: h.decimals });
+  /* Calvin — the water estimate, Violet's, once the visitor has worked on it.
+     The figure and the words for what is missing are her engine's; the row
+     carries her result's own status, a draft until an outside expert checks it. */
+  if (visit.water) {
+    const { result } = visit.water;
+    if (result.vwbM3PerYear !== null) {
+      const figure = result.vwbM3PerYear.toLocaleString('en-GB', { maximumFractionDigits: 0 });
       rows.push({
-        key: `calvin-${pack.key}`,
+        key: `calvin-${WATER_METHOD_ID}`,
         from: 'calvin',
-        sentence: `${lead}${pack.name} screens at ${figure} ${h.unit} for ${h.label.toLowerCase()} — a screening estimate. This is a first screening, not an official decision.`,
+        sentence: `${WATER_METHOD_NAME} screens at ${figure} m³ a year of water provided — a screening estimate. ${result.status}. This is a first screening, not an official decision.`,
         action: { kind: 'surface', label: 'Open Quantify', surface: 'quantification' },
       });
-    } else if (result.kind === 'incomplete') {
+    } else {
       rows.push({
-        key: `calvin-${pack.key}`,
+        key: `calvin-${WATER_METHOD_ID}`,
         from: 'calvin',
-        sentence: `${lead}${pack.name} is part-way through and still needs an answer before it can say its figure. ${result.missing}`,
+        sentence: `${WATER_METHOD_NAME} is part-way through and still needs: ${result.awaiting.join(', ')}.`,
         action: { kind: 'surface', label: 'Open Quantify', surface: 'quantification' },
       });
     }
@@ -617,9 +637,9 @@ export function rowTaken(row: DeskRow, surface: Surface, visit: Visit): boolean 
  * invite asks for it, and two rows asking one thing is a repeated question
  * (A22, 30 Oct 2026). Calvin's figures wait until Quantify.
  */
-export function nextStepRows(visit: Visit, sheet: Sheet, packs: MethodPack[]): DeskRow[] {
+export function nextStepRows(visit: Visit, sheet: Sheet): DeskRow[] {
   const invite = currentInvite(visit, pathwayAllowsQuantify(visit, sheet));
-  const derived = deskRows(visit, sheet, packs).filter((row) => {
+  const derived = deskRows(visit, sheet).filter((row) => {
     if (row.from === 'bridget') return visit.pin !== null ? visit.stage === 'partners' || visit.stage === 'quantify' : visit.stage === 'quantify';
     if (row.from === 'calvin') return visit.stage === 'quantify';
     if (row.from === 'phoebe') return visit.stage !== 'learn';
@@ -639,11 +659,7 @@ export function inviteSurface(visit: Visit): Surface | null {
    -------------------------------------------------------------------------- */
 
 /** Whether each of the three open phases has something from this visit. */
-export function journeyProgress(
-  visit: Visit,
-  sheet: Sheet,
-  packs: MethodPack[]
-): Record<'eligibility' | 'partners' | 'quantify', boolean> {
+export function journeyProgress(visit: Visit, sheet: Sheet): Record<'eligibility' | 'partners' | 'quantify', boolean> {
   return {
     eligibility: HER_PACKS.some((pack) =>
       verdictRows(pack, contextFor(sheet, pack, visit.context.gsClass)).some(
@@ -651,12 +667,7 @@ export function journeyProgress(
       )
     ),
     partners: visit.pin !== null,
-    quantify: packs.some((p) => {
-      const v = visit.packValues[p.key];
-      if (!v) return false;
-      const r = p.compute(v);
-      return r.kind === 'complete' || r.kind === 'incomplete';
-    }),
+    quantify: visit.water !== null,
   };
 }
 
@@ -718,7 +729,6 @@ const PATH_WORDS: Record<ReturnType<typeof pathStatus>, string> = {
 export function crewStatus(
   visit: Visit,
   sheet: Sheet,
-  packs: MethodPack[],
   carbon: CarbonFigure | null = null
 ): Record<Surface, string> {
   const c = visit.context;
@@ -737,15 +747,9 @@ export function crewStatus(
   const bridget = visit.pin ? `Basin found: ${visit.pin.stressLabel.toLowerCase()} water stress` : READY.map;
 
   let calvin = carbon ? 'Carbon estimate ready' : READY.quantification;
-  for (const pack of packs) {
-    const values = visit.packValues[pack.key];
-    if (!values) continue;
-    const result = pack.compute(values);
-    if (result.kind === 'complete') {
-      calvin = carbon ? 'Carbon and water estimates ready' : 'Water estimate ready';
-      break;
-    }
-    if (result.kind === 'incomplete' && !carbon) calvin = 'Estimate started';
+  if (visit.water) {
+    if (visit.water.result.vwbM3PerYear !== null) calvin = carbon ? 'Carbon and water estimates ready' : 'Water estimate ready';
+    else if (!carbon) calvin = 'Estimate started';
   }
   return { desk: wellington, eligibility: phoebe, map: bridget, quantification: calvin };
 }

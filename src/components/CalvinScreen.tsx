@@ -14,19 +14,12 @@
  * (wording of 14 Nov 2026), wherever a figure renders. The
  * strip was a second statement of the same thing beside the first.
  *
- * HIS KNOWLEDGE PACK IS THE METHOD PACKS. Calvin carries no rule cards; what
- * he works from is the registry in src/lib/methodPacks.ts — one row per live
- * pack, its name, what it measures, its scope, and its citation, all read
- * from the pack and never re-typed. A pack added to the registry appears
- * here the same day.
- *
- * EACH ROW WEARS ITS TOOL FOLDER'S VERSION from 24 Sep 2026 (ruling R10), read
- * from knowledge-packs/calvin-quantify/tools/<key>/README.md and never typed.
- * In the old pack shape the tool folder is the versioned thing, so the version
- * sits on the row rather than beside the heading; item K9 moves his pack to
- * the new shape and the tag follows it there. The Evals section joined the
- * foot of the tab the same day (ruling R5), the same sentence every agent's
- * tab carries.
+ * HIS KNOWLEDGE PACK IS HIS TWO CALCULATORS, BOTH THE OPEN CORE'S FROM 22 NOV
+ * 2026. Calvin carries no rule cards: one row per calculator, carbon from
+ * @waterbots/calvin and water from Violet's D-3, @waterbots/violet, each
+ * wearing its package's version (src/lib/calvinProject.ts, held to the lockfile
+ * by scripts/check-calvin-package.mjs). The Evals section sits at the foot of
+ * the tab (ruling R5), the same sentence every agent's tab carries.
  *
  * THERE IS NO "NEXT PHASE" ON QUANTIFY. The phase after it is Plan, which
  * opens with a saved project, so the way on is the save button at the foot
@@ -43,15 +36,15 @@ import type { CalvinProject } from '@waterbots/calvin/screen';
 import { GS4GG_CALCULATOR_VERSION } from '@waterbots/calvin/engine';
 import calvinPortrait from '../../brand/assets/bots/calvin.svg';
 import type { AgentHost } from '../chat/evidence';
-import { livePacks, type PackValues } from '../lib/methodPacks';
-import { toolVersion } from '../lib/toolReadmes';
+import { WATER_D3_LISTING } from '../lib/methodPacks';
+import type { WaterEstimate } from '../lib/visit';
 import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, { type PackView } from '../screen/KnowledgePackTab';
 import NotLiveChat from '../screen/NotLiveChat';
-import QuantificationWorksheet from './QuantificationWorksheet';
+import VioletWater from './VioletWater';
 import { CalvinCarbon, RecordFacts, type CalvinSummary } from './CalvinCalculator';
-import { CALVIN_PACKAGE_VERSION, CALVIN_RELEASE } from '../lib/calvinProject';
+import { CALVIN_PACKAGE_VERSION, CALVIN_RELEASE, VIOLET_PACKAGE_VERSION } from '../lib/calvinProject';
 import { GS_SDWS_LEGACY_V1, GS_SDWS_PAA_V2 } from '../lib/gsSdws';
 
 export const CALVIN: AgentHost = {
@@ -69,30 +62,25 @@ export const CALVIN_NOT_LIVE_LINE =
   'Calvin is not answering here yet. The calculator works: pick carbon credits or water benefits, and type in what you know.';
 
 /**
- * THE TOOL TAB HOLDS TWO CALCULATORS FROM 14 NOV 2026. Carbon credits are the
- * open core's calculator (CalvinCalculator.tsx), installed from calvin-v0.4.1
- * and locked to ex-ante. Water benefits stay this site's own VWBA D-3
- * worksheet until Violet's module arrives from the open core (proposal step 5),
- * so the step has two looks until then (proposal section 8, B).
+ * THE TOOL TAB HOLDS TWO CALCULATORS, BOTH THE OPEN CORE'S FROM 22 NOV 2026.
+ * Carbon credits are Calvin's package (CalvinCalculator.tsx) and water benefits
+ * are Violet's D-3 screen (VioletWater.tsx), both from the release
+ * calvin-violet-v0.5.0 and both locked to ex-ante. The water chip stays under
+ * Calvin until Violet joins the crew through the shared spec (ruling E).
  */
 export function CalvinTool({
   project,
   header,
   onSummary,
-  activeKey,
-  onSelect,
-  allValues,
-  onChange,
+  onWater,
   opensOn = 'carbon',
   screening = false,
 }: {
   project: CalvinProject;
   header?: (missing: string[]) => ReactNode;
   onSummary?: (summary: CalvinSummary) => void;
-  activeKey: string;
-  onSelect: (key: string) => void;
-  allValues: Record<string, PackValues>;
-  onChange: (key: string, values: PackValues) => void;
+  /** What Violet's screen gives back after every change, handed to the shell for the crew line, the report and the save. */
+  onWater?: (water: WaterEstimate) => void;
   opensOn?: 'carbon' | 'water';
   /** On the console's Quantify step, not the Commons: the left rail's screening report is the one export. */
   screening?: boolean;
@@ -120,7 +108,7 @@ export function CalvinTool({
           <CalvinCarbon project={project} header={header} onSummary={onSummary} screening={screening} />
         </div>
         <div style={{ position: 'absolute', inset: 0, display: 'flex', visibility: which === 'water' ? undefined : 'hidden' }} aria-hidden={which !== 'water'}>
-          <QuantificationWorksheet activeKey={activeKey} onSelect={onSelect} allValues={allValues} onChange={onChange} />
+          <VioletWater project={project} onChange={onWater} />
         </div>
       </div>
     </div>
@@ -130,18 +118,13 @@ export function CalvinTool({
 export default function CalvinScreen({
   project,
   onSummary,
-  activeKey,
-  onSelect,
-  allValues,
-  onChange,
+  onWater,
 }: {
   project: CalvinProject;
   /** The figure and the facts still needed, handed to the shell so the crew panel and the report read them. */
   onSummary: (summary: CalvinSummary) => void;
-  activeKey: string;
-  onSelect: (key: string) => void;
-  allValues: Record<string, PackValues>;
-  onChange: (key: string, values: PackValues) => void;
+  /** Violet's water estimate, handed to the shell the same way. */
+  onWater: (water: WaterEstimate) => void;
 }) {
   return (
     <AgentScreen
@@ -152,13 +135,11 @@ export default function CalvinScreen({
         tool: (
           <CalvinTool
             project={project}
-            header={(missing) => <RecordFacts missing={missing} />}
+            /* Only when the record lacks something: an empty header would still draw its frame. */
+            header={(missing) => (missing.length > 0 ? <RecordFacts missing={missing} /> : null)}
             onSummary={onSummary}
             screening
-            activeKey={activeKey}
-            onSelect={onSelect}
-            allValues={allValues}
-            onChange={onChange}
+            onWater={onWater}
           />
         ),
         pack: <KnowledgePackTab view={CALVIN_PACK} />,
@@ -172,22 +153,21 @@ export default function CalvinScreen({
    His Knowledge Pack, assembled from the registry.
    -------------------------------------------------------------------------- */
 
-const PACKS = livePacks();
-
 export const CALVIN_PACK: PackView = {
   heading: "Calvin's Knowledge Pack",
   /* One section, unlabelled: he holds one set of tools, not two pathways. */
   sections: [
     {
       key: 'method-packs',
-      tags: PACKS.map((p) => p.citation.document).filter((d, i, all) => all.indexOf(d) === i),
+      tags: [WATER_D3_LISTING.citation.document],
       version: null,
       source: (
         <>
           Calvin carries no rule cards. His carbon calculator is the open core&rsquo;s, @waterbots/calvin{' '}
           {CALVIN_PACKAGE_VERSION} from the release {CALVIN_RELEASE}, with its engine, gs4gg-carbon{' '}
           {GS4GG_CALCULATOR_VERSION}, which does every sum; here it shows the ex-ante view only. His water
-          calculator is this site&rsquo;s own method pack until Violet&rsquo;s arrives. Everything they
+          calculator is the open core&rsquo;s too: Violet&rsquo;s D-3 module, @waterbots/violet{' '}
+          {VIOLET_PACKAGE_VERSION}, from the same release, whose engine does every water sum. Everything they
           produce is a screening estimate: anticipated, not delivered. This is a first screening, not an
           official decision.
         </>
@@ -213,20 +193,26 @@ export const CALVIN_PACK: PackView = {
           })),
         },
         {
-          label: `WATER · ${PACKS.length} METHOD ${PACKS.length === 1 ? 'PACK' : 'PACKS'}`,
+          label: 'WATER · THE OPEN CORE’S D-3 MODULE',
           approved: null,
-          rows: PACKS.map((p) => ({
-            id: `pack-${p.key}`,
-            badge: String(PACKS.indexOf(p) + 1),
-            title: p.name,
-            tag: `v${toolVersion(p.key)}`,
-            layers: [
-              { heading: 'What it measures', text: p.measures },
-              { heading: 'What it covers', text: p.scope },
-              { heading: 'The indicator', text: `${p.method.indicator}, in ${p.method.indicatorUnit}. ${p.method.definition}` },
-            ],
-            citation: p.citation,
-          })),
+          rows: [
+            {
+              id: 'core-vwba-d3',
+              badge: 'D-3',
+              title: WATER_D3_LISTING.name,
+              tag: `violet ${VIOLET_PACKAGE_VERSION}`,
+              layers: [
+                { heading: 'What it measures', text: WATER_D3_LISTING.measures },
+                { heading: 'What it covers', text: WATER_D3_LISTING.scope },
+                { heading: 'The indicator', text: WATER_D3_LISTING.indicator },
+                {
+                  heading: 'Where the numbers come from',
+                  text: `The open core's D-3 engine, in @waterbots/violet ${VIOLET_PACKAGE_VERSION}, installed from the release ${CALVIN_RELEASE} and checked against its fingerprint. This site computes none of it. Every result is a draft until an outside expert checks the module.`,
+                },
+              ],
+              citation: WATER_D3_LISTING.citation,
+            },
+          ],
         },
       ],
     },

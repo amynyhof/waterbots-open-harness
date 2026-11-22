@@ -3,13 +3,15 @@
  * 14 Nov 2026 when the site installed @waterbots/calvin 0.2.0 from the release calvin-v0.2.0, and moved
  * to calvin-v0.3.0 (@waterbots/calvin 0.3.0, @waterbots/core 0.1.1) on 16 Nov 2026, and to calvin-v0.4.0
  * (@waterbots/calvin 0.4.0, the same core 0.1.1) on 21 Nov 2026, her word, and to calvin-v0.4.1
- * (@waterbots/calvin 0.4.1, the same core 0.1.1) the same day, her word.
+ * (@waterbots/calvin 0.4.1, the same core 0.1.1) the same day, her word, and to calvin-violet-v0.5.0
+ * (@waterbots/calvin 0.5.0, @waterbots/violet 0.5.0, the same core 0.1.1) on 22 Nov 2026, her word on #189:
+ * Violet's D-3 screen is the water calculator from then, and this site's own D-3 code is gone.
  *   6. The project the site hands Calvin leaves `creditedUnderV1` unset until item A29 sets it
  *      from Phoebe's question, so every project gets the V2.0-only view, with no V1.0 figure,
  *      no transition and no ask for a V1.0 filing (her word of 16 Nov 2026).
  *
  * WHAT IT HOLDS.
- *   1. The two release files in vendor/waterbots/ are the release's, byte for byte: their
+ *   1. The three release files in vendor/waterbots/ are the release's, byte for byte: their
  *      SHA-256 is the one the release publishes, written below and never read from the
  *      folder itself.
  *   2. package.json names exactly those files, and package-lock.json carries the release's
@@ -30,13 +32,19 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const RELEASE = 'calvin-v0.4.1';
+const RELEASE = 'calvin-violet-v0.5.0';
 const FILES = {
   '@waterbots/calvin': {
-    file: 'vendor/waterbots/waterbots-calvin-0.4.1.tgz',
-    version: '0.4.1',
-    sha256: '0b8d725ce4d1b86e49d0e43130623d5d6d2ea0aa229d7298c6eff43c2d76f919',
-    integrity: 'sha512-RdBhbZEXwyC9NMWVupQS9A5Kd3CAgqabgHxPklctd5to8RSTbxlRd6JtDaHEnbcuRFm1zoeWc7GUfwUBdFkt3Q==',
+    file: 'vendor/waterbots/waterbots-calvin-0.5.0.tgz',
+    version: '0.5.0',
+    sha256: '0412d39bf77953f1a5844f2dba400ee0999c768e769b5faca5232e6d95af1e4b',
+    integrity: 'sha512-HbeTzx9neaSHViY4Xkm1FFzRgD0sgYIBE9K94Nc6qszkmZLi/67K3Hpmk9shBvXSf0v1b2Qh4PaHA5mSZU9E3Q==',
+  },
+  '@waterbots/violet': {
+    file: 'vendor/waterbots/waterbots-violet-0.5.0.tgz',
+    version: '0.5.0',
+    sha256: 'b51f214c2d44bdbfb8cf726af28165545bae18db387e82a8551dcd6a804a6a02',
+    integrity: 'sha512-zai9pkB1vy1gv8IZt6brKb7btHvytPJQ9eZtd+WxoFrmMoPCU9TiDNNs/BUyg74VUGpnWtwQTb/GsRWrgwOtMg==',
   },
   '@waterbots/core': {
     file: 'vendor/waterbots/waterbots-core-0.1.1.tgz',
@@ -82,6 +90,10 @@ for (const [name, want] of Object.entries(FILES)) {
 }
 const constant = readFileSync(join('src', 'lib', 'calvinProject.ts'), 'utf8').match(/CALVIN_PACKAGE_VERSION = '([^']+)'/)?.[1];
 expect('the site names the same version it installed', constant === FILES['@waterbots/calvin'].version, constant);
+const violetConstant = readFileSync(join('src', 'lib', 'calvinProject.ts'), 'utf8').match(/VIOLET_PACKAGE_VERSION = '([^']+)'/)?.[1];
+expect('the site names the Violet version it installed', violetConstant === FILES['@waterbots/violet'].version, violetConstant);
+const release = readFileSync(join('src', 'lib', 'calvinProject.ts'), 'utf8').match(/CALVIN_RELEASE = '([^']+)'/)?.[1];
+expect('the site names the release it installed from', release === RELEASE, release);
 
 /* 4. The engine, and every case the package ships. */
 const engine = await import('@waterbots/calvin/engine');
@@ -258,6 +270,34 @@ expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSy
     'pinned, or an export button drawn'
   );
   expect('on the Commons his export button is still drawn', /Export report \(PDF\)/.test(commons) && /data-figure-block="scrolls"/.test(commons), 'no export button');
+}
+/* 7. Violet's D-3 is the one water calculator (her word on #189, 22 Nov 2026). Her hand-worked cases
+   are not in the package yet; Session C ships them in a later release (ruling C), so step 5 stays open on
+   that line alone. Until then: the installed engine is hers, and her screen takes people served from the
+   record and labels every result a draft. */
+{
+  const violet = await import('@waterbots/violet/engine');
+  const { recordPopulation, missingPopulationFacts } = await import('@waterbots/violet/screen');
+  expect('Violet\'s engine is installed and says D-3 is a draft', violet.D3_STATUS === 'Draft — pending expert review', violet.D3_STATUS);
+  expect(
+    'her screen takes people served from the record, and only a count above zero',
+    recordPopulation({ population: { mode: 'people', served: 100 } })?.served === 100 && recordPopulation({ population: { mode: 'people', served: -5 } })?.served === undefined,
+    JSON.stringify(recordPopulation({ population: { mode: 'people', served: -5 } }))
+  );
+  expect('with no count on the record she names people served as missing', missingPopulationFacts({ view: 'ex-ante', option: 'beneficiaries' }).includes('people served'), 'nothing named');
+  /* The one way this calculation can be large, confident and wrong: a blank without-project volume
+     read as zero. Her engine must leave the benefit unset and name the value it waits for (CLAUDE.md, Scope). */
+  {
+    const made = { view: 'ex-ante', option: 'beneficiaries', accessLevel: 'full', population: { mode: 'people', served: 100 } };
+    const blank = violet.computeD3(made);
+    const zero = violet.computeD3({ ...made, withoutProjectM3PerYear: 0 });
+    expect(
+      'a blank without-project volume is never read as zero: no benefit until it is given',
+      blank.vwbM3PerYear === null && blank.awaiting.length > 0 && zero.vwbM3PerYear !== null,
+      JSON.stringify({ blank: blank.vwbM3PerYear, awaiting: blank.awaiting, zero: zero.vwbM3PerYear })
+    );
+  }
+  expect('this site\'s own D-3 code is gone', !existsSync(join('src', 'lib', 'vwbaD3.ts')) && !existsSync(join('src', 'components', 'QuantificationWorksheet.tsx')), 'vwbaD3.ts or QuantificationWorksheet.tsx is still here');
 }
 expect('.gitattributes keeps no carried/ rule', !/^carried\//m.test(readFileSync('.gitattributes', 'utf8')), 'a carried/ line is left');
 
