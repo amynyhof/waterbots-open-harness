@@ -1,5 +1,5 @@
 /**
- * Calvin from the open core — proof P1 of docs/proposals/calvin-from-open-core.md, built
+ * Calvin from the open core — proof P1 of the open-core proposal on #156, built
  * 14 Nov 2026 when the site installed @waterbots/calvin 0.2.0 from the release calvin-v0.2.0, and moved
  * to calvin-v0.3.0 (@waterbots/calvin 0.3.0, @waterbots/core 0.1.1) on 16 Nov 2026, and to calvin-v0.4.0
  * (@waterbots/calvin 0.4.0, the same core 0.1.1) on 21 Nov 2026, her word, and to calvin-v0.4.1

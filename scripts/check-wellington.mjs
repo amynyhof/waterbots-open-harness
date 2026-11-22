@@ -1188,7 +1188,7 @@ console.log('\n  Bridget\n');
 }
 
 /* ---------------------------------------------------------------------------
-   The queued round, approved 16 Nov 2026 (docs/proposals/queued-round-2026-11-16.md).
+   The queued round, approved 16 Nov 2026 (the queued-round proposal on #175).
 --------------------------------------------------------------------------- */
 
 console.log('\n  W28, W29 and V1 — the queued round, 16 Nov 2026');

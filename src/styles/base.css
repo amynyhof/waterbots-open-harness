@@ -137,7 +137,7 @@ body {
    THIS COMMENT HAS BEEN WRONG TWICE AND IS ON ITS THIRD SUBJECT — it has
    described --chrome aliasing --paper, then a derived fourth plane, then the
    canvas, and now --frame. Every version was true when written. The record of
-   all of it lives once, in item S9 in docs/OPEN_ITEMS_ARCHIVE.md. */
+   all of it lives once, in item S9 in the old items archive (in GitHub's history since #192). */
 .chrome {
   border-bottom: 1px solid var(--line);
 }
@@ -270,7 +270,7 @@ body {
 /* ---------------------------------------------------------------------------
    The citation line — Level 2, owned by the shared chat layer.
 
-   CITATIONS.md fixes both its contents and its order:
+   CITATIONS.md (retired in #192) fixes both its contents and its order:
    source · version · section · page → canonical link, and nothing more. There
    is no Level 3 on the free site, so this line is where a citation ends.
 
@@ -291,7 +291,7 @@ body {
 
 /* The inline marker — Level 2's trigger.
 
-   A .tag by CITATIONS.md's own test: "ref1" is a value, it changes when the
+   A .tag by the test from CITATIONS.md (retired in #192): "ref1" is a value, it changes when the
    record changes, and it carries no state. It is a <button> rather than a link
    because it discloses something already on the page; the link out to the
    publisher lives inside the line it opens.
@@ -331,7 +331,7 @@ body {
      right while the dock was chrome. Now the dock is a panel, and a card inside
      a card breaks §2.3, so the fill goes and a top divider carries the
      separation. Nothing about the citation's content, order or link changes —
-     CITATIONS.md is untouched. */
+     CITATIONS.md (retired in #192) is untouched. */
   background: transparent;
   border: 0;
   border-top: 1px solid var(--line);

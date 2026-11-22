@@ -1,6 +1,6 @@
 /**
  * ONE BLUE BUTTON AT A TIME — the maintainer's word of 16 Nov 2026, approved
- * from docs/proposals/queued-round-2026-11-16.md. It settles S29 (three blue
+ * from the queued-round proposal on #175. It settles S29 (three blue
  * buttons at once, her walk of #170) and the last clause of S30.
  *
  * At most one solid blue button is on the screen. The one next step wins, in

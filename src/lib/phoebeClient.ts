@@ -287,7 +287,7 @@ async function readStream(response: Response, onLive?: (text: string | null) => 
  * She returns a pack and a card name. This turns each one into an Evidence
  * record the layer can render — the card's title, its plain words, and the
  * citation, all read from the committed card file. She supplies none of it
- * beyond the name, which is the whole point: see CITATIONS.md. A route card
+ * beyond the name, which is the whole point: see CITATIONS.md (retired in #192). A route card
  * she names comes through the same door, so the fix a visitor reads is the
  * pack's own sentence with its own citation.
  */

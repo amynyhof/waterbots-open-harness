@@ -5,7 +5,7 @@
  * the task is done or the question is out of its lane. The maintainer's
  * ruling of 20 Sep 2026 (R1): the hand-back is a FIELD the console acts on,
  * never a sentence it reads. Out of her lane a specialist still says the
- * colleague's facts in her own words (rung 2, unchanged) and sets the field
+ * colleague's facts in her own words (agent rule 9) and sets the field
  * beside them.
  *
  * ONE CLOSED LIST, read here and mirrored by the client. "none" is the

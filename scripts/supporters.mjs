@@ -1,6 +1,6 @@
 /**
  * The supporters board — the maintainer's one command, pasted into PowerShell in the repository
- * folder. Approved 16 Nov 2026, her word on #176 (docs/proposals/supporters-2026-11-16.md).
+ * folder. Approved 16 Nov 2026, her word on #176 (the supporters proposal on #176).
  *
  *   npm run supporters                     what is on the page, each with its hide line, then anything waiting
  *   npm run supporters -- hide <id>        take a post off the page

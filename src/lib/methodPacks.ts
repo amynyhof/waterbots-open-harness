@@ -258,7 +258,7 @@ export interface MethodPack extends PackListing {
    */
   primerLine: string;
   tier: PackTier;
-  /** The source, in the shape CITATIONS.md fixes. The console renders it. */
+  /** The source, in the shape CITATIONS.md (retired in #192) fixes. The console renders it. */
   citation: Citation;
   /** Further sources the pack's defaults rest on, rendered under the first. */
   alsoCites?: Citation[];

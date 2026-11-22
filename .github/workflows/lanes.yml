@@ -53,16 +53,16 @@ jobs:
           fi
           echo "lane=$LANE" >> "$GITHUB_OUTPUT"
           echo "This pull request is lane $LANE." >> "$GITHUB_STEP_SUMMARY"
-      - name: Label it (labels are created once, only if missing)
+      - name: Label it
         env:
           LANE: ${{ steps.decide.outputs.lane }}
         run: |
           set -e
-          existing=$(gh label list --repo "$REPO" --limit 200 --json name --jq '.[].name')
-          make() { echo "$existing" | grep -qx "$1" || gh label create "$1" --color "$2" --description "$3" --repo "$REPO"; }
-          make lane-1 0E8A16 "Plain writing only. Auto-merge is off for now"
-          make lane-2 FBCA04 "The maintainer looks in the browser, then merges"
-          make lane-3 D93F0B "The maintainer and the second reader"
+          # --force writes the description again, so a label made earlier carries today's words.
+          make() { gh label create "$1" --color "$2" --description "$3" --repo "$REPO" --force; }
+          make lane-1 0E8A16 "Docs only. Merges on its own"
+          make lane-2 FBCA04 "The maintainer looks at the preview first"
+          make lane-3 D93F0B "Merges on the maintainer's word. No outside review step"
           for n in 1 2 3; do
             if [ "$n" = "$LANE" ]; then gh pr edit "$PR" --add-label "lane-$n" --repo "$REPO"
             else gh pr edit "$PR" --remove-label "lane-$n" --repo "$REPO" || true

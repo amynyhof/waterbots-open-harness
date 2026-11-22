@@ -1,7 +1,7 @@
 /**
  * Supporters — the board on /supporters.
  *
- * APPROVED 16 Nov 2026, the maintainer's word on #176 (docs/proposals/supporters-2026-11-16.md),
+ * APPROVED 16 Nov 2026, the maintainer's word on #176 (the supporters proposal on #176),
  * and changed by her word since:
  *   - ~~A person who sends the interest form may tick "Show my support publicly" ... then wait for her
  *     approval.~~ From 19 Nov 2026 Register your interest has no public box: **the supporters page is

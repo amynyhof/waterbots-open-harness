@@ -1,5 +1,5 @@
-# Every check the README lists, run on every pull request. The required check named
-# "checks" on main's branch protection is this job.
+# Every check the README lists, run once for each commit a pull request gets (pull_request only, never
+# also on push). The required check named "checks" on main's branch protection is this job.
 #
 # Not run here: scripts/check-basemap-key.mjs. It reads the real basemap key, which
 # lives only on the hosting side and in .env.local, and this workflow holds no secrets.
@@ -28,7 +28,8 @@ jobs:
       - name: Confirm outputs, one script at a time
         run: |
           set -e
-          for c in basins stress palette cards api-exports visitor-id cap reply-guard gs-sdws calvin-package wellington roster lanes blue interest supporters; do
+          # check-roster is not in this list: `npm run build` below runs it first, so it runs once.
+          for c in basins stress palette cards api-exports visitor-id cap reply-guard gs-sdws calvin-package wellington lanes blue interest supporters; do
             echo "::group::check-$c"
             node "scripts/check-$c.mjs"
             echo "::endgroup::"

@@ -1,6 +1,6 @@
 /* Calvin's calculator, from the open core (@waterbots/calvin 0.4.0 from 21 Nov 2026; 0.3.0 from 16 Nov, 0.2.0 from 14 Nov) — the colour and shape names its
    screens use, mapped to this site's tokens. Built 14 Nov 2026 (proposal
-   docs/proposals/calvin-from-open-core.md, step 2: "the colour names the screens use, mapped to
+   the open-core proposal on #156, step 2: "the colour names the screens use, mapped to
    this site's tokens in one stylesheet").
 
    Everything here is scoped to .wb-calvin, the wrapper the calculator is mounted in, so nothing

@@ -72,7 +72,7 @@
 
 - **The three row states become five in the runtime**, which is item A18's
   ruling of 23 Sep 2026 reaching the code. The old account, from
-  `src/lib/criteriaState.ts`, which said the gate allowed no fourth state:
+  `src/lib/criteriaState.ts` (now `src/lib/worksheetState.ts`), which said the gate allowed no fourth state:
 
   > THREE STATES, AND NO FOURTH. Appendix A is a hard gate — the maintainer
   > ruled on 20 Aug 2026 that a criterion is met or it is not, with no

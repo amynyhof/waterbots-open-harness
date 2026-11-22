@@ -2,7 +2,7 @@
  * Register your interest — what a sign-up is, and the email copy of it.
  *
  * THE MAINTAINER'S PLAN OF 14 Nov 2026 (round 3, ruling 4), restated in
- * docs/proposals/queued-round-2026-11-16.md and approved on 16 Nov 2026 with
+ * the queued-round proposal on #175 and approved on 16 Nov 2026 with
  * her ruling on keeping: **no time limit. A sign-up is kept until the person
  * asks to be removed, and the form says how to ask. Nothing deletes on its
  * own.**
