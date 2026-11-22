@@ -1,746 +1,85 @@
-# CLAUDE.md — WaterBots Open Harness
+# CLAUDE.md — how this repository works
 
-REFERENCE PROJECTS — SETTLED, DO NOT ASK AGAIN (ruled 21 Nov 2026)
+This is the public, Apache 2.0 home of the WaterBots open site, live at https://open.waterbots.ai: a
+world map of HydroSHEDS watershed basins coloured by water stress, and a free screening console where
+the WaterBots agents (Wellington, Phoebe, Bridget, Calvin) help a visitor check a water project. Vercel
+builds it from `main` on every push. The paid site is "Shell A"; this repository is "Shell B".
 
-Never put a reference project's name, ID or documents into code, comments, tests or anything public. The name scan on the private names-to-block list (names and project IDs) is the only check. There is no rule or check on calculation figures. Every older rule about project numbers, figures or a number gate is retired. Do not raise this topic again; if anything seems to conflict, this rule wins. When a new reference project is used, stop and tell the maintainer to add its name and ID to names-to-block and update the three secrets.
+## The rules are on two pages
 
-This file is the rulebook for AI engineering work in this repository.
-Read it fully before doing anything.
+- **[RULINGS.md](./RULINGS.md)**: every ruling for how the whole site behaves.
+- **[FAMILY_OPEN_CLOSE.md](./FAMILY_OPEN_CLOSE.md)**: how a family of work opens and closes.
 
-## Start here — PROCESS_RULES_for_ShellB.md
+Both are exact copies of the masters in the handoff folder. Only the maintainer changes them; a session
+never edits them here. This repository holds no close-out rules of its own.
 
-**[PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) governs how
-work is run here**, and every session opens with it. It carries the order
-work moves in — propose, approve, build, eyeball, commit word — how the
-engineer is expected to speak, how open items are grouped, and what has to
-be true before a session closes.
+Beside them:
 
-**Read these three before doing anything else, every new session:**
+- **[AGENT_RULES.md](./AGENT_RULES.md)**: how every agent behaves, read by every agent.
+- **[docs/modules/](./docs/modules/)**: one short rulings file per module: Wellington, Phoebe, Bridget
+  and the map, the console, the save and questions carried in, the Agent Commons, Register your
+  interest and Supporters, and analytics.
+- Calvin and Violet are the open core's modules; their rulings live in the open core, not here.
 
-1. This file, CLAUDE.md
-2. [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) — how
-   work is run
-3. [BUILD_PLAN.md](./BUILD_PLAN.md) — the one plan file: what is being built
-   now, what comes next, every open item grouped into families, and the
-   compatibility goal
+## The plan and the log
 
-**The session has not started until all three are read.** The opening
-ritual itself is owned by
-[PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md); this list is
-the front door pointing at the same three, not a second rule. **Three from
-3 Oct 2026, the maintainer's ruling: one plan file.** OPEN_ITEMS.md is folded
-into BUILD_PLAN.md and retired to `docs/archive/`; the design canon and the
-session handoff were retired there on 17 Sep 2026. Do not recreate a live root
-`OPEN_ITEMS.md` or `SESSION_HANDOFF.md`. How the count moved before is in
-[docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md).
-[BUILD_LOG.md](./BUILD_LOG.md) stays not an opening read.
+- **[BUILD_PLAN.md](./BUILD_PLAN.md)**: the v1 finish line at the top, then every open item in its
+  family.
+- **[BUILD_LOG.md](./BUILD_LOG.md)**: the last three months only. GitHub's history keeps the rest.
 
-Where this file and the process rules both speak to a point — proposal
-before code, one step at a time, honest states, no fabricated data — they
-agree. If they ever diverge, that is a defect to raise with the
-maintainer, not a choice to make.
+## How-to facts
 
-## What this repo is
+**Folders.**
+- The handoff folder is `%USERPROFILE%\GitHub\handoff\`. This session reads its paste from
+  `handoff\pastes\B.md` and writes its report to `handoff\reports\B.md`, overwriting it each time. It
+  never opens another session's files there.
+- `brand/BRAND.md` is the brand book, version 4.2. It is gitignored and has Windows line endings; keep
+  them when editing.
+- `legacy/` is gitignored reference material only. `sources-local/` is gitignored and holds source PDFs
+  for local reading; they are never committed.
+- `captures/` holds pictures for pull requests. A picture is committed on the branch, named by date and
+  step, and embedded by its raw address at that commit.
+- `vendor/waterbots/` holds the open core's release files, pinned by fingerprint.
+  `scripts/check-calvin-package.mjs` checks them against the release's SHA-256 and the lockfile's
+  SHA-512, and re-runs the package's own test cases.
 
-The public, Apache 2.0 home of the WaterBots map:
-an interactive world map of HydroSHEDS watershed basins, colored by
-water stress, with a small set of real water project locations
-(planned, not yet placed) — and the foundation of an AI chat console
-in the WaterBots style.
+**Knowledge packs** (`knowledge-packs/`). A pack holds `cards/`, `tool/`, `evals/`, a README and a
+CHANGELOG. A tool is defined once, in `<pack>/tool/<tool-id>.yaml`, citing cards by id;
+`scripts/check-tool.mjs` holds each row to the card it cites. The crew list is
+`knowledge-packs/product-shared/roster.yaml`, carried whole from the paid site and never edited here;
+`scripts/check-roster.mjs` runs in front of every build and fails it, naming the line, when the site
+disagrees with it.
 
-It deploys standalone and is linked from waterbots.ai. It shares
-WaterBots branding, agent design, and agent knowledge with the main
-platform, but shares no repository with it. Shared material crosses
-only through the handoff folder, and only when the maintainer names a
-carry (Rule zero, below); the engineer never fetches it from anywhere else.
+**Before every push.**
+- The name scan: `node scripts/check-names.mjs --added origin/main` checks the lines and file names a
+  pull request adds; `node scripts/check-names.mjs` alone checks every tracked file. The machine
+  setting `WB_NAMES_LIST` holds the list's path. The list is in two places, the maintainer's file and
+  the repository secret `NAMES_TO_BLOCK`, and she changes both together. Its output shows file, line,
+  kind and counts, never a name. Never print or copy the list.
+- The secrets scan: `git diff origin/main...HEAD | node scripts/scan-diff.mjs --secrets`.
 
-**The site is deployed and live at https://open.waterbots.ai**, its address
-from 28 Oct 2026 by the maintainer's word; the old map.waterbots.ai forwards
-there, set in Vercel by her hand. Vercel builds from `main` on push. Every
-page carries the main site's menu, the same words, order and look as the live
-waterbots.ai menu; the links live once, in `src/lib/site.ts`. During a screening the three links fold
-into one small "Menu" button beside the wordmark, and the menu has Sign in and one button (21 Nov 2026).
+**A carry** through the handoff folder checks each file's SHA-256 against the bundle's packing list
+and runs the name scan on it.
 
-## Rule zero — this repo only
+**Checks.** `.github/workflows/checks.yml` lists every check; each runs as `node scripts/check-<name>.mjs`.
+Also `node scripts/build-prompt-modules.mjs --check`, `node scripts/build-calvin-css.mjs --check`,
+`npm run build` and `node scripts/check-attribution.mjs`. The README's *Running locally* and
+*Confirming the build* say how to run the site and what each check guards.
 
-You work in this repository and nowhere else. You never read, write,
-or reference any other repository, working tree, or dev server, except
-the open core and the handoff folder below. If a task appears to require something outside
-this repo, stop and say so. It becomes a written proposal for the
-maintainer to carry elsewhere — never an action here.
+**Lanes.** GitHub labels each pull request from its files, using `.github/lanes.json`; a file on no list
+is lane 3.
 
-**The open core is the one exception, from 27 Oct 2026, by the
-maintainer's ruling.** This site may install the open core packages
-from `waterbots-open-core-modules`, under the maintainer's GitHub account, and the engineer may read
-that repository on GitHub only: never a clone, never a write, never a
-pull request there. What the open core needs is made by its own
-session in its own repository. The paid site's repository stays
-outside, as before. The proposal is
-[docs/proposals/calvin-from-open-core.md](./docs/proposals/calvin-from-open-core.md).
+**This machine.** The GitHub tool is installed and signed in but not on the shell's path: call it at
+`C:\Program Files\GitHub CLI\gh.exe`. The session's local settings deny `gh pr merge`.
 
-**The handoff folder is the second exception, from 21 Nov 2026, by the
-maintainer's ruling.** Carries between this repository and any other, in
-either direction, cross through one folder outside every repository:
-`%USERPROFILE%\GitHub\handoff\`. The engineer may read and write that
-folder, and nothing else outside this repository beyond the open core
-above; never another session's repository. **A carry starts only when the
-maintainer names it** ("take the bundle in handoff\X"), in or out. Every
-carry checks each file's fingerprint against the bundle's packing list and
-runs the name scan, and is logged in BUILD_LOG.md at the session's close.
-The rule is in PROCESS_RULES_for_ShellB.md, *Carries through the handoff folder*.
+## Waiting for the maintainer: not on the rulings page yet
 
-## Non-negotiables
+These stand until she places them on the rulings page or drops them.
 
-- **No mock or fabricated data — ever.** On a map: real HydroSHEDS
-  basin boundaries, real project coordinates verified against their
-  source registry, or nothing. In chat: no scripted fake
-  conversations, no invented agent claims. An empty, honest state
-  beats a fabricated one.
-- **Proposal before code.** Nothing is built until the maintainer
-  approves a written proposal. Nothing commits without her explicit
-  word. Her browser review is part of every gate that changes what a visitor sees.
-- **One step at a time.** Build one thing → report → browser review →
-  commit word. No multi-step anticipation.
-- **Merge lanes, from 19 Oct 2026 (the maintainer's ruling).** GitHub labels every pull
-  request `lane-1`, `lane-2` or `lane-3` from the files it changes, never by the session. **Lane 1**,
-  plain writing only (BUILD_PLAN.md, BUILD_LOG.md, `.md` under `docs/`); **lane 2**, anything a
-  visitor sees or reads, which she checks in the browser; **lane 3**, engine and calculator numbers,
-  security, packages, data, rules files, CI and the lane rule itself, which she reads with the second reader. A file on
-  no list is lane 3. **Nothing merges without her**: lane 1's auto-merge is built but OFF until her
-  word. A session opens the pull request and never merges it. The rule is in
-  PROCESS_RULES_for_ShellB.md, *Merge lanes*.
-- **Atomic commits.** Subjects lead with the action taken —
-  `Built:`, `Fixed:`, `Docs amended:`, `Proposal written:` — never
-  the topic alone.
-- **Honest states.** No silent failures, no false success messages.
-  The product must tell you what happened.
-- **A check's threshold changes only on the maintainer's word.** Report the
-  trip and propose the number; do not move the bar and say so after.
-  Maintainer's ruling, 7 Sep 2026, made when the engineer raised
-  Wellington's prompt-size gate first and asked second.
-- **Docs never drift.** At every session close, refresh the root docs
-  (CLAUDE.md, README) to match what actually shipped. They must never
-  be more than one session behind the build. Doc edits are proposed
-  for the maintainer's review before they are committed.
-
-## Language rules
-
-**This section is the single home for these four rules.** They bind
-engineering prose, product copy, and agent answers alike;
-CITATIONS.md and AGENT_RULES.md point here rather than restating them.
-
-- The words "validate/validation" are not used; say "confirms outputs"
-  or reference the test suite.
-- The word "golden" is not used; say "reference".
-- Plain words lead, acronym in parentheses on first use. In an agent
-  conversation the acronym may stand bare after that first use; see
-  AGENT_RULES.md.
-- A packaged knowledge set is a **"Knowledge Pack."** Not "cartridge,"
-  not "methodology pack." New copy uses the word; nothing already
-  written is reworded for it.
-
-## Citations — see CITATIONS.md
-
-**CITATIONS.md in this repo is binding** on every surface, rule card,
-README, and future agent answer. It carries the four-part citation
-shape every cited claim must have, the rule that this repo holds rule
-cards and never source PDFs or excerpts beyond short attributed
-snippets, and the visual format citations render in. Read it before
-writing anything that cites a source. It is published, not
-engineer-eyes-only.
-
-Where CITATIONS.md and this file both speak to a point — the data
-licensing requirements below, derived values — they agree. If they ever
-diverge, that is a defect to raise with the maintainer, not a choice to
-make. Plain-words-first is no longer one of those points: it has a
-single home in Language rules above, and CITATIONS.md points at it.
-
-## Agents — see AGENT_RULES.md
-
-**AGENT_RULES.md in this repo is binding** on every agent on this site.
-It carries how an agent speaks, the three outcomes, the abstention
-ladder, and what an agent may say about itself and about its
-colleagues. It is published, not engineer-eyes-only.
-
-**Three root rulebooks, one home per rule.** CLAUDE.md owns engineering
-work and the language rules; CITATIONS.md owns what a citation is and
-how it renders; AGENT_RULES.md owns how an agent behaves and speaks. A
-rule restated in two of them is a defect, not thoroughness — the copies
-drift, and then nobody can tell which one is current.
-
-**The count has moved twice.** ~~It became four on 27 Aug 2026, when the
-design canon arrived.~~ **It is three again from 29 Aug 2026**, because
-the canon was superseded by the brand book and design values now live in
-the brand book, which is gitignored and is not a published rulebook. It
-said three for as long as there were three, four for two days, and three
-again.
-
-## Data licensing — binding display requirements
-
-Two datasets, two separate attributions. One combined line satisfies
-neither.
-
-**HydroSHEDS / HydroBASINS** — custom WWF license, **not** Creative
-Commons. The full required copyright statement from License Agreement
-Exhibit B must be displayed in a reasonably prominent manner, with the
-product name filled in. Text only — WWF's name may appear in the
-attribution text, but no WWF logo or trademark use, ever. Scientific
-citations (Lehner & Grill 2013; Lehner, Verdin & Jarvis 2008) go in
-the repo README and any About surface.
-
-**WRI Aqueduct 4.0** — CC-BY 4.0. Requires visible attribution to
-World Resources Institute with the suggested citation (Kuzma et al.
-2023) in the README.
-
-**Derived values are labelled as derived.** Aqueduct publishes water
-stress at Level 6 only. Level 6 therefore renders WRI's published
-figures directly; Level 4 is an area-weighted majority of its children
-and must say so wherever it renders. Presenting a derived value as
-WRI's is a fabricated claim about someone else's data.
-
-**Basemap tiles** — whatever tile provider is used carries its own
-attribution requirement (e.g. © OpenStreetMap contributors, © CARTO).
-Leaflet's attribution control stays ON. A tiny, faded, hand-rolled
-credit line does not meet any of these bars.
-
-## Where every value comes from
-
-Every value shown to a user says where it came from. It never credits a ruling or a person.
-- Entered: the user typed it. The source is the user.
-- Default: the site filled it in from a published source (document, section, page). The user's own local value replaces it.
-- Derived: worked out from other values. It shows the source of its formula.
-- Assumed: expected project performance, starting from a cited value.
-Three kinds of value (Calvin carbon modules):
-- Project facts (the project record): the user gives them at intake, and Wellington collects them. Until then, the field shows 'Not given yet'. Never guessed.
-- Method defaults: at screening, the site fills them in from cited sources, chosen by the user's project facts.
-- Anticipated performance (screening and ex-ante): starts at a labelled 'assumed' value. Calvin encourages the user to adjust it to their planned project.
-This is settled. Do not raise it again.
-
-Stove and fuel presets: do not raise their sources with the maintainer. A V2 agent and module source sweep checks them.
-
-## Scope — v1
-
-- HydroSHEDS basins worldwide, colored by Aqueduct 4.0 water stress.
-  **Two layers with a zoom swap: Level 4 at world view, Level 6 from
-  zoom 5.** Level 3 was tried first and rejected — single-watershed
-  projects vanished inside continent-sized polygons. Level 6 alone
-  reads as texture at world zoom (~4px per basin), which is why there
-  are two.
-- A small set of real, registry-verified project points. **Planned;
-  not yet placed — awaiting registry-verified source data.**
-- Chat console foundation: a right-hand chat panel in the
-  WaterBots console style, and a collapsible left-hand navigation
-  rail. **Foundation meant the shell, and v1 shipped that way — but
-  Phoebe has answered for real since 24 Aug 2026**, from two committed
-  card sets, capped at 30 messages a day per visitor (20 until 23 Sep 2026). **Those two card
-  sets live in her pack from 17 Sep 2026**, at
-  `knowledge-packs/phoebe-eligibility/vwba-2.0/cards/` — the pack is
-  their one home, by the maintainer's ruling, and the new pack shape
-  (cards, tool, evals, README, CHANGELOG) is the rule going forward, one
-  pack at a time; item K8. Bridget staffs
-  the map and Calvin staffs quantification. **Bridget's chat is live from
-  31 Oct 2026** (item A22, #167); Calvin's is not built, and his panel says
-  so plainly.
-- **Quantification, the third surface, from 1 Sep 2026.** The step holds
-  **method packs** — one tool per way of working a number out — and the
-  first is fitted: VWBA 2.0 · D-3 Volume Provided, for household and
-  community water supply, ex-ante. **The surface is pack-keyed and is
-  never typed to one method**, because the same seat must later hold
-  carbon screening and the other D-methods. **Everything it produces is
-  a screening estimate** — anticipated, never delivered and never
-  verified — and it carries a consultant-review tag wherever it renders.
-  **A blank without-project volume is never read as zero.**
-  **Three packs from 2 Sep 2026:** two carbon packs joined, Gold
-  Standard's safe-drinking-water methodology in its legacy and its
-  Paris-aligned versions, one module differing in one cited input, with
-  the transition delta between them. **Blank is never zero on any pack**,
-  and a default with no source asks instead. **From 14 Nov 2026 carbon is the open core's
-  calculator** (both versions, its own tabs and report, ex-ante only); this site's two carbon packs
-  are no longer registered, and `src/lib/gsSdws.ts` stays only as proof P3's "before" until it retires.
-- **The free desk, the fourth surface, from 2 Sep 2026 — and the console
-  in the production shape.** A journey bar of six phases across the top
-  of the centre, ~~four tabs beneath it~~ **one row from 7 Sep 2026**, the desk first. **Wellington,
-  Team Lead, hosts it, extended from the shared crew and never forked.**
-  ~~He answers on the paid site, and the one composer says so.~~ **His chat
-  is live on the desk from 3 Sep 2026**, on Phoebe's pattern: his own
-  endpoint, thirty a day, the same guards, every setting stated. He routes
-  and learns; the console acts on fields, never on his prose. **Rows
-  derive from this visit and are never invented**, the last is always
-  the save door to waterbots.ai, and nothing is persisted here. **Production
-  is canon for the console's shape** — layout, row anatomy and density
-  are taken from saved production pages brought in by the maintainer's
-  hand, and none of their data, composers, organisations, roles or
-  saving.
-- **The site says it is early in one place, from 21 Nov 2026, the maintainer's word: a small "beta"
-  beside waterbots.ai at the foot of the left rail.** The line under the site menu (W28, 16 Nov 2026)
-  is gone, and no agent or module wears a beta tag. Wellington keeps a dated build-update fact he
-  phrases when asked, refreshed at every full close-out (the ritual's step 8). Item S11. The "first
-  screening, not an official decision" note stays beside the figures and in the report.
-- **Agents phrase the roster's facts themselves, from 3 Sep 2026.** An
-  agent is given facts and rules and writes its own two or three plain
-  sentences; the maintainer approves rules, not wording, and no prompt
-  says word for word. The rule lives in AGENT_RULES.md.
-- **The desk plan's three slices landed 5–7 Sep 2026.** The desk is the
-  conversation and the rail is the record Wellington's interview fills, in
-  the order the seats need; **the tab row is gone**; Bridget's row asks for the pin once a place is known; **the
-  record goes to Phoebe with every ask and her verdicts come back to her
-  row.** Agents say the six phase names as written, point at the step and
-  never at a tab, and speak plain words — never "seat", "console",
-  "dispatch", "rail" or "surface". ~~**The bridge's contract is ruled**
-  (item S7) and its sender builds next, once the maintainer carries
-  production's sign-up address, claim endpoint and key name.~~ **The bridge
-  is built, 8 Sep 2026** (item S7, archived): the save row is a button (the
-  line under it saying what goes with the visitor was removed on 12 Nov 2026, the maintainer's
-  word); the click seals the visit for one
-  hour under a random ticket and moves the page to production's welcome
-  with only the ticket in the address; production claims it once behind
-  `BRIDGE_KEY`, then it is gone. Never a computed number, never the
-  conversation, and this site keeps no copy. Ten seals a day per visitor.
-  **Lines a visitor reads say what happens, in plain words** — never
-  "seal", "ticket", "store" or "claim"; maintainer's ruling, 8 Sep 2026.
-- **The look pass of 8 Sep 2026, and four canon rules the same day.** Wellington
-  opens warmly and names the next step in words; the project name shows once,
-  in the card; the record has three rows and an (i); the save button is
-  the site menu's one button from 21 Nov 2026, beside Sign in, on a laptop and on a phone: it says "Sign up" until
-  something is on the record, then "Save and sign up"; the phase names show at laptop width; ~~next steps
-  live in the right rail only~~ **every handoff's button sits in the chat from 14 Nov 2026**; the map's line is one plain sentence; no intro
-  paragraph above the conversation. **Every agent keeps four rules on pace and
-  posture** — short, one question at a time, ends with the next step; "I don't
-  know" is an answer; a planned project is normal and criteria are things to
-  do; status lines in a visitor's words — in AGENT_RULES.md. **Every capture
-  for the maintainer's eyeball is attached inside the pull request's For the maintainer
-  block as an image**; the rule and the way of doing it are in
-  PROCESS_RULES_for_ShellB.md.
-- **The agent screen, 9 Sep 2026 — every step is a screen, built once (item S16,
-  #61 to #64).** The agent's chat in the middle in bubbles, and tabs above it:
-  Chat, always; Tool, when the agent has one; Knowledge pack — cards, versions,
-  sources; Credentials — exam and scores only, honest that none exists. **The
-  tabs wear the agent's colour** and the active crew card takes the same
-  underline. **There is no "Next phase" chip on this site from 30 Sep 2026**: ~~next
-  steps live in the right rail only~~ the next step comes with Wellington, in the chat (14 Nov 2026). Where the chat is not live the screen opens on Tool and the Chat
-  tab carries one plain line. **Memory is never a tab**; it stays in the record
-  on the left rail, its source behind the (i). The three host docks and the old
-  dock frame are gone; the crew is the right column on
-  every step. **Three consumers, one screen** — the Commons, this site,
-  production — differ only in memory and tool depth; the B→A raise into the
-  brand book and the carry list for production are recorded under S16 in the
-  archive and wait on the maintainer's hand.
-- **The handoff receiver, 9 Sep 2026 (item S13) — the save door walked the other
-  way.** A visitor who types a question into the production landing's box arrives
-  here with it in the address; the desk reads it, cleans the address, opens
-  Dispatches and hands it to Wellington as the visitor's first turn, in a bubble,
-  so his answer is the first thing they see. Nothing is kept. **Bad or empty input
-  is ignored with no error** — the page opens as it always opens and never
-  invents a question. **Ten a day per visitor**, a counter of its own on
-  Wellington's relay on top of his thirty, never instead of it; the cap's shape
-  is the maintainer's ruling of 9 Sep 2026. ~~The sender's one-line contract —
-  `?question=`, percent-encoded UTF-8, at most 500 characters decoded —~~
-  **Amended 15 Sep 2026, #74:** the contract is
-  `?question=<≤500>[&does=<≤300>][&name=<≤80>][&place=<≤80>]`, omit empty keys,
-  no kind, no provenance in the URL (this site stamps chat). Optional does, name
-  and place fill the visit card as chat provenance; a bad or empty fact is
-  ignored with no toast. ~~Wellington's chat was not rewritten this slice.~~ **Visit-aware from
-  16 Sep 2026, #76:** he receives the same record on every ask, including the first carried turn,
-  so filled does / name / place / type / stage are treated as known (corrected 24 Sep 2026, see
-  docs/archive/CORRECTIONS.md). He may still ask for anything missing.
-  It lives in `src/lib/carried.ts` and under item S13, and production carries it
-  by the maintainer's hand. **The hero chat (item S12) is parked**, a later item, not
-  built; the same receiver will feed it.
-- **Agent Commons, 9 Sep 2026 (item S18) — proposed, approved, the pictures
-  drawn; ~~not yet built~~ ~~the address and the shelf built 11 Sep 2026~~ v0 —
-  slices 1 to 3 — built and merged by 11 Sep 2026, #68 to #70; slice 4 waits on
-  The grader's per-case file, the flag button is later.** A public
-  gallery of graded knowledge packs, each wearing the face of the agent who holds
-  it, at its own address, `/commons`, opened from the site menu (the main site's
-  menu from 28 Oct 2026) and never from the journey bar; open one and the agent screen appears as
-  its third consumer, without memory, its chat capped; free to explore, sign up
-  to manage a project. **Two rulings the same day, canon.** *One grader:* the
-  grading rig kept outside this repository, the grader's, is the only public grade; the
-  Commons shows its card and nothing else, and this site's and production's own
-  checks are internal gates, never a public score. *Real only:* a grade on the
-  Commons comes from real projects and real knowledge packs run through that
-  rig, and no invented case, ever. Credentials on the Commons reads "not yet
-  graded" until a real card from that rig exists. **A third ruling, 11 Sep 2026,
-  canon: on the Commons an agent opens alone.** No crew beside it, no next
-  steps; the only other things on the screen are the way back to the shelf and
-  the sign-up door. Open, chat, leave. **And the shelf is the crew** — no crew
-  column on the Commons at all, the shelf and the sign-up door only; same day.
-  **From 28 Oct 2026 the sign-up bar is gone**, the maintainer's word: the page
-  is centred under the site menu, whose Sign in is the way to the main site,
-  and an open agent keeps only the way back. **The same day, one list and an
-  address per module:** every module in one list with a display-only
-  community rating; only Phoebe's opens, the rest say "Coming soon" or seek
-  partners by email; an open module lives at `/commons/<slug>`, shareable,
-  with "About this module" beside it.
-  **The Workshop (item S19) is logged the
-  same day** — a visitor makes an agent on the Commons; not built, its proposal
-  is next on the maintainer's word. **"Connect with a human expert" (item S20)
-  is logged the same day too** — a button beside sign-up on every Commons agent
-  sending a short contact form, never the conversation; not built, two design
-  questions open.
-- **One roster, from 18 Sep 2026 (item A13).** The crew list for both sites is
-  `knowledge-packs/product-shared/roster.yaml`, carried whole from production by
-  the maintainer's hand and **never edited here**. `scripts/check-roster.mjs`
-  runs in front of every build and fails it, naming the line, when
-  `src/lib/crew.ts`, the Commons shelf, the primer's crew facts or Wellington's
-  people sentence disagree with the roster. Checked, never generated. A seat
-  or a face on the roster may be absent from this site; "unconfirmed" always
-  passes. In that file "this repository" on the paid line means production.
-- **"V1 — the fence," the maintainer's word of 7 Oct 2026.** What v1 means for the whole free site is
-  the v1 fence at the top of [BUILD_PLAN.md](./BUILD_PLAN.md): the one finish line. The per-seat
-  conditions, what is parked until after v1, and an eight-step build order (seven until 3 Oct 2026,
-  when the report export joined it) live there too, and BUILD_PLAN owns the order work is built in.
-  Every card set on the free site was sealed at its version on 23 Sep 2026; no card changes or is
-  added until a real project fails on one. The seal is recorded in `knowledge-packs/CHANGELOG.md`.
-- **Every card set shows on its agent's Knowledge tab, and one component draws every tab,
-  from 24 Sep 2026.** Build-order step 1. Phoebe's tab shows every approved card in both
-  packs, water then carbon, each set with its own approval date; an ungraded set says
-  **Draft** and nothing more; an Evals section on every agent's tab says no exam has run
-  yet and points at Credentials. Calvin's and Bridget's rows wear their tool folders'
-  versions, read from the folder and never typed. `MapSources`, Bridget's own second
-  drawing of the same look, is retired.
-- **A tool is defined once, in one file in its pack, from 24 Sep 2026.**
-  `<pack>/tool/<tool-id>.yaml` holds the tool's rows, their states, what each takes, where
-  a value comes from, and its citations **by card id** — the file names the card, it never
-  copies it. One tool may have a section per pack; the eligibility worksheet has two, one
-  in each of Phoebe's packs. A row carries eight keys, and one optional ninth, `applies`,
-  saying which rows exist for a project's technology class or version. The gate is
-  `scripts/check-tool.mjs`, which holds every row to the card it cites. **Nothing reads
-  either file yet**, and each pack's `tool/README.md` with its agent-facing region stands
-  until Phoebe's runtime step reads the file instead.
-- **Wellington names the project type and asks the stage, from 24 Sep 2026 (item A16, #119).**
-  Build-order step 2. The shared list `knowledge-packs/product-shared/project-types.md` — twenty
-  VWBA activity types, four Gold Standard technology classes, "none of these" — is parsed once by
-  the prompt generator into a module for his relay and one for the rail, and reaches his prompt
-  in its short form: id, the standard's name, one plain sentence, no cites. He matches from what
-  the project does, says the definition back in his own words and never the id, and `type` is
-  logged only on the visitor's yes; a drinking-water project is asked its class the same way,
-  kept only beside that type; the stage — on paper, being built, already running — is asked and
-  logged the same way. **"What kind" is retired** from his answer, the visit, the rail, both
-  agents' record blocks and Phoebe's tool text; the rail shows "What type" with the
-  definition behind it and "Stage". The seal carries `type`, `gsClass` and `stage`, told to
-  production once on item O14 — **and from 25 Sep 2026 the word `kind` again beside them**,
-  derived from the type and asked of nobody, because production's receiver still reads it and
-  a seal without it arrived there as an empty record. It retires from the seal on the day her
-  carry updates that receiver. Corrected 25 Sep 2026; the old wording is in
-  [docs/archive/CORRECTIONS.md](./docs/archive/CORRECTIONS.md). Which pathway a project fits is never a field: Phoebe finds it.
-  **His prompt gate is 26,199** from the same day, her ruling — measured 25,699 after the build
-  plus 500 — after the trim of #118 had taken it from 23,940 to 19,811; the reason is written
-  above the check.
-- **Phoebe is a guide on both pathways, from 26 Sep 2026 (items A18 and K7, #122 to #126).**
-  Build-order step 3. She reads both packs from their tool files, loaded in stages by pathway
-  state; every row takes one of five states — Not yet checked, Met, Fixable with a cited route,
-  Unknown, Blocked only where the card allows it — and each pathway ends in a readiness read
-  worked out from the rows: likely eligible, likely not, or not enough known yet. She asks the
-  Eligibility rows only and shows the rest once, by phase, with the colleague who helps. On a
-  Blocked row she offers a person once; a ticked box at the save door sends one email to
-  hello@waterbots.ai through Resend, its key the hosting secret `RESEND_API_KEY`, never in the
-  repository. The seal carries `wantsHuman` and `humanNote` only on a tick.
-- **Phoebe's second and third rounds, 13–14 Nov 2026, the maintainer's word.** Her first message is
-  a warm hello and an invitation to begin in her own words (14 Nov 2026); her second points at the eligibility quiz on her Tool tab,
-  which takes a pulsing dot in her colour, then asks. She reads the record first and never asks again
-  for what it holds; one thing a message, two or three short sentences, then one question, and a reply
-  past four sentences or 400 characters (her approved limit) is logged and fails the measured walk.
-  No teaching side notes and no paid-site pitch: where useful, a quiet "Learn more about …" chip sits
-  under her reply, and nothing else (14 Nov 2026). Her reply streams as it is written; the relay logs
-  each answer's time to first word. The carbon requirements load only once the water rows are done,
-  or when a question asks for them. Her chat box and Bridget's carry no line under them, and her
-  worksheet and Calvin's say "This is a first screening, not an official decision."
-- **Wellington's fourth and fifth walks, 14 Nov 2026.** Both agents talk like a person, not a
-  script: respond to what was said, then one related follow-up; examples are tone, never lines. He
-  answers the visitor first, then says who he is and that the team matches water projects with
-  funding they might qualify for, then asks; a friendly mentor who never thanks for answers and
-  steers back kindly. He confirms only what is unclear, takes "borehole", "well" or "spring" as a new
-  source, never invents a detail, and answers basic questions about impact funding from facts in his
-  prompt. A handoff introduces the colleague and draws "Meet <name>" (blue) and "Keep chatting" (a
-  quiet chip); his line also heads Phoebe's page, before her hello. A reply with card words ("water
-  stewardship work", "mapped way to count") is logged and fails the measured walk.
-- **Voice cards, no scripts, 14 Nov 2026, the maintainer's word on #173.** Each agent's prompt opens
-  with a voice card (who it is, who it talks to, the principles) and keeps at most two tone examples,
-  marked never to copy; the rule is in AGENT_RULES.md. Method terms are said in everyday words from one
-  shared list, `knowledge-packs/product-shared/plain-words.md`, with `before-and-after.md` beside it
-  as examples, not rules; both reach both prompts, generated. Wellington never implies a result is near,
-  and on a handoff to Phoebe he writes one line to her that heads her page, summing the project up.
-  Phoebe asks deal-breakers first (a running project's start date before anything else), then what
-  settles both paths, then one path, water first, never carbon first; a closed path gets one plain line
-  and she goes straight on; the offer of a person is under the save button in the site menu only, never in chat.
-- **Wellington comes to you, 14 Nov 2026, the maintainer's ruling; the rule is in AGENT_RULES.md.**
-  His one line to Phoebe or Bridget, summing up the project, heads her chat; when her part is done
-  he joins that chat with the next step and its button ("Meet Bridget", "Meet Calvin"), one ask on
-  his own conversation, so his desk holds it too. No agent sends the visitor back to him. A path
-  Phoebe rules out in chat is saved the same turn, through a required `closes` field (W25: on the
-  maintainer's walk carbon was said ruled out and saved as "not enough known"). The right rail is
-  the crew with one status line each; the save door is the site menu's one button and the box to send
-  the project to the team (whenever a path is ruled out) sits under it, from 21 Nov 2026, and **Export screening report** (S21,
-  print-only, growing with the visit) sits in the left rail under the project. Bridget has a voice
-  card and a short opening (B1), and the map zooms to the country as soon as the place is known
-  (B2). Calvin's chat is not built, so Wellington does not yet come to it.
-- **The queued round, 16 Nov 2026, the maintainer's word on #175** (the proposal is
-  docs/proposals/queued-round-2026-11-16.md). **W28:** the build banner, retired 21 Nov 2026. **W29:** Wellington
-  speaks first on the desk, one opened turn in his own words, unless a question was carried in.
-  **V1:** every agent speaks 3rd- to 6th-grade English (AGENT_RULES.md and every voice card); a
-  reading-grade count in `api/_reply.ts` logs a reply above grade 6, and a measured walk fails when
-  its replies average above 6 or one is above 8, her bars. **One blue button at a time**
-  (`src/lib/blue.ts`): Meet <name> under the latest turn on the step in view, else Save, else the
-  menu's Sign up; the form's Send on its own page. **Register your interest** at `/interest`, from
-  the left rail and each Commons "Coming soon" row: kept in the site store with no time limit until
-  the person asks to be removed, the form says how, nothing deletes on its own, a copy to
-  hello@waterbots.ai, three a day per visitor; `scripts/count-interest.mjs` counts and removes and
-  never prints a name or an email. **A29** (Phoebe asks "already earning Gold Standard credits?",
-  passed to Calvin as `creditedUnderV1`) waits on Calvin 0.3.0.
-- **Supporters at `/supporters`, 16 Nov 2026, the maintainer's word on #176** (the proposal is
-  docs/proposals/supporters-2026-11-16.md). The interest form has a second box, unticked, "Show my
-  support publicly": a role from six (required when ticked), a title and a comment (no links); the name
-  as typed and the organisation are the form's own. **Every public entry waits for her approval; nothing
-  shows or deletes on its own**, and no supporter entry holds an email (`api/_supporters.ts`). She
-  approves with one paste, `npm run supporters`, which prints each waiting entry's line
-  (`npm run supporters -- approve <id>`, `decline`, `hide`), reading the store keys from `.env.local`.
-  A person's removal (`count-interest.mjs --remove`) takes them off the page too. Reached from one quiet
-  line on the Commons and on the form, never the menu; ~~empty, the page says "No supporters are shown yet."~~
-  **From 18 Nov 2026, her word, the four agents are the board's first entries**, each with the crew's icon, a
-  "WaterBots agent" tag and one line in its own voice (`src/lib/supporters.ts`), and the reclining Wellington
-  sits beside the heading; ~~with no approved person yet, the page says "No people are shown yet."~~ **From the
-  same day the form is on the page**, in place of the Register your interest box: name and email (required),
-  organization (optional), a short comment, and two unticked boxes, "Show my name and comment on this page"
-  and "Send me the WaterBots newsletter". It saves where Register your interest saves (`/api/interest`, the
-  store's `interest:signups`, marked `source: 'supporters'`); a ticked "show" box sends the name and comment
-  alone ~~to wait for her approval~~. The thank-you says to write to hello@waterbots.ai to change or remove the
-  entry. The permission line, the empty line and the "taken off this page" line are gone, by her word.
-  **Later the same day, her word: no approval step on this form.** A ticked "show" box puts the name and
-  comment on the board at once, after a filter (`api/_postFilter.ts`) that blocks rude, sexual and spam posts
-  with a plain line and keeps nothing; text only, no links, 280 characters. She takes one off with
-  `npm run supporters -- hide <id>`, which `npm run supporters` prints under each card. The form sits beside
-  the heading on a laptop and right under it on a phone; the thank-you is a heading with a mint check.
-  ~~Register your interest's own public box still waits for approval.~~ **From 19 Nov 2026, her word: the
-  supporters page is the one place to post**, and Register your interest has no public box. There is no box
-  to tick either: name, email, a role and a comment, then **Post**, opens a pop-up with Wellington's icon ("Everything
-  except your email will show on this page.", her words of 21 Nov 2026, "Post" and "Go back"; the site's one
-  modal style, the brand book's floating plane as the map's Data & licences panel wears it), and Post puts it on
-  the board at once. **The poster can edit and delete their own post**: their browser remembers it and shows
-  Edit and Delete on their card, and an email carries a private link (the key after the #, its SHA-256 alone
-  in the store) to do the same later (`api/supporter-post.ts`); edits pass the same filter. "Questions?
-  hello@waterbots.ai" sits at the foot of the page. **The same day, her word: a title (optional), the
-  organization shown, and a role (required, one of Project developer, Consultant, Funder, Auditor,
-  Researcher, Other)**; the card reads "Title, Organization" under the name, whichever is filled in, and
-  the role is a small tag in its own colour (`--supporter-*` in tokens.css: brand hues no agent on the page
-  wears, a knowing exception to the book's fixed roles, raised with her; "Other" plain). An edit changes
-  them too, through the same filter on every text field.
-- **Vercel Web Analytics, from 21 Nov 2026, the maintainer's word: cookie-free page views, and no
-  other tracking.** `@vercel/analytics` 2.0.1, mounted once in `src/main.tsx`; every page view is cut
-  to the site and the path (`src/lib/analytics.ts`), so a carried `?question=` and a supporter's
-  `#edit=` key never leave the page. It counts only once she turns Web Analytics on for the project in Vercel.
-- **Wellington reads back what Phoebe found, and asks people served, from 26–27 Sep 2026 (items A17
-  and A16, #128 and #130).** Each ask carries her worksheet as row ids and states only; he greets a
-  visitor coming back from her knowing each pathway's read, never her sentences, and routes to
-  Quantify only where a pathway is likely eligible or not enough is known. For a water supply
-  project he asks how many people or households it serves, after the stage; it is kept as said,
-  households never converted here, on the record, the rail and the seal as `record.served`. His
-  prompt was 26,108 on 27 Sep 2026, 26,117 from 29 Sep, 26,034 from 4 Oct, 26,079 from 31 Oct, and
-  23,123 from 5 Nov 2026, when his shorter instructions were built (item A26), 24,560 from
-  13 Nov 2026, after the maintainer's three walks of them, 24,581 with the primer's line on Phoebe's tab, 25,943 after her fourth walk, 26,145 after her fifth, 26,148 with the voice card and the
-  shared plain-words list, and 26,136 when he came to the agents' chats, all 14 Nov 2026, and 26,158
-  with the reading level in his voice card, 16 Nov 2026 (his opening note rides beside the prompt,
-  as his notes for joining a chat do), 26,072 measured 21 Nov 2026, 26,111 the same day with the crew as the navigation, and 26,165 the same day when he asks the project's name, against the unchanged gate
-  of 26,199.
-- ~~**The engine bundle is tracked at `carried/`, from 27 Sep 2026**~~ (#132, replaced on 3 Oct 2026
-  by v0.16.1, #147; tags `engine-carry-2026-09-27` and `engine-carry-2026-10-04`). **`carried/` is
-  deleted on 14 Nov 2026, V1, required, the maintainer's word.** **Calvin's carbon calculator is the
-  open core's from the same day**: ~~`@waterbots/calvin` 0.2.0 and `@waterbots/core` 0.1.0 from the
-  release `calvin-v0.2.0`~~ ~~`@waterbots/calvin` 0.3.0 and `@waterbots/core` 0.1.1 from the release
-  `calvin-v0.3.0`, from 16 Nov 2026~~ **`@waterbots/calvin` 0.5.0 and the same `@waterbots/core` 0.1.1 from the
-  release `calvin-violet-v0.5.0`, from 22 Nov 2026, her word on #189** (0.4.1 from 21 Nov; 0.5.0 pins the
-  credit tiles at the top, and no sum changed), with `creditedUnderV1` left unset until item A29, so every
-  project gets the V2.0-only view; vendored in `vendor/waterbots/` and checked against the release's SHA-256
-  and the lockfile's SHA-512 by `scripts/check-calvin-package.mjs`, which also re-runs the package's
-  47 made-up cases (proof P1). It is locked to ex-ante (`exAnteOnly`, sliders on), on Quantify and on
-  the Commons; its state lives with the calculator (`CalvinCarbon`), which opens again once the record
-  names the technology, so every starting value is the package's own; the facts come from the record through `src/lib/calvinProject.ts`, and its classes are
-  scoped under `.wb-calvin` (`scripts/build-calvin-css.mjs`, `src/styles/calvin.css`). **One export
-  during a screening, from 16 Nov 2026, her word:** on Quantify his own "Export report (PDF)" is
-  hidden, and "Export screening report" in the left rail carries his figure and his full working; the
-  Commons keeps his export. **From 0.4.0 the package's own switches do it** (21 Nov 2026, her word):
-  `hideExportButton` on Quantify only, and `unpinFigureBlock` everywhere, so the smaller figures
-  scroll with the rows (from 0.5.0 the credit tiles stay pinned either way); the two CSS stopgaps of 16 Nov are gone. A new version
-  comes in only on her word. Proposal: `docs/proposals/calvin-from-open-core.md`. **The water calculator is
-  the open core's too, from 22 Nov 2026, her word on #189** (Road to v1 step 5): Violet's D-3 screen,
-  `@waterbots/violet` 0.5.0 from the same release, checked the same way, under Calvin's "Water benefits"
-  chip until Violet joins the crew through the shared spec. People served come from the record (on the
-  Commons, its facts form), and every result says "Draft — pending expert review". This site's own
-  `src/lib/vwbaD3.ts`, its worksheet, the empty pack seat and `check-vwba-d3` are gone, and Calvin's header
-  says only what the record still lacks. Proposal: `docs/proposals/violet-d3-from-open-core-2026-11-21.md`.
-- **The free-site fixes of 30 Sep 2026 are live, #134 to #138**, and the demo ran on `main` at
-  #138. The wordmark at the top left goes to waterbots.ai from 28 Oct 2026, as the main site's
-  menu does; until then it started a fresh visit at the landing. Every chat box grows to three lines, then
-  scrolls. **No desk has a "Next phase" chip**, by the maintainer's ruling of 30 Sep 2026, which
-  replaces the 16 Sep rule on this site: ~~next steps live in the right rail only~~ next steps come
-  with Wellington in the chat, and the right rail is the crew with a status line each (14 Nov 2026). **A rail row that
-  sends the visitor somewhere clears when taken**: they are on its step, or, for the map row, a
-  basin is pinned. Then Wellington's invite to Quantify lands, only where a pathway read allows
-  it; otherwise the rail is empty until the next agent is ready. **Record facts never clear**: the
-  pinned basin's water-stress reading, Phoebe's readings and Calvin's figures stay. Phoebe's
-  desk opens on her own greeting, without a copy of his routing message (display only), and the
-  Done-later section of her Tool tab is collapsed by default. **When her reply ends in a question,
-  that last sentence is bold, chips included**: display only, no prompt or relay change; the
-  Commons shows the same Phoebe, so it is bold there too. ~~**Calvin's brief has its bundle**,
-  carried 3 Oct 2026.~~ The bundle is gone; Calvin's calculator is the open core's (14 Nov 2026).
-- **Bridget's chat is live, her map on its own tab, from 31 Oct 2026 (item A22, #167)**, by the
-  maintainer's three rulings of that day. Her screen has the other agents' tab layout: Chat, Map,
-  Knowledge pack, Credentials, opening on Chat, the map at full width on its tab. The Map tab opens
-  on the country the visitor told Wellington, matched from Natural Earth's country names, or on the
-  whole world when no single country is named; never a guess. She opens in her own words: who she
-  is, what she does, why the basin matters to funders and partners, that she is still being built,
-  and her one question: open the Map tab and pin the basin, in the place the visitor gave
-  Wellington. A pin brings the visitor back to Chat. There she thanks them, gives the basin and its water-stress
-  reading, says when it is derived, ~~and says Calvin is next, by the Quantify button in the right
-  rail; where no pathway goes on to Quantify she hands back to Wellington. No button of her own,
-  except the 'Back to Wellington' link when no pathway goes on to Quantify, the same hand-back Phoebe
-  uses.~~ and says Wellington will join with the next step (14 Nov 2026). Thirty messages a day, under her own counter. She never guesses, never names a project,
-  partner, funder or place the visitor did not type, and never says she checks anything.
-- **The agents lead, 21 Nov 2026, the maintainer's word.** A visitor moves by clicking an agent in the
-  crew on the right, which opens that agent's screen, or by Wellington's "Meet …" button. The journey
-  bar is a progress line that does not click, "you are here" its strongest mark, and Plan, Monitor and
-  Communicate fold into one "After you save" mark: they open on waterbots.ai once a project is saved.
-  Each move to a step is a history entry, so the browser's Back button goes back a step; a reload still
-  starts the visit over. A "Meet …" button goes quiet once its agent is reached (`src/chat/reached.ts`).
-  Each crew line says what the agent is ready to do, then what they found ("Ready to check funding",
-  "Water: likely · Carbon: ruled out"), and shows only once it is news or while that agent's step is in
-  view (`crewStatus`, `crewNews`). The project record starts collapsed, its heading counting the rows
-  it holds, and shows only rows with a value, replacing her 13 Nov 2026 ruling that it opens on
-  landing. Wellington's desk opens on his chat alone; "About Wellington" beside his name brings back his
-  Knowledge pack and Credentials. On a phone the rings and the row under them are one row: Project,
-  the step by name with a dot per step, Crew.
-- **The project name and the menu, 21 Nov 2026, the maintainer's word.** Wellington asks the
-  project's name once, before any handoff, because it heads the record and the screening report; no
-  name yet is an answer. The project card has a clear place to type it, a "Project name" label over a
-  box. A detail the visitor has not given reads "Not given yet" in the report. The site menu has
-  Sign in and one button, on a laptop and on a phone: "Sign up" until something is on the record, then
-  "Save and sign up", the one Save on the site; the box that sends the project to the team sits under
-  it. During a screening Consulting, Open Source and Agent Commons fold into one small "Menu" button
-  beside the wordmark, which goes to waterbots.ai. On a phone the top row is the wordmark, the menu
-  button, Sign in and the one button, and never wraps (it fits from 360px).
-- WaterBots branding per the brand book. Standalone deploy. No login.
-
-## Legacy material
-
-The `legacy/` folder is gitignored and never publishes. Its contents
-are reference only — they predate current rules and must be
-reimagined, not copied. Any claim revived from legacy documents must
-be re-founded on cited sources.
-
-## Brand and design — see the brand book
-
-~~Follow the brand book and UI_REFERENCE.md in this repo. They are
-gitignored (engineer-eyes-only, not published). Never invent colors,
-type, or styles outside them.~~ **Corrected 17 Sep 2026, maintainer's
-ruling: the brand book governs design, alone.** UI_REFERENCE.md, the
-Replit demo's patterns written on 13 Aug 2026, was never used by any
-session's build and is retired to `legacy/`, where it stays gitignored as
-reference only. Follow the brand book in this repo. It is gitignored
-(engineer-eyes-only, not published). Never invent colors, type, or
-styles outside it.
-
-**The brand book lives at `brand/BRAND.md`.** ~~It lives at the
-repository root as `BRAND.md`.~~ **Corrected 30 Aug 2026** — it moved
-into `brand/` alongside the asset tree when version 4 arrived. It is
-gitignored twice over, by the bare `BRAND.md` rule and by `brand/*`, so
-it still does not publish.
-
-~~**BRAND.md is the brand book, version 3, and it governs all design on
-this site.**~~ ~~**It is version 4 from 30 Aug 2026.**~~ ~~**It is version
-4.1**~~ **It is version 4.2 from 31 Aug 2026**, and it governs all design on
-this site. Version 3 arrived on 28 Aug 2026 and held for two days; version 4
-and then 4.1 both landed on 30 Aug; 4.2 followed on 31 Aug. One light brand,
-still superseding the two-theme era. It is complete on its own page and it
-governs both properties.
-
-**What version 4 changed**, all of it carried up from this site's work:
-the roster-extension rule in §6, with **Phoebe's own entry**; `--chrome`
-retired in §2.3, with the frame-versus-content line and its worked
-example; the **three shadow values written into §4**, which had carried
-the names and no values; and the **Slate map wash** recorded in §7. A
-sixth change — Driftwood into use — was proposed and reversed the same
-night, and §2.1 keeps the strike rather than erasing it.
-
-**One line of §6 was struck and corrected in place on 2 Sep 2026**, by the
-maintainer's ruling: Wellington's role label is **"Team Lead"** everywhere he
-is named — not "Floor manager", not "Host" as a title. The book stays at
-version 4.2; the strike is kept.
-
-**The Calculator / Quantify seat in §6 was struck and corrected in place on
-17 Sep 2026**, by the maintainer's ruling: it is **Calvin**, not Vector. The
-book stays at version 4.2; the strike is kept. `--bot-vector` is not deleted.
-`vector.svg` is not renamed; `calvin.svg` is already live.
-
-**What version 4.2 changed, and it is the second amendment written into the
-book from inside this repository.** §6 only. **Calvin's row is filled in** — he
-is the free calculator, giving screening-level estimates **on the open site as
-well as in the Commons**, and he **never works in the paid console**. The
-Commons-only line is struck in place. His accent is **Plum `#5848A8`** and his
-portrait was **drawn here in the house form**, both by the maintainer's ruling
-of 31 Aug 2026 and both **knowing exceptions to §6's own rules** — the book
-forbids pointing an accent at a second agent, and says his portrait arrives
-with the Commons design. They are recorded in the book as exceptions rather
-than folded in silently. **Mint was the obvious pick and was refused on the
-merits**: §2.1 also makes Mint *Success / approved*, and a screening surface
-whose whole message is *not verified* must not wash green. The version bump
-itself was the engineer's call, made so the documents naming the book's version
-did not start telling a lie; the maintainer let it stand.
-
-**Calvin is Reef `#0E8A94` from 31 Oct 2026, and Violet is Orchid `#A457D4`**,
-both by the maintainer's ruling of that day. Plum is Reggie's alone again, so the
-first of the two knowing exceptions above is over; his portrait is redrawn in
-Reef. Both colours are tokens, `--reef` and `--orchid`, reached through
-`--bot-calvin` and `--bot-violet`. **Neither carries text**: Reef measures
-4.13:1 on white and Orchid 4.29:1, short of 4.5:1. **Calvin's text is Deep Reef
-`#0C7C85`** from 1 Nov 2026, her ruling: `--deep-reef` through
-`--bot-calvin-text`, 4.96:1 on white, for his name and the four labels on his
-calculator. Orchid has no text shade yet; Violet needs one when she is built.
-Violet is not on the roster or on this site yet. The brand book still says Plum for Calvin
-in §6, until the maintainer's hand changes it.
-
-**What version 4.1 changed, and it was the first amendment written into
-the book from inside this repository.** §2.5 only. Coral gained a text
-value it had never had, and the published live and approved text values
-were corrected, because measuring them against a shipped surface showed
-they did not reach the 4.5:1 the same sentence promises. Verification was
-measured too and is unchanged — a published value that already works is
-left alone. Maintainer's ruling, 30 Aug 2026; **the engineer wrote it
-into the book by her instruction, which is the exception, not the rule.**
-Everything else still arrives by her hand.
-
-~~**[DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md) is
-binding**, and it is the only design input from outside this
-repository.~~ **Corrected 29 Aug 2026: the canon is SUPERSEDED by the
-book** and says so at its own head, by the maintainer's hand. Its
-rulings were not wrong — the left rail, the "<" navigation and the chat
-dock rules it confirmed were carried into the book and live there now.
-It stays published as history. **Where the canon and the book disagree,
-the book wins.** **Archived 17 Sep 2026** to
-[docs/archive/DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md).
-Not an opening read.
-
-**What the book does not carry is raised, never invented** — §0 is
-explicit. ~~Four such rulings were made on 29–30 Aug 2026 and are owed to
-the master book by the maintainer's hand~~; **all four landed in version
-4 on 30 Aug 2026.** Item S9 in [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) remains
-the one home for them, and it now records where each one sits in the
-book. ~~Two fresh raises took their place and are open in the same
-item.~~ **Both are closed as of 30 Aug 2026** — the shadow values took the
-book's, and coral gained a darkened text value at 4.5:1. Item S9 carries
-both.
-
-## Housekeeping — machine facts, not rules
-
-**Small facts about this machine that cost a session's time when they
-have to be rediscovered.** Rules live above and in the rulebooks; this is
-only where things are.
-
-- **The GitHub command-line tool is installed and signed in, but is not
-  on the shell's PATH.** Call it at
-  `C:\Program Files\GitHub CLI\gh.exe`. Found 30 Aug 2026, when
-  `gh` alone reported "command not found" and looked, wrongly, like a
-  missing tool. The rule about who opens pull requests is unchanged and
-  lives in
-  [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md).
-- **The brand book carries Windows line endings** and is gitignored, so
-  nothing normalises it. Edit it preserving them.
+- **Honest states.** No silent failures and no false success messages: the product says what really
+  happened. A session reports its own mistakes at once.
+- **How a session writes to her.** Plain English at a 4th- to 6th-grade level, never an item by its
+  number alone. A pull request opens with a block for her (what changed, what she approved, what to
+  check), then Coach decisions, then What I ran, with the name scan's count.
+- **The brand book governs design, alone.** Never invent colours, type or styles outside it. What the
+  book does not carry is raised with her, never invented; changes to the book arrive by her hand.

@@ -1,45 +1,8 @@
-# BUILD_LOG.md — what was built, session by session
+# BUILD_LOG.md — what was built
 
-**Append-only. Never read at the opening.**
-
-~~This file exists so that [SESSION_HANDOFF.md](./docs/archive/SESSION_HANDOFF_retired_2026-09-17.md) can stay thin. The handoff says
-where things stand *now*; this says how they came to stand there.~~
-**Corrected 17 Sep 2026:** there is no live root handoff. Live state is
-[OPEN_ITEMS.md](./OPEN_ITEMS.md), [BUILD_PLAN.md](./BUILD_PLAN.md), and git. This file
-is how it came to stand there. The retired handoff is in
-[docs/archive/](./docs/archive/README.md). Maintainer's ruling,
-29 Aug 2026 — the rule itself lives in
-[PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) under *the opening reads stay thin,
-forever*, and this file does not restate it.
-
-**It is not one of the ~~six~~ four opening documents and must never become one.** A session starts by
-reading the current state, not the history. This is looked at when someone goes looking for how a
-thing came to be, and at no other time.
-
-## How it is written
-
-- **One entry per session**, appended at the close, after the root docs are refreshed and before
-  the checkpoint is committed.
-- **Nothing already in it is ever edited.** A correction is a *new* entry that names what it
-  corrects and why — the visible-corrections rule applied to a log rather than to a claim. An entry
-  that quietly changed would make the whole file untrustworthy, which is the one thing a log cannot
-  survive.
-- **It records what happened, not what is required.** Rules live in the rulebooks; open threads
-  live in [OPEN_ITEMS.md](./OPEN_ITEMS.md); the order of work lives in
-  [BUILD_PLAN.md](./BUILD_PLAN.md).
-- **An incident is recorded fully in the item that owns it**, per *record once, point everywhere
-  else*. An entry here carries two lines and a pointer, not a second account that can drift.
-
-## Entries
-
-Newest last.
-
-**Entries begin with the session of 29 Aug 2026**, which is the session this file was created in.
-**Earlier history is not lost and has not been moved yet** — it currently sits in the "Before that"
-and "Just finished" sections of [BUILD_PLAN.md](./BUILD_PLAN.md) and in each item's own row in
-[OPEN_ITEMS.md](./OPEN_ITEMS.md). Sweeping it here is ordinary tidying, not a ruling, and it is
-recorded as owed rather than done so that this file does not open with a false claim of
-completeness.
+Carries, releases and one line for each finished item (RULINGS.md, section 7). It keeps the last three
+months; older entries are deleted, and GitHub's history keeps them. Newest last. The entries below were
+written under older rules and are kept as they were written.
 
 ---
 
@@ -6299,3 +6262,8 @@ There is no packing list for a file going out; the fingerprint above is the reco
   `check-vwba-d3` are gone. The save keeps the water entry's key and shape, filled from her inputs.
 - Calvin 0.5.0: the credit tiles stay pinned; his introduction is out of the header, which says only what the record
   lacks; the Beta sticker is gone with the package's own change. Wellington's and Phoebe's prompts did not change.
+
+## 22 November 2026 — the two rulings pages in force
+
+- **Carry in, named by the maintainer:** `RULINGS.md` (SHA-256 `2aa63e76e1aea972d31427a2472b4dc4a1e7f083e1b31844f08a1d47761856d6`) and `FAMILY_OPEN_CLOSE.md` (SHA-256 `329dc4fc814e4a57d7e4c0306c73623c09b07c6d9669e173f0f29dbee638dbda`), copied byte for byte from the handoff folder; name scan 0.
+- **Done:** every older ruling sorted against the two pages. CLAUDE.md is a short how-to note; agent rules are in AGENT_RULES.md; module rulings are in `docs/modules/`; the process rules, the citations file, the archives and the built proposals are deleted. No code changed.

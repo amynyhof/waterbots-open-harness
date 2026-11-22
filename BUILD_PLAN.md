@@ -1,38 +1,8 @@
 # BUILD_PLAN.md — the one plan file
 
-What is being built, in what order, and every open item. **This file commits to an order, not to dates.**
-**It is the only plan file from 3 Oct 2026**, the maintainer's ruling: OPEN_ITEMS.md was folded in here and
-retired. Read it with [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md), which says how work
-moves from a proposal to a commit.
-
-**Four parts, in this order:** the v1 fence; the per-seat v1 order; the Road to v1; and the nine families, the same nine in
-all three repositories, each holding its open items.
-
-**Size limit: 450 lines.** The maintainer's word of 21 Nov 2026, raised from 400 (3 Oct 2026). An item is six lines at most; a longer
-write-up goes to BUILD_LOG.md and the item points at it. A full close-out that finds this file past 450 lines
-says so in its report (step 10 of the full close-out ritual). A light close that finds it still past
-450 after trimming says a full close is needed.
-
-**How it is kept.** Rewritten when the plan changes and refreshed at every full close-out. A closed item leaves
-at the full close-out for [BUILD_LOG.md](./BUILD_LOG.md), with nothing left behind (step 9). Every item belongs
-to a family; starting a family is her decision.
-
-**Where the detail is.** Each item's full write-up, as it stood on 3 Oct 2026, is in BUILD_LOG.md, in the
-entry "one plan file", Part A, under the item's number. Finished work is in BUILD_LOG.md too: search for
-the item's number. Items closed before 3 Oct 2026 are in
-[docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md).
-
-**Tags on an item.** Its v1 step or "After v1", then its bucket, her five of 18 Sep 2026: BONES (agent
-structure, packs, debt that trips agents or engineers), WALKTHROUGH (a simple VWBA path into the paid
-site), PARTNER (the Commons or a partner demo), PARK (real, not now), and "v1" for an item moved onto the
-v1 order. **Shell A is the paid site; Shell B is this repository.** A carry, in or out, goes through the
-handoff folder and starts only when she names it (CLAUDE.md, Rule zero).
-
----
-
 ## The v1 fence — the one finish line (the maintainer's word, 30 Oct 2026)
 
-**V1 is done when both parts hold.** Her wording of 7 Oct 2026 is in docs/archive/CORRECTIONS.md.
+**V1 is done when both parts hold.**
 
 1. **Reliable.** The carbon calculators reproduce one real household water treatment (HWT) filing (Mali) and one
    real community water supply (CWS) filing (Tanzania). The VWBA D-3 module follows the VWBA 2.0 guidebook's
@@ -50,11 +20,22 @@ handoff folder and starts only when she names it (CLAUDE.md, Rule zero).
   screening also shows its transitional volume, still maps it, quantifies it, checks VWBA, and offers
   the report and the move to the paid site.
 - **VWBA covers water supply project types only.**
-- **Defaults rule.** See CLAUDE.md, Scope.
+- **Defaults rule.** See RULINGS.md, section 2.
 - **Build rule.** Each module (screening, transition, VWBA, report) has its own inputs, outputs and
   card. Each module standing alone in the Agent Commons is v2.
 
 **New items go to v1 only if they block the finish line.** Anything else goes to After v1.
+
+---
+
+What is being built, in what order, and every open item, each in its family. This file commits to an order, not to
+dates. How a family opens and closes is in [FAMILY_OPEN_CLOSE.md](./FAMILY_OPEN_CLOSE.md); the rulings are in
+[RULINGS.md](./RULINGS.md). A finished item leaves this file and becomes one line in [BUILD_LOG.md](./BUILD_LOG.md).
+
+**Marks on an item.** Its v1 step or "After v1", then its bucket: BONES (agent structure, packs, debt that trips
+agents or engineers), WALKTHROUGH (a simple VWBA path into the paid site), PARTNER (the Commons or a partner demo),
+PARK (real, not now), and "v1" for an item moved onto the v1 order. Shell A is the paid site; Shell B is this
+repository.
 
 ---
 
@@ -68,19 +49,12 @@ handoff folder and starts only when she names it (CLAUDE.md, Rule zero).
 | 4 | **Project management** — running the project after it starts | Paid | Not in this repository |
 
 **The desk sits in front of all four**: Wellington's, where the visit starts. From 14 Nov 2026 his next steps
-come in the chat and the save door is in the left rail. **The free tier ends where step 4 begins**, and the theme turns from Frost to Deep Marine
-there. Nothing of the paid platform is built, described or linked from here.
+come in the chat, and from 21 Nov 2026 the save is the site menu's one button. **The free tier ends where step 4 begins**,
+and the theme turns from Frost to Deep Marine there. Nothing of the paid platform is built, described or linked from here.
 
-**Shell B is heading toward compatibility with the production console.** Someone who steps up to the paid
-platform should find the step seamless: the same behaviours and shapes, in a different colour, with more
-tabs. It is not a one-way copy; which parts settle where is decided in a design session with the
-production side, never by an engineer here. **The brand book, version 4.2, is the design authority**; it
-lives at `brand/BRAND.md`, gitignored. Two rules stand:
-
-1. **Build to this repository's own rules.** CLAUDE.md, AGENT_RULES.md, CITATIONS.md and the brand book
-   bind. The compatibility goal is a direction, not a specification, and overrides none of them.
-2. **Never copy from, fetch from, or match the production site unaided.** Not its files, shapes or wording,
-   and not by inference from memory. Rules travel as rules, by the maintainer's hand.
+**Shell B is heading toward compatibility with the production console** (RULINGS.md, section 6). Someone who steps
+up to the paid platform should find the step seamless: the same behaviours and shapes, in a different colour, with
+more tabs.
 
 ---
 
@@ -127,7 +101,6 @@ the proposal to install Calvin from the open core, merged with her word on its o
 **After v1, not needed for the finish line:** A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
 - **Wellington's prompt is 26,165 characters against a gate of 26,199** (A26, measured 22 Nov 2026). The gate moves only on her word.
-- **Standing rules across every step:** a proposal before each; at least one eyeball stop per pull request; a measured run after any prompt change; the build-update fact refreshed at every full close-out.
 
 ---
 
@@ -141,7 +114,7 @@ v1 step or "After v1" mark; only its family changed. Within a family, v1 items c
 
 What belongs here: how agents plug into both sites; the one shared project record; what each agent reads and writes; which pathway and method a project is on and which are unlikely; hand-offs between agents; installing core releases.
 
-**A21 · Calvin's brief — his chat, the engine, carbon beside water.** Step 5 · BONES. **27 Oct 2026: replaced by** [docs/proposals/calvin-from-open-core.md](./docs/proposals/calvin-from-open-core.md):
+**A21 · Calvin's brief — his chat, the engine, carbon beside water.** Step 5 · BONES. **27 Oct 2026: replaced by** the proposal to install Calvin from the open core (#156, in GitHub's history):
 Calvin's engine and screens from the open core, React 19, Wellington asks the core facts first. Ruled; six open.
 Done when his screening numbers match the paid site's calculators run on the saved project's inputs (the v1 fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 2026; teal dropped). **21 Nov 2026: calvin 0.4.0 installed from the release (#178), with `unpinFigureBlock` on everywhere and `hideExportButton` on Quantify, where the left rail's screening report is the one export; the Commons keeps his export; no figure changed.** **22 Nov 2026: calvin 0.5.0 from calvin-violet-v0.5.0, tiles pinned, his intro gone; no sum changed.**
 
@@ -155,7 +128,7 @@ back to Wellington, as built in A22. The visit stays at Partners after the pin, 
 **A27 · Agent door bug.** v1 · BONES. Her word of 12 Nov 2026: in the Agent Commons, Phoebe tells visitors to go to Wellington. In the Commons,
 every agent works alone and asks for what she needs herself; on the sites, she hands back to Wellington. Each module must know which door it is at (see the plug-in contract).
 
-**A29 · "Already earning Gold Standard credits?" reaches Calvin as `creditedUnderV1`.** Step 2 · v1 · BONES. Her word of 16 Nov 2026. The screening asks it once, plainly, and keeps the answer as a field (yes, no, not sure), never read from prose; the record carries it and `src/lib/calvinProject.ts` passes it to Calvin, so a new project runs V2.0 alone and only a credited one is asked its filed V1.0 fNRB. Calvin takes the field from 0.3.0 (#174, 16 Nov 2026); 0.4.0 is installed from #178 (21 Nov 2026), still with the field left unset, so every project gets the V2.0-only view until this is built. **Phoebe asks it**, her word of 16 Nov 2026, as a field she sets beside her registration question; "not sure" passes nothing. docs/proposals/queued-round-2026-11-16.md.
+**A29 · "Already earning Gold Standard credits?" reaches Calvin as `creditedUnderV1`.** Step 2 · v1 · BONES. Her word of 16 Nov 2026. The screening asks it once, plainly, and keeps the answer as a field (yes, no, not sure), never read from prose; the record carries it and `src/lib/calvinProject.ts` passes it to Calvin, so a new project runs V2.0 alone and only a credited one is asked its filed V1.0 fNRB. Calvin takes the field from 0.3.0 (#174, 16 Nov 2026); 0.4.0 is installed from #178 (21 Nov 2026), still with the field left unset, so every project gets the V2.0-only view until this is built. **Phoebe asks it**, her word of 16 Nov 2026, as a field she sets beside her registration question; "not sure" passes nothing. The queued-round proposal, #175.
 
 **O14 · Carries owed — listed once.** Step 7 · PARK. From 21 Nov 2026 a carry goes through the handoff folder, only when she names it.
 **Through the folder, to Shell A:** the seal's contract (`type`, `gsClass`, `stage`, rows and a read per pathway, `wantsHuman`, `record.served`; `kind` retires
@@ -235,7 +208,7 @@ card and plain-words line against a grade-6 target; printed, never enforced. Not
 
 What belongs here: what a visitor sees and clicks, the same on both sites: layout, navigation, header, Save, words, phone, design, report.
 
-**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved (docs/proposals/wellington-rewrite-2026-10-31.md); her walks' fixes, the voice card and "Wellington comes to you" 12–14 Nov 2026. His prompt is 26,165, measured 22 Nov 2026. Waiting on one measured run.
+**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved; her walks' fixes, the voice card and "Wellington comes to you" 12–14 Nov 2026. His prompt is 26,165, measured 22 Nov 2026. Waiting on one measured run.
 
 **A28 · Phoebe's walk fixes.** v1 · BONES. Her word of 12–14 Nov 2026: rounds two and three (#173), the limit of 4 sentences or 400 characters approved 14 Nov. On the preview her first word came at 4.8 to 6.1 seconds and whole answers took 5.8 to 9.3 (14 Nov). The skipped hello is fixed. From 14 Nov a voice card, the shared plain-words list, the order of questions, and a ruled-out path saved the same turn (W25). Waiting on one measured run.
 
@@ -257,9 +230,9 @@ project type are heard in chat only; a visitor who never chats cannot fill them.
 **S18 · Agent Commons — slices 4 and 5.** After v1 · PARTNER. v0, slices 1 to 3, is built (#68 to #70).
 Slice 4, Credentials fed by the grader's rig, waits on his per-case file and the three rig changes she takes to
 him; it reads "not yet graded" until a real card exists. Slice 5, the flag button, is later. One grader,
-real only, and an agent opens alone: canon in CLAUDE.md. Its 28 Oct 2026 rewrite is built; see the archive.
+real only, and an agent opens alone: docs/modules/commons.md. Its 28 Oct 2026 rewrite is built.
 
-**S24 · The site on a phone.** After v1 · WALKTHROUGH. Her word of 29 Oct 2026: built; the list is in docs/OPEN_ITEMS_ARCHIVE.md.
+**S24 · The site on a phone.** After v1 · WALKTHROUGH. Her word of 29 Oct 2026: built.
 Waits on her check on a real phone; a 44px tap area for the main site's menu is hers to carry (S25).
 
 **S23 · The Commons check.** After v1 · PARTNER. v2, her word of 30 Oct 2026; it was old step 4. Phoebe and
@@ -311,8 +284,7 @@ rows for the calculators and Phoebe, and the "beta" at the bottom left.
 
 What belongs here: showing it works: real-filing matches, same numbers, whole-journey walks, question counts, exams, the grading rig.
 
-**A22 · Bridget's chat.** Step 6 · BONES. Built and merged 31 Oct 2026 on her three rulings (#167); what it built is in
-docs/OPEN_ITEMS_ARCHIVE.md. Done when a walk passes through her and back with no wrong turn (road step 6). Closes A12.
+**A22 · Bridget's chat.** Step 6 · BONES. Built and merged 31 Oct 2026 on her three rulings (#167). Done when a walk passes through her and back with no wrong turn (road step 6). Closes A12.
 
 ### 6 · Data and map
 
@@ -378,10 +350,9 @@ for each. Check later, on her word.
 stays: anything development tolerates that Node would not. Closing it means exercising the relay as
 Vercel does before a push, or a named guard per known difference. Never a second copy of the handler.
 
-**C1 · Sweep every struck line into the archive.** After v1 · BONES. Her ruling of 23 Sep 2026: no crossed-out text
-in any live document. Strikes from before it wait in CLAUDE.md, PROCESS_RULES, AGENT_RULES, CITATIONS, the
-READMEs and the card files. One document a commit; the rulebooks and card files each their own pull
-request. Proposal first, with a count of strikes per document.
+**C1 · Delete every struck line.** After v1 · BONES. No crossed-out text in any live document, and no archive copy
+(RULINGS.md, section 7). The rule files lost theirs on 22 Nov 2026. Strikes still wait in the README and in the
+knowledge packs' READMEs and card files. Proposal first, with a count per document.
 
 **SP1 · A separate GitHub account for sessions.** After v1 · BONES. A second account that can open pull requests but
 cannot merge, enforced by branch protection (only the maintainer's account may merge). First on this list: the deny
@@ -395,9 +366,9 @@ Plan: `npm audit fix` without force on a throwaway branch; all checks and the bu
 byte-identical; upgrade `mapshaper` if a release drops `geographiclib`. Lane 3; proposal first; the paused
 install scripts for `better-sqlite3` and `esbuild` stay paused.
 
-**SP3 · Switch lane 1 auto-merge on.** After v1 · PARK. The job is built and off (`LANE1_AUTOMERGE` unset in the
-repository's variables). The number gate it waited on is retired (21 Nov 2026), so it waits on her word
-alone; then flip Allow auto-merge and branch protection by hand.
+**SP3 · Switch lane 1 auto-merge on.** After v1 · PARK. The rulings page of 22 Nov 2026 says docs-only changes merge
+on their own (lane 1). The job is built and off (`LANE1_AUTOMERGE` unset in the repository's variables); it waits on
+her flipping that, Allow auto-merge and branch protection by hand.
 
 **SP4 · Pin every GitHub Action by full commit hash instead of tag.** After v1 · BONES. `actions/checkout`, `actions/setup-node`,
 `gitleaks/gitleaks-action` and any others in `.github/workflows/`, per the second reader's re-attack on #152. A tag can be moved to
