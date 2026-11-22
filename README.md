@@ -170,9 +170,9 @@ plain answer, and the citations stay on the worksheet rows.
 Each citation is one line: the document, its version, the section, the page, and a link to the
 publisher's own page. Every card carries that link — no canonical link, no card.
 
-The rules behind this are published, not internal: [CITATIONS.md](./CITATIONS.md) governs what a
-citation is and how it renders, and [AGENT_RULES.md](./AGENT_RULES.md) governs how any agent here
-speaks, when it must abstain, and what it may say about work that is not built yet.
+The rules behind this are published, not internal: [AGENT_RULES.md](./AGENT_RULES.md) governs what a
+citation is, how any agent here speaks, when it must abstain, and what it may say about work that is
+not built yet.
 
 **She is in beta**, and the console says so where she appears. Nothing she produces is a decision,
 and no standards body endorses, certifies or is affiliated with this project.
@@ -419,7 +419,7 @@ book's own — each says so below:
   canvas belongs to content; the frame sits one step lighter and quieter*, carried in whole in the
   maintainer's own words. The active navigation item rises one plane to `--card` **with the 1px
   hairline §2.3 pairs with a white card** — a fill alone is 1.31 L\* against the frame and nearly
-  invisible; that is in §2.3 too. The full record is item S9 in [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md).
+  invisible; that is in §2.3 too.
 - **Phoebe's identity colour** — **Anemone `#A04E7E`**, with **Anemone Light `#C36E9F`** on her
   antenna. Anemone was held in the book as an unclaimed spare, kept so a future role would not have
   to re-open the search; this is that use. **Version 4 §6 puts Phoebe on the roster by name**, under
@@ -462,8 +462,7 @@ book's own — each says so below:
   > at the same time showed that **live and approved did not reach the contrast §2.5 promises** —
   > 3.99:1 and 3.83:1 against the frame. Corrected values were accepted into the book at
   > **version 4.1**, and **verification was measured and left unchanged**. Nothing on this site
-  > rendered wrongly: neither colour is used as type here. Item S9 in
-  > [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) carries it.
+  > rendered wrongly: neither colour is used as type here.
 
 - **The three shadow values** — `--shadow-sm`, `--shadow-md` and `--shadow-lg` are the book's own,
   published in §4 on 30 Aug 2026. Two of them replaced values this repository had derived and sent
@@ -487,16 +486,13 @@ should be checkable on how it works as well as on what it says.
 
 | File | What it governs |
 |---|---|
-| [CLAUDE.md](./CLAUDE.md) | Engineering rules, and the rule that this repository sees only itself |
-| [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md) | How work moves: propose, approve, build, review, commit |
-| [AGENT_RULES.md](./AGENT_RULES.md) | How an agent speaks, and when it must abstain |
-| [CITATIONS.md](./CITATIONS.md) | What a citation is and how it renders |
-| [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md) | Closed items swept before 3 Oct 2026, kept in full. Items closed after that live in BUILD_LOG.md |
-| [BUILD_PLAN.md](./BUILD_PLAN.md) | The one plan file: what is being built next, and every open item, by family |
-| [BUILD_LOG.md](./BUILD_LOG.md) | How it came to stand there — append-only, one entry per session |
-| [docs/archive/](./docs/archive/README.md) | Retired documents, moved not deleted. Not current state. |
-| [docs/archive/DESIGN_CANON_for_ShellB.md](./docs/archive/DESIGN_CANON_for_ShellB.md) | Superseded by the brand book; kept as history |
-| [docs/archive/CHAT_FORMAT_RULES_for_ShellB.md](./docs/archive/CHAT_FORMAT_RULES_for_ShellB.md) | Superseded 22 Aug 2026; kept as the extraction record. Language, citations, and agent speech live in CLAUDE.md, CITATIONS.md, and AGENT_RULES.md |
+| [RULINGS.md](./RULINGS.md) | Every ruling for how the whole site behaves |
+| [FAMILY_OPEN_CLOSE.md](./FAMILY_OPEN_CLOSE.md) | How a family of work opens and closes |
+| [AGENT_RULES.md](./AGENT_RULES.md) | How an agent speaks, cites, and when it must abstain |
+| [docs/modules/](./docs/modules/) | One short rulings file per module |
+| [CLAUDE.md](./CLAUDE.md) | How this repository works: folders, checks and commands |
+| [BUILD_PLAN.md](./BUILD_PLAN.md) | The one plan file: the v1 finish line, and every open item, by family |
+| [BUILD_LOG.md](./BUILD_LOG.md) | The last three months of finished work; GitHub's history keeps the rest |
 
 ## Not in this repository
 
