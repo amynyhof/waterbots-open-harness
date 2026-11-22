@@ -10,9 +10,9 @@
  * That is the whole of what he knows, and it is why a message to him costs a
  * fraction of one to her (see _cap.ts).
  *
- * HE INHERITS AGENT_RULES.md, restated here because a served prompt cannot
- * read a repo file at runtime. AGENT_RULES.md governs; this is a copy that
- * must track it.
+ * HE IS BUILT FROM THE 19 AGENT RULES (AGENT_RULES.md, in force 22 Nov 2026),
+ * carried whole from _agentRules.generated.ts under the staleness gate.
+ * Everything else in his prompt is only what is different for him.
  *
  * HIS FACTS ARE THE MAINTAINER'S; HIS WORDS ARE HIS OWN. Maintainer's ruling 1,
  * 3 Sep 2026: the WELLINGTON-FACING region of agent-primer.md gives him facts

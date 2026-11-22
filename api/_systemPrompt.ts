@@ -31,10 +31,11 @@
  * has not been given is answered by asking for the set, never by remembering
  * one.
  *
- * SHE INHERITS AGENT_RULES.md. The base rules every agent on this site follows
- * are restated at the top of the prompt, because a served prompt cannot read a
- * repo file at runtime. AGENT_RULES.md governs; this is a copy that must track
- * it. If the two ever disagree, the file is right and this is the defect.
+ * SHE IS BUILT FROM THE 19 AGENT RULES (AGENT_RULES.md, in force 22 Nov 2026).
+ * The build script copies rules 1 to 19, never the notes for builders, into
+ * _agentRules.generated.ts, and they sit whole near the top of her prompt; its
+ * staleness gate fails a build whose copy is behind the file. Everything else
+ * in the prompt is only what is different for her.
  *
  * SHE NEVER WRITES A CITATION. She names a card by a token the console knows,
  * and the browser renders the citation from its own copy of the same file. That

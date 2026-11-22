@@ -6267,3 +6267,10 @@ There is no packing list for a file going out; the fingerprint above is the reco
 
 - **Carry in, named by the maintainer:** `RULINGS.md` (SHA-256 `2aa63e76e1aea972d31427a2472b4dc4a1e7f083e1b31844f08a1d47761856d6`) and `FAMILY_OPEN_CLOSE.md` (SHA-256 `329dc4fc814e4a57d7e4c0306c73623c09b07c6d9669e173f0f29dbee638dbda`), copied byte for byte from the handoff folder; name scan 0.
 - **Done:** every older ruling sorted against the two pages. CLAUDE.md is a short how-to note; agent rules are in AGENT_RULES.md; module rulings are in `docs/modules/`; the process rules, the citations file, the archives and the built proposals are deleted. No code changed.
+
+## 22 November 2026 — the agent rules page in force
+
+- **Carry in, named by the maintainer:** `AGENT_RULES.md` (SHA-256 `fee1929dc4d34a6e2bbbb1dfb9728fb25f4379b3fc5f06b9a13eb9f01f36c200`), copied byte for byte. Rules 1 to 19 go whole into every agent's prompt through `api/_agentRules.generated.ts`; the notes for builders never do.
+- **Done:** Wellington's, Phoebe's and Bridget's prompts are built from the 19 rules plus only what is different for each. The old base rules and every line that repeated the rules are gone, among them "I don't know is always valid" and "every reply ends with the next step". Phoebe's "That is coming is the whole of it" is gone, and she says a read as likely, more to learn or unlikely. Each agent's module file says what it adds to the project record and its reasons to call a consultant, with the gaps marked.
+- **Her ruling, 22 Nov 2026:** both size gates raised by the measured amount plus 500, nothing cut from an agent's own rules. Wellington 29,236 (was 26,199); Phoebe's largest case 205,313 (was 203,787).
+- **Not run:** the measured walk and the sample exchanges. The model key was not in this shell. The reading-level count is unchanged.

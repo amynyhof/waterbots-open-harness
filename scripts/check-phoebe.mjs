@@ -96,6 +96,10 @@ const loadApi = (name) => import(pathToFileURL(join(apiOut, name)).href);
 
 const { SYSTEM_PROMPT, RESPONSE_SCHEMA, cardsBlock, setsFor, CARD_SETS, ON_REQUEST } = await loadApi('_systemPrompt.js');
 const { PHOEBE_TOOL_MD } = await loadApi('_tool.generated.js');
+/* The 19 agent rules (AGENT_RULES.md, in force 22 Nov 2026) sit whole in her prompt. A rule they
+   carry is checked in them; a check on her own wording reads her prompt without them. */
+const { AGENT_RULES_MD } = await loadApi('_agentRules.generated.js');
+const own = (prompt) => prompt.replace(AGENT_RULES_MD, '');
 const {
   TOOL_SECTIONS,
   ROW_STATES,
@@ -442,11 +446,16 @@ expect(
    legitimately larger ceiling, and every number it has held is written here.
    The maintainer owns the one that stands: if she would rather the prompt came
    back under an earlier number, the sentences come out.
+
+   205,313 FROM 22 NOV 2026, the maintainer's ruling. The 19 agent rules
+   (AGENT_RULES.md) went into every prompt; once only the lines that repeat them
+   were cut, the largest case measured 204,813, plus 500. Nothing was cut from
+   her own rules to fit.
 --------------------------------------------------------------------------- */
 
 console.log('\n  Her prompt’s size\n');
 
-const LARGEST = 203_787;
+const LARGEST = 205_313;
 const largest = SYSTEM_PROMPT.length + cardsBlock(CARD_SETS).length;
 expect(
   'the largest case is under the measured ceiling',
@@ -479,8 +488,8 @@ expect(
   'a field is named differently in the two places she reads'
 );
 expect(
-  'she is a guide, not a gate, and the five states are rules with what each carries',
-  /guide, not a gate/.test(SYSTEM_PROMPT) &&
+  'she is a guide, not a gate (agent rule 12), and the five states are rules with what each carries',
+  SYSTEM_PROMPT.includes(AGENT_RULES_MD) && /We are guides, not gates/.test(AGENT_RULES_MD) &&
     /Fixable is the ordinary "no"/.test(SYSTEM_PROMPT) &&
     /Unknown is not a fail/.test(SYSTEM_PROMPT) &&
     /Blocked is rare and it is the card's decision, not yours/.test(SYSTEM_PROMPT),
@@ -497,21 +506,21 @@ expect(
   'the paid-site line is back, or the one-line rule is missing'
 );
 /* THE DOOR TO A PERSON, item A18, 26 Sep 2026. Offered once, only on a
-   Blocked row, pointing at the box the save door shows; rung 3 still says
-   consultants are coming everywhere else, because everywhere else there is
-   still no way to reach one. */
+   Blocked row, pointing at the box the save door shows; section 2 (the old
+   rung 3) still says consultants are coming everywhere else, because
+   everywhere else there is still no way to reach one. */
 /* THE NEXT ROUND ON #173, the maintainer's word of 14 Nov 2026: a voice card
    at the top, the order of questions (P29, P31), a closed path said in one line
    (P30), and the shared plain-words list and before-and-after pairs. */
 {
   const { PLAIN_WORDS_MD, BEFORE_AFTER_MD } = await loadApi('_plainWords.generated.js');
-  const voice = SYSTEM_PROMPT.slice(0, SYSTEM_PROMPT.indexOf('# The base rules you inherit'));
+  const voice = SYSTEM_PROMPT.slice(0, SYSTEM_PROMPT.indexOf('# The rules every agent follows'));
   expect(
     'the voice card comes first: who she is, who she talks to, the principles',
     /^You are Phoebe[^\n]*\n\n# Your voice — read this first/.test(SYSTEM_PROMPT) &&
       /warm, clear and encouraging/.test(voice) &&
       /a newcomer who knows nothing about standards or methods/.test(voice) &&
-      /Answer what was asked first\. Respond to what the visitor actually said, then ask one follow-up related to it/.test(voice) &&
+      /\*\*How you talk:\*\* respond to what the visitor actually said, then ask one follow-up related to it\./.test(voice) &&
       /Say what it means for the visitor, not what the method says\. Never repeat something already said\. Never name a document or a method unless asked/.test(voice),
     'a part of the voice card is missing'
   );
@@ -563,8 +572,9 @@ expect(
   'the door rule is missing a part'
 );
 expect(
-  'rung 3 still says consultants are coming, with the Blocked row as its one exception',
-  /Say that consultants are coming/.test(SYSTEM_PROMPT) &&
+  'section 2 still says consultants are coming, with the Blocked row as its one exception (the old rung 3, 22 Nov 2026)',
+  /\*\*A consultant is not built on this site:\*\* never offer a way to reach one; if asked, say consultants are coming\./.test(SYSTEM_PROMPT) &&
+    !/"That is coming" is the whole of it/.test(SYSTEM_PROMPT) &&
     /A Blocked row is the exception: see section 3/.test(SYSTEM_PROMPT),
   'rung 3 lost its default or its exception'
 );
@@ -678,7 +688,7 @@ expect(
 );
 expect(
   'P16, P19, P21: one thing a message, the registration question, no side notes, and the two buttons as fields',
-  /One thing per message: two or three short sentences, then one question/.test(SYSTEM_PROMPT) &&
+  /Every reply is two or three short sentences[^\n]*One question at a time\./.test(AGENT_RULES_MD) && SYSTEM_PROMPT.includes(AGENT_RULES_MD) &&
     /\*\*Registration:\*\* ask plainly whether the project is already registered with a standards body or would be new/.test(SYSTEM_PROMPT) &&
     /\*\*No teaching side notes during screening\.\*\*/.test(SYSTEM_PROMPT) &&
     /"Learn more about …" button/.test(SYSTEM_PROMPT) &&
@@ -691,9 +701,9 @@ expect(
   'a rule from the third round is missing, or a field is not in her answer'
 );
 expect(
-  'V1, 16 Nov 2026: her voice card and base rules say 3rd- to 6th-grade English, and the old wording is gone',
-  (SYSTEM_PROMPT.match(/3rd- to 6th-grade English/g) ?? []).length >= 2 && !/twelve-year-old/.test(SYSTEM_PROMPT),
-  'the reading level is missing from her prompt'
+  'her reading level is rule 1 of the agent rules, 6th grade (22 Nov 2026), and her own text carries no other',
+  SYSTEM_PROMPT.includes(AGENT_RULES_MD) && /at a 6th grade reading level/.test(AGENT_RULES_MD) && !/3rd- to 6th-grade|twelve-year-old/.test(SYSTEM_PROMPT),
+  'the rules are missing from her prompt, or an older reading level is back'
 );
 {
   const screen = readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8');
@@ -745,7 +755,7 @@ expect(
     'P23: every tone example in her prompt passes the card-word check, and the relay and the walk use the same list',
     examples.length >= 1 && examples.length <= 2 && scripted.length === 0 &&
       dirty.length === 0 &&
-      /\*\*How you talk: like a person, not a script\.\*\*/.test(SYSTEM_PROMPT) &&
+      /\*\*How you talk:\*\*/.test(SYSTEM_PROMPT) && /never from a script/.test(AGENT_RULES_MD) &&
       /Providing safe water to a community has benefits that can be counted/.test(SYSTEM_PROMPT) &&
       /cardWordsIn\(answer\.reply\)/.test(relaySource) &&
       /cardWordsIn\(res\.reply\)/.test(readFileSync(join('scripts', 'measure-phoebe-walk.mjs'), 'utf8')),
@@ -754,7 +764,7 @@ expect(
 }
 expect(
   'P10: two or three short sentences, then one question, four at most and under 400 characters, and the relay counts a long one',
-  /two or three short sentences, then one question; four sentences and 400 characters at most/.test(SYSTEM_PROMPT) &&
+  /Every reply is two or three short sentences/.test(AGENT_RULES_MD) && /Four sentences and 400 characters at most\./.test(SYSTEM_PROMPT) &&
     /Two or three short sentences, then one question/.test(RESPONSE_SCHEMA.properties.reply.description) &&
     /isLongReply\(answer\.reply\)/.test(relaySource),
   'the length rule is missing from her prompt, her answer shape or the relay'
@@ -782,8 +792,8 @@ expect(
   'a token in the cards’ own form would resolve to nothing'
 );
 expect(
-  'nothing in her prompt tells her to say anything word for word',
-  !/word for word/.test(SYSTEM_PROMPT),
+  'nothing in her prompt tells her to say anything word for word (rule 6 forbids it; the rules are read out first)',
+  !/word for word/.test(own(SYSTEM_PROMPT)),
   'a word-for-word rule appeared'
 );
 expect(

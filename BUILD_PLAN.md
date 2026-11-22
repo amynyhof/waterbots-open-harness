@@ -90,7 +90,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 |---|---|---|---|
 | 1 | **React 19 under the map**, so the open core's calculator screens can run here (#156, §9). | Nothing outside this repository. | Before-and-after map pictures she has passed; every check and the build pass. |
 | 2 | **Calvin's carbon calculator from the open core** on his Tool tab, V1 and V2, simple view and sliders on (A21). | The open core (Session C): the eight changes in #156 §1, sliders and the simple view. Pinned to the open core release that includes the sliders, as a release file. | Proofs P1 to P5 of #156 pass; she has passed the before-and-after table and the tab in the browser; **`carried/` is removed from this repository in the same swap, required for v1** (ruling 1 Nov 2026: the paid repository keeps the private original as the archive). **14 Nov 2026: calvin 0.2.0 installed, ex-ante with sliders, `carried/` deleted; P1 to P3 run. 0.2.0 has no simple view, and shows a new project no figure without a filed V1.0 fNRB: both for Session C.** Now 0.4.0, from 21 Nov 2026 (A21). |
-| 3 | **Wellington asks the core facts first**: type and class, country, how many served, people or households, and whether it is already registered for carbon (the transition). | Her rewrite of his instructions, freeing at least 249 characters plus the new question's; the gate stays at 26,199. Step 2. | The record holds the new fields; one measured run; his prompt under the gate. |
+| 3 | **Wellington asks the core facts first**: type and class, country, how many served, people or households, and whether it is already registered for carbon (the transition). | Her rewrite of his instructions, freeing room for the new question; the gate stays at 29,236. Step 2. | The record holds the new fields; one measured run; his prompt under the gate. |
 | 4 | **Calvin's chat**, on the open core's prompt, asking only what is missing (A21). | The core's `prompt.md` read against AGENT_RULES.md (#156, open point C). Steps 2 and 3. | One measured run; on a walk he opens with his facts filled and asks at most household size and, for a transition, the filed V1.0 fraction of non-renewable biomass (fNRB). |
 | 5 | **The water figure from the open core's VWBA D-3 module**, in place of this site's `vwbaD3.ts`. | Session C builds the module, with the test cases worked by hand and every step cited, in a pinned open core release. Step 2. | The hand-worked cases pass here; she has passed the water figure in the browser. |
 | 6 | **Bridget's chat** (A22, old step 6): her opening, the pin, the reading, then Calvin or back. | Nothing outside this repository. | A walk passes through her and back with no wrong turn; her eyeball. |
@@ -100,7 +100,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 
 **After v1, not needed for the finish line:** A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
-- **Wellington's prompt is 26,165 characters against a gate of 26,199** (A26, measured 22 Nov 2026). The gate moves only on her word.
+- **Wellington's prompt gate is 29,236 characters, and Phoebe's largest case 205,313** (her ruling of 22 Nov 2026: measured once the 19 agent rules went in, plus 500). The gates move only on her word.
 
 ---
 
@@ -353,6 +353,11 @@ Vercel does before a push, or a named guard per known difference. Never a second
 **C1 · Delete every struck line.** After v1 · BONES. No crossed-out text in any live document, and no archive copy
 (RULINGS.md, section 7). The rule files lost theirs on 22 Nov 2026. Strikes still wait in the README and in the
 knowledge packs' READMEs and card files. Proposal first, with a count per document.
+
+**C2 · Pointers to the old agent rules.** After v1 · BONES. Found 22 Nov 2026, when the 19-rule page replaced the old
+`AGENT_RULES.md`. Pack READMEs still point at its "specialist contract" and "abstention ladder" (`knowledge-packs/README.md`,
+the `bridget-map`, `calvin-quantify`, `vwba-2.0` and `gs-paa-v2.0` READMEs), the shared primer's notes name "rung 2", and the
+sealed water eligibility cards point at its "Pace and posture" section. None reaches a prompt. One docs pass; the sealed cards on her word.
 
 **SP1 · A separate GitHub account for sessions.** After v1 · BONES. A second account that can open pull requests but
 cannot merge, enforced by branch protection (only the maintainer's account may merge). First on this list: the deny
