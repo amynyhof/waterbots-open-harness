@@ -37,10 +37,9 @@
 
 import { HER_PACKS, section } from './worksheet.generated';
 import { stateOf, type Sheet } from './worksheetState';
-import type { MethodPack } from './methodPacks';
 import { pathwayKind } from './projectTypes.generated';
 import { HANDOFF_LANDING } from './site';
-import { isWorkedExample, type Visit } from './visit';
+import { WATER_METHOD_ID, WATER_METHOD_NAME, type Visit, type WaterEstimate } from './visit';
 
 /**
  * The pack whose rows cross today.
@@ -155,12 +154,32 @@ function sealState(state: string): 'unchecked' | 'met' | 'not-yet' {
   return 'not-yet';
 }
 
-export function buildSeal(
-  visit: Visit,
-  sheet: Sheet,
-  packs: MethodPack[],
-  person: PersonAsk = NO_PERSON
-): SealBody {
+/**
+ * VIOLET'S D-3 ANSWERS IN THE SAVE, from 22 Nov 2026 — what the visitor set on
+ * her screen, in the same shape the site's own pack sent: one entry, its key
+ * kept, each answer a short text, never a figure. People served are not here:
+ * they are the record's, and travel there. Her screen computes; nothing here does.
+ */
+function waterAnswers(water: WaterEstimate): Record<string, string> {
+  const { input } = water;
+  const answers: Record<string, string> = {};
+  const put = (key: string, value: number | string | undefined) => {
+    if (value !== undefined && value !== '') answers[key] = String(value);
+  };
+  put('view', input.view);
+  put('option', input.option);
+  put('withoutProjectM3PerYear', input.withoutProjectM3PerYear);
+  put('accessLevel', input.accessLevel);
+  put('meteredM3PerYear', input.meteredM3PerYear);
+  put('flowM3PerHour', input.flowM3PerHour);
+  put('operatingHoursPerYear', input.operatingHoursPerYear);
+  put('litresPerPersonPerDay', input.litresPerPersonPerDay?.value);
+  put('litresPerPersonPerDaySource', input.litresPerPersonPerDay?.source);
+  put('daysOfAccessPerYear', input.daysOfAccessPerYear);
+  return answers;
+}
+
+export function buildSeal(visit: Visit, sheet: Sheet, person: PersonAsk = NO_PERSON): SealBody {
   const { context, pin } = visit;
   const field = (name: 'does' | 'type' | 'gsClass' | 'stage' | 'place' | 'name'): SealField => ({
     value: context[name],
@@ -205,25 +224,18 @@ export function buildSeal(
         ...(forward ? { routeForward: forward } : {}),
       };
     }),
-    packs: packs.flatMap((pack) => {
-      const values = visit.packValues[pack.key];
-      if (!values) return [];
-      const answers: Record<string, string> = {};
-      for (const [key, value] of Object.entries(values)) {
-        if (typeof value === 'string' && value !== '') answers[key] = value;
-      }
-      if (Object.keys(answers).length === 0) return [];
-      return [
-        {
-          key: pack.key,
-          name: pack.name,
-          /* The pack's own word. A classification, never a figure. */
-          status: pack.compute(values).kind,
-          workedExample: isWorkedExample(pack, values),
-          answers,
-        },
-      ];
-    }),
+    packs: visit.water
+      ? [
+          {
+            key: WATER_METHOD_ID,
+            name: WATER_METHOD_NAME,
+            /* A classification, never a figure: whole once her engine has every value it needs. */
+            status: visit.water.result.vwbM3PerYear !== null ? 'complete' : 'incomplete',
+            workedExample: false,
+            answers: waterAnswers(visit.water),
+          },
+        ]
+      : [],
     /* Only a ticked box sends anything. The note is the visitor's own, trimmed
        of blank space at its ends and nothing else; left empty, it is not sent. */
     ...(person.wanted

@@ -1,6 +1,13 @@
 /**
  * Method packs — the tools that live inside the Quantification step.
  *
+ * FROM 22 NOV 2026 NO PACK OF THIS SITE'S OWN IS REGISTERED, the maintainer's
+ * word on #189. Both calculators on Quantify are the open core's: carbon from
+ * @waterbots/calvin and water from Violet's D-3, @waterbots/violet. The empty
+ * seat that registered this site's own packs is gone with its checks. The shape
+ * below stays only because src/lib/gsSdws.ts, proof P3's "before", is written
+ * in it, until that file retires.
+ *
  * THE STEP IS QUANTIFICATION. A PACK IS ONE TOOL INSIDE IT. That separation is
  * the whole point of this file: the same seat has to hold carbon screening,
  * the other VWBA D-methods, and methods from standards this console does not
@@ -24,7 +31,6 @@
  */
 
 import type { Citation } from './citation';
-import { VWBA_D3 } from './vwbaD3';
 
 /**
  * How confident a pack's output is allowed to sound.
@@ -292,51 +298,63 @@ export interface MethodPack extends PackListing {
 export type RegisteredPack = MethodPack | PlannedPack;
 
 /**
- * Every pack this console carries.
- *
- * Adding a pack here adds its tab — there is no second place to register one.
- *
- * ~~Carbon screening is named, planned, and not built.~~ Two carbon packs are
- * live from 2 Sep 2026 and the planned placeholder they replace is gone with
- * them. The water pack keeps the first tab.
+ * THE WATER CALCULATOR'S LISTING — Violet's D-3, from 22 Nov 2026. What Calvin's
+ * Knowledge pack row and the Commons card say about it, in the words this site's
+ * own D-3 pack carried (the shelf line drafted 11 Sep 2026, the measures and
+ * scope of 1 Sep 2026), so nothing a visitor reads changes with the swap. The
+ * method, its values and its sources on the screen are her package's.
  */
-/* ~~Two carbon packs are live~~ — FROM 14 NOV 2026 CARBON IS THE OPEN CORE'S
-   CALCULATOR, @waterbots/calvin 0.4.1 (src/components/CalvinCalculator.tsx), on
-   the maintainer's word. This site's own carbon screening, src/lib/gsSdws.ts, is
-   no longer registered: it stays only as the "before" side of the proposal's
-   proof P3, checked by scripts/check-gs-sdws.mjs, until it retires. The water
-   pack stays until Violet's module arrives (proposal step 5). */
-export const METHOD_PACKS: RegisteredPack[] = [VWBA_D3];
+export const WATER_D3_LISTING: {
+  name: string;
+  scope: string;
+  measures: string;
+  indicator: string;
+  shelfLine: string;
+  shelfDocument: string;
+  citation: Citation;
+} = {
+  name: 'VWBA 2.0 · D-3 Volume Provided',
+  scope: 'WASH — household or community water supply · ex-ante',
+  measures:
+    'How much water a year a supply project provides to the people it serves, ' +
+    'over and above what they were already getting without it.',
+  indicator:
+    'Volume provided, in m³ per year. Volumetric water benefit = volume provided with the project − volume provided without the project',
+  shelfLine: 'A first estimate of the drinking water a supply project will provide in a year, before it is built.',
+  shelfDocument: 'VWBA 2.0',
+  citation: {
+    document: 'Volumetric Water Benefit Accounting 2.0',
+    version: 'Version 1, September 2025',
+    section: 'Appendix D · method D-3',
+    page: 'pp. 44–46',
+    full:
+      'World Resources Institute, LimnoTech, Bluerisk, and Bonneville Environmental Foundation. ' +
+      'Volumetric Water Benefit Accounting 2.0. Version 1, September 2025. ' +
+      'Appendix D, method D-3, pp. 44–46. CC BY 4.0.',
+    href: 'https://doi.org/10.46830/wrigb.23.00112',
+  },
+};
 
 /**
- * THE CALCULATORS FROM THE OPEN CORE, beside the site's own packs — 14 Nov 2026.
- * They are not method packs here (they bring their own screens), but the
+ * THE CALCULATORS ON QUANTIFY, ALL FROM THE OPEN CORE — water first, then
+ * carbon, as Calvin's chips show them. They bring their own screens; the
  * agents' primer lists what is fitted to Quantify, so each says, in one clause,
- * what it measures. scripts/build-prompt-modules.mjs reads this list with the
- * live packs; it is never typed into the primer.
+ * what it measures. scripts/build-prompt-modules.mjs reads this list; it is
+ * never typed into the primer. The water line is the one this site's own D-3
+ * pack carried, signed by the maintainer on 1 Sep 2026, so the primer reads the
+ * same.
  */
 export const CORE_CALCULATORS: { name: string; primerLine: string }[] = [
+  {
+    name: 'VWBA 2.0 · D-3 Volume Provided',
+    primerLine: 'the water volume a household or community supply project provides',
+  },
   {
     name: 'Carbon · V1.0 and V2.0, the open core’s calculator',
     primerLine:
       'the carbon reduction a safe-drinking-water project screens at under the Gold Standard method, legacy and Paris-aligned, ex-ante',
   },
 ];
-
-/** The packs that can answer, in tab order. */
-export function livePacks(): MethodPack[] {
-  return METHOD_PACKS.filter((p): p is MethodPack => p.state === 'live');
-}
-
-/** The first pack that can answer, or null when none can. */
-export function fittedPack(): MethodPack | null {
-  return livePacks()[0] ?? null;
-}
-
-/** A pack by key, if it is live. */
-export function packByKey(key: string): MethodPack | null {
-  return livePacks().find((p) => p.key === key) ?? null;
-}
 
 /**
  * A comparison the worksheet draws between two packs' headlines.

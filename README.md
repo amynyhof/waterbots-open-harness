@@ -139,16 +139,13 @@ the same thirty messages a day.
   replies land on the desk, never on a row — and the save door to waterbots.ai. A click on the map
   pins a basin for the visit. What the visitor tells him fills the context card, labelled as from
   the conversation, and never overwrites what they typed.
-- **Quantification step.** Three method packs in one pack-keyed slot. **VWBA 2.0 · D-3 Volume
-  Provided**, for household and community water supply, ex-ante, Option 3: three questions can stop
-  the number outright, the formula is written out with the visitor's own figures in it, and **a
-  blank without-project volume is never read as zero**. **Carbon · Legacy V1** and **Carbon · PAA
-  v2.0**, Gold Standard's *Emission Reductions from Safe Drinking Water Supply* in both versions,
-  from one module that differs in one input — the non-renewable share of biomass, filled from the
-  CDM's expired defaults on the legacy tab and from MoFuSS on the PAA tab, both cited. The emission
-  factor is derived under a stated standard profile and labelled derived; the PAA tab says which
-  v2.0 adjustments it does not apply; and the transition delta between the two is one line under
-  the tabs. **Blank is never zero on any pack.**
+- **Quantification step.** Calvin's two calculators, both from the open core and both ex-ante,
+  installed from the release `calvin-violet-v0.5.0`. **Carbon credits** is `@waterbots/calvin`
+  0.5.0: Gold Standard's *Emission Reductions from Safe Drinking Water Supply*, V1.0 and V2.0, its
+  engine doing every sum. **Water benefits** is Violet's **VWBA 2.0 · D-3 Volume Provided**,
+  `@waterbots/violet` 0.5.0, for household and community water supply: people served come from
+  the project record, every result says "Draft — pending expert review", and **a blank
+  without-project volume is never read as zero**. This site works none of either figure out.
 - **A shared chat layer** that every agent on this site uses, so citations are rendered one way
   rather than reinvented per agent.
 
@@ -241,9 +238,10 @@ otherwise cost twenty-one real messages to confirm by hand; `check-basemap-key` 
 bundle for the basemap key, because a build without one produces a map that works, looks healthy,
 and is watermarked on every tile; and `check-reply-guard` proves the relay refuses an answer too
 short to be one, because that fault shows up in about two requests in a hundred and waiting for it
-is not a test; `check-vwba-d3` proves the water pack answers the way the method says — above all
-that a blank without-project volume is never treated as zero, which is the one way this calculation
-can produce a large, confident, wrong number with nothing looking broken; and `check-gs-sdws` proves
+is not a test; `check-calvin-package` proves the open core's calculators are the release's own files,
+re-runs Calvin's reference cases, and proves Violet's water calculator never treats a blank
+without-project volume as zero, which is the one way that calculation can produce a large,
+confident, wrong number with nothing looking broken; and `check-gs-sdws` proves
 both carbon packs reproduce every recorded reference figure to four decimal places, that the
 derived emission factor lands on every recorded point, and that a blank share, a blank leakage
 figure or an unchosen method leaves the result honest rather than zero; and `check-wellington`
@@ -266,7 +264,6 @@ node scripts/check-api-exports.mjs
 node scripts/check-visitor-id.mjs
 node scripts/check-cap.mjs
 node scripts/check-reply-guard.mjs
-node scripts/check-vwba-d3.mjs
 node scripts/check-gs-sdws.mjs
 node scripts/check-wellington.mjs
 node scripts/check-roster.mjs

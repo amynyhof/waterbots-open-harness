@@ -112,7 +112,6 @@ import {
 } from './lib/worksheetState';
 import { eligibilityDone as sheetDone } from './lib/visit';
 import { HER_PACKS } from './lib/worksheet.generated';
-import { fittedPack, livePacks, type PackValues } from './lib/methodPacks';
 import {
   EMPTY_VISIT,
   applyEligibilityProgress,
@@ -130,9 +129,8 @@ import {
   type Learned,
   type MapPin,
   type Visit,
+  type WaterEstimate,
 } from './lib/visit';
-
-const LIVE_PACKS = livePacks();
 
 /**
  * Prints the screening report and nothing else (S21). The page is marked while
@@ -274,10 +272,11 @@ export default function App() {
     setVisit((v) => pinnedVisit(v, pin, pathwayAllowsQuantify(v, sheetRef.current)));
   }, []);
 
-  /* Which pack's tab is open. Held here so a step away and back keeps it. */
-  const [activePack, setActivePack] = useState<string>(() => fittedPack()?.key ?? '');
-  const setPackValues = useCallback((packKey: string, values: PackValues) => {
-    setVisit((v) => ({ ...v, packValues: { ...v.packValues, [packKey]: values } }));
+  /* The water estimate, Violet's, as her screen hands it over after every
+     change (src/components/VioletWater.tsx). Kept in the visit, so the crew
+     line, the report and the save read it. */
+  const setWater = useCallback((water: WaterEstimate) => {
+    setVisit((v) => ({ ...v, water }));
   }, []);
 
   /* WELLINGTON'S ONE CONVERSATION, held here rather than inside the desk so
@@ -406,8 +405,9 @@ export default function App() {
     void askReturned();
   }, [surface, visit.stage, askReturned]);
 
-  /* CALVIN'S CARBON CALCULATOR IS THE OPEN CORE'S — @waterbots/calvin 0.4.1
-     from 21 Nov 2026 (0.3.0 from 16 Nov, 0.2.0 from 14 Nov), the maintainer's word. The project
+  /* CALVIN'S CARBON CALCULATOR IS THE OPEN CORE'S — @waterbots/calvin 0.5.0
+     from 22 Nov 2026 (0.4.1 from 21 Nov, 0.3.0 from 16 Nov, 0.2.0 from 14 Nov), the maintainer's word,
+     and the water calculator beside it is Violet's D-3, from the same release. The project
      comes from the visit's record alone (src/lib/calvinProject.ts); the engine
      does every sum. ITS STATE LIVES WITH THE CALCULATOR from 16 Nov 2026
      (CalvinCarbon in src/components/CalvinCalculator.tsx), which opens again
@@ -444,14 +444,14 @@ export default function App() {
   /* FEWER LINES UNTIL THERE IS NEWS — the maintainer's word of 21 Nov 2026:
      a member's line shows once it says what they found, or while their step
      is in view; until then the card is the face, the name and the role. */
-  const crewAll = useMemo(() => crewStatus(visit, sheet, LIVE_PACKS, carbon), [visit, sheet, carbon]);
+  const crewAll = useMemo(() => crewStatus(visit, sheet, carbon), [visit, sheet, carbon]);
   const crew = useMemo(() => {
     const news = crewNews(crewAll);
     const shown: Partial<Record<Surface, string>> = {};
     for (const key of Object.keys(crewAll) as Surface[]) if (news[key] || key === surface) shown[key] = crewAll[key];
     return shown;
   }, [crewAll, surface]);
-  const progress = useMemo(() => journeyProgress(visit, sheet, LIVE_PACKS), [visit, sheet]);
+  const progress = useMemo(() => journeyProgress(visit, sheet), [visit, sheet]);
 
   /* THE BRIDGE (item S7, built 8 Sep 2026). The click seals the visit as it
      stands — the record with its source tags, the pin, the worksheet, each
@@ -472,7 +472,7 @@ export default function App() {
   const onSeal = useCallback(async () => {
     setSealing({ kind: 'sealing' });
     try {
-      const seal = buildSeal(visit, sheet, LIVE_PACKS, showPerson ? person : NO_PERSON);
+      const seal = buildSeal(visit, sheet, showPerson ? person : NO_PERSON);
       const { ticketId } = await sealVisit(seal, seal.wantsHuman ? teamRows(sheet) : undefined);
       setSealing({ kind: 'sealed' });
       window.location.assign(handoffAddress(ticketId));
@@ -668,8 +668,8 @@ export default function App() {
               </div>
 
               {/* CALVIN'S SCREEN, kept mounted like the others so its tab
-                  stays where the visitor left it. The worksheet is its Tool
-                  tab; the pack answers are the shell's, in the visit. */}
+                  stays where the visitor left it. His two calculators are its
+                  Tool tab; the water estimate is the shell's, in the visit. */}
               <div
                 style={{ position: 'absolute', inset: 0, visibility: onQuantification ? undefined : 'hidden' }}
                 aria-hidden={!onQuantification}
@@ -677,10 +677,7 @@ export default function App() {
                 <CalvinScreen
                   project={project}
                   onSummary={setCalvinSummary}
-                  activeKey={activePack}
-                  onSelect={setActivePack}
-                  allValues={visit.packValues}
-                  onChange={setPackValues}
+                  onWater={setWater}
                 />
               </div>
             </main>
@@ -741,7 +738,7 @@ export default function App() {
 
       {/* S21 — the screening report, print-only; "Export screening report"
           in the left rail opens the print dialog on it. */}
-      <ScreeningReport visit={visit} sheet={sheet} packs={LIVE_PACKS} showPerson={showPerson} carbon={carbon} />
+      <ScreeningReport visit={visit} sheet={sheet} showPerson={showPerson} carbon={carbon} />
     </div>
   );
 }

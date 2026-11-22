@@ -458,7 +458,7 @@ expect(
   placed.stage === 'learn' && currentInvite(placed) === null,
   JSON.stringify(placed.stage)
 );
-const derivedWhileLearning = deskRows(placed, NO_SHEET, []);
+const derivedWhileLearning = deskRows(placed, NO_SHEET);
 expect(
   'deskRows would still make a map row from place, which is why Next Steps must not use them raw',
   derivedWhileLearning.some((r) => r.from === 'bridget'),
@@ -466,8 +466,8 @@ expect(
 );
 expect(
   'nextStepRows hides the map row during learn, so place cannot force Map first',
-  nextStepRows(placed, NO_SHEET, []).every((r) => r.from !== 'bridget') && nextStepRows(placed, NO_SHEET, []).length === 0,
-  JSON.stringify(nextStepRows(placed, NO_SHEET, []))
+  nextStepRows(placed, NO_SHEET).every((r) => r.from !== 'bridget') && nextStepRows(placed, NO_SHEET).length === 0,
+  JSON.stringify(nextStepRows(placed, NO_SHEET))
 );
 const invited = applyWellingtonRoute(placed, 'eligibility', 'Phoebe can take this on the Eligibility step.');
 expect(
@@ -476,9 +476,9 @@ expect(
     invited.eligibilityInvite === 'Phoebe can take this on the Eligibility step.' &&
     currentInvite(invited)?.action.surface === 'eligibility' &&
     currentInvite(invited)?.primary === true &&
-    nextStepRows(invited, NO_SHEET, [])[0]?.key === 'invite-eligibility' &&
-    nextStepRows(invited, NO_SHEET, []).every((r) => r.from !== 'bridget'),
-  JSON.stringify(nextStepRows(invited, NO_SHEET, []))
+    nextStepRows(invited, NO_SHEET)[0]?.key === 'invite-eligibility' &&
+    nextStepRows(invited, NO_SHEET).every((r) => r.from !== 'bridget'),
+  JSON.stringify(nextStepRows(invited, NO_SHEET))
 );
 expect(
   'the Eligibility invite names the Eligibility step, so the shell can clear the row once the visitor is on it',
@@ -511,7 +511,7 @@ expect(
   handed.stage === 'partners' &&
     handed.invitedPartners === false &&
     currentInvite(handed)?.action.surface === 'desk' &&
-    nextStepRows(handed, doneSheet, [])[0]?.key === 'invite-desk',
+    nextStepRows(handed, doneSheet)[0]?.key === 'invite-desk',
   JSON.stringify(currentInvite(handed))
 );
 const mapped = applyWellingtonRoute(handed, 'map', 'Pin the basin on the Partners step.');
@@ -529,7 +529,7 @@ const pinnedVisit = {
   ...mapped,
   pin: { hybasId: 1, pfafId: 1, level: 6, stressLabel: 'High', subAreaKm2: 100 },
 };
-const pinnedRows = nextStepRows(pinnedVisit, NO_SHEET, []).filter((row) => !rowTaken(row, 'desk', pinnedVisit));
+const pinnedRows = nextStepRows(pinnedVisit, NO_SHEET).filter((row) => !rowTaken(row, 'desk', pinnedVisit));
 expect(
   'once a basin is pinned, the invite to the map clears, his invite to Quantify lands first, and the basin\'s water-stress reading stays as a record',
   pinnedRows.length > 0 &&
@@ -554,7 +554,7 @@ expect(
 expect(
   'only a row that sends the visitor somewhere clears: the pinned basin\'s reading, Phoebe\'s readings and Calvin\'s figures are record facts and stay (ruled 30 Sep 2026)',
   (() => {
-    const bridget = nextStepRows(pinnedVisit, NO_SHEET, []).find((row) => row.key === 'bridget');
+    const bridget = nextStepRows(pinnedVisit, NO_SHEET).find((row) => row.key === 'bridget');
     return (
       bridget !== undefined &&
       rowTaken(bridget, 'map', pinnedVisit) === false &&
@@ -570,21 +570,21 @@ expect(
 expect(
   'at Partners the map is asked for once: the invite asks, and her own ask for the pin waits until Quantify',
   (() => {
-    const keys = nextStepRows(mapped, NO_SHEET, []).map((row) => row.key);
-    const before = nextStepRows(handed, NO_SHEET, []).map((row) => row.key);
-    const later = nextStepRows({ ...mapped, stage: 'quantify' }, NO_SHEET, []).map((row) => row.key);
+    const keys = nextStepRows(mapped, NO_SHEET).map((row) => row.key);
+    const before = nextStepRows(handed, NO_SHEET).map((row) => row.key);
+    const later = nextStepRows({ ...mapped, stage: 'quantify' }, NO_SHEET).map((row) => row.key);
     return keys.includes('invite-partners') && !keys.includes('bridget') && !before.includes('bridget') && later.includes('bridget');
   })(),
-  JSON.stringify(nextStepRows(mapped, NO_SHEET, []).map((row) => row.key))
+  JSON.stringify(nextStepRows(mapped, NO_SHEET).map((row) => row.key))
 );
 const pinHere = { hybasId: 2, pfafId: 2, level: 6, stressLabel: 'Low (<10%)', subAreaKm2: 50 };
 const pinnedOn = pinVisit(mapped, pinHere, true);
 expect(
   'a pin at Partners, where a pathway read allows it, moves the visit to Quantify, so he never sends them back to the map',
   pinnedOn.stage === 'quantify' && pinnedOn.invitedQuantify === true && pinnedOn.pin === pinHere &&
-    nextStepRows(pinnedOn, NO_SHEET, [])[0]?.key === 'invite-quantify' &&
-    nextStepRows(pinnedOn, NO_SHEET, []).some((row) => row.key === 'bridget' && /Low/.test(row.sentence)),
-  JSON.stringify({ stage: pinnedOn.stage, rows: nextStepRows(pinnedOn, NO_SHEET, []).map((row) => row.key) })
+    nextStepRows(pinnedOn, NO_SHEET)[0]?.key === 'invite-quantify' &&
+    nextStepRows(pinnedOn, NO_SHEET).some((row) => row.key === 'bridget' && /Low/.test(row.sentence)),
+  JSON.stringify({ stage: pinnedOn.stage, rows: nextStepRows(pinnedOn, NO_SHEET).map((row) => row.key) })
 );
 expect(
   'where no pathway read allows Quantify the pin is kept and the stage stays, so nothing is invited past it',
@@ -720,7 +720,7 @@ expect(
 );
 expect(
   'W27: the right panel is the crew, one plain status line each, with no next-step rows (14 Nov 2026)',
-  /crewStatus\(visit, sheet, LIVE_PACKS, carbon\)/.test(appSource) && /status=\{crew\}/.test(appSource) && !/nextStepRows/.test(appSource),
+  /crewStatus\(visit, sheet, carbon\)/.test(appSource) && /status=\{crew\}/.test(appSource) && !/nextStepRows/.test(appSource),
   'the right panel still draws next-step rows'
 );
 expect(

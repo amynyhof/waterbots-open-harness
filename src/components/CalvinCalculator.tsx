@@ -1,7 +1,7 @@
 /**
  * Calvin's carbon calculator — the open core's, installed from the release
- * calvin-v0.4.1 (@waterbots/calvin 0.4.1, core 0.1.1, engine gs4gg-carbon 0.19.0) from
- * 21 Nov 2026; calvin-v0.3.0 from 16 Nov 2026; first calvin-v0.2.0, on the maintainer's word of 14 Nov 2026 (proposal docs/proposals/calvin-from-open-core.md,
+ * calvin-violet-v0.5.0 (@waterbots/calvin 0.5.0, core 0.1.1, engine gs4gg-carbon 0.19.0) from
+ * 22 Nov 2026; calvin-v0.4.1 from 21 Nov 2026; calvin-v0.3.0 from 16 Nov 2026; first calvin-v0.2.0, on the maintainer's word of 14 Nov 2026 (proposal docs/proposals/calvin-from-open-core.md,
  * step 2).
  *
  * THE SAME CALCULATOR AND LOOK AS THE PAID SITE, LOCKED TO EX-ANTE. The state
@@ -9,8 +9,9 @@
  * analysis would open as ex-ante, and the sliders are on.
  *
  * TWO SWITCHES FROM 0.4.0, the maintainer's word of 21 Nov 2026. `unpinFigureBlock`
- * everywhere: the block of headline figures scrolls with the rows, as her tablet walk
- * of 16 Nov 2026 asked (it was a CSS override until then). `hideExportButton` on
+ * everywhere: the smaller figures scroll with the rows, as her tablet walk of 16 Nov
+ * 2026 asked (it was a CSS override until then); from 0.5.0 the main credit tiles stay
+ * pinned at the top either way, and on a phone only the tiles pin. `hideExportButton` on
  * Quantify: the left rail's "Export screening report" is the one export there, and it
  * carries his figure and full working; the Commons, which has no screening report,
  * keeps his export, as ruled on 16 Nov 2026 (it was hidden by its title until then). The engine does every
@@ -22,8 +23,11 @@
  * this site passes none: the save door is this site's, the site menu's one button.
  *
  * THE HOST'S HEADER. The lens takes the host's own top. On the console it says
- * where the facts come from — the project record on the left — and on the
- * Commons, which holds no record, it is a small form (CommonsSeats.tsx).
+ * only what the record still lacks, when it lacks something: the introduction
+ * that stood there ("Calvin reads the facts from your project record, on the
+ * left …") came out on 22 Nov 2026, her word on #189, as Calvin's 0.5.0 README
+ * offers. On the Commons, which holds no record, it is a small form
+ * (CommonsSeats.tsx).
  *
  * STYLED BY THIS SITE'S TOKENS. The wrapper is `.wb-calvin`: src/styles/calvin.css
  * maps the core's colour names to this site's, and its classes are copied,
@@ -67,16 +71,22 @@ export default function CalvinCalculator({
      after her tablet walk: the side column squeezed the figures to about
      100px at tablet width. The core's lens (where the facts come from, its
      note, Export report) sits above the calculator, full width, and scrolls
-     away with it; the work surface takes the whole width below. */
+     away with it; the work surface takes the whole width below.
+     FROM 0.5.0 THE LENS HOLDS ONLY THE HOST'S TOP AND CALVIN'S BUTTONS, so on
+     Quantify, with nothing missing and his export hidden, it would be an empty
+     band: it is drawn only when it has something to hold (22 Nov 2026). */
+  const lensHolds = Boolean(header) || calc.exportButton || calc.canSave || calc.readOnly;
   return (
     <div className="wb-calvin wb-calvin-stack" style={{ position: 'absolute', inset: 0, overflowY: 'auto', background: 'var(--paper)' }}>
-      <section
-        aria-label="The calculator's project facts and controls"
-        className="wb-calvin-lens"
-        style={{ background: 'var(--card)', borderBottom: '1px solid var(--line)', padding: '12px 18px 14px' }}
-      >
-        <CalculatorLens calc={calc} header={header} />
-      </section>
+      {lensHolds && (
+        <section
+          aria-label="The calculator's project facts and controls"
+          className="wb-calvin-lens"
+          style={{ background: 'var(--card)', borderBottom: '1px solid var(--line)', padding: '12px 18px 14px' }}
+        >
+          <CalculatorLens calc={calc} header={header} />
+        </section>
+      )}
       <div style={{ padding: '14px 18px 24px', maxWidth: 980 }}>
         <CalculatorWork calc={calc} project={project} appVersion={CALVIN_PACKAGE_VERSION} tab="calculator" />
       </div>
@@ -206,16 +216,18 @@ function WorkingInReport({ calc, project }: { calc: CalculatorState; project: Ca
   );
 }
 
-/** The console's header: where the facts come from, in a visitor's words. */
+/**
+ * The console's header: only what the record still lacks, in a visitor's
+ * words, and nothing when it lacks nothing. The record is filled by talking to
+ * Wellington; the left rail has no box for the place, so the line no longer
+ * says to type it there.
+ */
 export function RecordFacts({ missing }: { missing: string[] }) {
+  if (missing.length === 0) return null;
   return (
     <div style={{ marginBottom: 12 }}>
       <p className="t-caption" style={{ margin: 0, color: 'var(--ink-2)' }}>
-        Calvin reads the facts from your project record, on the left: what kind of water system it is, the
-        country, and how many people it serves.
-        {missing.length > 0 && (
-          <> Still needed: {missing.join(', ')}. Tell Wellington, or type the country into “Where it is”.</>
-        )}
+        Still needed: {missing.join(', ')}. Tell Wellington.
       </p>
     </div>
   );

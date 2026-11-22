@@ -766,17 +766,23 @@ if (compileLib.status !== 0) {
 writeFileSync(join(libOut, 'package.json'), '{"type":"commonjs"}');
 const requireLib = createRequire(import.meta.url);
 const { buildSeal, handoffAddress, teamRows } = requireLib(join(libOut, 'handoff.js'));
-const { livePacks } = requireLib(join(libOut, 'methodPacks.js'));
 const { EMPTY_VISIT, typedContext, learnedContext, pinnedContext } = requireLib(join(libOut, 'visit.js'));
 const { pathwayKind } = requireLib(join(libOut, 'projectTypes.generated.js'));
 
-/* THE SEAL'S WORKED-EXAMPLE FLAG IS STILL HELD, ON A PACK THAT HAS ONE. From
-   14 Nov 2026 the only live pack, water, carries no worked example (carbon is
-   the open core's calculator), so the old carbon pack, still in the tree until
-   it retires, stands in for one here. The seal reads whatever packs it is given. */
-const { GS_SDWS_PAA_V2 } = requireLib(join(libOut, 'gsSdws.js'));
-const packs = [...livePacks(), GS_SDWS_PAA_V2];
-const examplePack = packs.find((p) => p.example !== undefined);
+/* THE WATER ESTIMATE IN THE SEAL, from 22 Nov 2026: Violet's D-3 screen hands the
+   site what the visitor set and what her engine gave back. A MADE-UP estimate
+   stands in here, round numbers and no real project: only its shape matters. */
+const madeUpWater = {
+  input: {
+    view: 'ex-ante',
+    option: 'beneficiaries',
+    withoutProjectM3PerYear: 0,
+    accessLevel: 'full',
+    daysOfAccessPerYear: 300,
+    population: { mode: 'people', served: 100 },
+  },
+  result: { status: 'Draft — pending expert review', vwbM3PerYear: 1500, awaiting: [] },
+};
 const pin = { hybasId: 1040041430, pfafId: 1, level: 4, stressLabel: 'Arid and Low Water Use', subAreaKm2: 87466 };
 let context = typedContext(EMPTY_VISIT.context, 'name', 'Test spring');
 context = learnedContext(context, { does: 'Protects a spring and pipes it to a village', type: 'C-11', stage: 'running' });
@@ -784,7 +790,7 @@ context = pinnedContext(context, pin);
 const visit = {
   context,
   pin,
-  packValues: examplePack ? { [examplePack.key]: { ...examplePack.example.values } } : {},
+  water: madeUpWater,
 };
 /* The worksheet as the shell holds it from 25 Sep 2026: rows keyed by pack and
    by the row's own id, in five states. The seal maps them onto the three words
@@ -799,7 +805,7 @@ const sheet = {
   },
   sorts: {},
 };
-const built = buildSeal(visit, sheet, packs);
+const built = buildSeal(visit, sheet);
 const reading = readSeal(built);
 
 expect('the seal the desk builds is one the server accepts', 'seal' in reading, JSON.stringify(reading));
@@ -853,11 +859,21 @@ expect(
   JSON.stringify(built.worksheet)
 );
 expect(
-  'a pack filled with its worked example is flagged worked-example, with the pack’s own word beside it',
-  examplePack !== undefined && built.packs.length === 1 && built.packs[0].workedExample === true &&
-    ['complete', 'incomplete', 'pending', 'blocked'].includes(built.packs[0].status),
+  'the water estimate crosses as one entry under its old key, whole, never a worked example',
+  built.packs.length === 1 && built.packs[0].key === 'vwba-2.0-d3-volume-provided' && built.packs[0].status === 'complete' &&
+    built.packs[0].workedExample === false,
   JSON.stringify(built.packs)
 );
+expect(
+  'the water answers carry what the visitor set and not people served, which travel on the record',
+  built.packs[0]?.answers.daysOfAccessPerYear === '300' && built.packs[0]?.answers.withoutProjectM3PerYear === '0' &&
+    !Object.keys(built.packs[0]?.answers ?? {}).some((k) => /population|served/i.test(k)),
+  JSON.stringify(built.packs[0]?.answers)
+);
+{
+  const partWay = buildSeal({ ...visit, water: { ...madeUpWater, result: { ...madeUpWater.result, vwbM3PerYear: null } } }, sheet);
+  expect('a water estimate still waiting on a value crosses as incomplete', partWay.packs[0]?.status === 'incomplete', JSON.stringify(partWay.packs));
+}
 const builtText = JSON.stringify(built);
 expect(
   'the seal carries no figure, no headline and no conversation',
@@ -874,13 +890,13 @@ expect(
   !('wantsHuman' in built) && !('humanNote' in built),
   Object.keys(built).join(', ')
 );
-const ticked = buildSeal(visit, sheet, packs, { wanted: true, note: '  Please look at criterion 4.  ' });
+const ticked = buildSeal(visit, sheet, { wanted: true, note: '  Please look at criterion 4.  ' });
 expect(
   'a ticked box sends the ask and the note, trimmed at its ends, and the server accepts it',
   ticked.wantsHuman === true && ticked.humanNote === 'Please look at criterion 4.' && 'seal' in readSeal(ticked),
   JSON.stringify({ wantsHuman: ticked.wantsHuman, humanNote: ticked.humanNote })
 );
-const tickedBlank = buildSeal(visit, sheet, packs, { wanted: true, note: '   ' });
+const tickedBlank = buildSeal(visit, sheet, { wanted: true, note: '   ' });
 expect(
   'a ticked box with an empty note sends the ask alone',
   tickedBlank.wantsHuman === true && !('humanNote' in tickedBlank) && 'seal' in readSeal(tickedBlank),
@@ -902,13 +918,13 @@ expect(
   tickedThrough.status === 200 && mails.length === 1 && /Water pathway: Likely not\./.test(mails[0].text),
   `got ${tickedThrough.status}: ${mails[0]?.text}`
 );
-const noteUnticked = buildSeal(visit, sheet, packs, { wanted: false, note: 'typed, then unticked' });
+const noteUnticked = buildSeal(visit, sheet, { wanted: false, note: 'typed, then unticked' });
 expect(
   'a note typed and then unticked is not sent',
   !('wantsHuman' in noteUnticked) && !('humanNote' in noteUnticked),
   Object.keys(noteUnticked).join(', ')
 );
-const untouched = buildSeal(EMPTY_VISIT, { rows: {}, sorts: {} }, packs);
+const untouched = buildSeal(EMPTY_VISIT, { rows: {}, sorts: {} });
 expect(
   'an empty visit seals as empty fields, a null pin, six unchecked criteria and no packs — never invented',
   'seal' in readSeal(untouched) && untouched.pin === null && untouched.packs.length === 0 &&

@@ -33,7 +33,8 @@
  */
 
 import { crewMember, type CrewMember } from './crew';
-import { livePacks } from './methodPacks';
+import { WATER_D3_LISTING } from './methodPacks';
+import { WATER_METHOD_ID } from './visit';
 import { CRITERIA } from './phoebeCards';
 
 /**
@@ -160,23 +161,24 @@ const CALVIN_CARBON_CARD: ShelfCard = {
   grade: null,
 };
 
-const CALVIN_CARDS: ShelfCard[] = [CALVIN_CARBON_CARD, ...livePacks().map((pack): ShelfCard => {
-  const carbon = pack.category === 'Carbon';
-  return {
-    key: `pack-${pack.key}`,
-    slug: `calvin-${pack.key}`,
-    holder: crewMember('Calvin'),
-    title: pack.name,
-    line: pack.shelf.line,
-    tag: pack.shelf.document,
-    tagHref: pack.shelf.href,
-    packKey: pack.key,
-    opens: false,
-    stage: carbon ? 'Expert review' : 'Proposed',
-    owner: carbon ? 'WaterBots + partner (to be named)' : 'WaterBots',
-    grade: null,
-  };
-})];
+/* FROM 22 NOV 2026 THE WATER CARD IS VIOLET'S D-3, the open core's, under Calvin
+   until she joins the crew (ruling E). Its words, stage and owner are the ones
+   this site's own D-3 pack carried, unchanged. */
+const CALVIN_WATER_CARD: ShelfCard = {
+  key: `pack-${WATER_METHOD_ID}`,
+  slug: `calvin-${WATER_METHOD_ID}`,
+  holder: crewMember('Calvin'),
+  title: WATER_D3_LISTING.name,
+  line: WATER_D3_LISTING.shelfLine,
+  tag: WATER_D3_LISTING.shelfDocument,
+  packKey: WATER_METHOD_ID,
+  opens: false,
+  stage: 'Proposed',
+  owner: 'WaterBots',
+  grade: null,
+};
+
+const CALVIN_CARDS: ShelfCard[] = [CALVIN_CARBON_CARD, CALVIN_WATER_CARD];
 
 const BRIDGET_CARD: ShelfCard = {
   key: 'bridget-map-datasets',
