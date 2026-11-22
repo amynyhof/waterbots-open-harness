@@ -201,10 +201,10 @@ the end of every sitting. The old wording is in
 1. **A light close after each task, in this order:** (a) write one plan line saying what landed,
    **in [BUILD_PLAN.md](./BUILD_PLAN.md), under the family's own row** — the item or entry of the
    family the task belongs to, never at the top of the file or in a list of its own; (b) check the two
-   caps, which are six lines at most for the item the task touched and 400 lines at most for the
+   caps, which are six lines at most for the item the task touched and 450 lines at most for the
    file; (c) if the item is over, trim it (a longer write-up goes to BUILD_LOG.md and the item points
    at it); (d) commit; (e) open the pull request; (f) `/clear`, which empties the session's working
-   memory between tasks. **A light close never sweeps to BUILD_LOG.md.** If the file is still over 400
+   memory between tasks. **A light close never sweeps to BUILD_LOG.md.** If the file is still over 450
    lines after the item is trimmed, the light close says a full close-out is needed, and the sweep
    waits for it. A light close also does not append the session to BUILD_LOG.md or refresh
    Wellington's build-update fact.
@@ -268,7 +268,7 @@ holds the cases that prove them. It labels the pull request `lane-1`, `lane-2` o
    file, CLAUDE.md, AGENT_RULES.md, CITATIONS.md, anything CARRY-related, the lane rule itself),
    `.github/`, secrets or anything a visitor sees. **Lane 1 is meant to merge on its own, but that is OFF
    (ruling of 19 Oct 2026, after the second reader's read).** It stays off until the maintainer's word (BUILD_PLAN,
-   Safety pass, SP3); until then she merges lane 1 too. The job that would do it runs only when the repository
+   Security and hygiene, SP3); until then she merges lane 1 too. The job that would do it runs only when the repository
    variable `LANE1_AUTOMERGE` is on, and only when the secrets scan of the added lines comes back clean.
 2. **Lane 2 — the maintainer looks.** Anything that changes what a visitor sees or reads: screens, copy, the
    README, captures, brand files. She checks in the browser, then merges.
@@ -490,8 +490,8 @@ maintainer's ruling.
 **Flagging is part of the job.** An engineer who notices an opening document growing says so in the
 Part 1 report, rather than reading it dutifully and saying nothing.
 
-**The plan file has a number: 400 lines.** [BUILD_PLAN.md](./BUILD_PLAN.md) is counted at every
-full close-out, step 10, and a count past 400 is flagged in the report.
+**The plan file has a number: 450 lines**, from the maintainer's word of 21 Nov 2026. [BUILD_PLAN.md](./BUILD_PLAN.md) is counted at every
+full close-out, step 10, and a count past 450 is flagged in the report.
 
 ## How a session closes
 
@@ -537,9 +537,9 @@ those gets the light close (*Two kinds of close*). **A ritual with a skipped ste
      is raised with the maintainer, not worked around.
    - Bodies swept before 3 Oct 2026 stay in
      [docs/OPEN_ITEMS_ARCHIVE.md](./docs/OPEN_ITEMS_ARCHIVE.md); nothing is moved twice.
-10. **Count the plan file's lines.** Maintainer's ruling, 3 Oct 2026: [BUILD_PLAN.md](./BUILD_PLAN.md)
-    has a limit of **400 lines**. Count them at every full close-out, after the sweep. **If the file is past
-    400, flag it in the full close-out report, with the count.** An item there is six lines at most; a longer
+10. **Count the plan file's lines.** Maintainer's word, 21 Nov 2026: [BUILD_PLAN.md](./BUILD_PLAN.md)
+    has a limit of **450 lines**. Count them at every full close-out, after the sweep. **If the file is past
+    450, flag it in the full close-out report, with the count.** An item there is six lines at most; a longer
     write-up goes to BUILD_LOG.md and the item points at it. The limit is a threshold, and it changes
     only on her word.
 11. **Tidy what you touched.** Maintainer's ruling, 23 Oct 2026. At each family close, tidy what you

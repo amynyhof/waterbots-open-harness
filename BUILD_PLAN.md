@@ -5,13 +5,13 @@ What is being built, in what order, and every open item. **This file commits to 
 retired. Read it with [PROCESS_RULES_for_ShellB.md](./PROCESS_RULES_for_ShellB.md), which says how work
 moves from a proposal to a commit.
 
-**Five parts, in this order:** the v1 fence; the per-seat v1 order; the Road to v1; the sprints, one per family that
-has work on a v1 step; and the families whose work is all after v1, ending in the After v1 list.
+**Four parts, in this order:** the v1 fence; the per-seat v1 order; the Road to v1; and the nine families, the same nine in
+all three repositories, each holding its open items.
 
-**Size limit: 400 lines.** The maintainer's ruling of 3 Oct 2026. An item is six lines at most; a longer
-write-up goes to BUILD_LOG.md and the item points at it. A full close-out that finds this file past 400 lines
+**Size limit: 450 lines.** The maintainer's word of 21 Nov 2026, raised from 400 (3 Oct 2026). An item is six lines at most; a longer
+write-up goes to BUILD_LOG.md and the item points at it. A full close-out that finds this file past 450 lines
 says so in its report (step 10 of the full close-out ritual). A light close that finds it still past
-400 after trimming says a full close is needed.
+450 after trimming says a full close is needed.
 
 **How it is kept.** Rewritten when the plan changes and refreshed at every full close-out. A closed item leaves
 at the full close-out for [BUILD_LOG.md](./BUILD_LOG.md), with nothing left behind (step 9). Every item belongs
@@ -131,14 +131,15 @@ the proposal to install Calvin from the open core, merged with her word on its o
 
 ---
 
-## Sprints — one per family, in order
+## The nine families
 
-A sprint is a family with work on a v1 step. Each holds all of its family's open items: the v1 items first, in step order,
-then that family's after-v1 items. The order is the engineer's reading of the v1 order above, for her to move.
+One set of nine families for all three repositories, the maintainer's word of 21 Nov 2026. It replaces this file's seven
+(Agents, Surfaces, Operations, Knowledge, Data, Cleanup, Safety pass) and its sprints. An item kept its number, its words and its
+v1 step or "After v1" mark; only its family changed. Within a family, v1 items come first. Starting a family's sprint is her decision.
 
-### Sprint 1 — Agents: Calvin (step 5), then Bridget (step 6)
+### 1 · Agent orchestration
 
-How agents behave, what they may say, how they hand off. Governed by AGENT_RULES.md.
+What belongs here: how agents plug into both sites; the one shared project record; what each agent reads and writes; which pathway and method a project is on and which are ruled out; hand-offs between agents; installing core releases.
 
 **A21 · Calvin's brief — his chat, the engine, carbon beside water.** Step 5 · BONES. **27 Oct 2026: replaced by** [docs/proposals/calvin-from-open-core.md](./docs/proposals/calvin-from-open-core.md):
 Calvin's engine and screens from the open core, React 19, Wellington asks the core facts first. Ruled; six open.
@@ -148,43 +149,91 @@ Done when his screening numbers match the paid site's calculators run on the sav
 `role: 'Map'` where her crew card says "Partners"; `PhoebeScreen.tsx` carries its own too. The chat header
 draws them and `check-roster` does not read them. Her ruling is owed: the field goes and the header reads the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 2026.
 
-**A22 · Bridget's chat.** Step 6 · BONES. Built and merged 31 Oct 2026 on her three rulings (#167); what it built is in
-docs/OPEN_ITEMS_ARCHIVE.md. Done when a walk passes through her and back with no wrong turn (road step 6). Closes A12.
-
 **A24 · A pin where no pathway goes on to Quantify.** Step 6 · v1 · BONES. Her ruling of 31 Oct 2026: Bridget thanks the visitor and sends them
 back to Wellington, as built in A22. The visit stays at Partners after the pin, and he may point back to the map. Done is a line he reads after a pin there, and a measured walk.
-
-**A25 · Agents' knowledge copies refresh whenever their files change.** v1 · BONES. Her word of 31 Oct 2026. The primer,
-the cards and the lists reach the relays as generated copies (`scripts/build-prompt-modules.mjs`), written by hand; CI's
-`--check` fails a stale copy, but nothing refreshes one. Done is a copy that cannot ship stale and needs no hand. Proposal first.
-
-**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved (docs/proposals/wellington-rewrite-2026-10-31.md); her walks' fixes, the voice card and "Wellington comes to you" 12–14 Nov 2026. His prompt is 26,072, measured 21 Nov 2026. Waiting on one measured run.
 
 **A27 · Agent door bug.** v1 · BONES. Her word of 12 Nov 2026: in the Agent Commons, Phoebe tells visitors to go to Wellington. In the Commons,
 every agent works alone and asks for what she needs herself; on the sites, she hands back to Wellington. Each module must know which door it is at (see the plug-in contract).
 
-**A28 · Phoebe's walk fixes.** v1 · BONES. Her word of 12–14 Nov 2026: rounds two and three (#173), the limit of 4 sentences or 400 characters approved 14 Nov. On the preview her first word came at 4.8 to 6.1 seconds and whole answers took 5.8 to 9.3 (14 Nov). The skipped hello is fixed. From 14 Nov a voice card, the shared plain-words list, the order of questions, and a ruled-out path saved the same turn (W25). Waiting on one measured run.
-
 **A29 · "Already earning Gold Standard credits?" reaches Calvin as `creditedUnderV1`.** Step 2 · v1 · BONES. Her word of 16 Nov 2026. The screening asks it once, plainly, and keeps the answer as a field (yes, no, not sure), never read from prose; the record carries it and `src/lib/calvinProject.ts` passes it to Calvin, so a new project runs V2.0 alone and only a credited one is asked its filed V1.0 fNRB. Calvin takes the field from 0.3.0 (#174, 16 Nov 2026); 0.4.0 is installed from #178 (21 Nov 2026), still with the field left unset, so every project gets the V2.0-only view until this is built. **Phoebe asks it**, her word of 16 Nov 2026, as a field she sets beside her registration question; "not sure" passes nothing. docs/proposals/queued-round-2026-11-16.md.
+
+**O14 · Carries owed — listed once.** Step 7 · PARK. From 21 Nov 2026 a carry goes through the handoff folder, only when she names it.
+**Through the folder, to Shell A:** the seal's contract (`type`, `gsClass`, `stage`, rows and a read per pathway, `wantsHuman`, `record.served`; `kind` retires
+when its receiver reads them, and that receiver is not fixed, Shell A item #243); `project-types.md`; the ten-line contract; Q11; the paid-site tools line; the
+transition module; the one-row shape; the agent screen's file list; open.waterbots.ai for the landing box, the claim and the menu (28 Oct 2026). **Through the folder,
+to this site:** the sign-up address, the confirmed roster columns. **Route not yet ruled:** the brand book (typing dots §5, the agent screen §7); the grader (three rig changes).
+**Done:** `roster.yaml` without the maintainer's name, carried 2 Nov 2026, version 0.3.1, `product-shared@0.6.3`; Web Analytics, built #179 and on in Vercel 21 Nov 2026.
+
+**A30 · The walk of 21 Nov 2026 — what the agents knew and handed on.** v1 · BONES. Eight findings from her walk of the
+live site: a path Phoebe ruled out still got a water figure and Calvin's card said it was ready; Wellington offered Bridget after
+both paths closed; the record's technology did not reach the carbon calculator; the water calculator asked again for facts on the
+record; a corrected fact did not reach "What it does"; Wellington's detail total moved; the D-3 swap (Road step 5). The full
+list: BUILD_LOG.md, 21 Nov 2026. Not fixed; it waits for this family's sprint.
 
 **A23 · Calvin's VWBA row becomes Violet's.** After v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet, host of the
 D-n modules in the Commons; not on the roster yet, by her hand. No proposal yet. Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026).
-
-**A5 · Primer review against the abstention log.** After v1 · PARK. The primer was written from the rules,
-not from real questions, because there were none. Once there is real traffic, read the log against it:
-gaps that are another agent's subject, and anything no agent covers. Waits on usage, with O1, O9, A20.
-
-**A10 · Wellington's answers run long.** After v1 · BONES. The target is two or three plain sentences; his
-replies ran four or five. Done is a measured pass on the length rule, counts and not impressions, and a
-check that reads sentence counts off a walk. On her word.
 
 **A20 · Phoebe's runaway call is cut off, not prevented.** After v1 · PARK. One request in seventy-five
 spent all 16,000 output tokens; `CALL_TIMEOUT_MS`, 120 seconds, ends it. Done is a real count once there
 is traffic, then a smaller budget with a measured reason or a line saying the timeout is enough.
 
-### Sprint 2 — Surfaces: the report export (step 8)
+### 2 · Calculators and methods
 
-What a visitor sees and works with. Her browser review is the gate.
+What belongs here: the maths, method values, defaults, labels and where each value comes from.
+
+**CM1 · The walk of 21 Nov 2026 — the water calculator's inputs.** v1 · BONES. One finding from her walk of the live
+site: a minus number of people was ignored with no message. The full list: BUILD_LOG.md, 21 Nov 2026. Not fixed; it waits for
+this family's sprint.
+
+**V2-2 · WHO cooking-fuel data by fuel type — WHO shares this database on request under a data-sharing
+agreement (see [link](https://www.who.int/data/gho/data/themes/air-pollution/who-household-energy-db)).
+Request it via householdenergy@who.int; use it only if the agreement allows use in this tool.** If so,
+replace the screening's conservative fuel-mix floor with WHO's by-fuel-type mix. After v1. No proposal
+yet.
+
+### 3 · Knowledge
+
+What belongs here: what the agents are allowed to know: cards, packs, hosted copies.
+
+**A25 · Agents' knowledge copies refresh whenever their files change.** v1 · BONES. Her word of 31 Oct 2026. The primer,
+the cards and the lists reach the relays as generated copies (`scripts/build-prompt-modules.mjs`), written by hand; CI's
+`--check` fails a stale copy, but nothing refreshes one. Done is a copy that cannot ship stale and needs no hand. Proposal first.
+
+**A5 · Primer review against the abstention log.** After v1 · PARK. The primer was written from the rules,
+not from real questions, because there were none. Once there is real traffic, read the log against it:
+gaps that are another agent's subject, and anything no agent covers. Waits on usage, with O1, O9, A20.
+
+**K1 · VWBA full-docs card pass.** After v1 · BONES. Read the manual end to end and propose which further card sets
+are warranted. Not started. Two untracked drafts at the root, `activity-cards-vwba-DRAFT.md` and
+`definitions-cards-vwba-DRAFT.md`, are parked until after v1, on her word.
+
+**K2 · Co-benefit quantification module.** After v1 · PARK. One card per method, so a co-benefit that can be
+quantified is, and one that cannot stays words. Not started.
+
+**K3 · VWB report corpus.** After v1 · PARK. About ten public volumetric water benefit reports, parsed for their
+common must-haves. One is held, by her hand. No action yet.
+
+**K9 · Calvin's and Bridget's packs move to the new pack shape.** After v1 · BONES. One brief each, the way
+Phoebe's did: `git mv`, every reader follows, the move proved byte for byte. Calvin's comes after A21,
+which leaves his pack where it is.
+
+**K10 · Phoebe ready for the grader's rig.** After v1 · BONES. Her cards are reviewed by the maintainer and the engineer
+notes are split out (#94). Left: exam questions drafted for her signature, then exported in the rig's
+case shape, which arrives by her hand. Her done line of an 80% pass is the rig's to say.
+
+**K12 · Three carbon route cards no card carries.** After v1 · PARK. The pump-drive change that cards T1 and M2
+name, and M14's justified sub-national area. The card sets are sealed until a real project fails on one.
+
+**K13 · A reading-grade figure for route cards.** After v1 · PARK. `check-cards` prints a grade for every route
+card and plain-words line against a grade-6 target; printed, never enforced. Not built.
+
+### 4 · Console and surfaces
+
+What belongs here: what a visitor sees and clicks, the same on both sites: layout, navigation, header, Save, words, phone, design, report.
+
+**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved (docs/proposals/wellington-rewrite-2026-10-31.md); her walks' fixes, the voice card and "Wellington comes to you" 12–14 Nov 2026. His prompt is 26,072, measured 21 Nov 2026. Waiting on one measured run.
+
+**A28 · Phoebe's walk fixes.** v1 · BONES. Her word of 12–14 Nov 2026: rounds two and three (#173), the limit of 4 sentences or 400 characters approved 14 Nov. On the preview her first word came at 4.8 to 6.1 seconds and whole answers took 5.8 to 9.3 (14 Nov). The skipped hello is fixed. From 14 Nov a voice card, the shared plain-words list, the order of questions, and a ruled-out path saved the same turn (W25). Waiting on one measured run.
 
 **S21 · The screening report exports free.** Step 8 · v1. Her word of 23 Sep 2026: every tool, with or
 without answers, exportable as an easy-to-read, properly cited document. The screening report is the first
@@ -193,6 +242,10 @@ export, in the phase-tags shape. **A first version is built on her word of 14 No
 **S25 · Tap size on phones.** v1 · WALKTHROUGH. Her word of 31 Oct 2026, after her preview check of #167. Every control a
 visitor taps, measured at phone width against a size she rules; S24's 44px for the main site's menu is the same question
 there. Proposal first, with the measurements.
+
+**A10 · Wellington's answers run long.** After v1 · BONES. The target is two or three plain sentences; his
+replies ran four or five. Done is a measured pass on the length rule, counts and not impressions, and a
+check that reads sentence counts off a walk. On her word.
 
 **S11 · The free desk — two typeable controls owed.** After v1 · WALKTHROUGH. "What it does" and the
 project type are heard in chat only; a visitor who never chats cannot fill them. Everything else is built.
@@ -204,9 +257,6 @@ real only, and an agent opens alone: canon in CLAUDE.md. Its 28 Oct 2026 rewrite
 
 **S24 · The site on a phone.** After v1 · WALKTHROUGH. Her word of 29 Oct 2026: built; the list is in docs/OPEN_ITEMS_ARCHIVE.md.
 Waits on her check on a real phone; a 44px tap area for the main site's menu is hers to carry (S25).
-
-**S28 · Countries named inside another country's name still zoom.** After v1 · WALKTHROUGH. v2, her word of 31 Oct 2026.
-Four countries whose names are part of another country's name open the Map tab on the whole world today (`src/lib/placeBox.ts`); done is their own, never a guess.
 
 **S23 · The Commons check.** After v1 · PARTNER. v2, her word of 30 Oct 2026; it was old step 4. Phoebe and
 Calvin work on the Commons with no memory; Bridget introduces herself; Calvin's two cards on one engine. No proposal.
@@ -227,11 +277,6 @@ Waits on the rig's pack-file shape, by her hand.
 questions are hers: the form's fields, and whether a builder's contact is public or relayed. Where the
 form goes is a fact she carries.
 
-**S6 · The dev relay resolves imports differently from production.** After v1 · BONES. Three outages on
-24 Aug 2026, three guards since (the api type-check mode, named HTTP exports, `check-api-exports`). The gap
-stays: anything development tolerates that Node would not. Closing it means exercising the relay as
-Vercel does before a push, or a named guard per known difference. Never a second copy of the handler.
-
 **S12 · The hero chat — a full page that is the conversation.** After v1 · PARK. Parked 9 Sep 2026. Waits
 on a demo reference brought in by her hand: the `Design refs/` folder was deleted on her word on 3 Oct
 2026, so the hero-chat reference must be brought in again if S12 is picked up. The landing never changes without her word.
@@ -245,9 +290,6 @@ is the navigation. Offered to production by her hand, when she chooses.
 **S17 · The agent watches its Tool tab and comments; a teal dot on Chat.** After v1 · PARK. Parked for a
 design session, both shells. Four questions are open, in her words, in the write-up. No proposal yet.
 
-**S1 · Collective action as a partner-finding surface.** After v1 · PARK. Regional collective action
-groups: which exist, where, how to reach them. The companion to D1. Not started.
-
 **S5 · Narrow-column wraps.** After v1 · PARK. Citation lines wrap badly in the narrow dock; one piece with O4's legend strip and the rail-width rider.
 
 **S30 · Phoebe's screen, for the console pass (job 2).** PARK, not built; her word of 14 Nov 2026, with S29 (three blue buttons at once, her walk of #170; **settled 16 Nov 2026: one blue at a time, built, `src/lib/blue.ts`**): a small progress bar
@@ -256,16 +298,52 @@ for her questions; an Eligibility quiz tracker in the left rail, the Project Rec
 **S22 · The Blocked row colour.** After v1 · PARK. Blocked rows reuse `--state-pending` until her pixels;
 the brand book's §2.5 has no stopped state that is not an error. A raise for the book, from an image.
 
-### Sprint 3 — Operations: the carry to the paid site (step 7)
+**S31 · The walk of 21 Nov 2026 — what the visitor sees.** After v1 · WALKTHROUGH. Four findings from her walk of the
+live site: the calculator's intro, its line of method symbols and its Beta sticker still show, and the intro says "on the left";
+the Commons rows for the calculators and Phoebe; the "beta" at the bottom left; on a phone, the water calculator's labels wrap
+to four lines. The full list: BUILD_LOG.md, 21 Nov 2026. Not fixed; it waits for this family's sprint.
 
-The deploy, the repository, settings and limits. Step 7 is the carry, through the handoff folder on her word.
+### 5 · v1 proof and grading
 
-**O14 · Carries owed — listed once.** Step 7 · PARK. From 21 Nov 2026 a carry goes through the handoff folder, only when she names it.
-**Through the folder, to Shell A:** the seal's contract (`type`, `gsClass`, `stage`, rows and a read per pathway, `wantsHuman`, `record.served`; `kind` retires
-when its receiver reads them, and that receiver is not fixed, Shell A item #243); `project-types.md`; the ten-line contract; Q11; the paid-site tools line; the
-transition module; the one-row shape; the agent screen's file list; open.waterbots.ai for the landing box, the claim and the menu (28 Oct 2026). **Through the folder,
-to this site:** the sign-up address, the confirmed roster columns. **Route not yet ruled:** the brand book (typing dots §5, the agent screen §7); the grader (three rig changes).
-**Done:** `roster.yaml` without the maintainer's name, carried 2 Nov 2026, version 0.3.1, `product-shared@0.6.3`; Web Analytics, built #179 and on in Vercel 21 Nov 2026.
+What belongs here: showing it works: real-filing matches, same numbers, whole-journey walks, question counts, exams, the grading rig.
+
+**A22 · Bridget's chat.** Step 6 · BONES. Built and merged 31 Oct 2026 on her three rulings (#167); what it built is in
+docs/OPEN_ITEMS_ARCHIVE.md. Done when a walk passes through her and back with no wrong turn (road step 6). Closes A12.
+
+### 6 · Data and map
+
+What belongs here: real outside data and the rights to use it: basins, project points, corporate goals.
+
+**S28 · Countries named inside another country's name still zoom.** After v1 · WALKTHROUGH. v2, her word of 31 Oct 2026.
+Four countries whose names are part of another country's name open the Map tab on the whole world today (`src/lib/placeBox.ts`); done is their own, never a guess.
+
+**S1 · Collective action as a partner-finding surface.** After v1 · PARK. Regional collective action
+groups: which exist, where, how to reach them. The companion to D1. Not started.
+
+**D1 · Corporate water goals and target geographies.** After v1 · PARK. Public disclosures mapped to basins, so
+Bridget can answer who funds water work here. Every point traceable to its disclosure; no inferred
+coordinates. Not started.
+
+**D2 · Project points.** After v1 · PARK. Blocked on registry-verified data from the maintainer: the registry and a
+link, the project's id and name as stated there, coordinates as published. A dot at a plausible-looking
+spot is never an option.
+
+**V2-1 · Watershed map — click a watershed, see its water facts.** After v1. A visitor clicks a basin
+and reads its water facts. Every fact traceable to its source; no invented values. No proposal yet.
+
+### 7 · Paid platform
+
+What belongs here: paid-only structure: roles, organizations, programs, documents.
+
+Nothing here.
+
+### 8 · Security and hygiene
+
+What belongs here: secrets, names to block, alerts, repo settings, speed and weight, stale rules and docs, close-outs.
+
+**O16 · Real-project figures in the carried bundle, public since #132.** Step 5 · BONES. The sweep of 3 Oct 2026
+found the India filing's figures in `presets.ts`, `emissions-legacy.ts` and `MANIFEST.md` (`carried/` deleted 14 Nov 2026). #244 is the paid site's
+item for real numbers left in this repository's public history. Open: the figures stay in `main`'s history before it. List: BUILD_LOG.
 
 **O1 · Revisit the daily cap against real usage.** After v1 · PARK. Thirty a day per visitor is live
 (`DAILY_CAP` in `api/_cap.ts`); it is a starting point, not a figure from usage. Looked at with A5, O9
@@ -291,86 +369,33 @@ callers, and "console" in Bridget's and Calvin's dock copy. One hygiene pass; no
 `KV_REST_API_TOKEN` and `KV_REST_API_READ_ONLY_TOKEN`. Not looked at; first read the platform's message
 for each. Check later, on her word.
 
-**O16 · Real-project figures in the carried bundle, public since #132.** Step 5 · BONES. The sweep of 3 Oct 2026
-found the India filing's figures in `presets.ts`, `emissions-legacy.ts` and `MANIFEST.md` (`carried/` deleted 14 Nov 2026). #244 is the paid site's
-item for real numbers left in this repository's public history. Open: the figures stay in `main`'s history before it. List: BUILD_LOG.
+**S6 · The dev relay resolves imports differently from production.** After v1 · BONES. Three outages on
+24 Aug 2026, three guards since (the api type-check mode, named HTTP exports, `check-api-exports`). The gap
+stays: anything development tolerates that Node would not. Closing it means exercising the relay as
+Vercel does before a push, or a named guard per known difference. Never a second copy of the handler.
 
----
-
-## After v1 — the families with no work on a v1 step
-
-The same shape. Nothing here is started before v1 is done, except on her word.
-
-### Knowledge
-
-What the agents may know. Governed by CITATIONS.md. The card sets are sealed for v1.
-
-**K1 · VWBA full-docs card pass.** BONES. Read the manual end to end and propose which further card sets
-are warranted. Not started. Two untracked drafts at the root, `activity-cards-vwba-DRAFT.md` and
-`definitions-cards-vwba-DRAFT.md`, are parked until after v1, on her word.
-
-**K2 · Co-benefit quantification module.** PARK. One card per method, so a co-benefit that can be
-quantified is, and one that cannot stays words. Not started.
-
-**K3 · VWB report corpus.** PARK. About ten public volumetric water benefit reports, parsed for their
-common must-haves. One is held, by her hand. No action yet.
-
-**K9 · Calvin's and Bridget's packs move to the new pack shape.** BONES. One brief each, the way
-Phoebe's did: `git mv`, every reader follows, the move proved byte for byte. Calvin's comes after A21,
-which leaves his pack where it is.
-
-**K10 · Phoebe ready for the grader's rig.** BONES. Her cards are reviewed by the maintainer and the engineer
-notes are split out (#94). Left: exam questions drafted for her signature, then exported in the rig's
-case shape, which arrives by her hand. Her done line of an 80% pass is the rig's to say.
-
-**K12 · Three carbon route cards no card carries.** PARK. The pump-drive change that cards T1 and M2
-name, and M14's justified sub-national area. The card sets are sealed until a real project fails on one.
-
-**K13 · A reading-grade figure for route cards.** PARK. `check-cards` prints a grade for every route
-card and plain-words line against a grade-6 target; printed, never enforced. Not built.
-
-### Data
-
-Where real, verifiable data comes from. An empty, honest state beats a fabricated one.
-
-**D1 · Corporate water goals and target geographies.** PARK. Public disclosures mapped to basins, so
-Bridget can answer who funds water work here. Every point traceable to its disclosure; no inferred
-coordinates. Not started.
-
-**D2 · Project points.** PARK. Blocked on registry-verified data from the maintainer: the registry and a
-link, the project's id and name as stated there, coordinates as published. A dot at a plausible-looking
-spot is never an option.
-
-### Cleanup
-
-Debt in the documents themselves.
-
-**C1 · Sweep every struck line into the archive.** BONES. Her ruling of 23 Sep 2026: no crossed-out text
+**C1 · Sweep every struck line into the archive.** After v1 · BONES. Her ruling of 23 Sep 2026: no crossed-out text
 in any live document. Strikes from before it wait in CLAUDE.md, PROCESS_RULES, AGENT_RULES, CITATIONS, the
 READMEs and the card files. One document a commit; the rulebooks and card files each their own pull
 request. Proposal first, with a count of strikes per document.
 
-### Safety pass
-
-Known weaknesses in tools this machine runs, not in what visitors get. Not v1.
-
-**SP1 · A separate GitHub account for sessions.** BONES. A second account that can open pull requests but
+**SP1 · A separate GitHub account for sessions.** After v1 · BONES. A second account that can open pull requests but
 cannot merge, enforced by branch protection (only the maintainer's account may merge). First on this list: the deny
 rules in session settings are a fence a session could edit away, branch protection is not. Needs her to
 create the account and set the rule; a proposal comes first.
 
-**SP2 · The nine `npm audit` findings.** PARK. All are in build-time tools, none in the live site's own
+**SP2 · The nine `npm audit` findings.** After v1 · PARK. All are in build-time tools, none in the live site's own
 dependencies: seven come through `mapshaper` (`adm-zip`, `@xmldom/xmldom`, `fflate`, `file-type`, `image-size`
 and two that depend on them), one through Vite (`source-map-js`), and from 21 Nov 2026 Vite itself; `geographiclib`, deprecated, is mapshaper's too.
 Plan: `npm audit fix` without force on a throwaway branch; all checks and the build; rebuild the basins,
 byte-identical; upgrade `mapshaper` if a release drops `geographiclib`. Lane 3; proposal first; the paused
 install scripts for `better-sqlite3` and `esbuild` stay paused.
 
-**SP3 · Switch lane 1 auto-merge on.** PARK. The job is built and off (`LANE1_AUTOMERGE` unset in the
+**SP3 · Switch lane 1 auto-merge on.** After v1 · PARK. The job is built and off (`LANE1_AUTOMERGE` unset in the
 repository's variables). The number gate it waited on is retired (21 Nov 2026), so it waits on her word
 alone; then flip Allow auto-merge and branch protection by hand.
 
-**SP4 · Pin every GitHub Action by full commit hash instead of tag.** BONES. `actions/checkout`, `actions/setup-node`,
+**SP4 · Pin every GitHub Action by full commit hash instead of tag.** After v1 · BONES. `actions/checkout`, `actions/setup-node`,
 `gitleaks/gitleaks-action` and any others in `.github/workflows/`, per the second reader's re-attack on #152. A tag can be moved to
 different code; a full commit hash cannot. Lane 3 (it edits CI); proposal first.
 
@@ -378,22 +403,10 @@ different code; a full commit hash cannot. Lane 3 (it edits CI); proposal first.
 of the three the repository already runs, and turn on the ones it does not. Proposal first, with what is on and
 what is off.
 
+### 9 · Experts and partners
+
+What belongs here: what outside experts review, what we owe partners, and what we send them.
+
 **SP6 · A human engineer reviews the structure.** Now, not blocking v1 · BONES. One question put to a person:
 what would you keep, what would you fix first, what would you worry about. It covers all three repositories. The
 review itself is her hand's work, outside this repository (rule zero); only its findings come back here, as items.
-
----
-
-## After v1
-
-Nothing here is started before v1 is done, except on her word. First in the list is the next thing
-to pick up.
-
-**V2-1 · Watershed map — click a watershed, see its water facts.** After v1. A visitor clicks a basin
-and reads its water facts. Every fact traceable to its source; no invented values. No proposal yet.
-
-**V2-2 · WHO cooking-fuel data by fuel type — WHO shares this database on request under a data-sharing
-agreement (see [link](https://www.who.int/data/gho/data/themes/air-pollution/who-household-energy-db)).
-Request it via householdenergy@who.int; use it only if the agreement allows use in this tool.** If so,
-replace the screening's conservative fuel-mix floor with WHO's by-fuel-type mix. After v1. No proposal
-yet.

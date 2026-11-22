@@ -2,7 +2,7 @@
 # changes. Nothing else decides a lane: not the session, not a person, not the description.
 #
 # AUTO-MERGE IS OFF (the maintainer's ruling, 19 Oct 2026). The `automerge` job below is switched off
-# by default. It is switched on only on her word (BUILD_PLAN, Safety pass, SP3). The number gate it
+# by default. It is switched on only on her word (BUILD_PLAN, Security and hygiene, SP3). The number gate it
 # once waited on is retired (21 Nov 2026): the name scan, a required check, is the one check for
 # public material, and GitHub waits for every required check before an auto-merge lands.
 #
