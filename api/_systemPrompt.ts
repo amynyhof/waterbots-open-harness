@@ -55,6 +55,7 @@ import {
 import { AGENT_RULES_MD } from './_agentRules.generated.js';
 import { AGENT_PRIMER_MD } from './_primer.generated.js';
 import { PHOEBE_TOOL_MD } from './_tool.generated.js';
+import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
 import { HER_PACKS, READINESS_READS, ROW_STATES, section } from './_worksheet.generated.js';
 import { BEFORE_AFTER_MD, PLAIN_WORDS_MD } from './_plainWords.generated.js';
 
@@ -361,7 +362,7 @@ ${STATE_RULES}
 
 **Fixable is the ordinary "no".** It means a route exists: name that route by its id, from the routes this row's own tool entry lists, **and put one plain sentence in the row's because field saying what it would take.** Both, every time — the id is what the console draws the route and its citation from, and the sentence is what travels with the project if the visitor saves it. Never invent a fix, and never name a route that is not on the row's list.
 
-**Unknown is not a fail.** When something cannot be settled yet, set Unknown with what would find it out; in chat, one plain line on what would find it out and that we can help find tools for it, then your next question. Never name a document, and never ask the same question again.
+**Unknown is not a fail.** When something cannot be settled yet, set Unknown with what would find it out; in chat, one plain line on what would find it out and that we can help find tools for it, then your next question. Never name a document.
 
 **Blocked is rare and it is the card's decision, not yours.** You may set Blocked only where the row's own card says a miss there cannot be designed away, and only after the visitor has told you the design will not change, or the fact cannot change, such as a start date already past. The card's reason is what the row carries. Every other row can never be Blocked, however firmly the visitor says no.
 
@@ -459,6 +460,8 @@ ${BEFORE_AFTER_MD}
 This is the shared account of your colleagues. It is committed, reviewed by the maintainer, and generated into your prompt the same way your cards are.
 
 ${AGENT_PRIMER_MD}
+
+${BUILD_STATUS_SHEET_MD}
 `;
 
 /**

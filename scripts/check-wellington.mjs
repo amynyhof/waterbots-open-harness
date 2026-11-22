@@ -73,12 +73,12 @@ const { WELLINGTON_SYSTEM_PROMPT, WELLINGTON_RESPONSE_SCHEMA } = await loadApi('
 const { AGENT_PRIMER_MD } = await loadApi('_primer.generated.js');
 const { WELLINGTON_PRIMER_MD } = await loadApi('_wellingtonPrimer.generated.js');
 const { PROJECT_TYPES_MD, PROJECT_TYPES, PROJECT_TYPE_IDS, GS_CLASS_IDS, PROJECT_STAGE_IDS, DRINKING_WATER_TYPE } = await loadApi('_projectTypes.generated.js');
-const { WELLINGTON_BUILD_UPDATE_MD } = await loadApi('_buildUpdate.generated.js');
+const { BUILD_STATUS_SHEET_MD } = await loadApi('_statusSheet.generated.js');
 const { SYSTEM_PROMPT: PHOEBE_PROMPT } = await loadApi('_systemPrompt.js');
 const { AGENT_RULES_MD } = await loadApi('_agentRules.generated.js');
 /* The 21 agent rules (AGENT_RULES.md, in force 22 Nov 2026; 20 and 21 added the same day) sit whole in every prompt. Checks on an
    agent's own wording read the prompt without them, so a word the rules use is not counted as his. */
-const own = (prompt) => prompt.replace(AGENT_RULES_MD, '');
+const own = (prompt) => prompt.replace(AGENT_RULES_MD, '').replace(BUILD_STATUS_SHEET_MD, '');
 const { PLAIN_WORDS_MD, BEFORE_AFTER_MD } = await loadApi('_plainWords.generated.js');
 
 /* ---------------------------------------------------------------------------
@@ -179,7 +179,29 @@ expect('the roster names him for his colleagues', /Wellington — the desk/.test
 expect("Phoebe's prompt carries the roster but not his region", PHOEBE_PROMPT.includes('Wellington — the desk') && !PHOEBE_PROMPT.includes('The rules you keep'), 'his region leaked into her prompt, or the roster left it');
 expect('his prompt carries the roster and his region, and none of her cards', WELLINGTON_SYSTEM_PROMPT.includes(AGENT_PRIMER_MD.trim().slice(0, 200)) && WELLINGTON_SYSTEM_PROMPT.includes('The rules you keep') && !/Criterion 1/.test(WELLINGTON_SYSTEM_PROMPT), 'his prompt is mis-assembled');
 expect('no prompt tells any agent to say anything word for word — ruling 1, 3 Sep 2026; rule 6 forbids it, so the rules are read out first', !/word for word/.test(own(WELLINGTON_SYSTEM_PROMPT)) && !/word for word/.test(own(PHOEBE_PROMPT)), 'a word-for-word rule survived');
-expect('his prompt carries the dated build update as facts he phrases, and the region is dated', WELLINGTON_SYSTEM_PROMPT.includes('# The build update, when asked') && WELLINGTON_SYSTEM_PROMPT.includes(WELLINGTON_BUILD_UPDATE_MD.trim().slice(0, 120)) && /^# The build, as of \d{1,2} \w+ \d{4}/m.test(WELLINGTON_BUILD_UPDATE_MD) && /Not live/.test(WELLINGTON_BUILD_UPDATE_MD) && !/^> "/m.test(WELLINGTON_BUILD_UPDATE_MD), 'the build update is missing, undated, or scripted');
+{
+  /* Agent rule 16, 22 Nov 2026: the one build status sheet, an exact copy of the master, read whole by
+     every agent. A build update comes from its "New lately" part, dated in words. It replaced his own
+     build-update card, which is gone with its generated module. */
+  const { existsSync } = await import('node:fs');
+  const sheetFile = readFileSync(join('knowledge-packs', 'product-shared', 'BUILD_STATUS_SHEET.md'), 'utf8');
+  const { BRIDGET_SYSTEM_PROMPT: bridgetPrompt } = await loadApi('_bridgetPrompt.js');
+  expect(
+    'rule 16: every agent reads the whole build status sheet, byte for byte, and its "New lately" part is dated in words',
+    BUILD_STATUS_SHEET_MD === sheetFile &&
+      [WELLINGTON_SYSTEM_PROMPT, PHOEBE_PROMPT, bridgetPrompt].every((p) => p.includes(BUILD_STATUS_SHEET_MD)) &&
+      /^## New lately\n[\s\S]*?When someone asks for a build update, an agent answers from this part and gives the date in words\.\n- \d{1,2} [A-Z][a-z]+ \d{4}: /m.test(BUILD_STATUS_SHEET_MD),
+    'a prompt is missing the sheet, or the sheet differs from its file'
+  );
+  expect(
+    "the old build-update card is gone, and nothing reads it",
+    !existsSync(join('knowledge-packs', 'wellington-host', 'build-update.md')) &&
+      !existsSync(join('api', '_buildUpdate.generated.ts')) &&
+      !/# The build update, when asked|build-update/.test(WELLINGTON_SYSTEM_PROMPT) &&
+      !/_buildUpdate|wellington-host\/build-update/.test(readFileSync(join('scripts', 'build-prompt-modules.mjs'), 'utf8')),
+    'the old card or something that served it is still here'
+  );
+}
 expect('the roster gives facts, not quoted lines, for every colleague', !/^> "/m.test(AGENT_PRIMER_MD), 'a quoted colleague sentence is still live in the roster');
 expect('his reading level is rule 1 of the agent rules, 6th grade (22 Nov 2026), and his own text carries no other', WELLINGTON_SYSTEM_PROMPT.includes(AGENT_RULES_MD) && /at a 6th grade reading level/.test(AGENT_RULES_MD) && !/3rd- to 6th-grade|twelve-year-old/.test(WELLINGTON_SYSTEM_PROMPT), 'the rules are missing from his prompt, or an older reading level is back');
 expect('his prompt states the five things he never does: his own three, and rules 5 and 15 for the sign-up and the promise', /quote no figure/.test(WELLINGTON_SYSTEM_PROMPT) && /never invent/i.test(WELLINGTON_SYSTEM_PROMPT) && /Outside every lane, abstain and stop/.test(WELLINGTON_SYSTEM_PROMPT) && /Never press anyone to sign up/.test(AGENT_RULES_MD) && /Never promise an outcome/.test(AGENT_RULES_MD), 'a rule is missing');
@@ -280,11 +302,11 @@ expect(
     'the two buttons are not built from the route field'
   );
 }
-// His gate: 29,896 from 22 Nov 2026, the maintainer's method of that day (measured plus 500), applied
-// again when rules 20 and 21 came in: after the full no-repeats pass against all 21 he measured 29,396.
-// Earlier the same day it was 29,236 (19 rules, measured 28,736); before that 26,199 from 24 Sep 2026.
+// His gate: 32,001 from 22 Nov 2026, the maintainer's method of that day (measured plus 500), applied a
+// third time when the build status sheet came in for every agent and his build-update card went: 31,501.
+// Earlier the same day 29,896 (21 rules, measured 29,396) and 29,236 (19 rules); before that 26,199 from 24 Sep 2026.
 expect('the agent rules are 1 to 21, in order, and the notes for builders are not among them', (AGENT_RULES_MD.match(/^\d+\. /gm) ?? []).map((n) => parseInt(n, 10)).join(',') === Array.from({ length: 21 }, (_, i) => i + 1).join(',') && !/Notes for builders/.test(AGENT_RULES_MD), (AGENT_RULES_MD.match(/^\d+\. /gm) ?? []).join(' '));
-expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 29896 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
+expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 32001 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
 
 /* ---------------------------------------------------------------------------
    The record the desk carries to Phoebe — slice 3, 7 Sep 2026.
@@ -759,8 +781,10 @@ expect(
   'his prompt names the screening loop and forbids a fake live chat',
   /* Rule 2 carries it: the line in rule 4 that said it again was cut on
      26 Sep 2026, item A17, ruling R3. */
-  /Eligibility with Phoebe/.test(WELLINGTON_SYSTEM_PROMPT) && /Calvin's chat is not live/.test(WELLINGTON_SYSTEM_PROMPT) &&
-    /Bridget's is live, on Partners/.test(WELLINGTON_SYSTEM_PROMPT) && !/Bridget is not answering|Bridget's and Calvin's chats/.test(WELLINGTON_SYSTEM_PROMPT),
+  /* From 22 Nov 2026 what is live and coming is the status sheet's (rule 16), not his own lines. */
+  /Eligibility with Phoebe/.test(WELLINGTON_SYSTEM_PROMPT) && /Until Calvin's chat is live, pointing at him means pointing at his step\./.test(WELLINGTON_SYSTEM_PROMPT) &&
+    /Coming:\n- Calvin's chat\./.test(BUILD_STATUS_SHEET_MD) && /- Bridget's chat and the basin map/.test(BUILD_STATUS_SHEET_MD) &&
+    WELLINGTON_SYSTEM_PROMPT.includes(BUILD_STATUS_SHEET_MD) && !/Bridget is not answering|Bridget's and Calvin's chats/.test(WELLINGTON_SYSTEM_PROMPT),
   'the loop rule is missing from his prompt'
 );
 

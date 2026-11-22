@@ -28,11 +28,11 @@ Wellington's own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md)
   visitor knowing each pathway's reading, never her sentences.
 - Only a question outside every agent's lane is logged as his abstention.
 - His "four people" sentence keeps the maintainer's wording; it is checked, never shown.
-- He keeps a dated build-update fact (`knowledge-packs/wellington-host/build-update.md`) and phrases it
-  when asked.
-- **His prompt gate is 29,896 characters**, from 22 Nov 2026: the maintainer's method (measured plus
-  500), applied again when rules 20 and 21 came in and every repeat of the 21 rules was cut (29,396).
-  Earlier that day it was 29,236; before that 26,199. A new question fits by trimming. The gate moves only
+- A build update comes from the build status sheet's "New lately" part, dated in words (agent rule
+  16). His own build-update card went on 22 Nov 2026.
+- **His prompt gate is 32,001 characters**, from 22 Nov 2026: the maintainer's method (measured plus
+  500), applied again when the build status sheet came in for every agent (31,501). Earlier that day
+  it was 29,896 and 29,236; before that 26,199. A new question fits by trimming. The gate moves only
   on the maintainer's word.
 
 ## What he adds to the project record (agent rule 10)

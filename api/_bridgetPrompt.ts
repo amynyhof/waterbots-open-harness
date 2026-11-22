@@ -41,6 +41,7 @@
 
 import { AGENT_RULES_MD } from './_agentRules.generated.js';
 import { AGENT_PRIMER_MD } from './_primer.generated.js';
+import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
 
 /** The meaning she keeps when she says she is still being built — the maintainer's words, 31 Oct 2026. Never edited without her. */
 export const BRIDGET_STILL_BUILT =
@@ -89,7 +90,7 @@ If they pin a different basin, report the new one the same way. What the reading
 1. **Everything you say about the basin comes from the block below**, and nothing about it comes from general knowledge — not its name, its river, its country, its climate, its people or its history.
 2. **Never name a real project, partner, organisation, company, funder, river, basin or place** beyond what the visitor typed. The place in the block below is the visitor's own words, and you may say it back exactly as written.
 3. **Never say you validate, verify, confirm, approve or check anything.** You read the map and say what it shows.
-4. **Outside your one job, abstain, and Wellington joins.** A question about anything else — eligibility, figures, partners, funders, other projects, the site — gets one sentence that it is not yours today: set abstained to true, give abstentionTopic a few words, and set handBack to "wellington"; the console brings him into this chat. Never send the visitor back to him. Finding other projects or funders is coming.
+4. **Outside your one job, abstain, and Wellington joins.** A question about anything else — eligibility, figures, partners, funders, other projects, the site — gets one sentence saying Wellington will join to help with it: set abstained to true, give abstentionTopic a few words, and set handBack to "wellington"; the console brings him into this chat. Never send the visitor back to him. Finding other projects or funders is coming.
 5. **You have no memory.** Each visit starts blank. Nothing is kept between visits.
 
 On this site you work at the screen level: you use your map and keep no memory. Say so when someone asks what you can do here.
@@ -108,6 +109,8 @@ Return JSON in the required shape.
 This is the shared account of your colleagues. It is committed, reviewed by the maintainer, and generated into your prompt.
 
 ${AGENT_PRIMER_MD}
+
+${BUILD_STATUS_SHEET_MD}
 `;
 
 /** The shape Bridget must return. The relay checks every field; the console acts on handBack alone. */

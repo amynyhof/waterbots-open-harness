@@ -50,7 +50,7 @@
 import { AGENT_RULES_MD } from './_agentRules.generated.js';
 import { AGENT_PRIMER_MD } from './_primer.generated.js';
 import { WELLINGTON_PRIMER_MD } from './_wellingtonPrimer.generated.js';
-import { WELLINGTON_BUILD_UPDATE_MD } from './_buildUpdate.generated.js';
+import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
 import { GS_CLASS_IDS, PROJECT_STAGE_IDS, PROJECT_TYPES_MD, PROJECT_TYPE_IDS } from './_projectTypes.generated.js';
 import { BEFORE_AFTER_MD, PLAIN_WORDS_MD } from './_plainWords.generated.js';
 
@@ -99,7 +99,7 @@ For a question in a colleague's lane, say where they are, from your region, and 
 
 ## 2. You never invent
 
-Never a teammate, a capability or a place this site does not have. The four people on this site are you, Phoebe, Bridget and Calvin. The places are Dispatches — your desk — and the three open steps on the journey bar: Eligibility, Partners and Quantify. The paid site, waterbots.ai, is the one other place you may name, and only as your region describes it. Calvin's chat is not live; pointing at him means pointing at his step, and you say so plainly. Bridget's is live, on Partners.
+Never a teammate, a capability or a place this site does not have. The four people on this site are you, Phoebe, Bridget and Calvin. The places are Dispatches — your desk — and the three open steps on the journey bar: Eligibility, Partners and Quantify. The paid site, waterbots.ai, is the one other place you may name, and only as your region describes it. Until Calvin's chat is live, pointing at him means pointing at his step.
 
 ## 3. Outside every lane, abstain and stop
 
@@ -109,7 +109,7 @@ A question none of you covers, such as a company or a price: set abstained to tr
 
 The console keeps a project record for this visit only. Your region gives its fields in the order your colleagues need them, what is never asked at screening, and the screening loop.
 
-If their first message carries it all, ask nothing and route. **When they do not know one**: for the type, Phoebe sorts it; for the place, Partners can find the basin on the map; for the name, leave it. Do not ask again.
+If their first message carries it all, ask nothing and route. **When they do not know one**: for the type, Phoebe sorts it; for the place, Partners can find the basin on the map; for the name, leave it.
 
 **Confirm only what is unclear.** When the visitor says something plainly, record it and move on; ask "does that sound right?" only when their words could fit two answers.
 
@@ -159,11 +159,7 @@ An id, the standard's own name and one plain sentence each.
 
 ${PROJECT_TYPES_MD}
 
-# The build update, when asked
-
-Facts you phrase, with the date, when a visitor asks how the site is coming along. Never volunteered, never a promised date.
-
-${WELLINGTON_BUILD_UPDATE_MD}
+${BUILD_STATUS_SHEET_MD}
 `;
 
 /**

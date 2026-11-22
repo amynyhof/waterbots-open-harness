@@ -1,4 +1,12 @@
 # Changelog — product-shared
+## 0.7.0 — 22 Nov 2026
+
+- `BUILD_STATUS_SHEET.md` joins: the one build status sheet, an exact copy of the maintainer's master in the
+  handoff folder, in force 22 Nov 2026. Every agent reads it whole (agent rule 16). Never edited here; replaced
+  byte for byte when she changes it.
+- `agent-primer.md`, the roster region: lines that repeat the 21 agent rules cut, and the consultant line
+  replaced by the consulting-page fact (rule 13), the same day.
+
 ## 0.6.7 — 21 Nov 2026
 
 - `agent-primer.md`, Wellington's region only: **he asks the project's name**, the maintainer's word of

@@ -90,7 +90,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 |---|---|---|---|
 | 1 | **React 19 under the map**, so the open core's calculator screens can run here (#156, §9). | Nothing outside this repository. | Before-and-after map pictures she has passed; every check and the build pass. |
 | 2 | **Calvin's carbon calculator from the open core** on his Tool tab, V1 and V2, simple view and sliders on (A21). | The open core (Session C): the eight changes in #156 §1, sliders and the simple view. Pinned to the open core release that includes the sliders, as a release file. | Proofs P1 to P5 of #156 pass; she has passed the before-and-after table and the tab in the browser; **`carried/` is removed from this repository in the same swap, required for v1** (ruling 1 Nov 2026: the paid repository keeps the private original as the archive). **14 Nov 2026: calvin 0.2.0 installed, ex-ante with sliders, `carried/` deleted; P1 to P3 run. 0.2.0 has no simple view, and shows a new project no figure without a filed V1.0 fNRB: both for Session C.** Now 0.4.0, from 21 Nov 2026 (A21). |
-| 3 | **Wellington asks the core facts first**: type and class, country, how many served, people or households, and whether it is already registered for carbon (the transition). | Her rewrite of his instructions, freeing room for the new question; the gate stays at 29,896. Step 2. | The record holds the new fields; one measured run; his prompt under the gate. |
+| 3 | **Wellington asks the core facts first**: type and class, country, how many served, people or households, and whether it is already registered for carbon (the transition). | Her rewrite of his instructions, freeing room for the new question; the gate stays at 32,001. Step 2. | The record holds the new fields; one measured run; his prompt under the gate. |
 | 4 | **Calvin's chat**, on the open core's prompt, asking only what is missing (A21). | The core's `prompt.md` read against AGENT_RULES.md (#156, open point C). Steps 2 and 3. | One measured run; on a walk he opens with his facts filled and asks at most household size and, for a transition, the filed V1.0 fraction of non-renewable biomass (fNRB). |
 | 5 | **The water figure from the open core's VWBA D-3 module**, in place of this site's `vwbaD3.ts`. | Session C builds the module, with the test cases worked by hand and every step cited, in a pinned open core release. Step 2. | The hand-worked cases pass here; she has passed the water figure in the browser. |
 | 6 | **Bridget's chat** (A22, old step 6): her opening, the pin, the reading, then Calvin or back. | Nothing outside this repository. | A walk passes through her and back with no wrong turn; her eyeball. |
@@ -100,7 +100,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 
 **After v1, not needed for the finish line:** A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
-- **Wellington's prompt gate is 29,896 characters, and Phoebe's largest case 205,313** (her method of 22 Nov 2026: measured once the agent rules went in, plus 500; Wellington's applied again for rules 20 and 21). The gates move only on her word.
+- **Wellington's prompt gate is 32,001 characters, and Phoebe's largest case 208,338** (her method of 22 Nov 2026: measured plus 500, applied again when the build status sheet went into every agent). The gates move only on her word.
 
 ---
 

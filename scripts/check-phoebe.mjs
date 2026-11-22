@@ -451,11 +451,15 @@ expect(
    (AGENT_RULES.md) went into every prompt; once only the lines that repeat them
    were cut, the largest case measured 204,813, plus 500. Nothing was cut from
    her own rules to fit.
+
+   208,338 FROM 22 NOV 2026, the same method applied again: rules 1 to 21 with
+   their repeats cut, and the build status sheet (rule 16) read whole by every
+   agent. The largest case measured 207,838, plus 500.
 --------------------------------------------------------------------------- */
 
 console.log('\n  Her prompt’s size\n');
 
-const LARGEST = 205_313;
+const LARGEST = 208_338;
 const largest = SYSTEM_PROMPT.length + cardsBlock(CARD_SETS).length;
 expect(
   'the largest case is under the measured ceiling',
