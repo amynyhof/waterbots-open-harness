@@ -298,7 +298,7 @@ const BUNDLES = [
     target: 'api/_agentRules.generated.ts',
     /* THE FOUNDATIONAL AGENT RULES, in force from 22 Nov 2026. AGENT_RULES.md is
        an exact copy of the maintainer's master, so it carries no region markers:
-       rules 1 to 19 are taken from their first heading up to the "Notes for
+       rules 1 to 21 are taken from their first heading up to the "Notes for
        builders" heading, which is for builders and never reaches an agent. Every
        agent's prompt opens its rules with this text. */
     sources: [{ name: 'AGENT_RULES_MD', file: 'AGENT_RULES.md', between: ['## How an agent talks', '## Notes for builders'] }],

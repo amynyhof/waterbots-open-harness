@@ -87,12 +87,12 @@ export function readStage(value: unknown): ScreeningStage | null {
 }
 
 const STAGE_LINES: Record<ScreeningStage, string> = {
-  learn: 'Screening step: still learning the project. Ask only for what is missing. When you have enough, invite Eligibility with Phoebe.',
+  learn: 'Screening step: still learning the project. When you have enough, invite Eligibility with Phoebe.',
   eligibility: 'Screening step: Eligibility with Phoebe is next. Do not skip to the map.',
   partners:
     'Screening step: Eligibility is done for this visit. Invite the Partners step — the map, where Bridget asks for the pin.',
   quantify:
-    'Screening step: Quantify is next. Calvin is not answering yet; point at the calculator. Do not pretend his chat is live.',
+    'Screening step: Quantify is next. Calvin is not answering yet; point at the calculator.',
 };
 
 function field(value: unknown): string {
@@ -156,7 +156,7 @@ export function recordBlock(record: ProjectRecord): string {
   return [
     `# ${RECORD_HEADING}`,
     '',
-    'These are the visitor’s own words about their project, carried from the desk so they need not say them twice. They are facts about the project and never a verdict on any row of your worksheet; only the cards decide that. Start from them, never ask again for what is here in any words, and ask only for what is missing.',
+    'These are the visitor’s own words about their project, carried from the desk so they need not say them twice. They are facts about the project and never a verdict on any row of your worksheet; only the cards decide that.',
     '',
     ...recordLines(record),
   ].join('\n');
@@ -167,7 +167,7 @@ export function phoebeNotesBlock(notes: { opened?: boolean; eligibilityDone?: bo
   const extra: string[] = [];
   if (notes.opened) {
     extra.push(
-      'The visitor has just opened Eligibility after Wellington invited them. Do not repeat him. This is your message 1, on its own: a warm hello with some personality, one line on what you do, then an invitation to begin, in your own words. It comes before every other rule: no question about the project, no rows, pathways or sorts, no "in beta", and no read on either pathway. Do not invent a method.'
+      'The visitor has just opened Eligibility after Wellington invited them. Do not repeat him. This is your message 1, on its own: a warm hello with some personality, one line on what you do, then an invitation to begin. It comes before every other rule: no question about the project, no rows, pathways or sorts, no "in beta", and no read on either pathway.'
     );
   }
   if (notes.eligibilityDone) {
@@ -188,7 +188,7 @@ export function visitBlock(record: ProjectRecord | null, stage?: ScreeningStage 
   return [
     `# ${VISIT_HEADING}`,
     '',
-    'These fields are already on this visit — from the visitor, from a carried link, or from the map pin. Do not ask for them again as if they were blank. Ask only for what is still missing. If this visit already holds the project, do not introduce yourself as if this were a cold start. One next step.',
+    'These fields are already on this visit — from the visitor, from a carried link, or from the map pin. If this visit already holds the project, do not introduce yourself as if this were a cold start. One next step.',
     '',
     ...lines,
     ...(stageLine ? ['', stageLine] : []),
@@ -319,7 +319,7 @@ export function worksheetBlock(sheets: PackSheet[], record: ProjectRecord | null
   const parts: string[] = [
     `# ${WORKSHEET_HEADING}`,
     '',
-    'Your eligibility worksheet as it stands for this visit. Every verdict below is one you set earlier in this conversation, from what the visitor told you; a row not listed has not been looked at. Ask in the order of questions in your rules, do not ask again for what a Met row already settled, and when the visitor asks where a row stands, read it from here. The read at the end of each pathway is worked out from these rows, and it is what the screen shows — say it in your own words and never a different one.',
+    'Your eligibility worksheet as it stands for this visit. Every verdict below is one you set earlier in this conversation, from what the visitor told you; a row not listed has not been looked at. Ask in the order of questions in your rules, do not ask again for what a Met row already settled, and when the visitor asks where a row stands, read it from here. The read at the end of each pathway is worked out from these rows, and it is what the screen shows — never say a different one.',
   ];
 
   for (const sheet of sheets) {
@@ -366,6 +366,13 @@ export function worksheetBlock(sheets: PackSheet[], record: ProjectRecord | null
 /** The heading his prompt names, so he knows the block when he sees it. */
 export const FOUND_HEADING = 'What Phoebe found';
 
+/** A read in rule 14's three words (AGENT_RULES.md, 22 Nov 2026): never "ruled out". The screen keeps its own labels until the shared console spec. */
+const READ_WORD: Record<'likely-eligible' | 'likely-not' | 'not-enough-known', string> = {
+  'likely-eligible': 'likely',
+  'not-enough-known': 'more to learn',
+  'likely-not': 'unlikely',
+};
+
 /** A pathway's reading for him: the readiness read, or that it does not apply. */
 export type FoundRead = 'likely-eligible' | 'likely-not' | 'not-enough-known' | 'does-not-apply';
 
@@ -397,7 +404,7 @@ export function phoebeFound(sheets: PackSheet[] | null, record: ProjectRecord | 
     /* W25, 14 Nov 2026: a path ruled out is said as ruled out, plainly. */
     if (pathwayStateOf(sheet.pack, states, context) === 'does-not-apply') {
       reads.push('does-not-apply');
-      lines.push(`- ${name}: ruled out — it does not apply to this project.`);
+      lines.push(`- ${name}: unlikely — it does not apply to this project.`);
       continue;
     }
     const read = readinessOf(sheet.pack, states, context);
@@ -405,14 +412,14 @@ export function phoebeFound(sheets: PackSheet[] | null, record: ProjectRecord | 
     const rows = verdictRows(sheet.pack, context);
     const looked = rows.some((row) => (states[row.id] ?? 'unchecked') !== 'unchecked');
     if (!looked) {
-      lines.push(`- ${name}: ${READINESS_LABEL[read]} — not looked at yet.`);
+      lines.push(`- ${name}: ${READ_WORD[read]} — not looked at yet.`);
       continue;
     }
     const blocked = rows.filter((row) => states[row.id] === 'blocked').map((row) => row.id);
     const open = rows
       .filter((row) => states[row.id] !== 'met' && states[row.id] !== 'blocked')
       .map((row) => row.id);
-    const parts = [read === 'likely-not' ? `- ${name}: ruled out (${READINESS_LABEL[read]}).` : `- ${name}: ${READINESS_LABEL[read]}.`];
+    const parts = [`- ${name}: ${READ_WORD[read]}.`];
     if (blocked.length) parts.push(`Blocked: ${titled(blocked, rows)}.`);
     if (open.length) parts.push(`Still open: ${titled(open, rows)}.`);
     lines.push(parts.join(' '));
@@ -423,7 +430,7 @@ export function phoebeFound(sheets: PackSheet[] | null, record: ProjectRecord | 
     text: [
       `# ${FOUND_HEADING}`,
       '',
-      'Worked out from Phoebe’s worksheet for this visit, from the same rows the screen shows. Each read is hers: say it in your own words and never read out a row id. A path ruled out is ruled out: say so plainly, never as "not enough known". Do not reopen her questions.',
+      'Worked out from Phoebe’s worksheet for this visit, from the same rows the screen shows. Each read is hers, in rule 14’s words; never read out a row id. An unlikely path is never said as more to learn. Do not reopen her questions.',
       '',
       ...lines,
     ].join('\n'),

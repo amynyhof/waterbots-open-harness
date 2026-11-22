@@ -41,8 +41,11 @@ Phoebe's own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md); ev
 - Each pathway's reading, its sorts (the technology class and the methodology version), and which paths
   close.
 
-## Her reasons to call a consultant (agent rule 13)
+## Her reasons to send someone to the WaterBots team (agent rule 13)
 
-- **A path closes** (a Blocked row, or the path does not apply). The console then shows the box for a
-  person beside the save, never in her chat (ruling of 23 Sep 2026, item A18).
+- **A path closes** (a Blocked row, or the path does not apply). The console then shows the box to
+  reach the WaterBots team beside the save (ruling of 23 Sep 2026, item A18), and on a Blocked row she
+  points to it.
+- **A link is needed:** this site holds no address for the consulting page, so she names the page and
+  gives no address.
 - **Partly a gap, for the maintainer.** The repository gives no other reason.

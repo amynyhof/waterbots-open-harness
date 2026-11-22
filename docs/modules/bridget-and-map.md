@@ -22,7 +22,7 @@ agent's are in [AGENT_RULES.md](../../AGENT_RULES.md).
 - **Nothing herself, today.** The console keeps the pin and the basin's place when the visitor clicks
   the map. Whether she should add anything is a **gap, for the maintainer**.
 
-### Her reasons to call a consultant (agent rule 13)
+### Her reasons to send someone to the WaterBots team (agent rule 13)
 
 - **Gap, for the maintainer.** The repository gives her no reason yet.
 

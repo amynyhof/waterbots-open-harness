@@ -96,7 +96,7 @@ const loadApi = (name) => import(pathToFileURL(join(apiOut, name)).href);
 
 const { SYSTEM_PROMPT, RESPONSE_SCHEMA, cardsBlock, setsFor, CARD_SETS, ON_REQUEST } = await loadApi('_systemPrompt.js');
 const { PHOEBE_TOOL_MD } = await loadApi('_tool.generated.js');
-/* The 19 agent rules (AGENT_RULES.md, in force 22 Nov 2026) sit whole in her prompt. A rule they
+/* The 21 agent rules (AGENT_RULES.md, in force 22 Nov 2026; 20 and 21 added the same day) sit whole in her prompt. A rule they
    carry is checked in them; a check on her own wording reads her prompt without them. */
 const { AGENT_RULES_MD } = await loadApi('_agentRules.generated.js');
 const own = (prompt) => prompt.replace(AGENT_RULES_MD, '');
@@ -501,14 +501,13 @@ expect(
   'P18: what cannot be settled yet is one line, in her spirit, with no document named and no paid-site pitch',
   !/WaterBots is building tools and resources on the paid site/.test(SYSTEM_PROMPT) &&
     /in chat, one plain line on what would find it out and that we can help find tools for it, then your next question/.test(SYSTEM_PROMPT) &&
-    /Never name a document/.test(SYSTEM_PROMPT) &&
-    /never a document's name/.test(SYSTEM_PROMPT),
+    /Never name a document/.test(SYSTEM_PROMPT),
   'the paid-site line is back, or the one-line rule is missing'
 );
 /* THE DOOR TO A PERSON, item A18, 26 Sep 2026. Offered once, only on a
-   Blocked row, pointing at the box the save door shows; section 2 (the old
-   rung 3) still says consultants are coming everywhere else, because
-   everywhere else there is still no way to reach one. */
+   Blocked row, pointing at the box the save door shows. From 22 Nov 2026 rule
+   13 says "the WaterBots team" and the consulting page, never "a
+   consultant"; this site holds no link to that page yet, and section 2 says so. */
 /* THE NEXT ROUND ON #173, the maintainer's word of 14 Nov 2026: a voice card
    at the top, the order of questions (P29, P31), a closed path said in one line
    (P30), and the shared plain-words list and before-and-after pairs. */
@@ -559,24 +558,25 @@ expect(
   'Wellington comes to her chat: no "Back to Wellington" link, and she never sends the visitor back to him (14 Nov 2026)',
   !/Back to Wellington/.test(readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8')) &&
     /onWellington\('eligibility', 'wb-phoebe-composer'\)/.test(readFileSync(join('src', 'components', 'PhoebeScreen.tsx'), 'utf8')) &&
-    /he joins the visitor in this chat with the next step\. You never send them back to him\./.test(SYSTEM_PROMPT) &&
+    /Wellington joins the visitor in this chat with the next step\. You never send them back to him\./.test(SYSTEM_PROMPT) &&
     !/visitor goes back to him on Dispatches|send them back to Wellington on Dispatches/.test(SYSTEM_PROMPT),
   'a way back to Wellington survives'
 );
 expect(
-  'P30: on a Blocked row the offer of a person is in the right panel, never in chat, and she promises no reply',
-  /When you set a Blocked row, the console offers the visitor a person\*\*, beside the save button\. You do not make that offer in chat/.test(SYSTEM_PROMPT) &&
-    /Never offer the team's review in chat: the console shows that offer beside the save button/.test(SYSTEM_PROMPT) &&
+  'P30, rule 13 from 22 Nov 2026: on a Blocked row the box to reach the WaterBots team is in the right panel and she points to it; no reply time and no cost are rule 13\'s',
+  /When you set a Blocked row, the console shows the box to reach the WaterBots team\*\*, beside the save button; point to it\./.test(SYSTEM_PROMPT) &&
     !/tick the box beside the save button/.test(SYSTEM_PROMPT) &&
-    /never promise when or how anyone will reply/.test(SYSTEM_PROMPT),
+    /never promises a reply time and never talks about cost/i.test(AGENT_RULES_MD) &&
+    !/never promise when or how anyone will reply/.test(SYSTEM_PROMPT),
   'the door rule is missing a part'
 );
 expect(
-  'section 2 still says consultants are coming, with the Blocked row as its one exception (the old rung 3, 22 Nov 2026)',
-  /\*\*A consultant is not built on this site:\*\* never offer a way to reach one; if asked, say consultants are coming\./.test(SYSTEM_PROMPT) &&
-    !/"That is coming" is the whole of it/.test(SYSTEM_PROMPT) &&
-    /A Blocked row is the exception: see section 3/.test(SYSTEM_PROMPT),
-  'rung 3 lost its default or its exception'
+  'rule 13 from 22 Nov 2026: section 2 says this site has no consulting-page link, and no prompt says "consultant" in the agent\'s own text',
+  /\*\*This site holds no link to the consulting page yet:\*\* name the page, never an address\./.test(SYSTEM_PROMPT) &&
+    !/consultants are coming|A consultant is not built|"That is coming" is the whole of it/.test(SYSTEM_PROMPT) &&
+    /see section 3/.test(SYSTEM_PROMPT) &&
+    !/\bconsultant\b/i.test(own(SYSTEM_PROMPT).replace(/overseen by trusted consultants/, '')),
+  'section 2 still says consultant, or lost the link line'
 );
 expect(
   'she asks the Eligibility rows only, one a turn, and shows the rest once',
@@ -721,10 +721,10 @@ expect(
   );
 }
 expect(
-  'P9: the record is read first and nothing it holds is asked again, in any words',
+  'P9: the record is read first; not asking again for what it holds is agent rule 10 from 22 Nov 2026',
   /# Read the record first — a hard rule/.test(SYSTEM_PROMPT) &&
-    /Never ask for anything it holds, in any words/.test(SYSTEM_PROMPT) &&
-    /new source or cleaning water, stage, people or households served, place, name/.test(SYSTEM_PROMPT) &&
+    /asks only for what is missing/.test(AGENT_RULES_MD) && /the project record of rule 10/.test(SYSTEM_PROMPT) &&
+    /new source or cleaning water, stage, people or households served, place and name/.test(SYSTEM_PROMPT) &&
     SYSTEM_PROMPT.indexOf('# Your first two messages') < SYSTEM_PROMPT.indexOf('# Read the record first'),
   'the record-first rule is missing, or comes before her first two messages'
 );
@@ -765,7 +765,7 @@ expect(
 expect(
   'P10: two or three short sentences, then one question, four at most and under 400 characters, and the relay counts a long one',
   /Every reply is two or three short sentences/.test(AGENT_RULES_MD) && /Four sentences and 400 characters at most\./.test(SYSTEM_PROMPT) &&
-    /Two or three short sentences, then one question/.test(RESPONSE_SCHEMA.properties.reply.description) &&
+    /Four sentences and 400 characters at most/.test(RESPONSE_SCHEMA.properties.reply.description) &&
     /isLongReply\(answer\.reply\)/.test(relaySource),
   'the length rule is missing from her prompt, her answer shape or the relay'
 );
@@ -805,9 +805,10 @@ expect(
   'a block is unnamed in her prompt'
 );
 expect(
-  'her prompt says her level and who leads',
+  'her prompt says her level and her doors (rule 21); who leads is agent rule 19 from 22 Nov 2026',
   /you work at the \w+ level/.test(SYSTEM_PROMPT) &&
-    /Wellington is the Team Lead, and he leads the visit/.test(SYSTEM_PROMPT),
+    /At the Free site and the Agent Commons doors/.test(SYSTEM_PROMPT) &&
+    /^19\. Wellington leads\./m.test(AGENT_RULES_MD) && !/Wellington is the Team Lead, and he leads the visit/.test(SYSTEM_PROMPT),
   'her level sentence or her lead sentence is missing'
 );
 

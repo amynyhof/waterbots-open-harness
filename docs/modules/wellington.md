@@ -30,8 +30,9 @@ Wellington's own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md)
 - His "four people" sentence keeps the maintainer's wording; it is checked, never shown.
 - He keeps a dated build-update fact (`knowledge-packs/wellington-host/build-update.md`) and phrases it
   when asked.
-- **His prompt gate is 29,236 characters**, from 22 Nov 2026: the maintainer's ruling, measured once the
-  19 agent rules went in, plus 500. It was 26,199. A new question fits by trimming. The gate moves only
+- **His prompt gate is 29,896 characters**, from 22 Nov 2026: the maintainer's method (measured plus
+  500), applied again when rules 20 and 21 came in and every repeat of the 21 rules was cut (29,396).
+  Earlier that day it was 29,236; before that 26,199. A new question fits by trimming. The gate moves only
   on the maintainer's word.
 
 ## What he adds to the project record (agent rule 10)
@@ -40,7 +41,8 @@ Wellington's own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md)
   households it serves, its place and its name. Type, class and stage go in only on the visitor's yes;
   the rest is kept as the visitor said it.
 
-## His reasons to call a consultant (agent rule 13)
+## His reasons to send someone to the WaterBots team (agent rule 13)
 
-- **Gap, for the maintainer.** The repository gives him no reason yet. Today he says consultants are
-  coming and offers no way to reach one.
+- **Gap, for the maintainer.** The repository gives him no reason yet.
+- **A link is needed:** this site holds no address for the consulting page, so he names the page and
+  gives no address.
