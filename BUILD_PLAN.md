@@ -405,6 +405,10 @@ by hand; it needs the real key); the automerge job in `.github/workflows/lanes.y
 - A Vercel preview needs a sign-in, so a session cannot take a picture of one; pictures come from a local server.
 - This file's v1 fence names two real countries, and O16 a third. The wording is hers.
 
+**C5 · Trufflehog read nothing on pull requests until #196.** After v1 · BONES. Found 22 Nov 2026: its check passed on #193 to #196 after
+scanning 0 chunks and 0 bytes, most likely because it was told to scan from `main`, which a pull request's checkout does not have. #196 gives
+it no base and no head. Session C and Session A cannot read this repository; the coach asks them to check their own.
+
 **C2 · Two sealed cards point at retired pages.** After v1 · BONES. The water eligibility cards point at "Pace and
 posture" in the old `AGENT_RULES.md`, and the carbon eligibility cards at `CITATIONS.md` (retired in #192). Card text reaches
 Phoebe's prompt, so the sealed cards change only on her word. Every other old pointer was fixed on 22 Nov 2026.

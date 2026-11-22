@@ -20,9 +20,7 @@ jobs:
       - uses: trufflesecurity/trufflehog@eafb8c5f6a06175141c27f17bcc17941853d0047 # v3.90.0
         with:
           path: ./
-          # On a pull request, the commits between main and the pull request's head, as before. On a run
-          # started by hand, both are empty, so the action scans the whole history (the maintainer's yes,
-          # 22 Nov 2026). Given main for both, it stopped with "BASE and HEAD are the same".
-          base: ${{ github.event_name == 'pull_request' && github.event.repository.default_branch || '' }}
-          head: ${{ github.event_name == 'pull_request' && 'HEAD' || '' }}
+          # No base and no head, the maintainer's yes of 22 Nov 2026: the pinned action then reads a pull
+          # request's own commits (its base and head commits) on a pull request, and the whole history on a
+          # run started by hand. Given "main" and "HEAD" before, it read 0 chunks on every pull request.
           extra_args: --results=verified,unknown
