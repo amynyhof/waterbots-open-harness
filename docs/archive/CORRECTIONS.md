@@ -17,6 +17,45 @@ before 3 Oct 2026 link to an OPEN_ITEMS.md that has since been retired to this f
 
 ---
 
+## 21 Nov 2026 — the nine families, and the plan file's limit raised to 450 lines
+
+**Why.** The maintainer's word of 21 Nov 2026: one set of nine families for all three repositories, and BUILD_PLAN.md's
+size limit raised from 400 lines to 450. The lines below named the old families or the old limit.
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — Two kinds of close, the light close:**
+
+> caps, which are six lines at most for the item the task touched and 400 lines at most for the
+> file;
+
+> If the file is still over 400
+> lines after the item is trimmed,
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — Merge lanes, lane 1:**
+
+> (BUILD_PLAN,
+> Safety pass, SP3)
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — The opening reads stay thin:**
+
+> **The plan file has a number: 400 lines.** [BUILD_PLAN.md](./BUILD_PLAN.md) is counted at every
+> full close-out, step 10, and a count past 400 is flagged in the report.
+
+**Old wording, whole — PROCESS_RULES_for_ShellB.md — How a session closes, step 10:**
+
+> 10. **Count the plan file's lines.** Maintainer's ruling, 3 Oct 2026: [BUILD_PLAN.md](./BUILD_PLAN.md)
+> has a limit of **400 lines**. Count them at every full close-out, after the sweep. **If the file is past
+> 400, flag it in the full close-out report, with the count.**
+
+**Old wording, whole — README.md:**
+
+> Every open thread lives in [BUILD_PLAN.md](./BUILD_PLAN.md), the one plan file, grouped into six
+> families: Knowledge, Agents, Surfaces, Data, Operations and Cleanup.
+
+**Where the current text is:** the same places, and the nine families in [BUILD_PLAN.md](../../BUILD_PLAN.md),
+*The nine families*. BUILD_PLAN's own description of its shape and its limit was rewritten in place, as the plan file is.
+
+---
+
 ## 21 Nov 2026 — CLAUDE.md: "Not given yet" in place of "awaiting user project input"
 
 **Why.** The maintainer's word of 21 Nov 2026: a project detail the visitor has not given yet is said

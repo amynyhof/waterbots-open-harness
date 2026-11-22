@@ -20,8 +20,9 @@ working session, and what keeps her open to anyone. When someone reaches the cap
 and says when it comes back. If her relay is ever unconfigured she states that she is not connected
 rather than pretending to answer.
 
-Every open thread lives in [BUILD_PLAN.md](./BUILD_PLAN.md), the one plan file, grouped into six
-families: Knowledge, Agents, Surfaces, Data, Operations and Cleanup. The same file says what is being
+Every open thread lives in [BUILD_PLAN.md](./BUILD_PLAN.md), the one plan file, grouped into nine
+families, the same nine in all three repositories: Agent orchestration, Calculators and methods, Knowledge, Console and
+surfaces, v1 proof and grading, Data and map, Paid platform, Security and hygiene, and Experts and partners. The same file says what is being
 built next, and why.
 
 The largest gap: **project points are not placed**, because nothing goes on the map until there is

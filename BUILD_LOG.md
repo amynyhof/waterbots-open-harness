@@ -6228,3 +6228,45 @@ The old bundle's figures remain in `main`'s history before this merge; #244 is t
 repository still has no `vitest`, so the bundle's 84 tests ran only in a clean folder outside it (the
 proposal's R3, ruled yes on 1 Oct, is part of Calvin's brief). Building his chat waits on her word to start.
 The five untracked drafts at the root are untouched.
+
+
+## 21 November 2026 — the walk's findings, the nine families, and the audit carried out
+
+**Not a full close-out.** One plan change and one carry, on the maintainer's word of 21 Nov 2026.
+
+**The nine families.** BUILD_PLAN.md's seven families and its sprints are replaced by one set of nine for all three
+repositories. All 60 open items kept their number, words and v1 step or "After v1" mark; the 14 that sat in the old
+"After v1" section with no mark of their own carry the words "After v1" now. The size limit is 450 lines, her word.
+The table of every item and its family is in the pull request.
+
+**The walk of 21 Nov 2026 — the full list.** Her walk of the live site, in her words, not fixed; each waits for its
+family's sprint.
+
+*A30 · Agent orchestration:*
+- A project Phoebe ruled out for water and carbon still got a number from the water calculator. Calvin's card said
+  "Water estimate ready." The report showed "ruled out" and an estimate for the same path.
+- Calvin's card says "Ready to estimate" when both paths are ruled out, and when the carbon calculator says it cannot run.
+- After Phoebe ruled out both paths, Wellington said the next step is Partners and offered "Meet Bridget."
+- The record said "Community level water treatment technologies" but the carbon calculator said the technology "is
+  recorded as other" and would not run. The line above it said "Still needed: technology."
+- The water calculator asked for people served when the record already had it, and asked its own five fit questions
+  that Phoebe covers. The number appeared with all five blank.
+- After the visitor corrected people served, "What it does" on the record kept the old number.
+- Wellington's "Knows X of Y details" total changed between walks (4, 5, 4).
+- Swap this site's own D-3 calculator for the core's package when it is released (Road to v1, step 5).
+
+*CM1 · Calculators and methods:*
+- A minus number of people was ignored with no message.
+
+*S31 · Console and surfaces:*
+- The "Calvin reads the facts…" intro, the line of method symbols, and the Beta sticker under the calculator still
+  show. The intro says "on the left," which is wrong on a phone.
+- Agent Commons: the water calculator is listed under Calvin; the carbon calculator says "Coming soon" though it runs
+  in the screening; Phoebe's row describes water only.
+- "beta" sticker at the bottom left.
+- On a phone, the water calculator's question labels wrap to four lines beside the box.
+
+**The carry out.** One file, written by this session, read only from this repository, on her word:
+`handoff\shared-draft\B_audit.md`, 461 lines, SHA-256
+`ee6f3730911ea673a7b5acf96ffef1da4908f1f47f8a61791b2ef8f7ac0314ac`. The name scan on it: 1 file, 0 findings.
+There is no packing list for a file going out; the fingerprint above is the record.
