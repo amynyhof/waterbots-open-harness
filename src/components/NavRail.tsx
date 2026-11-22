@@ -41,8 +41,11 @@ const COLLAPSED = 52;
 /** Narrowed below this after landing, the rail collapses. The reader can still expand it. */
 const AUTO_COLLAPSE_BELOW = 1180;
 
-/** What the card says when the visit has not named its project. Not a value. */
+/** The collapsed rail's title when the visit has not named its project. Not a value. */
 const UNNAMED = 'Unnamed project';
+
+/** The name box's words while it is empty: where to type, in plain words (21 Nov 2026). */
+const NAME_PLACEHOLDER = 'Type a name here';
 
 /**
  * What sits under a row. Look pass, 8 Sep 2026: "from the conversation" and
@@ -190,7 +193,10 @@ export default function NavRail({
               {/* THE NAME SHOWS ONCE, HERE — look pass, 8 Sep 2026. The card
                   is where a visitor names the project, by typing or by telling
                   Wellington; the record below no longer repeats it. A name he
-                  heard reads as a value; a blank or typed one is an input. */}
+                  heard reads as a value; a blank or typed one is an input.
+                  FROM 21 NOV 2026, the maintainer's word, the input is a clear
+                  place to type: a "Project name" label over a box, and
+                  Wellington asks for the name in the chat. */}
               {context.provenance.name === 'chat' ? (
                 <span
                   style={{
@@ -204,17 +210,22 @@ export default function NavRail({
                   {name}
                 </span>
               ) : (
-                <input
-                  className="wb-rail-input wb-rail-name"
-                  type="text"
-                  value={context.name}
-                  onChange={(e) => onTyped('name', e.target.value)}
-                  placeholder={UNNAMED}
-                  aria-label="Project name"
-                  maxLength={160}
-                />
+                <label htmlFor="wb-project-name" className="t-caption wb-rail-name-label">
+                  Project name
+                </label>
               )}
             </div>
+            {context.provenance.name !== 'chat' && (
+              <input
+                id="wb-project-name"
+                className="wb-rail-name wb-rail-name-box"
+                type="text"
+                value={context.name}
+                onChange={(e) => onTyped('name', e.target.value)}
+                placeholder={NAME_PLACEHOLDER}
+                maxLength={160}
+              />
+            )}
           </div>
 
           {/* S21 — the screening report, under the project. Quiet: blue is for

@@ -729,24 +729,24 @@ expect(
   'the composer does not grow'
 );
 expect(
-  'S21, and Save from 21 Nov 2026: the report under the project in the left rail; one Save, under the crew in the right panel with the team box, a bar above the chat box on a phone',
+  "S21, and Save from 21 Nov 2026: the report under the project in the left rail; one Save, the site menu's one button, with the team box under it",
   (() => {
     const left = readFileSync('src/components/NavRail.tsx', 'utf8');
     const door = readFileSync('src/components/SaveDoor.tsx', 'utf8');
     const chatBox = readFileSync('src/screen/ScreenChat.tsx', 'utf8');
-    const crewList = railSource.indexOf('{CREW.map(');
-    const save = railSource.indexOf('<SaveDoorPanel save={save} />');
+    const menu = readFileSync('src/components/SiteMenu.tsx', 'utf8');
     return (
       /Export screening report/.test(left) && !/wb-save-button|Save and sign up|Send my project to the WaterBots team/.test(left) &&
-      crewList > 0 && save > crewList &&
+      !/SaveDoor|Save and sign up/.test(railSource) &&
       /Send my project to the WaterBots team/.test(door) && (door.match(/'Save and sign up'/g) ?? []).length === 1 &&
-      chatBox.indexOf('<SaveBarSlot />') > 0 && chatBox.indexOf('<SaveBarSlot />') < chatBox.indexOf('<textarea') &&
-      /PhoneSaveBar\.Provider value=\{phone \? saveDoor : null\}/.test(appSource)
+      !/SaveBarSlot|PhoneSaveBar/.test(chatBox + door + appSource) &&
+      /<MenuSave save=\{save\} blue=\{buttonBlue\} \/>/.test(menu) && /<MenuSaveUnder save=\{save\} \/>/.test(menu) &&
+      /save=\{onConsole \? saveDoor : undefined\}/.test(appSource)
     );
   })() &&
     /onExport: printScreeningReport/.test(appSource) && /body\.classList\.add\('wb-print-screening'\)/.test(appSource) &&
     !/Next steps|TOOLS_LINE/.test(railSource),
-  'the report is not in the left rail, or Save is not under the crew, or the phone bar is not above the chat box'
+  "the report is not in the left rail, or Save is not the menu's one button, or the team box is not with it"
 );
 expect(
   'his prompt names the screening loop and forbids a fake live chat',

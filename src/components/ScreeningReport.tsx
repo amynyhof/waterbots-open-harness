@@ -9,7 +9,8 @@
  *
  * IT GROWS AS THE VISITOR GOES, and it is drawn from the visit and the rows
  * alone — never from anyone's prose, and nothing is invented:
- *   1. Wellington's project details, each one or "awaiting user project input";
+ *   1. Wellington's project details, each one or "Not given yet" (plain words
+ *      from 21 Nov 2026, the maintainer's word);
  *   2. Phoebe's results per funding path — what is in place, what is ruled out
  *      and why, what can be fixed, what is still to find out — with each card's
  *      citation, which path looks plausible, and how to reach a person;
@@ -31,7 +32,8 @@ import { GS4GG_CALCULATOR_VERSION } from '@waterbots/calvin/engine';
 import { CALVIN_PACKAGE_VERSION } from '../lib/calvinProject';
 import { SCREENING_WORKING_SLOT } from './CalvinCalculator';
 
-const AWAITING = 'awaiting user project input';
+/** A detail the visitor has not given yet. Plain words, the maintainer's word of 21 Nov 2026. */
+const AWAITING = 'Not given yet';
 const FIRST_SCREENING = 'This is a first screening, not an official decision.';
 
 /** Each funding path by its plain name. */

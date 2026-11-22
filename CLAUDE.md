@@ -58,7 +58,8 @@ carry (Rule zero, below); the engineer never fetches it from anywhere else.
 from 28 Oct 2026 by the maintainer's word; the old map.waterbots.ai forwards
 there, set in Vercel by her hand. Vercel builds from `main` on push. Every
 page carries the main site's menu, the same words, order and look as the live
-waterbots.ai menu; the links live once, in `src/lib/site.ts`.
+waterbots.ai menu; the links live once, in `src/lib/site.ts`. During a screening the three links fold
+into one small "Menu" button beside the wordmark, and the menu has Sign in and one button (21 Nov 2026).
 
 ## Rule zero — this repo only
 
@@ -210,7 +211,7 @@ Every value shown to a user says where it came from. It never credits a ruling o
 - Derived: worked out from other values. It shows the source of its formula.
 - Assumed: expected project performance, starting from a cited value.
 Three kinds of value (Calvin carbon modules):
-- Project facts (the project record): the user gives them at intake, and Wellington collects them. Until then, the field shows 'awaiting user project input'. Never guessed.
+- Project facts (the project record): the user gives them at intake, and Wellington collects them. Until then, the field shows 'Not given yet'. Never guessed.
 - Method defaults: at screening, the site fills them in from cited sources, chosen by the user's project facts.
 - Anticipated performance (screening and ex-ante): starts at a labelled 'assumed' value. Calvin encourages the user to adjust it to their planned project.
 This is settled. Do not raise it again.
@@ -299,9 +300,9 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   "seal", "ticket", "store" or "claim"; maintainer's ruling, 8 Sep 2026.
 - **The look pass of 8 Sep 2026, and four canon rules the same day.** Wellington
   opens warmly and names the next step in words; the project name shows once,
-  in the card; the record has three rows and an (i); the save button sits
-  in the right panel, under the crew, from 21 Nov 2026, and is a bar above the chat box on a phone
-  (only once something is on the record; until then the site menu's Sign up, beside Sign in, is the door); the phase names show at laptop width; ~~next steps
+  in the card; the record has three rows and an (i); the save button is
+  the site menu's one button from 21 Nov 2026, beside Sign in, on a laptop and on a phone: it says "Sign up" until
+  something is on the record, then "Save and sign up"; the phase names show at laptop width; ~~next steps
   live in the right rail only~~ **every handoff's button sits in the chat from 14 Nov 2026**; the map's line is one plain sentence; no intro
   paragraph above the conversation. **Every agent keeps four rules on pace and
   posture** — short, one question at a time, ends with the next step; "I don't
@@ -319,7 +320,7 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   steps live in the right rail only~~ the next step comes with Wellington, in the chat (14 Nov 2026). Where the chat is not live the screen opens on Tool and the Chat
   tab carries one plain line. **Memory is never a tab**; it stays in the record
   on the left rail, its source behind the (i). The three host docks and the old
-  dock frame are gone; the crew with the save button is the right column on
+  dock frame are gone; the crew is the right column on
   every step. **Three consumers, one screen** — the Commons, this site,
   production — differ only in memory and tool depth; the B→A raise into the
   brand book and the carry list for production are recorded under S16 in the
@@ -462,15 +463,15 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   and on a handoff to Phoebe he writes one line to her that heads her page, summing the project up.
   Phoebe asks deal-breakers first (a running project's start date before anything else), then what
   settles both paths, then one path, water first, never carbon first; a closed path gets one plain line
-  and she goes straight on; the offer of a person is in the right panel only, never in chat.
+  and she goes straight on; the offer of a person is under the save button in the site menu only, never in chat.
 - **Wellington comes to you, 14 Nov 2026, the maintainer's ruling; the rule is in AGENT_RULES.md.**
   His one line to Phoebe or Bridget, summing up the project, heads her chat; when her part is done
   he joins that chat with the next step and its button ("Meet Bridget", "Meet Calvin"), one ask on
   his own conversation, so his desk holds it too. No agent sends the visitor back to him. A path
   Phoebe rules out in chat is saved the same turn, through a required `closes` field (W25: on the
   maintainer's walk carbon was said ruled out and saved as "not enough known"). The right rail is
-  the crew with one status line each; the save door and the box to send the project to the team
-  (whenever a path is ruled out) sit under it from 21 Nov 2026, and **Export screening report** (S21,
+  the crew with one status line each; the save door is the site menu's one button and the box to send
+  the project to the team (whenever a path is ruled out) sits under it, from 21 Nov 2026, and **Export screening report** (S21,
   print-only, growing with the visit) sits in the left rail under the project. Bridget has a voice
   card and a short opening (B1), and the map zooms to the country as soon as the place is known
   (B2). Calvin's chat is not built, so Wellington does not yet come to it.
@@ -539,7 +540,7 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   13 Nov 2026, after the maintainer's three walks of them, 24,581 with the primer's line on Phoebe's tab, 25,943 after her fourth walk, 26,145 after her fifth, 26,148 with the voice card and the
   shared plain-words list, and 26,136 when he came to the agents' chats, all 14 Nov 2026, and 26,158
   with the reading level in his voice card, 16 Nov 2026 (his opening note rides beside the prompt,
-  as his notes for joining a chat do), 26,072 measured 21 Nov 2026, and 26,111 the same day with the crew as the navigation, against the unchanged gate
+  as his notes for joining a chat do), 26,072 measured 21 Nov 2026, 26,111 the same day with the crew as the navigation, and 26,165 the same day when he asks the project's name, against the unchanged gate
   of 26,199.
 - ~~**The engine bundle is tracked at `carried/`, from 27 Sep 2026**~~ (#132, replaced on 3 Oct 2026
   by v0.16.1, #147; tags `engine-carry-2026-09-27` and `engine-carry-2026-10-04`). **`carried/` is
@@ -602,6 +603,15 @@ Stove and fuel presets: do not raise their sources with the maintainer. A V2 age
   landing. Wellington's desk opens on his chat alone; "About Wellington" beside his name brings back his
   Knowledge pack and Credentials. On a phone the rings and the row under them are one row: Project,
   the step by name with a dot per step, Crew.
+- **The project name and the menu, 21 Nov 2026, the maintainer's word.** Wellington asks the
+  project's name once, before any handoff, because it heads the record and the screening report; no
+  name yet is an answer. The project card has a clear place to type it, a "Project name" label over a
+  box. A detail the visitor has not given reads "Not given yet" in the report. The site menu has
+  Sign in and one button, on a laptop and on a phone: "Sign up" until something is on the record, then
+  "Save and sign up", the one Save on the site; the box that sends the project to the team sits under
+  it. During a screening Consulting, Open Source and Agent Commons fold into one small "Menu" button
+  beside the wordmark, which goes to waterbots.ai. On a phone the top row is the wordmark, the menu
+  button, Sign in and the one button, and never wraps (it fits from 360px).
 - WaterBots branding per the brand book. Standalone deploy. No login.
 
 ## Legacy material

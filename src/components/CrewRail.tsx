@@ -16,11 +16,9 @@
  * line on where their part stands ("water likely · carbon ruled out"), worked
  * out from the visit and never typed (crewStatus, visit.ts).
  *
- * SAVE IS BACK UNDER THE CREW, FROM 21 NOV 2026 — the maintainer's word. One
- * "Save and sign up", once something is on the record, with the box that sends
- * the project to the team above it (src/components/SaveDoor.tsx). On a phone
- * Save is the bar at the bottom of the screen instead, and this panel keeps
- * only the team box.
+ * SAVE IS NOT HERE — the maintainer's word of 21 Nov 2026. It is the site
+ * menu's one button, with the box that sends the project to the team under it
+ * (the site menu, SiteMenu.tsx). For a few hours that day it sat under the crew.
  *
  * FOUR AGENTS, AND THE ROSTER IS THE BOOK'S. The roster lives in
  * src/lib/crew.ts and the row in CrewRow.tsx; this rail reads both.
@@ -32,21 +30,17 @@
 import { CREW } from '../lib/crew';
 import type { Surface } from '../lib/surfaces';
 import CrewRow from './CrewRow';
-import { SaveDoorPanel, SaveDoorTeamOnly, type SaveDoor } from './SaveDoor';
 
 export default function CrewRail({
   active,
   status,
   onNavigate,
-  save,
   drawer,
 }: {
   active: Surface;
   /** One plain line per member, keyed by the step each one opens. */
   status: Partial<Record<Surface, string>>;
   onNavigate: (surface: Surface) => void;
-  /** The one save door, under the crew once something is on the record. */
-  save: SaveDoor;
   /** On a phone: the column is a sliding panel, open or shut by the shell. */
   drawer?: { open: boolean; onClose: () => void };
 }) {
@@ -101,7 +95,6 @@ export default function CrewRail({
         ))}
       </div>
 
-      {save.show && (drawer ? <SaveDoorTeamOnly save={save} /> : <SaveDoorPanel save={save} />)}
     </aside>
   );
 }

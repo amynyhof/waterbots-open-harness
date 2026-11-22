@@ -82,12 +82,12 @@ const door = readFileSync(join('src', 'components', 'SaveDoor.tsx'), 'utf8');
 const css = readFileSync(join('src', 'styles', 'base.css'), 'utf8');
 expect('the shell asks the rule once', (app.match(/blueButton\(/g) ?? []).length === 1, 'blueButton is not called exactly once in App.tsx');
 expect(
-  'the menu, the save door and the form are each told from it',
-  /signupBlue=\{blue === 'signup'\}/.test(app) && /blue: blue === 'save'/.test(app),
-  'App.tsx does not pass the rule to the menu and the save door'
+  'the menu\'s one button is told from it, as Sign up or as Save',
+  /buttonBlue=\{blue === 'save' \|\| blue === 'signup'\}/.test(app),
+  'App.tsx does not pass the rule to the menu'
 );
-expect('the menu draws Sign up quiet when told', /signupBlue \? '' : ' is-quiet'/.test(menu) && /\.wb-site-menu-signup\.is-quiet \{[^}]*background: transparent/.test(css), 'no quiet Sign up');
-expect('the save door draws Save quiet when told', /save\.blue \? 'wb-save-button' : 'wb-save-button is-quiet'/.test(door) && /\.wb-save-button\.is-quiet \{[^}]*background: transparent/.test(css), 'no quiet Save');
+expect('the menu draws Sign up quiet when told', /buttonBlue \? '' : ' is-quiet'/.test(menu) && /\.wb-site-menu-signup\.is-quiet \{[^}]*background: transparent/.test(css), 'no quiet Sign up');
+expect('the save door draws Save quiet when told, in Sign up\'s look', /wb-site-menu-signup wb-site-menu-save\$\{blue \? '' : ' is-quiet'\}/.test(door), 'no quiet Save');
 expect(
   "Phoebe's and Bridget's screens tell the shell when Meet is under their latest turn",
   ['PhoebeScreen', 'BridgetScreen'].every((f) => /onMeet\?\.\(meet\)/.test(readFileSync(join('src', 'components', `${f}.tsx`), 'utf8'))) &&
@@ -133,6 +133,37 @@ expect(
   'Back goes back a step: every move pushes the step, and popstate restores it',
   /pushState\(\{ \.\.\.\(window\.history\.state \?\? \{\}\), wbStep: next \}/.test(app) && /\.wbStep;\s*if \(step\)/.test(app),
   'the step is not in the history'
+);
+
+console.log('\n  The menu: Sign in and one button (21 Nov 2026)');
+const crewRail = readFileSync(join('src', 'components', 'CrewRail.tsx'), 'utf8');
+expect(
+  'the menu has Sign in and one button: Sign up until something is on the record, then Save, and no other Save anywhere',
+  /saving \? \(\s*<MenuSave save=\{save\} blue=\{buttonBlue\} \/>\s*\) : \(\s*<a[\s\S]*?MENU_SIGN_UP\.label/.test(menu) &&
+    /save=\{onConsole \? saveDoor : undefined\}/.test(app) &&
+    (door.match(/'Save and sign up'/g) ?? []).length === 1 &&
+    !/SaveDoor|Save and sign up/.test(crewRail),
+  'the menu has two buttons, or a Save is still in the right panel'
+);
+expect(
+  'the team box goes with Save, under the menu\'s top row',
+  /\{saving && <MenuSaveUnder save=\{save\} \/>\}/.test(menu) && /save\.showPerson && <TeamBox/.test(door),
+  'the team box is not with Save'
+);
+expect(
+  'on a phone, Save is the blue one only while no panel covers the menu',
+  /const saveInView = onConsole && somethingOnRecord\(visit\) && \(!phone \|\| drawer === null\);/.test(app),
+  'Save counts as in view under an open panel'
+);
+expect(
+  'during a screening the links fold into one menu button',
+  /folded=\{onConsole\}/.test(app) && /folded \? \(/.test(menu) && /className="wb-site-menu-fold-button"/.test(menu),
+  'the links still show as a row during a screening'
+);
+expect(
+  'the menu\'s top row never wraps on a phone: a grid, the right-hand group on one line',
+  /@media \(max-width: 900px\) \{\s*\.wb-site-menu-band \{\s*display: grid;/.test(css) && /\.wb-site-menu-end \{\s*order: 2;\s*grid-column: -2 \/ -1;\s*flex-wrap: nowrap;/.test(css),
+  'the top row can wrap'
 );
 
 if (problems.length) {
