@@ -1,19 +1,18 @@
 /**
- * THE SAVE DOOR — one "Save and sign up" button, the maintainer's word of
- * 21 Nov 2026. It shows once something is on the record, as before.
+ * THE SAVE DOOR — the maintainer's word of 21 Nov 2026. The site menu has
+ * Sign in and ONE button beside it, on a laptop and on a phone. It says
+ * "Sign up" until something is on the record; then it becomes "Save and sign
+ * up", which saves the visit and takes the visitor to waterbots.ai to sign up.
+ * There is no other Save button: the one that sat under the crew in the right
+ * panel, and the phone's bar above the chat box before it, are gone.
  *
- * ON A LAPTOP it sits in the right panel, under the crew, with the box that
- * sends the project to the team for review (it goes with the save, so it moved
- * with it). Until 21 Nov 2026 both sat at the foot of the left rail.
+ * THE BOX THAT SENDS THE PROJECT TO THE TEAM goes with Save, so it sits in the
+ * menu too, on a line under the button, whenever a path is ruled out. Nothing
+ * is sent until Save is pressed, and then only with it.
  *
- * ON A PHONE it sits in the site menu's top row, beside Sign in and Sign up,
- * with the WaterBots.AI wordmark — the maintainer's word of 21 Nov 2026, in
- * place of the bar above the chat box. The team box stays in the right panel,
- * which on a phone is the Crew panel; a tick there goes with the menu's Save,
- * so a phone has one Save button too.
- *
- * ONE BLUE BUTTON AT A TIME (src/lib/blue.ts, 16 Nov 2026): Save is solid blue
- * only when it is the one next step; otherwise it keeps its place and words,
+ * ONE BLUE BUTTON AT A TIME (src/lib/blue.ts, 16 Nov 2026): the menu's button
+ * is solid blue when it is the one next step, as Sign up or as Save; when a
+ * "Meet …" button or a form's Send comes first, it keeps its place and words,
  * drawn quiet.
  */
 
@@ -28,26 +27,39 @@ export interface SaveDoor {
   showPerson: boolean;
   person: PersonAsk;
   onPerson: (next: PersonAsk) => void;
-  /** One blue button at a time: Save is the blue one only when nothing comes before it. */
-  blue: boolean;
 }
 
-/** On a laptop: the team box, then Save, under the crew in the right panel. */
-export function SaveDoorPanel({ save }: { save: SaveDoor }) {
+/** The menu's one button once something is on the record. Its waiting words are short, so the row never wraps. */
+export function MenuSave({ save, blue }: { save: SaveDoor; blue: boolean }) {
+  const { sealing } = save;
+  const busy = sealing.kind === 'sealing' || sealing.kind === 'sealed';
   return (
-    <div className="wb-crew-save">
-      <TeamBox save={save} />
-      <SaveButton save={save} />
-    </div>
+    <button
+      type="button"
+      className={`wb-site-menu-link wb-site-menu-signup wb-site-menu-save${blue ? '' : ' is-quiet'}`}
+      onClick={save.onSeal}
+      disabled={busy}
+      aria-busy={sealing.kind === 'sealing' || undefined}
+    >
+      {sealing.kind === 'sealing' && 'Saving…'}
+      {sealing.kind === 'sealed' && 'Saved'}
+      {(sealing.kind === 'idle' || sealing.kind === 'failed') && 'Save and sign up'}
+    </button>
   );
 }
 
-/** On a phone, in the Crew panel: the team box alone, because Save is in the site menu. */
-export function SaveDoorTeamOnly({ save }: { save: SaveDoor }) {
-  if (!save.showPerson) return null;
+/** Under the menu's top row: what went wrong if saving failed, and the box to send the project to the team. */
+export function MenuSaveUnder({ save }: { save: SaveDoor }) {
+  const failed = save.sealing.kind === 'failed';
+  if (!failed && !save.showPerson) return null;
   return (
-    <div className="wb-crew-save">
-      <TeamBox save={save} />
+    <div className="wb-site-menu-under">
+      {save.showPerson && <TeamBox save={save} />}
+      {save.sealing.kind === 'failed' && (
+        <p role="alert" style={{ margin: 0, fontSize: 12, lineHeight: 1.5, color: 'var(--state-pending)' }}>
+          {save.sealing.message}
+        </p>
+      )}
     </div>
   );
 }
@@ -55,15 +67,13 @@ export function SaveDoorTeamOnly({ save }: { save: SaveDoor }) {
 /**
  * THE DOOR TO A PERSON — item A18, 26 Sep 2026; from 14 Nov 2026 shown
  * whenever a path is ruled out, Blocked or not applying (the ruling of
- * 23 Sep 2026), and never offered in chat. Nothing is sent until Save is
- * pressed, and then only with it.
+ * 23 Sep 2026), and never offered in chat.
  */
 function TeamBox({ save }: { save: SaveDoor }) {
   const { sealing, person, onPerson } = save;
   const busy = sealing.kind === 'sealing' || sealing.kind === 'sealed';
-  if (!save.showPerson) return null;
   return (
-    <div style={{ margin: '0 2px 10px' }}>
+    <div className="wb-team-box">
       <label
         style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12.5, lineHeight: 1.45, color: 'var(--ink)', cursor: 'pointer' }}
       >
@@ -91,57 +101,4 @@ function TeamBox({ save }: { save: SaveDoor }) {
       )}
     </div>
   );
-}
-
-/** The one button, and what went wrong if saving failed. */
-function SaveButton({ save }: { save: SaveDoor }) {
-  return (
-    <>
-      <SaveOnly save={save} />
-      <SaveFailed save={save} />
-    </>
-  );
-}
-
-/** The button alone. In the menu its waiting words are short, so the row never wraps. */
-function SaveOnly({ save, short = false }: { save: SaveDoor; short?: boolean }) {
-  const { sealing } = save;
-  const busy = sealing.kind === 'sealing' || sealing.kind === 'sealed';
-  return (
-    <button
-      type="button"
-      className={save.blue ? 'wb-save-button' : 'wb-save-button is-quiet'}
-      onClick={save.onSeal}
-      disabled={busy}
-      aria-busy={sealing.kind === 'sealing' || undefined}
-    >
-      {sealing.kind === 'sealing' && (short ? 'Saving…' : 'Saving your project…')}
-      {sealing.kind === 'sealed' && (short ? 'Saved' : 'Saved. Taking you to waterbots.ai…')}
-      {(sealing.kind === 'idle' || sealing.kind === 'failed') && 'Save and sign up'}
-    </button>
-  );
-}
-
-/** What went wrong, if saving failed. */
-function SaveFailed({ save, inMenu = false }: { save: SaveDoor; inMenu?: boolean }) {
-  if (save.sealing.kind !== 'failed') return null;
-  return (
-    <p
-      role="alert"
-      className={inMenu ? 'wb-site-menu-alert' : undefined}
-      style={{ margin: inMenu ? 0 : '8px 0 0', fontSize: 12, lineHeight: 1.5, color: 'var(--state-pending)' }}
-    >
-      {save.sealing.message}
-    </p>
-  );
-}
-
-/** On a phone, in the site menu's top row: the button, with short waiting words. */
-export function MenuSave({ save }: { save: SaveDoor }) {
-  return <SaveOnly save={save} short />;
-}
-
-/** On a phone, what went wrong, on its own line under the menu's top row. */
-export function MenuSaveFailed({ save }: { save: SaveDoor }) {
-  return <SaveFailed save={save} inMenu />;
 }

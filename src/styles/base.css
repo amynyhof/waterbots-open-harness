@@ -922,45 +922,6 @@ body {
   outline: none;
 }
 
-/* The bridge's button on the save row (item S7, 8 Sep 2026). The book's §7
-   primary: solid Tide, light label ink, --r-md, hover darkens, press scales to
-   0.98. The one primary action on this site that takes the visitor somewhere
-   else with their work, so it is the one that looks like one. */
-.wb-save-button {
-  display: inline-block;
-  font-family: var(--font-sans);
-  font-size: 12.5px;
-  font-weight: 500;
-  padding: 8px 14px;
-  border: 0;
-  border-radius: var(--r-md);
-  background: var(--tide-ui);
-  color: #ffffff;
-  cursor: pointer;
-  transition: background var(--dur) var(--ease), transform var(--dur) var(--ease);
-}
-.wb-save-button:hover:not(:disabled) {
-  background: var(--tide-hover);
-}
-.wb-save-button:active:not(:disabled) {
-  transform: scale(0.98);
-}
-/* One blue button at a time (src/lib/blue.ts, 16 Nov 2026): when another
-   button is the next step, Save keeps its place and words, drawn quiet. */
-.wb-save-button.is-quiet {
-  background: transparent;
-  color: var(--ink);
-  box-shadow: inset 0 0 0 1px var(--line);
-}
-.wb-save-button.is-quiet:hover:not(:disabled) {
-  background: transparent;
-  box-shadow: inset 0 0 0 1px var(--ink-4);
-}
-.wb-save-button:disabled {
-  opacity: 0.6;
-  cursor: progress;
-}
-
 /* A live pack tab is a button; an unselected one lifts a little on hover. */
 .wb-pack-tab:hover span:nth-child(2) {
   color: var(--ink);
@@ -1390,6 +1351,73 @@ body {
 .wb-site-menu-quiet:hover {
   color: var(--ink);
 }
+/* DURING A SCREENING THE LINKS ARE ONE SMALL MENU BUTTON beside the wordmark
+   (21 Nov 2026), quiet, outlined; its list opens under it on a card. The
+   panels on a phone sit above it. */
+.wb-site-menu-fold {
+  position: relative;
+  margin-left: 20px;
+}
+.wb-site-menu-fold-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  padding: 4px 10px;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-radius: var(--r-md);
+  box-shadow: inset 0 0 0 1px var(--line);
+  cursor: pointer;
+}
+.wb-site-menu-fold-button:hover,
+.wb-site-menu-fold-button[aria-expanded="true"] {
+  box-shadow: inset 0 0 0 1px var(--ink-4);
+}
+.wb-site-menu-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 1000;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md);
+}
+.wb-site-menu-list .wb-site-menu-link {
+  display: block;
+  padding: 8px 10px;
+  border-radius: var(--r-sm);
+}
+.wb-site-menu-list .wb-site-menu-link:hover {
+  background: var(--frame);
+}
+.wb-site-menu-list .wb-site-menu-link[aria-current="page"] {
+  color: var(--tide-text);
+}
+/* Under the top row: the box that sends the project to the team, which goes
+   with Save, and what went wrong if saving failed. At the right, under the
+   button. */
+.wb-site-menu-under {
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.wb-team-box {
+  width: 100%;
+  max-width: 340px;
+}
+
 /* The map's one line in the menu: at the left of Sign in on a laptop. */
 .wb-site-menu-readout {
   display: inline-flex;
@@ -1424,6 +1452,18 @@ body {
 }
 .wb-site-menu-signup:hover {
   background: var(--tide-hover);
+}
+/* THE MENU'S ONE BUTTON — the maintainer's word of 21 Nov 2026: "Sign up"
+   until something is on the record, then "Save and sign up", in the same look.
+   As Save it is a button, not a link. */
+.wb-site-menu-save {
+  font-family: var(--font-sans);
+  border: 0;
+  cursor: pointer;
+}
+.wb-site-menu-save:disabled {
+  opacity: 0.6;
+  cursor: progress;
 }
 /* Quiet when another button is the one next step (src/lib/blue.ts). */
 .wb-site-menu-signup.is-quiet {
@@ -1678,7 +1718,7 @@ button.wb-info {
 
   /* WHILE A BOX IS TYPED IN, the menu and the Commons' way back step aside,
      and the chat takes the whole screen above the keyboard. */
-  html.wb-typing .wb-site-menu,
+  html.wb-typing .wb-site-menu:not(:focus-within),
   html.wb-typing .wb-crumb {
     display: none;
   }
@@ -1958,18 +1998,19 @@ button.wb-info {
 }
 
 /* THE MENU ON A PHONE, TWO ROWS — the maintainer's word of 21 Nov 2026. The
-   top row is the wordmark with Sign in, Sign up and, once something is on the
-   record, "Save and sign up" (src/components/SiteMenu.tsx). It is a grid, so the
-   top row never wraps, and the type and the gaps narrow with the screen so all
-   four fit from 360px. The three links take the row under it. At the site's
-   phone width, 900px. */
+   top row is the wordmark, the menu button during a screening, Sign in and the
+   one button (src/components/SiteMenu.tsx). It is a grid, so the top row never
+   wraps, and the type and the gaps narrow with the screen so all four fit from
+   340px. The links, off a screening, take the row under it. At the site's phone
+   width, 900px. */
 @media (max-width: 900px) {
   .wb-site-menu-band {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns: auto auto minmax(0, 1fr);
+    column-gap: 8px;
     padding: 10px 16px;
   }
-  .wb-site-menu-alert,
+  .wb-site-menu-under,
   .wb-site-menu-links,
   .wb-site-menu-readout {
     grid-column: 1 / -1;
@@ -1978,8 +2019,17 @@ button.wb-info {
     order: 0;
     font-size: clamp(15px, 4.2vw, 18px);
   }
-  .wb-site-menu-end {
+  .wb-site-menu-fold {
     order: 1;
+    margin-left: 0;
+  }
+  .wb-site-menu-fold-button {
+    font-size: clamp(12px, 3.4vw, 13px);
+    padding: 4px clamp(7px, 2.2vw, 10px);
+  }
+  .wb-site-menu-end {
+    order: 2;
+    grid-column: -2 / -1;
     flex-wrap: nowrap;
     justify-self: end;
     column-gap: clamp(6px, 2.2vw, 16px);
@@ -1991,25 +2041,17 @@ button.wb-info {
   .wb-site-menu-signup {
     padding: 5px clamp(8px, 2.4vw, 14px);
   }
-  .wb-site-menu-end .wb-save-button {
-    font-size: clamp(12px, 3.4vw, 13px);
-    line-height: 1.5;
-    padding: 5px clamp(8px, 2.4vw, 14px);
-    white-space: nowrap;
-  }
-  /* If saving failed, what went wrong, on its own line under the top row. */
-  .wb-site-menu-alert {
-    order: 2;
-    text-align: right;
+  .wb-site-menu-under {
+    order: 3;
   }
   .wb-site-menu-links {
-    order: 3;
+    order: 4;
     margin-top: 2px;
   }
   /* The map's line takes its own row under the links (21 Nov 2026), so the top
      row keeps its place and the line is not squeezed beside it. */
   .wb-site-menu-readout {
-    order: 4;
+    order: 5;
     justify-content: flex-end;
     margin: 0;
   }
@@ -2021,6 +2063,13 @@ button.wb-info {
 /* The menu's links are 44px places to tap on the smallest phones; the look is
    the live page's (29 Oct 2026). */
 @media (max-width: 430px) {
+  /* The menu button is its icon alone here, so the top row fits from 340px. */
+  .wb-site-menu-fold-word {
+    display: none;
+  }
+  .wb-site-menu-fold-button {
+    padding: 6px 8px;
+  }
   .wb-site-menu-link {
     position: relative;
   }
@@ -2344,23 +2393,6 @@ button.wb-info {
   background: color-mix(in srgb, var(--chip-hue) 14%, var(--card));
   border-color: color-mix(in srgb, var(--chip-hue) 55%, var(--card));
   color: var(--ink);
-}
-
-/* THE ONE SAVE DOOR — the maintainer's word of 21 Nov 2026
-   (src/components/SaveDoor.tsx). On a laptop, under the crew in the right
-   panel, the team box above it; full width, normal text size; still the one
-   blue button only when nothing comes before it. */
-.wb-crew-save {
-  flex: none;
-  margin: 0 18px 18px;
-}
-.wb-crew-save .wb-save-button {
-  display: block;
-  width: 100%;
-  font-size: 13.5px;
-  padding: 9px 12px;
-  /* "Save and sign up", on one line at every width (16 Nov 2026). */
-  white-space: nowrap;
 }
 
 /* THE CREW COLUMN NARROWS BETWEEN PHONE AND WIDE LAPTOP — the maintainer's

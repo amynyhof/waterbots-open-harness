@@ -99,7 +99,7 @@ import CalvinScreen from './components/CalvinScreen';
 import SiteMenu from './components/SiteMenu';
 import { usePhone } from './lib/phone';
 import { blueButton, meetShowing } from './lib/blue';
-import { MenuSave, MenuSaveFailed, type SaveDoor } from './components/SaveDoor';
+import type { SaveDoor } from './components/SaveDoor';
 import { Reached } from './chat/reached';
 import { DEFAULT_SURFACE, type Surface } from './lib/surfaces';
 import { useConversation } from './chat/useConversation';
@@ -504,14 +504,14 @@ export default function App() {
     onConsole &&
     !(phone && drawer !== null) &&
     ((onDesk && meetShowing(chat.turns, reached)) || (onEligibility && meetOn.eligibility) || (onMap && meetOn.map));
-  /* On a phone Save is in the site menu's top row (21 Nov 2026). An open panel covers the menu, so it counts only while no panel is open. */
+  /* Save is the site menu's one button (21 Nov 2026). On a phone an open panel covers the menu, so it counts only while no panel is open. */
   const saveInView = onConsole && somethingOnRecord(visit) && (!phone || drawer === null);
   /* A page with a form of its own — the interest form, and the supporters page from 18 Nov 2026 — makes its Send the blue one. */
   const blue = blueButton({ meet: meetInView, save: saveInView, form: onInterest || onSupporters });
 
   /* THE ONE SAVE DOOR — the maintainer's word of 21 Nov 2026
-     (src/components/SaveDoor.tsx): under the crew in the right panel on a
-     laptop, in the site menu's top row on a phone; with the team box. */
+     (src/components/SaveDoor.tsx): the site menu's one button, Sign up until
+     something is on the record and Save after, with the team box under it. */
   const saveDoor: SaveDoor = {
     show: somethingOnRecord(visit),
     sealing,
@@ -519,7 +519,6 @@ export default function App() {
     showPerson,
     person,
     onPerson: setPerson,
-    blue: blue === 'save',
   };
 
   return (
@@ -539,9 +538,9 @@ export default function App() {
       <SiteMenu
         page={page}
         onPage={goTo}
-        signupBlue={blue === 'signup'}
-        save={phone && onConsole && saveDoor.show ? <MenuSave save={saveDoor} /> : undefined}
-        saveFailed={phone && onConsole && saveDoor.show ? <MenuSaveFailed save={saveDoor} /> : undefined}
+        buttonBlue={blue === 'save' || blue === 'signup'}
+        save={onConsole ? saveDoor : undefined}
+        folded={onConsole}
         readout={
           /* The layer readout describes the map, so it only shows on the map. */
           onConsole && onMap && mapTabOpen && status && (
@@ -686,15 +685,14 @@ export default function App() {
               </div>
             </main>
 
-            {/* The right column is the crew on every step, with Save under
-                it from 21 Nov 2026, so saving is reachable from every step.
+            {/* The right column is the crew on every step; Save is in the
+                site menu from 21 Nov 2026, so it is reachable from every step.
                 The host docks that stood here on the map and on quantification
                 are retired; each agent's screen holds its own chat in the centre. */}
             <CrewRail
               active={surface}
               status={crew}
               onNavigate={setSurface}
-              save={saveDoor}
               drawer={phone ? { open: drawer === 'crew', onClose: closeDrawer } : undefined}
             />
           </div>

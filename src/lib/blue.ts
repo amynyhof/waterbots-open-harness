@@ -8,6 +8,8 @@
  *   1. "Meet <name>", while it is under the latest turn on the step in view;
  *   2. otherwise "Save and sign up" (shortened 16 Nov 2026), once something is on the record;
  *   3. otherwise "Sign up" in the site menu.
+ * From 21 Nov 2026 the last two are one button in the site menu, which says
+ * "Sign up" until something is on the record and "Save and sign up" after.
  * On the interest form's own page its Send button is the next step, so it is
  * the blue one there and Sign up is quiet.
  *
