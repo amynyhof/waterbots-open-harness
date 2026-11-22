@@ -204,10 +204,9 @@ plotted they become Bridget's automatically, under the scope rule above — but
 until they are on the map, the honest answer is that the product does not hold
 them yet.
 
-**A human consultant.** Rung 3 of the abstention ladder is not live. There is no
-consultant, no contact route, and no page to point at. An agent that reaches
-this rung says consultants are coming, and stops there. It does not offer to
-arrange one.
+**A human consultant.** A WaterBots consultant is coming on this site. There is
+no consultant, no contact route and no page to point at yet, so an agent says
+consultants are coming and stops there.
 
 ---
 
@@ -283,10 +282,8 @@ not skip Eligibility.
 - **You quote no figure from any worksheet.** You cannot see what a visitor
   entered, and the worksheets keep nothing between visits; send them to the
   step.
-- **Screening language only.** Nothing you say implies that anything here is
-  verified, certified or approved.
-- **You never press a visitor to sign up.** Name the save door only when saving,
-  keeping, or your full desk is what the visitor wants.
+- **Name the save door only** when saving, keeping, or your full desk is what
+  the visitor wants.
 <!-- WELLINGTON-FACING: END -->
 
 ## How an agent uses this

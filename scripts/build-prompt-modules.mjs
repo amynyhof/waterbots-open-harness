@@ -294,6 +294,17 @@ const BUNDLES = [
     stale: 'The relay would deploy with out-of-date cards.',
   },
   {
+    label: 'agent-rules',
+    target: 'api/_agentRules.generated.ts',
+    /* THE FOUNDATIONAL AGENT RULES, in force from 22 Nov 2026. AGENT_RULES.md is
+       an exact copy of the maintainer's master, so it carries no region markers:
+       rules 1 to 19 are taken from their first heading up to the "Notes for
+       builders" heading, which is for builders and never reaches an agent. Every
+       agent's prompt opens its rules with this text. */
+    sources: [{ name: 'AGENT_RULES_MD', file: 'AGENT_RULES.md', between: ['## How an agent talks', '## Notes for builders'] }],
+    stale: 'An agent would deploy following agent rules the maintainer has since changed.',
+  },
+  {
     label: 'primer',
     target: 'api/_primer.generated.ts',
     /* The primer moved into the shared pack on 17 Sep 2026; it was at the
@@ -359,13 +370,13 @@ function render({ target, sources }) {
  * The build gate fails if this has drifted from its sources, so a stale copy
  * cannot reach the relay unnoticed.
  *
- * Sources: ${sources.map((s) => (s.region ? `${s.file} (${s.region} region only)` : s.file)).join(', ')}
+ * Sources: ${sources.map((s) => (s.region ? `${s.file} (${s.region} region only)` : s.between ? `${s.file} (from "${s.between[0]}" up to "${s.between[1]}")` : s.file)).join(', ')}
  */
 
 `;
 
   const body = sources
-    .map(({ name, file, region, render }) => {
+    .map(({ name, file, region, between, render }) => {
       /* Normalised to LF before embedding. Git may check these files out with
          CRLF on Windows and LF on Vercel's Linux builders; without this the
          generated module differs by platform and the staleness gate fails on a
@@ -390,6 +401,19 @@ function render({ target, sources }) {
           );
         }
         text = text.slice(from + begin.length, to).trim() + '\n';
+      }
+
+      /* A source that is an exact copy of a master cannot carry markers, so it
+         names the heading it starts at and the heading it stops before. A
+         missing heading throws, for the same reason a missing marker does. */
+      if (between) {
+        const [first, stop] = between;
+        const from = text.indexOf(first);
+        const to = text.indexOf(stop);
+        if (from === -1 || to === -1 || to < from) {
+          throw new Error(`${file} is missing "${first}" or "${stop}", or they are out of order.`);
+        }
+        text = text.slice(from, to).trim() + '\n';
       }
 
       /* The pack list comes from the registry, never from typed prose. A
