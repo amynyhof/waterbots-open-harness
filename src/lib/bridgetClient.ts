@@ -31,7 +31,7 @@ export async function askBridget(
   history: { role: 'user' | 'assistant'; content: string }[],
   visit: { place: string; phone: boolean; pin: MapPin | null; quantifyNext: boolean },
   signal?: AbortSignal,
-  opts?: { opened?: boolean; pinned?: boolean }
+  opts?: { opened?: boolean; introduced?: boolean; pinned?: boolean }
 ): Promise<BridgetAnswer> {
   const body: Record<string, unknown> = { messages: history, phone: visit.phone, quantifyNext: visit.quantifyNext };
   if (visit.place.trim()) body.place = visit.place.trim();
@@ -44,6 +44,7 @@ export async function askBridget(
     };
   }
   if (opts?.opened) body.opened = true;
+  if (opts?.opened && opts.introduced) body.introduced = true;
   if (opts?.pinned) body.pinned = true;
 
   let response: Response;

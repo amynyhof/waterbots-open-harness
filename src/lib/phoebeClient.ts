@@ -131,6 +131,8 @@ export async function askPhoebe(
   signal?: AbortSignal,
   opts?: {
     opened?: boolean;
+    /** On the opened turn: Wellington's line shows above hers, so he has introduced her (rule 17). */
+    introduced?: boolean;
     eligibilityDone?: boolean;
     sheet?: CarriedSheet[];
     /** Card sets already loaded earlier this visit, so a stage does not unload. */
@@ -151,6 +153,7 @@ export async function askPhoebe(
       sheet?: CarriedSheet[];
       loaded?: string[];
       opened?: true;
+      introduced?: true;
       eligibilityDone?: true;
       stream?: true;
     } = { messages: history };
@@ -162,6 +165,7 @@ export async function askPhoebe(
     if (opts?.sheet && opts.sheet.length > 0) body.sheet = opts.sheet;
     if (opts?.loaded && opts.loaded.length > 0) body.loaded = opts.loaded;
     if (opts?.opened) body.opened = true;
+    if (opts?.opened && opts.introduced) body.introduced = true;
     if (opts?.eligibilityDone) body.eligibilityDone = true;
     response = await fetch('/api/phoebe', {
       method: 'POST',

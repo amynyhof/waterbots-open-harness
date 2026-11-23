@@ -4,8 +4,8 @@
 
 **V1 is done when both parts hold.**
 
-1. **Reliable.** The carbon calculators reproduce one real household water treatment (HWT) filing (Mali) and one
-   real community water supply (CWS) filing (Tanzania). The VWBA D-3 module follows the VWBA 2.0 guidebook's
+1. **Reliable.** The carbon calculators reproduce one real filing of each kind: household water treatment (HWT)
+   and community water supply (CWS). The VWBA D-3 module follows the VWBA 2.0 guidebook's
    method on test cases worked by hand, with every step cited; an outside expert checks it once the prototype is
    up. The guidebook has no worked example for D-3. No figure from either filing comes into this repository.
 2. **Whole journey.** A visitor runs a screening (Wellington → Phoebe → Bridget → Calvin → report or sign up). We
@@ -90,7 +90,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 |---|---|---|---|
 | 1 | **React 19 under the map**, so the open core's calculator screens can run here (#156, §9). | Nothing outside this repository. | Before-and-after map pictures she has passed; every check and the build pass. |
 | 2 | **Calvin's carbon calculator from the open core** on his Tool tab, V1 and V2, simple view and sliders on (A21). | The open core (Session C): the eight changes in #156 §1, sliders and the simple view. Pinned to the open core release that includes the sliders, as a release file. | Proofs P1 to P5 of #156 pass; she has passed the before-and-after table and the tab in the browser; **`carried/` is removed from this repository in the same swap, required for v1** (ruling 1 Nov 2026: the paid repository keeps the private original as the archive). **14 Nov 2026: calvin 0.2.0 installed, ex-ante with sliders, `carried/` deleted; P1 to P3 run. 0.2.0 has no simple view, and shows a new project no figure without a filed V1.0 fNRB: both for Session C.** Now 0.5.0, from 22 Nov 2026 (A21). |
-| 3 | **Wellington asks the core facts first**: type and class, country, how many served, people or households, and whether it is already registered for carbon (the transition). | Her rewrite of his instructions, freeing room for the new question; the gate stays at 32,001. Step 2. | The record holds the new fields; one measured run; his prompt under the gate. |
+| 3 | **Wellington asks the core facts first**: type and class, country, how many served, people or households, and whether it is already registered for carbon (the transition). | Her rewrite of his instructions, freeing room for the new question; the gate holds. Step 2. | The record holds the new fields; one measured run; his prompt under the gate. |
 | 4 | **Calvin's chat**, on the open core's prompt, asking only what is missing (A21). | The core's `prompt.md` read against AGENT_RULES.md (#156, open point C). Steps 2 and 3. | One measured run; on a walk he opens with his facts filled and asks at most household size and, for a transition, the filed V1.0 fraction of non-renewable biomass (fNRB). |
 | 5 | **The water figure from the open core's VWBA D-3 module**, in place of this site's `vwbaD3.ts`. | Session C builds the module, with the test cases worked by hand and every step cited, in a pinned open core release. Step 2. | The hand-worked cases pass here; she has passed the water figure in the browser. |
 | 6 | **Bridget's chat** (A22, old step 6): her opening, the pin, the reading, then Calvin or back. | Nothing outside this repository. | A walk passes through her and back with no wrong turn; her eyeball. |
@@ -100,7 +100,8 @@ the proposal to install Calvin from the open core, merged with her word on its o
 
 **After v1, not needed for the finish line:** A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
-- **Wellington's prompt gate is 32,001 characters, and Phoebe's largest case 208,338** (her method of 22 Nov 2026: measured plus 500, applied again when the build status sheet went into every agent). The gates move only on her word.
+- **Wellington's prompt gate is 32,537 characters, and Phoebe's largest case 208,957** (measured plus 500, family 1's first pull request). The limits stay. From her ruling of 22 Nov 2026 a session raises them itself by measured plus 500, without asking, and states the old and new size in its pull request.
+- **Her own walk of the preview stands in for the measured walk on everyday pull requests** (her ruling of 22 Nov 2026). The measured walk runs once before v1, when the model key has a safe home (A32).
 
 ---
 
@@ -114,6 +115,22 @@ v1 step or "After v1" mark; only its family changed. Within a family, v1 items c
 
 What belongs here: how agents plug into both sites; the one shared project record; what each agent reads and writes; which pathway and method a project is on and which are unlikely; hand-offs between agents; installing core releases.
 
+**The v1 scope of family 1, ruled by the maintainer on 22 Nov 2026.** The same words go to all three sessions. Everything else in family 1 stays "after v1". The sprint opened 22 Nov 2026; this repository's part comes in two pull requests, the second after Session C's release.
+
+GUIDING LINE: Wellington manages the team to gather what the project needs and keep it moving. The other agents do their tasks, collect what they need, and report back to him. He helps with the next steps.
+
+- **J1.** Release Calvin and Violet 0.5.1 as one joined release. After it, each agent gets its own release, so one agent can be updated without the other. Both sites install the same release in the same batch.
+- **J2.** Doors. Each host tells each agent which door it is at: Free site, Paid site, Agent Commons or MCP (agent rule 21). An agent working alone asks for what it needs itself. This covers how Calvin opens in the Agent Commons.
+- **J3.** The shared project record. Every agent adds its facts and results to one record, and the paid site reads it (agent rule 10). It holds each pathway's reading (likely, more to learn, unlikely) with its reason and what would change it. It refuses a count below zero where it is entered. One shared list turns each site's technology label into the record's code.
+- **J4.** The agent map. ONE map, kept in the core, reads the project's facts and the door, and says which agents are in play, which method applies, and what comes next. It is worked out from facts, so the same project always gets the same agents. Wellington leads from it on both sites. It replaces one-off rules. It must cover at least: on "likely" or "more to learn" a pathway's calculator agent is called and shows; on "unlikely" it is not called, and the visitor is told what would change it; with no pathway forward Bridget is not called and Wellington points to the WaterBots team; a transitioning project also sees the legacy calculator (today it does not); one entry for each carbon method. Session C proposes the design FIRST; the maintainer approves it before anyone builds it.
+- **J5.** Finalize all five current agents in v1: Wellington, Phoebe, Bridget, Calvin and Violet, each as an installable package in the core. Bridget's map data needs a rights check before it goes into a public repo. Violet becomes her own crew member on both sites, through the shared spec.
+- **J6.** Saving a screening into the paid site: the count of people served crosses over correctly, and the paid record never shows "people" as a unit nobody chose.
+- **J7.** The maintainer signs off the first water-benefit activity type (safe drinking water supply). No building.
+- **J8.** Reword the 30 lines the seed checks catch on the paid site, before the next agent moves into the core.
+- **J9.** Close the gaps against the agent rules: agents never talk about their own limits (rule 6); a build rule for a needed fact left blank (rule 11); no repeat introductions (rule 17); the link to the WaterBots team and the consulting page (rule 13; the address waits on the maintainer).
+
+**Where this repository stands on them.** J4's design is approved as Session C designed it (22 Nov 2026), with the maintainer's lobby chat on the paid site, not a door and not this repository's. **Built in the first pull request:** J9's rules 6, 11 and 17 (A31); rule 13's link waits on the address. **For the second, after Session C's release:** J1, J2 (A27), J3, J4 (A29, A30), J5 (A23, D3) and this site's side of J6. J7 is the maintainer's; J8 is Session A's.
+
 **A21 · Calvin's brief — his chat, the engine, carbon beside water.** Step 5 · BONES. **27 Oct 2026: replaced by** the proposal to install Calvin from the open core (#156, in GitHub's history):
 Calvin's engine and screens from the open core, React 19, Wellington asks the core facts first. Ruled; six open.
 Done when his screening numbers match the paid site's calculators run on the saved project's inputs (the v1 fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 2026; teal dropped). **21 Nov 2026: calvin 0.4.0 installed from the release (#178), with `unpinFigureBlock` on everywhere and `hideExportButton` on Quantify, where the left rail's screening report is the one export; the Commons keeps his export; no figure changed.** **22 Nov 2026: calvin 0.5.0 from calvin-violet-v0.5.0, tiles pinned, his intro gone; no sum changed.**
@@ -122,13 +139,10 @@ Done when his screening numbers match the paid site's calculators run on the sav
 `role: 'Map'` where her crew card says "Partners"; `PhoebeScreen.tsx` carries its own too. The chat header
 draws them and `check-roster` does not read them. Her ruling is owed: the field goes and the header reads the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 2026.
 
-**A24 · A pin where no pathway goes on to Quantify.** Step 6 · v1 · BONES. Her ruling of 31 Oct 2026: Bridget thanks the visitor and sends them
-back to Wellington, as built in A22. The visit stays at Partners after the pin, and he may point back to the map. Done is a line he reads after a pin there, and a measured walk.
-
 **A27 · Agent door bug.** v1 · BONES. Her word of 12 Nov 2026: in the Agent Commons, Phoebe tells visitors to go to Wellington. In the Commons,
 every agent works alone and asks for what she needs herself; on the sites, she hands back to Wellington. Each module must know which door it is at (see the plug-in contract). **22 Nov 2026 (#193):** rule 21 names four doors. Phoebe has one set of instructions at the Free site and the Agent Commons, and nothing tells her which door she is at; she can only guess from whether the visitor's record came with the message. Wellington and Bridget are at the Free site door only.
 
-**A29 · "Already earning Gold Standard credits?" reaches Calvin as `creditedUnderV1`.** Step 2 · v1 · BONES. Her word of 16 Nov 2026. The screening asks it once, plainly, and keeps the answer as a field (yes, no, not sure), never read from prose; the record carries it and `src/lib/calvinProject.ts` passes it to Calvin, so a new project runs V2.0 alone and only a credited one is asked its filed V1.0 fNRB. Calvin takes the field from 0.3.0 (#174, 16 Nov 2026); 0.5.0 is installed from #191 (22 Nov 2026), still with the field left unset, so every project gets the V2.0-only view until this is built. **Phoebe asks it**, her word of 16 Nov 2026, as a field she sets beside her registration question; "not sure" passes nothing. The queued-round proposal, #175.
+**A29 · The legacy calculator for a transitioning project.** v1 · BONES. Her ruling of 22 Nov 2026: the question "already earning Gold Standard credits?" is already asked. What is missing is the legacy calculator for a transitioning project. J4 covers it.
 
 **O14 · Carries owed — listed once.** Step 7 · PARK. From 21 Nov 2026 a carry goes through the handoff folder, only when she names it.
 **Through the folder, to Shell A:** the seal's contract (`type`, `gsClass`, `stage`, rows and a read per pathway, `wantsHuman`, `record.served`; `kind` retires
@@ -137,12 +151,10 @@ transition module; the one-row shape; the agent screen's file list; open.waterbo
 to this site:** the sign-up address, the confirmed roster columns, and a `roster.yaml` with rule 21's four doors and without its lines that repeat the agent rules (found 22 Nov 2026). **Route not yet ruled:** the brand book (typing dots §5, the agent screen §7); the grader (three rig changes).
 **Done:** `roster.yaml` without the maintainer's name, carried 2 Nov 2026, version 0.3.1, `product-shared@0.6.3`; Web Analytics, built #179 and on in Vercel 21 Nov 2026.
 
-**A31 · What the agent rules of 22 Nov 2026 still need built.** After v1 · BONES. Found while building #193; each waits for her ruling.
-- Rule 13: the reasons each agent sends someone to the WaterBots team. The repository gives Wellington and Bridget none, and Phoebe one (`docs/modules/`). The link to the consulting page is needed in Wellington's and Phoebe's instructions, the shared roster and the save door's team box; this site holds no address for it yet.
+**A31 · What the agent rules of 22 Nov 2026 still need built.** After v1 · BONES. Found while building #193. Rules 6, 11 and 17 are J9, built in family 1's first pull request: Phoebe and Bridget answer "what can you do" with what they can help with, and Phoebe says her sources do not cover a gap rather than that she has no card; Wellington's visit block names what is needed and still blank; where his line shows above theirs, Phoebe and Bridget do not introduce themselves again. Left, each waiting for her ruling:
+- Rule 13: the reasons each agent sends someone to the WaterBots team. The repository gives Wellington and Bridget none, and Phoebe one (`docs/modules/`). The link to the consulting page is needed in Wellington's and Phoebe's instructions, the shared roster and the save door's team box; this site holds no address for it yet (J9).
+- Rule 6: Bridget's "still being built" sentence says what she can only do today. It keeps the maintainer's own wording, so it changes on her word.
 - Rule 10: Bridget adds nothing to the project record herself; the console stores the pin.
-- Rule 11: no build rule for a fact that is needed but left blank.
-- Rule 17: Phoebe and Bridget greet with a line on what they do, even after Wellington has introduced them.
-- Rule 6: a few lines still have an agent say what it cannot do when asked ("the screen level", "no card for that yet"). Her walks decide.
 - Rule 8: no (ref) marker beside a fact in the chat; Phoebe's sources show on her worksheet rows.
 
 **A30 · The walk of 21 Nov 2026 — what the agents knew and handed on.** v1 · BONES. Eight findings from her walk (full list:
@@ -214,16 +226,17 @@ card and plain-words line against a grade-6 target; printed, never enforced. Not
 
 **K14 · Knowledge the agent rules left behind.** After v1 · BONES. Found 22 Nov 2026.
 - Rule 7: Wellington's basic facts about water benefits and carbon credits live in his instructions, not in a pack with a source.
-- Card T4 says a transition module is "overseen by trusted consultants"; rule 13 says "the WaterBots team". The card is sealed, so it changes on her word.
 - The shared roster still carries live-or-coming facts that the build status sheet now holds, such as "his chat is not live yet" and the journey table's State column.
+
+**C2 · Two sealed cards point at retired pages: a routine knowledge update.** After v1 · BONES. Her ruling of 22 Nov 2026: the sealed cards stay as they are, and these fixes wait for the routine knowledge updates of this family. The water eligibility cards point at "Pace and posture" in the old `AGENT_RULES.md`, and the carbon eligibility cards at `CITATIONS.md` (retired in #192). Every other old pointer was fixed on 22 Nov 2026.
 
 ### 4 · Console and surfaces
 
 What belongs here: what a visitor sees and clicks, the same on both sites: layout, navigation, header, Save, words, phone, design, report.
 
-**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved; her walks' fixes, the voice card and "Wellington comes to you" 12–14 Nov 2026. His prompt is 31,501 against a gate of 32,001, measured 22 Nov 2026 once the agent rules and the status sheet went in (#193). Waiting on one measured run (A32).
+**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved; her walks' fixes, the voice card and "Wellington comes to you" 12–14 Nov 2026. His prompt is 32,037 against a gate of 32,537, measured 22 Nov 2026 in family 1's first pull request. Waiting on the one measured walk before v1 (A32).
 
-**A28 · Phoebe's walk fixes.** v1 · BONES. Her word of 12–14 Nov 2026: rounds two and three (#173), the limit of 4 sentences or 400 characters approved 14 Nov. On the preview her first word came at 4.8 to 6.1 seconds and whole answers took 5.8 to 9.3 (14 Nov). The skipped hello is fixed. From 14 Nov a voice card, the shared plain-words list, the order of questions, and a ruled-out path saved the same turn (W25). Waiting on one measured run (A32).
+**A28 · Phoebe's walk fixes.** v1 · BONES. Her word of 12–14 Nov 2026: rounds two and three (#173), the limit of 4 sentences or 400 characters approved 14 Nov. On the preview her first word came at 4.8 to 6.1 seconds and whole answers took 5.8 to 9.3 (14 Nov). The skipped hello is fixed. From 14 Nov a voice card, the shared plain-words list, the order of questions, and a ruled-out path saved the same turn (W25). Waiting on the one measured walk before v1 (A32).
 
 **S21 · The screening report exports free.** Step 8 · v1. Her word of 23 Sep 2026: every tool, with or
 without answers, exportable as an easy-to-read, properly cited document. The screening report is the first
@@ -301,12 +314,14 @@ What belongs here: showing it works: real-filing matches, same numbers, whole-jo
 
 **A32 · The measured walks wait on the model key.** v1 · BONES. A26, A28 and road step 9 each wait on a measured walk. The
 model key has not been on this machine since at least 31 Oct 2026. The walk scripts can point at another address (`WB_BASE`), so a
-walk could run against a preview, whose server holds the key; that uses her credit and the preview's daily limit. Her own walk of
-the preview stood in for #193's, her word of 22 Nov 2026.
+walk could run against a preview, whose server holds the key; that uses her credit and the preview's daily limit. **Her ruling of 22 Nov 2026:** her own walk of the preview stands in for the
+measured walk on everyday pull requests. The measured walk runs once before v1, when the model key has a safe home.
 
 ### 6 · Data and map
 
 What belongs here: real outside data and the rights to use it: basins, project points, corporate goals.
+
+**D3 · Map data rights.** v1 · BONES. For the maintainer, her ruling of 22 Nov 2026 (J5): a rights check on each map data file in this repo and before any of it moves to the core. The map's basin and water-stress files are already public here. Change no data.
 
 **S28 · Countries named inside another country's name still zoom.** After v1 · WALKTHROUGH. v2, her word of 31 Oct 2026.
 Four countries whose names are part of another country's name open the Map tab on the whole world today (`src/lib/placeBox.ts`); done is their own, never a guess.
@@ -335,8 +350,10 @@ Nothing here.
 
 What belongs here: secrets, names to block, alerts, repo settings, speed and weight, stale rules and docs, close-outs.
 
+Routine hygiene, about once a month: check that nothing in this repo repeats or disagrees with a master page (rulings, agent rules, family page, status sheet). Fix what does.
+
 **O16 · Real-project figures in the carried bundle, public since #132.** Step 5 · BONES. The sweep of 3 Oct 2026
-found the India filing's figures in `presets.ts`, `emissions-legacy.ts` and `MANIFEST.md` (`carried/` deleted 14 Nov 2026). #244 is the paid site's
+found one real filing's figures in `presets.ts`, `emissions-legacy.ts` and `MANIFEST.md` (`carried/` deleted 14 Nov 2026). #244 is the paid site's
 item for real numbers left in this repository's public history. Open: the figures stay in `main`'s history before it. List: the build log as it stood at #193, in GitHub's history.
 
 **O1 · Revisit the daily cap against real usage.** After v1 · PARK. Thirty a day per visitor is live
@@ -390,6 +407,15 @@ waits for the engineer. The list from #194, line numbers as merged in #194 (comm
 8. `src/lib/phoebeCards.ts`, lines 617–621: `CARDS_APPROVED_ON`.
 9. `src/lib/surfaces.ts`, lines 23–24: `ConsoleSurface`, a second name for the same type.
 10. `scripts/measure-levels.mjs` (126 lines) and `scripts/measure-join.mjs` (163 lines): one-off measurements from August 2026.
+11. **The checks switched off on 22 Nov 2026** (her ruling, family 1's first pull request): each matched exact sentences in an
+    agent's instructions. Each is commented out where it stood, under one note at the top of its file, so it no longer runs. Line
+    numbers are where each starts in that pull request.
+    - `scripts/check-wellington.mjs`, 25 checks: lines 165, 182, 183, 186, 210, 212, 228, 239, 256, 269, 285, 332, 378, 787,
+      1021, 1049, 1082, 1087, 1096, 1101, 1107, 1114, 1132, 1188 and 1242. Line 1242 treated the word "consultant" as a fault.
+    - `scripts/check-phoebe.mjs`, 32 checks: lines 327, 505, 515, 532, 541, 551, 562, 572, 580, 588, 596, 606, 613, 620, 626, 631,
+      639, 646, 655, 662, 668, 678, 691, 704, 738, 751, 769, 780, 796, 809, 814 and 822. Line 588 treated the word "consultant" as a fault.
+    - The structure checks stay on: the whole agent rules page in each agent, no older rule left, the status sheet present, the gates,
+      and the machinery that does not depend on wording.
 
 Kept, though they look unused, because something planned needs them: `walkGrades` in `api/_reply.ts` (lines 213–217) and the
 three measure scripts (A32); `PROJECT_MAPPING_NOTE` in `src/lib/site.ts` (lines 18–21; projects on the map are coming);
@@ -403,15 +429,10 @@ by hand; it needs the real key); the automerge job in `.github/workflows/lanes.y
 - `.github/workflows/names.yml` has a comment pointing at a deleted proposal, kept because the name scan stays exactly as it is.
 - The knowledge packs' CHANGELOGs keep old card wording ("Old wording:"), copies of dead text; with C1.
 - A Vercel preview needs a sign-in, so a session cannot take a picture of one; pictures come from a local server.
-- This file's v1 fence names two real countries, and O16 a third. The wording is hers.
 
 **C5 · Trufflehog read nothing on pull requests until #196.** After v1 · BONES. Found 22 Nov 2026: its check passed on #193 to #196 after
 scanning 0 chunks and 0 bytes, most likely because it was told to scan from `main`, which a pull request's checkout does not have. #196 gives
 it no base and no head. Session C and Session A cannot read this repository; the coach asks them to check their own.
-
-**C2 · Two sealed cards point at retired pages.** After v1 · BONES. The water eligibility cards point at "Pace and
-posture" in the old `AGENT_RULES.md`, and the carbon eligibility cards at `CITATIONS.md` (retired in #192). Card text reaches
-Phoebe's prompt, so the sealed cards change only on her word. Every other old pointer was fixed on 22 Nov 2026.
 
 **SP1 · A separate GitHub account for sessions.** After v1 · BONES. A second account that can open pull requests but
 cannot merge, enforced by branch protection (only the maintainer's account may merge). First on this list: the deny

@@ -235,6 +235,7 @@ export async function POST(req: Request): Promise<Response> {
     sheet?: unknown;
     loaded?: unknown;
     opened?: unknown;
+    introduced?: unknown;
     eligibilityDone?: unknown;
     stream?: unknown;
   };
@@ -245,6 +246,7 @@ export async function POST(req: Request): Promise<Response> {
       sheet?: unknown;
       loaded?: unknown;
       opened?: unknown;
+      introduced?: unknown;
       eligibilityDone?: unknown;
       stream?: unknown;
     };
@@ -253,6 +255,8 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   const opened = body.opened === true;
+  /* Rule 17, 22 Nov 2026: Wellington's line shows above her first answer, so he has introduced her. */
+  const introduced = opened && body.introduced === true;
   const eligibilityDone = body.eligibilityDone === true;
 
   const messages = Array.isArray(body.messages) ? body.messages : [];
@@ -299,7 +303,7 @@ export async function POST(req: Request): Promise<Response> {
      second system block AFTER the cache breakpoint, so her cards stay cached
      and only this small block changes between visitors. */
   const record = readRecord(body.record);
-  const notes = phoebeNotesBlock({ opened, eligibilityDone });
+  const notes = phoebeNotesBlock({ opened, introduced, eligibilityDone });
 
   /* THE WORKSHEET AS IT STANDS — contract line 3, item A15, step 3,
      21 Sep 2026; per pack, with five states, from 25 Sep 2026. The rows the

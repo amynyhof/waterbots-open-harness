@@ -18,9 +18,13 @@ Phoebe's own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md); ev
   the eligibility quiz on her Tool tab, which takes a pulsing dot in her colour, then asks.
 - She reads the record first and never asks again for what it holds.
 - **A reply is four sentences or 400 characters at most.** Longer is logged and fails the measured walk.
-- **Her prompt's largest case (every card set loaded) is gated at 208,338 characters**, from 22 Nov
-  2026: the maintainer's method, measured plus 500, once the 21 agent rules and the build status sheet
-  went in (207,838). Earlier that day 205,313; before that 203,787.
+- **Her prompt's largest case (every card set loaded) is gated at 208,957 characters**, from 22 Nov
+  2026 (family 1): measured plus 500 (208,457), once rule 21's lobby-chat line and her rule 6 and 17
+  lines went in. Earlier that day 208,338 and 205,313; before that 203,787. A session raises it itself
+  by the same method and states the old and new size in its pull request.
+- **Where Wellington introduced her, she does not introduce herself again** (agent rule 17). The
+  console tells her relay when his line shows above her first answer; in the Agent Commons she
+  introduces herself.
 - No teaching side notes and no paid-site pitch. Where useful, a quiet "Learn more about …" chip sits
   under her reply, and nothing else.
 - Her reply streams as it is written; the relay logs each answer's time to first word.

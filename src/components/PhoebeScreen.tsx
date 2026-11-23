@@ -172,7 +172,7 @@ export default function PhoebeScreen({
   async function ask(
     history: { role: 'user' | 'agent'; text: string }[],
     signal: AbortSignal,
-    meta?: { opened?: boolean },
+    meta?: { opened?: boolean; introduced?: boolean },
     onLive?: (text: string | null) => void
   ): Promise<AgentTurn> {
     const answer = await askPhoebe(
@@ -186,6 +186,7 @@ export default function PhoebeScreen({
          sees what is filled in and what is still missing. */
       {
         opened: meta?.opened === true,
+        introduced: meta?.opened === true && meta.introduced === true,
         eligibilityDone,
         sheet: carriedSheet(sheet, HER_PACKS),
         loaded: loaded.current,
@@ -263,7 +264,7 @@ export default function PhoebeScreen({
     if (invite.trim()) {
       chatRef.current.seed([{ role: 'agent', text: invite.trim(), evidence: [], speaker: WELLINGTON }]);
     }
-    void chatRef.current.askOpened();
+    void chatRef.current.askOpened({ opened: true, introduced: invite.trim() !== '' });
   }, [visible, invite]);
 
   return (
