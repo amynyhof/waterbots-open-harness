@@ -206,3 +206,5 @@ GitHub's history keeps everything else. Newest last.
 - 22 Nov 2026: #192 Docs amended: the rulings page and the family open-and-close page in force, older rulings sorted out
 - 22 Nov 2026: #193 Built: the agent rules in force, every agent's prompt from rules 1 to 21 and the build status sheet, the size limits measured plus 500
 - 22 Nov 2026: #194 Docs amended: keep it light — checks run once, the build log one line per item, captures and dead pointers gone
+- 22 Nov 2026: #195 Docs amended: family 8 closed — findings filed, the engineer's delete list, stale plan wording fixed
+- 22 Nov 2026: SP3 finished: lane 1 auto-merge is on (`LANE1_AUTOMERGE` set 22 Nov 2026, 03:06 UTC); #195 merged by it.

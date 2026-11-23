@@ -394,7 +394,7 @@ waits for the engineer. The list from #194, line numbers as merged in #194 (comm
 Kept, though they look unused, because something planned needs them: `walkGrades` in `api/_reply.ts` (lines 213–217) and the
 three measure scripts (A32); `PROJECT_MAPPING_NOTE` in `src/lib/site.ts` (lines 18–21; projects on the map are coming);
 `scripts/build-basins.mjs` and `scripts/build-stress.mjs` (they rebuild the map's data); `scripts/check-basemap-key.mjs` (run
-by hand; it needs the real key); the automerge job in `.github/workflows/lanes.yml`, lines 81–118 (SP3).
+by hand; it needs the real key); the automerge job in `.github/workflows/lanes.yml`, lines 81–118 (switched on 22 Nov 2026).
 
 **C4 · Leftovers from the clean-up of 22 Nov 2026.** After v1 · BONES. Written down, not chased.
 - `CLAUDE.md` says this session's settings deny `gh pr merge`; on 22 Nov 2026 two merges ran from the session on her word. The
@@ -404,6 +404,10 @@ by hand; it needs the real key); the automerge job in `.github/workflows/lanes.y
 - The knowledge packs' CHANGELOGs keep old card wording ("Old wording:"), copies of dead text; with C1.
 - A Vercel preview needs a sign-in, so a session cannot take a picture of one; pictures come from a local server.
 - This file's v1 fence names two real countries, and O16 a third. The wording is hers.
+
+**C5 · Trufflehog read nothing on pull requests until #196.** After v1 · BONES. Found 22 Nov 2026: its check passed on #193 to #196 after
+scanning 0 chunks and 0 bytes, most likely because it was told to scan from `main`, which a pull request's checkout does not have. #196 gives
+it no base and no head. Session C and Session A cannot read this repository; the coach asks them to check their own.
 
 **C2 · Two sealed cards point at retired pages.** After v1 · BONES. The water eligibility cards point at "Pace and
 posture" in the old `AGENT_RULES.md`, and the carbon eligibility cards at `CITATIONS.md` (retired in #192). Card text reaches
@@ -420,11 +424,6 @@ and two that depend on them), one through Vite (`source-map-js`), and from 21 No
 Plan: `npm audit fix` without force on a throwaway branch; all checks and the build; rebuild the basins,
 byte-identical; upgrade `mapshaper` if a release drops `geographiclib`. Lane 3; proposal first; the paused
 install scripts for `better-sqlite3` and `esbuild` stay paused.
-
-**SP3 · Switch lane 1 auto-merge on.** After v1 · PARK. The rulings page of 22 Nov 2026 says docs-only changes merge
-on their own (lane 1). The job is built and off (`LANE1_AUTOMERGE` unset in the repository's variables); it waits on
-her flipping that, Allow auto-merge and branch protection by hand. **For the maintainer, 22 Nov 2026:** still off. From #194,
-lane 1's label says "Docs only. Merges on its own", so the label is ahead of the switch until she turns it on.
 
 **SP4 · Pin every GitHub Action by full commit hash instead of tag.** After v1 · BONES. `actions/checkout`, `actions/setup-node`,
 `gitleaks/gitleaks-action` and any others in `.github/workflows/`, per the second reader's re-attack on #152. A tag can be moved to

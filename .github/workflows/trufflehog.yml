@@ -20,6 +20,7 @@ jobs:
       - uses: trufflesecurity/trufflehog@eafb8c5f6a06175141c27f17bcc17941853d0047 # v3.90.0
         with:
           path: ./
-          base: ${{ github.event.repository.default_branch }}
-          head: HEAD
+          # No base and no head, the maintainer's yes of 22 Nov 2026: the pinned action then reads a pull
+          # request's own commits (its base and head commits) on a pull request, and the whole history on a
+          # run started by hand. Given "main" and "HEAD" before, it read 0 chunks on every pull request.
           extra_args: --results=verified,unknown
