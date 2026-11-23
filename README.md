@@ -140,10 +140,10 @@ the same thirty messages a day.
   pins a basin for the visit. What the visitor tells him fills the context card, labelled as from
   the conversation, and never overwrites what they typed.
 - **Quantification step.** Calvin's two calculators, both from the open core and both ex-ante,
-  installed from the release `calvin-violet-v0.5.0`. **Carbon credits** is `@waterbots/calvin`
-  0.5.0: Gold Standard's *Emission Reductions from Safe Drinking Water Supply*, V1.0 and V2.0, its
+  installed from the release `calvin-violet-v0.5.1`. **Carbon credits** is `@waterbots/calvin`
+  0.5.1: Gold Standard's *Emission Reductions from Safe Drinking Water Supply*, V1.0 and V2.0, its
   engine doing every sum. **Water benefits** is Violet's **VWBA 2.0 · D-3 Volume Provided**,
-  `@waterbots/violet` 0.5.0, for household and community water supply: people served come from
+  `@waterbots/violet` 0.5.1, for household and community water supply: people served come from
   the project record, every result says "Draft — pending expert review", and **a blank
   without-project volume is never read as zero**. This site works none of either figure out.
 - **A shared chat layer** that every agent on this site uses, so citations are rendered one way
