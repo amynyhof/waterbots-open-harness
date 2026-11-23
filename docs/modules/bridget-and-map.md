@@ -12,7 +12,9 @@ agent's are in [AGENT_RULES.md](../../AGENT_RULES.md).
 - The Map tab opens on the country the visitor told Wellington, matched from Natural Earth's country
   names, or on the whole world when no single country is named; never a guess. The map zooms to the
   country as soon as the place is known.
-- She opens in her own words, from her voice card, and asks for the pin. A pin brings the visitor back
+- She opens in her own words, from her voice card, and asks for the pin. Where Wellington's line shows
+  above her first answer, he has introduced her, and she does not say again who she is (agent rule
+  17). A pin brings the visitor back
   to Chat, where she gives the basin and its water-stress reading, and says when it is derived.
 - She never guesses, never names a project, partner, funder or place the visitor did not type, and
   never says she checks anything.

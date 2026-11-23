@@ -143,7 +143,7 @@ export default function BridgetScreen({
   async function ask(
     history: { role: 'user' | 'agent'; text: string }[],
     signal: AbortSignal,
-    meta?: { opened?: boolean; pinned?: boolean }
+    meta?: { opened?: boolean; introduced?: boolean; pinned?: boolean }
   ): Promise<AgentTurn> {
     const answer = await askBridget(
       history.map(({ role, text }) => ({
@@ -152,7 +152,7 @@ export default function BridgetScreen({
       })),
       { place, phone, pin, quantifyNext },
       signal,
-      { opened: meta?.opened === true, pinned: meta?.pinned === true }
+      { opened: meta?.opened === true, introduced: meta?.opened === true && meta.introduced === true, pinned: meta?.pinned === true }
     );
     /* After her answer lands, he joins: from the field alone. */
     if (answer.handBack === 'wellington') window.setTimeout(() => void wellingtonJoins(), 0);
@@ -184,7 +184,7 @@ export default function BridgetScreen({
     if (invite.trim()) {
       chatRef.current.seed([{ role: 'agent', text: invite.trim(), evidence: [], speaker: WELLINGTON }]);
     }
-    void chatRef.current.askOpened({ opened: true });
+    void chatRef.current.askOpened({ opened: true, introduced: invite.trim() !== '' });
   }, [visible, invite]);
 
   /* The tab is held here, so a pin can bring the visitor back to Chat. */

@@ -59,6 +59,8 @@ const MAX_MESSAGE_CHARS = 4000;
 
 /** The turns no visitor typed. Never shown as a bubble; the prompt names both. */
 const OPENED_TURN = '(The visitor opened Partners.)';
+/* Rule 17, 22 Nov 2026: Wellington's line shows above her first answer, so he has introduced her. */
+const OPENED_INTRODUCED_TURN = '(The visitor opened Partners. Wellington has introduced you.)';
 const PINNED_TURN = '(The visitor pinned a basin.)';
 
 function pick(value: unknown, key: string): unknown {
@@ -89,6 +91,7 @@ export async function POST(req: Request): Promise<Response> {
   let body: {
     messages?: IncomingMessage[];
     opened?: unknown;
+    introduced?: unknown;
     pinned?: unknown;
     place?: unknown;
     phone?: unknown;
@@ -103,6 +106,7 @@ export async function POST(req: Request): Promise<Response> {
 
   /* Exactly `true` counts; anything else is a typed turn. */
   const opened = body.opened === true;
+  const introduced = opened && body.introduced === true;
   const pinned = body.pinned === true;
   const quantifyNext = body.quantifyNext === true;
   const pin = readPin(body.pin);
@@ -151,7 +155,7 @@ export async function POST(req: Request): Promise<Response> {
     clean.push({ role: 'user', content: PINNED_TURN });
     lastQuestion = '(pinned a basin)';
   } else if (opened && clean.length === 0) {
-    clean.push({ role: 'user', content: OPENED_TURN });
+    clean.push({ role: 'user', content: introduced ? OPENED_INTRODUCED_TURN : OPENED_TURN });
     lastQuestion = '(opened Partners)';
   }
   if (clean.length === 0 || clean[clean.length - 1].role !== 'user') {

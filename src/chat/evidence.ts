@@ -187,6 +187,12 @@ export interface AskMeta {
    */
   opened?: boolean;
   /**
+   * On an opened turn: Wellington's line shows above this agent's first answer,
+   * so he has introduced them, and they do not introduce themselves again
+   * (agent rule 17, 22 Nov 2026). Phoebe's and Bridget's.
+   */
+  introduced?: boolean;
+  /**
    * Bridget's: a basin was just pinned on her map, and she reports it. No
    * visitor bubble is added, the same way as `opened`.
    */

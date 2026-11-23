@@ -132,6 +132,27 @@ export function servedWords(served: Served): string {
   return `${served.count.toLocaleString('en-US')} ${unit}`;
 }
 
+/** The water supply types, the only ones whose people served are asked; src/lib/visit.ts keeps the same pair. */
+const SERVED_TYPES: readonly string[] = ['C-11', DRINKING_WATER_TYPE];
+
+/**
+ * RULE 11'S BUILD RULE, 22 Nov 2026: the facts the screening needs that are
+ * still blank. A blank stays blank: never zero, never a guess. It is named in
+ * Wellington's block so he comes back to it, since he gathers the basics
+ * (rule 10). The name is never needed; the type decides whether the class and
+ * people served are.
+ */
+export function stillBlank(record: ProjectRecord): string[] {
+  const out: string[] = [];
+  if (!record.does) out.push('what it does');
+  if (!record.type) out.push('what type');
+  if (record.type === DRINKING_WATER_TYPE && !record.gsClass) out.push('which class of drinking-water project');
+  if (!record.stage) out.push('stage');
+  if (SERVED_TYPES.includes(record.type) && !record.served) out.push('people served');
+  if (!record.place) out.push('where it is');
+  return out;
+}
+
 /** The field lines, only those that were said. Shared by both blocks. */
 function recordLines(record: ProjectRecord): string[] {
   const lines: string[] = [];
@@ -163,11 +184,14 @@ export function recordBlock(record: ProjectRecord): string {
 }
 
 /** Extra visit notes for Phoebe, after the record. Empty when neither applies. */
-export function phoebeNotesBlock(notes: { opened?: boolean; eligibilityDone?: boolean }): string | null {
+export function phoebeNotesBlock(notes: { opened?: boolean; introduced?: boolean; eligibilityDone?: boolean }): string | null {
   const extra: string[] = [];
   if (notes.opened) {
+    /* Rule 17, 22 Nov 2026: where Wellington's line shows above hers, he has introduced her. */
     extra.push(
-      'The visitor has just opened Eligibility after Wellington invited them. Do not repeat him. This is your message 1, on its own: a warm hello with some personality, one line on what you do, then an invitation to begin. It comes before every other rule: no question about the project, no rows, pathways or sorts, no "in beta", and no read on either pathway.'
+      notes.introduced
+        ? 'The visitor has just opened Eligibility, and Wellington introduced you in this chat. Do not repeat him, and do not say again who you are or what you do. This is your message 1, on its own: a warm hello with some personality, then an invitation to begin. It comes before every other rule: no question about the project, no rows, pathways or sorts, no "in beta", and no read on either pathway.'
+        : 'The visitor has just opened Eligibility. This is your message 1, on its own: a warm hello with some personality, one line on what you do, then an invitation to begin. It comes before every other rule: no question about the project, no rows, pathways or sorts, no "in beta", and no read on either pathway.'
     );
   }
   if (notes.eligibilityDone) {
@@ -184,6 +208,7 @@ export function phoebeNotesBlock(notes: { opened?: boolean; eligibilityDone?: bo
  */
 export function visitBlock(record: ProjectRecord | null, stage?: ScreeningStage | null): string {
   const lines = record ? recordLines(record) : [];
+  const blank = record ? stillBlank(record) : [];
   const stageLine = stage ? STAGE_LINES[stage] : '';
   return [
     `# ${VISIT_HEADING}`,
@@ -191,6 +216,7 @@ export function visitBlock(record: ProjectRecord | null, stage?: ScreeningStage 
     'These fields are already on this visit — from the visitor, from a carried link, or from the map pin. If this visit already holds the project, do not introduce yourself as if this were a cold start. One next step.',
     '',
     ...lines,
+    ...(blank.length ? ['', `Needed and still blank: ${blank.join('; ')}. A blank is never zero or a guess; come back to it when its step needs it.`] : []),
     ...(stageLine ? ['', stageLine] : []),
   ].join('\n');
 }

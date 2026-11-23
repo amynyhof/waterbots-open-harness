@@ -134,6 +134,36 @@ const PROJECT_STAGES = [
   { id: 'running', words: 'already running', plain: 'it is in use today' },
 ];
 
+/**
+ * WHAT EACH COLLEAGUE HELPS WITH, from the crew list (roster.yaml) — the
+ * maintainer's word of 22 Nov 2026, after her walk of #198. When Wellington hands
+ * a visitor to a colleague for the first time, he says what that colleague does
+ * for them, in his own words, from these facts. Every colleague on this site's
+ * crew (src/lib/crew.ts, which check-roster holds to the roster), other than
+ * himself, is listed by the name this site shows: the seat's first face. A
+ * colleague with no `helps_with` line throws, naming it: nothing is invented.
+ */
+function renderCrewRoles(text) {
+  const { parse } = createRequire(import.meta.url)('yaml');
+  const roster = parse(text);
+  const onSite = new Set(
+    [...readFileSync('src/lib/crew.ts', 'utf8').matchAll(/^\s{4}name: '([^']+)'/gm)].map((m) => m[1])
+  );
+  if (onSite.size === 0) throw new Error('src/lib/crew.ts names no crew member, so the colleagues cannot be listed.');
+  const lines = [];
+  for (const seat of roster.seats ?? []) {
+    const name = (seat.faces ?? [])[0] ?? seat.name;
+    if (seat.id === 'wellington' || !onSite.has(name)) continue;
+    const helps = (seat.helps_with ?? []).map((h) => String(h).trim()).filter(Boolean);
+    if (!name || helps.length === 0) {
+      throw new Error(`The crew list gives no plain line on what the seat "${seat.id}" helps with (helps_with), so Wellington cannot say it.`);
+    }
+    lines.push(`- ${name} (${seat.seat}): ${helps.join('; ')}.`);
+  }
+  if (lines.length === 0) throw new Error('The crew list opens no colleague at the free door.');
+  return `export const CREW_ROLES_MD: string = ${JSON.stringify(lines.join('\n') + '\n')};\n`;
+}
+
 function renderProjectTypes(text) {
   const types = parseProjectTypes(text);
   const short = projectTypesShortForm(types);
@@ -354,6 +384,14 @@ const BUNDLES = [
       { name: 'BEFORE_AFTER_MD', file: 'knowledge-packs/product-shared/before-and-after.md', region: 'AGENT-FACING' },
     ],
     stale: 'An agent would deploy translating method terms with a list the maintainer has since changed.',
+  },
+  {
+    label: 'crew-roles',
+    target: 'api/_crewRoles.generated.ts',
+    /* What each colleague helps with, from the crew list, for Wellington's first
+       handoff to each (the maintainer's word of 22 Nov 2026, after her walk of #198). */
+    sources: [{ name: 'CREW_ROLES_MD', file: 'knowledge-packs/product-shared/roster.yaml', render: renderCrewRoles }],
+    stale: 'Wellington would deploy saying what a colleague helps with from a crew list the maintainer has since changed.',
   },
 ];
 
