@@ -4,6 +4,7 @@ In force from 22 Nov 2026. The master is in the handoff folder; each site carrie
 
 ## New lately
 Newest first. Only the last three months are kept. When someone asks for a build update, an agent answers from this part and gives the date in words.
+- 22 November 2026: We are working on how our agents talk with you. They are becoming experts in their own areas, and on the free site and the paid site they now speak in a warmer voice, with simpler, more natural answers. Ask them your questions. They are glad to help.
 - 21 November 2026: on the free site, the Quantify step now gives a water figure from Violet's calculator, beside the carbon estimate from Calvin's calculator.
 
 ## Free site
