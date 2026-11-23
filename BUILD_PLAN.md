@@ -100,7 +100,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 
 **After v1, not needed for the finish line:** A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
-- **Wellington's prompt gate is 32,537 characters, and Phoebe's largest case 208,957** (measured plus 500, family 1's first pull request). The limits stay. From her ruling of 22 Nov 2026 a session raises them itself by measured plus 500, without asking, and states the old and new size in its pull request.
+- **Wellington's prompt gate is 33,310 characters, and Phoebe's largest case 208,957** (measured plus 500, family 1's first pull request). The limits stay. From her ruling of 22 Nov 2026 a session raises them itself by measured plus 500, without asking, and states the old and new size in its pull request.
 - **Her own walk of the preview stands in for the measured walk on everyday pull requests** (her ruling of 22 Nov 2026). The measured walk runs once before v1, when the model key has a safe home (A32).
 
 ---
@@ -234,7 +234,7 @@ card and plain-words line against a grade-6 target; printed, never enforced. Not
 
 What belongs here: what a visitor sees and clicks, the same on both sites: layout, navigation, header, Save, words, phone, design, report.
 
-**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved; her walks' fixes, the voice card and "Wellington comes to you" 12–14 Nov 2026. His prompt is 32,037 against a gate of 32,537, measured 22 Nov 2026 in family 1's first pull request. Waiting on the one measured walk before v1 (A32).
+**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved; her walks' fixes, the voice card and "Wellington comes to you" 12–14 Nov 2026. His prompt is 32,810 against a gate of 33,310, measured 22 Nov 2026 in family 1's first pull request. Waiting on the one measured walk before v1 (A32).
 
 **A28 · Phoebe's walk fixes.** v1 · BONES. Her word of 12–14 Nov 2026: rounds two and three (#173), the limit of 4 sentences or 400 characters approved 14 Nov. On the preview her first word came at 4.8 to 6.1 seconds and whole answers took 5.8 to 9.3 (14 Nov). The skipped hello is fixed. From 14 Nov a voice card, the shared plain-words list, the order of questions, and a ruled-out path saved the same turn (W25). Waiting on the one measured walk before v1 (A32).
 

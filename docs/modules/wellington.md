@@ -30,10 +30,13 @@ Wellington's own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md)
 - His "four people" sentence keeps the maintainer's wording; it is checked, never shown.
 - A build update comes from the build status sheet's "New lately" part, dated in words (agent rule
   16). His own build-update card went on 22 Nov 2026.
-- **His prompt gate is 32,537 characters**, from 22 Nov 2026 (family 1): measured plus 500 (32,037),
-  once rule 21's lobby-chat line and the blank-facts line came in. Earlier that day 32,001, 29,896 and
-  29,236; before that 26,199. The limit stays; a session raises it itself by measured plus 500 and
+- **His prompt gate is 33,310 characters**, from 22 Nov 2026 (family 1): measured plus 500 (32,810),
+  once what each colleague helps with came in from the crew list. Earlier that day 32,537, 32,001,
+  29,896 and 29,236; before that 26,199. The limit stays; a session raises it itself by measured plus 500 and
   states the old and new size in its pull request (the maintainer's ruling of 22 Nov 2026).
+- **His first handoff to each colleague says what that colleague does for the visitor**, in his own
+  words, from each colleague's `helps_with` lines in the crew list (the maintainer's word of 22 Nov 2026).
+  The colleague does not introduce herself after him (agent rule 17).
 - **A needed fact left blank stays blank** (agent rule 11): never zero, never a guess. His visit block
   names what is needed and still blank, so he comes back to it. The name is never needed.
 

@@ -53,6 +53,7 @@ import { WELLINGTON_PRIMER_MD } from './_wellingtonPrimer.generated.js';
 import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
 import { GS_CLASS_IDS, PROJECT_STAGE_IDS, PROJECT_TYPES_MD, PROJECT_TYPE_IDS } from './_projectTypes.generated.js';
 import { BEFORE_AFTER_MD, PLAIN_WORDS_MD } from './_plainWords.generated.js';
+import { CREW_ROLES_MD } from './_crewRoles.generated.js';
 
 export const WELLINGTON_SYSTEM_PROMPT = `You are Wellington, the Team Lead, on the WaterBots Open Harness: the Free site door of rule 21.
 
@@ -81,7 +82,7 @@ Your next turn says in one short sentence why you ask — you'll collect a few b
 
 **Never imply a result is near.** Phoebe, Bridget and Calvin each come before any result, so never say you have what you need for a first look or an answer; say what comes next.
 
-**A handoff is a real introduction, and names one next step:** who the colleague is and what they will help with. Never preview the steps after that one. The console draws "Meet Phoebe" and "Keep chatting" under it; never describe them. On a handoff to Phoebe or Bridget, also fill the introduction field, in one natural line, never a list.
+**A handoff is a real introduction, and names one next step:** who the colleague is and what they will help with. The first time you hand the visitor to a colleague, say in your own words what that colleague does for them, from "What each colleague helps with" below; they do not introduce themselves after you. Never preview the steps after that one. The console draws "Meet Phoebe" and "Keep chatting" under it; never describe them. On a handoff to Phoebe or Bridget, also fill the introduction field, in one natural line, never a list.
 
 # What you know
 
@@ -145,6 +146,11 @@ Before and after — examples, not rules; never copy them:
 
 ${BEFORE_AFTER_MD}
 
+# What each colleague helps with
+
+From the crew list. Facts, never lines to read out; what is live and what is coming is the status sheet's.
+
+${CREW_ROLES_MD}
 # The roster — who covers what
 
 ${AGENT_PRIMER_MD}
@@ -232,7 +238,7 @@ export const WELLINGTON_RESPONSE_SCHEMA = {
     introduction: {
       type: 'string',
       description:
-        'On a handoff to Phoebe (route "eligibility") or Bridget (route "map"): one line Wellington says to her in her chat, by name, summing up the project in one natural line — place, size, stage, as far as known. "" on every other turn.',
+        'On a handoff to Phoebe (route "eligibility") or Bridget (route "map"): one line Wellington says to her in her chat, by name, summing up the project in one natural line — place, size, stage, as far as known — and, the first time, telling the visitor in his own words what she will help them with. "" on every other turn.',
     },
     abstained: {
       type: 'boolean',
