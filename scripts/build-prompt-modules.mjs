@@ -330,8 +330,12 @@ const BUNDLES = [
        an exact copy of the maintainer's master, so it carries no region markers:
        rules 1 to 21 are taken from their first heading up to the "Notes for
        builders" heading, which is for builders and never reaches an agent. Every
-       agent's prompt opens its rules with this text. */
-    sources: [{ name: 'AGENT_RULES_MD', file: 'AGENT_RULES.md', between: ['## How an agent talks', '## Notes for builders'] }],
+       agent's prompt opens its rules with this text.
+       FROM CORE, 22 NOV 2026 (calvin-violet-v0.5.1, the maintainer's word): the rules come from
+       @waterbots/core's agent-rules.md, rules 1 to 21 word for word, as every agent in the open core reads
+       them. AGENT_RULES.md stays the exact master copy; scripts/check-calvin-package.mjs holds core's rules
+       to its rules part, word for word. */
+    sources: [{ name: 'AGENT_RULES_MD', file: 'node_modules/@waterbots/core/dist/agent-rules.md', between: ['## How an agent talks', null] }],
     stale: 'An agent would deploy following agent rules the maintainer has since changed.',
   },
   {
@@ -409,7 +413,7 @@ function render({ target, sources }) {
  * The build gate fails if this has drifted from its sources, so a stale copy
  * cannot reach the relay unnoticed.
  *
- * Sources: ${sources.map((s) => (s.region ? `${s.file} (${s.region} region only)` : s.between ? `${s.file} (from "${s.between[0]}" up to "${s.between[1]}")` : s.file)).join(', ')}
+ * Sources: ${sources.map((s) => (s.region ? `${s.file} (${s.region} region only)` : s.between ? `${s.file} (from "${s.between[0]}" ${s.between[1] === null ? "to the end" : `up to "${s.between[1]}"`})` : s.file)).join(', ')}
  */
 
 `;
@@ -446,9 +450,10 @@ function render({ target, sources }) {
          names the heading it starts at and the heading it stops before. A
          missing heading throws, for the same reason a missing marker does. */
       if (between) {
+        /* A stop of null runs to the end: core's agent-rules.md ships rules 1 to 21 and nothing after them. */
         const [first, stop] = between;
         const from = text.indexOf(first);
-        const to = text.indexOf(stop);
+        const to = stop === null ? text.length : text.indexOf(stop);
         if (from === -1 || to === -1 || to < from) {
           throw new Error(`${file} is missing "${first}" or "${stop}", or they are out of order.`);
         }

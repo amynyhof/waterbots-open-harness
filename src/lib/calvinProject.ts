@@ -32,13 +32,13 @@ import { foldPlace } from './placeBox';
 import type { VisitContext } from './visit';
 
 /** The installed package's version, held to the lockfile by scripts/check-calvin-package.mjs. */
-export const CALVIN_PACKAGE_VERSION = '0.5.0';
+export const CALVIN_PACKAGE_VERSION = '0.5.1';
 
 /** Violet's D-3 package, the water calculator from 22 Nov 2026, from the same release. */
-export const VIOLET_PACKAGE_VERSION = '0.5.0';
+export const VIOLET_PACKAGE_VERSION = '0.5.1';
 
 /** The release tag both came from. */
-export const CALVIN_RELEASE = 'calvin-violet-v0.5.0';
+export const CALVIN_RELEASE = 'calvin-violet-v0.5.1';
 
 /** The ISO 3166-1 alpha-3 code of the one country the place names, or null. */
 export function countryIsoFor(place: string): string | null {

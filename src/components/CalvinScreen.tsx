@@ -65,7 +65,7 @@ export const CALVIN_NOT_LIVE_LINE =
  * THE TOOL TAB HOLDS TWO CALCULATORS, BOTH THE OPEN CORE'S FROM 22 NOV 2026.
  * Carbon credits are Calvin's package (CalvinCalculator.tsx) and water benefits
  * are Violet's D-3 screen (VioletWater.tsx), both from the release
- * calvin-violet-v0.5.0 and both locked to ex-ante. The water chip stays under
+ * calvin-violet-v0.5.1 and both locked to ex-ante. The water chip stays under
  * Calvin until Violet joins the crew through the shared spec (ruling E).
  */
 export function CalvinTool({

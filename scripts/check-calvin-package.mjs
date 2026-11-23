@@ -5,7 +5,9 @@
  * (@waterbots/calvin 0.4.0, the same core 0.1.1) on 21 Nov 2026, her word, and to calvin-v0.4.1
  * (@waterbots/calvin 0.4.1, the same core 0.1.1) the same day, her word, and to calvin-violet-v0.5.0
  * (@waterbots/calvin 0.5.0, @waterbots/violet 0.5.0, the same core 0.1.1) on 22 Nov 2026, her word on #189:
- * Violet's D-3 screen is the water calculator from then, and this site's own D-3 code is gone.
+ * Violet's D-3 screen is the water calculator from then, and this site's own D-3 code is gone; and to
+ * calvin-violet-v0.5.1 (@waterbots/calvin 0.5.1, @waterbots/violet 0.5.1, @waterbots/core 0.1.2) the same day, her
+ * word ("carry 0.5.1 to both sites"): no sum changed, and core ships the agent rules every agent here reads.
  *   6. The project the site hands Calvin leaves `creditedUnderV1` unset until item A29 sets it
  *      from Phoebe's question, so every project gets the V2.0-only view, with no V1.0 figure,
  *      no transition and no ask for a V1.0 filing (her word of 16 Nov 2026).
@@ -32,25 +34,25 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const RELEASE = 'calvin-violet-v0.5.0';
+const RELEASE = 'calvin-violet-v0.5.1';
 const FILES = {
   '@waterbots/calvin': {
-    file: 'vendor/waterbots/waterbots-calvin-0.5.0.tgz',
-    version: '0.5.0',
-    sha256: '0412d39bf77953f1a5844f2dba400ee0999c768e769b5faca5232e6d95af1e4b',
-    integrity: 'sha512-HbeTzx9neaSHViY4Xkm1FFzRgD0sgYIBE9K94Nc6qszkmZLi/67K3Hpmk9shBvXSf0v1b2Qh4PaHA5mSZU9E3Q==',
+    file: 'vendor/waterbots/waterbots-calvin-0.5.1.tgz',
+    version: '0.5.1',
+    sha256: '8cbd1506244591614f9ac0908970df3ba9683d8ba67e747b17b0b3f52bd5eef1',
+    integrity: 'sha512-PsU+dQmf/AGkmoGw/NRWvAkCmsRrRxzIKE0bb6A3l0MVXSQU1mIZ8F/OREnIOEgL8N0QRvlt+yVkmY7MbKfjrQ==',
   },
   '@waterbots/violet': {
-    file: 'vendor/waterbots/waterbots-violet-0.5.0.tgz',
-    version: '0.5.0',
-    sha256: 'b51f214c2d44bdbfb8cf726af28165545bae18db387e82a8551dcd6a804a6a02',
-    integrity: 'sha512-zai9pkB1vy1gv8IZt6brKb7btHvytPJQ9eZtd+WxoFrmMoPCU9TiDNNs/BUyg74VUGpnWtwQTb/GsRWrgwOtMg==',
+    file: 'vendor/waterbots/waterbots-violet-0.5.1.tgz',
+    version: '0.5.1',
+    sha256: 'faa230e07a581cc5cda41a3a1ce9add778305f1d99d416efab2aa1ffffb5b8d6',
+    integrity: 'sha512-WPD7qdfqKk02IO06PRIBZbvdot5DcFNbrfOY6/qUzbhmzyobswN1Z3tnv9BFNKe3YIa17k7lpq/3VkIKl6/yog==',
   },
   '@waterbots/core': {
-    file: 'vendor/waterbots/waterbots-core-0.1.1.tgz',
-    version: '0.1.1',
-    sha256: '4e9be07073bd55c765611a459fa15d41fec5482bbf8665cb56c4f80a446f6b5a',
-    integrity: 'sha512-wP8ZFabCBzxAh4nvRVIuG0qrwfmxQx9u0wSHbbnjTfhv6QRmjOVrXZkXmE5tHwpkb//hcteYDOSfsEGOLlK3jg==',
+    file: 'vendor/waterbots/waterbots-core-0.1.2.tgz',
+    version: '0.1.2',
+    sha256: '51534f84aabd7f51bb36d9eefb2e76e78770ed9d096fef825a40a4cf9256efe7',
+    integrity: 'sha512-8BQ4ouYORLJPLeEB+XRMzU7JHjXyQa0sLL5YD9VylEmSmTl+KKN6Jg3LfLSl5XMwAVxy5Ym+PglrxshD9JaStA==',
   },
 };
 const ENGINE_VERSION = '0.19.0';
@@ -298,6 +300,25 @@ expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSy
     );
   }
   expect('this site\'s own D-3 code is gone', !existsSync(join('src', 'lib', 'vwbaD3.ts')) && !existsSync(join('src', 'components', 'QuantificationWorksheet.tsx')), 'vwbaD3.ts or QuantificationWorksheet.tsx is still here');
+}
+/* 8. The agent rules come from core (calvin-violet-v0.5.1, the maintainer's word of 22 Nov 2026). Every agent
+   here reads rules 1 to 21 from @waterbots/core's agent-rules.md; AGENT_RULES.md stays the exact master copy.
+   "Match" is rules 1 to 21 the same word for word (her ruling of that day): core ships only the part an agent
+   reads, with Windows line endings, and leaves out the master's opening lines and its notes for builders. */
+{
+  const rulesPart = (text, stop) => {
+    const lf = text.replace(/\r\n/g, '\n');
+    const from = lf.indexOf('## How an agent talks');
+    const to = stop ? lf.indexOf(stop) : lf.length;
+    return from === -1 || to === -1 ? '' : lf.slice(from, to).trim();
+  };
+  const coreRules = rulesPart(readFileSync(join('node_modules', '@waterbots', 'core', 'dist', 'agent-rules.md'), 'utf8'));
+  const masterRules = rulesPart(readFileSync('AGENT_RULES.md', 'utf8'), '## Notes for builders');
+  expect(
+    "core's agent rules, rules 1 to 21, are AGENT_RULES.md's word for word",
+    coreRules !== '' && coreRules === masterRules,
+    `core ${coreRules.length} characters, the master's rules part ${masterRules.length}`
+  );
 }
 expect('.gitattributes keeps no carried/ rule', !/^carried\//m.test(readFileSync('.gitattributes', 'utf8')), 'a carried/ line is left');
 

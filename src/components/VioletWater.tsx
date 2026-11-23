@@ -4,7 +4,7 @@
  * of this site's own D-3 pack, so there is one D-3 calculator.
  *
  * WHAT IS HERS AND WHAT IS OURS. Every number, label, note and source on it is
- * her package's (@waterbots/violet, from the release calvin-violet-v0.5.0):
+ * her package's (@waterbots/violet, from the release calvin-violet-v0.5.1):
  * her screen holds what the visitor sets and her engine does every sum. This
  * file only mounts it, locked to the ex-ante view as the open site screens
  * before a project runs, and hands what she gives back to the visit.
@@ -18,14 +18,16 @@
  * becomes her own crew member on the v1 road, through the shared spec with the
  * paid site, not in this swap.
  *
- * STYLED BY THIS SITE'S TOKENS. Her package ships no stylesheet: her markup is
- * plain, under `.violet-d3`, and src/styles/violet.css gives it this site's
- * look, scoped to that class.
+ * STYLED BY THIS SITE'S TOKENS. From 0.5.1 her package ships a stylesheet,
+ * @waterbots/violet/styles.css, imported first as her README asks. This site's
+ * own src/styles/violet.css comes after it and wins, so her screen keeps this
+ * site's look and no Orchid while she sits under Calvin's chip (ruling E).
  */
 
 import { D3Screen } from '@waterbots/violet/screen';
 import type { CalvinProject } from '@waterbots/calvin/screen';
 import type { WaterEstimate } from '../lib/visit';
+import '@waterbots/violet/styles.css';
 import '../styles/violet.css';
 
 export default function VioletWater({
