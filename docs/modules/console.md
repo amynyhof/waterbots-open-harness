@@ -73,7 +73,7 @@ they stand here.
   Her header pins at the top of the box that scrolls (`--wb-pin-top: 0px`).
 - **The agent map decides who is called** (J4). A pathway that reads unlikely closes its calculator's desk:
   its card leaves the crew, and the desk says why, what would change it, and that the calculator can be
-  looked at in the Agent Commons. A desk whose turn has not come is never closed.
+  read about in the Agent Commons, where it does not open yet. A desk whose turn has not come is never closed.
 - **No note box** on the Free site or in the Agent Commons. Each export carries the agents' own notes on
   the values still blank or assumed, under the agent's label from core.
 - Calvin's header says only what the record still lacks, or that his calculator does not know the kind of

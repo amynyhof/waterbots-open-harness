@@ -307,7 +307,7 @@ expect('his reading level is rule 1 of the agent rules, 6th grade (22 Nov 2026),
     'the two buttons are not built from the route field'
   );
 }
-// His gate: 35,150 from 23 Nov 2026 (family 1, second pull request): Violet's seat and the agent map, measured 34,650, plus
+// His gate: 35,181 from 23 Nov 2026 (family 1, second pull request): Violet's seat and the agent map, measured 34,681, plus
 // 500. It was 33,310 from 22 Nov 2026 (family 1, after the maintainer's walk of #198): what each colleague helps
 // with, from the crew list, measured 32,810, plus 500. Before that the same day 32,537: rule 21's lobby-chat line
 // and rule 11's blank-facts line, measured 32,037, plus 500. From the maintainer's ruling of that day a session raises the gate itself by this
@@ -315,7 +315,7 @@ expect('his reading level is rule 1 of the agent rules, 6th grade (22 Nov 2026),
 // third time when the build status sheet came in for every agent and his build-update card went: 31,501.
 // Earlier the same day 29,896 (21 rules, measured 29,396) and 29,236 (19 rules); before that 26,199 from 24 Sep 2026.
 expect('the agent rules are 1 to 21, in order, and the notes for builders are not among them', (AGENT_RULES_MD.match(/^\d+\. /gm) ?? []).map((n) => parseInt(n, 10)).join(',') === Array.from({ length: 21 }, (_, i) => i + 1).join(',') && !/Notes for builders/.test(AGENT_RULES_MD), (AGENT_RULES_MD.match(/^\d+\. /gm) ?? []).join(' '));
-expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 35150 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
+expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 35181 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
 
 /* ---------------------------------------------------------------------------
    The record the desk carries to Phoebe — slice 3, 7 Sep 2026.

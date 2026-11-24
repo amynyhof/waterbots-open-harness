@@ -88,7 +88,7 @@ export function mapBlock(map: MapNote): string {
     lines.push('The one next step: every step is done. Point to the screening report in the left rail, or to saving and signing up.');
   }
   const closed = map.closed.filter((a) => ROUTE_OF[a]);
-  if (closed.length) lines.push(`Not called for this project: ${closed.map((a) => NAME[a]).join(', ')}. Never route there. A calculator can still be looked at in the Agent Commons.`);
+  if (closed.length) lines.push(`Not called for this project: ${closed.map((a) => NAME[a]).join(', ')}. Never route there. The calculator can be read about in the Agent Commons; it does not open there yet.`);
   if (map.transitioning) lines.push('This project already earns credits under the older carbon rules, so Calvin also shows the older calculator and what changes.');
   return lines.join('\n');
 }
