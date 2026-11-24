@@ -324,6 +324,16 @@ export function eligibilityDone(visit: Visit, sheet: Sheet): boolean {
   });
 }
 
+/**
+ * HER PART IS DONE, as the agent map reads it (J4, 23 Nov 2026): `eligibilityDone`, and she has looked at every
+ * pathway she reads. Without the second half, closing the first path counted as the end of her step, and the other
+ * path was never asked about at all.
+ */
+export function phoebeDone(visit: Visit, sheet: Sheet): boolean {
+  const packs = HER_PACKS.filter((pack) => section(pack) !== undefined);
+  return eligibilityDone(visit, sheet) && packs.every((pack) => Object.keys(sheet.rows[pack] ?? {}).length > 0);
+}
+
 /** Opening Eligibility during learn starts that stage. Later stages stay put. */
 export function openedEligibility(visit: Visit): Visit {
   if (visit.stage === 'learn') return { ...visit, stage: 'eligibility' };
@@ -336,7 +346,7 @@ export function openedEligibility(visit: Visit): Visit {
  */
 export function applyWellingtonRoute(
   visit: Visit,
-  route: 'none' | 'eligibility' | 'quantification' | 'map' | 'paid',
+  route: 'none' | 'eligibility' | 'quantification' | 'water' | 'map' | 'paid',
   reply: string
 ): Visit {
   const text = reply.trim();
@@ -357,7 +367,8 @@ export function applyWellingtonRoute(
       partnersInvite: text || visit.partnersInvite,
     };
   }
-  if (route === 'quantification' && (visit.stage === 'partners' || visit.stage === 'quantify')) {
+  /* Calvin's desk and, from 23 Nov 2026, Violet's: both are the Quantify step. */
+  if ((route === 'quantification' || route === 'water') && (visit.stage === 'partners' || visit.stage === 'quantify')) {
     return { ...visit, stage: 'quantify', invitedQuantify: true };
   }
   return visit;
@@ -392,7 +403,7 @@ export function applyEligibilityProgress(visit: Visit, sheet: Sheet): Visit {
    -------------------------------------------------------------------------- */
 
 /** Who a row comes from. The desk shows the sender's face on the row. */
-export type RowSender = 'phoebe' | 'bridget' | 'calvin' | 'wellington';
+export type RowSender = 'phoebe' | 'bridget' | 'calvin' | 'violet' | 'wellington';
 
 export type RowAction =
   | { kind: 'surface'; label: string; surface: Surface }
@@ -509,7 +520,7 @@ export function deskRows(visit: Visit, sheet: Sheet): DeskRow[] {
     });
   }
 
-  /* Calvin — the water estimate, Violet's, once the visitor has worked on it.
+  /* Violet — the water estimate, once the visitor has worked on it. Under Calvin until 23 Nov 2026.
      The figure and the words for what is missing are her engine's; the row
      carries her result's own status, a draft until an outside expert checks it. */
   if (visit.water) {
@@ -517,17 +528,17 @@ export function deskRows(visit: Visit, sheet: Sheet): DeskRow[] {
     if (result.vwbM3PerYear !== null) {
       const figure = result.vwbM3PerYear.toLocaleString('en-GB', { maximumFractionDigits: 0 });
       rows.push({
-        key: `calvin-${WATER_METHOD_ID}`,
-        from: 'calvin',
+        key: `violet-${WATER_METHOD_ID}`,
+        from: 'violet',
         sentence: `${WATER_METHOD_NAME} screens at ${figure} m³ a year of water provided — a screening estimate. ${result.status}. This is a first screening, not an official decision.`,
-        action: { kind: 'surface', label: 'Open Quantify', surface: 'quantification' },
+        action: { kind: 'surface', label: 'Open Violet’s desk', surface: 'water' },
       });
     } else {
       rows.push({
-        key: `calvin-${WATER_METHOD_ID}`,
-        from: 'calvin',
+        key: `violet-${WATER_METHOD_ID}`,
+        from: 'violet',
         sentence: `${WATER_METHOD_NAME} is part-way through and still needs: ${result.awaiting.join(', ')}.`,
-        action: { kind: 'surface', label: 'Open Quantify', surface: 'quantification' },
+        action: { kind: 'surface', label: 'Open Violet’s desk', surface: 'water' },
       });
     }
   }
@@ -595,6 +606,9 @@ function quantifyInvite(): DeskRow {
 }
 
 /**
+ * SWITCHED OFF, 23 NOV 2026 (J4): the agent map decides who is called (src/lib/projectRecord.ts), and the
+ * shell no longer asks this. Kept, not deleted.
+ *
  * Whether any pathway she reads is one Calvin can screen: likely eligible, or
  * not enough known yet. Likely not, and a pathway that does not apply, are not.
  * The same rule Wellington's route to Quantify keeps (item A17, ruling R4).
@@ -641,7 +655,7 @@ export function nextStepRows(visit: Visit, sheet: Sheet): DeskRow[] {
   const invite = currentInvite(visit, pathwayAllowsQuantify(visit, sheet));
   const derived = deskRows(visit, sheet).filter((row) => {
     if (row.from === 'bridget') return visit.pin !== null ? visit.stage === 'partners' || visit.stage === 'quantify' : visit.stage === 'quantify';
-    if (row.from === 'calvin') return visit.stage === 'quantify';
+    if (row.from === 'calvin' || row.from === 'violet') return visit.stage === 'quantify';
     if (row.from === 'phoebe') return visit.stage !== 'learn';
     return true;
   });
@@ -675,25 +689,25 @@ export function journeyProgress(visit: Visit, sheet: Sheet): Record<'eligibility
    THE CREW'S STATUS — the maintainer's word of 14 Nov 2026 (W27). The right
    panel is the crew, each with one plain line on where their part stands,
    worked out from the visit and the rows alone, never from anyone's prose:
-   "Phoebe: water likely · carbon ruled out".
+   "Phoebe: water likely · carbon unlikely".
    -------------------------------------------------------------------------- */
 
 /** Each funding path's short name in a status line. */
 const SHORT_PATH: Record<string, string> = { water: 'water', carbon: 'carbon' };
 
 /**
- * Where one funding path stands, in a visitor's words. A path that does not
- * apply and a path with a Blocked row are both "ruled out": the maintainer's
- * ruling of 14 Nov 2026 calls a path that does not apply ruled out too.
+ * Where one funding path stands, in rule 14's three words: likely, more to learn,
+ * unlikely (RULINGS.md, section 3; the screens' older words went on 23 Nov 2026).
+ * A path that does not apply and a path with a Blocked row are both unlikely.
  */
-export function pathStatus(visit: Visit, sheet: Sheet, pack: string): 'likely' | 'ruled out' | 'more to find out' | 'not started' {
+export function pathStatus(visit: Visit, sheet: Sheet, pack: string): 'likely' | 'unlikely' | 'more to learn' | 'not started' {
   const context = contextFor(sheet, pack, visit.context.gsClass);
-  if (pathwayState(sheet, pack, context) === 'does-not-apply') return 'ruled out';
+  if (pathwayState(sheet, pack, context) === 'does-not-apply') return 'unlikely';
   const read = readiness(sheet, pack, context);
-  if (read === 'likely-not') return 'ruled out';
+  if (read === 'likely-not') return 'unlikely';
   if (read === 'likely-eligible') return 'likely';
   const looked = verdictRows(pack, context).some((row) => stateOf(sheet, pack, row.id).state !== 'unchecked');
-  return looked || pathwayState(sheet, pack, context) === 'applies' ? 'more to find out' : 'not started';
+  return looked || pathwayState(sheet, pack, context) === 'applies' ? 'more to learn' : 'not started';
 }
 
 /** Calvin's carbon headline, from the open core's engine, once the visitor has opened Quantify. */
@@ -715,13 +729,14 @@ const READY: Record<Surface, string> = {
   eligibility: 'Ready to check funding',
   map: 'Ready to find your basin',
   quantification: 'Ready to estimate',
+  water: 'Ready to estimate',
 };
 
 /** A funding path's state, as the crew line says it. */
 const PATH_WORDS: Record<ReturnType<typeof pathStatus>, string> = {
   likely: 'likely',
-  'ruled out': 'ruled out',
-  'more to find out': 'more to learn',
+  unlikely: 'unlikely',
+  'more to learn': 'more to learn',
   'not started': 'next',
 };
 
@@ -746,12 +761,10 @@ export function crewStatus(
 
   const bridget = visit.pin ? `Basin found: ${visit.pin.stressLabel.toLowerCase()} water stress` : READY.map;
 
-  let calvin = carbon ? 'Carbon estimate ready' : READY.quantification;
-  if (visit.water) {
-    if (visit.water.result.vwbM3PerYear !== null) calvin = carbon ? 'Carbon and water estimates ready' : 'Water estimate ready';
-    else if (!carbon) calvin = 'Estimate started';
-  }
-  return { desk: wellington, eligibility: phoebe, map: bridget, quantification: calvin };
+  /* Each has a line of their own from 23 Nov 2026 (J5); Violet's estimate was on Calvin's line until then. */
+  const calvin = carbon ? 'Carbon estimate ready' : READY.quantification;
+  const violet = !visit.water ? READY.water : visit.water.result.vwbM3PerYear !== null ? 'Water estimate ready' : 'Estimate started';
+  return { desk: wellington, eligibility: phoebe, map: bridget, quantification: calvin, water: violet };
 }
 
 /**
@@ -765,5 +778,6 @@ export function crewNews(status: Record<Surface, string>): Record<Surface, boole
     eligibility: status.eligibility !== READY.eligibility,
     map: status.map !== READY.map,
     quantification: status.quantification !== READY.quantification,
+    water: status.water !== READY.water,
   };
 }

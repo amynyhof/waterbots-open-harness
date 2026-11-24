@@ -139,13 +139,17 @@ the same thirty messages a day.
   replies land on the desk, never on a row — and the save door to waterbots.ai. A click on the map
   pins a basin for the visit. What the visitor tells him fills the context card, labelled as from
   the conversation, and never overwrites what they typed.
-- **Quantification step.** Calvin's two calculators, both from the open core and both ex-ante,
-  installed from the release `calvin-violet-v0.5.1`. **Carbon credits** is `@waterbots/calvin`
-  0.5.1: Gold Standard's *Emission Reductions from Safe Drinking Water Supply*, V1.0 and V2.0, its
-  engine doing every sum. **Water benefits** is Violet's **VWBA 2.0 · D-3 Volume Provided**,
-  `@waterbots/violet` 0.5.1, for household and community water supply: people served come from
+- **Quantification step.** Two desks, both calculators from the open core and both ex-ante. On
+  Calvin's, **carbon credits**: `@waterbots/calvin` 0.6.0 from the release `calvin-v0.6.0`, Gold
+  Standard's *Emission Reductions from Safe Drinking Water Supply*, V1.0 and V2.0, its engine doing
+  every sum. On Violet's, **water benefits**: **VWBA 2.0 · D-3 Volume Provided**,
+  `@waterbots/violet` 0.6.0 from `violet-v0.6.0`, for household and community water supply: people served come from
   the project record, every result says "Draft — pending expert review", and **a blank
   without-project volume is never read as zero**. This site works none of either figure out.
+- **The shared project record and the agent map.** One record in the open core's shape, worked out from the
+  visit and Phoebe's worksheet (`src/lib/projectRecord.ts`), and core's agent map read from it: who is called,
+  which method applies and the one next step. Wellington leads from it. A pathway that reads unlikely has its
+  calculator's desk closed, and the visitor is told what would change it.
 - **A shared chat layer** that every agent on this site uses, so citations are rendered one way
   rather than reinvented per agent.
 
@@ -448,9 +452,9 @@ book's own — each says so below:
   name and his calculator's labels are set in **Deep Reef `#0C7C85`**, its text shade, in
   `--deep-reef` through `--bot-calvin-text`: 4.96:1 on white, the maintainer's ruling of 1 Nov 2026.
 - **Violet's identity colour** — **Orchid `#A457D4`**, the same ruling, in `--orchid` through
-  `--bot-violet`. Violet is the VWBA agent who will host the D-n modules on the Commons; she is not
-  on the roster or on this site yet, so the token waits for her. At 4.29:1 on white it never carries
-  text; she will need a darker text shade when she is built.
+  `--bot-violet`. Violet is the water benefits agent, her own crew member from 23 Nov 2026.
+  At 4.29:1 on white it never carries text, so her name is set in ink until she has a darker text shade,
+  and her initial is drawn until she has a portrait.
 - **Warning text is a darkened coral** — **`#BF4949`**, in `--state-warn-text`. The book's §2.5
   rule is that a role colour used as **type** is darkened to clear 4.5:1, the same hue mixed toward
   ink, while the dot or fill value is unchanged. Coral `#E25858` set as 11px type measured

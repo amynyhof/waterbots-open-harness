@@ -148,7 +148,7 @@ expect('a topic without an abstention is dropped', notAbst?.abstentionTopic === 
 
 expect(
   'the schema closes the route list',
-  JSON.stringify(WELLINGTON_RESPONSE_SCHEMA.properties.route.enum) === JSON.stringify(['none', 'eligibility', 'quantification', 'map', 'paid']),
+  JSON.stringify(WELLINGTON_RESPONSE_SCHEMA.properties.route.enum) === JSON.stringify(['none', 'eligibility', 'quantification', 'water', 'map', 'paid']), /* 'water' is Violet's desk, 23 Nov 2026 (J5) */
   JSON.stringify(WELLINGTON_RESPONSE_SCHEMA.properties.route.enum)
 );
 expect(
@@ -307,14 +307,15 @@ expect('his reading level is rule 1 of the agent rules, 6th grade (22 Nov 2026),
     'the two buttons are not built from the route field'
   );
 }
-// His gate: 33,310 from 22 Nov 2026 (family 1, after the maintainer's walk of #198): what each colleague helps
+// His gate: 35,150 from 23 Nov 2026 (family 1, second pull request): Violet's seat and the agent map, measured 34,650, plus
+// 500. It was 33,310 from 22 Nov 2026 (family 1, after the maintainer's walk of #198): what each colleague helps
 // with, from the crew list, measured 32,810, plus 500. Before that the same day 32,537: rule 21's lobby-chat line
 // and rule 11's blank-facts line, measured 32,037, plus 500. From the maintainer's ruling of that day a session raises the gate itself by this
 // method and states the old and new size in its pull request. Before that 32,001, the maintainer's method of that day (measured plus 500), applied a
 // third time when the build status sheet came in for every agent and his build-update card went: 31,501.
 // Earlier the same day 29,896 (21 rules, measured 29,396) and 29,236 (19 rules); before that 26,199 from 24 Sep 2026.
 expect('the agent rules are 1 to 21, in order, and the notes for builders are not among them', (AGENT_RULES_MD.match(/^\d+\. /gm) ?? []).map((n) => parseInt(n, 10)).join(',') === Array.from({ length: 21 }, (_, i) => i + 1).join(',') && !/Notes for builders/.test(AGENT_RULES_MD), (AGENT_RULES_MD.match(/^\d+\. /gm) ?? []).join(' '));
-expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 33310 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
+expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 35150 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
 
 /* ---------------------------------------------------------------------------
    The record the desk carries to Phoebe — slice 3, 7 Sep 2026.
@@ -639,11 +640,18 @@ expect(
     /HYBAS 2/.test(pinVisit({ ...EMPTY_VISIT, stage: 'partners' }, pinHere, true).context.place),
   'a pin moved a stage it should not'
 );
+/* RETIRED 23 Nov 2026 (J4): the agent map took the place of the site's own pathway rule. Switched off, not deleted.
 expect(
   'the shell writes a pin through pinnedVisit, with the pathway rule, and his greeting back also runs at Quantify',
   /pinnedVisit\(v, pin, pathwayAllowsQuantify\(v, sheetRef\.current\)\)/.test(readFileSync('src/App.tsx', 'utf8')) &&
     /visit\.stage !== 'partners' && visit\.stage !== 'quantify'/.test(readFileSync('src/App.tsx', 'utf8')),
   'the shell does not use the pin rule'
+); */
+expect(
+  'the shell writes a pin through pinnedVisit, with who the agent map calls, and his greeting back also runs at Quantify',
+  /pinnedVisit\(v, pin, callOf\(now, 'calvin'\)\.called \|\| callOf\(now, 'violet'\)\.called\)/.test(readFileSync('src/App.tsx', 'utf8')) &&
+    /visit\.stage !== 'partners' && visit\.stage !== 'quantify'/.test(readFileSync('src/App.tsx', 'utf8')),
+  'the shell does not use the map for the pin'
 );
 const bridgetSource = readFileSync('src/components/BridgetScreen.tsx', 'utf8');
 expect(
@@ -708,7 +716,7 @@ expect(
 expect(
   'she is told Calvin is next exactly when the rail offers Quantify (31 Oct 2026)',
   /quantifyNext=\{visit\.stage === 'quantify'\}/.test(readFileSync('src/App.tsx', 'utf8')) &&
-    /\{ place, phone, pin, quantifyNext \}/.test(bridgetSource) &&
+    /\{ place, phone, pin, quantifyNext, record \}/.test(bridgetSource) &&
     currentInvite({ ...mapped, stage: 'quantify' })?.key === 'invite-quantify' &&
     currentInvite({ ...mapped, pin: { hybasId: 1 } }, false) === null,
   'what she is told and what the rail shows can disagree'
@@ -757,7 +765,8 @@ expect(
 );
 expect(
   'W27: the right panel is the crew, one plain status line each, with no next-step rows (14 Nov 2026)',
-  /crewStatus\(visit, sheet, carbon\)/.test(appSource) && /status=\{crew\}/.test(appSource) && !/nextStepRows/.test(appSource),
+  /* `counted` is the visit less what was worked out at a desk the map closed (J4, 23 Nov 2026). */
+  /crewStatus\(counted, sheet, carbon\)/.test(appSource) && /status=\{crew\}/.test(appSource) && !/nextStepRows/.test(appSource),
   'the right panel still draws next-step rows'
 );
 expect(
@@ -864,7 +873,7 @@ expect(
   'the first carried send reads the visit from a ref written before the send, not the last paint',
   /visitRef\.current/.test(appSource) &&
     /learnedContext\(visitRef\.current\.context, learned\)/.test(appSource) &&
-    /wellingtonAsk\(onLearned, \(\) => visitRef\.current, onRouted, \(\) => sheetRef\.current, setSurface\)/.test(appSource) &&
+    /wellingtonAsk\(onLearned, \(\) => visitRef\.current, onRouted, \(\) => sheetRef\.current, setSurface, \(\) => mapNow\.current\(\)\)/.test(appSource) &&
     /void sendCarried\(question, \{ carried: true \}\)/.test(appSource),
   'the first ask can still see a blank visit'
 );
@@ -1024,7 +1033,7 @@ console.log('\n  What Phoebe found\n');
   const relay = readFileSync('api/wellington.ts', 'utf8');
   const client = readFileSync('src/lib/wellington.ts', 'utf8');
   const shell = readFileSync('src/App.tsx', 'utf8');
-  expect('the relay adds the block after the breakpoint and feeds the guard', /\.\.\.\(found \? \[\{ type: 'text' as const, text: found\.text \}\] : \[\]\)/.test(relay) && /reads: found\?\.reads/.test(relay) && /\(The visitor came back from Eligibility\.\)/.test(relay), 'the relay is not wired');
+  expect('the relay adds the block after the breakpoint and feeds the guard', /\.\.\.\(found \? \[\{ type: 'text' as const, text: found\.text \}\] : \[\]\)/.test(relay) && /map \? \{\} : \{ reads: found\?\.reads \}/.test(relay) && /\(The visitor came back from Eligibility\.\)/.test(relay), 'the relay is not wired');
   expect('the client sends rows by id and state only', /rows: rows\.map\(\(\{ id, state \}\) => \(\{ id, state \}\)\)/.test(client), 'more than id and state crosses');
   expect('the desk greets back once, on the first return from Phoebe', /greetedBack\.current = true/.test(shell) && /visit\.stage !== 'partners'/.test(shell), 'the return greeting is not wired');
 }

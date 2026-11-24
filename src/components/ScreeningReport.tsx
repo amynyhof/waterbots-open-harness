@@ -11,12 +11,18 @@
  * alone — never from anyone's prose, and nothing is invented:
  *   1. Wellington's project details, each one or "Not given yet" (plain words
  *      from 21 Nov 2026, the maintainer's word);
- *   2. Phoebe's results per funding path — what is in place, what is ruled out
+ *   2. Phoebe's results per funding path — what is in place, what makes it unlikely
  *      and why, what can be fixed, what is still to find out — with each card's
  *      citation, which path looks plausible, and how to reach a person;
  *   3. Bridget's basin and its water-stress reading, with the attribution the
  *      datasets require, or "Not done yet";
- *   4. Calvin's screening figures and his full working, or "Not done yet".
+ *   4. Calvin's screening figures and his full working, or "Not done yet";
+ *   5. Violet's water estimate, or "Not done yet" (her own section from 23 Nov 2026, J5).
+ * A pathway that reads unlikely says what would change it, from the shared record (J4), and its calculator's
+ * section says the agent was not called.
+ *
+ * THE AGENTS' NOTES (the maintainer's word of 23 Nov 2026): sections 4 and 5 carry each agent's own notes on the
+ * values still blank or assumed, under the label core gives them. There is no note box on this site.
  * Nothing is kept: the report is the visit as it stands, printed.
  */
 
@@ -26,9 +32,14 @@ import { AQUEDUCT_CITATION, HYDROBASINS_CITATION, PRODUCT_NAME } from '../lib/li
 import { PROJECT_STAGES, projectType } from '../lib/projectTypes.generated';
 import { HER_PACKS, section, verdictRows, pathwayRows } from '../lib/worksheet.generated';
 import { contextFor, stateOf, type Sheet } from '../lib/worksheetState';
+import { NotesOnValues, type NoteLine } from '@waterbots/core/notes';
+import type { AgentMap } from '@waterbots/core/agentMap';
+import type { ProjectRecord } from '@waterbots/core/record';
+import { D3_ENGINE_VERSION } from '@waterbots/violet/engine';
 import { deskRows, pathStatus, servedWords, WATER_SUPPLY_TYPES, type CarbonFigure, type Visit } from '../lib/visit';
+import { closedBy, pathwayForPack } from '../lib/projectRecord';
 import { GS4GG_CALCULATOR_VERSION } from '@waterbots/calvin/engine';
-import { CALVIN_PACKAGE_VERSION } from '../lib/calvinProject';
+import { CALVIN_PACKAGE_VERSION, VIOLET_PACKAGE_VERSION } from '../lib/calvinProject';
 import { SCREENING_WORKING_SLOT } from './CalvinCalculator';
 
 /** A detail the visitor has not given yet. Plain words, the maintainer's word of 21 Nov 2026. */
@@ -39,9 +50,9 @@ const FIRST_SCREENING = 'This is a first screening, not an official decision.';
 const PLAIN_PATH: Record<string, string> = { water: 'Water benefits', carbon: 'Carbon credits' };
 
 const STATUS_WORDS: Record<ReturnType<typeof pathStatus>, string> = {
-  likely: 'looks likely so far',
-  'ruled out': 'ruled out',
-  'more to find out': 'needs a few more answers',
+  likely: 'likely',
+  unlikely: 'unlikely',
+  'more to learn': 'more to learn',
   'not started': 'not checked yet',
 };
 
@@ -102,13 +113,23 @@ export default function ScreeningReport({
   visit,
   sheet,
   showPerson,
+  record,
+  map,
   carbon = null,
+  calvinNotes = [],
+  violetNotes = [],
 }: {
   visit: Visit;
   sheet: Sheet;
   /** Calvin's carbon headline from the open core's engine, once Quantify was opened. */
   carbon?: CarbonFigure | null;
-  /** A path is ruled out, so the box to send the project to the team is offered. */
+  /** The shared project record and the agent map, as they stand (J3, J4). */
+  record: ProjectRecord;
+  map: AgentMap;
+  /** Each agent's own notes on the values still blank or assumed. */
+  calvinNotes?: NoteLine[];
+  violetNotes?: NoteLine[];
+  /** A path is unlikely, so the box to send the project to the team is offered. */
   showPerson: boolean;
 }) {
   const c = visit.context;
@@ -118,6 +139,7 @@ export default function ScreeningReport({
   const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
   const paths = HER_PACKS.filter((pack) => section(pack) !== undefined).map((pack) => {
+    const pathway = pathwayForPack(pack);
     const part = section(pack)!;
     const context = contextFor(sheet, pack, c.gsClass);
     const status = pathStatus(visit, sheet, pack);
@@ -137,16 +159,19 @@ export default function ScreeningReport({
       name: PLAIN_PATH[part.sectionId] ?? part.sectionName,
       status,
       met: inState('met'),
-      ruledOut: [...notApplying, ...inState('blocked')],
+      stops: [...notApplying, ...inState('blocked')],
+      wouldChange: pathway && record.pathways[pathway]?.wouldChange,
       fixable: inState('fixable'),
       unknown: inState('unknown'),
       unchecked,
     };
   });
-  const plausible = paths.filter((p) => p.status === 'likely' || p.status === 'more to find out').map((p) => p.name);
+  const plausible = paths.filter((p) => p.status === 'likely' || p.status === 'more to learn').map((p) => p.name);
   const phoebeStarted = paths.some((p) => p.status !== 'not started');
 
-  const calvin = deskRows(visit, sheet).filter((row) => row.from === 'calvin');
+  const violet = deskRows(visit, sheet).filter((row) => row.from === 'violet');
+  const calvinClosed = closedBy(map, 'calvin');
+  const violetClosed = closedBy(map, 'violet');
   const pin = visit.pin;
 
   return (
@@ -181,10 +206,11 @@ export default function ScreeningReport({
                 {p.name}: {STATUS_WORDS[p.status]}
               </div>
               <Lines label="In place" lines={p.met} />
-              <Lines label="Ruled out, and why" lines={p.ruledOut} />
+              <Lines label="Unlikely, and why" lines={p.stops} />
               <Lines label="Can be fixed" lines={p.fixable} />
               <Lines label="Still to find out" lines={p.unknown} />
-              {p.status !== 'ruled out' && p.unchecked > 0 && (
+              {p.wouldChange && p.status !== 'likely' && <Row k="What would change it" v="" note={p.wouldChange} />}
+              {p.status !== 'unlikely' && p.unchecked > 0 && (
                 <div style={{ fontSize: 10, color: 'var(--ink-3)', marginTop: 4 }}>
                   {p.unchecked} {p.unchecked === 1 ? 'question' : 'questions'} not asked yet.
                 </div>
@@ -229,13 +255,26 @@ export default function ScreeningReport({
       )}
       {/* Calvin's full working, the package's own report, drawn here by the
           calculator on Quantify (CalvinCalculator.tsx, SCREENING_WORKING_SLOT).
-          Shown only beside the figure. Inside .wb-calvin, so the core's own
+          Shown only beside the figure; it ends with his notes. Inside .wb-calvin, so the core's own
           classes, scoped there (calvin.css), lay it out. */}
       <div id={SCREENING_WORKING_SLOT} className="wb-calvin wb-report-working" style={carbon ? undefined : { display: 'none' }} />
-      {calvin.map((row) => (
-        <Row key={row.key} k="Water benefits, first estimate" v="" note={row.sentence} />
+      {calvinClosed && <p style={{ fontSize: 11 }}>Calvin was not called: carbon credits read unlikely. Section 2 says what would change it.</p>}
+      {!carbon && !calvinClosed && <p style={{ fontSize: 11 }}>Not done yet.</p>}
+      {/* With no figure his working is not drawn, so his notes stand on their own. */}
+      {!carbon && !calvinClosed && <NotesOnValues lines={calvinNotes} agent="Calvin" />}
+
+      <Heading>5. The water it would provide, with Violet</Heading>
+      {violet.map((row) => (
+        <Row
+          key={row.key}
+          k="Water benefits, first estimate"
+          v=""
+          note={`${row.sentence} Worked out by the open core's D-3 engine, version ${D3_ENGINE_VERSION}, in @waterbots/violet ${VIOLET_PACKAGE_VERSION}.`}
+        />
       ))}
-      {!carbon && calvin.length === 0 && <p style={{ fontSize: 11 }}>Not done yet.</p>}
+      {violetClosed && <p style={{ fontSize: 11 }}>Violet was not called: water benefits read unlikely. Section 2 says what would change it.</p>}
+      {violet.length === 0 && !violetClosed && <p style={{ fontSize: 11 }}>Not done yet.</p>}
+      {!violetClosed && <NotesOnValues lines={violetNotes} agent="Violet" />}
 
       <footer style={{ marginTop: 18, borderTop: '1px solid var(--line)', paddingTop: 6, fontSize: 9.5, color: 'var(--ink-3)' }}>
         {FIRST_SCREENING} Nothing from this visit is kept on this site.

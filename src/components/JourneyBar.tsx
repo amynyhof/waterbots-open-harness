@@ -31,7 +31,7 @@
  */
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
-import { AFTER_SAVE_LABEL, AFTER_SAVE_NOTE, JOURNEY } from '../lib/journey';
+import { AFTER_SAVE_LABEL, AFTER_SAVE_NOTE, JOURNEY, phaseSurface } from '../lib/journey';
 import { DESK_LABEL, type Surface } from '../lib/surfaces';
 
 /**
@@ -54,7 +54,7 @@ function markStyle(mark: Mark): CSSProperties {
 }
 
 export default function JourneyBar({
-  active,
+  active: inView,
   progress,
   phone,
 }: {
@@ -64,6 +64,8 @@ export default function JourneyBar({
   /** On a phone: the one row, and what its two buttons open. */
   phone?: { onProject: () => void; onCrew: () => void };
 }) {
+  /* Violet's desk is Quantify's second desk, so the bar marks Quantify there too. */
+  const active = phaseSurface(inView);
   const bar = useRef<HTMLElement>(null);
   const [compact, setCompact] = useState(false);
   useEffect(() => {

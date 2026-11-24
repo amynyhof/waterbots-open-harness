@@ -12,6 +12,7 @@
  */
 
 import type { CrewMember } from '../lib/crew';
+import AgentFace from './AgentFace';
 
 export default function CrewRow({
   member,
@@ -60,7 +61,7 @@ export default function CrewRow({
           overflow: 'hidden',
         }}
       >
-        <img src={member.portrait} alt="" width={28} height={28} style={{ display: 'block' }} />
+        <AgentFace portrait={member.portrait} name={member.name} size={28} />
       </span>
       <span style={{ minWidth: 0, flex: 1, textAlign: 'left' }}>
         <span

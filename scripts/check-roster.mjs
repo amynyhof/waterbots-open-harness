@@ -62,6 +62,8 @@ const SURFACE_PHASE = {
   eligibility: 'Eligibility',
   map: 'Partners',
   quantification: 'Quantify',
+  /* Violet's own desk, the Quantify phase's second, from 23 Nov 2026 (J5). */
+  water: 'Quantify',
 };
 
 /** The desk's word on the journey bar, which is what the primer says for `all`. */

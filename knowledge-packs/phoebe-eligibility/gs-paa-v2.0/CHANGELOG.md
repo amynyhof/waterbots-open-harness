@@ -1,5 +1,11 @@
 # Changelog — gs-paa-v2.0
 
+## 0.8.1 — 23 Nov 2026
+
+- **The read is said in the three words everyone uses** (RULINGS.md, section 3): the tool file's labels are now
+  Likely, More to learn and Unlikely. They read "Likely eligible", "Not enough known yet" and "Likely not". The
+  reads' ids, the rows and every card are unchanged.
+
 ## 0.8.0 — 25 Sep 2026
 
 - **Phoebe reads this pack.** Build-order step 3, pull request B: its three approved sets — the four

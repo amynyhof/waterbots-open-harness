@@ -47,6 +47,7 @@ import {
   type ShelfCard,
 } from '../lib/commonsShelf';
 import { CONSULTING_URL, partnerMailto } from '../lib/site';
+import AgentFace from './AgentFace';
 import WellingtonLeaning from './WellingtonLeaning';
 
 /**
@@ -236,7 +237,7 @@ function ModuleRow({ card, onOpen, onInterest }: { card: ShelfCard; onOpen: () =
           the accent where it may carry text, the role beneath. */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
         <Portrait token={holder.token}>
-          <img src={holder.portrait} alt="" width={24} height={24} style={{ display: 'block' }} />
+          <AgentFace portrait={holder.portrait} name={holder.name} size={24} />
         </Portrait>
         <span style={{ minWidth: 0 }}>
           <span

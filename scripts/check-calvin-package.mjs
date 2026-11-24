@@ -7,10 +7,11 @@
  * (@waterbots/calvin 0.5.0, @waterbots/violet 0.5.0, the same core 0.1.1) on 22 Nov 2026, her word on #189:
  * Violet's D-3 screen is the water calculator from then, and this site's own D-3 code is gone; and to
  * calvin-violet-v0.5.1 (@waterbots/calvin 0.5.1, @waterbots/violet 0.5.1, @waterbots/core 0.1.2) the same day, her
- * word ("carry 0.5.1 to both sites"): no sum changed, and core ships the agent rules every agent here reads.
- *   6. The project the site hands Calvin leaves `creditedUnderV1` unset until item A29 sets it
- *      from Phoebe's question, so every project gets the V2.0-only view, with no V1.0 figure,
- *      no transition and no ask for a V1.0 filing (her word of 16 Nov 2026).
+ * word ("carry 0.5.1 to both sites"): no sum changed, and core ships the agent rules every agent here reads; and to
+ * three releases with a tag each on 23 Nov 2026 ("carry the release to both sites"): calvin-v0.6.0, violet-v0.6.0 and
+ * core-v0.2.0. No sum changed.
+ *   6. The project the site hands Calvin sets `creditedUnderV1` from the shared record and never otherwise (item A29,
+ *      J4, 23 Nov 2026): Phoebe's question settles it. Until then it was left unset (her word of 16 Nov 2026).
  *
  * WHAT IT HOLDS.
  *   1. The three release files in vendor/waterbots/ are the release's, byte for byte: their
@@ -34,25 +35,26 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const RELEASE = 'calvin-violet-v0.5.1';
+const RELEASE = 'calvin-v0.6.0';
+const VIOLET_RELEASE = 'violet-v0.6.0';
 const FILES = {
   '@waterbots/calvin': {
-    file: 'vendor/waterbots/waterbots-calvin-0.5.1.tgz',
-    version: '0.5.1',
-    sha256: '8cbd1506244591614f9ac0908970df3ba9683d8ba67e747b17b0b3f52bd5eef1',
-    integrity: 'sha512-PsU+dQmf/AGkmoGw/NRWvAkCmsRrRxzIKE0bb6A3l0MVXSQU1mIZ8F/OREnIOEgL8N0QRvlt+yVkmY7MbKfjrQ==',
+    file: 'vendor/waterbots/waterbots-calvin-0.6.0.tgz',
+    version: '0.6.0',
+    sha256: '5ef48f7dae703f396ad25980872ec27ac6a4f72a627205de546badb182b6625e',
+    integrity: 'sha512-8YnEyjoRfgi3hQdrYCGfi13cptuI285fXuJLvNbCKN1KwOjyk1ddppvw0plXk8qEgDKRHLQUpfvX+dFmxaQIqA==',
   },
   '@waterbots/violet': {
-    file: 'vendor/waterbots/waterbots-violet-0.5.1.tgz',
-    version: '0.5.1',
-    sha256: 'faa230e07a581cc5cda41a3a1ce9add778305f1d99d416efab2aa1ffffb5b8d6',
-    integrity: 'sha512-WPD7qdfqKk02IO06PRIBZbvdot5DcFNbrfOY6/qUzbhmzyobswN1Z3tnv9BFNKe3YIa17k7lpq/3VkIKl6/yog==',
+    file: 'vendor/waterbots/waterbots-violet-0.6.0.tgz',
+    version: '0.6.0',
+    sha256: '7f94d0a1425b39e5dc2ac66de96ca2a3992fcc1328dd6278662db57b64cf578c',
+    integrity: 'sha512-sNNnNXVm1vUzqbhHs612vZEcW/NrktM7/+7jIfobs/HewQyfXfHbjTpAZR/1BGYDFME1s7hCCyEP3YqUNkYHWQ==',
   },
   '@waterbots/core': {
-    file: 'vendor/waterbots/waterbots-core-0.1.2.tgz',
-    version: '0.1.2',
-    sha256: '51534f84aabd7f51bb36d9eefb2e76e78770ed9d096fef825a40a4cf9256efe7',
-    integrity: 'sha512-8BQ4ouYORLJPLeEB+XRMzU7JHjXyQa0sLL5YD9VylEmSmTl+KKN6Jg3LfLSl5XMwAVxy5Ym+PglrxshD9JaStA==',
+    file: 'vendor/waterbots/waterbots-core-0.2.0.tgz',
+    version: '0.2.0',
+    sha256: 'bae2b949fbb42c0b86e324fb8a62ddf8a26fb5c01b05eac97bc841c5db539160',
+    integrity: 'sha512-8QfK5ku0j1NrIudieYCDIYYnDws+0wuV9C8qXCHgCP3MjgUrC4i3h8KVpAYmrnWDkjwNiYx48GmGYyYF18N1og==',
   },
 };
 const ENGINE_VERSION = '0.19.0';
@@ -69,7 +71,7 @@ function expect(label, condition, detail) {
   }
 }
 
-console.log(`\nCalvin from the open core — ${RELEASE}\n`);
+console.log(`\nCalvin and Violet from the open core — ${RELEASE}, ${VIOLET_RELEASE}\n`);
 
 /* 1–3. The files, the manifest, the lockfile and what is installed. */
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
@@ -95,7 +97,8 @@ expect('the site names the same version it installed', constant === FILES['@wate
 const violetConstant = readFileSync(join('src', 'lib', 'calvinProject.ts'), 'utf8').match(/VIOLET_PACKAGE_VERSION = '([^']+)'/)?.[1];
 expect('the site names the Violet version it installed', violetConstant === FILES['@waterbots/violet'].version, violetConstant);
 const release = readFileSync(join('src', 'lib', 'calvinProject.ts'), 'utf8').match(/CALVIN_RELEASE = '([^']+)'/)?.[1];
-expect('the site names the release it installed from', release === RELEASE, release);
+const violetRelease = readFileSync(join('src', 'lib', 'calvinProject.ts'), 'utf8').match(/VIOLET_RELEASE = '([^']+)'/)?.[1];
+expect('the site names the releases it installed from', release === RELEASE && violetRelease === VIOLET_RELEASE, `${release} and ${violetRelease}`);
 
 /* 4. The engine, and every case the package ships. */
 const engine = await import('@waterbots/calvin/engine');
@@ -145,14 +148,20 @@ expect(`both fNRB cases give exactly the recorded answers`, caseFailures.length 
 
 /* 5. The old sealed copy is gone. */
 expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSync('carried'), 'carried/ still exists');
-/* 6. creditedUnderV1 stays unset until A29 (her word of 16 Nov 2026). */
+/* 6. creditedUnderV1 comes from the shared record alone (A29, J4, 23 Nov 2026). */
 {
   const adapter = readFileSync(join('src', 'lib', 'calvinProject.ts'), 'utf8');
   const code = adapter.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+  /* RETIRED 23 Nov 2026: A29 is built, so the field is set. Switched off, not deleted.
   expect(
     'the site leaves creditedUnderV1 unset, so every project gets the V2.0-only view until A29',
     !/creditedUnderV1/.test(code),
     'src/lib/calvinProject.ts sets creditedUnderV1'
+  ); */
+  expect(
+    'the site sets creditedUnderV1 only where the shared record says the project is transitioning (A29)',
+    (code.match(/creditedUnderV1/g) ?? []).length === 2 && /facts\.creditedUnderV1\?\.value === true \? \{ creditedUnderV1: true \} : \{\}/.test(code),
+    'src/lib/calvinProject.ts sets creditedUnderV1 some other way'
   );
   /* The installed hook itself, rendered once on the server with a made-up project: without
      the field it is the V2.0-only view with a figure; with it, the transition and the ask. */
@@ -219,7 +228,7 @@ expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSy
   /* From 0.4.0 the package's own switch, unpinFigureBlock, does it (her word of 21 Nov 2026); the CSS override is gone. */
   expect(
     'the core\'s summary block scrolls with the rows here, by the package\'s own switch, and no CSS override is left',
-    /useCalculatorState\(project, \{ exAnteOnly: true, unpinFigureBlock: true, hideExportButton: screening \}\)/.test(holder) && !/\.sticky\s*\{/.test(css),
+    /useCalculatorState\(project, \{ exAnteOnly: true, unpinFigureBlock: true, hideExportButton: screening, place \}\)/.test(holder) && !/\.sticky\s*\{/.test(css),
     'the switch is not passed, or the old override is back'
   );
 }

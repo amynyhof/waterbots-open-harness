@@ -1,16 +1,29 @@
-/* Violet's D-3 screen, in this site's look — 22 Nov 2026 (src/components/VioletWater.tsx).
-   From 0.5.1 her package ships its own stylesheet, @waterbots/violet/styles.css, imported just
-   before this file. This file comes after it and wins, so her screen keeps this site's look.
-   Every rule here is scoped to .violet-d3, in this site's tokens. Nothing here changes what she
-   says or computes. Her accent (Orchid) is not used: on this site the chip is Calvin's (ruling E). */
+/* Violet's D-3 screen, in this site's tokens — 22 Nov 2026 (src/components/VioletWater.tsx).
+
+   FROM 23 NOV 2026 (J5, @waterbots/violet 0.6.0) HER SCREEN HAS CALVIN'S LAYOUT, drawn by her own stylesheet,
+   @waterbots/violet/styles.css, imported just before this file. This file now sets only:
+   - this site's names for the tokens her stylesheet uses, exactly as calvin.css does for Calvin's;
+   - her colour, Orchid, from this site's own token;
+   - where her header card pins;
+   - the one rule this site keeps: Orchid never carries text.
+   Nothing here changes what she says or computes. */
 
 .wb-water {
   flex: 1;
   min-width: 0;
   overflow-y: auto;
-  padding: 18px 24px 32px;
+  /* No padding at the top: a sticky header would stop under it and leave a strip of the page showing above. The
+     space is her screen's own margin instead. */
+  padding: 0 24px 32px;
   /* The names her stylesheet uses, mapped to this site's tokens exactly as Calvin's are in calvin.css;
      no new colour. Her screen does not sit inside .wb-calvin, so they are set here. */
+  --orchid: var(--bot-violet);
+  --ease-out: var(--ease);
+  --duration-fast: 120ms;
+  --duration-base: var(--dur);
+  /* HER HEADER PINS AT THE TOP OF THIS BOX. This box is what scrolls, and no bar of this site's sits inside it:
+     the site menu, the journey bar and her tabs are all above it, as they are above Calvin's. So: nothing to clear. */
+  --wb-pin-top: 0px;
   --fg-1: var(--ink);
   --fg-2: var(--ink-2);
   --fg-3: var(--ink-3);
@@ -22,272 +35,304 @@
   --radius-pill: var(--r-pill);
 }
 
-.violet-d3 {
-  /* Her stylesheet draws the screen as one card; here it stays open on the page, as before. */
-  display: block;
-  padding: 0;
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  max-width: 760px;
-  margin: 0 auto;
-  font-family: var(--font-sans);
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--ink);
-}
-.violet-d3 h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--ink);
-}
-/* Her standing, "Draft — pending expert review": a quiet tag under the title. */
-.violet-d3 [data-status] {
-  display: inline-block;
-  margin: 6px 0 14px;
-  padding: 1px 8px;
-  background: transparent;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--ink-2);
-  border-radius: var(--r-pill);
-  box-shadow: inset 0 0 0 1px var(--line);
+/* Her screen is one column, as wide as Calvin's work surface. */
+.wb-water .violet-d3 {
+  max-width: 980px;
+  margin-top: 18px;
 }
 
-/* Her choices — how the volume is worked out, full or limited access — as this site's chips. */
-.violet-d3 [role='group'] {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0 0 12px;
-}
-.violet-d3 [role='group'] button {
-  font-family: var(--font-sans);
-  font-size: 12.5px;
-  line-height: 1.4;
-  padding: 6px 12px;
-  color: var(--ink-2);
-  background: transparent;
-  border: 0;
-  border-radius: var(--r-pill);
-  box-shadow: inset 0 0 0 1px var(--line);
-  cursor: pointer;
-  text-align: left;
-}
-.violet-d3 [role='group'] button[aria-pressed='true'] {
-  color: var(--ink);
-  background: var(--card);
-  box-shadow: inset 0 0 0 1.5px var(--bot-calvin);
-}
-.violet-d3 [role='group'] button:disabled {
-  cursor: default;
-}
-
-.violet-d3 fieldset {
-  margin: 0 0 14px;
-  padding: 14px 16px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-md);
-  background: var(--card);
-}
-.violet-d3 legend {
-  padding: 0 6px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-/* A typed value: its label above its box, so a narrow screen never squeezes the label. */
-.violet-d3 fieldset > label,
-.violet-d3 [data-slider] > label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin: 0 0 12px;
-  color: var(--ink);
-}
-.violet-d3 input[type='number'] {
-  width: 160px;
-  max-width: 100%;
-  font: inherit;
-  padding: 6px 10px;
-  color: var(--ink);
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--r-sm);
-}
-.violet-d3 input[type='number']:focus {
-  outline: none;
-  border-color: var(--tide-ui);
-}
-
-/* People served, from the record; or what the record is missing. */
-.violet-d3 [data-record-people],
-.violet-d3 [data-record-ask] {
-  margin: 4px 0 0;
-  color: var(--ink-2);
-}
-.violet-d3 [data-record-ask] {
-  padding: 8px 10px;
-  border-radius: var(--r-sm);
-  background: color-mix(in oklab, var(--amber) 10%, transparent);
-}
-
-/* A slider: its label and where it starts, the slider, the exact box, then its range in small type. */
-.violet-d3 [data-slider] {
-  margin: 0 0 16px;
-}
-.violet-d3 [data-slider] [data-label] {
-  align-self: flex-start;
-  margin-left: 6px;
-  padding: 0 6px;
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  color: var(--ink-2);
-  border-radius: var(--r-xs);
-  box-shadow: inset 0 0 0 1px var(--line);
-}
-.violet-d3 input[type='range'] {
-  width: 100%;
-  accent-color: var(--bot-calvin);
-}
-.violet-d3 [data-slider] small {
-  display: block;
-  margin-top: 4px;
-  font-size: 11.5px;
-  color: var(--ink-3);
-}
-
-.violet-d3 [role='alert'] {
-  color: var(--state-warn);
-}
-
-/* The result: the table of values, the sum in words, the notes, the benefit, the conditions. */
-.violet-d3 [data-result] {
-  margin-top: 6px;
-  padding: 14px 16px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-md);
-  background: var(--card);
-  overflow-x: auto;
-}
-.violet-d3 table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-}
-.violet-d3 th,
-.violet-d3 td {
-  padding: 6px 8px;
-  text-align: left;
-  vertical-align: top;
-  border-bottom: 1px solid var(--line);
-}
-.violet-d3 thead th {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-.violet-d3 tbody th {
-  font-weight: 500;
-}
-.violet-d3 td[data-origin],
-.violet-d3 td[data-source],
-.violet-d3 td[data-note] {
-  color: var(--ink-2);
-}
-.violet-d3 ol,
-.violet-d3 ul {
-  margin: 12px 0;
-  padding-left: 20px;
-  color: var(--ink-2);
-}
-.violet-d3 [data-vwb] {
-  margin: 14px 0;
-  font-size: 15px;
-  font-weight: 600;
+/* Orchid is 4.29:1 on white and never carries text (docs/modules/console.md): her figure on the tile is ink. */
+.wb-water .violet-d3 [data-tile-total] {
   color: var(--ink);
 }
 
-/* Where her stylesheet lays her screen out differently, this site's layout holds, as it was
-   before 0.5.1: open boxes stacked top to bottom, labels above their boxes, chips at their own
-   height, plain table cells with one line under each row. */
-.violet-d3 h2 {
-  line-height: inherit;
-}
-.violet-d3 [data-status] {
-  font-weight: 400;
-}
-.violet-d3 fieldset {
-  display: block;
-}
-.violet-d3 legend {
-  font-weight: 400;
-}
-.violet-d3 fieldset > label,
-.violet-d3 [data-slider] > label {
-  flex-wrap: nowrap;
-  align-items: stretch;
-  font-size: inherit;
-}
-.violet-d3 [role='group'] button {
-  min-height: 0;
-}
-.violet-d3 [role='group'] button:disabled {
-  opacity: 1;
-}
-.violet-d3 [data-slider] {
-  display: block;
-}
-.violet-d3 [data-slider] [data-label] {
-  letter-spacing: normal;
-  text-transform: none;
-}
-.violet-d3 input[type='range'] {
-  flex: none;
-}
-.violet-d3 th,
-.violet-d3 td {
-  border-top: 0;
-}
-.violet-d3 tbody td:nth-child(2) {
-  font-family: inherit;
-  text-align: left;
-  white-space: normal;
-}
-
-/* On a phone the table of values becomes one block per value, so nothing is squeezed sideways. */
 @media (max-width: 640px) {
   .wb-water {
-    padding: 14px 16px 28px;
+    padding: 0 16px 28px;
   }
-  .violet-d3 thead {
-    display: none;
+  .wb-water .violet-d3 {
+    margin-top: 14px;
   }
-  .violet-d3 table,
-  .violet-d3 tbody,
-  .violet-d3 tr,
+  /* Her tile stays at the top on a phone, as Calvin's does: his stylesheet opens the header the same way. Hers
+     leaves it a box, and a sticky tile cannot leave a box its own size. Found 23 Nov 2026; for the open core. */
+  .wb-water .violet-d3 [data-pinned-header] {
+    display: contents;
+  }
+}
+
+/* The parts inside a fold keep their space. Her stylesheet sets a gap on the <details> itself, which browsers do
+   not pass to what it holds. Found 23 Nov 2026; for the open core. */
+.wb-water .violet-d3 [data-fold] > :not(summary) + :not(summary) {
+  margin-top: 10px;
+}
+
+/* SWITCHED OFF, 23 NOV 2026 (J5): the site's own layout for her screen, from 22 Nov 2026. Her package's layout
+   takes its place. Kept, not deleted; "not all" matches no screen and no printer, so none of it applies. */
+@media not all {
+  .violet-d3 {
+    /* Her stylesheet draws the screen as one card; here it stays open on the page, as before. */
+    display: block;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    max-width: 760px;
+    margin: 0 auto;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .violet-d3 h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  /* Her standing, "Draft — pending expert review": a quiet tag under the title. */
+  .violet-d3 [data-status] {
+    display: inline-block;
+    margin: 6px 0 14px;
+    padding: 1px 8px;
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-2);
+    border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+
+  /* Her choices — how the volume is worked out, full or limited access — as this site's chips. */
+  .violet-d3 [role='group'] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 12px;
+  }
+  .violet-d3 [role='group'] button {
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    line-height: 1.4;
+    padding: 6px 12px;
+    color: var(--ink-2);
+    background: transparent;
+    border: 0;
+    border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 1px var(--line);
+    cursor: pointer;
+    text-align: left;
+  }
+  .violet-d3 [role='group'] button[aria-pressed='true'] {
+    color: var(--ink);
+    background: var(--card);
+    box-shadow: inset 0 0 0 1.5px var(--bot-calvin);
+  }
+  .violet-d3 [role='group'] button:disabled {
+    cursor: default;
+  }
+
+  .violet-d3 fieldset {
+    margin: 0 0 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    background: var(--card);
+  }
+  .violet-d3 legend {
+    padding: 0 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* A typed value: its label above its box, so a narrow screen never squeezes the label. */
+  .violet-d3 fieldset > label,
+  .violet-d3 [data-slider] > label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0 0 12px;
+    color: var(--ink);
+  }
+  .violet-d3 input[type='number'] {
+    width: 160px;
+    max-width: 100%;
+    font: inherit;
+    padding: 6px 10px;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+  }
+  .violet-d3 input[type='number']:focus {
+    outline: none;
+    border-color: var(--tide-ui);
+  }
+
+  /* People served, from the record; or what the record is missing. */
+  .violet-d3 [data-record-people],
+  .violet-d3 [data-record-ask] {
+    margin: 4px 0 0;
+    color: var(--ink-2);
+  }
+  .violet-d3 [data-record-ask] {
+    padding: 8px 10px;
+    border-radius: var(--r-sm);
+    background: color-mix(in oklab, var(--amber) 10%, transparent);
+  }
+
+  /* A slider: its label and where it starts, the slider, the exact box, then its range in small type. */
+  .violet-d3 [data-slider] {
+    margin: 0 0 16px;
+  }
+  .violet-d3 [data-slider] [data-label] {
+    align-self: flex-start;
+    margin-left: 6px;
+    padding: 0 6px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--ink-2);
+    border-radius: var(--r-xs);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  .violet-d3 input[type='range'] {
+    width: 100%;
+    accent-color: var(--bot-calvin);
+  }
+  .violet-d3 [data-slider] small {
+    display: block;
+    margin-top: 4px;
+    font-size: 11.5px;
+    color: var(--ink-3);
+  }
+
+  .violet-d3 [role='alert'] {
+    color: var(--state-warn);
+  }
+
+  /* The result: the table of values, the sum in words, the notes, the benefit, the conditions. */
+  .violet-d3 [data-result] {
+    margin-top: 6px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    background: var(--card);
+    overflow-x: auto;
+  }
+  .violet-d3 table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
   .violet-d3 th,
   .violet-d3 td {
-    display: block;
-    width: auto;
-  }
-  .violet-d3 tr {
-    padding: 8px 0;
+    padding: 6px 8px;
+    text-align: left;
+    vertical-align: top;
     border-bottom: 1px solid var(--line);
   }
+  .violet-d3 thead th {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .violet-d3 tbody th {
+    font-weight: 500;
+  }
+  .violet-d3 td[data-origin],
+  .violet-d3 td[data-source],
+  .violet-d3 td[data-note] {
+    color: var(--ink-2);
+  }
+  .violet-d3 ol,
+  .violet-d3 ul {
+    margin: 12px 0;
+    padding-left: 20px;
+    color: var(--ink-2);
+  }
+  .violet-d3 [data-vwb] {
+    margin: 14px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* Where her stylesheet lays her screen out differently, this site's layout holds, as it was
+     before 0.5.1: open boxes stacked top to bottom, labels above their boxes, chips at their own
+     height, plain table cells with one line under each row. */
+  .violet-d3 h2 {
+    line-height: inherit;
+  }
+  .violet-d3 [data-status] {
+    font-weight: 400;
+  }
+  .violet-d3 fieldset {
+    display: block;
+  }
+  .violet-d3 legend {
+    font-weight: 400;
+  }
+  .violet-d3 fieldset > label,
+  .violet-d3 [data-slider] > label {
+    flex-wrap: nowrap;
+    align-items: stretch;
+    font-size: inherit;
+  }
+  .violet-d3 [role='group'] button {
+    min-height: 0;
+  }
+  .violet-d3 [role='group'] button:disabled {
+    opacity: 1;
+  }
+  .violet-d3 [data-slider] {
+    display: block;
+  }
+  .violet-d3 [data-slider] [data-label] {
+    letter-spacing: normal;
+    text-transform: none;
+  }
+  .violet-d3 input[type='range'] {
+    flex: none;
+  }
   .violet-d3 th,
   .violet-d3 td {
-    padding: 2px 0;
-    border-bottom: 0;
+    border-top: 0;
   }
-  .violet-d3 td:empty {
-    display: none;
+  .violet-d3 tbody td:nth-child(2) {
+    font-family: inherit;
+    text-align: left;
+    white-space: normal;
+  }
+
+  /* On a phone the table of values becomes one block per value, so nothing is squeezed sideways. */
+  @media (max-width: 640px) {
+    .violet-d3 thead {
+      display: none;
+    }
+    .violet-d3 table,
+    .violet-d3 tbody,
+    .violet-d3 tr,
+    .violet-d3 th,
+    .violet-d3 td {
+      display: block;
+      width: auto;
+    }
+    .violet-d3 tr {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .violet-d3 th,
+    .violet-d3 td {
+      padding: 2px 0;
+      border-bottom: 0;
+    }
+    .violet-d3 td:empty {
+      display: none;
+    }
   }
 }

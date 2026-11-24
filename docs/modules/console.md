@@ -66,12 +66,21 @@ they stand here.
 - Calvin's carbon calculator is the open core's, locked to ex-ante (`exAnteOnly`, sliders on), on
   Quantify and on the Commons. Its state lives with the calculator and opens again once the record names
   the technology.
-- Violet's D-3 screen sits under Calvin's "Water benefits" chip until Violet joins the crew. People
-  served come from the record; on the Commons, from its facts form.
-- Calvin's header says only what the record still lacks.
-- **One export during a screening.** On Quantify Calvin's own export is hidden (`hideExportButton`),
-  and "Export screening report" in the left rail carries his figure and his full working. The Commons
-  keeps his export.
+- **Violet is her own crew member** (the maintainer's word of 23 Nov 2026): her own seat and desk, beside
+  Calvin's on Quantify. Her seat word and job line are the crew list's. People served come from the
+  record; on the Commons, from her facts form.
+- **One calculator layout.** Violet's screen has Calvin's layout and her own colour, drawn by her package.
+  Her header pins at the top of the box that scrolls (`--wb-pin-top: 0px`).
+- **The agent map decides who is called** (J4). A pathway that reads unlikely closes its calculator's desk:
+  its card leaves the crew, and the desk says why, what would change it, and that the calculator can be
+  looked at in the Agent Commons. A desk whose turn has not come is never closed.
+- **No note box** on the Free site or in the Agent Commons. Each export carries the agents' own notes on
+  the values still blank or assumed, under the agent's label from core.
+- Calvin's header says only what the record still lacks, or that his calculator does not know the kind of
+  project yet.
+- **One export during a screening.** On Quantify Calvin's and Violet's own exports are hidden
+  (`hideExportButton`), and "Export screening report" in the left rail carries his figure, his full working
+  and her estimate. The Commons keeps theirs.
 
 ## The screening report
 
@@ -97,7 +106,7 @@ they stand here.
 - The frame and the content have different grounds: `--paper` is the content canvas, `--frame` the
   frame. An active navigation item rises one plane to `--card` with its 1px hairline.
 - Agent colours: Phoebe is Anemone, Bridget is Surf, Calvin is Reef with Deep Reef (`--deep-reef`) for
-  his text, Violet is Orchid and needs a text shade when she is built. Neither Reef nor Orchid carries
-  text. The Quantify seat is Calvin, not Vector; `--bot-vector` and `vector.svg` are kept.
+  his text, Violet is Orchid and still needs a text shade and a portrait: her name is ink and her initial
+  is drawn. Neither Reef nor Orchid carries text. The Quantify seat is Calvin, not Vector; `--bot-vector` and `vector.svg` are kept.
 - An agent colour never reads as a project status. Purple belongs on small tags, never washed behind
   numbers.

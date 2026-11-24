@@ -26,7 +26,9 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk';
+import { checkEntry } from '@waterbots/core/record';
 import { recordAbstention } from './_abstentions.js';
+import { guardRoute, mapBlock, readMap } from './_agentMap.js';
 import { CARRIED, WELLINGTON, countOneMessage, timeUntilReset } from './_cap.js';
 import { phoebeFound, readRecord, readSheet, readStage, stageBlock, visitBlock } from './_record.js';
 import { MIN_REPLY_CHARS, READING_GRADE, cardWordsIn, isDegenerateReply, isHardReply, readingGrade } from './_reply.js';
@@ -122,6 +124,7 @@ export async function POST(req: Request): Promise<Response> {
     sheet?: unknown;
     returned?: unknown;
     at?: unknown;
+    map?: unknown;
   };
   try {
     body = (await req.json()) as {
@@ -132,6 +135,7 @@ export async function POST(req: Request): Promise<Response> {
       sheet?: unknown;
       returned?: unknown;
       at?: unknown;
+      map?: unknown;
     };
   } catch {
     return problem(400, 'That request could not be read.');
@@ -200,7 +204,11 @@ export async function POST(req: Request): Promise<Response> {
      and he may still ask. */
   const record = readRecord(body.record);
   const stage = readStage(body.stage);
-  const visitText = record ? visitBlock(record, stage) : stage ? stageBlock(stage) : null;
+  /* THE AGENT MAP — J4, 23 Nov 2026 (api/_agentMap.ts). Where it came, its one next step takes the place of the
+     screening step's line, which is switched off then and kept for a page loaded before the map. */
+  const map = readMap(body.map);
+  const stepStage = map ? null : stage;
+  const visitText = record ? visitBlock(record, stepStage) : stepStage ? stageBlock(stepStage) : null;
 
   /* WHAT PHOEBE FOUND — item A17, 26 Sep 2026. Her worksheet as the shell
      holds it, checked in _record.ts, read into each pathway's read and the
@@ -301,6 +309,7 @@ export async function POST(req: Request): Promise<Response> {
           { type: 'text', text: WELLINGTON_SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
           ...(visitText ? [{ type: 'text' as const, text: visitText }] : []),
           ...(found ? [{ type: 'text' as const, text: found.text }] : []),
+          ...(map ? [{ type: 'text' as const, text: mapBlock(map) }] : []),
           ...(at ? [{ type: 'text' as const, text: AT_NOTE[at] }] : []),
         ],
         messages: clean,
@@ -365,7 +374,11 @@ export async function POST(req: Request): Promise<Response> {
 
   /* A class returned this turn is kept only beside a drinking-water type,
      confirmed this turn or already on the visit. */
-  const answer = validate(parsed, { type: record?.type, reads: found?.reads });
+  const checked = validate(parsed, { type: record?.type, ...(map ? {} : { reads: found?.reads }) });
+  /* The map's guard, in place of the reads' (J4): a desk the map has closed is never routed to, and an
+     introduction goes with its route. */
+  const route = checked && map ? guardRoute(checked.route, map) : checked?.route;
+  const answer = checked && route !== undefined ? { ...checked, route, ...(route === checked.route ? {} : { introduction: undefined }) } : null;
   if (!answer) {
     console.error(`wellington: returned an empty answer — ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens`);
     return undelivered(
@@ -409,6 +422,7 @@ export async function POST(req: Request): Promise<Response> {
 
   return json(200, {
     ...answer,
+    ...(refusedCount(parsed) ? { refused: refusedCount(parsed) } : {}),
     usage: {
       cacheRead: response.usage.cache_read_input_tokens ?? 0,
       cacheWrite: response.usage.cache_creation_input_tokens ?? 0,
@@ -416,6 +430,17 @@ export async function POST(req: Request): Promise<Response> {
       output: response.usage.output_tokens,
     },
   });
+}
+
+/**
+ * A COUNT CORE'S FACT CHECK REFUSES, and why — J3, 23 Nov 2026. `validate` keeps such a count off the record, as
+ * before; until then it was dropped without a word. The console says why under his turn.
+ */
+function refusedCount(parsed: unknown): string | null {
+  const served = pick(pick(parsed, 'context'), 'served');
+  if (served === undefined || served === null) return null;
+  const check = checkEntry('population.served', pick(served, 'count'));
+  return check.ok ? null : check.problem;
 }
 
 /* -------------------------------------------------------------------------

@@ -16,3 +16,5 @@ The Commons' own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md)
 - An open module lives at `/commons/<slug>`, shareable, with "About this module" beside it.
 - A module's status is one of six stages, from seeking partners to graduated, drawn as bars with an (i).
 - On the Commons, Phoebe's Tool tab reads "Eligibility quiz".
+- Each agent is told it is at the Agent Commons door (J2, 23 Nov 2026), and Calvin's and Violet's exports
+  there carry their own notes. Violet holds her own row.

@@ -1,5 +1,5 @@
 /**
- * The three seats on the Agent Commons — Phoebe's, Calvin's and Bridget's
+ * The four seats on the Agent Commons — Phoebe's, Calvin's, Violet's and Bridget's
  * packs opened on the one agent screen as its third consumer. Item S18,
  * slice 3, built 11 Sep 2026.
  *
@@ -32,12 +32,15 @@
  * on the Partners step, and a second copy would fetch the basins again and
  * hold a second Leaflet; her seat here has no Tool tab and her Chat line says
  * where the map is. Calvin's calculator is light and self-contained, so his
- * seat holds one with answers of its own, opened on the pack whose card was
- * clicked.
+ * seat holds one with answers of its own; Violet's does too, from 23 Nov 2026 (J5).
+ *
+ * EVERY SEAT IS TOLD ITS PLACE (J2, 23 Nov 2026): the Agent Commons door. Phoebe's relay reads it; Calvin's and
+ * Violet's screens take it, so their own exports carry their notes on the values still blank or assumed.
  */
 
 import { useMemo, useRef, useState } from 'react';
 import type { CalvinProject } from '@waterbots/calvin/screen';
+import { checkEntry, emptyRecord, type ProjectRecord } from '@waterbots/core/record';
 import { COUNTRIES } from '@waterbots/calvin/engine';
 import type { AgentTurn, AskMeta } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
@@ -49,7 +52,6 @@ import {
   type Sheet,
 } from '../lib/worksheetState';
 import { HER_PACKS } from '../lib/worksheet.generated';
-import { WATER_METHOD_ID } from '../lib/visit';
 import { askPhoebe, carriedSheet } from '../lib/phoebeClient';
 import AgentScreen, { type ScreenTab } from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
@@ -57,6 +59,8 @@ import KnowledgePackTab from '../screen/KnowledgePackTab';
 import NotLiveChat from '../screen/NotLiveChat';
 import ScreenChat from '../screen/ScreenChat';
 import { BRIDGET, BRIDGET_PACK } from './BridgetScreen';
+import { VIOLET, VIOLET_NOT_LIVE_LINE, VIOLET_PACK } from './VioletScreen';
+import VioletWater from './VioletWater';
 import { CALVIN, CALVIN_NOT_LIVE_LINE, CALVIN_PACK, CalvinTool } from './CalvinScreen';
 import EligibilityWorksheet from './EligibilityWorksheet';
 import { PHOEBE, PHOEBE_PACK, phoebeButtons } from './PhoebeScreen';
@@ -85,7 +89,7 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
       })),
       null,
       signal,
-      { sheet: carriedSheet(sheet, HER_PACKS), loaded: loaded.current, onLive }
+      { sheet: carriedSheet(sheet, HER_PACKS), loaded: loaded.current, onLive, door: 'agent-commons' }
     );
     if (answer.loaded) loaded.current = answer.loaded;
     if (answer.showTool) setToolDot(true);
@@ -154,13 +158,35 @@ interface CommonsFacts {
   unit: 'people' | 'households';
 }
 
-function CommonsFactsForm({ facts, onChange }: { facts: CommonsFacts; onChange: (next: CommonsFacts) => void }) {
+/** The count typed, when core's fact check takes it. A count below zero is refused where it is entered (J3). */
+function servedOf(facts: CommonsFacts): number | undefined {
+  if (facts.served.trim() === '') return undefined;
+  const count = Number(facts.served);
+  return checkEntry('population.served', count).ok ? count : undefined;
+}
+
+/** What is wrong with the count typed, in plain words, or nothing. */
+function servedProblem(facts: CommonsFacts): string | null {
+  if (facts.served.trim() === '') return null;
+  const check = checkEntry('population.served', Number(facts.served));
+  if (check.ok) return null;
+  return check.problem === 'below zero'
+    ? 'A count can’t be below zero.'
+    : check.problem === 'zero'
+      ? 'A count has to be at least 1.'
+      : 'A count has to be a whole number.';
+}
+
+function CommonsFactsForm({ facts, onChange, agent = 'Calvin', servedOnly = false }: { facts: CommonsFacts; onChange: (next: CommonsFacts) => void; agent?: string; servedOnly?: boolean }) {
+  const problem = servedProblem(facts);
+  const id = `commons-${agent.toLowerCase()}`;
   const label = { display: 'block', fontSize: 12, color: 'var(--ink-2)', margin: '8px 0 3px' } as const;
   return (
     <div style={{ marginBottom: 12 }}>
       <p className="t-caption" style={{ margin: 0, color: 'var(--ink-2)' }}>
-        Tell Calvin about your project. Nothing here is kept.
+        Tell {agent} about your project. Nothing here is kept.
       </p>
+      {!servedOnly && (<>
       <label style={label} htmlFor="commons-calvin-system">The water system</label>
       <select
         id="commons-calvin-system"
@@ -186,14 +212,17 @@ function CommonsFactsForm({ facts, onChange }: { facts: CommonsFacts; onChange: 
           </option>
         ))}
       </select>
-      <label style={label} htmlFor="commons-calvin-served">How many it serves</label>
+      </>)}
+      <label style={label} htmlFor={`${id}-served`}>How many it serves</label>
       <div style={{ display: 'flex', gap: 6 }}>
         <input
-          id="commons-calvin-served"
+          id={`${id}-served`}
           className="wb-rail-input"
           inputMode="numeric"
           value={facts.served}
-          onChange={(e) => onChange({ ...facts, served: e.target.value.replace(/[^0-9]/g, '') })}
+          aria-invalid={problem !== null || undefined}
+          /* The minus sign is kept, so a count below zero is refused with a reason and never turned into another number. */
+          onChange={(e) => onChange({ ...facts, served: e.target.value.replace(/[^0-9.-]/g, '') })}
           style={{ flex: 1, minWidth: 0 }}
         />
         <select
@@ -207,29 +236,30 @@ function CommonsFactsForm({ facts, onChange }: { facts: CommonsFacts; onChange: 
           <option value="households">households</option>
         </select>
       </div>
+      {problem && (
+        <p role="alert" style={{ margin: '4px 0 0', fontSize: 12, color: 'var(--state-warn-text)' }}>
+          {problem}
+        </p>
+      )}
     </div>
   );
 }
 
-export function CalvinCommonsSeat({ packKey }: { packKey: string | null }) {
-  /* A water card opens Violet's D-3 screen; the carbon card opens Calvin's calculator. */
-  const opensOn: 'carbon' | 'water' = packKey === WATER_METHOD_ID ? 'water' : 'carbon';
+export function CalvinCommonsSeat() {
   const [facts, setFacts] = useState<CommonsFacts>({ country: '', technology: '', served: '', unit: 'people' });
   const project: CalvinProject = useMemo(() => {
-    const served = Number(facts.served);
+    const served = servedOf(facts);
     return {
       name: 'Your project',
       standards: ['carbon'],
       ...(facts.technology ? { technology: facts.technology } : {}),
       ...(facts.country ? { country: facts.country } : {}),
-      ...(served > 0 ? { population: { mode: facts.unit, served } } : {}),
+      ...(served !== undefined ? { population: { mode: facts.unit, served } } : {}),
     };
   }, [facts]);
   /* The calculator holds its own state and opens again once a technology is
      chosen, as on the console (CalvinCarbon, 16 Nov 2026); the count typed
-     afterwards is handed on there. Violet's water screen reads the same project,
-     so the people served typed into this form are her record too (ruling A,
-     22 Nov 2026), and it follows a count that changes. */
+     afterwards is handed on there. */
 
   return (
     <AgentScreen
@@ -240,14 +270,50 @@ export function CalvinCommonsSeat({ packKey }: { packKey: string | null }) {
         chat: <NotLiveChat host={CALVIN} line={CALVIN_NOT_LIVE_LINE} />,
         tool: (
           <CalvinTool
-            key={opensOn}
             project={project}
+            place="agent-commons"
             header={() => <CommonsFactsForm facts={facts} onChange={setFacts} />}
-            opensOn={opensOn}
           />
         ),
         pack: <KnowledgePackTab view={CALVIN_PACK} />,
         credentials: <CredentialsTab host={CALVIN} />,
+      }}
+    />
+  );
+}
+
+/**
+ * VIOLET'S SEAT, her own from 23 Nov 2026 (J5). The Commons holds no record, so she keeps a temporary one of the
+ * same shape from what the visitor types: how many it serves. The rest she asks on her own screen. Her export
+ * stays here, because the Commons has no screening report, and it carries her notes.
+ */
+export function VioletCommonsSeat() {
+  const [facts, setFacts] = useState<CommonsFacts>({ country: '', technology: '', served: '', unit: 'people' });
+  const record: ProjectRecord = useMemo(() => {
+    const served = servedOf(facts);
+    const out = emptyRecord();
+    if (served !== undefined) {
+      out.facts.population = { value: { mode: facts.unit, served }, source: { by: 'person', note: 'typed in the Agent Commons' } };
+    }
+    return out;
+  }, [facts]);
+  return (
+    <AgentScreen
+      host={VIOLET}
+      idSlug="commons-violet"
+      opensOn="tool"
+      tabs={{
+        chat: <NotLiveChat host={VIOLET} line={VIOLET_NOT_LIVE_LINE} />,
+        tool: (
+          <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+            <div style={{ flex: 'none', background: 'var(--card)', borderBottom: '1px solid var(--line)', padding: '12px 18px 2px' }}>
+              <CommonsFactsForm facts={facts} onChange={setFacts} agent="Violet" servedOnly />
+            </div>
+            <VioletWater record={record} place="agent-commons" />
+          </div>
+        ),
+        pack: <KnowledgePackTab view={VIOLET_PACK} />,
+        credentials: <CredentialsTab host={VIOLET} />,
       }}
     />
   );

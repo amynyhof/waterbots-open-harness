@@ -37,6 +37,7 @@
 
 import { useContext, type CSSProperties } from 'react';
 import { Reached } from './reached';
+import AgentFace from '../components/AgentFace';
 import AnswerBody from './AnswerBody';
 import type { AgentHost, AgentTurn, Turn } from './evidence';
 
@@ -110,7 +111,7 @@ export default function Transcript({
 function HostFace({ host, thinking = false }: { host: AgentHost; thinking?: boolean }) {
   return (
     <span className={thinking ? 'wb-turn-face wb-turn-face-thinking' : 'wb-turn-face'} aria-hidden>
-      <img src={host.portrait} alt="" width={35} height={35} />
+      <AgentFace portrait={host.portrait} name={host.name} size={35} />
     </span>
   );
 }

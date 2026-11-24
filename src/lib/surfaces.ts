@@ -18,9 +18,11 @@
  * desk's own word is the one label that is not a phase.
  */
 
-export type Surface = 'desk' | 'eligibility' | 'map' | 'quantification';
+/* 'water' is Violet's desk, from 23 Nov 2026 (J5): she is her own crew member, and the Quantify
+   phase holds two desks, Calvin's and hers. */
+export type Surface = 'desk' | 'eligibility' | 'map' | 'quantification' | 'water';
 
-/** The console's surfaces — the same four; the alias names what a route may open. */
+/** The console's surfaces — the same five; the alias names what a route may open. */
 export type ConsoleSurface = Surface;
 
 /**

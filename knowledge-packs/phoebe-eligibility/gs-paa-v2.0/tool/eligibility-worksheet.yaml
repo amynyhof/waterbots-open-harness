@@ -47,7 +47,7 @@ pack:
   key: gs-paa-v2.0
   # Equal to the pack README's own "**Version x.y.z.**" line; the gate holds the
   # two together, and check-cards already holds that line to the CHANGELOG head.
-  version: 0.8.0
+  version: 0.8.1
 
 section:
   id: carbon
@@ -286,17 +286,17 @@ states:
   # "Likely" is the honest word: nothing on this site verifies anything.
   readiness-read:
     - id: likely-eligible
-      label: Likely eligible
+      label: Likely
       carries: nothing beyond the rows it was drawn from
       colour: null
 
     - id: likely-not
-      label: Likely not
+      label: Unlikely
       carries: the blocked row's own reason
       colour: null
 
     - id: not-enough-known
-      label: Not enough known yet
+      label: More to learn
       carries: the list of rows still open, each with its route or its question
       colour: null
 
@@ -891,8 +891,8 @@ outputs:
 
   - id: readiness
     posts: >-
-      The readiness read for the carbon pathway: likely eligible when every row
-      that applies is Met, likely not when any row is Blocked, not enough known
+      The readiness read for the carbon pathway: likely when every row
+      that applies is Met, unlikely when any row is Blocked, more to learn
       yet for anything else.
     takes:
       kind: state

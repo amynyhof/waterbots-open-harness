@@ -30,8 +30,13 @@ Wellington's own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md)
 - His "four people" sentence keeps the maintainer's wording; it is checked, never shown.
 - A build update comes from the build status sheet's "New lately" part, dated in words (agent rule
   16). His own build-update card went on 22 Nov 2026.
-- **His prompt gate is 33,310 characters**, from 22 Nov 2026 (family 1): measured plus 500 (32,810),
-  once what each colleague helps with came in from the crew list. Earlier that day 32,537, 32,001,
+- **He leads from the agent map** (J4, 23 Nov 2026): core's map, run on the shared project record, gives him
+  the one next step and who is called. A route to a desk the map has closed is dropped. On an unlikely path
+  he says what would change it; with no path forward he points to the WaterBots team.
+- A count below zero is refused, and the visitor is told why (J3).
+- **His prompt gate is 35,150 characters**, from 23 Nov 2026 (family 1): measured plus 500 (34,650), once
+  Violet's seat and the agent map came in. On 22 Nov 2026 33,310, once what each colleague helps with came
+  in from the crew list; earlier that day 32,537, 32,001,
   29,896 and 29,236; before that 26,199. The limit stays; a session raises it itself by measured plus 500 and
   states the old and new size in its pull request (the maintainer's ruling of 22 Nov 2026).
 - **His first handoff to each colleague says what that colleague does for the visitor**, in his own

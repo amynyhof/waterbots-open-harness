@@ -24,6 +24,7 @@
  */
 
 import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
+import AgentFace from '../components/AgentFace';
 import Transcript from '../chat/Transcript';
 import type { AgentHost } from '../chat/evidence';
 import type { Conversation } from '../chat/useConversation';
@@ -158,7 +159,7 @@ export function HostHeader({ host }: { host: AgentHost }) {
           overflow: 'hidden',
         }}
       >
-        <img src={host.portrait} alt="" width={35} height={35} style={{ display: 'block' }} />
+        <AgentFace portrait={host.portrait} name={host.name} size={35} />
       </span>
       <div style={{ minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

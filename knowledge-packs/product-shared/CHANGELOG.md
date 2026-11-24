@@ -1,4 +1,14 @@
 # Changelog — product-shared
+
+## 0.8.0 — 23 Nov 2026
+
+- `roster.yaml`, version 0.4.1, carried byte for byte from the paid site on the maintainer's word: the lobby chat
+  is a place and not a door, Violet is her own crew member, and the agent rules are no longer repeated.
+- `agent-primer.md`, the roster region: **Violet has the fifth post** (J5). Calvin's entry is carbon alone, and
+  hers is the water a supply project provides.
+- `agent-primer.md`, Wellington's region: the Quantify step is two facts, Calvin's and Violet's, and the
+  screening loop is the agent map's order (J4).
+
 ## 0.7.0 — 22 Nov 2026
 
 - `BUILD_STATUS_SHEET.md` joins: the one build status sheet, an exact copy of the maintainer's master in the

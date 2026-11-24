@@ -6,21 +6,26 @@
  * portrait, a name in the agent's own accent, a role caption, and the current
  * agent's row raised to a card. The look is taken; nothing else is.
  *
- * CLICK A FACE AND YOU GO TO THAT AGENT'S STEP. Phoebe, Bridget and Calvin
- * each have a step, so their row opens it; Wellington's row is the desk.
+ * CLICK A FACE AND YOU GO TO THAT AGENT'S STEP. Phoebe, Bridget, Calvin and,
+ * from 23 Nov 2026, Violet each have a step, so their row opens it;
+ * Wellington's row is the desk.
+ *
+ * A CALCULATOR WHOSE PATHWAY READS UNLIKELY IS NOT SHOWN (J4, 23 Nov 2026,
+ * RULINGS.md section 4): the agent map closes it, and Wellington tells the
+ * visitor what would change it. Its face comes back when the reading does.
  *
  * A QUIET LIST, FROM 14 NOV 2026 — the maintainer's word (W26, W27). The
  * next-step rows, their buttons, the repeated "Open the Eligibility
  * worksheet" links left this column: every handoff's button now sits in the
  * chat under Wellington's message. What stays is the crew, each with one plain
- * line on where their part stands ("water likely · carbon ruled out"), worked
+ * line on where their part stands ("water likely · carbon unlikely"), worked
  * out from the visit and never typed (crewStatus, visit.ts).
  *
  * SAVE IS NOT HERE — the maintainer's word of 21 Nov 2026. It is the site
  * menu's one button, with the box that sends the project to the team under it
  * (the site menu, SiteMenu.tsx). For a few hours that day it sat under the crew.
  *
- * FOUR AGENTS, AND THE ROSTER IS THE BOOK'S. The roster lives in
+ * FIVE AGENTS (four until 23 Nov 2026). The roster lives in
  * src/lib/crew.ts and the row in CrewRow.tsx; this rail reads both.
  *
  * ON A PHONE THE COLUMN IS A PANEL — the maintainer's word of 29 Oct 2026. It
@@ -35,12 +40,15 @@ export default function CrewRail({
   active,
   status,
   onNavigate,
+  hidden = [],
   drawer,
 }: {
   active: Surface;
   /** One plain line per member, keyed by the step each one opens. */
   status: Partial<Record<Surface, string>>;
   onNavigate: (surface: Surface) => void;
+  /** The desks the agent map closes, which are not shown. The one in view stays, so nobody loses their place. */
+  hidden?: readonly Surface[];
   /** On a phone: the column is a sliding panel, open or shut by the shell. */
   drawer?: { open: boolean; onClose: () => void };
 }) {
@@ -84,7 +92,7 @@ export default function CrewRail({
       </div>
 
       <div style={{ padding: '0 12px 16px', display: 'flex', flexDirection: 'column', gap: 4 }}>
-        {CREW.map((member) => (
+        {CREW.filter((member) => member.surface === active || !hidden.includes(member.surface)).map((member) => (
           <CrewRow
             key={member.name}
             member={member}

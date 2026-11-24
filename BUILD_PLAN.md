@@ -45,7 +45,7 @@ repository.
 |---|---|---|---|
 | 1 | **Eligibility** — can this project generate a countable benefit? | Free | Worksheet built; Phoebe live, on both pathways from 26 Sep 2026 |
 | 2 | **Basin map / Partners** — where is the water stress, and who else is working there? | Free | Map built; the partner layer is item D1 |
-| 3 | **Ex-ante quantification** — what benefit would this project produce? | Free | Built 1 Sep 2026; from 22 Nov 2026 both calculators are the open core's, from the release calvin-violet-v0.5.1: carbon (calvin 0.5.1) and water (Violet's D-3, violet 0.5.1); Calvin's chat is item A21 |
+| 3 | **Ex-ante quantification** — what benefit would this project produce? | Free | Built 1 Sep 2026; both calculators are the open core's: carbon (calvin 0.6.0) on Calvin's desk and water (Violet's D-3, violet 0.6.0) on hers, from 23 Nov 2026; Calvin's chat is item A21 |
 | 4 | **Project management** — running the project after it starts | Paid | Not in this repository |
 
 **The desk sits in front of all four**: Wellington's, where the visit starts. From 14 Nov 2026 his next steps
@@ -89,7 +89,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 | # | Step, in one line | Depends on | Done when |
 |---|---|---|---|
 | 1 | **React 19 under the map**, so the open core's calculator screens can run here (#156, §9). | Nothing outside this repository. | Before-and-after map pictures she has passed; every check and the build pass. |
-| 2 | **Calvin's carbon calculator from the open core** on his Tool tab, V1 and V2, simple view and sliders on (A21). | The open core (Session C): the eight changes in #156 §1, sliders and the simple view. Pinned to the open core release that includes the sliders, as a release file. | Proofs P1 to P5 of #156 pass; she has passed the before-and-after table and the tab in the browser; **`carried/` is removed from this repository in the same swap, required for v1** (ruling 1 Nov 2026: the paid repository keeps the private original as the archive). **14 Nov 2026: calvin 0.2.0 installed, ex-ante with sliders, `carried/` deleted; P1 to P3 run. 0.2.0 has no simple view, and shows a new project no figure without a filed V1.0 fNRB: both for Session C.** Now 0.5.1, from 22 Nov 2026 (A21). |
+| 2 | **Calvin's carbon calculator from the open core** on his Tool tab, V1 and V2, simple view and sliders on (A21). | The open core (Session C): the eight changes in #156 §1, sliders and the simple view. Pinned to the open core release that includes the sliders, as a release file. | Proofs P1 to P5 of #156 pass; she has passed the before-and-after table and the tab in the browser; **`carried/` is removed from this repository in the same swap, required for v1** (ruling 1 Nov 2026: the paid repository keeps the private original as the archive). **14 Nov 2026: calvin 0.2.0 installed, ex-ante with sliders, `carried/` deleted; P1 to P3 run. 0.2.0 has no simple view, and shows a new project no figure without a filed V1.0 fNRB: both for Session C.** Now 0.6.0, from 23 Nov 2026 (A21). |
 | 3 | **Wellington asks the core facts first**: type and class, country, how many served, people or households, and whether it is already registered for carbon (the transition). | Her rewrite of his instructions, freeing room for the new question; the gate holds. Step 2. | The record holds the new fields; one measured run; his prompt under the gate. |
 | 4 | **Calvin's chat**, on the open core's prompt, asking only what is missing (A21). | The core's `prompt.md` read against AGENT_RULES.md (#156, open point C). Steps 2 and 3. | One measured run; on a walk he opens with his facts filled and asks at most household size and, for a transition, the filed V1.0 fraction of non-renewable biomass (fNRB). |
 | 5 | **The water figure from the open core's VWBA D-3 module**, in place of this site's `vwbaD3.ts`. | Session C builds the module, with the test cases worked by hand and every step cited, in a pinned open core release. Step 2. | The hand-worked cases pass here; she has passed the water figure in the browser. |
@@ -100,7 +100,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 
 **After v1, not needed for the finish line:** A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
 
-- **Wellington's prompt gate is 33,310 characters, and Phoebe's largest case 208,957** (measured plus 500, family 1's first pull request). The limits stay. From her ruling of 22 Nov 2026 a session raises them itself by measured plus 500, without asking, and states the old and new size in its pull request.
+- **Wellington's prompt gate is 35,150 characters, and Phoebe's largest case 209,982** (measured plus 500, family 1's second pull request). The limits stay. From her ruling of 22 Nov 2026 a session raises them itself by measured plus 500, without asking, and states the old and new size in its pull request.
 - **Her own walk of the preview stands in for the measured walk on everyday pull requests** (her ruling of 22 Nov 2026). The measured walk runs once before v1, when the model key has a safe home (A32).
 
 ---
@@ -129,20 +129,20 @@ GUIDING LINE: Wellington manages the team to gather what the project needs and k
 - **J8.** Reword the 30 lines the seed checks catch on the paid site, before the next agent moves into the core.
 - **J9.** Close the gaps against the agent rules: agents never talk about their own limits (rule 6); a build rule for a needed fact left blank (rule 11); no repeat introductions (rule 17); the link to the WaterBots team and the consulting page (rule 13; the address waits on the maintainer).
 
-**Where this repository stands on them.** J4's design is approved as Session C designed it (22 Nov 2026), with the maintainer's lobby chat on the paid site, not a door and not this repository's. **Built in the first pull request:** J9's rules 6, 11 and 17 (A31); rule 13's link waits on the address. **J1 in its own pull request, 22 Nov 2026:** calvin-violet-v0.5.1 installed (Calvin 0.5.1, Violet 0.5.1, core 0.1.2), no sum changed; every agent here reads rules 1 to 21 from core. **Next, once the agent map and the shared record are in a release:** J2 (A27), J3, J4 (A29, A30), J5 (A23, D3) and this site's side of J6. J7 is the maintainer's; J8 is Session A's.
+**Where this repository stands on them.** J4's design is approved as Session C designed it (22 Nov 2026), with the maintainer's lobby chat on the paid site, not a door and not this repository's. **Built in the first pull request:** J9's rules 6, 11 and 17 (A31); rule 13's link waits on the address. **J1 in its own pull request, 22 Nov 2026:** calvin-violet-v0.5.1 installed (Calvin 0.5.1, Violet 0.5.1, core 0.1.2), no sum changed; every agent here reads rules 1 to 21 from core. **The second pull request, 23 Nov 2026:** core 0.2.0, Calvin 0.6.0 and Violet 0.6.0 installed, no sum changed; each agent told its place (J2, A27); Violet her own crew member (J5, A23); the shared record and the fact check where a count is entered (J3); the agent map, with the site's own rules it replaces switched off (J4, A29, A30); the agents' notes in the export. **Still open here:** this site's side of J6; the agents as installable packages in the core and D3 (J5). J7 is the maintainer's; J8 is Session A's.
 
 **A21 · Calvin's brief — his chat, the engine, carbon beside water.** Step 5 · BONES. **27 Oct 2026: replaced by** the proposal to install Calvin from the open core (#156, in GitHub's history):
 Calvin's engine and screens from the open core, React 19, Wellington asks the core facts first. Ruled; six open.
-Done when his screening numbers match the paid site's calculators run on the saved project's inputs (the v1 fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 2026; teal dropped). **21 Nov 2026: calvin 0.4.0 installed from the release (#178), with `unpinFigureBlock` on everywhere and `hideExportButton` on Quantify, where the left rail's screening report is the one export; the Commons keeps his export; no figure changed.** **22 Nov 2026: calvin 0.5.0 from calvin-violet-v0.5.0, tiles pinned, his intro gone; no sum changed.** **22 Nov 2026: calvin 0.5.1 from calvin-violet-v0.5.1 (J1), a missing value a blank box; no sum changed.**
+Done when his screening numbers match the paid site's calculators run on the saved project's inputs (the v1 fence; her ruling, 10 Oct 2026). Baseline marker: `--tide-text` (chosen 9 Oct 2026; teal dropped). **21 Nov 2026: calvin 0.4.0 installed from the release (#178), with `unpinFigureBlock` on everywhere and `hideExportButton` on Quantify, where the left rail's screening report is the one export; the Commons keeps his export; no figure changed.** **22 Nov 2026: calvin 0.5.0 from calvin-violet-v0.5.0, tiles pinned, his intro gone; no sum changed.** **22 Nov 2026: calvin 0.5.1 from calvin-violet-v0.5.1 (J1), a missing value a blank box; no sum changed.** **23 Nov 2026: calvin 0.6.0 from calvin-v0.6.0, his place and his notes in the export; no sum changed.**
 
 **A14 · Screen host role words — one home.** Step 6, before or with A22 · BONES. `BridgetScreen.tsx` says
 `role: 'Map'` where her crew card says "Partners"; `PhoebeScreen.tsx` carries its own too. The chat header
 draws them and `check-roster` does not read them. Her ruling is owed: the field goes and the header reads the crew file, or the check reads the records. Not fixed, by her word of 18 Sep 2026.
 
 **A27 · Agent door bug.** v1 · BONES. Her word of 12 Nov 2026: in the Agent Commons, Phoebe tells visitors to go to Wellington. In the Commons,
-every agent works alone and asks for what she needs herself; on the sites, she hands back to Wellington. Each module must know which door it is at (see the plug-in contract). **22 Nov 2026 (#193):** rule 21 names four doors. Phoebe has one set of instructions at the Free site and the Agent Commons, and nothing tells her which door she is at; she can only guess from whether the visitor's record came with the message. Wellington and Bridget are at the Free site door only.
+every agent works alone and asks for what she needs herself; on the sites, she hands back to Wellington. Each module must know which door it is at (see the plug-in contract). **22 Nov 2026 (#193):** rule 21 names four doors. Phoebe has one set of instructions at the Free site and the Agent Commons, and nothing tells her which door she is at; she can only guess from whether the visitor's record came with the message. Wellington and Bridget are at the Free site door only. **Built 23 Nov 2026 (J2):** each host names the door, and Phoebe's relay tells her which one she is at. Waits on the maintainer's walk.
 
-**A29 · The legacy calculator for a transitioning project.** v1 · BONES. Her ruling of 22 Nov 2026: the question "already earning Gold Standard credits?" is already asked. What is missing is the legacy calculator for a transitioning project. J4 covers it.
+**A29 · The legacy calculator for a transitioning project.** v1 · BONES. Her ruling of 22 Nov 2026: the question "already earning Gold Standard credits?" is already asked. What is missing is the legacy calculator for a transitioning project. J4 covers it. **Built 23 Nov 2026:** Phoebe's answer sets it on the shared record, and Calvin then shows the legacy calculator and the transition, and asks for the filed V1.0 fNRB first. Waits on the maintainer's walk.
 
 **O14 · Carries owed — listed once.** Step 7 · PARK. From 21 Nov 2026 a carry goes through the handoff folder, only when she names it.
 **Through the folder, to Shell A:** the seal's contract (`type`, `gsClass`, `stage`, rows and a read per pathway, `wantsHuman`, `record.served`; `kind` retires
@@ -162,12 +162,12 @@ the build log as it stood at #193, in GitHub's history). The D-3 swap and the wa
 **Her rulings of 21 Nov 2026 for it** (whole in the build log as it stood at #193, in GitHub's history): the words are "likely", "more to learn" and "unlikely",
 never "ruled out"; on likely the host calls that pathway's calculator agent and it shows; on more to learn the same, flagged as
 missing information; on unlikely it is not called and does not show, the visitor is told what would change it and may browse it
-in the Commons. This replaces "the water calculator always shows". Built from a shared spec on both sites, not here alone.
+in the Commons. This replaces "the water calculator always shows". Built from a shared spec on both sites, not here alone. **Built here 23 Nov 2026 on core's agent map (J4).** Left, found while building it, for the maintainer's word: Phoebe's step counts as done when one path is done and the other is only started, so the other mostly reads "more to learn"; her rows are not cleared when a fact changes; the Agent Commons rows for Calvin and Violet still say "Coming soon", so an unlikely path's calculator cannot be opened there yet. For Session C: the map asks about four pathways and this site reads two.
 
 **A23 · Calvin's VWBA row becomes Violet's.** v1 · BONES. Her word of 30 Oct 2026: the VWBA agent is Violet, host of the
 D-n modules in the Commons; not on the roster yet, by her hand. **Moved to v1 on her ruling of 21 Nov 2026:** Violet becomes her own
 crew member on the v1 road, through the shared spec with both sites. Until then her D-3 screen sits under Calvin's "Water
-benefits" chip (22 Nov 2026). Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026).
+benefits" chip (22 Nov 2026). Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026). **Built 23 Nov 2026 (J5):** her own seat and desk, from the crew list. Left, by the maintainer's hand: her portrait (her initial is drawn), her Orchid text shade (her name is ink), and the brand book's §6, which still says no agent called Violet.
 
 **A20 · Phoebe's runaway call is cut off, not prevented.** After v1 · PARK. One request in seventy-five
 spent all 16,000 output tokens; `CALL_TIMEOUT_MS`, 120 seconds, ends it. Done is a real count once there
@@ -179,8 +179,8 @@ What belongs here: the maths, method values, defaults, labels and where each val
 
 **CM1 · The walk of 21 Nov 2026 — the water calculator's inputs.** v1 · BONES. One finding from her walk of the live
 site: a minus number of people was ignored with no message. The full list: the build log as it stood at #193, in GitHub's history. From 22 Nov 2026 the water
-calculator has no people box (Violet takes the count from the record); a minus count said to Wellington is still dropped without
-a word. That part waits for this family's sprint.
+calculator has no people box (Violet takes the count from the record). **Closed by J3, 23 Nov 2026:** a count below zero said to
+Wellington is refused by core's fact check, and the visitor is told why. Waits on the maintainer's walk.
 
 **V2-2 · WHO cooking-fuel data by fuel type — WHO shares this database on request under a data-sharing
 agreement (see [link](https://www.who.int/data/gho/data/themes/air-pollution/who-household-energy-db)).
@@ -230,11 +230,13 @@ card and plain-words line against a grade-6 target; printed, never enforced. Not
 
 **C2 · Two sealed cards point at retired pages: a routine knowledge update.** After v1 · BONES. Her ruling of 22 Nov 2026: the sealed cards stay as they are, and these fixes wait for the routine knowledge updates of this family. The water eligibility cards point at "Pace and posture" in the old `AGENT_RULES.md`, and the carbon eligibility cards at `CITATIONS.md` (retired in #192). Every other old pointer was fixed on 22 Nov 2026.
 
+**K15 · Two copied-text matches.** After v1 · BONES. The ten-word match in the carbon eligibility cards and the nine-word match in the carbon grader notes wait for the maintainer's knowledge pack review sprint (her word of 23 Nov 2026).
+
 ### 4 · Console and surfaces
 
 What belongs here: what a visitor sees and clicks, the same on both sites: layout, navigation, header, Save, words, phone, design, report.
 
-**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved; her walks' fixes, the voice card and "Wellington comes to you" 12–14 Nov 2026. His prompt is 32,810 against a gate of 33,310, measured 22 Nov 2026 in family 1's first pull request. Waiting on the one measured walk before v1 (A32).
+**A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved; her walks' fixes, the voice card and "Wellington comes to you" 12–14 Nov 2026. His prompt is 34,650 against a gate of 35,150, measured 23 Nov 2026 in family 1's second pull request. Waiting on the one measured walk before v1 (A32).
 
 **A28 · Phoebe's walk fixes.** v1 · BONES. Her word of 12–14 Nov 2026: rounds two and three (#173), the limit of 4 sentences or 400 characters approved 14 Nov. On the preview her first word came at 4.8 to 6.1 seconds and whole answers took 5.8 to 9.3 (14 Nov). The skipped hello is fixed. From 14 Nov a voice card, the shared plain-words list, the order of questions, and a ruled-out path saved the same turn (W25). Waiting on the one measured walk before v1 (A32).
 

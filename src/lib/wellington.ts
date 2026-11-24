@@ -18,6 +18,7 @@ import type { AgentHost, AgentTurn, Ask, TurnAction, TurnButton } from '../chat/
 import type { Surface } from './surfaces';
 import { carriedSheet } from './phoebeClient';
 import type { Learned, Visit } from './visit';
+import type { MapForWellington } from './projectRecord';
 import { askWellington, type FoundSheet, type VisitRecord, type WellingtonRoute } from './wellingtonClient';
 import { HER_PACKS } from './worksheet.generated';
 import type { Sheet } from './worksheetState';
@@ -52,7 +53,17 @@ const MEET: Partial<Record<WellingtonRoute, { name: string; surface: Surface }>>
   eligibility: { name: 'Phoebe', surface: 'eligibility' },
   map: { name: 'Bridget', surface: 'map' },
   quantification: { name: 'Calvin', surface: 'quantification' },
+  /* Her own desk from 23 Nov 2026 (J5). */
+  water: { name: 'Violet', surface: 'water' },
 };
+
+/** What the visitor is told when a count is refused (J3). It says why, and that nothing was kept. */
+const REFUSED_LINE = {
+  'below zero': 'That count was not kept: a count can’t be below zero.',
+  zero: 'That count was not kept: it has to be at least 1.',
+  'not a whole number': 'That count was not kept: it has to be a whole number.',
+  'not a number': 'That count was not kept: it is not a number.',
+} as const;
 
 /**
  * TWO BUTTONS IN THE CHAT AT A HANDOFF — the maintainer's word of 14 Nov 2026
@@ -100,7 +111,9 @@ export function wellingtonAsk(
   onRouted: (route: WellingtonRoute, reply: string, isIntroduction?: boolean) => void,
   getSheet: () => Sheet,
   /** Opens a step, for the "Meet <name>" button at a handoff (W17). */
-  onNavigate?: (surface: Surface) => void
+  onNavigate?: (surface: Surface) => void,
+  /** The agent map as it stands, read at send time (J4). */
+  getMap?: () => MapForWellington
 ): Ask {
   return async (history, signal, meta): Promise<AgentTurn> => {
     const visit = getVisit();
@@ -124,7 +137,7 @@ export function wellingtonAsk(
       visit.stage,
       /* The desk's one turn when the visitor comes back from Phoebe is sent
          through askOpened, so it arrives here as `opened`. */
-      { sheet, returned: meta?.opened === true, ...(meta?.at ? { at: meta.at } : {}) }
+      { sheet, returned: meta?.opened === true, ...(meta?.at ? { at: meta.at } : {}), ...(getMap ? { map: getMap() } : {}) }
     );
     if (Object.keys(answer.learned).length > 0) onLearned(answer.learned);
     /* W24, 14 Nov 2026: on Phoebe's page he speaks to her, so her page gets
@@ -137,6 +150,7 @@ export function wellingtonAsk(
       evidence: [],
       abstained: answer.abstained,
       action: actionFor(answer.route),
+      ...(answer.refused ? { caption: REFUSED_LINE[answer.refused] } : {}),
       /* In another agent's chat, "Keep chatting" focuses that chat's box. */
       buttons: actionsFor(answer.route, onNavigate, meta?.composerId),
     };

@@ -21,8 +21,8 @@ agent's are in [AGENT_RULES.md](../../AGENT_RULES.md).
 
 ### What she adds to the project record (agent rule 10)
 
-- **Nothing herself, today.** The console keeps the pin and the basin's place when the visitor clicks
-  the map. Whether she should add anything is a **gap, for the maintainer**.
+- **The pinned basin**, in her own part of the shared record (J3, 23 Nov 2026). The console writes it when the
+  visitor clicks the map; she says nothing into the record herself. She reads the record the others read.
 
 ### Her reasons to send someone to the WaterBots team (agent rule 13)
 

@@ -1,6 +1,6 @@
 # product-shared — journey, roster, pathway (open)
 
-**Version 0.7.0.** Shared facts for the open free pathway. No tools folder — this
+**Version 0.8.0.** Shared facts for the open free pathway. No tools folder — this
 pack is not a seat with tools.
 
 **The project-type list lives here from 23 Sep 2026**, at
@@ -21,7 +21,7 @@ rules. Both agents on this site read both, generated into their prompts by
 whether production carries them is hers to say.
 
 **The roster lives here from 18 Sep 2026**, at [`roster.yaml`](./roster.yaml): the
-one crew list for both sites, ten seats and three doors, carried whole from
+one crew list for both sites, eleven seats, three doors and the lobby chat, carried whole from
 production by the maintainer's hand and **never edited on this site**. It is
 replaced byte for byte when she carries a new version. `scripts/check-roster.mjs`
 reads it in front of every build and fails the build, naming the line, when this
@@ -47,7 +47,7 @@ A **pathway** is the road of phases a visit walks. On this site it is:
 1. **Dispatches** — Wellington’s desk. Not a phase. The visit starts here.
 2. **Eligibility** — Phoebe. Live.
 3. **Partners** — Bridget’s map. Live.
-4. **Quantify** — Calvin. Live.
+4. **Quantify** — Calvin, carbon; Violet, water. Live.
 5. **Plan** — named, gated. Opens with a saved project.
 6. **Monitor** — named, gated.
 7. **Communicate** — named, gated.

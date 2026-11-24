@@ -34,6 +34,7 @@ import { readPin, readPlace, settleHandBack, visitBlock } from './_bridgetPin.js
 import { BRIDGET_RESPONSE_SCHEMA, BRIDGET_SYSTEM_PROMPT } from './_bridgetPrompt.js';
 import { BRIDGET, countOneMessage, timeUntilReset } from './_cap.js';
 import { readHandBack, type HandBack } from './_handBack.js';
+import { bridgetRecordBlock, readRecord } from './_record.js';
 import { MIN_REPLY_CHARS, READING_GRADE, isDegenerateReply, isHardReply, readingGrade } from './_reply.js';
 
 /** The same tier as her colleagues, for their measured reason (item A6): a voice that goes silent is the worse fault. */
@@ -97,6 +98,7 @@ export async function POST(req: Request): Promise<Response> {
     phone?: unknown;
     pin?: unknown;
     quantifyNext?: unknown;
+    record?: unknown;
   };
   try {
     body = (await req.json()) as typeof body;
@@ -163,6 +165,9 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   const visitText = visitBlock(readPlace(body.place), body.phone === true, pin, quantifyNext);
+  /* THE PROJECT RECORD, the one Phoebe reads (J3, 23 Nov 2026), so she never asks for what it holds. */
+  const record = readRecord(body.record);
+  const recordText = record ? bridgetRecordBlock(record) : null;
 
   /* Shape first, then whether we can actually answer — same order as Phoebe's. */
   const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -217,6 +222,7 @@ export async function POST(req: Request): Promise<Response> {
         system: [
           { type: 'text', text: BRIDGET_SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
           { type: 'text', text: visitText },
+          ...(recordText ? [{ type: 'text' as const, text: recordText }] : []),
         ],
         messages: clean,
         thinking: { type: 'adaptive' },

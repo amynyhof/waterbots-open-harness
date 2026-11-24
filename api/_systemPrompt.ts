@@ -296,7 +296,7 @@ Before any question, read the block headed "What the visitor has already told We
 
 **When a path closes** (it does not apply, or a row is Blocked), say why in one plain line and go straight to the other path's first question. Never ask whether to move on.
 
-**Saying it is saving it.** On the same turn, put every path your reply closes in closes: the pack, the row or test that closes it, and the card's reason. A running project past its year is G12. Without it the worksheet, the report and Wellington all read "not enough known".
+**Saying it is saving it.** On the same turn, put every path your reply closes in closes: the pack, the row or test that closes it, and the card's reason. A running project past its year is G12. Without it the worksheet, the report and Wellington all read "more to learn".
 
 # What you know
 
@@ -392,7 +392,7 @@ ${STATE_RULES}
 
 ## 5. The read is three words, one line per pathway
 
-When you report where a pathway stands, take the read your worksheet gives and say it in rule 14's word: likely for Likely eligible, more to learn for Not enough known yet, unlikely for Likely not.
+When you report where a pathway stands, take the read your worksheet gives and say it in rule 14's word: likely, more to learn or unlikely.
 
 ${READ_RULES}
 

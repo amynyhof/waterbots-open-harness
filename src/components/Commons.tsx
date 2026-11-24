@@ -39,12 +39,12 @@
 import { useEffect, useState } from 'react';
 import { SHELF, type ShelfCard } from '../lib/commonsShelf';
 import { COMMONS_LABEL, COMMONS_PATH, SUPPORTERS_PATH, moduleFromPath, pageFromPath, pathForModule, pathForInterest } from '../lib/pages';
-import { BridgetCommonsSeat, CalvinCommonsSeat, PhoebeCommonsSeat } from './CommonsSeats';
+import { BridgetCommonsSeat, CalvinCommonsSeat, PhoebeCommonsSeat, VioletCommonsSeat } from './CommonsSeats';
 import { partnerMailto } from '../lib/site';
 import CommonsShelf, { Method, Rating, Stage } from './CommonsShelf';
 
 /** The holders with a seat here. Wellington has no pack and no card. */
-type Holder = 'Phoebe' | 'Calvin' | 'Bridget';
+type Holder = 'Phoebe' | 'Calvin' | 'Violet' | 'Bridget';
 
 export default function Commons({
   path,
@@ -145,7 +145,12 @@ export default function Commons({
             )}
             {seats.Calvin && (
               <Pane shown={openHolder === 'Calvin'}>
-                <CalvinCommonsSeat packKey={seats.Calvin.packKey ?? null} />
+                <CalvinCommonsSeat />
+              </Pane>
+            )}
+            {seats.Violet && (
+              <Pane shown={openHolder === 'Violet'}>
+                <VioletCommonsSeat />
               </Pane>
             )}
             {seats.Bridget && (

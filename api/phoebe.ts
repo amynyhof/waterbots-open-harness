@@ -42,6 +42,7 @@ import {
 } from './_reply.js';
 import { needCardsSoFar, replySoFar } from './_replyStream.js';
 import { PHOEBE, countOneMessage, timeUntilReset } from './_cap.js';
+import { phoebeDoorBlock, readDoor } from './_door.js';
 import { readHandBack, type HandBack } from './_handBack.js';
 import { CARD_SETS, RESPONSE_SCHEMA, SYSTEM_PROMPT, cardsBlock, setsFor, type CardSet } from './_systemPrompt.js';
 import {
@@ -237,6 +238,7 @@ export async function POST(req: Request): Promise<Response> {
     opened?: unknown;
     introduced?: unknown;
     eligibilityDone?: unknown;
+    door?: unknown;
     stream?: unknown;
   };
   try {
@@ -248,6 +250,7 @@ export async function POST(req: Request): Promise<Response> {
       opened?: unknown;
       introduced?: unknown;
       eligibilityDone?: unknown;
+      door?: unknown;
       stream?: unknown;
     };
   } catch {
@@ -304,6 +307,8 @@ export async function POST(req: Request): Promise<Response> {
      and only this small block changes between visitors. */
   const record = readRecord(body.record);
   const notes = phoebeNotesBlock({ opened, introduced, eligibilityDone });
+  /* Which door she is at (J2, item A27, 23 Nov 2026), after the breakpoints. */
+  const door = phoebeDoorBlock(readDoor(body.door));
 
   /* THE WORKSHEET AS IT STANDS — contract line 3, item A15, step 3,
      21 Sep 2026; per pack, with five states, from 25 Sep 2026. The rows the
@@ -459,6 +464,7 @@ export async function POST(req: Request): Promise<Response> {
         system: [
           { type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
           { type: 'text', text: cardsBlock(withSets), cache_control: { type: 'ephemeral' } },
+          ...(door ? [{ type: 'text' as const, text: door }] : []),
           ...(record ? [{ type: 'text' as const, text: recordBlock(record) }] : []),
           ...(sheetText ? [{ type: 'text' as const, text: sheetText }] : []),
           ...(notes ? [{ type: 'text' as const, text: notes }] : []),

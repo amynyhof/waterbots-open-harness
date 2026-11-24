@@ -35,6 +35,14 @@ export const JOURNEY: JourneyPhase[] = [
 ];
 
 /**
+ * The surface the journey bar marks for the one in view. Violet's desk, 'water', is the Quantify
+ * phase's second desk beside Calvin's (23 Nov 2026, J5), so the bar marks Quantify for both.
+ */
+export function phaseSurface(surface: Surface): Surface {
+  return surface === 'water' ? 'quantification' : surface;
+}
+
+/**
  * PLAN, MONITOR AND COMMUNICATE FOLD INTO ONE MARK — the maintainer's word of
  * 21 Nov 2026. They open on waterbots.ai once a project is saved, never on this
  * site; the note says so plainly, where "Opens with a saved project" promised

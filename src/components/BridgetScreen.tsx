@@ -60,6 +60,7 @@ import { useConversation } from '../chat/useConversation';
 import { meetShowing } from '../lib/blue';
 import { Reached } from '../chat/reached';
 import { askBridget } from '../lib/bridgetClient';
+import type { CarriedRecord } from '../lib/phoebeClient';
 import {
   AQUEDUCT_CITATION,
   AQUEDUCT_HREF,
@@ -106,6 +107,7 @@ export default function BridgetScreen({
   onWellington,
   onMeet,
   onMapTab,
+  record = null,
 }: {
   onStatus: (status: MapStatus) => void;
   pin: MapPin | null;
@@ -129,6 +131,8 @@ export default function BridgetScreen({
   onMeet?: (showing: boolean) => void;
   /** Tells the shell whether her Map tab is the one in view, so the map's line in the menu shows only with the map (21 Nov 2026). */
   onMapTab?: (open: boolean) => void;
+  /** The project record, the one Phoebe reads (J3, 23 Nov 2026). */
+  record?: CarriedRecord | null;
 }) {
   /* WELLINGTON COMES TO YOU — the maintainer's ruling of 14 Nov 2026. When her
      part is done (a basin reported, or a question not hers) he joins this chat
@@ -150,7 +154,7 @@ export default function BridgetScreen({
         role: role === 'agent' ? ('assistant' as const) : ('user' as const),
         content: text,
       })),
-      { place, phone, pin, quantifyNext },
+      { place, phone, pin, quantifyNext, record },
       signal,
       { opened: meta?.opened === true, introduced: meta?.opened === true && meta.introduced === true, pinned: meta?.pinned === true }
     );

@@ -190,6 +190,7 @@ export default function PhoebeScreen({
         eligibilityDone,
         sheet: carriedSheet(sheet, HER_PACKS),
         loaded: loaded.current,
+        door: 'free-site',
         /* Her reply shows as it is written (13 Nov 2026). */
         onLive,
       }

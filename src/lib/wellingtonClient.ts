@@ -28,9 +28,10 @@ import {
   type ProjectStageId,
   type ProjectTypeId,
 } from './projectTypes.generated';
+import type { MapForWellington } from './projectRecord';
 import type { Served } from './visit';
 
-export type WellingtonRoute = 'none' | 'eligibility' | 'quantification' | 'map' | 'paid';
+export type WellingtonRoute = 'none' | 'eligibility' | 'quantification' | 'water' | 'map' | 'paid';
 
 export interface Learned {
   does?: string;
@@ -76,6 +77,8 @@ export interface WellingtonAnswer {
   learned: Learned;
   abstained: boolean;
   abstentionTopic?: string;
+  /** A count core's fact check refused, and why (J3). It is not on the record. */
+  refused?: 'below zero' | 'zero' | 'not a whole number' | 'not a number';
 }
 
 /** Thrown with a message that is already fit to show a reader. */
@@ -88,7 +91,9 @@ export interface FoundSheet {
   sorts?: string[];
 }
 
-const ROUTES: WellingtonRoute[] = ['none', 'eligibility', 'quantification', 'map', 'paid'];
+const ROUTES: WellingtonRoute[] = ['none', 'eligibility', 'quantification', 'water', 'map', 'paid'];
+
+const REFUSED = ['below zero', 'zero', 'not a whole number', 'not a number'] as const;
 
 export async function askWellington(
   history: { role: 'user' | 'assistant'; content: string }[],
@@ -109,7 +114,7 @@ export async function askWellington(
    * it, each row by id and state only — never her own sentences. `returned` is
    * true on the one turn the desk sends when the visitor comes back from her.
    */
-  found: { sheet?: FoundSheet[]; returned?: boolean; at?: 'eligibility' | 'map' | 'open' } = {}
+  found: { sheet?: FoundSheet[]; returned?: boolean; at?: 'eligibility' | 'map' | 'open'; map?: MapForWellington } = {}
 ): Promise<WellingtonAnswer> {
   let response: Response;
   try {
@@ -121,9 +126,14 @@ export async function askWellington(
       sheet?: FoundSheet[];
       returned?: true;
       at?: 'eligibility' | 'map' | 'open';
+      map?: MapForWellington;
+      door?: 'free-site';
     } = {
       messages: history,
+      door: 'free-site',
     };
+    /* The agent map (J4, 23 Nov 2026), worked out by core from the shared record. He leads from it. */
+    if (found.map) body.map = found.map;
     if (carried) body.carried = true;
     if (record) body.record = record;
     if (stage !== 'learn') body.stage = stage;
@@ -199,5 +209,6 @@ export async function askWellington(
     learned,
     abstained: data.abstained === true,
     abstentionTopic: typeof data.abstentionTopic === 'string' ? data.abstentionTopic : undefined,
+    refused: REFUSED.find((r) => r === data.refused),
   };
 }

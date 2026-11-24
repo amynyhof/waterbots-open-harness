@@ -531,8 +531,8 @@ expect(
     /Where: HYBAS 1040021560/.test(mails[0]?.text ?? '') &&
     /Type: C-19, /.test(mails[0]?.text ?? '') &&
     /Stage: on paper/.test(mails[0]?.text ?? '') &&
-    /Water pathway: Not enough known yet\./.test(mails[0]?.text ?? '') &&
-    /Carbon pathway: Not enough known yet\./.test(mails[0]?.text ?? '') &&
+    /Water pathway: More to learn\./.test(mails[0]?.text ?? '') &&
+    /Carbon pathway: More to learn\./.test(mails[0]?.text ?? '') &&
     /The sponsor cannot change the design\./.test(mails[0]?.text ?? ''),
   mails[0]?.text
 );
@@ -571,7 +571,7 @@ const mailText = mails[0]?.text ?? '';
 expect(
   'the read is worked out on the server from the rows: likely not, with the Blocked row and the card’s reason',
   withRows.status === 200 &&
-    /Water pathway: Likely not\./.test(mailText) &&
+    /Water pathway: Unlikely\./.test(mailText) &&
     /Blocked: .+ — The permit requires this treatment by law/.test(mailText),
   mailText
 );
@@ -916,7 +916,7 @@ mails.length = 0;
 const tickedThrough = await post({ ...ticked, forTeam: rowsForTeam }, '192.0.2.98');
 expect(
   'the desk’s ticked save goes through the route and the team gets its email',
-  tickedThrough.status === 200 && mails.length === 1 && /Water pathway: Likely not\./.test(mails[0].text),
+  tickedThrough.status === 200 && mails.length === 1 && /Water pathway: Unlikely\./.test(mails[0].text),
   `got ${tickedThrough.status}: ${mails[0]?.text}`
 );
 const noteUnticked = buildSeal(visit, sheet, { wanted: false, note: 'typed, then unticked' });

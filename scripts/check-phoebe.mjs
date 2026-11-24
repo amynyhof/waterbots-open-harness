@@ -466,11 +466,14 @@ expect(
    208,457, plus 500. From the maintainer's ruling of that day a session raises
    the ceiling itself by this method, and states the old and new size in its
    pull request.
+
+   209,982 FROM 23 NOV 2026 (family 1, second pull request): Violet's post in
+   the roster every agent reads. The largest case measured 209,482, plus 500.
 --------------------------------------------------------------------------- */
 
 console.log('\n  Her prompt’s size\n');
 
-const LARGEST = 208_957;
+const LARGEST = 209_982;
 const largest = SYSTEM_PROMPT.length + cardsBlock(CARD_SETS).length;
 expect(
   'the largest case is under the measured ceiling',
@@ -975,7 +978,7 @@ expect(
     /- 1: Met — the volume is counted/.test(block) &&
     /- 2: Fixable — route R-2/.test(block) &&
     /- 4: Not yet checked\./.test(block) &&
-    /The read from these rows: \*\*Not enough known yet\*\*/.test(block),
+    /The read from these rows: \*\*More to learn\*\*/.test(block),
   block
 );
 expect(
@@ -1031,7 +1034,7 @@ expect(
 );
 expect(
   'the screen says "likely", calls itself a first screening, and never certifies (13 Nov 2026)',
-  /reads likely eligible/.test(worksheetSource) &&
+  /reads likely — next stop/.test(worksheetSource) &&
     (worksheetSource.match(/This is a first screening, not an official decision\./g) ?? []).length === 3 &&
     !/verified|consultant confirms/i.test(worksheetSource),
   'the banner overclaims, or an old "nothing is verified" line is back'

@@ -25,9 +25,10 @@ import {
   type ProjectTypeId,
 } from './_projectTypes.generated.js';
 
-export type Route = 'none' | 'eligibility' | 'quantification' | 'map' | 'paid';
+/* 'water' is Violet's desk, her own from 23 Nov 2026 (J5). */
+export type Route = 'none' | 'eligibility' | 'quantification' | 'water' | 'map' | 'paid';
 
-const ROUTES: Route[] = ['none', 'eligibility', 'quantification', 'map', 'paid'];
+const ROUTES: Route[] = ['none', 'eligibility', 'quantification', 'water', 'map', 'paid'];
 
 /** What the visitor stated, in their own words. Every field optional. */
 export interface LearnedContext {
@@ -125,7 +126,10 @@ export function validate(value: unknown, known: KnownContext = {}): Answer | nul
   /* CALVIN ONLY WHERE A PATHWAY FITS — item A17, ruling R4. The console acts
      on this field, never on his prose, so the guard is here: when Phoebe has
      found something and no pathway is one Calvin can screen, a route to
-     Quantify is "none". With no reads, nothing changes. */
+     Quantify is "none". With no reads, nothing changes.
+     SWITCHED OFF WHERE THE AGENT MAP CAME, 23 Nov 2026 (J4): the relay then
+     passes no reads and the map's own guard decides (api/_agentMap.ts). It
+     stands only for a page loaded before the map. */
   if (route === 'quantification' && known.reads?.length && !known.reads.some(screenable)) {
     route = 'none';
   }

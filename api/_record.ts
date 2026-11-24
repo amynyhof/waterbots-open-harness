@@ -183,6 +183,20 @@ export function recordBlock(record: ProjectRecord): string {
   ].join('\n');
 }
 
+/**
+ * The block as Bridget reads it (J3, 23 Nov 2026): the same fields, the same words, and what they are for. Her one
+ * question stays the pin.
+ */
+export function bridgetRecordBlock(record: ProjectRecord): string {
+  return [
+    `# ${RECORD_HEADING}`,
+    '',
+    'These are the visitor’s own words about their project, from the shared record. They are known, so never ask for them. Your one question stays the pin.',
+    '',
+    ...recordLines(record),
+  ].join('\n');
+}
+
 /** Extra visit notes for Phoebe, after the record. Empty when neither applies. */
 export function phoebeNotesBlock(notes: { opened?: boolean; introduced?: boolean; eligibilityDone?: boolean }): string | null {
   const extra: string[] = [];
