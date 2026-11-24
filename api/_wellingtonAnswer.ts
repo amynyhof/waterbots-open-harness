@@ -15,6 +15,7 @@
  * visitor's yes — that rule is in his prompt; this file holds the lists.
  */
 
+import { readChips } from './_chips.js';
 import {
   DRINKING_WATER_TYPE,
   GS_CLASS_IDS,
@@ -77,8 +78,10 @@ export function readServed(value: unknown): Served | undefined {
 
 export interface Answer {
   reply: string;
+  /** Chips that answer the question the reply ends with (24 Nov 2026, _chips.ts). */
+  answers: string[];
   route: Route;
-  /** W24: his one line to Phoebe or Bridget in her chat, only beside a route to her. */
+  /** W24: his one line to a colleague at the top of their page, only beside a route to them. Every colleague's from 24 Nov 2026. */
   introduction?: string;
   context?: LearnedContext;
   abstained: boolean;
@@ -159,16 +162,18 @@ export function validate(value: unknown, known: KnownContext = {}): Answer | nul
 
   const abstained = v.abstained === true;
   const topic = typeof v.abstentionTopic === 'string' ? v.abstentionTopic.trim() : '';
-  /* W24, 14 Nov 2026: kept only on a route to Phoebe, and only when it is one
-     line; otherwise dropped, and her page shows his reply as before. */
+  /* W24, 14 Nov 2026: kept only on a route to a colleague, and only when it is one
+     line; otherwise dropped, and the page shows his reply as before. Calvin's and
+     Violet's too from 24 Nov 2026: he hands the visitor to every agent the same way. */
   const intro = typeof v.introduction === 'string' ? v.introduction.trim() : '';
   const introduction =
-    (route === 'eligibility' || route === 'map') && intro && intro.length <= MAX_INTRODUCTION_CHARS && !intro.includes('\n')
+    route !== 'none' && route !== 'paid' && intro && intro.length <= MAX_INTRODUCTION_CHARS && !intro.includes('\n')
       ? intro
       : '';
 
   return {
     reply: v.reply.trim(),
+    answers: readChips(v.answers, v.reply),
     route,
     ...(introduction ? { introduction } : {}),
     ...(context ? { context } : {}),

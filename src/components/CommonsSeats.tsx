@@ -115,9 +115,18 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
         : {}),
       /* The way back to the shelf, from the field alone. */
       ...(answer.handBack === 'wellington' ? { action: { label: 'Back to the shelf', go: onBack } } : {}),
-      ...(answer.handBack === 'wellington' || history.length <= 1
+      ...(answer.handBack === 'wellington'
         ? {}
-        : { buttons: phoebeButtons(answer.learnMore, (text) => void chatRef.current?.sendText(text)) }),
+        : {
+            /* No helper under her first answer, as on the console. */
+            buttons: phoebeButtons(history.length <= 1 ? { ...answer, learnMore: '', showTool: false } : answer, (text) => void chatRef.current?.sendText(text), {
+              label: 'Eligibility quiz',
+              open: () => {
+                setTab('tool');
+                setToolDot(false);
+              },
+            }),
+          }),
     };
   }
 

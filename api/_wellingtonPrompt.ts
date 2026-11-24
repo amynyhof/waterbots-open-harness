@@ -51,6 +51,8 @@
  */
 
 import { AGENT_RULES_MD } from './_agentRules.generated.js';
+import { ANSWERS_SCHEMA } from './_chips.js';
+import { FINISH_RULE } from './_lookUp.js';
 import { AGENT_PRIMER_MD } from './_primer.generated.js';
 import { WELLINGTON_PRIMER_MD } from './_wellingtonPrimer.generated.js';
 import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
@@ -85,7 +87,7 @@ Your next turn says in one short sentence why you ask — you'll collect a few b
 
 **Never imply a result is near.** Phoebe, Bridget, Calvin and Violet each come before any result, so never say you have what you need for a first look or an answer; say what comes next.
 
-**A handoff is a real introduction, and names one next step:** who the colleague is and what they will help with. The first time you hand the visitor to a colleague, say in your own words what that colleague does for them, from "What each colleague helps with" below; they do not introduce themselves after you. Never preview the steps after that one. The console draws "Meet Phoebe" and "Keep chatting" under it; never describe them. On a handoff to Phoebe or Bridget, also fill the introduction field, in one natural line, never a list.
+**A handoff is a real introduction, and names one next step:** who the colleague is and what they will help with. The first time you hand the visitor to a colleague, say in your own words what that colleague does for them, from "What each colleague helps with" below; they do not introduce themselves after you. Never preview the steps after that one. The console draws "Meet Phoebe" and "Keep chatting" under it; never describe them. On every handoff, also fill the introduction field, in one natural line, never a list.
 
 # What you know
 
@@ -139,6 +141,8 @@ You are the Team Lead. On the paid site you run a full desk; on this site you or
 
 # Your output
 
+${FINISH_RULE}
+
 Return JSON in the required shape; each field's description says what goes in it. The reply is prose, with no markdown headings, citation text or markers. Context holds only the fields rule 4 allows.
 
 # Plain words
@@ -188,6 +192,8 @@ export const WELLINGTON_RESPONSE_SCHEMA = {
       description:
         "Wellington's message. Prose only — no headings, no citation text, no markers.",
     },
+    /* 24 Nov 2026: chips that answer the question just asked (api/_chips.ts). Required, [] when there are none. */
+    answers: ANSWERS_SCHEMA,
     route: {
       type: 'string',
       enum: ['none', 'eligibility', 'quantification', 'water', 'map', 'paid'],
@@ -239,11 +245,12 @@ export const WELLINGTON_RESPONSE_SCHEMA = {
     /* W24, the maintainer's word of 14 Nov 2026: a handoff is a real
        introduction. On Phoebe's page he speaks to her, summing the project up
        in one line, and she then greets the visitor. Required, so it is never
-       forgotten on a handoff; "" on every other turn. */
+       forgotten on a handoff; "" on every other turn. The same for every
+       colleague from 24 Nov 2026 (agent rule 17). */
     introduction: {
       type: 'string',
       description:
-        'On a handoff to Phoebe (route "eligibility") or Bridget (route "map"): one line Wellington says to her in her chat, by name, summing up the project in one natural line — place, size, stage, as far as known — and, the first time, telling the visitor in his own words what she will help them with. "" on every other turn.',
+        'On a handoff to Phoebe (route "eligibility"), Bridget ("map"), Calvin ("quantification") or Violet ("water"): one line Wellington says to that colleague at the top of their page, by name, summing up the project in one natural line — place, size, stage, as far as known — and, the first time, telling the visitor in his own words what that colleague will help them with. "" on every other turn.',
     },
     abstained: {
       type: 'boolean',
@@ -254,6 +261,6 @@ export const WELLINGTON_RESPONSE_SCHEMA = {
       description: 'A few words naming what was asked about, when abstaining.',
     },
   },
-  required: ['reply', 'route', 'introduction', 'abstained'],
+  required: ['reply', 'answers', 'route', 'introduction', 'abstained'],
   additionalProperties: false,
 };

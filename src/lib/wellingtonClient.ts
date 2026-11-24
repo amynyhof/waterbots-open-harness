@@ -28,7 +28,9 @@ import {
   type ProjectStageId,
   type ProjectTypeId,
 } from './projectTypes.generated';
+import { answersFrom } from './chips';
 import type { MapForWellington } from './projectRecord';
+import type { Surface } from './surfaces';
 import type { Served } from './visit';
 
 export type WellingtonRoute = 'none' | 'eligibility' | 'quantification' | 'water' | 'map' | 'paid';
@@ -72,7 +74,9 @@ export interface VisitRecord {
 export interface WellingtonAnswer {
   reply: string;
   route: WellingtonRoute;
-  /** W24: his one line to Phoebe or Bridget, shown at the top of her chat; only on a route to her. */
+  /** Chips that answer the question just asked (24 Nov 2026). */
+  answers: string[];
+  /** W24: his one line to a colleague, at the top of their page; only on a route to them. Every colleague's from 24 Nov 2026. */
   introduction?: string;
   learned: Learned;
   abstained: boolean;
@@ -114,7 +118,7 @@ export async function askWellington(
    * it, each row by id and state only — never her own sentences. `returned` is
    * true on the one turn the desk sends when the visitor comes back from her.
    */
-  found: { sheet?: FoundSheet[]; returned?: boolean; at?: 'eligibility' | 'map' | 'open'; map?: MapForWellington } = {}
+  found: { sheet?: FoundSheet[]; returned?: boolean; at?: 'eligibility' | 'map' | 'open' | 'handoff'; to?: Surface; map?: MapForWellington } = {}
 ): Promise<WellingtonAnswer> {
   let response: Response;
   try {
@@ -125,7 +129,8 @@ export async function askWellington(
       stage?: typeof stage;
       sheet?: FoundSheet[];
       returned?: true;
-      at?: 'eligibility' | 'map' | 'open';
+      at?: 'eligibility' | 'map' | 'open' | 'handoff';
+      to?: Surface;
       map?: MapForWellington;
       door?: 'free-site';
     } = {
@@ -141,6 +146,7 @@ export async function askWellington(
     if (found.returned) body.returned = true;
     /* "Wellington comes to you" (14 Nov 2026): the step whose chat he joins. */
     if (found.at) body.at = found.at;
+    if (found.at === 'handoff' && found.to) body.to = found.to;
     response = await fetch('/api/wellington', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -198,12 +204,13 @@ export async function askWellington(
   }
 
   const introduction =
-    (route === 'eligibility' || route === 'map') && typeof data.introduction === 'string' && data.introduction.trim()
+    route !== 'none' && route !== 'paid' && typeof data.introduction === 'string' && data.introduction.trim()
       ? data.introduction.trim()
       : undefined;
 
   return {
     reply: data.reply,
+    answers: answersFrom(data.answers),
     route,
     ...(introduction ? { introduction } : {}),
     learned,

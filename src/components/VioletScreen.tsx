@@ -22,6 +22,7 @@ import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, { type PackView } from '../screen/KnowledgePackTab';
 import NotLiveChat from '../screen/NotLiveChat';
+import HandOff from './HandOff';
 import VioletWater from './VioletWater';
 
 export const VIOLET: AgentHost = {
@@ -41,6 +42,8 @@ export default function VioletScreen({
   record,
   onWater,
   closed = null,
+  invite = '',
+  waiting = false,
 }: {
   /** The shared project record: her screen opens on it and follows it. */
   record: ProjectRecord;
@@ -48,16 +51,20 @@ export default function VioletScreen({
   onWater: (water: WaterEstimate) => void;
   /** What her desk shows in place of the calculator when the agent map closes it (J4). */
   closed?: ReactNode;
+  /** Wellington's hand-off line, at the head of her desk (24 Nov 2026). */
+  invite?: string;
+  /** True while he is writing it. */
+  waiting?: boolean;
 }) {
   return (
     <AgentScreen
       host={VIOLET}
       opensOn="tool"
       tabs={{
-        chat: <NotLiveChat host={VIOLET} line={VIOLET_NOT_LIVE_LINE} note={rosterJobAtDesk('violet')} />,
+        chat: <NotLiveChat host={VIOLET} line={VIOLET_NOT_LIVE_LINE} note={rosterJobAtDesk('violet')} lead={<HandOff line={invite} waiting={waiting} />} />,
         tool: (
           <>
-            {closed}
+            {closed ?? <HandOff line={invite} waiting={waiting} framed />}
             {/* Kept mounted behind a closed desk, so nothing the visitor set is lost if the reading changes. */}
             <div style={{ display: closed ? 'none' : 'contents' }}>
               <VioletWater record={record} place="free-site" onChange={onWater} hideExportButton />

@@ -40,6 +40,8 @@
  */
 
 import { AGENT_RULES_MD } from './_agentRules.generated.js';
+import { ANSWERS_SCHEMA } from './_chips.js';
+import { FINISH_RULE } from './_lookUp.js';
 import { AGENT_PRIMER_MD } from './_primer.generated.js';
 import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
 
@@ -97,9 +99,12 @@ On this site you work at the screen level: you use your map and keep no memory. 
 
 # Your output
 
+${FINISH_RULE}
+
 Return JSON in the required shape.
 
 - reply: what you say. Prose. No markdown headings, no citation text, no markers.
+- showMap: true when this reply asks the visitor to open the Map tab. The console draws a button that opens it; never describe the button.
 - handBack: "wellington" after a pin, or when the question is not yours — the console brings Wellington into this chat; "none" otherwise.
 - abstained: true only when the question is outside your one job.
 - abstentionTopic: when abstaining, a few words naming what was asked about.
@@ -121,6 +126,12 @@ export const BRIDGET_RESPONSE_SCHEMA = {
       type: 'string',
       description: "Bridget's message. Prose only — no headings, no citation text, no markers.",
     },
+    /* 24 Nov 2026: chips that answer the question just asked (api/_chips.ts), and the one that opens the Map tab. */
+    answers: ANSWERS_SCHEMA,
+    showMap: {
+      type: 'boolean',
+      description: 'True when this reply asks the visitor to open the Map tab.',
+    },
     handBack: {
       type: 'string',
       enum: ['none', 'wellington'],
@@ -135,6 +146,6 @@ export const BRIDGET_RESPONSE_SCHEMA = {
       description: 'A few words naming what was asked about, when abstaining.',
     },
   },
-  required: ['reply', 'handBack', 'abstained'],
+  required: ['reply', 'answers', 'showMap', 'handBack', 'abstained'],
   additionalProperties: false,
 };

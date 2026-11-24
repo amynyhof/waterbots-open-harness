@@ -139,8 +139,11 @@ expect('a topic without an abstention is dropped', notAbst?.abstentionTopic === 
     'W24: the introduction is kept on a route to Phoebe, dropped elsewhere or past one line, and heads her page',
     kept?.introduction === intro && offRoute?.introduction === undefined && twoLines?.introduction === undefined &&
       /onRouted\(answer\.route, answer\.introduction \?\? answer\.reply/.test(wellingtonLib) &&
-      /\(route === 'eligibility' \|\| route === 'map'\) && typeof data\.introduction === 'string'/.test(readFileSync(join('src', 'lib', 'wellingtonClient.ts'), 'utf8')) &&
+      /* Every colleague's from 24 Nov 2026, the maintainer's ruling: the same hand-off for every agent. */
+      /route !== 'none' && route !== 'paid' && typeof data\.introduction === 'string'/.test(readFileSync(join('src', 'lib', 'wellingtonClient.ts'), 'utf8')) &&
       validate({ reply: 'Let me introduce you to a colleague.', route: 'map', introduction: 'Bridget, this is a borehole in Kitui.', abstained: false })?.introduction === 'Bridget, this is a borehole in Kitui.' &&
+      validate({ reply: 'Let me introduce you to a colleague.', route: 'water', introduction: 'Violet, this is a borehole in Kitui.', abstained: false })?.introduction === 'Violet, this is a borehole in Kitui.' &&
+      validate({ reply: 'Saving is on the paid site.', route: 'paid', introduction: 'Nobody, this is a line.', abstained: false })?.introduction === undefined &&
       /cardWordsIn\(answer\.reply\)/.test(readFileSync(join('api', 'wellington.ts'), 'utf8')),
     JSON.stringify({ kept, offRoute, twoLines })
   );
@@ -657,7 +660,7 @@ const bridgetSource = readFileSync('src/components/BridgetScreen.tsx', 'utf8');
 expect(
   'her screen opens on Chat, and the map has its own tab, "Map", at full width; the strip and the side-by-side split are gone (31 Oct 2026)',
   /chat: <ScreenChat host=\{BRIDGET\}/.test(bridgetSource) &&
-    /toolLabel="Map"/.test(bridgetSource) && /tool: \(/.test(bridgetSource) && /<BasinMap /.test(bridgetSource) &&
+    /const MAP_TAB = 'Map';/.test(bridgetSource) && /toolLabel=\{MAP_TAB\}/.test(bridgetSource) && /tool: \(/.test(bridgetSource) && /<BasinMap /.test(bridgetSource) &&
     /useState<ScreenTab>\('chat'\)/.test(bridgetSource) &&
     !/NotLiveChat|BridgetHello|wb-hello|opensOn="tool"|wb-bridget-split/.test(bridgetSource) &&
     !/wb-hello|wb-bridget-split/.test(readFileSync('src/styles/base.css', 'utf8')),
@@ -873,7 +876,7 @@ expect(
   'the first carried send reads the visit from a ref written before the send, not the last paint',
   /visitRef\.current/.test(appSource) &&
     /learnedContext\(visitRef\.current\.context, learned\)/.test(appSource) &&
-    /wellingtonAsk\(onLearned, \(\) => visitRef\.current, onRouted, \(\) => sheetRef\.current, setSurface, \(\) => mapNow\.current\(\)\)/.test(appSource) &&
+    /wellingtonAsk\(\s*onLearned,\s*\(\) => visitRef\.current,\s*onRouted,\s*\(\) => sheetRef\.current,\s*setSurface,\s*\(\) => mapNow\.current\(\),/.test(appSource) &&
     /void sendCarried\(question, \{ carried: true \}\)/.test(appSource),
   'the first ask can still see a blank visit'
 );
@@ -1185,7 +1188,7 @@ console.log('\n  Bridget\n');
   expect(
     "the relay reads its two console turns strictly, refuses a pinned turn with no pin that holds, and keeps her colleagues' guards",
     /body\.opened === true/.test(relay) && /body\.pinned === true/.test(relay) && /if \(pinned && !pin\)/.test(relay) &&
-      /isDegenerateReply\(answer\.reply\)/.test(relay) && /readHandBack\(v\.handBack\)/.test(relay) &&
+      /isDegenerateReply\(read\.reply\)/.test(relay) && /readHandBack\(v\.handBack\)/.test(relay) &&
       /recordAbstention\(lastQuestion, answer\.abstentionTopic, new Date\(\), 'bridget'\)/.test(relay) &&
       /'Bridget is not connected in this environment/.test(relay),
     'a guard is missing from her relay'

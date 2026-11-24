@@ -331,6 +331,31 @@ export function closedBy(map: AgentMap, agent: AgentId): boolean {
   return !call.called && (call.because === 'pathway unlikely' || call.because === 'no pathway forward');
 }
 
+/**
+ * WHO THE MAP HAS CALLED, for the crew column — the maintainer's ruling of 24 Nov 2026, the shared console behaviours,
+ * line 1: the crew shows only the agents the agent map has called, and an agent it has not called yet is hidden.
+ *
+ * AFTER PHOEBE. Core's map marks Bridget and Violet as called the moment the project is a community water supply,
+ * from that fact alone, while its one next step is still Phoebe; and it reads her part as done while one path is only
+ * started (A30). On her walk of 24 Nov they showed before Phoebe had finished, and she ruled they are hidden until
+ * then. So here an agent after Phoebe is called once the map calls them, every pathway read on this site has its
+ * reading, and she has finished: nothing is left for her to ask, or she has handed back (`phoebeFinished`).
+ *
+ * The caller keeps who has been called: an agent that has shown never disappears (App.tsx).
+ */
+export function calledSurfaces(record: ProjectRecord, map: AgentMap, phoebeFinished: boolean): Surface[] {
+  const read = phoebeFinished && READ_HERE.every((pathway) => record.pathways[pathway] !== undefined);
+  const out: Surface[] = ['desk'];
+  for (const surface of ['eligibility', 'map', 'quantification', 'water'] as const) {
+    const call = callOf(map, AGENT_AT[surface]);
+    if (surface === 'eligibility') {
+      /* Not called any more because she has read every pathway: she was, and stays. */
+      if (call.called || call.because === 'every pathway has a reading') out.push(surface);
+    } else if (call.called && read) out.push(surface);
+  }
+  return out;
+}
+
 /** Each pathway's plain name, as the screens say it. */
 export const PATHWAY_NAME: Partial<Record<StandardId, string>> = { vwba: 'Water benefits', carbon: 'Carbon credits' };
 

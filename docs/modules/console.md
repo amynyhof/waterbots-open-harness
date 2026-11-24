@@ -35,6 +35,16 @@ they stand here.
 - Memory is never a tab; it stays in the record, its source behind the (i).
 - Three consumers share one screen (the Commons, this site, the paid site), differing only in memory and
   tool depth.
+- **The crew shows only the agents the agent map has called** (the shared console behaviours, 24 Nov 2026, line
+  1). One not called yet is hidden, not dimmed; it appears when the map calls it and never disappears after
+  that. An agent after Phoebe appears once she has finished.
+- **Chips answer the question just asked, and come first** (line 2). Then the one that opens a tab the agent asked
+  for, "Go to map" (line 3); last, at most one helper. An answer chip is sent as the visitor's own words, so it
+  never holds a fact the visitor has not said.
+- **An answer comes in the same turn** (line 4). A reply that ends by promising a look-up is never sent: the
+  question goes again at once, and if that does not answer it the visitor is told so (`api/_lookUp.ts`).
+- **The same hand-off for every agent** (line 5). Wellington's line heads each agent's page the first time it
+  opens, whichever way the visitor came. The agent waits for it.
 - The crew is the right column on every step, one status line each. Each line says what the agent is
   ready to do, then what they found, and shows only once it is news or while that agent's step is in
   view.
@@ -72,8 +82,9 @@ they stand here.
 - **One calculator layout.** Violet's screen has Calvin's layout and her own colour, drawn by her package.
   Her header pins at the top of the box that scrolls (`--wb-pin-top: 0px`).
 - **The agent map decides who is called** (J4). A pathway that reads unlikely closes its calculator's desk:
-  its card leaves the crew, and the desk says why, what would change it, and that the calculator can be
-  read about in the Agent Commons, where it does not open yet. A desk whose turn has not come is never closed.
+  the desk says why, what would change it, and that the calculator can be read about in the Agent Commons,
+  where it does not open yet. Its agent is not called, so their card does not appear; one already in the
+  crew stays, and says it is unlikely for this project.
 - **No note box** on the Free site or in the Agent Commons. Each export carries the agents' own notes on
   the values still blank or assumed, under the agent's label from core.
 - Calvin's header says only what the record still lacks, or that his calculator does not cover the kind of

@@ -42,6 +42,9 @@ Wellington's own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md)
 - **His first handoff to each colleague says what that colleague does for the visitor**, in his own
   words, from each colleague's `helps_with` lines in the crew list (the maintainer's word of 22 Nov 2026).
   The colleague does not introduce herself after him (agent rule 17).
+- **He hands the visitor to every agent the same way** (the maintainer's ruling of 24 Nov 2026): his line heads
+  Phoebe's, Bridget's, Calvin's and Violet's pages. Where the visitor opens a page before he has handed them over,
+  he is asked for the line then; it is one of his thirty messages.
 - **A needed fact left blank stays blank** (agent rule 11): never zero, never a guess. His visit block
   names what is needed and still blank, so he comes back to it. The name is never needed.
 

@@ -65,9 +65,10 @@ import {
   type Phase,
   type RouteCard,
 } from '../lib/phoebeCards';
+import { chipsFor } from '../lib/chips';
 import { askPhoebe, carriedRecord, carriedSheet } from '../lib/phoebeClient';
 import type { Surface } from '../lib/surfaces';
-import type { VisitContext } from '../lib/visit';
+import { nothingLeftToAsk, type VisitContext } from '../lib/visit';
 import AgentScreen, { type ScreenTab } from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, {
@@ -95,15 +96,32 @@ export const PHOEBE: AgentHost = {
 };
 
 /**
- * The one button under her latest message: "Learn more about …", only where
- * she named an idea in learnMore — the maintainer's word of 14 Nov 2026 (P22),
- * which took away the blue button that moved her on, the same day.
- * A quiet chip, not blue (P24). It sends a real message the visitor can see in
- * their bubble. Shared by the console and the Commons.
+ * Her one helper chip: "Learn more about …", only where she named an idea in
+ * learnMore — the maintainer's word of 14 Nov 2026 (P22), which took away the
+ * blue button that moved her on, the same day. A quiet chip, not blue (P24). It
+ * sends a real message the visitor can see in their bubble.
  */
-export function phoebeButtons(learnMore: string, send: (text: string) => void): TurnButton[] | undefined {
+function learnMoreChip(learnMore: string, send: (text: string) => void): TurnButton | undefined {
   if (!learnMore) return undefined;
-  return [{ label: `Learn more about ${learnMore}`, go: () => send(`Tell me more about ${learnMore}.`) }];
+  return { label: `Learn more about ${learnMore}`, go: () => send(`Tell me more about ${learnMore}.`) };
+}
+
+/**
+ * The chips under her latest message, from 24 Nov 2026 (src/lib/chips.ts): the
+ * answers to the question she just asked, the one that opens her tool where she
+ * points at it, then her one helper. Shared by the console and the Commons.
+ */
+export function phoebeButtons(
+  answer: { answers: readonly string[]; learnMore: string; showTool: boolean },
+  send: (text: string) => void,
+  tool: { label: string; open: () => void }
+): TurnButton[] | undefined {
+  return chipsFor({
+    answers: answer.answers,
+    send,
+    tab: answer.showTool ? tool : null,
+    helper: learnMoreChip(answer.learnMore, send),
+  });
 }
 
 export default function PhoebeScreen({
@@ -114,6 +132,7 @@ export default function PhoebeScreen({
   visible,
   eligibilityDone,
   invite = '',
+  waiting = false,
   onWellington,
   onMeet,
 }: {
@@ -134,6 +153,8 @@ export default function PhoebeScreen({
    * words with his face, and it is never sent to her as one of her turns.
    */
   invite?: string;
+  /** True while he is writing that line: she waits for it, so it heads her page whatever way the visitor came (24 Nov 2026). */
+  waiting?: boolean;
   /** Brings Wellington into her chat with the next step, once her part is done. */
   onWellington?: (at: 'eligibility' | 'map', composerId: string) => Promise<AgentTurn | null>;
   /** Tells the shell whether "Meet <name>" is under her chat's latest turn (one blue button, 16 Nov 2026). */
@@ -149,7 +170,9 @@ export default function PhoebeScreen({
     if (!onWellington) return;
     const turn = await onWellington('eligibility', 'wb-phoebe-composer');
     if (turn) chatRef.current.append([{ ...turn, speaker: WELLINGTON }]);
+    else joined.current = false;
   }
+  const joined = useRef(false);
 
   /* The card sets she has been given this visit. Staged loading (ruling R6)
      sends only what the visit has reached, and a set she has already used must
@@ -207,13 +230,20 @@ export default function PhoebeScreen({
     }
 
     /* He joins once her answer has landed, from the field alone. */
-    if (answer.handBack === 'wellington') window.setTimeout(() => void wellingtonJoins(), 0);
-
+    /* HE COMES AT THE END OF HER STEP, EVERY TIME (24 Nov 2026). It hung on her remembering the field. Where nothing
+       is left for her to ask, and she was told so on this ask, he comes whether or not she set it, once. */
+    const done = eligibilityDone && nothingLeftToAsk(sheet, record.gsClass) && meta?.opened !== true && !joined.current;
+    const joins = answer.handBack === 'wellington' || done;
     const after = applyUpdates(sheet, {
       rows: answer.rows,
       pathways: answer.pathways,
       sorts: answer.sorts,
     });
+    if (joins) {
+      /* Coming for a question that is not hers, part-way, is not the end of her step. */
+      if (nothingLeftToAsk(after, record.gsClass)) joined.current = true;
+      window.setTimeout(() => void wellingtonJoins(), 0);
+    }
 
     return {
       role: 'agent',
@@ -237,11 +267,18 @@ export default function PhoebeScreen({
             ),
           }
         : {}),
-      /* "Learn more about …" where she named an idea (P22). Not under her
-         first hello, and not once she has handed back. */
-      ...(meta?.opened || answer.handBack === 'wellington'
+      /* The chips that answer what she just asked, then "Learn more about …" where
+         she named an idea (P22). No helper under her first hello, and nothing once
+         she has handed back, because his buttons come next. */
+      ...(joins
         ? {}
-        : { buttons: phoebeButtons(answer.learnMore, (text) => void chatRef.current.sendText(text)) }),
+        : {
+            buttons: phoebeButtons(
+              meta?.opened ? { ...answer, learnMore: '', showTool: false } : answer,
+              (text) => void chatRef.current.sendText(text),
+              { label: 'Tool', open: () => onTab('tool') }
+            ),
+          }),
     };
   }
 
@@ -258,7 +295,7 @@ export default function PhoebeScreen({
   const chatRef = useRef(chat);
   chatRef.current = chat;
   useEffect(() => {
-    if (!visible || opened.current) return;
+    if (!visible || opened.current || waiting) return;
     opened.current = true;
     /* W22: his handoff line first, then her hello. The chat layer never sends
        a turn with a speaker to her (useConversation's forAsk). */
@@ -266,7 +303,7 @@ export default function PhoebeScreen({
       chatRef.current.seed([{ role: 'agent', text: invite.trim(), evidence: [], speaker: WELLINGTON }]);
     }
     void chatRef.current.askOpened({ opened: true, introduced: invite.trim() !== '' });
-  }, [visible, invite]);
+  }, [visible, invite, waiting]);
 
   return (
     <AgentScreen
@@ -275,7 +312,7 @@ export default function PhoebeScreen({
       onActiveChange={onTab}
       dots={{ tool: toolDot, chat: tab === 'tool' && chat.turns.some((turn) => turn.role === 'agent') }}
       tabs={{
-        chat: <ScreenChat host={PHOEBE} chat={chat} composerId="wb-phoebe-composer" />,
+        chat: <ScreenChat host={PHOEBE} chat={chat} composerId="wb-phoebe-composer" waitingFor={waiting ? WELLINGTON : undefined} />,
         tool: (
           <EligibilityWorksheet
             sheet={sheet}

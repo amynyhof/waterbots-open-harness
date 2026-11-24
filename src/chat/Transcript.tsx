@@ -47,6 +47,7 @@ export default function Transcript({
   pending,
   error,
   live = null,
+  thinkingHost,
 }: {
   host: AgentHost;
   turns: Turn[];
@@ -57,8 +58,11 @@ export default function Transcript({
    * own bubble in place of the thinking dots, and replaced by the answer.
    */
   live?: string | null;
+  /** Who is thinking, when it is not the host: Wellington, writing his hand-off line (24 Nov 2026). */
+  thinkingHost?: AgentHost;
 }) {
-  const accent = { '--turn-accent': `var(${host.colourToken})` } as CSSProperties;
+  const thinker = thinkingHost ?? host;
+  const accent = { '--turn-accent': `var(${thinker.colourToken})` } as CSSProperties;
 
   return (
     <>
@@ -78,13 +82,13 @@ export default function Transcript({
 
       {pending && !live && (
         <div className="wb-thinking" style={accent} role="status" aria-live="polite">
-          <HostFace host={host} thinking />
+          <HostFace host={thinker} thinking />
           <span className="wb-thinking-dots" aria-hidden>
             <span />
             <span />
             <span />
           </span>
-          <span className="wb-thinking-line">{host.thinkingLine}</span>
+          <span className="wb-thinking-line">{thinker.thinkingLine}</span>
         </div>
       )}
 

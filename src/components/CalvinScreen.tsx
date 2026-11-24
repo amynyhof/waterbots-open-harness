@@ -41,6 +41,7 @@ import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, { type PackView } from '../screen/KnowledgePackTab';
 import NotLiveChat from '../screen/NotLiveChat';
+import HandOff from './HandOff';
 import { CalvinCarbon, RecordFacts, type CalvinSummary } from './CalvinCalculator';
 import { CALVIN_PACKAGE_VERSION, CALVIN_RELEASE } from '../lib/calvinProject';
 import { GS_SDWS_LEGACY_V1, GS_SDWS_PAA_V2 } from '../lib/gsSdws';
@@ -92,6 +93,8 @@ export default function CalvinScreen({
   onSummary,
   unknownLabel,
   closed = null,
+  invite = '',
+  waiting = false,
 }: {
   project: CalvinProject;
   /** The figure and the facts still needed, handed to the shell so the crew panel and the report read them. */
@@ -100,16 +103,20 @@ export default function CalvinScreen({
   unknownLabel?: string;
   /** What his desk shows in place of the calculator when the agent map closes it (J4). */
   closed?: ReactNode;
+  /** Wellington's hand-off line, at the head of his desk (24 Nov 2026). */
+  invite?: string;
+  /** True while he is writing it. */
+  waiting?: boolean;
 }) {
   return (
     <AgentScreen
       host={CALVIN}
       opensOn="tool"
       tabs={{
-        chat: <NotLiveChat host={CALVIN} line={CALVIN_NOT_LIVE_LINE} />,
+        chat: <NotLiveChat host={CALVIN} line={CALVIN_NOT_LIVE_LINE} lead={<HandOff line={invite} waiting={waiting} />} />,
         tool: (
           <>
-            {closed}
+            {closed ?? <HandOff line={invite} waiting={waiting} framed />}
             {/* Kept mounted behind a closed desk, so nothing the visitor set is lost if the reading changes. */}
             <div style={{ display: closed ? 'none' : 'contents' }}>
               <CalvinTool

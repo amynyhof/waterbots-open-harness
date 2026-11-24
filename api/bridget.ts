@@ -33,7 +33,9 @@ import { recordAbstention } from './_abstentions.js';
 import { readPin, readPlace, settleHandBack, visitBlock } from './_bridgetPin.js';
 import { BRIDGET_RESPONSE_SCHEMA, BRIDGET_SYSTEM_PROMPT } from './_bridgetPrompt.js';
 import { BRIDGET, countOneMessage, timeUntilReset } from './_cap.js';
+import { readChips } from './_chips.js';
 import { readHandBack, type HandBack } from './_handBack.js';
+import { FINISH_NOTE, leavesWaiting } from './_lookUp.js';
 import { bridgetRecordBlock, readRecord } from './_record.js';
 import { MIN_REPLY_CHARS, READING_GRADE, isDegenerateReply, isHardReply, readingGrade } from './_reply.js';
 
@@ -212,9 +214,10 @@ export async function POST(req: Request): Promise<Response> {
   const client = new Anthropic({ apiKey });
 
   let response: Anthropic.Message;
+  let answer: Answer;
   const calledAt = Date.now();
 
-  const callModel = (): Promise<Anthropic.Message> =>
+  const callModel = (pass: number): Promise<Anthropic.Message> =>
     client.messages.create(
       {
         model: MODEL,
@@ -223,6 +226,8 @@ export async function POST(req: Request): Promise<Response> {
           { type: 'text', text: BRIDGET_SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
           { type: 'text', text: visitText },
           ...(recordText ? [{ type: 'text' as const, text: recordText }] : []),
+          /* The same question again: this one has to end in an answer (api/_lookUp.ts). */
+          ...(pass > 1 ? [{ type: 'text' as const, text: FINISH_NOTE }] : []),
         ],
         messages: clean,
         thinking: { type: 'adaptive' },
@@ -234,9 +239,12 @@ export async function POST(req: Request): Promise<Response> {
       { timeout: CALL_TIMEOUT_MS }
     );
 
+  /* ONE ANSWER, IN THE SAME TURN — 24 Nov 2026 (api/_lookUp.ts). A reply that ends by promising a look-up is never
+     sent: the same question goes again once, and if that does not end in an answer the visitor is told so. */
+  for (let pass = 1; ; pass += 1) {
   try {
     try {
-      response = await callModel();
+      response = await callModel(pass);
     } catch (first) {
       const status = pick(first, 'status');
       const elapsed = Date.now() - calledAt;
@@ -245,7 +253,7 @@ export async function POST(req: Request): Promise<Response> {
       console.error(
         `bridget: a 400 arrived after ${(elapsed / 1000).toFixed(1)}s, which is too late to be a malformed request — retrying once`
       );
-      response = await callModel();
+      response = await callModel(pass);
     }
   } catch (error) {
     return undelivered(fromApiError(error));
@@ -282,8 +290,8 @@ export async function POST(req: Request): Promise<Response> {
     return undelivered(problem(502, 'Bridget answered in a shape this console could not read. Try asking again.'));
   }
 
-  const answer = readAnswer(parsed);
-  if (!answer) {
+  const read = readAnswer(parsed);
+  if (!read) {
     console.error(`bridget: returned an empty answer — ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens`);
     return undelivered(
       problem(
@@ -293,9 +301,9 @@ export async function POST(req: Request): Promise<Response> {
     );
   }
 
-  if (isDegenerateReply(answer.reply)) {
+  if (isDegenerateReply(read.reply)) {
     console.error(
-      `bridget: returned an answer too short to be one — ${answer.reply.trim().length} characters against a floor of ${MIN_REPLY_CHARS}`
+      `bridget: returned an answer too short to be one — ${read.reply.trim().length} characters against a floor of ${MIN_REPLY_CHARS}`
     );
     return undelivered(
       problem(
@@ -303,6 +311,20 @@ export async function POST(req: Request): Promise<Response> {
         'Bridget returned an answer with almost nothing in it. This is a fault on our side rather than something you did, and asking again usually works.'
       )
     );
+  }
+
+  answer = read;
+  /* Wellington joins with the next step after a pin or a hand-back, so the visitor is never left waiting there. */
+  if (pinned || answer.handBack === 'wellington' || !leavesWaiting(answer.reply)) break;
+  console.log(`bridget: the reply promised a look-up and did not answer, call ${pass}`);
+  if (pass > 1) {
+    return undelivered(
+      problem(
+        502,
+        'Bridget went to look something up and did not come back with an answer. This is a fault on our side rather than something you did, and asking again usually works.'
+      )
+    );
+  }
   }
 
   /* READING LEVEL (V1, 16 Nov 2026): 3rd- to 6th-grade English. A reply above
@@ -319,6 +341,8 @@ export async function POST(req: Request): Promise<Response> {
 
   return json(200, {
     ...answer,
+    /* Her first message always asks for the Map tab (her prompt's opening), so the chip is there whatever the field says. */
+    showMap: !pinned && (answer.showMap || (opened && !pin)),
     handBack: settleHandBack(answer.handBack, { pinned, quantifyNext, abstained: answer.abstained }),
     usage: {
       cacheRead: response.usage.cache_read_input_tokens ?? 0,
@@ -335,6 +359,10 @@ export async function POST(req: Request): Promise<Response> {
 
 interface Answer {
   reply: string;
+  /** Chips that answer the question the reply ends with (24 Nov 2026, _chips.ts). */
+  answers: string[];
+  /** The reply asks the visitor to open the Map tab: the console draws "Go to map" (24 Nov 2026). */
+  showMap: boolean;
   handBack: HandBack;
   abstained: boolean;
   abstentionTopic?: string;
@@ -348,6 +376,8 @@ function readAnswer(value: unknown): Answer | null {
   const topic = typeof v.abstentionTopic === 'string' ? v.abstentionTopic.trim() : '';
   return {
     reply: v.reply.trim(),
+    answers: readChips(v.answers, v.reply),
+    showMap: v.showMap === true,
     handBack: readHandBack(v.handBack),
     abstained,
     ...(abstained && topic ? { abstentionTopic: topic } : {}),

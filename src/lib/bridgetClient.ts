@@ -13,6 +13,7 @@
  */
 
 import type { CarriedRecord } from './phoebeClient';
+import { answersFrom } from './chips';
 import type { MapPin } from './visit';
 
 /** The hand-back, the same closed list as Phoebe's (api/_handBack.ts). An unknown value is "none". */
@@ -24,6 +25,10 @@ export interface BridgetAnswer {
   reply: string;
   handBack: HandBack;
   abstained: boolean;
+  /** Chips that answer the question just asked (24 Nov 2026). */
+  answers: string[];
+  /** She asked the visitor to open the Map tab: the console draws "Go to map" (24 Nov 2026). */
+  showMap: boolean;
 }
 
 /** Thrown with a message that is already fit to show a reader. */
@@ -88,5 +93,7 @@ export async function askBridget(
     reply: data.reply,
     handBack: HAND_BACKS.find((h) => h === data.handBack) ?? 'none',
     abstained: data.abstained === true,
+    answers: answersFrom(data.answers),
+    showMap: data.showMap === true,
   };
 }

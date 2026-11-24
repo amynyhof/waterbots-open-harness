@@ -79,7 +79,7 @@ import ScreeningReport from './components/ScreeningReport';
 import { NO_SUMMARY, type CalvinSummary } from './components/CalvinCalculator';
 import { calvinProjectFrom } from './lib/calvinProject';
 import { carriedRecord } from './lib/phoebeClient';
-import { callOf, closedBy, mapForWellington, metFrom, projectRecord, siteMap, uncoveredLabel, type MapForWellington } from './lib/projectRecord';
+import { callOf, calledSurfaces, closedBy, mapForWellington, metFrom, projectRecord, siteMap, uncoveredLabel, type MapForWellington } from './lib/projectRecord';
 import { d3InputFromRecord, violetAgentNoteLines } from '@waterbots/violet';
 import { computeD3 } from '@waterbots/violet/engine';
 import type { CarbonFigure } from './lib/visit';
@@ -124,8 +124,11 @@ import {
   applyWellingtonRoute,
   crewStatus,
   crewNews,
+  handedOver,
+  inviteFor,
   journeyProgress,
   learnedContext,
+  nothingLeftToAsk,
   openedEligibility,
   pathStatus,
   pinnedVisit,
@@ -311,10 +314,23 @@ export default function App() {
     return mapForWellington(record, siteMap(record, metFrom(reachedRef.current)));
   });
   const ask = useMemo(
-    () => wellingtonAsk(onLearned, () => visitRef.current, onRouted, () => sheetRef.current, setSurface, () => mapNow.current()),
+    () =>
+      wellingtonAsk(
+        onLearned,
+        () => visitRef.current,
+        onRouted,
+        () => sheetRef.current,
+        setSurface,
+        () => mapNow.current(),
+        (to, line) => setVisit((v) => handedOver(v, to, line)),
+        (text) => sayToHim.current(text)
+      ),
     [onLearned, onRouted]
   );
   const chat = useConversation(ask, WELLINGTON.name);
+  /* A chip under his reply sends its words as the visitor's own message (24 Nov 2026), read at tap time. */
+  const sayToHim = useRef<(text: string) => void>(() => undefined);
+  sayToHim.current = (text) => void chat.sendText(text);
 
   /* THE RECEIVER (item S13, built 9 Sep 2026; facts 15 Sep 2026). A visitor
      who typed a question into the production landing's box arrives here with
@@ -467,7 +483,18 @@ export default function App() {
   const project = useMemo(() => calvinProjectFrom(facts), [facts]);
   /* What was worked out at a closed desk is not part of the screening: not on the crew's lines, the report or the save. */
   const counted = useMemo<Visit>(() => (closed.violet && visit.water ? { ...visit, water: null } : visit), [visit, closed.violet]);
-  const hiddenDesks = useMemo<Surface[]>(() => [...(closed.calvin ? (['quantification'] as const) : []), ...(closed.violet ? (['water'] as const) : [])], [closed]);
+  const closedDesks = useMemo<Surface[]>(() => [...(closed.calvin ? (['quantification'] as const) : []), ...(closed.violet ? (['water'] as const) : [])], [closed]);
+  /* THE CREW SHOWS ONLY WHO THE MAP HAS CALLED — the maintainer's ruling of 24 Nov 2026 (calledSurfaces,
+     src/lib/projectRecord.ts). An agent appears when the map calls them, or when Wellington has handed the visitor to
+     them, and never disappears after that. */
+  const [phoebeHandedBack, setPhoebeHandedBack] = useState(false);
+  const phoebeFinished = phoebeHandedBack || nothingLeftToAsk(sheet, visit.context.gsClass);
+  const calledNow = useMemo(() => calledSurfaces(record, map, phoebeFinished), [record, map, phoebeFinished]);
+  const [calledBefore, setCalledBefore] = useState<ReadonlySet<Surface>>(() => new Set([DEFAULT_SURFACE]));
+  const crewShown = useMemo<ReadonlySet<Surface>>(() => new Set([...calledBefore, ...calledNow, ...reached]), [calledBefore, calledNow, reached]);
+  useEffect(() => {
+    if (crewShown.size !== calledBefore.size) setCalledBefore(crewShown);
+  }, [crewShown, calledBefore]);
   /* Violet's notes for the report: from what the visitor set, or from the record alone once they have seen her desk. */
   const violetNotes = useMemo(() => {
     if (visit.water) return violetAgentNoteLines(visit.water.result as unknown as ReturnType<typeof computeD3>);
@@ -484,10 +511,28 @@ export default function App() {
   const wellingtonComes = useCallback(
     async (at: 'eligibility' | 'map', composerId: string): Promise<AgentTurn | null> => {
       greetedBack.current = true;
+      if (at === 'eligibility') setPhoebeHandedBack(true);
       return askHim({ opened: true, at, composerId });
     },
     [askHim]
   );
+
+  /* THE SAME HAND-OFF FOR EVERY AGENT — the maintainer's ruling of 24 Nov 2026 (the shared console behaviours, line 5).
+     His line heads a desk when the visitor came by his "Meet <name>" button. By the crew list there was none, and a
+     desk's line was never asked for. Now the first time a desk shows without his line, and the map has not closed it,
+     he gives it: one ask on his own conversation, like his joining an agent's chat. The agent waits for it. If he
+     cannot answer, the desk opens without it and the agent says who they are (agent rule 17). */
+  const [linesAsked, setLinesAsked] = useState<ReadonlySet<Surface>>(() => new Set());
+  const [handingTo, setHandingTo] = useState<Surface | null>(null);
+  const needsLine = onConsole && surface !== 'desk' && !linesAsked.has(surface) && !closedDesks.includes(surface) && inviteFor(visit, surface) === '';
+  const hePends = chat.pending;
+  useEffect(() => {
+    if (!needsLine || hePends) return;
+    setLinesAsked((s) => new Set([...s, surface]));
+    setHandingTo(surface);
+    void askHim({ opened: true, at: 'handoff', to: surface }).finally(() => setHandingTo(null));
+  }, [needsLine, hePends, surface, askHim]);
+  const waitsForHim = (desk: Surface): boolean => handingTo === desk || (needsLine && surface === desk);
 
   /* THE RIGHT PANEL IS A QUIET LIST — W27, 14 Nov 2026: the crew, each with
      one plain line on where their part stands. Every handoff's button sits in
@@ -500,10 +545,10 @@ export default function App() {
     const news = crewNews(crewAll);
     const shown: Partial<Record<Surface, string>> = {};
     for (const key of Object.keys(crewAll) as Surface[]) if (news[key] || key === surface) shown[key] = crewAll[key];
-    /* A closed desk's card shows only while it is in view, and never says it is ready (J4). */
-    for (const key of hiddenDesks) shown[key] = 'Unlikely for this project';
+    /* A closed desk's card, where it had already shown, says so and never that it is ready (J4). */
+    for (const key of closedDesks) shown[key] = 'Unlikely for this project';
     return shown;
-  }, [crewAll, surface, hiddenDesks]);
+  }, [crewAll, surface, closedDesks]);
   const progress = useMemo(() => journeyProgress(counted, sheet), [counted, sheet]);
 
   /* THE BRIDGE (item S7, built 8 Sep 2026). The click seals the visit as it
@@ -690,6 +735,7 @@ export default function App() {
                   quantifyNext={visit.stage === 'quantify'}
                   visible={onMap}
                   invite={visit.partnersInvite}
+                  waiting={waitsForHim('map')}
                   onWellington={wellingtonComes}
                   onMeet={onBridgetMeet}
                   onMapTab={setMapTabOpen}
@@ -717,6 +763,7 @@ export default function App() {
                   visible={onEligibility}
                   eligibilityDone={phoebeDone(visit, sheet)}
                   invite={visit.eligibilityInvite}
+                  waiting={waitsForHim('eligibility')}
                   onWellington={wellingtonComes}
                   onMeet={onPhoebeMeet}
                 />
@@ -734,6 +781,8 @@ export default function App() {
                   project={project}
                   onSummary={setCalvinSummary}
                   unknownLabel={uncoveredLabel(facts)}
+                  invite={visit.quantifyInvite}
+                  waiting={waitsForHim('quantification')}
                   closed={closed.calvin ? <NotCalled pathway="carbon" reading={facts.pathways.carbon} onCommons={() => goTo('commons')} /> : null}
                 />
               </div>
@@ -747,6 +796,8 @@ export default function App() {
                 <VioletScreen
                   record={facts}
                   onWater={setWater}
+                  invite={visit.waterInvite}
+                  waiting={waitsForHim('water')}
                   closed={closed.violet ? <NotCalled pathway="vwba" reading={facts.pathways.vwba} onCommons={() => goTo('commons')} /> : null}
                 />
               </div>
@@ -760,7 +811,7 @@ export default function App() {
               active={surface}
               status={crew}
               onNavigate={setSurface}
-              hidden={hiddenDesks}
+              shown={crewShown}
               drawer={phone ? { open: drawer === 'crew', onClose: closeDrawer } : undefined}
             />
           </div>

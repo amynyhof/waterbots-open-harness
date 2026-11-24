@@ -60,6 +60,7 @@ import { useConversation } from '../chat/useConversation';
 import { meetShowing } from '../lib/blue';
 import { Reached } from '../chat/reached';
 import { askBridget } from '../lib/bridgetClient';
+import { chipsFor } from '../lib/chips';
 import type { CarriedRecord } from '../lib/phoebeClient';
 import {
   AQUEDUCT_CITATION,
@@ -95,6 +96,9 @@ export const BRIDGET: AgentHost = {
   thinkingLine: 'Bridget is looking at the map…',
 };
 
+/** Her Tool tab's name on screen, and the word "Go to map" is built from. */
+const MAP_TAB = 'Map';
+
 export default function BridgetScreen({
   onStatus,
   pin,
@@ -104,6 +108,7 @@ export default function BridgetScreen({
   quantifyNext,
   visible,
   invite = '',
+  waiting = false,
   onWellington,
   onMeet,
   onMapTab,
@@ -125,6 +130,8 @@ export default function BridgetScreen({
    * "Wellington comes to you", 14 Nov 2026. Display only, never sent to her.
    */
   invite?: string;
+  /** True while he is writing that line: she waits for it, so it heads her page whatever way the visitor came (24 Nov 2026). */
+  waiting?: boolean;
   /** Brings Wellington into her chat with the next step, once her part is done. */
   onWellington?: (at: 'eligibility' | 'map', composerId: string) => Promise<AgentTurn | null>;
   /** Tells the shell whether "Meet <name>" is under her chat's latest turn (one blue button, 16 Nov 2026). */
@@ -165,6 +172,17 @@ export default function BridgetScreen({
       text: answer.reply,
       evidence: [],
       abstained: answer.abstained,
+      /* Where she asks for the Map tab, "Go to map" is the answer, and the only chip; otherwise the chips that answer
+         what she just asked (24 Nov 2026). Nothing once she has handed back, because his buttons come next. */
+      ...(answer.handBack === 'wellington'
+        ? {}
+        : {
+            buttons: chipsFor({
+              answers: answer.showMap ? [] : answer.answers,
+              send: (text) => void chatRef.current.sendText(text),
+              tab: answer.showMap ? { label: MAP_TAB, open: () => setTab('tool') } : null,
+            }),
+          }),
     };
   }
 
@@ -182,14 +200,14 @@ export default function BridgetScreen({
   /* The first time her step shows, she introduces herself and asks her one question. */
   const opened = useRef(false);
   useEffect(() => {
-    if (!visible || opened.current) return;
+    if (!visible || opened.current || waiting) return;
     opened.current = true;
     /* His line to her first, then her opening. */
     if (invite.trim()) {
       chatRef.current.seed([{ role: 'agent', text: invite.trim(), evidence: [], speaker: WELLINGTON }]);
     }
     void chatRef.current.askOpened({ opened: true, introduced: invite.trim() !== '' });
-  }, [visible, invite]);
+  }, [visible, invite, waiting]);
 
   /* The tab is held here, so a pin can bring the visitor back to Chat. */
   const [tab, setTab] = useState<ScreenTab>('chat');
@@ -241,11 +259,11 @@ export default function BridgetScreen({
   return (
     <AgentScreen
       host={BRIDGET}
-      toolLabel="Map"
+      toolLabel={MAP_TAB}
       active={tab}
       onActiveChange={setTab}
       tabs={{
-        chat: <ScreenChat host={BRIDGET} chat={chat} composerId="wb-bridget-composer" />,
+        chat: <ScreenChat host={BRIDGET} chat={chat} composerId="wb-bridget-composer" waitingFor={waiting ? WELLINGTON : undefined} />,
         tool: (
           <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
             <BasinMap onStatus={onStatus} pinnedHybas={pin?.hybasId ?? null} onPin={onPin} focus={focus} />

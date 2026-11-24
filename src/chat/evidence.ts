@@ -94,7 +94,8 @@ export interface AgentTurn {
   /**
    * Buttons under the turn, from 14 Nov 2026: Wellington's "Meet Phoebe" and
    * "Keep chatting" at a handoff (W17), and Phoebe's "Learn more about …"
-   * (P22). Only the main next step is primary and blue; the rest are quiet
+   * (P22). From 24 Nov 2026 every agent's chips that answer the question just
+   * asked come first (src/lib/chips.ts). Only the main next step is primary and blue; the rest are quiet
    * chips (P24). Built by an adapter from fields, never from
    * prose, and drawn only under the latest turn.
    */
@@ -204,8 +205,13 @@ export interface AskMeta {
    * `open` is his own desk on a visitor's arrival: he speaks first (W29,
    * 16 Nov 2026).
    */
-  at?: 'eligibility' | 'map' | 'open';
+  at?: 'eligibility' | 'map' | 'open' | 'handoff';
   composerId?: string;
+  /**
+   * On a `handoff`: the desk the visitor has just opened without his hand-off, whose line he now gives. The same
+   * hand-off for every agent (24 Nov 2026).
+   */
+  to?: Surface;
 }
 
 /** One piece of a laid-out answer: prose, or a marker standing in the prose. */

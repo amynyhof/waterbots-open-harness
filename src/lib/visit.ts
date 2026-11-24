@@ -290,6 +290,9 @@ export interface Visit {
   eligibilityInvite: string;
   /** His line to Bridget, copied onto her thread once — "Wellington comes to you", 14 Nov 2026. */
   partnersInvite: string;
+  /** His lines to Calvin and Violet, at the head of their desks — the same hand-off for every agent, 24 Nov 2026. */
+  quantifyInvite: string;
+  waterInvite: string;
   /** True once he has invited Partners while the stage is partners. */
   invitedPartners: boolean;
   /** True once he has invited Quantify. */
@@ -303,6 +306,8 @@ export const EMPTY_VISIT: Visit = {
   stage: 'learn',
   eligibilityInvite: '',
   partnersInvite: '',
+  quantifyInvite: '',
+  waterInvite: '',
   invitedPartners: false,
   invitedQuantify: false,
 };
@@ -332,6 +337,22 @@ export function eligibilityDone(visit: Visit, sheet: Sheet): boolean {
 export function phoebeDone(visit: Visit, sheet: Sheet): boolean {
   const packs = HER_PACKS.filter((pack) => section(pack) !== undefined);
   return eligibilityDone(visit, sheet) && packs.every((pack) => Object.keys(sheet.rows[pack] ?? {}).length > 0);
+}
+
+/**
+ * Every question she asks has an answer, on every pathway still open. Stricter than `phoebeDone`: with this, there is
+ * nothing left for her to ask, so Wellington comes whether or not her answer handed back (24 Nov 2026).
+ */
+export function nothingLeftToAsk(sheet: Sheet, gsClass: string): boolean {
+  const packs = HER_PACKS.filter((pack) => section(pack) !== undefined);
+  return (
+    packs.length > 0 &&
+    packs.every((pack) => {
+      const context = contextFor(sheet, pack, gsClass);
+      /* A path that does not apply, or with a row that stops it, is closed: she asks nothing more there. */
+      return pathwayState(sheet, pack, context) === 'does-not-apply' || readiness(sheet, pack, context) === 'likely-not' || packDone(sheet, pack, context);
+    })
+  );
 }
 
 /** Opening Eligibility during learn starts that stage. Later stages stay put. */
@@ -367,11 +388,32 @@ export function applyWellingtonRoute(
       partnersInvite: text || visit.partnersInvite,
     };
   }
-  /* Calvin's desk and, from 23 Nov 2026, Violet's: both are the Quantify step. */
-  if ((route === 'quantification' || route === 'water') && (visit.stage === 'partners' || visit.stage === 'quantify')) {
-    return { ...visit, stage: 'quantify', invitedQuantify: true };
+  /* Calvin's desk and, from 23 Nov 2026, Violet's: both are the Quantify step. His line to each heads their desk,
+     as it does Phoebe's and Bridget's pages (24 Nov 2026). */
+  if (route === 'quantification' || route === 'water') {
+    const next = handedOver(visit, route, text);
+    return visit.stage === 'partners' || visit.stage === 'quantify' ? { ...next, stage: 'quantify', invitedQuantify: true } : next;
   }
   return visit;
+}
+
+/** Where each desk's hand-off line is kept. */
+const INVITE_OF = {
+  eligibility: 'eligibilityInvite',
+  map: 'partnersInvite',
+  quantification: 'quantifyInvite',
+  water: 'waterInvite',
+} as const satisfies Partial<Record<Surface, keyof Visit>>;
+
+/** Wellington's hand-off line for a desk, or '' before he has given one. His own desk has none. */
+export function inviteFor(visit: Visit, surface: Surface): string {
+  return surface === 'desk' ? '' : visit[INVITE_OF[surface]];
+}
+
+/** His hand-off line put at the head of a desk. Nothing else about the visit moves. */
+export function handedOver(visit: Visit, surface: Surface, line: string): Visit {
+  const text = line.trim();
+  return surface === 'desk' || text === '' ? visit : { ...visit, [INVITE_OF[surface]]: text };
 }
 
 /**

@@ -15,6 +15,7 @@
 
 import wellingtonPortrait from '../../brand/assets/bots/wellington.svg';
 import type { AgentHost, AgentTurn, Ask, TurnAction, TurnButton } from '../chat/evidence';
+import { chipsFor } from './chips';
 import type { Surface } from './surfaces';
 import { carriedSheet } from './phoebeClient';
 import type { Learned, Visit } from './visit';
@@ -113,7 +114,11 @@ export function wellingtonAsk(
   /** Opens a step, for the "Meet <name>" button at a handoff (W17). */
   onNavigate?: (surface: Surface) => void,
   /** The agent map as it stands, read at send time (J4). */
-  getMap?: () => MapForWellington
+  getMap?: () => MapForWellington,
+  /** His hand-off line for a desk the visitor opened by another way than his button (24 Nov 2026). */
+  onHandedOver?: (to: Surface, line: string) => void,
+  /** Sends a chip's words as the visitor's own message on his desk (24 Nov 2026). */
+  say?: (text: string) => void
 ): Ask {
   return async (history, signal, meta): Promise<AgentTurn> => {
     const visit = getVisit();
@@ -137,13 +142,18 @@ export function wellingtonAsk(
       visit.stage,
       /* The desk's one turn when the visitor comes back from Phoebe is sent
          through askOpened, so it arrives here as `opened`. */
-      { sheet, returned: meta?.opened === true, ...(meta?.at ? { at: meta.at } : {}), ...(getMap ? { map: getMap() } : {}) }
+      { sheet, returned: meta?.opened === true, ...(meta?.at ? { at: meta.at } : {}), ...(meta?.to ? { to: meta.to } : {}), ...(getMap ? { map: getMap() } : {}) }
     );
     if (Object.keys(answer.learned).length > 0) onLearned(answer.learned);
     /* W24, 14 Nov 2026: on Phoebe's page he speaks to her, so her page gets
        his introduction; his reply to the visitor stays here. Without one, his
        reply is shown there as before (W22). */
+    /* On a hand-off the visitor is on that page already, so nothing is routed: the line is put at its head. */
+    if (meta?.at === 'handoff') {
+      if (meta.to && answer.route !== 'none') onHandedOver?.(meta.to, answer.introduction ?? answer.reply);
+    } else {
     onRouted(answer.route, answer.introduction ?? answer.reply, answer.introduction !== undefined);
+    }
     return {
       role: 'agent',
       text: answer.reply,
@@ -152,7 +162,11 @@ export function wellingtonAsk(
       action: actionFor(answer.route),
       ...(answer.refused ? { caption: REFUSED_LINE[answer.refused] } : {}),
       /* In another agent's chat, "Keep chatting" focuses that chat's box. */
-      buttons: actionsFor(answer.route, onNavigate, meta?.composerId),
+      /* A handoff's two buttons are the answer to it. Otherwise, on his own desk, the chips that answer what he just
+         asked; in another agent's chat the box is that agent's, so he draws none there. */
+      buttons:
+        actionsFor(answer.route, onNavigate, meta?.composerId) ??
+        (say && (!meta?.at || meta.at === 'open') ? chipsFor({ answers: answer.answers, send: say }) : undefined),
     };
   };
 }

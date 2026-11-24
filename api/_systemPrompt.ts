@@ -53,6 +53,8 @@ import {
   WATER_ROUTES_MD,
 } from './_cards.generated.js';
 import { AGENT_RULES_MD } from './_agentRules.generated.js';
+import { ANSWERS_SCHEMA } from './_chips.js';
+import { FINISH_RULE } from './_lookUp.js';
 import { AGENT_PRIMER_MD } from './_primer.generated.js';
 import { PHOEBE_TOOL_MD } from './_tool.generated.js';
 import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
@@ -200,6 +202,33 @@ export function setsFor(input: {
   return CARD_SETS.filter((set) => out.has(set));
 }
 
+/**
+ * The sets a call is given when the one before it did not end in an answer (24 Nov 2026, api/_lookUp.ts). A set she
+ * asks for comes with the one it is used with, because a row and its routes are read together and one question often
+ * needs both. With nothing new to give, or on the last call, it is every set of every pack still in play, so there is
+ * nothing left to ask for.
+ */
+export function nextSets(input: {
+  used: readonly CardSet[];
+  asked: CardSet | 'none';
+  pathways: { pack: string; state: string }[];
+  last: boolean;
+}): CardSet[] {
+  const out = new Set<CardSet>(input.used);
+  if (input.asked !== 'none' && !out.has(input.asked)) {
+    out.add(input.asked);
+    const [part, set] = input.asked.split(':');
+    const pair = set === 'eligibility' ? 'routes' : set === 'routes' ? 'eligibility' : null;
+    const other = `${part}:${pair}` as CardSet;
+    if (pair && CARD_SETS.includes(other)) out.add(other);
+    if (!input.last) return CARD_SETS.filter((s) => out.has(s));
+  }
+  const closed = new Set(
+    input.pathways.filter((p) => p.state === 'does-not-apply').map((p) => section(p.pack)?.sectionId)
+  );
+  return CARD_SETS.filter((s) => out.has(s) || !closed.has(s.split(':')[0]));
+}
+
 /** The staged half of the prompt: the cards this turn actually has. */
 export function cardsBlock(sets: readonly CardSet[]): string {
   const missing = CARD_SETS.filter((set) => !sets.includes(set));
@@ -221,7 +250,7 @@ export function cardsBlock(sets: readonly CardSet[]): string {
         '',
         `If a question needs one of those, set needCards to its name — ${askable
           .map((set) => `\`${set}\``)
-          .join(', ')} — and write one short sentence saying you are fetching it. The console asks the same question again with that set in front of you, and the visitor sees only that second answer. Never answer such a question from memory, and never tell the visitor you have no card for it: you do have it, it is simply not in front of you yet. One set per turn; ask for the one the question needs.`
+          .join(', ')} — and leave the reply empty. The console asks the same question again at once with that set in front of you, and the visitor sees only that answer. Never tell the visitor you are looking something up, never answer such a question from memory, and never tell the visitor you have no card for it: you do have it, it is simply not in front of you yet. One set per turn; ask for the one the question needs.`
       );
     }
   }
@@ -443,6 +472,8 @@ When every row you ask has a verdict for this visit, give the read, show the row
 
 # Your output
 
+${FINISH_RULE}
+
 Return JSON in the required shape; each field's description says what goes in it, needCards comes first, and closes is never forgotten. The reply is prose, with no markdown headings, citation text or card markers. Rows, pathways and sorts carry only what changed on this turn.
 
 # Plain words
@@ -490,8 +521,10 @@ export const RESPONSE_SCHEMA = {
     reply: {
       type: 'string',
       description:
-        "Phoebe's message. Prose only - no citation text, no card markers, no page numbers, no links. Four sentences and 400 characters at most.",
+        "Phoebe's message. Prose only - no citation text, no card markers, no page numbers, no links. Four sentences and 400 characters at most. Empty only when needCards names a set.",
     },
+    /* 24 Nov 2026: chips that answer the question just asked (api/_chips.ts). Required, [] when there are none. */
+    answers: ANSWERS_SCHEMA,
     /* W25, 14 Nov 2026: required, so a path ruled out in the reply is always
        saved on the worksheet the same turn (api/phoebe.ts). */
     closes: {
@@ -599,6 +632,6 @@ export const RESPONSE_SCHEMA = {
       description: 'A few words naming what was asked about, when abstaining.',
     },
   },
-  required: ['needCards', 'reply', 'closes', 'cited', 'handBack', 'abstained'],
+  required: ['needCards', 'reply', 'answers', 'closes', 'cited', 'handBack', 'abstained'],
   additionalProperties: false,
 };

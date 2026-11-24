@@ -43,8 +43,10 @@ import {
 import { needCardsSoFar, replySoFar } from './_replyStream.js';
 import { PHOEBE, countOneMessage, timeUntilReset } from './_cap.js';
 import { phoebeDoorBlock, readDoor } from './_door.js';
+import { readChips } from './_chips.js';
+import { FINISH_NOTE, leavesWaiting, showable } from './_lookUp.js';
 import { readHandBack, type HandBack } from './_handBack.js';
-import { CARD_SETS, RESPONSE_SCHEMA, SYSTEM_PROMPT, cardsBlock, setsFor, type CardSet } from './_systemPrompt.js';
+import { CARD_SETS, RESPONSE_SCHEMA, SYSTEM_PROMPT, cardsBlock, nextSets, setsFor, type CardSet } from './_systemPrompt.js';
 import {
   MAX_BECAUSE_CHARS,
   phoebeNotesBlock,
@@ -162,6 +164,14 @@ const CALL_TIMEOUT_MS = 120_000;
  * Retrying a real 400 would be a bug, and this cannot become one.
  */
 const LATE_400_MS = 5_000;
+
+/**
+ * How many times one question may go to the model before it has to end in an answer — 24 Nov 2026. It was two, and the
+ * second could end in "let me pull that up" (api/_lookUp.ts). The first call has the cards the visit has reached, the
+ * second the set she asked for, and the third every set still in play. A loop is impossible, and it is one answer to
+ * the visitor, so it is one message of their thirty.
+ */
+const MAX_PASSES = 3;
 
 /** Reads a property off an unknown thrown value without assuming its shape. */
 function pick(value: unknown, key: string): unknown {
@@ -331,8 +341,9 @@ export async function POST(req: Request): Promise<Response> {
   const loaded = Array.isArray(body.loaded)
     ? body.loaded.filter((set): set is string => typeof set === 'string')
     : [];
+  const pathways = pathwaysOf(sheet, record);
   const sets = setsFor({
-    pathways: pathwaysOf(sheet, record),
+    pathways,
     loaded,
     allMet: allMet(sheet, record),
     /* P29: a running project's start date is asked first, so the card that
@@ -415,21 +426,23 @@ export async function POST(req: Request): Promise<Response> {
   let firstWordAt: number | null = null;
 
   /**
-   * One pass's streamed reply. A pass that is about to ask for a card set it
-   * was not given is never shown, because the visitor sees only the second
-   * pass's answer (ruling R6); if her answer names that set only after its
-   * reply, what was shown is reset before the second pass.
+   * One pass's streamed reply. A pass that asks for a card set is never shown,
+   * because the visitor sees only the answer that follows (ruling R6); if her
+   * answer names that set only after its reply, or ends by promising a look-up,
+   * what was shown is reset before the next pass.
    */
-  const passWriter = (pass: readonly CardSet[]) => {
+  const passWriter = (last: boolean) => {
     let sent = 0;
     return {
       snapshot(raw: string): void {
         if (!onText) return;
         const asked = needCardsSoFar(raw);
-        if (asked && asked !== 'none' && (CARD_SETS as readonly string[]).includes(asked) && !pass.includes(asked as CardSet)) {
+        if (!last && asked && asked !== 'none' && (CARD_SETS as readonly string[]).includes(asked)) {
           return;
         }
-        const text = replySoFar(raw);
+        /* A sentence that promises a look-up is held until an answer follows it (api/_lookUp.ts). */
+        const written = replySoFar(raw);
+        const text = written === null ? null : showable(written);
         if (text === null || text.length <= sent) return;
         if (firstWordAt === null) firstWordAt = Date.now();
         onText(text.slice(sent));
@@ -452,7 +465,7 @@ export async function POST(req: Request): Promise<Response> {
      message are the same as before (finalMessage() is the Message create()
      returned), and while it is written the reply's text is read out of it for
      the visitor. */
-  const callModel = (withSets: readonly CardSet[], writer: ReturnType<typeof passWriter>): Promise<Anthropic.Message> => {
+  const callModel = (withSets: readonly CardSet[], writer: ReturnType<typeof passWriter>, pass: number): Promise<Anthropic.Message> => {
     const stream = client.messages.stream(
       {
         model: MODEL,
@@ -468,6 +481,8 @@ export async function POST(req: Request): Promise<Response> {
           ...(record ? [{ type: 'text' as const, text: recordBlock(record) }] : []),
           ...(sheetText ? [{ type: 'text' as const, text: sheetText }] : []),
           ...(notes ? [{ type: 'text' as const, text: notes }] : []),
+          /* The same question again: this one has to end in an answer. */
+          ...(pass > 1 ? [{ type: 'text' as const, text: FINISH_NOTE }] : []),
         ],
         messages: clean,
         /* Stated rather than inherited. This model thinks adaptively whether
@@ -486,10 +501,10 @@ export async function POST(req: Request): Promise<Response> {
   };
 
   /** One call, with one narrow retry for a late 400 — see LATE_400_MS. */
-  const callOnce = async (withSets: readonly CardSet[]): Promise<Anthropic.Message> => {
-    const writer = passWriter(withSets);
+  const callOnce = async (withSets: readonly CardSet[], pass: number): Promise<Anthropic.Message> => {
+    const writer = passWriter(pass === MAX_PASSES);
     try {
-      return await callModel(withSets, writer);
+      return await callModel(withSets, writer, pass);
     } catch (first) {
       const status = pick(first, 'status');
       const elapsed = Date.now() - calledAt;
@@ -499,53 +514,47 @@ export async function POST(req: Request): Promise<Response> {
         `phoebe: a 400 arrived after ${(elapsed / 1000).toFixed(1)}s, which is too late to be a malformed request — retrying once`
       );
       writer.restart();
-      return await callModel(withSets, writer);
+      return await callModel(withSets, writer, pass);
     }
   };
 
-  let usedSets: CardSet[] = [...sets];
-  try {
-    response = await callOnce(usedSets);
-  } catch (error) {
-    return undelivered(fromApiError(error));
-  }
-
-  /* Claude Sonnet 5 can decline a request outright. That is a real state and
-     it gets said, not smoothed over into an empty answer. */
-  if (response.stop_reason === 'refusal') {
-    return undelivered(
-      problem(
+  /** What stopped one model response from being an answer at all, or null. */
+  const stopped = (message: Anthropic.Message): Response | null => {
+    /* Claude Sonnet 5 can decline a request outright. That is a real state and
+       it gets said, not smoothed over into an empty answer. */
+    if (message.stop_reason === 'refusal') {
+      return problem(
         502,
         'Phoebe stopped part-way through that one and did not finish an answer. Try rephrasing the question.'
-      )
-    );
-  }
+      );
+    }
 
-  /* Running out of budget is a different failure from writing a bad answer,
-     and it must not be reported as one. A truncated reply reaches JSON.parse
-     as half-written JSON and throws there, which used to surface as "Phoebe
-     answered in a shape this console could not read" - blaming her answer for
-     what is our budget. Caught here instead, and named. */
-  if (response.stop_reason === 'max_tokens') {
-    console.error(
-      `phoebe: answer hit the output budget and was cut off — ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens, most of it hidden thinking`
-    );
-    return undelivered(
-      problem(
+    /* Running out of budget is a different failure from writing a bad answer,
+       and it must not be reported as one. A truncated reply reaches JSON.parse
+       as half-written JSON and throws there, which used to surface as "Phoebe
+       answered in a shape this console could not read" - blaming her answer for
+       what is our budget. Caught here instead, and named. */
+    if (message.stop_reason === 'max_tokens') {
+      console.error(
+        `phoebe: answer hit the output budget and was cut off — ${message.usage.output_tokens} of ${MAX_TOKENS} output tokens, most of it hidden thinking`
+      );
+      return problem(
         502,
         'Phoebe ran out of room part-way through that answer, so it was cut off before it was finished. Nothing has been recorded. This is a limit on our side, not something you did - asking again, or in smaller pieces, usually gets through.'
-      )
-    );
-  }
+      );
+    }
+    return null;
+  };
 
   /**
-   * One model response, read into an answer or into the honest failure it is.
+   * One model response, read into an answer, into the card set she needs
+   * first, or into the honest failure it is.
    *
-   * It runs once on the ordinary turn and twice when she asks for a card set
-   * she was not given — see the second pass below — so every failure message
-   * is written once rather than in two places that could drift apart.
+   * It runs once on the ordinary turn and again on each further call — see the
+   * loop below — so every failure message is written once rather than in two
+   * places that could drift apart.
    */
-  const readTurn = (message: Anthropic.Message): { answer: Answer } | { problem: Response } => {
+  const readTurn = (message: Anthropic.Message, last: boolean): { answer: Answer } | { needs: CardSet } | { problem: Response } => {
     const text = message.content
       .filter((b): b is Anthropic.TextBlock => b.type === 'text')
       .map((b) => b.text)
@@ -565,6 +574,11 @@ export async function POST(req: Request): Promise<Response> {
         ),
       };
     }
+
+    /* A set she asks for comes before everything else in her answer: the same
+       question goes again with it, and nothing of this pass is kept. */
+    const needs = needsOf(parsed);
+    if (needs !== 'none' && !last) return { needs };
 
     /* An answer with nothing in it is its own failure, and it is said as one.
        readAnswer() refuses for exactly one reason — a reply that is missing,
@@ -607,44 +621,65 @@ export async function POST(req: Request): Promise<Response> {
     return { answer };
   };
 
-  let outcome = readTurn(response);
-  if ('problem' in outcome) return undelivered(outcome.problem);
-  let answer = outcome.answer;
-  /* MESSAGE 1 SETS NOTHING (P14, 14 Nov 2026): on the opened turn any row, test
-     or sort she returns is dropped, so the worksheet waits for message 2. */
-  if (opened) answer = { ...answer, rows: [], pathways: [], sorts: [] };
-  let calls = 1;
-  let inputTokens = response.usage.input_tokens;
-  let outputTokens = response.usage.output_tokens;
-
-  /* THE ONE EXTRA CALL — ruling R6, staged loading, 25 Sep 2026.
+  /* UNTIL SHE ANSWERS — 24 Nov 2026, the maintainer's ruling (api/_lookUp.ts).
      A set she has not been given is not a missing card, and she must never say
-     it is. So when a question needs a set this turn does not carry, she names
-     that set in a field, and the same question is asked again with it in front
-     of her. The visitor sees the second answer and nothing of the first.
-     ONE EXTRA CALL AND NO MORE: the second answer's own request is ignored, so
-     a loop is impossible. It is not counted against anyone's day either — the
-     cap counts answers delivered to a visitor, and this is one answer. */
-  if (answer.needCards !== 'none' && !usedSets.includes(answer.needCards)) {
-    usedSets = [...usedSets, answer.needCards];
-    console.log(`phoebe: asked for ${answer.needCards}, so the same question goes again with it`);
-    /* Anything the first pass showed is thrown away before the second speaks. */
+     it is (ruling R6, 25 Sep 2026). So when a question needs a set this turn
+     does not carry, she names that set in a field, and the same question is
+     asked again with it in front of her. The visitor sees the answer and
+     nothing of what came before it.
+     IT WAS ONE EXTRA CALL AND NO MORE, and where that did not end in an answer
+     her holding sentence was delivered as one. Now the question goes again
+     until it is answered, at most MAX_PASSES times, and the last call has every
+     set still in play. It is not counted against anyone's day: the cap counts
+     answers delivered to a visitor, and this is one answer. */
+  let usedSets: CardSet[] = [...sets];
+  let answer: Answer;
+  let calls = 0;
+  let inputTokens = 0;
+  let outputTokens = 0;
+  for (;;) {
+    calls += 1;
+    const last = calls === MAX_PASSES;
+    try {
+      response = await callOnce(usedSets, calls);
+    } catch (error) {
+      return undelivered(fromApiError(error));
+    }
+    inputTokens += response.usage.input_tokens;
+    outputTokens += response.usage.output_tokens;
+    const stop = stopped(response);
+    if (stop) return undelivered(stop);
+    const outcome = readTurn(response, last);
+    if ('problem' in outcome) return undelivered(outcome.problem);
+
+    let asked: CardSet | 'none' = 'none';
+    if ('needs' in outcome) {
+      asked = outcome.needs;
+      console.log(`phoebe: asked for ${asked}, so the same question goes again with it`);
+    } else {
+      answer = outcome.answer;
+      /* A reply that ends by promising a look-up is not an answer, unless Wellington is joining with the next step. */
+      if (answer.handBack === 'wellington' || !leavesWaiting(answer.reply)) break;
+      console.log(`phoebe: the reply promised a look-up and did not answer, call ${calls} of ${MAX_PASSES}`);
+      if (last) {
+        return undelivered(
+          problem(
+            502,
+            'Phoebe went to look something up and did not come back with an answer. Nothing has been recorded. This is a fault on our side rather than something you did, and asking again usually works.'
+          )
+        );
+      }
+    }
+    usedSets = nextSets({ used: usedSets, asked, pathways, last: calls + 1 === MAX_PASSES });
+    /* Anything this pass showed is thrown away before the next speaks. */
     if (firstWordAt !== null) {
       onReset?.();
       firstWordAt = null;
     }
-    try {
-      response = await callOnce(usedSets);
-    } catch (error) {
-      return undelivered(fromApiError(error));
-    }
-    outcome = readTurn(response);
-    if ('problem' in outcome) return undelivered(outcome.problem);
-    answer = opened ? { ...outcome.answer, rows: [], pathways: [], sorts: [] } : outcome.answer;
-    calls = 2;
-    inputTokens += response.usage.input_tokens;
-    outputTokens += response.usage.output_tokens;
   }
+  /* MESSAGE 1 SETS NOTHING (P14, 14 Nov 2026): on the opened turn any row, test
+     or sort she returns is dropped, so the worksheet waits for message 2. */
+  if (opened) answer = { ...answer, rows: [], pathways: [], sorts: [] };
 
   /* Recorded before the answer goes out, and awaited rather than left running:
      once a Response is returned the platform may stop this function where it
@@ -694,7 +729,7 @@ export async function POST(req: Request): Promise<Response> {
       cacheWrite: response.usage.cache_creation_input_tokens ?? 0,
       input: inputTokens,
       output: outputTokens,
-      /* Two on the one turn where she asked for a set she did not have. */
+      /* More than one on a turn where she asked for a set she did not have. */
       calls,
       /* How long the visitor waited, so speed is measured rather than felt:
          to the first word shown (streamed asks only) and to the whole answer. */
@@ -828,8 +863,16 @@ function allMet(sheets: PackSheet[] | null, record: ReturnType<typeof readRecord
   });
 }
 
+/** The card set an answer asks for, or "none". */
+function needsOf(value: unknown): CardSet | 'none' {
+  const asked = pick(value, 'needCards');
+  return (CARD_SETS as readonly unknown[]).includes(asked) ? (asked as CardSet) : 'none';
+}
+
 interface Answer {
   reply: string;
+  /** Chips that answer the question the reply ends with (24 Nov 2026, _chips.ts). */
+  answers: string[];
   /** Card tokens, `section:set/id`. The console renders each one's citation. */
   cited: string[];
   rows: { pack: string; id: string; state: string; because?: string; routes?: string[] }[];
@@ -967,10 +1010,7 @@ function readAnswer(value: unknown): Answer | null {
     }
   }
 
-  const asked = typeof v.needCards === 'string' ? v.needCards : 'none';
-  const needCards: Answer['needCards'] = (CARD_SETS as readonly string[]).includes(asked)
-    ? (asked as CardSet)
-    : 'none';
+  const needCards = needsOf(v);
 
   /* Checked against the closed list, never trusted: an unknown hand-back is
      "none", the ordinary turn, and the console draws nothing for it. */
@@ -1020,6 +1060,7 @@ function readAnswer(value: unknown): Answer | null {
 
   return {
     reply: v.reply.trim(),
+    answers: readChips(v.answers, v.reply),
     cited,
     rows,
     pathways,

@@ -25,8 +25,11 @@ Phoebe's own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md); ev
 - **Where Wellington introduced her, she does not introduce herself again** (agent rule 17). The
   console tells her relay when his line shows above her first answer; in the Agent Commons she
   introduces herself.
-- No teaching side notes and no paid-site pitch. Where useful, a quiet "Learn more about …" chip sits
-  under her reply, and nothing else.
+- No teaching side notes and no paid-site pitch. Under her reply: the chips that answer the question she just
+  asked, then, where useful, one quiet "Learn more about …" (24 Nov 2026).
+- **She answers in the same turn** (the maintainer's ruling of 24 Nov 2026). A question that needs a card set she
+  has not been given goes again with it, at most three calls; the last has every set still in play.
+- **When nothing is left for her to ask, Wellington comes**, whether or not her answer handed back (24 Nov 2026).
 - Her reply streams as it is written; the relay logs each answer's time to first word.
 - When her reply ends in a question, that last sentence is bold, chips included. Display only.
 - Her chat carries no citation markers; her citations show on her worksheet rows, beside the row each

@@ -37,11 +37,14 @@ export default function ScreenChat({
   host,
   chat,
   composerId,
+  waitingFor,
 }: {
   host: AgentHost;
   chat: Conversation;
   /** Unique per mounted chat, so two screens on one page keep valid label ids. */
   composerId: string;
+  /** Who is about to speak here first: Wellington, writing his hand-off line (24 Nov 2026). The box waits for him. */
+  waitingFor?: AgentHost;
 }) {
   const scroller = useRef<HTMLDivElement>(null);
   const composer = useRef<HTMLTextAreaElement>(null);
@@ -75,7 +78,8 @@ export default function ScreenChat({
           <Transcript
             host={host}
             turns={chat.turns}
-            pending={chat.pending}
+            pending={chat.pending || waitingFor !== undefined}
+            thinkingHost={waitingFor}
             error={chat.error}
             live={chat.live}
           />
@@ -103,7 +107,7 @@ export default function ScreenChat({
               className="wb-composer wb-composer-desk"
               rows={1}
               value={chat.draft}
-              disabled={chat.pending}
+              disabled={chat.pending || waitingFor !== undefined}
               onChange={(e) => chat.setDraft(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
@@ -120,7 +124,7 @@ export default function ScreenChat({
               type="button"
               className="wb-send-desk"
               onClick={() => void chat.send()}
-              disabled={chat.pending || chat.draft.trim() === ''}
+              disabled={chat.pending || waitingFor !== undefined || chat.draft.trim() === ''}
             >
               {chat.pending ? 'Sending…' : 'Send'}
             </button>
