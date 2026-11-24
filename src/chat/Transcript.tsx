@@ -170,13 +170,28 @@ function HostBubble({ host, turn, latest = false }: { host: AgentHost; turn: Age
  * small, outlined and unfilled (P24). Only the latest turn draws them, so an old handoff's
  * buttons do not stay on the thread as if they were still the next step.
  */
-function TurnButtons({ turn }: { turn: AgentTurn }) {
+export function TurnButtons({ turn }: { turn: Pick<AgentTurn, 'buttons'> }) {
   /* A Meet button whose agent this visit has reached is drawn quiet (21 Nov 2026). */
   const reached = useContext(Reached);
   if (!turn.buttons?.length) return null;
   return (
     <div style={{ marginTop: 10, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
       {turn.buttons.map((button) => {
+        /* Every hand-off has one format, in the next agent's colour (24 Nov 2026). */
+        if (button.handoff) {
+          return (
+            <button
+              key={button.label}
+              type="button"
+              className="wb-handoff"
+              style={{ '--handoff': `var(${button.handoff.token})` } as CSSProperties}
+              onClick={button.go}
+            >
+              <AgentFace portrait={button.handoff.portrait} name={button.handoff.name} size={20} />
+              {button.label}
+            </button>
+          );
+        }
         const blue = button.primary && !(button.reaches && reached.has(button.reaches));
         return (
           <button

@@ -65,10 +65,10 @@ import {
   type Phase,
   type RouteCard,
 } from '../lib/phoebeCards';
-import { chipsFor } from '../lib/chips';
+import { chipsFor, withWayOn } from '../lib/chips';
 import { askPhoebe, carriedRecord, carriedSheet } from '../lib/phoebeClient';
 import type { Surface } from '../lib/surfaces';
-import { nothingLeftToAsk, type VisitContext } from '../lib/visit';
+import { nothingLeftToAsk, onePathDone, type VisitContext } from '../lib/visit';
 import AgentScreen, { type ScreenTab } from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, {
@@ -135,6 +135,9 @@ export default function PhoebeScreen({
   waiting = false,
   onWellington,
   onMeet,
+  onward,
+  onHandedOn,
+  showChat = 0,
 }: {
   onVerdicts: (verdicts: Verdicts) => void;
   /** The visit's project record, carried to Phoebe with every ask. */
@@ -159,6 +162,12 @@ export default function PhoebeScreen({
   onWellington?: (at: 'eligibility' | 'map', composerId: string) => Promise<AgentTurn | null>;
   /** Tells the shell whether "Meet <name>" is under her chat's latest turn (one blue button, 16 Nov 2026). */
   onMeet?: (showing: boolean) => void;
+  /** The buttons to what comes next, under her replies once her step is done (24 Nov 2026, src/lib/steps.ts). */
+  onward?: () => TurnButton[];
+  /** Tells the shell her step is ended: she handed the visitor on with a path done or closed (24 Nov 2026). */
+  onHandedOn?: () => void;
+  /** Bumped each time the visitor opens her from the crew, which opens her Chat tab first (24 Nov 2026). */
+  showChat?: number;
 }) {
   const carried = carriedRecord(record);
 
@@ -239,6 +248,7 @@ export default function PhoebeScreen({
       pathways: answer.pathways,
       sorts: answer.sorts,
     });
+    if (answer.handBack === 'wellington' && !answer.abstained && onePathDone(after, record.gsClass)) onHandedOn?.();
     if (joins) {
       /* Coming for a question that is not hers, part-way, is not the end of her step. */
       if (nothingLeftToAsk(after, record.gsClass)) joined.current = true;
@@ -273,14 +283,21 @@ export default function PhoebeScreen({
       ...(joins
         ? {}
         : {
-            buttons: phoebeButtons(
-              meta?.opened ? { ...answer, learnMore: '', showTool: false } : answer,
-              (text) => void chatRef.current.sendText(text),
-              { label: 'Tool', open: () => onTab('tool') }
+            buttons: withWayOn(
+              phoebeButtons(
+                meta?.opened ? { ...answer, learnMore: '', showTool: false } : answer,
+                (text) => void chatRef.current.sendText(text),
+                { label: 'Tool', open: () => onTab('tool') }
+              ),
+              nothingLeftToAsk(after, record.gsClass) ? onward?.() : undefined
             ),
           }),
     };
   }
+
+  useEffect(() => {
+    if (showChat > 0) setTab('chat');
+  }, [showChat]);
 
   const chat = useConversation(ask, PHOEBE.name);
   /* ONE BLUE BUTTON (16 Nov 2026): the shell decides which button is blue, so

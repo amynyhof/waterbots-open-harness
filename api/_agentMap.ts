@@ -22,6 +22,16 @@ const FACTS = ['technology', 'country'] as const;
 const READINGS = ['likely', 'more to learn', 'unlikely'] as const;
 const PATHWAYS = { vwba: 'Water benefits', carbon: 'Carbon credits' } as const;
 
+/**
+ * THE THREE STEPS, by the journey's names (src/lib/journey.ts; scripts/check-wellington.mjs holds them to it). The
+ * journey is told by step, not by agent: the maintainer's ruling of 24 Nov 2026.
+ */
+export const STEP_NAMES = ['Eligibility', 'Partners', 'Quantify'] as const;
+const STEP_KEYS = ['eligibility', 'partners', 'quantify'] as const;
+type StepKey = (typeof STEP_KEYS)[number];
+const STEP_OF: Partial<Record<Agent, number>> = { phoebe: 1, bridget: 2, calvin: 3, violet: 3 };
+const stepWords = (n: number): string => `Step ${n} of ${STEP_NAMES.length}, ${STEP_NAMES[n - 1]}`;
+
 /** Long enough for a few card titles, short enough to refuse an essay. */
 const MAX_CHANGE_CHARS = 600;
 
@@ -33,6 +43,11 @@ export interface MapNote {
   closed: Agent[];
   readings: { pathway: keyof typeof PATHWAYS; reading: (typeof READINGS)[number]; wouldChange: string }[];
   transitioning: boolean;
+  /** The steps that are done, and every agent who helps with the next one (24 Nov 2026). */
+  done: StepKey[];
+  agents: Agent[];
+  /** Calvin's calculator does not cover this kind of project. */
+  uncovered: boolean;
 }
 
 /** The map off a request body, or null when none came or it does not hold. */
@@ -62,6 +77,9 @@ export function readMap(value: unknown): MapNote | null {
     closed: agents(v.closed),
     readings,
     transitioning: v.transitioning === true,
+    done: Array.isArray(v.done) ? STEP_KEYS.filter((k) => (v.done as unknown[]).includes(k)) : [],
+    agents: agents(v.agents),
+    uncovered: v.uncovered === true,
   };
 }
 
@@ -78,19 +96,60 @@ export function mapBlock(map: MapNote): string {
   for (const r of map.readings) {
     lines.push(`- ${PATHWAYS[r.pathway]}: ${r.reading}.${r.reading === 'unlikely' && r.wouldChange ? ` What would change it: ${r.wouldChange}` : ''}`);
   }
+  for (const key of map.done) lines.push(`- ${stepWords(STEP_KEYS.indexOf(key) + 1)}: done.`);
   if (map.next === 'gather facts') {
     lines.push(`The one next step: gather ${map.facts.map((f) => FACT_WORDS[f]).join(' and ') || 'the basics'}. Phoebe comes after that.`);
   } else if (map.next === 'call' && map.agent) {
-    lines.push(`The one next step: ${NAME[map.agent]}. Set the route to "${ROUTE_OF[map.agent] ?? 'none'}".`);
+    const helpers = map.agents.length ? map.agents : [map.agent];
+    lines.push(`The one next step: ${stepWords(STEP_OF[map.agent] ?? 1)}, with ${helpers.map((a) => NAME[a]).join(' and ')}. Set the route to "${ROUTE_OF[map.agent] ?? 'none'}". The screening is not done while this step is ahead, so never say it is.`);
+    if (map.facts.length) lines.push(`Still missing, and worth asking for: ${map.facts.map((f) => FACT_WORDS[f]).join(' and ')}.`);
   } else if (map.next === 'point to the WaterBots team') {
     lines.push('The one next step: no funding path goes forward for now. Say so kindly, say what would change it, and point to the WaterBots team: the box under the save button sends them the project. Set the route to "none". Do not invite Bridget, Calvin or Violet.');
   } else {
-    lines.push('The one next step: every step is done. Point to the screening report in the left rail, or to saving and signing up.');
+    lines.push('Every step this project calls for is done. Say so, and offer the screening report and "Save and sign up". The console draws both under your message.');
   }
   const closed = map.closed.filter((a) => ROUTE_OF[a]);
   if (closed.length) lines.push(`Not called for this project: ${closed.map((a) => NAME[a]).join(', ')}. Never route there. The calculator can be read about in the Agent Commons; it does not open there yet.`);
+  if (map.uncovered) lines.push('Calvin is not the next step here: his calculator does not cover this kind of project yet. Say so kindly.');
   if (map.transitioning) lines.push('This project already earns credits under the older carbon rules, so Calvin also shows the older calculator and what changes.');
   return lines.join('\n');
+}
+
+/**
+ * The note he gets when a step has ended: which one, what comes next, and how to hand over. The same for every step and
+ * every agent (24 Nov 2026, items 5 to 8 and 10).
+ */
+export function stepEndNote(at: 'eligibility' | 'map', map: MapNote | null): string {
+  const step = at === 'eligibility' ? 1 : 2;
+  const done = map?.done.includes(STEP_KEYS[step - 1]) ?? false;
+  const who = at === 'eligibility' ? 'Phoebe' : 'Bridget';
+  const where = `# Where you are speaking\n\nYou have joined the visitor in ${who}'s chat. Never tell the visitor to come back to you.`;
+  if (map && !done) {
+    return `${where} ${stepWords(step)}, is not done yet: they asked something ${who} does not cover. Answer it, then leave them with ${who}. Set the route to "none".`;
+  }
+  const says = `Say that ${stepWords(step)}, is done and, in a line, what came of it.`;
+  if (!map || (map.next === 'call' && map.agent)) {
+    const helpers = map?.agents.length ? map.agents : map?.agent ? [map.agent] : [];
+    const next = helpers.length
+      ? `Then name ${stepWords(STEP_OF[helpers[0]] ?? step + 1)}, and what it helps them decide. Then introduce ${helpers.map((a) => NAME[a]).join(' and ')} and what each does for them, the way you introduced Phoebe. Set the route to "${ROUTE_OF[helpers[0]] ?? 'none'}" and fill the introduction field for ${NAME[helpers[0]]}.`
+      : 'Then name the next step and what it helps them decide, introduce who helps there, set the route and fill the introduction field.';
+    return `${where} ${says} ${next} The console draws the button.`;
+  }
+  if (map.next === 'point to the WaterBots team') {
+    return `${where} ${says} No funding path goes forward for now, so say why, kindly, what would change it, and that the box under the save button sends the project to the WaterBots team. Offer the screening report and "Save and sign up". Set the route to "none". The console draws both.`;
+  }
+  return `${where} ${says} No step is left. ${map.uncovered ? 'Say why no calculator comes next: Calvin does not cover this kind of project yet. ' : ''}Offer the screening report and "Save and sign up". Set the route to "none". The console draws both.`;
+}
+
+/** The route a step's end has to carry: the map's next agent, whatever his field says. Null where the map has none. */
+export function stepEndRoute(at: 'eligibility' | 'map', map: MapNote): Route | null {
+  if (!map.done.includes(at === 'eligibility' ? 'eligibility' : 'partners')) return null;
+  return map.next === 'call' && map.agent ? (ROUTE_OF[map.agent] ?? 'none') : 'none';
+}
+
+/** True when a reply says the whole screening, or every step, is done. Never said while a step is ahead (item 7). */
+export function saysAllDone(reply: string): boolean {
+  return /\b(?:every|all)\b(?:\s+\w+){0,3}\s+steps?\b[^.?!]{0,40}\b(?:done|finished|complete|completed)\b|\b(?:the|this|your|our)\s+(?:\w+\s+)?screening\b[^.?!]{0,25}\b(?:is|are|'s|’s)\s+(?:now\s+|all\s+)*(?:done|finished|complete|completed)\b|\b(?:that|this)(?:'s|’s| is) the end of (?:the|your) screening\b/i.test(reply);
 }
 
 /** A route to an agent the map has closed is "none". The console acts on the field, so the guard is here. */

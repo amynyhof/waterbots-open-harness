@@ -50,6 +50,22 @@ export function readPin(value: unknown): PinnedBasin | null {
   return { hybasId, level, subAreaKm2, stressLabel };
 }
 
+/** What came of GPS numbers the visitor typed, as the console found it. Anything else is none. */
+export type Gps = 'found' | 'outside' | 'failed';
+export function readGpsOutcome(value: unknown): Gps | null {
+  return value === 'found' || value === 'outside' || value === 'failed' ? value : null;
+}
+
+/**
+ * The more exact place she heard, kept only when it is in the visitor's own last message, word for word, so a place is
+ * never guessed (24 Nov 2026). Numbers alone are not a place.
+ */
+export function readHeardPlace(value: unknown, said: string): string {
+  const place = readPlace(value);
+  const fold = (s: string): string => s.toLowerCase().replace(/\s+/g, ' ');
+  return place !== '' && /[a-zà-ɏ]{2}/i.test(place) && fold(said).includes(fold(place)) ? place : '';
+}
+
 /** The visitor's own words for where the project is, or blank. */
 export function readPlace(value: unknown): string {
   if (typeof value !== 'string') return '';
@@ -65,7 +81,7 @@ export function readPlace(value: unknown): string {
  * maintainer's ruling of 31 Oct 2026 on #167: Calvin is next then, by the
  * rail's button; otherwise Wellington, by her hand-back.
  */
-export function visitBlock(place: string, phone: boolean, pin: PinnedBasin | null, _quantifyNext = false): string {
+export function visitBlock(place: string, phone: boolean, pin: PinnedBasin | null, _quantifyNext = false, gps: Gps | null = null): string {
   const lines = ['# This visit', ''];
   lines.push(
     place
@@ -73,13 +89,17 @@ export function visitBlock(place: string, phone: boolean, pin: PinnedBasin | nul
       : 'Wellington has not heard where the project is.'
   );
   lines.push(phone ? 'The visitor is on a phone, so they tap.' : 'The visitor is on a computer, so they click.');
+  /* GPS numbers the visitor typed (24 Nov 2026): the console reads them and finds the basin, or says it could not. */
+  if (gps === 'found') lines.push('The visitor typed GPS numbers, and the console has pinned the basin they fall in.');
+  if (gps === 'outside') lines.push('The visitor typed GPS numbers, and they fall in no basin on this map. Say so, and ask them to check the numbers or pin it on the map.');
+  if (gps === 'failed') lines.push('The visitor typed GPS numbers, and the map could not be read just now, so no basin is pinned from them. Say so, and ask them to pin it on the map.');
   if (!pin) {
     lines.push('No basin is pinned yet.');
     return lines.join('\n');
   }
   const km2 = Math.round(pin.subAreaKm2).toLocaleString('en-GB');
   lines.push(
-    `A basin is pinned. Its area is ${km2} km². Its water stress reading is "${pin.stressLabel}".`,
+    `A basin is pinned. Its water stress reading is "${pin.stressLabel}". Its area, to give only if asked: ${km2} km².`,
     pin.level === 6
       ? 'The reading is published: WRI Aqueduct 4.0’s own figure for this basin.'
       : 'The reading is derived: this site worked it out as the area-weighted majority of the smaller basins inside it, because WRI publishes no figure at this size. Zooming in to pin one of the smaller basins shows the published figure.',

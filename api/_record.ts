@@ -191,7 +191,7 @@ export function bridgetRecordBlock(record: ProjectRecord): string {
   return [
     `# ${RECORD_HEADING}`,
     '',
-    'These are the visitor’s own words about their project, from the shared record. They are known, so never ask for them. Your one question stays the pin.',
+    'These are the visitor’s own words about their project, from the shared record. They are known, so never ask for them.',
     '',
     ...recordLines(record),
   ].join('\n');

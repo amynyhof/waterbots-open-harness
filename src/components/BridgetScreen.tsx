@@ -55,12 +55,13 @@
 
 import { useContext, useEffect, useRef, useState } from 'react';
 import bridgetPortrait from '../../brand/assets/bots/bridget.svg';
-import type { AgentHost, AgentTurn } from '../chat/evidence';
+import type { AgentHost, AgentTurn, TurnButton } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
 import { meetShowing } from '../lib/blue';
 import { Reached } from '../chat/reached';
 import { askBridget } from '../lib/bridgetClient';
-import { chipsFor } from '../lib/chips';
+import { chipsFor, withWayOn } from '../lib/chips';
+import { basinAt, readGps } from '../lib/gps';
 import type { CarriedRecord } from '../lib/phoebeClient';
 import {
   AQUEDUCT_CITATION,
@@ -109,6 +110,10 @@ export default function BridgetScreen({
   visible,
   invite = '',
   waiting = false,
+  onward,
+  onPlace,
+  onHandedOn,
+  showChat = 0,
   onWellington,
   onMeet,
   onMapTab,
@@ -132,6 +137,14 @@ export default function BridgetScreen({
   invite?: string;
   /** True while he is writing that line: she waits for it, so it heads her page whatever way the visitor came (24 Nov 2026). */
   waiting?: boolean;
+  /** The buttons to what comes next, under her replies once her step is done (24 Nov 2026, src/lib/steps.ts). */
+  onward?: () => TurnButton[];
+  /** The more exact place the visitor typed, in their own words, for the record (24 Nov 2026). */
+  onPlace?: (place: string) => void;
+  /** Tells the shell her step is ended without a basin: the visitor would rather not give a place. */
+  onHandedOn?: () => void;
+  /** Bumped each time the visitor opens her from the crew, which opens her Chat tab first (24 Nov 2026). */
+  showChat?: number;
   /** Brings Wellington into her chat with the next step, once her part is done. */
   onWellington?: (at: 'eligibility' | 'map', composerId: string) => Promise<AgentTurn | null>;
   /** Tells the shell whether "Meet <name>" is under her chat's latest turn (one blue button, 16 Nov 2026). */
@@ -156,15 +169,33 @@ export default function BridgetScreen({
     signal: AbortSignal,
     meta?: { opened?: boolean; introduced?: boolean; pinned?: boolean }
   ): Promise<AgentTurn> {
+    /* GPS NUMBERS ARE READ HERE, NEVER BY THE MODEL (24 Nov 2026, src/lib/gps.ts): a position in the visitor's message
+       pins the basin it falls in, as a click would, and she reports it in the same answer. */
+    const last = history[history.length - 1];
+    const typed = meta?.opened || meta?.pinned || last?.role !== 'user' ? null : readGps(last.text);
+    const found = typed ? await basinAt(typed) : null;
+    if (found?.kind === 'found') {
+      reported.current = found.pin.hybasId;
+      onPin(found.pin);
+      setFocus((f) => ({ box: found.box, key: (f?.key ?? 0) + 1 }));
+    }
     const answer = await askBridget(
       history.map(({ role, text }) => ({
         role: role === 'agent' ? ('assistant' as const) : ('user' as const),
         content: text,
       })),
-      { place, phone, pin, quantifyNext, record },
+      { place, phone, pin: found?.kind === 'found' ? found.pin : pin, quantifyNext, record },
       signal,
-      { opened: meta?.opened === true, introduced: meta?.opened === true && meta.introduced === true, pinned: meta?.pinned === true }
+      {
+        opened: meta?.opened === true,
+        introduced: meta?.opened === true && meta.introduced === true,
+        pinned: meta?.pinned === true || found?.kind === 'found',
+        ...(found ? { gps: found.kind } : {}),
+      }
     );
+    if (answer.place) onPlace?.(answer.place);
+    /* Handed on with no basin and no question of somebody else's: her step does not hold the visitor. */
+    if (meta?.opened !== true && answer.handBack === 'wellington' && !answer.abstained && !pin && found?.kind !== 'found') onHandedOn?.();
     /* After her answer lands, he joins: from the field alone. */
     if (answer.handBack === 'wellington') window.setTimeout(() => void wellingtonJoins(), 0);
     return {
@@ -177,11 +208,14 @@ export default function BridgetScreen({
       ...(answer.handBack === 'wellington'
         ? {}
         : {
-            buttons: chipsFor({
-              answers: answer.showMap ? [] : answer.answers,
-              send: (text) => void chatRef.current.sendText(text),
-              tab: answer.showMap ? { label: MAP_TAB, open: () => setTab('tool') } : null,
-            }),
+            buttons: withWayOn(
+              chipsFor({
+                answers: answer.showMap ? [] : answer.answers,
+                send: (text) => void chatRef.current.sendText(text),
+                tab: answer.showMap ? { label: MAP_TAB, open: () => setTab('tool') } : null,
+              }),
+              pin ? onward?.() : undefined
+            ),
           }),
     };
   }
@@ -214,6 +248,9 @@ export default function BridgetScreen({
   useEffect(() => {
     onMapTab?.(tab === 'tool');
   }, [tab, onMapTab]);
+  useEffect(() => {
+    if (showChat > 0) setTab('chat');
+  }, [showChat]);
 
   /* THE MAP ZOOMS TO THE COUNTRY BY ITSELF — the ruling of 31 Oct 2026, made
      firmer on 14 Nov 2026 (B2), after a walk where the visitor was asked to

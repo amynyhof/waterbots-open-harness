@@ -180,7 +180,10 @@ export function learnedContext(context: VisitContext, learned: Learned): VisitCo
   };
   if (learned.does) take('does', learned.does);
   if (learned.name) take('name', learned.name);
-  if (learned.place) take('place', learned.place);
+  /* A more exact place the visitor gave Bridget is never undone by the shorter one he heard first (24 Nov 2026). */
+  const heard = learned.place?.trim().toLowerCase() ?? '';
+  const held = next.provenance.place === 'chat' ? next.place.trim().toLowerCase() : '';
+  if (learned.place && !(held !== heard && held.includes(heard))) take('place', learned.place);
   if (learned.type) take('type', learned.type);
   /* A class is a fact about a drinking-water project and nothing else: it
      lands only beside C-19, and a type that is not C-19 clears any class. */
@@ -193,6 +196,20 @@ export function learnedContext(context: VisitContext, learned: Learned): VisitCo
     next = { ...next, served: learned.served, provenance: { ...next.provenance, served: 'chat' } };
   }
   return next;
+}
+
+/**
+ * A more exact place, in the visitor's own words to Bridget — the maintainer's ruling of 24 Nov 2026. It goes in front of
+ * what Wellington heard, so the country they gave is kept: "Kitui" beside "Kenya" is "Kitui, Kenya". Words that name a
+ * country themselves stand alone. A typed place is never overwritten.
+ */
+export function placedContext(context: VisitContext, place: string, namesACountry: (text: string) => boolean): VisitContext {
+  const text = place.trim();
+  if (text === '' || context.provenance.place === 'typed') return context;
+  const had = context.provenance.place === 'pin' ? '' : context.place.trim();
+  if (had.toLowerCase().includes(text.toLowerCase())) return context;
+  const next = had === '' || namesACountry(text) ? text : `${text}, ${had}`;
+  return { ...context, place: next, provenance: { ...context.provenance, place: 'chat' } };
 }
 
 /**
@@ -293,6 +310,10 @@ export interface Visit {
   /** His lines to Calvin and Violet, at the head of their desks — the same hand-off for every agent, 24 Nov 2026. */
   quantifyInvite: string;
   waterInvite: string;
+  /** Bridget has handed the visitor on without a basin: her step does not hold them (24 Nov 2026). */
+  partnersDone?: boolean;
+  /** Phoebe has handed the visitor on with a path done or closed: what she has not read is "more to learn" (24 Nov 2026). */
+  eligibilityHanded?: boolean;
   /** True once he has invited Partners while the stage is partners. */
   invitedPartners: boolean;
   /** True once he has invited Quantify. */
@@ -320,10 +341,15 @@ export const EMPTY_VISIT: Visit = {
  * be a wait for something that is never coming.
  */
 export function eligibilityDone(visit: Visit, sheet: Sheet): boolean {
+  return onePathDone(sheet, visit.context.gsClass);
+}
+
+/** One path she reads is done or closed. */
+export function onePathDone(sheet: Sheet, gsClass: string): boolean {
   const packs = HER_PACKS.filter((pack) => section(pack) !== undefined);
   if (packs.length === 0) return false;
   return packs.some((pack) => {
-    const context = contextFor(sheet, pack, visit.context.gsClass);
+    const context = contextFor(sheet, pack, gsClass);
     if (pathwayState(sheet, pack, context) === 'does-not-apply') return true;
     return packDone(sheet, pack, context);
   });

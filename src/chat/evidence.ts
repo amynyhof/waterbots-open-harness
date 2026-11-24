@@ -123,6 +123,11 @@ export interface TurnButton {
   primary?: boolean;
   /** The step this button opens, for a "Meet …" button: once that step is reached it is drawn quiet (21 Nov 2026). */
   reaches?: Surface;
+  /**
+   * A hand-off to the next step, from 24 Nov 2026 (src/lib/steps.ts): drawn in the next agent's colour, the same for
+   * every agent, whether or not the visitor has been there.
+   */
+  handoff?: { token: string; portrait: string; name: string };
   /** Called on a tap. The layer knows no more than that. */
   go: () => void;
 }

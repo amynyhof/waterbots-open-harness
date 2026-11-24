@@ -41,7 +41,7 @@ import { countryIsoFor } from './calvinProject';
 import { cardFor, routeFor } from './phoebeCards';
 import { DRINKING_WATER_TYPE, GS_CLASS_IDS, projectType } from './projectTypes.generated';
 import type { Surface } from './surfaces';
-import { phoebeDone, type CarbonFigure, type Visit, type VisitContext } from './visit';
+import { nothingLeftToAsk, phoebeDone, type CarbonFigure, type Visit, type VisitContext } from './visit';
 import { HER_PACKS, pathwayRows, section, verdictRows } from './worksheet.generated';
 import { contextFor, packDone, pathwayState, readiness, stateOf, touched, type Sheet } from './worksheetState';
 
@@ -249,8 +249,9 @@ export function projectRecord({ visit, sheet, carbon = null }: RecordInput): Pro
     ...(technology?.by === 'phoebe' ? { technology: { label: technology.label, ...(technology.code ? { code: technology.code } : {}) } } : {}),
     ...(credited !== undefined ? { creditedUnderV1: credited } : {}),
   }).record;
-  /* Her part is done by the rule her own screen keeps (phoebeDone, src/lib/visit.ts). */
-  const done = phoebeDone(visit, sheet);
+  /* Her part is done by the rule her own screen keeps (phoebeDone, src/lib/visit.ts), or once she has handed the visitor
+     on with a path done or closed, so nobody is sent back to a step she has ended (24 Nov 2026). */
+  const done = phoebeDone(visit, sheet) || visit.eligibilityHanded === true;
   for (const pack of HER_PACKS) {
     const pathway = PATHWAY_OF[section(pack)?.sectionId ?? ''];
     const read = pathway ? pathwayReading(pack, sheet, context.gsClass, done) : undefined;
@@ -258,11 +259,17 @@ export function projectRecord({ visit, sheet, carbon = null }: RecordInput): Pro
   }
   record = setAgentResults(record, 'phoebe', {
     inputs: { rows: sheet.rows, sorts: sheet.sorts },
-    done: READ_HERE.every((p) => record.pathways[p] !== undefined),
+    /* Her step is ended, for what comes next and who shows: every path has its reading, and nothing is left for her to ask
+       or she has handed the visitor on (24 Nov 2026). Her readings keep the rule above. */
+    done:
+      READ_HERE.every((p) => record.pathways[p] !== undefined) &&
+      (visit.eligibilityHanded === true || nothingLeftToAsk(sheet, context.gsClass)),
   });
 
-  /* BRIDGET. Core's record has no field for a basin yet, so it is her own part, as the map handed it over. */
+  /* BRIDGET. Core's record has no field for a basin yet, so it is her own part, as the map handed it over. Her step is
+     done with a basin, or once she has handed the visitor on without one: we are guides, not gates (24 Nov 2026). */
   if (visit.pin) record = setAgentResults(record, 'bridget', { inputs: { basin: visit.pin }, done: true });
+  else if (visit.partnersDone) record = setAgentResults(record, 'bridget', { inputs: {}, done: true });
 
   /* CALVIN. The figure is his engine's; this file only writes it down. */
   if (carbon) {
@@ -271,6 +278,10 @@ export function projectRecord({ visit, sheet, carbon = null }: RecordInput): Pro
       done: true,
     });
   }
+
+  /* A class his calculator does not cover gives no figure, so his part could never end and the visitor would be sent to
+     him for ever. It is ended here with no figure, and Wellington says why (24 Nov 2026). */
+  if (!carbon && technology && uncoveredLabel(record)) record = setAgentResults(record, 'calvin', { done: true });
 
   /* VIOLET, by her own package's helpers. */
   if (visit.water) {
@@ -338,22 +349,59 @@ export function closedBy(map: AgentMap, agent: AgentId): boolean {
  * AFTER PHOEBE. Core's map marks Bridget and Violet as called the moment the project is a community water supply,
  * from that fact alone, while its one next step is still Phoebe; and it reads her part as done while one path is only
  * started (A30). On her walk of 24 Nov they showed before Phoebe had finished, and she ruled they are hidden until
- * then. So here an agent after Phoebe is called once the map calls them, every pathway read on this site has its
- * reading, and she has finished: nothing is left for her to ask, or she has handed back (`phoebeFinished`).
+ * then: later agents wait until the agent before them has finished. So here Bridget is called once the map calls her and
+ * Phoebe's step is ended, and the calculators once Bridget's is. Calvin and Violet share Step 3, so neither waits for the
+ * other: Wellington introduces both.
  *
  * The caller keeps who has been called: an agent that has shown never disappears (App.tsx).
  */
-export function calledSurfaces(record: ProjectRecord, map: AgentMap, phoebeFinished: boolean): Surface[] {
-  const read = phoebeFinished && READ_HERE.every((pathway) => record.pathways[pathway] !== undefined);
+export function calledSurfaces(record: ProjectRecord, map: AgentMap): Surface[] {
+  const phoebe = record.agents.phoebe?.done === true;
+  const bridget = record.agents.bridget?.done === true || !callOf(map, 'bridget').called;
   const out: Surface[] = ['desk'];
   for (const surface of ['eligibility', 'map', 'quantification', 'water'] as const) {
     const call = callOf(map, AGENT_AT[surface]);
     if (surface === 'eligibility') {
       /* Not called any more because she has read every pathway: she was, and stays. */
       if (call.called || call.because === 'every pathway has a reading') out.push(surface);
-    } else if (call.called && read) out.push(surface);
+    } else if (call.called && phoebe && (surface === 'map' || bridget)) out.push(surface);
   }
   return out;
+}
+
+/**
+ * WHAT COMES NEXT, read from the map — the maintainer's ruling of 24 Nov 2026 (src/lib/steps.ts draws it).
+ *
+ * It is the map's own one next step, with two things added. Step 3 names every calculator the map calls that is not done,
+ * not the first alone. And once Phoebe has read every path, a missing country no longer holds the visitor at "gather
+ * facts": Wellington asks for it, and the next step is still there. A visitor never reaches a dead end.
+ */
+export type NextStep = { kind: 'gather' } | { kind: 'call'; surfaces: Surface[] } | { kind: 'team' } | { kind: 'done' };
+
+export function nextStep(record: ProjectRecord, map: AgentMap): NextStep {
+  if (record.agents.phoebe?.done !== true) {
+    const read = READ_HERE.every((pathway) => record.pathways[pathway] !== undefined);
+    /* Until her step is ended the next step is Phoebe's, whatever else the facts already call. */
+    return read || callOf(map, 'phoebe').called ? { kind: 'call', surfaces: ['eligibility'] } : { kind: 'gather' };
+  }
+  if (READ_HERE.every((pathway) => record.pathways[pathway]?.reading === 'unlikely')) return { kind: 'team' };
+  const ahead = (agent: AgentId) => callOf(map, agent).called && record.agents[agent]?.done !== true;
+  if (ahead('bridget')) return { kind: 'call', surfaces: ['map'] };
+  const calculators = (['quantification', 'water'] as const).filter((surface) => ahead(AGENT_AT[surface]));
+  return calculators.length ? { kind: 'call', surfaces: [...calculators] } : { kind: 'done' };
+}
+
+/** The steps that are done, by the journey's own keys. */
+export function stepsDone(record: ProjectRecord, map: AgentMap): ('eligibility' | 'partners' | 'quantify')[] {
+  const next = nextStep(record, map);
+  const phoebe = record.agents.phoebe?.done === true;
+  const bridget = record.agents.bridget?.done === true;
+  return [
+    ...(phoebe ? (['eligibility'] as const) : []),
+    ...(phoebe && bridget ? (['partners'] as const) : []),
+    /* Only where a calculator gave a figure: a project no calculator is called for has no Step 3 to call done. */
+    ...(next.kind === 'done' && (record.agents.calvin?.estimate || record.agents.violet?.estimate) ? (['quantify'] as const) : []),
+  ];
 }
 
 /** Each pathway's plain name, as the screens say it. */
@@ -371,13 +419,23 @@ export interface MapForWellington {
   closed: string[];
   readings: { pathway: string; reading: string; wouldChange?: string }[];
   transitioning: boolean;
+  /** The steps that are done, by the journey's keys, and every agent who helps with the next one (24 Nov 2026). */
+  done: string[];
+  agents: string[];
+  /** Calvin's calculator does not cover this kind of project, so he is not the next step. */
+  uncovered: boolean;
 }
 
 export function mapForWellington(record: ProjectRecord, map: AgentMap): MapForWellington {
+  const next = nextStep(record, map);
+  const agents = next.kind === 'call' ? next.surfaces.map((surface) => AGENT_AT[surface]) : [];
   return {
-    next: map.next.step,
-    ...(map.next.step === 'call' ? { agent: map.next.agent } : {}),
+    next: next.kind === 'call' ? 'call' : next.kind === 'gather' ? 'gather facts' : next.kind === 'team' ? 'point to the WaterBots team' : 'report or sign-up',
+    ...(agents.length ? { agent: agents[0] } : {}),
     ...(map.next.step === 'gather facts' ? { facts: [...map.next.facts] } : {}),
+    done: stepsDone(record, map),
+    agents,
+    uncovered: uncoveredLabel(record) !== undefined && callOf(map, 'calvin').called,
     called: map.agents.filter((c) => c.called).map((c) => c.agent),
     closed: map.agents.filter((c) => closedBy(map, c.agent)).map((c) => c.agent),
     readings: map.pathways.flatMap((p) =>

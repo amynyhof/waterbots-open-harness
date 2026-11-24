@@ -37,7 +37,7 @@ they stand here.
   tool depth.
 - **The crew shows only the agents the agent map has called** (the shared console behaviours, 24 Nov 2026, line
   1). One not called yet is hidden, not dimmed; it appears when the map calls it and never disappears after
-  that. An agent after Phoebe appears once she has finished.
+  that. Later agents wait until the agent before them has finished; Calvin and Violet share Step 3.
 - **Chips answer the question just asked, and come first** (line 2). Then the one that opens a tab the agent asked
   for, "Go to map" (line 3); last, at most one helper. An answer chip is sent as the visitor's own words, so it
   never holds a fact the visitor has not said.
@@ -48,10 +48,16 @@ they stand here.
 - The crew is the right column on every step, one status line each. Each line says what the agent is
   ready to do, then what they found, and shows only once it is news or while that agent's step is in
   view.
-- There is no "Next phase" chip on any step. Every handoff's button sits in the chat: a blue "Meet
-  <name>" and a quiet "Keep chatting". A "Meet …" button goes quiet once its agent is reached.
-- **One blue button at a time** (`src/lib/blue.ts`): "Meet <name>" under the latest turn on the step in
-  view, else Save, else the menu's Sign up. A form's Send on its own page.
+- **The journey is told by step** (the shared console behaviours, 24 Nov 2026, items 6 and 7; `src/lib/steps.ts`): Step 1
+  Eligibility, Step 2 Partners, Step 3 Quantify, in the journey's words. What comes next is read from the agent map. A
+  step is done when its agent has finished or handed on; the screening is never called done while a step is ahead.
+- **Every hand-off button has one format** (item 8): the step and the agent, "Step 2 of 3: Partners. Meet Bridget", in
+  the next agent's colour, whether or not the visitor has been there. Beside it, a quiet "Keep chatting". There is
+  always one to the next step; at the end, "Export screening report" and "Save and sign up" (item 10).
+- **A crew card opens that agent's Chat tab first** (item 9). Calvin's and Violet's chats wait for their instructions
+  from the open core, so until then their screens open on their calculator.
+- **One blue button at a time** (`src/lib/blue.ts`): Save, else the menu's Sign up. A form's Send on its own page. A
+  hand-off is in its agent's colour, so it is no longer the blue one (24 Nov 2026).
 - Wellington's desk opens on his chat alone; "About Wellington" beside his name brings back his
   Knowledge pack and Credentials.
 - No intro paragraph above the conversation; the map's line is one plain sentence.

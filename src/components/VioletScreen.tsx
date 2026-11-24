@@ -13,7 +13,7 @@
 
 import type { ReactNode } from 'react';
 import type { ProjectRecord } from '@waterbots/core/record';
-import type { AgentHost } from '../chat/evidence';
+import type { AgentHost, TurnButton } from '../chat/evidence';
 import { VIOLET_PACKAGE_VERSION, VIOLET_RELEASE } from '../lib/calvinProject';
 import { WATER_D3_LISTING } from '../lib/methodPacks';
 import { rosterJobAtDesk } from '../lib/rosterLine';
@@ -44,6 +44,7 @@ export default function VioletScreen({
   closed = null,
   invite = '',
   waiting = false,
+  wayOn = [],
 }: {
   /** The shared project record: her screen opens on it and follows it. */
   record: ProjectRecord;
@@ -55,16 +56,20 @@ export default function VioletScreen({
   invite?: string;
   /** True while he is writing it. */
   waiting?: boolean;
+  /** The buttons to what comes next (24 Nov 2026, src/lib/steps.ts). */
+  wayOn?: TurnButton[];
 }) {
   return (
     <AgentScreen
       host={VIOLET}
       opensOn="tool"
       tabs={{
-        chat: <NotLiveChat host={VIOLET} line={VIOLET_NOT_LIVE_LINE} note={rosterJobAtDesk('violet')} lead={<HandOff line={invite} waiting={waiting} />} />,
+        chat: <NotLiveChat host={VIOLET} line={VIOLET_NOT_LIVE_LINE} note={rosterJobAtDesk('violet')} lead={<HandOff line={invite} waiting={waiting} wayOn={wayOn} />} />,
         tool: (
           <>
-            {closed ?? <HandOff line={invite} waiting={waiting} framed />}
+            {/* A closed desk has no line of his, and still has the way on. */}
+            {closed ? <HandOff line="" wayOn={wayOn} framed /> : <HandOff line={invite} waiting={waiting} wayOn={wayOn} framed />}
+            {closed}
             {/* Kept mounted behind a closed desk, so nothing the visitor set is lost if the reading changes. */}
             <div style={{ display: closed ? 'none' : 'contents' }}>
               <VioletWater record={record} place="free-site" onChange={onWater} hideExportButton />

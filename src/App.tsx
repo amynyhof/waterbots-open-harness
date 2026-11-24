@@ -77,13 +77,14 @@ import Desk from './components/Desk';
 import CrewRail from './components/CrewRail';
 import ScreeningReport from './components/ScreeningReport';
 import { NO_SUMMARY, type CalvinSummary } from './components/CalvinCalculator';
-import { calvinProjectFrom } from './lib/calvinProject';
+import { calvinProjectFrom, countryIsoFor } from './lib/calvinProject';
 import { carriedRecord } from './lib/phoebeClient';
-import { callOf, calledSurfaces, closedBy, mapForWellington, metFrom, projectRecord, siteMap, uncoveredLabel, type MapForWellington } from './lib/projectRecord';
+import { callOf, calledSurfaces, closedBy, mapForWellington, metFrom, nextStep, projectRecord, siteMap, uncoveredLabel, type MapForWellington, type NextStep } from './lib/projectRecord';
+import { onward, type Ending } from './lib/steps';
 import { d3InputFromRecord, violetAgentNoteLines } from '@waterbots/violet';
 import { computeD3 } from '@waterbots/violet/engine';
 import type { CarbonFigure } from './lib/visit';
-import type { AgentTurn } from './chat/evidence';
+import type { AgentTurn, TurnButton } from './chat/evidence';
 import Commons from './components/Commons';
 import InterestPage from './components/InterestPage';
 import SupportersPage from './components/SupportersPage';
@@ -128,10 +129,10 @@ import {
   inviteFor,
   journeyProgress,
   learnedContext,
-  nothingLeftToAsk,
   openedEligibility,
   pathStatus,
   pinnedVisit,
+  placedContext,
   somethingOnRecord,
   typedContext,
   type Learned,
@@ -313,6 +314,12 @@ export default function App() {
     const record = projectRecord({ visit: visitRef.current, sheet: sheetRef.current, carbon: carbonRef.current });
     return mapForWellington(record, siteMap(record, metFrom(reachedRef.current)));
   });
+  /* WHAT COMES NEXT, read at answer time (24 Nov 2026, src/lib/steps.ts), and what the console does at the end. */
+  const nextNow = useRef<() => NextStep>(() => {
+    const record = projectRecord({ visit: visitRef.current, sheet: sheetRef.current, carbon: carbonRef.current });
+    return nextStep(record, siteMap(record, metFrom(reachedRef.current)));
+  });
+  const endingRef = useRef<Ending>({ open: setSurface, report: printScreeningReport, save: () => undefined });
   const ask = useMemo(
     () =>
       wellingtonAsk(
@@ -323,7 +330,9 @@ export default function App() {
         setSurface,
         () => mapNow.current(),
         (to, line) => setVisit((v) => handedOver(v, to, line)),
-        (text) => sayToHim.current(text)
+        (text) => sayToHim.current(text),
+        () => nextNow.current(),
+        { open: (to) => setSurface(to), report: () => endingRef.current.report(), save: () => endingRef.current.save() }
       ),
     [onLearned, onRouted]
   );
@@ -487,9 +496,7 @@ export default function App() {
   /* THE CREW SHOWS ONLY WHO THE MAP HAS CALLED — the maintainer's ruling of 24 Nov 2026 (calledSurfaces,
      src/lib/projectRecord.ts). An agent appears when the map calls them, or when Wellington has handed the visitor to
      them, and never disappears after that. */
-  const [phoebeHandedBack, setPhoebeHandedBack] = useState(false);
-  const phoebeFinished = phoebeHandedBack || nothingLeftToAsk(sheet, visit.context.gsClass);
-  const calledNow = useMemo(() => calledSurfaces(record, map, phoebeFinished), [record, map, phoebeFinished]);
+  const calledNow = useMemo(() => calledSurfaces(record, map), [record, map]);
   const [calledBefore, setCalledBefore] = useState<ReadonlySet<Surface>>(() => new Set([DEFAULT_SURFACE]));
   const crewShown = useMemo<ReadonlySet<Surface>>(() => new Set([...calledBefore, ...calledNow, ...reached]), [calledBefore, calledNow, reached]);
   useEffect(() => {
@@ -511,7 +518,6 @@ export default function App() {
   const wellingtonComes = useCallback(
     async (at: 'eligibility' | 'map', composerId: string): Promise<AgentTurn | null> => {
       greetedBack.current = true;
-      if (at === 'eligibility') setPhoebeHandedBack(true);
       return askHim({ opened: true, at, composerId });
     },
     [askHim]
@@ -584,6 +590,24 @@ export default function App() {
       });
     }
   }, [counted, sheet, person, showPerson]);
+
+  endingRef.current = { open: setSurface, report: printScreeningReport, save: () => void onSeal() };
+  /* The way on from each desk, by what the map says is next. */
+  const next = useMemo(() => nextStep(record, map), [record, map]);
+  const wayOn = (here: Surface) => onward(next, endingRef.current, here);
+  /* Read when an agent's answer lands, from what the shell holds then. */
+  const wayOnNow = useRef<(here: Surface) => TurnButton[]>(() => []);
+  wayOnNow.current = (here) => onward(nextNow.current(), endingRef.current, here);
+  /* A CREW CARD OPENS THAT AGENT'S CHAT FIRST — 24 Nov 2026, item 9. Calvin's and Violet's chats are not live, so their
+     screens still open on their calculator, under Wellington's line. */
+  const [chatAsked, setChatAsked] = useState<Partial<Record<Surface, number>>>({});
+  const openFromCrew = useCallback(
+    (to: Surface) => {
+      setChatAsked((c) => ({ ...c, [to]: (c[to] ?? 0) + 1 }));
+      setSurface(to);
+    },
+    [setSurface]
+  );
 
   const onDesk = surface === 'desk';
   const onMap = surface === 'map';
@@ -712,7 +736,7 @@ export default function App() {
                 style={{ position: 'absolute', inset: 0, visibility: onDesk ? undefined : 'hidden' }}
                 aria-hidden={!onDesk}
               >
-                  <Desk chat={chat} />
+                  <Desk chat={chat} showChat={chatAsked.desk} />
               </div>
 
               {/* BRIDGET'S SCREEN, kept mounted, hidden when off-surface — see
@@ -735,6 +759,13 @@ export default function App() {
                   quantifyNext={visit.stage === 'quantify'}
                   visible={onMap}
                   invite={visit.partnersInvite}
+                  onward={() => wayOnNow.current('map')}
+                  showChat={chatAsked.map}
+                  onPlace={(place) => setVisit((v) => ({ ...v, context: placedContext(v.context, place, (text) => countryIsoFor(text) !== null) }))}
+                  onHandedOn={() => {
+                    visitRef.current = { ...visitRef.current, partnersDone: true };
+                    setVisit((v) => ({ ...v, partnersDone: true }));
+                  }}
                   waiting={waitsForHim('map')}
                   onWellington={wellingtonComes}
                   onMeet={onBridgetMeet}
@@ -763,6 +794,12 @@ export default function App() {
                   visible={onEligibility}
                   eligibilityDone={phoebeDone(visit, sheet)}
                   invite={visit.eligibilityInvite}
+                  onward={() => wayOnNow.current('eligibility')}
+                  onHandedOn={() => {
+                    visitRef.current = { ...visitRef.current, eligibilityHanded: true };
+                    setVisit((v) => ({ ...v, eligibilityHanded: true }));
+                  }}
+                  showChat={chatAsked.eligibility}
                   waiting={waitsForHim('eligibility')}
                   onWellington={wellingtonComes}
                   onMeet={onPhoebeMeet}
@@ -782,6 +819,7 @@ export default function App() {
                   onSummary={setCalvinSummary}
                   unknownLabel={uncoveredLabel(facts)}
                   invite={visit.quantifyInvite}
+                  wayOn={wayOn('quantification')}
                   waiting={waitsForHim('quantification')}
                   closed={closed.calvin ? <NotCalled pathway="carbon" reading={facts.pathways.carbon} onCommons={() => goTo('commons')} /> : null}
                 />
@@ -797,6 +835,7 @@ export default function App() {
                   record={facts}
                   onWater={setWater}
                   invite={visit.waterInvite}
+                  wayOn={wayOn('water')}
                   waiting={waitsForHim('water')}
                   closed={closed.violet ? <NotCalled pathway="vwba" reading={facts.pathways.vwba} onCommons={() => goTo('commons')} /> : null}
                 />
@@ -810,7 +849,7 @@ export default function App() {
             <CrewRail
               active={surface}
               status={crew}
-              onNavigate={setSurface}
+              onNavigate={openFromCrew}
               shown={crewShown}
               drawer={phone ? { open: drawer === 'crew', onClose: closeDrawer } : undefined}
             />

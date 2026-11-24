@@ -33,7 +33,12 @@ export interface BlueState {
   form?: boolean;
 }
 
-/** Which button is blue. Exactly one, always. */
+/**
+ * Which button is blue. Exactly one, always.
+ *
+ * From 24 Nov 2026 a hand-off is drawn in the next agent's colour (src/lib/steps.ts), so no chat has a blue "Meet" any
+ * more and `meet` is false. The rule is kept whole for whatever is primary next.
+ */
 export function blueButton(state: BlueState): Blue {
   if (state.form) return 'send';
   if (state.meet) return 'meet';

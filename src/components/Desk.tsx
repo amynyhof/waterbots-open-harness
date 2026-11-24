@@ -40,22 +40,31 @@
  * a card. No mock data, ever.
  */
 
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import type { Conversation } from '../chat/useConversation';
 import { WELLINGTON } from '../lib/wellington';
-import AgentScreen from '../screen/AgentScreen';
+import AgentScreen, { type ScreenTab } from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import ScreenChat, { SCREEN_COLUMN } from '../screen/ScreenChat';
 
 export default function Desk({
   chat,
+  showChat = 0,
 }: {
   chat: Conversation;
+  /** Bumped each time the visitor opens him from the crew, which opens his Chat tab first (24 Nov 2026). */
+  showChat?: number;
 }) {
+  const [tab, setTab] = useState<ScreenTab>('chat');
+  useEffect(() => {
+    if (showChat > 0) setTab('chat');
+  }, [showChat]);
   return (
     <AgentScreen
       host={WELLINGTON}
       chatOnly
+      active={tab}
+      onActiveChange={setTab}
       tabs={{
         /* The build note that stood here (item S11, 23 Sep 2026) is the one-line
            banner under the site menu from 16 Nov 2026, on every page (W28). */

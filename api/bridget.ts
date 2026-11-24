@@ -30,7 +30,7 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 import { recordAbstention } from './_abstentions.js';
-import { readPin, readPlace, settleHandBack, visitBlock } from './_bridgetPin.js';
+import { readGpsOutcome, readHeardPlace, readPin, readPlace, settleHandBack, visitBlock } from './_bridgetPin.js';
 import { BRIDGET_RESPONSE_SCHEMA, BRIDGET_SYSTEM_PROMPT } from './_bridgetPrompt.js';
 import { BRIDGET, countOneMessage, timeUntilReset } from './_cap.js';
 import { readChips } from './_chips.js';
@@ -101,6 +101,7 @@ export async function POST(req: Request): Promise<Response> {
     pin?: unknown;
     quantifyNext?: unknown;
     record?: unknown;
+    gps?: unknown;
   };
   try {
     body = (await req.json()) as typeof body;
@@ -166,7 +167,8 @@ export async function POST(req: Request): Promise<Response> {
     return problem(400, 'No message was sent.');
   }
 
-  const visitText = visitBlock(readPlace(body.place), body.phone === true, pin, quantifyNext);
+  const gps = readGpsOutcome(body.gps);
+  const visitText = visitBlock(readPlace(body.place), body.phone === true, pin, quantifyNext, gps);
   /* THE PROJECT RECORD, the one Phoebe reads (J3, 23 Nov 2026), so she never asks for what it holds. */
   const record = readRecord(body.record);
   const recordText = record ? bridgetRecordBlock(record) : null;
@@ -341,6 +343,8 @@ export async function POST(req: Request): Promise<Response> {
 
   return json(200, {
     ...answer,
+    /* The more exact place, only in the visitor's own words from this turn (24 Nov 2026). */
+    place: lastIsUser ? readHeardPlace(answer.place, lastQuestion) : '',
     /* Her first message always asks for the Map tab (her prompt's opening), so the chip is there whatever the field says. */
     showMap: !pinned && (answer.showMap || (opened && !pin)),
     handBack: settleHandBack(answer.handBack, { pinned, quantifyNext, abstained: answer.abstained }),
@@ -363,6 +367,8 @@ interface Answer {
   answers: string[];
   /** The reply asks the visitor to open the Map tab: the console draws "Go to map" (24 Nov 2026). */
   showMap: boolean;
+  /** The more exact place the visitor typed, or "" (24 Nov 2026). */
+  place: string;
   handBack: HandBack;
   abstained: boolean;
   abstentionTopic?: string;
@@ -378,6 +384,7 @@ function readAnswer(value: unknown): Answer | null {
     reply: v.reply.trim(),
     answers: readChips(v.answers, v.reply),
     showMap: v.showMap === true,
+    place: typeof v.place === 'string' ? v.place : '',
     handBack: readHandBack(v.handBack),
     abstained,
     ...(abstained && topic ? { abstentionTopic: topic } : {}),

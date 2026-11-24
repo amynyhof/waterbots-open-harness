@@ -42,6 +42,9 @@ Wellington's own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md)
 - **His first handoff to each colleague says what that colleague does for the visitor**, in his own
   words, from each colleague's `helps_with` lines in the crew list (the maintainer's word of 22 Nov 2026).
   The colleague does not introduce herself after him (agent rule 17).
+- **At the end of a step** (24 Nov 2026, item 7) he says which step is done, names the next one and what it helps the
+  visitor decide, and introduces who helps there, one or more. The route is the map's, whatever his field says. A reply
+  that calls the screening done too soon goes back to him once.
 - **He hands the visitor to every agent the same way** (the maintainer's ruling of 24 Nov 2026): his line heads
   Phoebe's, Bridget's, Calvin's and Violet's pages. Where the visitor opens a page before he has handed them over,
   he is asked for the line then; it is one of his thirty messages.

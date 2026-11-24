@@ -23,6 +23,12 @@ export function answersFrom(value: unknown): string[] {
     .slice(0, MAX_CHIPS);
 }
 
+/** An agent's chips, and after them the way on to the next step where their own step is done (24 Nov 2026). */
+export function withWayOn(chips: TurnButton[] | undefined, way: TurnButton[] | undefined): TurnButton[] | undefined {
+  const all = [...(chips ?? []), ...(way ?? [])];
+  return all.length ? all : undefined;
+}
+
 export function chipsFor(input: {
   answers: readonly string[];
   /** Sends a chip's words as the visitor's own message. */

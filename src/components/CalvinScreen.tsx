@@ -36,7 +36,7 @@ import type { CalvinProject } from '@waterbots/calvin/screen';
 import type { Place } from '@waterbots/core/places';
 import { GS4GG_CALCULATOR_VERSION } from '@waterbots/calvin/engine';
 import calvinPortrait from '../../brand/assets/bots/calvin.svg';
-import type { AgentHost } from '../chat/evidence';
+import type { AgentHost, TurnButton } from '../chat/evidence';
 import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, { type PackView } from '../screen/KnowledgePackTab';
@@ -95,6 +95,7 @@ export default function CalvinScreen({
   closed = null,
   invite = '',
   waiting = false,
+  wayOn = [],
 }: {
   project: CalvinProject;
   /** The figure and the facts still needed, handed to the shell so the crew panel and the report read them. */
@@ -107,16 +108,20 @@ export default function CalvinScreen({
   invite?: string;
   /** True while he is writing it. */
   waiting?: boolean;
+  /** The buttons to what comes next (24 Nov 2026, src/lib/steps.ts). */
+  wayOn?: TurnButton[];
 }) {
   return (
     <AgentScreen
       host={CALVIN}
       opensOn="tool"
       tabs={{
-        chat: <NotLiveChat host={CALVIN} line={CALVIN_NOT_LIVE_LINE} lead={<HandOff line={invite} waiting={waiting} />} />,
+        chat: <NotLiveChat host={CALVIN} line={CALVIN_NOT_LIVE_LINE} lead={<HandOff line={invite} waiting={waiting} wayOn={wayOn} />} />,
         tool: (
           <>
-            {closed ?? <HandOff line={invite} waiting={waiting} framed />}
+            {/* A closed desk has no line of his, and still has the way on. */}
+            {closed ? <HandOff line="" wayOn={wayOn} framed /> : <HandOff line={invite} waiting={waiting} wayOn={wayOn} framed />}
+            {closed}
             {/* Kept mounted behind a closed desk, so nothing the visitor set is lost if the reading changes. */}
             <div style={{ display: closed ? 'none' : 'contents' }}>
               <CalvinTool

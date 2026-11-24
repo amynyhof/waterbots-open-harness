@@ -28,7 +28,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { checkEntry } from '@waterbots/core/record';
 import { recordAbstention } from './_abstentions.js';
-import { guardRoute, mapBlock, readMap } from './_agentMap.js';
+import { guardRoute, mapBlock, readMap, saysAllDone, stepEndNote, stepEndRoute } from './_agentMap.js';
 import { CARRIED, WELLINGTON, countOneMessage, timeUntilReset } from './_cap.js';
 import { FINISH_NOTE, leavesWaiting } from './_lookUp.js';
 import { phoebeFound, readRecord, readSheet, readStage, stageBlock, visitBlock } from './_record.js';
@@ -115,15 +115,10 @@ function handoffNote(to: HandTo): string {
 }
 
 /** What he is told when he joins another agent's chat — 14 Nov 2026 — or opens his own desk (W29). */
-const AT_NOTE: Record<'eligibility' | 'map' | 'open', string> = {
-  /* W29, 16 Nov 2026: he speaks first on his desk when no question was carried in. */
-  open:
-    '# Where you are speaking\n\nThe visitor has just arrived on your desk and has said nothing yet. Speak first, in your own words: who you are and what the team does, then one question about their project. If the record already holds something, use it and ask only for what is missing. Set no route.',
-  eligibility:
-    "# Where you are speaking\n\nYou have joined the visitor in Phoebe's chat, because her step is done. In a line, say where things stand from what Phoebe found, then hand the visitor to the one next step, the way you handed them to Phoebe: say what that colleague does for them, set the route, and fill the introduction field; the console draws its button under your message. Never tell the visitor to come back to you.",
-  map:
-    "# Where you are speaking\n\nYou have joined the visitor in Bridget's chat, because the basin is pinned. In a line, say where things stand, then hand the visitor to the one next step, the way you handed them to Phoebe: say what that colleague does for them, set the route, and fill the introduction field; the console draws its button under your message. Never tell the visitor to come back to you.",
-};
+const OPEN_NOTE: string =
+  /* W29, 16 Nov 2026: he speaks first on his desk when no question was carried in. The notes for the end of a step are
+     worked out from the map (stepEndNote, api/_agentMap.ts) from 24 Nov 2026. */
+    '# Where you are speaking\n\nThe visitor has just arrived on your desk and has said nothing yet. Speak first, in your own words: who you are and what the team does, then one question about their project. If the record already holds something, use it and ask only for what is missing. Set no route.';
 
 export async function POST(req: Request): Promise<Response> {
   let body: {
@@ -329,9 +324,9 @@ export async function POST(req: Request): Promise<Response> {
           ...(visitText ? [{ type: 'text' as const, text: visitText }] : []),
           ...(found ? [{ type: 'text' as const, text: found.text }] : []),
           ...(map ? [{ type: 'text' as const, text: mapBlock(map) }] : []),
-          ...(handTo ? [{ type: 'text' as const, text: handoffNote(handTo) }] : at ? [{ type: 'text' as const, text: AT_NOTE[at] }] : []),
+          ...(handTo ? [{ type: 'text' as const, text: handoffNote(handTo) }] : at ? [{ type: 'text' as const, text: at === 'open' ? OPEN_NOTE : stepEndNote(at, map) }] : []),
           /* The same question again: this one has to end in an answer (api/_lookUp.ts). */
-          ...(pass > 1 ? [{ type: 'text' as const, text: FINISH_NOTE }] : []),
+          ...(pass > 1 ? [{ type: 'text' as const, text: map && map.next !== 'report or sign-up' ? `${FINISH_NOTE} A step is still ahead, so never say the screening, or every step, is done.` : FINISH_NOTE }] : []),
         ],
         messages: clean,
         thinking: { type: 'adaptive' },
@@ -397,8 +392,10 @@ export async function POST(req: Request): Promise<Response> {
 
   /* A class returned this turn is kept only beside a drinking-water type,
      confirmed this turn or already on the visit. */
-  /* On a hand-off the page is already open, so the route is that page, whatever the field says. */
-  const checked = validate(handTo && typeof parsed === 'object' && parsed !== null ? { ...parsed, route: handTo } : parsed, { type: record?.type, ...(map ? {} : { reads: found?.reads }) });
+  /* On a hand-off the page is already open, so the route is that page, whatever the field says. At the end of a step it
+     is the map's next one, so a hand-off never hangs on his remembering it (24 Nov 2026). */
+  const set = handTo ?? (map && (at === 'eligibility' || at === 'map') ? stepEndRoute(at, map) : null);
+  const checked = validate(set !== null && typeof parsed === 'object' && parsed !== null ? { ...parsed, route: set } : parsed, { type: record?.type, ...(map ? {} : { reads: found?.reads }) });
   /* The map's guard, in place of the reads' (J4): a desk the map has closed is never routed to, and an
      introduction goes with its route. */
   const route = checked && map ? guardRoute(checked.route, map) : checked?.route;
@@ -427,9 +424,13 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   answer = read;
+  /* HE NEVER CALLS THE SCREENING DONE while a step is ahead (24 Nov 2026, item 7). The same question goes again once. */
+  const tooSoon = map !== null && map.next !== 'report or sign-up' && saysAllDone(answer.reply);
+  if (tooSoon) console.log(`wellington: the reply called the screening done with a step ahead, call ${pass}`);
   /* A route draws the next step under his message, so the visitor is never left waiting there. */
-  if (answer.route !== 'none' || !leavesWaiting(answer.reply)) break;
-  console.log(`wellington: the reply promised a look-up and did not answer, call ${pass}`);
+  const waits = answer.route === 'none' && leavesWaiting(answer.reply);
+  if (!waits && (!tooSoon || pass > 1)) break;
+  if (waits) console.log(`wellington: the reply promised a look-up and did not answer, call ${pass}`);
   if (pass > 1) {
     return undelivered(
       problem(

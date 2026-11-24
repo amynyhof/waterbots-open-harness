@@ -7,29 +7,40 @@
  * face, drawn by the chat's one transcript. Display only.
  */
 
-import Transcript from '../chat/Transcript';
+import Transcript, { TurnButtons } from '../chat/Transcript';
+import type { TurnButton } from '../chat/evidence';
 import { WELLINGTON } from '../lib/wellington';
 
 export default function HandOff({
   line,
   waiting = false,
   framed = false,
+  wayOn = [],
 }: {
   line: string;
   /** True while he is writing it. */
   waiting?: boolean;
   /** Above a calculator it has its own band; in a Chat tab the column is already drawn. */
   framed?: boolean;
+  /** The buttons to what comes next, so a desk with no chat is never a dead end (24 Nov 2026). */
+  wayOn?: TurnButton[];
 }) {
   const text = line.trim();
-  if (text === '' && !waiting) return null;
+  if (text === '' && !waiting && wayOn.length === 0) return null;
   const turn = (
-    <Transcript
+    <>
+    {(text !== '' || waiting) && <Transcript
       host={WELLINGTON}
       turns={text === '' ? [] : [{ role: 'agent', text, evidence: [] }]}
       pending={text === '' && waiting}
       error={null}
-    />
+    />}
+    {wayOn.length > 0 && (
+      <div style={{ margin: text !== '' || waiting ? '-6px 0 12px' : '0 0 12px' }}>
+        <TurnButtons turn={{ buttons: wayOn }} />
+      </div>
+    )}
+    </>
   );
   if (!framed) return turn;
   return (
@@ -38,7 +49,7 @@ export default function HandOff({
       /* Never more than a third of the desk, so on a phone the calculator keeps its room; a longer line scrolls. */
       style={{
         flex: 'none',
-        maxHeight: '32%',
+        maxHeight: '38%',
         overflowY: 'auto',
         background: 'var(--paper)',
         borderBottom: '1px solid var(--line)',

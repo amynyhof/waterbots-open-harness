@@ -149,6 +149,22 @@ expect('a topic without an abstention is dropped', notAbst?.abstentionTopic === 
   );
 }
 
+{
+  /* The journey told by step, 24 Nov 2026 (items 6 and 7): the relay's step names are the journey's own, the route at a
+     step's end is the map's, and the screening is never called done while a step is ahead. */
+  const { STEP_NAMES, readMap: readStepMap, saysAllDone, stepEndRoute } = await loadApi('_agentMap.js');
+  const journey = [...readFileSync('src/lib/journey.ts', 'utf8').matchAll(/label: '([A-Za-z]+)', surface: '/g)].map((m) => m[1]);
+  const at = (over) => readStepMap({ next: 'call', agent: 'calvin', agents: ['calvin', 'violet'], done: ['eligibility', 'partners'], ...over });
+  expect(
+    'items 6 and 7: the step names are the journey\'s, the route at the end of a step is the map\'s, and "done" is never said too soon',
+    JSON.stringify(STEP_NAMES) === JSON.stringify(journey) &&
+      stepEndRoute('map', at({})) === 'quantification' && stepEndRoute('map', at({ done: ['eligibility'] })) === null &&
+      stepEndRoute('map', at({ next: 'report or sign-up', agent: undefined })) === 'none' &&
+      saysAllDone('Every step of the screening is done.') && saysAllDone('Your screening is complete.') &&
+      !saysAllDone('Step 2, Partners, is done. Next is Step 3, Quantify.') && !saysAllDone('The screening is not done yet.'),
+    JSON.stringify({ STEP_NAMES, journey })
+  );
+}
 expect(
   'the schema closes the route list',
   JSON.stringify(WELLINGTON_RESPONSE_SCHEMA.properties.route.enum) === JSON.stringify(['none', 'eligibility', 'quantification', 'water', 'map', 'paid']), /* 'water' is Violet's desk, 23 Nov 2026 (J5) */
@@ -302,8 +318,12 @@ expect('his reading level is rule 1 of the agent rules, 6th grade (22 Nov 2026),
 {
   const wellingtonLib = readFileSync(join('src', 'lib', 'wellington.ts'), 'utf8');
   expect(
-    'W17, P24: a route to a colleague draws "Meet <name>" (blue, quiet once that step is reached, 21 Nov 2026) and "Keep chatting" (a quiet chip) under his message, from the field alone',
-    /Meet \$\{/.test(wellingtonLib) && /'Keep chatting'/.test(wellingtonLib) && /actionsFor\(answer\.route/.test(wellingtonLib) &&
+    /* From 24 Nov 2026, the shared console behaviours, item 8: every hand-off has one format, in the next agent's colour
+       and naming the step (src/lib/steps.ts), so Meet is no longer blue and never goes quiet. */
+    'W17, P24, item 8: a route to a colleague draws the hand-off that names the step and "Keep chatting" (a quiet chip) under his message, from the field and the map alone',
+    /Step \$\{step\.number\} of \$\{step\.of\}: \$\{step\.label\}\. Meet \$\{agent\.name\}/.test(readFileSync(join('src', 'lib', 'steps.ts'), 'utf8')) &&
+      /handoffButton\(surface/.test(wellingtonLib) && /'Keep chatting'/.test(wellingtonLib) && /buttonsAfter\(answer\.route/.test(wellingtonLib) &&
+      /\.wb-handoff \{[^}]*border: 1px solid var\(--handoff\);/.test(readFileSync(join('src', 'styles', 'base.css'), 'utf8')) &&
       /const blue = button\.primary && !\(button\.reaches && reached\.has\(button\.reaches\)\)/.test(readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8')) &&
       /blue \? 'btn btn-primary' : 'wb-chip'/.test(readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8')) &&
       /\.wb-chip \{[^}]*background: transparent;/.test(readFileSync(join('src', 'styles', 'base.css'), 'utf8')),
@@ -719,7 +739,8 @@ expect(
 expect(
   'she is told Calvin is next exactly when the rail offers Quantify (31 Oct 2026)',
   /quantifyNext=\{visit\.stage === 'quantify'\}/.test(readFileSync('src/App.tsx', 'utf8')) &&
-    /\{ place, phone, pin, quantifyNext, record \}/.test(bridgetSource) &&
+    /* The pin may be the one her GPS numbers just found (24 Nov 2026). */
+    /\{ place, phone, pin: found\?\.kind === 'found' \? found\.pin : pin, quantifyNext, record \}/.test(bridgetSource) &&
     currentInvite({ ...mapped, stage: 'quantify' })?.key === 'invite-quantify' &&
     currentInvite({ ...mapped, pin: { hybasId: 1 } }, false) === null,
   'what she is told and what the rail shows can disagree'
@@ -1239,7 +1260,7 @@ console.log('\n  W28, W29 and V1 — the queued round, 16 Nov 2026');
   expect(
     'W29: the relay takes `open` only as an opened turn, with its own note and no route',
     /body\.at === 'open'/.test(relay) && /returned && \(body\.at === 'eligibility'/.test(relay) &&
-      /open:\s*'# Where you are speaking[^']*Speak first, in your own words[^']*Set no route\./.test(relay),
+      /OPEN_NOTE: string =[\s\S]{0,400}'# Where you are speaking[^']*Speak first, in your own words[^']*Set no route\./.test(relay),
     'the open case is missing or not bound to an opened turn'
   );
   expect(

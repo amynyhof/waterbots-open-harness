@@ -29,6 +29,8 @@ export interface BridgetAnswer {
   answers: string[];
   /** She asked the visitor to open the Map tab: the console draws "Go to map" (24 Nov 2026). */
   showMap: boolean;
+  /** The more exact place the visitor typed, in their own words, or '' (24 Nov 2026). */
+  place: string;
 }
 
 /** Thrown with a message that is already fit to show a reader. */
@@ -38,7 +40,7 @@ export async function askBridget(
   history: { role: 'user' | 'assistant'; content: string }[],
   visit: { place: string; phone: boolean; pin: MapPin | null; quantifyNext: boolean; record?: CarriedRecord | null },
   signal?: AbortSignal,
-  opts?: { opened?: boolean; introduced?: boolean; pinned?: boolean }
+  opts?: { opened?: boolean; introduced?: boolean; pinned?: boolean; gps?: 'found' | 'outside' | 'failed' }
 ): Promise<BridgetAnswer> {
   const body: Record<string, unknown> = { messages: history, phone: visit.phone, quantifyNext: visit.quantifyNext, door: 'free-site' };
   if (visit.record) body.record = visit.record;
@@ -54,6 +56,8 @@ export async function askBridget(
   if (opts?.opened) body.opened = true;
   if (opts?.opened && opts.introduced) body.introduced = true;
   if (opts?.pinned) body.pinned = true;
+  /* What came of GPS numbers the visitor typed, as the console found it (src/lib/gps.ts). */
+  if (opts?.gps) body.gps = opts.gps;
 
   let response: Response;
   try {
@@ -95,5 +99,6 @@ export async function askBridget(
     abstained: data.abstained === true,
     answers: answersFrom(data.answers),
     showMap: data.showMap === true,
+    place: typeof data.place === 'string' ? data.place.trim().slice(0, 80) : '',
   };
 }
