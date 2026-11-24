@@ -14,7 +14,8 @@
  *   - Calvin: his V2.0 figure. Violet: the access level and the water before the project, her inputs, her figure.
  *
  * THE CODES ARE CORE'S, NEVER GUESSED. A technology label is turned into the record's code by core's one label
- * list (`technologyCode`). A label the list does not know gets no code.
+ * list (`technologyCode`), for the two classes this site counts; see THE SITE'S GUARD below. A label the list does
+ * not know gets no code.
  *
  * THE MAP IS CORE'S (@waterbots/core/agentMap). It says who is called, which method applies and the one next
  * step. This file adds one thing only. Core's map knows four funding pathways and this site reads two, so the
@@ -80,6 +81,15 @@ export function classOf(context: Pick<VisitContext, 'type' | 'gsClass'>, sheet: 
 }
 
 /**
+ * THE SITE'S GUARD, the maintainer's ruling of 23 Nov 2026: "Do not count it. I need to ask the experts." Core 0.2.0's
+ * list turns community level water treatment into a community supply. This site counts the classes it counted before
+ * that list and no others, so a class off this pair gets no code and no carbon figure.
+ *
+ * TO REMOVE IT, once core's list is fixed: delete this constant and its two uses in `technologyOf`.
+ */
+const COUNTED_CLASSES: readonly string[] = ['CWS', 'HWT'];
+
+/**
  * Core's code for one of this site's labels. The Gold Standard classes' full names end in "technologies"
  * ("Community water supply technologies"), and core's list holds two of the four without that word, so the
  * label is looked up whole first and then without it. Both lookups are core's one list; no code is typed here.
@@ -94,14 +104,25 @@ export function technologyOf(context: Pick<VisitContext, 'type' | 'gsClass'>, sh
   if (found) {
     const label = projectType(found.id)?.name;
     if (label) {
-      const code = codeFor(label);
+      const code = COUNTED_CLASSES.includes(found.id) ? codeFor(label) : undefined;
       return { label, ...(code ? { code } : {}), by: found.by };
     }
   }
   const label = context.type ? projectType(context.type)?.name : undefined;
   if (!label) return null;
-  const code = codeFor(label);
+  /* A type alone never gave a code on this site, and does not now. */
+  const code = COUNTED_CLASSES.includes(context.type) ? codeFor(label) : undefined;
   return { label, ...(code ? { code } : {}), by: 'wellington' };
+}
+
+/**
+ * The label of a project Calvin does not cover, for his screen to say so; undefined when he covers it, or when the
+ * visitor has not said enough yet (nothing, or a drinking-water project whose class is still blank).
+ */
+export function uncoveredLabel(record: ProjectRecord): string | undefined {
+  const technology = record.facts.technology;
+  if (!technology || technology.code !== undefined) return undefined;
+  return technology.label === projectType(DRINKING_WATER_TYPE)?.name ? undefined : technology.label;
 }
 
 /** Whether Phoebe's own test says the project already earns credits under V1.0; undefined until it is settled. */

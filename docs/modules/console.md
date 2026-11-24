@@ -76,8 +76,10 @@ they stand here.
   read about in the Agent Commons, where it does not open yet. A desk whose turn has not come is never closed.
 - **No note box** on the Free site or in the Agent Commons. Each export carries the agents' own notes on
   the values still blank or assumed, under the agent's label from core.
-- Calvin's header says only what the record still lacks, or that his calculator does not know the kind of
+- Calvin's header says only what the record still lacks, or that his calculator does not cover the kind of
   project yet.
+- **Community level water treatment is not counted** (the maintainer's ruling of 23 Nov 2026): no code and no
+  carbon figure, until the experts are asked. Institutional treatment is not covered either.
 - **One export during a screening.** On Quantify Calvin's and Violet's own exports are hidden
   (`hideExportButton`), and "Export screening report" in the left rail carries his figure, his full working
   and her estimate. The Commons keeps theirs.

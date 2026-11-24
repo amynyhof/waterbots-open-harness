@@ -79,7 +79,7 @@ import ScreeningReport from './components/ScreeningReport';
 import { NO_SUMMARY, type CalvinSummary } from './components/CalvinCalculator';
 import { calvinProjectFrom } from './lib/calvinProject';
 import { carriedRecord } from './lib/phoebeClient';
-import { callOf, closedBy, mapForWellington, metFrom, projectRecord, siteMap, type MapForWellington } from './lib/projectRecord';
+import { callOf, closedBy, mapForWellington, metFrom, projectRecord, siteMap, uncoveredLabel, type MapForWellington } from './lib/projectRecord';
 import { d3InputFromRecord, violetAgentNoteLines } from '@waterbots/violet';
 import { computeD3 } from '@waterbots/violet/engine';
 import type { CarbonFigure } from './lib/visit';
@@ -733,7 +733,7 @@ export default function App() {
                 <CalvinScreen
                   project={project}
                   onSummary={setCalvinSummary}
-                  unknownLabel={facts.facts.technology && facts.facts.technology.code === undefined ? facts.facts.technology.label : undefined}
+                  unknownLabel={uncoveredLabel(facts)}
                   closed={closed.calvin ? <NotCalled pathway="carbon" reading={facts.pathways.carbon} onCommons={() => goTo('commons')} /> : null}
                 />
               </div>
@@ -816,7 +816,8 @@ export default function App() {
         carbon={carbon}
         record={record}
         map={map}
-        calvinNotes={seenQuantify ? calvinSummary.noteLines : []}
+        /* A project he does not cover has no values of his to note (23 Nov 2026). */
+        calvinNotes={seenQuantify && !uncoveredLabel(facts) ? calvinSummary.noteLines : []}
         violetNotes={violetNotes}
       />
     </div>

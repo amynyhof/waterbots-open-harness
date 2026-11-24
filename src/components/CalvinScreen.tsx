@@ -96,7 +96,7 @@ export default function CalvinScreen({
   project: CalvinProject;
   /** The figure and the facts still needed, handed to the shell so the crew panel and the report read them. */
   onSummary: (summary: CalvinSummary) => void;
-  /** The project's own label, when core's list has no code for it. */
+  /** The project's own label, when Calvin does not cover it. */
   unknownLabel?: string;
   /** What his desk shows in place of the calculator when the agent map closes it (J4). */
   closed?: ReactNode;

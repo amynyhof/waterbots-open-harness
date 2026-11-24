@@ -460,6 +460,8 @@ what is off.
 
 What belongs here: what outside experts review, what we owe partners, and what we send them.
 
+**SP7 · Ask the experts: does community level water treatment count as a community water supply for the carbon method?**
+
 **SP6 · A human engineer reviews the structure.** Now, not blocking v1 · BONES. One question put to a person:
 what would you keep, what would you fix first, what would you worry about. It covers all three repositories. The
 review itself is her hand's work, outside this repository (rule zero); only its findings come back here, as items.

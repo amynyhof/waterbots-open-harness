@@ -242,13 +242,13 @@ function WorkingInReport({ calc, project }: { calc: CalculatorState; project: Ca
  * says to type it there.
  */
 export function RecordFacts({ missing, unknownLabel }: { missing: string[]; unknownLabel?: string }) {
-  /* The label is on the record but core's list has no code for it (J3): said plainly, and never asked for again. */
+  /* The label is on the record and Calvin does not cover it (J3): said plainly, and never asked for again. */
   if (unknownLabel && missing.includes('technology')) {
     const rest = missing.filter((m) => m !== 'technology');
     return (
       <div style={{ marginBottom: 12 }}>
         <p className="t-caption" style={{ margin: 0, color: 'var(--ink-2)' }}>
-          Calvin’s calculator does not know this kind of project yet: {unknownLabel}.{rest.length > 0 ? ` Still needed: ${rest.join(', ')}. Tell Wellington.` : ''}
+          Calvin’s calculator does not cover this kind of project yet: {unknownLabel}.{rest.length > 0 ? ` Still needed: ${rest.join(', ')}. Tell Wellington.` : ''}
         </p>
       </div>
     );
