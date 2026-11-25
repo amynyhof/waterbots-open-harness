@@ -7,7 +7,7 @@
  * panel, and the phone's bar above the chat box before it, are gone.
  *
  * THE BOX THAT SENDS THE PROJECT TO THE TEAM goes with Save, so it sits in the
- * menu too, on a line under the button, whenever a path is ruled out. Nothing
+ * menu too, on a line under the button, whenever a path is unlikely. Nothing
  * is sent until Save is pressed, and then only with it.
  *
  * ONE BLUE BUTTON AT A TIME (src/lib/blue.ts, 16 Nov 2026): the menu's button
@@ -23,7 +23,7 @@ export interface SaveDoor {
   show: boolean;
   sealing: SealState;
   onSeal: () => void;
-  /** A path is ruled out: the box to send the project to the team shows. */
+  /** A path is unlikely: the box to send the project to the team shows. */
   showPerson: boolean;
   person: PersonAsk;
   onPerson: (next: PersonAsk) => void;
@@ -66,7 +66,7 @@ export function MenuSaveUnder({ save }: { save: SaveDoor }) {
 
 /**
  * THE DOOR TO A PERSON — item A18, 26 Sep 2026; from 14 Nov 2026 shown
- * whenever a path is ruled out, Blocked or not applying (the ruling of
+ * whenever a path is unlikely, Blocked or not applying (the ruling of
  * 23 Sep 2026), and never offered in chat.
  */
 function TeamBox({ save }: { save: SaveDoor }) {

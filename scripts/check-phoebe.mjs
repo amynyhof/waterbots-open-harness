@@ -415,15 +415,79 @@ expect(
 );
 expect(
   'P13: a pass that will be asked again is never shown, and what was shown is reset before the second speaks',
-  /!pass\.includes\(asked as CardSet\)/.test(relaySource) && /onReset\?\.\(\);\s*firstWordAt = null;/.test(relaySource),
+  /* 24 Nov 2026: a pass that asks for any set is held, whether or not she had it, except on the last call. The old
+     reading of this line was /!pass\.includes\(asked as CardSet\)/. */
+  /!last && asked && asked !== 'none' &&/.test(relaySource) && /onReset\?\.\(\);\s*firstWordAt = null;/.test(relaySource),
   'a first pass could reach the visitor'
 );
+/* SWITCHED OFF, 24 Nov 2026, the maintainer's ruling: an answer comes in the same turn (api/_lookUp.ts). One extra call
+   and no more was the fault, because where it did not end in an answer her holding sentence was delivered as one.
 expect(
   'the one extra call happens only for a set she has not been given, and only once',
   /answer\.needCards !== 'none' && !usedSets\.includes\(answer\.needCards\)/.test(relaySource) &&
     /calls = 2/.test(relaySource),
   'the second pass is missing or unguarded'
-);
+); */
+{
+  const { nextSets } = await loadApi('_systemPrompt.js');
+  const { leavesWaiting, showable, FINISH_RULE } = await loadApi('_lookUp.js');
+  const { WELLINGTON_SYSTEM_PROMPT } = await loadApi('_wellingtonPrompt.js');
+  const { BRIDGET_SYSTEM_PROMPT } = await loadApi('_bridgetPrompt.js');
+  const open = [{ pack: 'vwba-2.0', state: 'applies' }, { pack: 'gs-paa-v2.0', state: 'applies' }];
+  const shut = [{ pack: 'vwba-2.0', state: 'applies' }, { pack: 'gs-paa-v2.0', state: 'does-not-apply' }];
+  expect(
+    'the question goes again until it is answered: the set she asks for and its pair, then every set still in play, three calls at most',
+    JSON.stringify(nextSets({ used: stage2, asked: 'carbon:eligibility', pathways: open, last: false })) ===
+      JSON.stringify(['water:applies', 'water:eligibility', 'water:routes', 'carbon:applies', 'carbon:eligibility', 'carbon:routes']) &&
+      JSON.stringify(nextSets({ used: stage2, asked: 'water:routes', pathways: open, last: false })) === JSON.stringify([...CARD_SETS]) &&
+      JSON.stringify(nextSets({ used: stage2, asked: 'none', pathways: open, last: true })) === JSON.stringify([...CARD_SETS]) &&
+      !nextSets({ used: ['water:applies'], asked: 'none', pathways: shut, last: true }).some((s) => s.startsWith('carbon:')) &&
+      nextSets({ used: ['water:applies'], asked: 'carbon:routes', pathways: shut, last: true }).includes('carbon:routes') &&
+      /const MAX_PASSES = 3;/.test(relaySource) && /const last = calls === MAX_PASSES;/.test(relaySource),
+    'a call could be given the wrong cards, or the calls are not bounded'
+  );
+  const waits = [
+    'Let me pull up the detail on how funding affects the carbon side before I answer that properly.',
+    'Good question. I’ll check the cards on that.',
+    "I'm fetching the carbon rules now.",
+    'Let me look into that for you. One moment.',
+    'I will get back to you on that.',
+  ];
+  const answers = [
+    'Having the money in hand does not by itself close the carbon side. Could the borehole go ahead without it?',
+    'Let me check one thing: is the borehole new?',
+    'Let me look at that with you. Having the money in hand does not by itself close carbon credits, because the rule asks more.',
+    'Wellington will join you here with the next step.',
+    "I'll introduce you to Phoebe, who can check which funding might suit your project.",
+    "I'll get you to Bridget next, and she will find your river basin on the map.",
+    'I will ask about one thing at a time. When did it start running?',
+  ];
+  expect(
+    'a reply that ends by promising a look-up is not an answer, a real answer is one, and every live agent is told and checked',
+    waits.every(leavesWaiting) && !answers.some(leavesWaiting) &&
+      [SYSTEM_PROMPT, WELLINGTON_SYSTEM_PROMPT, BRIDGET_SYSTEM_PROMPT].every((p) => p.includes(FINISH_RULE)) &&
+      ['phoebe', 'wellington', 'bridget'].every((a) => /leavesWaiting\(answer\.reply\)/.test(readFileSync(join('api', `${a}.ts`), 'utf8'))) &&
+      !/saying you are fetching it/.test(cardsBlock(stage1)),
+    JSON.stringify({ missed: waits.filter((w) => !leavesWaiting(w)), wrong: answers.filter(leavesWaiting) })
+  );
+  expect(
+    'while she writes, a promise of a look-up is held back until an answer follows it',
+    waits.every((w) => Array.from({ length: w.length }, (_, i) => showable(w.slice(0, i + 1))).every((s) => !leavesWaiting(s) && !/pull|check|fetch|look|get back/i.test(s))) &&
+      answers.every((a) => showable(a) === a) && showable('Good question. Let me') === 'Good question.',
+    'a promise could be shown'
+  );
+  const { readChips } = await loadApi('_chips.js');
+  expect(
+    'chips answer the question just asked: none where nothing was asked, no number the reply did not say, no question, three at most',
+    JSON.stringify(readChips(['Yes.', 'Not yet', 'yes', 'I’m not sure', 'Maybe'], 'Is it built?')) === JSON.stringify(['Yes', 'Not yet', 'I’m not sure']) &&
+      readChips(['Yes'], 'Thank you for that.').length === 0 &&
+      JSON.stringify(readChips(['1,600 people', '2,000 people', 'Why?'], 'Is it 1,600 people or households?')) === JSON.stringify(['1,600 people']) &&
+      readChips(['A chip that is far too long to be a few words on one line'], 'Is it built?').length === 0 &&
+      readChips('Yes', 'Is it built?').length === 0 &&
+      RESPONSE_SCHEMA.required.includes('answers'),
+    'a chip was kept that should not be, or dropped that should stay'
+  );
+}
 
 /* ---------------------------------------------------------------------------
    Her prompt's size.
@@ -466,11 +530,14 @@ expect(
    208,457, plus 500. From the maintainer's ruling of that day a session raises
    the ceiling itself by this method, and states the old and new size in its
    pull request.
+
+   209,982 FROM 23 NOV 2026 (family 1, second pull request): Violet's post in
+   the roster every agent reads. The largest case measured 209,482, plus 500.
 --------------------------------------------------------------------------- */
 
 console.log('\n  Her prompt’s size\n');
 
-const LARGEST = 208_957;
+const LARGEST = 209_982;
 const largest = SYSTEM_PROMPT.length + cardsBlock(CARD_SETS).length;
 expect(
   'the largest case is under the measured ceiling',
@@ -729,6 +796,8 @@ expect(
       /dots=\{/.test(screen) &&
       !/Skip for now|'Next question'/.test(screen) &&
       /if \(!learnMore\) return undefined;/.test(screen) &&
+      /* 24 Nov 2026: the answer chips come first and one helper last (src/lib/chips.ts). */
+      /helper: learnMoreChip\(answer\.learnMore, send\)/.test(screen) &&
       /Learn more about \$\{/.test(screen) &&
       /Phoebe is checking your project against these criteria/.test(worksheet) &&
       /--bot-phoebe/.test(worksheet),
@@ -975,7 +1044,7 @@ expect(
     /- 1: Met — the volume is counted/.test(block) &&
     /- 2: Fixable — route R-2/.test(block) &&
     /- 4: Not yet checked\./.test(block) &&
-    /The read from these rows: \*\*Not enough known yet\*\*/.test(block),
+    /The read from these rows: \*\*More to learn\*\*/.test(block),
   block
 );
 expect(
@@ -1031,7 +1100,7 @@ expect(
 );
 expect(
   'the screen says "likely", calls itself a first screening, and never certifies (13 Nov 2026)',
-  /reads likely eligible/.test(worksheetSource) &&
+  /reads likely — next stop/.test(worksheetSource) &&
     (worksheetSource.match(/This is a first screening, not an official decision\./g) ?? []).length === 3 &&
     !/verified|consultant confirms/i.test(worksheetSource),
   'the banner overclaims, or an old "nothing is verified" line is back'

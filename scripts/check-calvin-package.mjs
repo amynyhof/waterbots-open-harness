@@ -7,10 +7,12 @@
  * (@waterbots/calvin 0.5.0, @waterbots/violet 0.5.0, the same core 0.1.1) on 22 Nov 2026, her word on #189:
  * Violet's D-3 screen is the water calculator from then, and this site's own D-3 code is gone; and to
  * calvin-violet-v0.5.1 (@waterbots/calvin 0.5.1, @waterbots/violet 0.5.1, @waterbots/core 0.1.2) the same day, her
- * word ("carry 0.5.1 to both sites"): no sum changed, and core ships the agent rules every agent here reads.
- *   6. The project the site hands Calvin leaves `creditedUnderV1` unset until item A29 sets it
- *      from Phoebe's question, so every project gets the V2.0-only view, with no V1.0 figure,
- *      no transition and no ask for a V1.0 filing (her word of 16 Nov 2026).
+ * word ("carry 0.5.1 to both sites"): no sum changed, and core ships the agent rules every agent here reads; and to
+ * three releases with a tag each on 23 Nov 2026 ("carry the release to both sites"): calvin-v0.6.0, violet-v0.6.0 and
+ * core-v0.2.0. No sum changed. On 25 Nov 2026, her word ("carry the release to both sites"): calvin-v0.7.0,
+ * violet-v0.7.0 and core-v0.3.0, with both agents' chats. No sum changed.
+ *   6. The project the site hands Calvin sets `creditedUnderV1` from the shared record and never otherwise (item A29,
+ *      J4, 23 Nov 2026): Phoebe's question settles it. Until then it was left unset (her word of 16 Nov 2026).
  *
  * WHAT IT HOLDS.
  *   1. The three release files in vendor/waterbots/ are the release's, byte for byte: their
@@ -34,25 +36,26 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const RELEASE = 'calvin-violet-v0.5.1';
+const RELEASE = 'calvin-v0.7.0';
+const VIOLET_RELEASE = 'violet-v0.7.0';
 const FILES = {
   '@waterbots/calvin': {
-    file: 'vendor/waterbots/waterbots-calvin-0.5.1.tgz',
-    version: '0.5.1',
-    sha256: '8cbd1506244591614f9ac0908970df3ba9683d8ba67e747b17b0b3f52bd5eef1',
-    integrity: 'sha512-PsU+dQmf/AGkmoGw/NRWvAkCmsRrRxzIKE0bb6A3l0MVXSQU1mIZ8F/OREnIOEgL8N0QRvlt+yVkmY7MbKfjrQ==',
+    file: 'vendor/waterbots/waterbots-calvin-0.7.0.tgz',
+    version: '0.7.0',
+    sha256: 'b9e5bb8e038b6d7c9a6ed1771b20e9c146fb282da48181598660e5b911f1ed89',
+    integrity: 'sha512-jkD2/ogm+wXzRTF4jNCcQ031PipAHTRuQVLy1FHSayk5P8aoWjEOgi5z503BsmQ3Mwh+Wv40AfGedemaXMZqcg==',
   },
   '@waterbots/violet': {
-    file: 'vendor/waterbots/waterbots-violet-0.5.1.tgz',
-    version: '0.5.1',
-    sha256: 'faa230e07a581cc5cda41a3a1ce9add778305f1d99d416efab2aa1ffffb5b8d6',
-    integrity: 'sha512-WPD7qdfqKk02IO06PRIBZbvdot5DcFNbrfOY6/qUzbhmzyobswN1Z3tnv9BFNKe3YIa17k7lpq/3VkIKl6/yog==',
+    file: 'vendor/waterbots/waterbots-violet-0.7.0.tgz',
+    version: '0.7.0',
+    sha256: '6b334cd10c26441adbb59275182b8c671394646c34c356b15b974e89eb004599',
+    integrity: 'sha512-CgvDXEltwrIrRB6CE9/fhKIvoI7a7n/4dh1g4S6zd9IBvu1hUP+69UagY+UgGBiDl3aw3jVqxHzlYeopacKdrg==',
   },
   '@waterbots/core': {
-    file: 'vendor/waterbots/waterbots-core-0.1.2.tgz',
-    version: '0.1.2',
-    sha256: '51534f84aabd7f51bb36d9eefb2e76e78770ed9d096fef825a40a4cf9256efe7',
-    integrity: 'sha512-8BQ4ouYORLJPLeEB+XRMzU7JHjXyQa0sLL5YD9VylEmSmTl+KKN6Jg3LfLSl5XMwAVxy5Ym+PglrxshD9JaStA==',
+    file: 'vendor/waterbots/waterbots-core-0.3.0.tgz',
+    version: '0.3.0',
+    sha256: 'ceff1c9d250ca098f003838c09511fa38818d52c6e196ecd33e620309c3d6f31',
+    integrity: 'sha512-yERniudcxtqZX9t3X4H+U4rO7yig4jUXHrsZlLCLGM2ePWiBTpvWOlekCIAVDqbvvfX3jyPOdj0ggV7ors3R7Q==',
   },
 };
 const ENGINE_VERSION = '0.19.0';
@@ -69,7 +72,7 @@ function expect(label, condition, detail) {
   }
 }
 
-console.log(`\nCalvin from the open core — ${RELEASE}\n`);
+console.log(`\nCalvin and Violet from the open core — ${RELEASE}, ${VIOLET_RELEASE}\n`);
 
 /* 1–3. The files, the manifest, the lockfile and what is installed. */
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
@@ -95,7 +98,8 @@ expect('the site names the same version it installed', constant === FILES['@wate
 const violetConstant = readFileSync(join('src', 'lib', 'calvinProject.ts'), 'utf8').match(/VIOLET_PACKAGE_VERSION = '([^']+)'/)?.[1];
 expect('the site names the Violet version it installed', violetConstant === FILES['@waterbots/violet'].version, violetConstant);
 const release = readFileSync(join('src', 'lib', 'calvinProject.ts'), 'utf8').match(/CALVIN_RELEASE = '([^']+)'/)?.[1];
-expect('the site names the release it installed from', release === RELEASE, release);
+const violetRelease = readFileSync(join('src', 'lib', 'calvinProject.ts'), 'utf8').match(/VIOLET_RELEASE = '([^']+)'/)?.[1];
+expect('the site names the releases it installed from', release === RELEASE && violetRelease === VIOLET_RELEASE, `${release} and ${violetRelease}`);
 
 /* 4. The engine, and every case the package ships. */
 const engine = await import('@waterbots/calvin/engine');
@@ -143,16 +147,165 @@ for (const c of expected.fnrbCases) {
 }
 expect(`both fNRB cases give exactly the recorded answers`, caseFailures.length === 0, caseFailures.join('; '));
 
+/* 11. Both chats run on what the packages ship (25 Nov 2026): the instructions are theirs, whole, after core's agent rules;
+       the settings the code carries are the ones in config.yaml; the answer's shape is the package's own, within the model
+       service's limits and back whole for its reader; and thirty messages a day each, as for the other agents. */
+{
+  const { spawnSync } = await import('node:child_process');
+  const { mkdtempSync, rmSync, symlinkSync, unlinkSync, writeFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { pathToFileURL } = await import('node:url');
+  const out = mkdtempSync(join(tmpdir(), 'wb-chat-api-'));
+  const built = spawnSync(process.execPath, [join('node_modules', 'typescript', 'bin', 'tsc'), '-p', 'tsconfig.api.json', '--noEmit', 'false', '--outDir', out, '--composite', 'false', '--declaration', 'false'], { encoding: 'utf8' });
+  expect('api/ compiles', built.status === 0, built.stdout);
+  writeFileSync(join(out, 'package.json'), '{"type":"module"}');
+  symlinkSync(join(process.cwd(), 'node_modules'), join(out, 'node_modules'), 'junction');
+  const load = (name) => import(pathToFileURL(join(out, name)).href);
+  const { toWire, fromWire, shapeCost, SHAPE_LIMITS } = await load('_answerShape.js');
+  const { CALVIN_SYSTEM_PROMPT, calvinBlock } = await load('_calvinTurn.js');
+  const { VIOLET_SYSTEM_PROMPT, violetBlock } = await load('_violetTurn.js');
+  const { CALVIN, VIOLET, PHOEBE } = await load('_cap.js');
+  const agent = await import('@waterbots/calvin/agent');
+  const violet = await import('@waterbots/violet');
+  const ship = (pkg, file) => readFileSync(join('node_modules', '@waterbots', pkg, 'dist', file), 'utf8').replace(/\r\n/g, '\n').trim();
+  const rules = ship('core', 'agent-rules.md').split('## How an agent talks')[1].trim();
+  for (const [name, system, pkg, chat] of [['Calvin', CALVIN_SYSTEM_PROMPT, 'calvin', agent.CALVIN_CHAT], ['Violet', VIOLET_SYSTEM_PROMPT, 'violet', violet.VIOLET_CHAT]]) {
+    const sheet = readFileSync(join('knowledge-packs', 'product-shared', 'BUILD_STATUS_SHEET.md'), 'utf8').replace(/\r\n/g, '\n').trim();
+    const parts = [rules, ship(pkg, 'prompt.md'), ship(pkg, 'knowledge.md'), sheet];
+    const left = parts.reduce((text, part) => text.split(part).join(''), system).replace('## How an agent talks', '').trim();
+    expect(`${name}'s instructions are the agent rules, the package's two files and the status sheet, and nothing of this site's`, parts.every((part) => system.includes(part)) && left === '', left.slice(0, 120));
+    const config = ship(pkg, 'config.yaml');
+    expect(`${name}'s settings are config.yaml's`, config.includes(`model: ${chat.model}`) && config.includes(`effort: ${chat.effort}`) && config.includes(`max_output_tokens: ${chat.maxOutputTokens}`) && config.includes(`sentences: ${chat.reply.sentences}, characters: ${chat.reply.chars}`), JSON.stringify(chat));
+  }
+  for (const [name, schema] of [['Calvin', agent.CALVIN_ANSWER_SCHEMA], ['Violet', violet.VIOLET_ANSWER_SCHEMA]]) {
+    const cost = shapeCost(toWire(schema));
+    expect(`${name}'s answer goes to the model within its limits`, cost.optional <= SHAPE_LIMITS.optional && cost.unions <= SHAPE_LIMITS.unions, JSON.stringify(cost));
+  }
+  const back = agent.readCalvinAnswer(fromWire({ reply: 'A made-up reply.', handBack: 'none', values: { numbers: agent.CALVIN_ANSWER_VALUES.map((name, i) => ({ name, value: i === 0 ? null : i })) } }));
+  expect('every number in his answer comes back in its own field, a cleared one too', back !== null && agent.CALVIN_ANSWER_VALUES.every((name, i) => back.values[name] === (i === 0 ? null : i)), JSON.stringify(back));
+  const parts = { opened: false, introduce: false, leftForNow: [], refused: [] };
+  expect('a screen that is not one is refused, and no line of it can stand as a heading', calvinBlock({ state: { x: 'a\n# b' }, screen: 'x' }, parts) === null && violetBlock({ input: { option: 'none' } }, parts) === null && !/^# [^T]/m.test(violetBlock({ input: { option: 'beneficiaries' }, projectName: 'a\n# b', facts: {} }, parts) ?? '# x'), 'a made-up heading came through');
+  expect('thirty messages a day each, the same as the other agents', CALVIN.cap === PHOEBE.cap && VIOLET.cap === PHOEBE.cap && CALVIN.cap === 30 && CALVIN.name !== VIOLET.name, JSON.stringify([CALVIN, VIOLET]));
+  /* 12. The guards on both chats (25 Nov 2026, the maintainer's word), with made-up words. A number nobody gave is never
+         filled in; a treatment project is never a supply, and core alone says which kind gives a figure; a number out of range
+         shows its message whether or not the agent sends it. */
+  {
+    const { checkAnswer, gave, kindSaid, bearsOut, nowDenied, refusedIn, siteNote, sentBackNote } = await load('_chatGuards.js');
+    const { calvinGuard } = await load('_calvinTurn.js');
+    const { violetGuard } = await load('_violetTurn.js');
+    const { PROJECT_TYPES } = await load('_projectTypes.generated.js');
+    const { renderToString } = await import('react-dom/server');
+    const { createElement } = await import('react');
+    const { useCalculatorState } = await import('@waterbots/calvin/screen');
+    let state;
+    const Probe = ({ project }) => { state = useCalculatorState(project, { exAnteOnly: true, place: 'free-site' }).state; return null; };
+    const probe = (project) => { renderToString(createElement(Probe, { project })); return JSON.parse(JSON.stringify(state)); };
+    const lines = { does: 'A made-up borehole for a village', kind: 'Community water supply technologies', filedInChat: false };
+    const supply = probe({ name: 'Made-up probe', standards: ['carbon'], technology: 'CWS', country: 'KEN', population: { mode: 'people', served: 1600 }, pumpPower: 'solar' });
+    const c = calvinGuard({ state: supply }, [], lines);
+    const water = { view: 'ex-ante', option: 'beneficiaries', accessLevel: 'full', population: { mode: 'people', served: 1600 } };
+    const v = violetGuard({ input: water, chosen: true, facts: { technology: 'Community water supply technologies', code: 'CWS', type: 'C-19', technologyClass: 'CWS' } }, [], lines);
+    const sends = (guard, words, part) => checkAnswer({ reply: 'x', handBack: 'none', ...part }, words, guard);
+    const days = supply.operationalDays;
+
+    console.log('\n  The guards on both chats, with made-up words\n');
+    const lost = sends(c, ['It runs 400 days a year.'], { values: { operationalDays: 346 } });
+    expect('a number nobody gave is not filled in: 346 where the visitor said 400', !('operationalDays' in lost.answer.values) && lost.numbers.length === 1 && lost.numbers[0].value === 346, JSON.stringify(lost));
+    const dflt = sends(c, ['Yes, use that.'], { values: { operationalDays: days, waterQualityFactor: 0.9, fnrbOverride: 0.5 } });
+    expect('a default or an assumed value is not filled in on a yes, and a value the screen holds already is no fault', Object.keys(dflt.answer.values).length === 0 && dflt.numbers.every((n) => n.field !== 'operationalDays') && dflt.numbers.length === (supply.waterQualityFactor === 0.9 ? 1 : 2), JSON.stringify(dflt));
+    expect('asked for by number, it is', sends(c, ['Use 200 days.'], { values: { operationalDays: 200 } }).answer.values.operationalDays === 200, 'left out');
+    const ways = [['1,600 people', 1600], ['1 600', 1600], ['1.6 thousand', 1600], ['sixteen hundred', 1600], ['one thousand six hundred', 1600], ['30 million litres', 3e7], ['half a million', 5e5], ['3 lakh', 3e5], ['12k', 12000], ['it is 0,8', 0.8], ['80%', 0.8], ['eighty per cent', 0.8], ['about 4.6 each', 4.6], ['a hundred and five', 105], ['minus 5', -5], ['-5 people', -5]];
+    expect('one amount is the same however it is written', ways.every(([text, n]) => gave([text], n)), ways.filter(([text, n]) => !gave([text], n)).join('; '));
+    const never = [['3 million litres', 3], ['400 days', 347], ['5 cubic metres an hour', 43800], ['30 cubic metres a day', 10950000], ['8', 0.8], ['10-20', -20], ['no idea', 0], ['four people', 40]];
+    expect('a number worked out from theirs, or part of one, is not one they gave', never.every(([text, n]) => !gave([text], n)), never.filter(([text, n]) => gave([text], n)).join('; '));
+    const counts = sends(c, ['We serve 1,600 people, five to a home.'], { facts: { population: { served: 1600, householdSize: 4.4, mode: 'people' }, pumpPower: 'solar' } });
+    expect('the facts are held to the same rule as the screen, and what is not a number stays', JSON.stringify(counts.answer.facts) === '{"population":{"mode":"people"},"pumpPower":"solar"}' && counts.numbers.length === 1 && counts.numbers[0].value === 4.4, JSON.stringify(counts));
+    expect('a brand-new supply is 0 as the answer to that question, and no 0 comes from any other words', sends(v, ['It is brand-new.'], { values: { withoutProjectM3PerYear: 0 } }).answer.values.withoutProjectM3PerYear === 0 && sends(v, ['I do not know.'], { values: { withoutProjectM3PerYear: 0 } }).numbers.length === 1 && sends(v, ['The pump is brand-new.'], { values: { flowM3PerHour: 0 } }).numbers.length === 1, 'a blank was read as zero');
+    const litres = sends(v, ['Full access.'], { values: { accessLevel: 'full', litresPerPersonPerDay: { value: 50, source: 'made up' } } });
+    expect('a value with a source goes whole when its number is not theirs', JSON.stringify(litres.answer.values) === '{"accessLevel":"full"}' && litres.numbers.length === 1, JSON.stringify(litres));
+    const held = { ...c, held: () => 12 };
+    expect('a value is cleared only when they ask', sends(held, ['Thank you.'], { values: { activityEmissions: null } }).numbers.length === 1 && sends(held, ['Please remove the pump emissions.'], { values: { activityEmissions: null } }).answer.values.activityEmissions === null, 'cleared unasked');
+    expect('what is sent back names each number and the kind, and says nothing is filled in', /operationalDays: 346/.test(sentBackNote(lost)) && /filled in none of it/.test(sentBackNote(lost)) && /the kind of project: A made-up kind/.test(sentBackNote({ numbers: [], kind: 'A made-up kind' })), sentBackNote(lost));
+
+    const label = (id) => PROJECT_TYPES.find((t) => t.id === id).name;
+    const unsaid = { ...c, kind: '', does: '' };
+    const files = (words, id, does = '') => sends({ ...unsaid, does }, words, { facts: { technology: { label: id === 'C-11' ? 'New or alternative water supply' : label(id) } } }).kind === null;
+    const plants = ['A central treatment plant that pipes safe water to homes.', 'We clean the river water at one point and sell it at a kiosk.', 'It is a purification plant for the town.', 'A plant with filters and chlorine, then a pipe to the village.', 'Not a supply but a treatment plant.', 'It is not only treatment, it is a whole plant.'];
+    expect('a treatment project is never filed as a supply, whatever the agent files', plants.every((text) => !files([text], 'CWS') && !files([text], 'C-11')), plants.filter((text) => files([text], 'CWS') || files([text], 'C-11')).join('; '));
+    expect('nor by a later word, nor when Wellington heard it', !files([plants[0], 'Well, call it a community water supply.'], 'CWS') && !files(['A community water supply.'], 'CWS', 'A central water treatment plant'), 'filed');
+    expect('nor as household treatment', !files([plants[0]], 'HWT'), 'filed');
+    expect('a kind nobody has said is not filed', ['CWS', 'HWT', 'IWT', 'CWT', 'C-11'].every((id) => !files(['It serves 400 people.'], id) && !files(['Yes.'], id)), 'filed');
+    expect('a kind their words bear out is filed', files(['A new borehole with a hand pump.'], 'CWS') && files(['Yes, that is right.'], 'CWS', 'A new borehole') && files(['A protected spring, with no treatment.'], 'CWS') && files(['Ceramic filters for families.'], 'HWT') && files(['Chlorine at four schools.'], 'IWT') && files([plants[0]], 'CWT') && files(['Rainwater tanks.'], 'C-11'), 'not filed');
+    expect('treatment with a new or restored source files nothing new, and the agent is told a person should look', ['HWT', 'IWT', 'CWT', 'CWS', 'C-11'].every((id) => !files(['A central treatment plant.', 'It also has a new borehole.'], id)) && /a person on the WaterBots team should look at it, and file no kind/.test(siteNote([], false)), 'filed');
+    expect('a kind already on the record is never changed from a chat, and the same one said again is no fault', sends({ ...c, kind: label('CWT') }, ['We have a new borehole.'], { facts: { technology: { label: label('CWS') } } }).kind === label('CWS') && sends({ ...c, kind: label('CWS') }, ['We have a new borehole.'], { facts: { technology: { label: label('CWS') } } }).kind === null, 'changed');
+    expect('one filed in a chat comes off when what they say next does not fit it', nowDenied(kindSaid(['A new borehole.', 'It is a treatment plant, really.']), label('CWS')) && !nowDenied(kindSaid(['A new borehole.', 'It is deep.']), label('CWS')) && nowDenied(kindSaid(['Filters for homes.', 'From a central plant.']), label('HWT')), 'stands');
+    const kinds = PROJECT_TYPES.filter((t) => t.axis === 'carbon');
+    expect('each agent is told the four kinds, one plain line each, from this site\'s own list', kinds.map((k) => k.id).sort().join() === 'CWS,CWT,HWT,IWT' && kinds.every((k) => siteNote(kinds, false).split('\n').filter((l) => l === `- ${k.id}, ${k.name}: ${k.plain}`).length === 1), siteNote(kinds, false));
+    expect('words for a kind are read, never a list of what is covered', !/covered/i.test(readFileSync(join('api', '_chatGuards.ts'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')), 'a list in the guards');
+
+    const daysMessage = 'Days of operation must be between 0 and 365.';
+    expect('400 days shows its message though the agent sent nothing', refusedIn('It runs 400 days a year.', c).join() === daysMessage, refusedIn('It runs 400 days a year.', c).join());
+    expect('so does a count of people below one, and the days of access', refusedIn('0 people', calvinGuard({ state: { ...supply, populationCount: null } }, [], lines)).join() === 'People served must be a whole number, 1 or more.' && refusedIn('about 400 days', v).join() === 'Days of access must be between 0 and 365.', refusedIn('about 400 days', v).join());
+    expect('and the answer to the question just asked, in any writing', refusedIn('minus ten', v).join() === 'Water before the project must be 0 or more.' && refusedIn('-3 million', c).join() === 'Water produced in a year must be 0 or more.', refusedIn('minus ten', v).join() + refusedIn('-3 million', c).join());
+    const filing = calvinGuard({ state: supply, transition: true }, [], lines);
+    expect('a share in percent is read as its share', refusedIn('140%', filing).join() === 'fNRB must be between 0 and 1.' && refusedIn('80%', filing).length === 0, refusedIn('140%', filing).join());
+    const fine = [['It runs 300 days a year.', c], ['0.8, from our 2019 filing', filing], ['We filed it in 2019 for 1,600 people.', filing], ['It failed 400 days ago.', c], ['5 million litres', c], ['1.600', c], ['It is brand-new.', v], ['leave it for now', v]];
+    expect('a number in range, or one that counts something else, shows nothing', fine.every(([text, guard]) => refusedIn(text, guard).length === 0), fine.map(([text, guard]) => [text, refusedIn(text, guard).join()]).filter(([, m]) => m).join('; '));
+
+    /* The record: core's own answer says which kind gives a figure, so the guard lifts the day core's list changes. */
+    const { createServer } = await import('vite');
+    const vite = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'error', optimizeDeps: { noDiscovery: true } });
+    try {
+      const { projectRecord, kindGivesFigure, kindOnRecord } = await vite.ssrLoadModule('/src/lib/projectRecord.ts');
+      const { toldVisit, kindNow } = await vite.ssrLoadModule('/src/lib/told.ts');
+      const { EMPTY_VISIT } = await vite.ssrLoadModule('/src/lib/visit.ts');
+      const { EMPTY_SHEET } = await vite.ssrLoadModule('/src/lib/worksheetState.ts');
+      const { TECHNOLOGY_LABELS } = await import('@waterbots/core/technologyLabels');
+      const visit = (type, gsClass, more = {}) => ({ ...EMPTY_VISIT, context: { ...EMPTY_VISIT.context, type, gsClass, ...more } });
+      const record = (at, sheet = EMPTY_SHEET, carbon = null) => projectRecord({ visit: at, sheet, carbon });
+      const gives = (type, gsClass, more) => ['calvin', 'violet'].map((agent) => kindGivesFigure(record(visit(type, gsClass, more)), agent)).join();
+      const want = [['', '', 'false,false'], ['C-19', '', 'false,false'], ['C-19', 'CWT', 'false,false'], ['C-19', 'IWT', 'false,false'], ['C-19', 'HWT', 'true,false'], ['C-19', 'CWS', 'true,true'], ['C-11', '', 'false,false'], ['C-3', '', 'false,false']];
+      expect('a kind not covered yet, or not said, gives no figure', want.every(([type, cls, w]) => gives(type, cls) === w) && gives('C-11', '', { homeUse: 'yes' }) === 'false,true', JSON.stringify(want.map(([type, cls]) => [type, cls, gives(type, cls)])));
+      const figure = { er: 1, version: 'paa' };
+      expect('and a figure handed over for one is not written to the record', record(visit('C-19', 'CWT'), EMPTY_SHEET, figure).agents.calvin?.estimate === undefined && record(visit('C-19', ''), EMPTY_SHEET, figure).agents.calvin?.estimate === undefined && record(visit('C-19', 'CWS'), EMPTY_SHEET, figure).agents.calvin?.estimate?.figure === 1, 'written');
+      const cwt = TECHNOLOGY_LABELS.find((t) => t.classId === 'CWT');
+      const before = { ...cwt };
+      Object.assign(cwt, { code: 'CWS', water: 'covered' });
+      const lifted = gives('C-19', 'CWT');
+      Object.assign(cwt, before);
+      delete cwt.code;
+      expect('the day core\'s list covers a class, its figure shows with no change here', lifted === 'true,true' && gives('C-19', 'CWT') === 'false,false', lifted);
+
+      const tell = (at, agent, given, unfile) => toldVisit(at, agent, given, record(at), unfile).visit;
+      const file = { technology: { label: label('CWS'), code: 'CWS' } };
+      const filed = tell(visit('C-19', ''), 'calvin', file);
+      const now = kindNow(filed, record(filed));
+      expect('a kind filed from a chat is kept as filed there, and goes when their words no longer fit it', filed.context.gsClass === 'CWS' && now.filedInChat && now.kind === label('CWS') && kindOnRecord(record(tell(filed, 'violet', {}, true))) === '' && gives('C-19', tell(filed, 'violet', {}, true).context.gsClass) === 'false,false', JSON.stringify(now));
+      expect('one anyone else gave is never changed or taken off', ['CWT', 'IWT', 'HWT'].every((cls) => tell(visit('C-19', cls), 'calvin', file).context.gsClass === cls && tell(visit('C-19', cls), 'calvin', {}, true).context.gsClass === cls) && tell(visit('C-3', ''), 'violet', file).context.type === 'C-3', 'changed');
+    } finally {
+      await vite.close();
+    }
+  }
+  /* The link first, so nothing behind it is touched. */
+  unlinkSync(join(out, 'node_modules'));
+  rmSync(out, { recursive: true, force: true });
+}
 /* 5. The old sealed copy is gone. */
 expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSync('carried'), 'carried/ still exists');
-/* 6. creditedUnderV1 stays unset until A29 (her word of 16 Nov 2026). */
+/* 6. creditedUnderV1 comes from the shared record alone (A29, J4, 23 Nov 2026). */
 {
   const adapter = readFileSync(join('src', 'lib', 'calvinProject.ts'), 'utf8');
   const code = adapter.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+  /* RETIRED 23 Nov 2026: A29 is built, so the field is set. Switched off, not deleted.
   expect(
     'the site leaves creditedUnderV1 unset, so every project gets the V2.0-only view until A29',
     !/creditedUnderV1/.test(code),
     'src/lib/calvinProject.ts sets creditedUnderV1'
+  ); */
+  expect(
+    'the site sets creditedUnderV1 only where the shared record says the project is transitioning (A29)',
+    (code.match(/creditedUnderV1/g) ?? []).length === 2 && /facts\.creditedUnderV1\?\.value === true \? \{ creditedUnderV1: true \} : \{\}/.test(code),
+    'src/lib/calvinProject.ts sets creditedUnderV1 some other way'
   );
   /* The installed hook itself, rendered once on the server with a made-up project: without
      the field it is the V2.0-only view with a figure; with it, the transition and the ask. */
@@ -219,7 +372,7 @@ expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSy
   /* From 0.4.0 the package's own switch, unpinFigureBlock, does it (her word of 21 Nov 2026); the CSS override is gone. */
   expect(
     'the core\'s summary block scrolls with the rows here, by the package\'s own switch, and no CSS override is left',
-    /useCalculatorState\(project, \{ exAnteOnly: true, unpinFigureBlock: true, hideExportButton: screening \}\)/.test(holder) && !/\.sticky\s*\{/.test(css),
+    /useCalculatorState\(project, \{ exAnteOnly: true, unpinFigureBlock: true, hideExportButton: screening, place \}\)/.test(holder) && !/\.sticky\s*\{/.test(css),
     'the switch is not passed, or the old override is back'
   );
 }

@@ -70,7 +70,7 @@ export default function EligibilityWorksheet({
   /** The packs Phoebe reads today. A pack she does not read says so here. */
   herPacks: readonly string[];
   /**
-   * Opens the map when a pathway reads likely eligible. Absent on the Agent
+   * Opens the map when a pathway reads likely. Absent on the Agent
    * Commons (item S18, slice 3), which has no map: the banner then names the
    * next stop without a button to it, rather than a door to somewhere else.
    */
@@ -669,7 +669,7 @@ function StateBadge({ state, pathway }: { state: string; pathway: boolean }) {
 }
 
 /**
- * Shown when a pathway reads likely eligible.
+ * Shown when a pathway reads likely.
  *
  * "Likely" is the word the read itself uses: this console works a worksheet, it
  * does not certify anything, and no standards body endorses it.
@@ -690,7 +690,7 @@ function ReadyBanner({ onOpenMap }: { onOpenMap?: () => void }) {
     >
       <div>
         <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink)', marginBottom: 3 }}>
-          This pathway reads likely eligible — next stop: Partners
+          This pathway reads likely — next stop: Partners
         </div>
         <p className="t-caption" style={{ margin: 0 }}>
           Every row asked here is met. This is a first screening, not an official decision. The

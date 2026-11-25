@@ -28,9 +28,13 @@ import {
   type ProjectStageId,
   type ProjectTypeId,
 } from './projectTypes.generated';
-import type { Served } from './visit';
+import type { AskMeta } from '../chat/evidence';
+import { answersFrom } from './chips';
+import type { MapForWellington } from './projectRecord';
+import type { Surface } from './surfaces';
+import type { HomeUse, Served } from './visit';
 
-export type WellingtonRoute = 'none' | 'eligibility' | 'quantification' | 'map' | 'paid';
+export type WellingtonRoute = 'none' | 'eligibility' | 'quantification' | 'water' | 'map' | 'paid';
 
 export interface Learned {
   does?: string;
@@ -40,7 +44,11 @@ export interface Learned {
   gsClass?: GsClassId;
   stage?: ProjectStageId;
   served?: Served;
+  homeUse?: HomeUse;
 }
+
+/** Core's own three words for it (25 Nov 2026). */
+const HOME_USES: readonly HomeUse[] = ['yes', 'no', 'not sure'];
 
 /** Ten million, the relay's own ceiling (api/_wellingtonAnswer.ts). */
 const MAX_SERVED = 10_000_000;
@@ -71,11 +79,15 @@ export interface VisitRecord {
 export interface WellingtonAnswer {
   reply: string;
   route: WellingtonRoute;
-  /** W24: his one line to Phoebe or Bridget, shown at the top of her chat; only on a route to her. */
+  /** Chips that answer the question just asked (24 Nov 2026). */
+  answers: string[];
+  /** W24: his one line to a colleague, at the top of their page; only on a route to them. Every colleague's from 24 Nov 2026. */
   introduction?: string;
   learned: Learned;
   abstained: boolean;
   abstentionTopic?: string;
+  /** A count core's fact check refused, and why (J3). It is not on the record. */
+  refused?: 'below zero' | 'zero' | 'not a whole number' | 'not a number';
 }
 
 /** Thrown with a message that is already fit to show a reader. */
@@ -88,7 +100,9 @@ export interface FoundSheet {
   sorts?: string[];
 }
 
-const ROUTES: WellingtonRoute[] = ['none', 'eligibility', 'quantification', 'map', 'paid'];
+const ROUTES: WellingtonRoute[] = ['none', 'eligibility', 'quantification', 'water', 'map', 'paid'];
+
+const REFUSED = ['below zero', 'zero', 'not a whole number', 'not a number'] as const;
 
 export async function askWellington(
   history: { role: 'user' | 'assistant'; content: string }[],
@@ -109,7 +123,7 @@ export async function askWellington(
    * it, each row by id and state only — never her own sentences. `returned` is
    * true on the one turn the desk sends when the visitor comes back from her.
    */
-  found: { sheet?: FoundSheet[]; returned?: boolean; at?: 'eligibility' | 'map' | 'open' } = {}
+  found: { sheet?: FoundSheet[]; returned?: boolean; at?: AskMeta['at']; to?: Surface; map?: MapForWellington } = {}
 ): Promise<WellingtonAnswer> {
   let response: Response;
   try {
@@ -120,10 +134,16 @@ export async function askWellington(
       stage?: typeof stage;
       sheet?: FoundSheet[];
       returned?: true;
-      at?: 'eligibility' | 'map' | 'open';
+      at?: AskMeta['at'];
+      to?: Surface;
+      map?: MapForWellington;
+      door?: 'free-site';
     } = {
       messages: history,
+      door: 'free-site',
     };
+    /* The agent map (J4, 23 Nov 2026), worked out by core from the shared record. He leads from it. */
+    if (found.map) body.map = found.map;
     if (carried) body.carried = true;
     if (record) body.record = record;
     if (stage !== 'learn') body.stage = stage;
@@ -131,6 +151,7 @@ export async function askWellington(
     if (found.returned) body.returned = true;
     /* "Wellington comes to you" (14 Nov 2026): the step whose chat he joins. */
     if (found.at) body.at = found.at;
+    if (found.at === 'handoff' && found.to) body.to = found.to;
     response = await fetch('/api/wellington', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -185,19 +206,23 @@ export async function askWellington(
     if (projectStage) learned.stage = projectStage;
     const served = readServed(c.served);
     if (served) learned.served = served;
+    const homeUse = HOME_USES.find((h) => h === c.homeUse);
+    if (homeUse) learned.homeUse = homeUse;
   }
 
   const introduction =
-    (route === 'eligibility' || route === 'map') && typeof data.introduction === 'string' && data.introduction.trim()
+    route !== 'none' && route !== 'paid' && typeof data.introduction === 'string' && data.introduction.trim()
       ? data.introduction.trim()
       : undefined;
 
   return {
     reply: data.reply,
+    answers: answersFrom(data.answers),
     route,
     ...(introduction ? { introduction } : {}),
     learned,
     abstained: data.abstained === true,
     abstentionTopic: typeof data.abstentionTopic === 'string' ? data.abstentionTopic : undefined,
+    refused: REFUSED.find((r) => r === data.refused),
   };
 }

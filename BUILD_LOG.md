@@ -13,6 +13,7 @@ GitHub's history keeps everything else. Newest last.
 - 21 Nov 2026: the release calvin-violet-v0.5.0 (#191): calvin 0.5.0 `0412d39b…`, violet 0.5.0 `b51f214c…`, core 0.1.1 `4e9be070…` (SHA-256), each checked against the release's `SHA256SUMS.txt`.
 - 22 Nov 2026: `RULINGS.md` `2aa63e76e1aea972d31427a2472b4dc4a1e7f083e1b31844f08a1d47761856d6` and `FAMILY_OPEN_CLOSE.md` `329dc4fc814e4a57d7e4c0306c73623c09b07c6d9669e173f0f29dbee638dbda` (#192).
 - 22 Nov 2026 (#193): `AGENT_RULES.md` three times, last `f45f2e243d359063bf5a820ca521e95769bdc0e4ae0661664d927ed11bf2a5fb`; `RULINGS.md` `d15271d623f0e48643386544465361c6a2553ce1c34fb77a1e6fade5c7dc1177`; `FAMILY_OPEN_CLOSE.md` `8672098fbc7767698580157d6b5eb9518fb29dc56cbd56a7c59c303709641734`; `BUILD_STATUS_SHEET.md`, new, `2cf7bdc4b3f046d9b99d472cf740fec085d19e30dbb6900547b8bd8b94a2ec6c`.
+- 23 Nov 2026: the releases core-v0.2.0 `bae2b949fbb42c0b86e324fb8a62ddf8a26fb5c01b05eac97bc841c5db539160`, calvin-v0.6.0 `5ef48f7dae703f396ad25980872ec27ac6a4f72a627205de546badb182b6625e` and violet-v0.6.0 `7f94d0a1425b39e5dc2ac66de96ca2a3992fcc1328dd6278662db57b64cf578c` (SHA-256), and the crew list `roster.yaml` 0.4.1 `8b7730539ff91a2b413dbbfbd228d7c080ea0d06b91488d50918568ee401dca3`, each checked (family 1, second pull request).
 
 ## Finished items, one line each
 

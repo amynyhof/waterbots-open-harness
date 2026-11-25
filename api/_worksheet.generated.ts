@@ -128,7 +128,13 @@ export const PHASE_SEATS: readonly { phase: string; label: string; seats: { name
         "names": [
           "Calvin"
         ],
-        "seat": "Calculator"
+        "seat": "Carbon credits calculator"
+      },
+      {
+        "names": [
+          "Violet"
+        ],
+        "seat": "Volumetric water benefits calculator"
       },
       {
         "names": [
@@ -248,19 +254,19 @@ export const PATHWAY_STATES: readonly ToolWord[] = [
 export const READINESS_READS: readonly ToolWord[] = [
   {
     "id": "likely-eligible",
-    "label": "Likely eligible",
+    "label": "Likely",
     "carries": "nothing beyond the rows it was drawn from",
     "colour": null
   },
   {
     "id": "likely-not",
-    "label": "Likely not",
+    "label": "Unlikely",
     "carries": "the blocked row's own reason",
     "colour": null
   },
   {
     "id": "not-enough-known",
-    "label": "Not enough known yet",
+    "label": "More to learn",
     "carries": "the list of rows still open, each with its route or its question",
     "colour": null
   }
@@ -269,7 +275,7 @@ export const READINESS_READS: readonly ToolWord[] = [
 export const TOOL_SECTIONS: readonly ToolSection[] = [
   {
     "pack": "vwba-2.0",
-    "version": "0.12.0",
+    "version": "0.12.1",
     "sectionId": "water",
     "sectionName": "The water pathway",
     "pathway": "water",
@@ -496,7 +502,7 @@ export const TOOL_SECTIONS: readonly ToolSection[] = [
   },
   {
     "pack": "gs-paa-v2.0",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "sectionId": "carbon",
     "sectionName": "The carbon pathway",
     "pathway": "carbon",

@@ -18,15 +18,18 @@ Phoebe's own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md); ev
   the eligibility quiz on her Tool tab, which takes a pulsing dot in her colour, then asks.
 - She reads the record first and never asks again for what it holds.
 - **A reply is four sentences or 400 characters at most.** Longer is logged and fails the measured walk.
-- **Her prompt's largest case (every card set loaded) is gated at 208,957 characters**, from 22 Nov
-  2026 (family 1): measured plus 500 (208,457), once rule 21's lobby-chat line and her rule 6 and 17
-  lines went in. Earlier that day 208,338 and 205,313; before that 203,787. A session raises it itself
+- **Her prompt's largest case (every card set loaded) is gated at 209,982 characters**, from 23 Nov
+  2026 (family 1): measured plus 500 (209,482), once Violet's post went into the roster. On 22 Nov 2026
+  208,957, once rule 21's lobby-chat line and her rule 6 and 17 lines went in; earlier that day 208,338 and 205,313; before that 203,787. A session raises it itself
   by the same method and states the old and new size in its pull request.
 - **Where Wellington introduced her, she does not introduce herself again** (agent rule 17). The
   console tells her relay when his line shows above her first answer; in the Agent Commons she
   introduces herself.
-- No teaching side notes and no paid-site pitch. Where useful, a quiet "Learn more about …" chip sits
-  under her reply, and nothing else.
+- No teaching side notes and no paid-site pitch. Under her reply: the chips that answer the question she just
+  asked, then, where useful, one quiet "Learn more about …" (24 Nov 2026).
+- **She answers in the same turn** (the maintainer's ruling of 24 Nov 2026). A question that needs a card set she
+  has not been given goes again with it, at most three calls; the last has every set still in play.
+- **When nothing is left for her to ask, Wellington comes**, whether or not her answer handed back (24 Nov 2026).
 - Her reply streams as it is written; the relay logs each answer's time to first word.
 - When her reply ends in a question, that last sentence is bold, chips included. Display only.
 - Her chat carries no citation markers; her citations show on her worksheet rows, beside the row each
@@ -43,7 +46,7 @@ Phoebe's own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md); ev
 
 - Each row's state; for a Fixable row the route's id and one sentence on what it would take, and for a
   Blocked row the card's reason.
-- Each pathway's reading, its sorts (the technology class and the methodology version), and which paths
+- Each pathway's reading, with its reason and what would change it (from 23 Nov 2026, J3), its sorts (the technology class and the methodology version), and which paths
   close.
 
 ## Her reasons to send someone to the WaterBots team (agent rule 13)

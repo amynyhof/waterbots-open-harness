@@ -139,16 +139,49 @@ expect('a topic without an abstention is dropped', notAbst?.abstentionTopic === 
     'W24: the introduction is kept on a route to Phoebe, dropped elsewhere or past one line, and heads her page',
     kept?.introduction === intro && offRoute?.introduction === undefined && twoLines?.introduction === undefined &&
       /onRouted\(answer\.route, answer\.introduction \?\? answer\.reply/.test(wellingtonLib) &&
-      /\(route === 'eligibility' \|\| route === 'map'\) && typeof data\.introduction === 'string'/.test(readFileSync(join('src', 'lib', 'wellingtonClient.ts'), 'utf8')) &&
+      /* Every colleague's from 24 Nov 2026, the maintainer's ruling: the same hand-off for every agent. */
+      /route !== 'none' && route !== 'paid' && typeof data\.introduction === 'string'/.test(readFileSync(join('src', 'lib', 'wellingtonClient.ts'), 'utf8')) &&
       validate({ reply: 'Let me introduce you to a colleague.', route: 'map', introduction: 'Bridget, this is a borehole in Kitui.', abstained: false })?.introduction === 'Bridget, this is a borehole in Kitui.' &&
+      validate({ reply: 'Let me introduce you to a colleague.', route: 'water', introduction: 'Violet, this is a borehole in Kitui.', abstained: false })?.introduction === 'Violet, this is a borehole in Kitui.' &&
+      validate({ reply: 'Saving is on the paid site.', route: 'paid', introduction: 'Nobody, this is a line.', abstained: false })?.introduction === undefined &&
       /cardWordsIn\(answer\.reply\)/.test(readFileSync(join('api', 'wellington.ts'), 'utf8')),
     JSON.stringify({ kept, offRoute, twoLines })
   );
 }
 
+{
+  /* The journey told by step, 24 Nov 2026 (items 6 and 7): the relay's step names are the journey's own, the route at a
+     step's end is the map's, and the screening is never called done while a step is ahead. */
+  const { STEP_NAMES, afterHomeUse, asksHomeUse, readMap: readStepMap, saysAllDone, stepEndNote, stepEndRoute } = await loadApi('_agentMap.js');
+  const journey = [...readFileSync('src/lib/journey.ts', 'utf8').matchAll(/label: '([A-Za-z]+)', surface: '/g)].map((m) => m[1]);
+  const at = (over) => readStepMap({ next: 'call', agent: 'calvin', agents: ['calvin', 'violet'], done: ['eligibility', 'partners'], ...over });
+  expect(
+    'items 6 and 7: the step names are the journey\'s, the route at the end of a step is the map\'s, and "done" is never said too soon',
+    JSON.stringify(STEP_NAMES) === JSON.stringify(journey) &&
+      stepEndRoute('map', at({})) === 'quantification' && stepEndRoute('map', at({ done: ['eligibility'] })) === null &&
+      stepEndRoute('map', at({ next: 'report or sign-up', agent: undefined })) === 'none' &&
+      /* Step 3's two agents share it, so each part is read apart; a project with no calculator ahead has two steps. */
+      stepEndRoute('quantification', at({ agent: 'violet', agents: ['violet'] })) === 'water' && stepEndRoute('quantification', at({})) === null &&
+      /Step 2 of 2, Partners/.test(stepEndNote('map', at({ next: 'report or sign-up', agent: undefined, agents: [], steps: ['eligibility', 'partners'] }))) &&
+      saysAllDone('Every step of the screening is done.') && saysAllDone('Your screening is complete.') &&
+      !saysAllDone('Step 2, Partners, is done. Next is Step 3, Quantify.') && !saysAllDone('The screening is not done yet.'),
+    JSON.stringify({ STEP_NAMES, journey })
+  );
+  /* Home use, asked when the map asks (core 0.3.0, 25 Nov 2026): one question, before anyone is introduced. */
+  const homeUse = at({ next: 'gather facts', facts: ['homeUse'], agent: 'bridget', agents: ['bridget'], done: ['eligibility'] });
+  expect(
+    'home use is asked before the next step is named, its answer is one of three and only beside a new supply, and then the next agent follows',
+    asksHomeUse(homeUse) && stepEndRoute('eligibility', homeUse) === 'none' && afterHomeUse(homeUse) === 'map' &&
+      /whether people use the water at home/.test(stepEndNote('eligibility', homeUse)) && /return it in context\.homeUse/.test(stepEndNote('eligibility', homeUse, true)) &&
+      validate({ reply: 'Thank you.', route: 'none', abstained: false, context: { homeUse: 'not sure' } }, { type: 'C-11' })?.context?.homeUse === 'not sure' &&
+      validate({ reply: 'Thank you.', route: 'none', abstained: false, context: { homeUse: 'yes' } }, { type: 'C-19' })?.context === undefined &&
+      validate({ reply: 'Thank you.', route: 'none', abstained: false, context: { homeUse: 'maybe' } }, { type: 'C-11' })?.context === undefined,
+    JSON.stringify(homeUse)
+  );
+}
 expect(
   'the schema closes the route list',
-  JSON.stringify(WELLINGTON_RESPONSE_SCHEMA.properties.route.enum) === JSON.stringify(['none', 'eligibility', 'quantification', 'map', 'paid']),
+  JSON.stringify(WELLINGTON_RESPONSE_SCHEMA.properties.route.enum) === JSON.stringify(['none', 'eligibility', 'quantification', 'water', 'map', 'paid']), /* 'water' is Violet's desk, 23 Nov 2026 (J5) */
   JSON.stringify(WELLINGTON_RESPONSE_SCHEMA.properties.route.enum)
 );
 expect(
@@ -299,22 +332,29 @@ expect('his reading level is rule 1 of the agent rules, 6th grade (22 Nov 2026),
 {
   const wellingtonLib = readFileSync(join('src', 'lib', 'wellington.ts'), 'utf8');
   expect(
-    'W17, P24: a route to a colleague draws "Meet <name>" (blue, quiet once that step is reached, 21 Nov 2026) and "Keep chatting" (a quiet chip) under his message, from the field alone',
-    /Meet \$\{/.test(wellingtonLib) && /'Keep chatting'/.test(wellingtonLib) && /actionsFor\(answer\.route/.test(wellingtonLib) &&
+    /* From 24 Nov 2026, the shared console behaviours, item 8: every hand-off has one format, in the next agent's colour
+       and naming the step (src/lib/steps.ts), so Meet is no longer blue and never goes quiet. */
+    'W17, P24, item 8: a route to a colleague draws the hand-off that names the step and "Keep chatting" (a quiet chip) under his message, from the field and the map alone',
+    /Step \$\{step\.number\} of \$\{step\.of\}: \$\{step\.label\}\. Meet \$\{agent\.name\}/.test(readFileSync(join('src', 'lib', 'steps.ts'), 'utf8')) &&
+      /handoffButton\(surface/.test(wellingtonLib) && /'Keep chatting'/.test(wellingtonLib) && /buttonsAfter\(answer\.route/.test(wellingtonLib) &&
+      /\.wb-handoff \{[^}]*border: 1px solid var\(--handoff\);/.test(readFileSync(join('src', 'styles', 'base.css'), 'utf8')) &&
       /const blue = button\.primary && !\(button\.reaches && reached\.has\(button\.reaches\)\)/.test(readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8')) &&
       /blue \? 'btn btn-primary' : 'wb-chip'/.test(readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8')) &&
       /\.wb-chip \{[^}]*background: transparent;/.test(readFileSync(join('src', 'styles', 'base.css'), 'utf8')),
     'the two buttons are not built from the route field'
   );
 }
-// His gate: 33,310 from 22 Nov 2026 (family 1, after the maintainer's walk of #198): what each colleague helps
+// His gate: 35,772 from 25 Nov 2026 (family 1, second pull request): the status sheet's new part, rule 6's fourth pair and
+// the line that he explains what WaterBots covers today, measured 35,272, plus 500. The maintainer allowed up to 1,000.
+// Before that 35,181 from 23 Nov 2026 (family 1, second pull request): Violet's seat and the agent map, measured 34,681, plus
+// 500. It was 33,310 from 22 Nov 2026 (family 1, after the maintainer's walk of #198): what each colleague helps
 // with, from the crew list, measured 32,810, plus 500. Before that the same day 32,537: rule 21's lobby-chat line
 // and rule 11's blank-facts line, measured 32,037, plus 500. From the maintainer's ruling of that day a session raises the gate itself by this
 // method and states the old and new size in its pull request. Before that 32,001, the maintainer's method of that day (measured plus 500), applied a
 // third time when the build status sheet came in for every agent and his build-update card went: 31,501.
 // Earlier the same day 29,896 (21 rules, measured 29,396) and 29,236 (19 rules); before that 26,199 from 24 Sep 2026.
 expect('the agent rules are 1 to 21, in order, and the notes for builders are not among them', (AGENT_RULES_MD.match(/^\d+\. /gm) ?? []).map((n) => parseInt(n, 10)).join(',') === Array.from({ length: 21 }, (_, i) => i + 1).join(',') && !/Notes for builders/.test(AGENT_RULES_MD), (AGENT_RULES_MD.match(/^\d+\. /gm) ?? []).join(' '));
-expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 33310 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
+expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 35772 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
 
 /* ---------------------------------------------------------------------------
    The record the desk carries to Phoebe — slice 3, 7 Sep 2026.
@@ -639,17 +679,24 @@ expect(
     /HYBAS 2/.test(pinVisit({ ...EMPTY_VISIT, stage: 'partners' }, pinHere, true).context.place),
   'a pin moved a stage it should not'
 );
+/* RETIRED 23 Nov 2026 (J4): the agent map took the place of the site's own pathway rule. Switched off, not deleted.
 expect(
   'the shell writes a pin through pinnedVisit, with the pathway rule, and his greeting back also runs at Quantify',
   /pinnedVisit\(v, pin, pathwayAllowsQuantify\(v, sheetRef\.current\)\)/.test(readFileSync('src/App.tsx', 'utf8')) &&
     /visit\.stage !== 'partners' && visit\.stage !== 'quantify'/.test(readFileSync('src/App.tsx', 'utf8')),
   'the shell does not use the pin rule'
+); */
+expect(
+  'the shell writes a pin through pinnedVisit, with who the agent map calls, and his greeting back also runs at Quantify',
+  /pinnedVisit\(v, pin, callOf\(now, 'calvin'\)\.called \|\| callOf\(now, 'violet'\)\.called\)/.test(readFileSync('src/App.tsx', 'utf8')) &&
+    /visit\.stage !== 'partners' && visit\.stage !== 'quantify'/.test(readFileSync('src/App.tsx', 'utf8')),
+  'the shell does not use the map for the pin'
 );
 const bridgetSource = readFileSync('src/components/BridgetScreen.tsx', 'utf8');
 expect(
   'her screen opens on Chat, and the map has its own tab, "Map", at full width; the strip and the side-by-side split are gone (31 Oct 2026)',
   /chat: <ScreenChat host=\{BRIDGET\}/.test(bridgetSource) &&
-    /toolLabel="Map"/.test(bridgetSource) && /tool: \(/.test(bridgetSource) && /<BasinMap /.test(bridgetSource) &&
+    /const MAP_TAB = 'Map';/.test(bridgetSource) && /toolLabel=\{MAP_TAB\}/.test(bridgetSource) && /tool: \(/.test(bridgetSource) && /<BasinMap /.test(bridgetSource) &&
     /useState<ScreenTab>\('chat'\)/.test(bridgetSource) &&
     !/NotLiveChat|BridgetHello|wb-hello|opensOn="tool"|wb-bridget-split/.test(bridgetSource) &&
     !/wb-hello|wb-bridget-split/.test(readFileSync('src/styles/base.css', 'utf8')),
@@ -708,7 +755,8 @@ expect(
 expect(
   'she is told Calvin is next exactly when the rail offers Quantify (31 Oct 2026)',
   /quantifyNext=\{visit\.stage === 'quantify'\}/.test(readFileSync('src/App.tsx', 'utf8')) &&
-    /\{ place, phone, pin, quantifyNext \}/.test(bridgetSource) &&
+    /* The pin may be the one her GPS numbers just found (24 Nov 2026). */
+    /\{ place, phone, pin: found\?\.kind === 'found' \? found\.pin : pin, quantifyNext, record \}/.test(bridgetSource) &&
     currentInvite({ ...mapped, stage: 'quantify' })?.key === 'invite-quantify' &&
     currentInvite({ ...mapped, pin: { hybasId: 1 } }, false) === null,
   'what she is told and what the rail shows can disagree'
@@ -720,10 +768,11 @@ expect(
 );
 const quantified = applyWellingtonRoute(mapped, 'quantification', 'Open Quantify.');
 expect(
-  'Quantify invite names the calculator and says Calvin is not live',
+  'Quantify invite names the calculator and does not say Calvin is not live',
   quantified.stage === 'quantify' &&
     currentInvite(quantified)?.action.surface === 'quantification' &&
-    /not answering yet/.test(currentInvite(quantified).sentence),
+    /* His chat is live from 25 Nov 2026, so the line no longer says it is not. */
+    !/not answering/.test(currentInvite(quantified).sentence),
   JSON.stringify(currentInvite(quantified))
 );
 const navSource = readFileSync('src/components/NavRail.tsx', 'utf8');
@@ -757,7 +806,8 @@ expect(
 );
 expect(
   'W27: the right panel is the crew, one plain status line each, with no next-step rows (14 Nov 2026)',
-  /crewStatus\(visit, sheet, carbon\)/.test(appSource) && /status=\{crew\}/.test(appSource) && !/nextStepRows/.test(appSource),
+  /* `counted` is the visit less what was worked out at a desk the map closed (J4, 23 Nov 2026). */
+  /crewStatus\(counted, sheet, carbon\)/.test(appSource) && /status=\{crew\}/.test(appSource) && !/nextStepRows/.test(appSource),
   'the right panel still draws next-step rows'
 );
 expect(
@@ -864,7 +914,7 @@ expect(
   'the first carried send reads the visit from a ref written before the send, not the last paint',
   /visitRef\.current/.test(appSource) &&
     /learnedContext\(visitRef\.current\.context, learned\)/.test(appSource) &&
-    /wellingtonAsk\(onLearned, \(\) => visitRef\.current, onRouted, \(\) => sheetRef\.current, setSurface\)/.test(appSource) &&
+    /wellingtonAsk\(\s*onLearned,\s*\(\) => visitRef\.current,\s*onRouted,\s*\(\) => sheetRef\.current,\s*setSurface,\s*\(\) => mapNow\.current\(\),/.test(appSource) &&
     /void sendCarried\(question, \{ carried: true \}\)/.test(appSource),
   'the first ask can still see a blank visit'
 );
@@ -1024,7 +1074,7 @@ console.log('\n  What Phoebe found\n');
   const relay = readFileSync('api/wellington.ts', 'utf8');
   const client = readFileSync('src/lib/wellington.ts', 'utf8');
   const shell = readFileSync('src/App.tsx', 'utf8');
-  expect('the relay adds the block after the breakpoint and feeds the guard', /\.\.\.\(found \? \[\{ type: 'text' as const, text: found\.text \}\] : \[\]\)/.test(relay) && /reads: found\?\.reads/.test(relay) && /\(The visitor came back from Eligibility\.\)/.test(relay), 'the relay is not wired');
+  expect('the relay adds the block after the breakpoint and feeds the guard', /\.\.\.\(found \? \[\{ type: 'text' as const, text: found\.text \}\] : \[\]\)/.test(relay) && /map \? \{\} : \{ reads: found\?\.reads \}/.test(relay) && /\(The visitor came back from Eligibility\.\)/.test(relay), 'the relay is not wired');
   expect('the client sends rows by id and state only', /rows: rows\.map\(\(\{ id, state \}\) => \(\{ id, state \}\)\)/.test(client), 'more than id and state crosses');
   expect('the desk greets back once, on the first return from Phoebe', /greetedBack\.current = true/.test(shell) && /visit\.stage !== 'partners'/.test(shell), 'the return greeting is not wired');
 }
@@ -1176,7 +1226,7 @@ console.log('\n  Bridget\n');
   expect(
     "the relay reads its two console turns strictly, refuses a pinned turn with no pin that holds, and keeps her colleagues' guards",
     /body\.opened === true/.test(relay) && /body\.pinned === true/.test(relay) && /if \(pinned && !pin\)/.test(relay) &&
-      /isDegenerateReply\(answer\.reply\)/.test(relay) && /readHandBack\(v\.handBack\)/.test(relay) &&
+      /isDegenerateReply\(read\.reply\)/.test(relay) && /readHandBack\(v\.handBack\)/.test(relay) &&
       /recordAbstention\(lastQuestion, answer\.abstentionTopic, new Date\(\), 'bridget'\)/.test(relay) &&
       /'Bridget is not connected in this environment/.test(relay),
     'a guard is missing from her relay'
@@ -1226,8 +1276,8 @@ console.log('\n  W28, W29 and V1 — the queued round, 16 Nov 2026');
   const app = readFileSync(join('src', 'App.tsx'), 'utf8');
   expect(
     'W29: the relay takes `open` only as an opened turn, with its own note and no route',
-    /body\.at === 'open'/.test(relay) && /returned && \(body\.at === 'eligibility'/.test(relay) &&
-      /open:\s*'# Where you are speaking[^']*Speak first, in your own words[^']*Set no route\./.test(relay),
+    /body\.at === 'open'/.test(relay) && /const at = returned \? \(joinedAt \?\? \(body\.at === 'open'/.test(relay) &&
+      /OPEN_NOTE: string =[\s\S]{0,400}'# Where you are speaking[^']*Speak first, in your own words[^']*Set no route\./.test(relay),
     'the open case is missing or not bound to an opened turn'
   );
   expect(

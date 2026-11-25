@@ -1032,6 +1032,30 @@ body {
   color: var(--ink-2);
   cursor: pointer;
 }
+/* A hand-off to the next step, in the next agent's colour — the maintainer's ruling
+   of 24 Nov 2026 (src/lib/steps.ts). The colour is a keyline and an edge, as the book
+   allows an identity (§2.6), never text and never behind a number; the label is ink. */
+.wb-handoff {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px 7px 10px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--handoff);
+  border-left-width: 4px;
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+.wb-handoff:hover {
+  background: var(--paper);
+}
+
 .wb-chip:hover {
   color: var(--ink);
   border-color: var(--ink-4);
@@ -1129,7 +1153,7 @@ body {
   font-size: 10.5px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--turn-accent);
+  color: var(--turn-name, var(--turn-accent));
 }
 
 /* Thinking — face + three opacity-pulse dots + the host's line. Never flush-left

@@ -77,9 +77,16 @@ import Desk from './components/Desk';
 import CrewRail from './components/CrewRail';
 import ScreeningReport from './components/ScreeningReport';
 import { NO_SUMMARY, type CalvinSummary } from './components/CalvinCalculator';
-import { calvinProject } from './lib/calvinProject';
+import { calvinProjectFrom, countryIsoFor } from './lib/calvinProject';
+import { carriedRecord } from './lib/phoebeClient';
+import { NO_CALCULATOR_YET, callOf, calledSurfaces, closedBy, kindGivesFigure, mapForWellington, metFrom, nextStep, noCalculatorFor, projectRecord, siteMap, uncoveredLabel, waterHasNoCalculator, type MapForWellington, type NextStep } from './lib/projectRecord';
+import { kindNow, toldVisit } from './lib/told';
+import type { GivenFacts } from '@waterbots/core/record';
+import { onward, type Ending } from './lib/steps';
+import { d3InputFromRecord, violetAgentNoteLines } from '@waterbots/violet';
+import { computeD3 } from '@waterbots/violet/engine';
 import type { CarbonFigure } from './lib/visit';
-import type { AgentTurn } from './chat/evidence';
+import type { AgentTurn, TurnButton } from './chat/evidence';
 import Commons from './components/Commons';
 import InterestPage from './components/InterestPage';
 import SupportersPage from './components/SupportersPage';
@@ -96,6 +103,8 @@ import {
 import BridgetScreen from './components/BridgetScreen';
 import PhoebeScreen from './components/PhoebeScreen';
 import CalvinScreen from './components/CalvinScreen';
+import NotCalled, { NoCalculatorYet } from './components/NotCalled';
+import VioletScreen from './components/VioletScreen';
 import SiteMenu from './components/SiteMenu';
 import { usePhone } from './lib/phone';
 import { blueButton, meetShowing } from './lib/blue';
@@ -110,7 +119,7 @@ import {
   type Sheet,
   type Verdicts,
 } from './lib/worksheetState';
-import { eligibilityDone as sheetDone } from './lib/visit';
+import { phoebeDone } from './lib/visit';
 import { HER_PACKS } from './lib/worksheet.generated';
 import {
   EMPTY_VISIT,
@@ -118,16 +127,19 @@ import {
   applyWellingtonRoute,
   crewStatus,
   crewNews,
+  handedOver,
+  inviteFor,
   journeyProgress,
   learnedContext,
   openedEligibility,
   pathStatus,
-  pathwayAllowsQuantify,
   pinnedVisit,
+  placedContext,
   somethingOnRecord,
   typedContext,
   type Learned,
   type MapPin,
+  type Teller,
   type Visit,
   type WaterEstimate,
 } from './lib/visit';
@@ -173,6 +185,9 @@ export default function App() {
   useEffect(() => {
     setReached((r) => (r.has(surface) ? r : new Set([...r, surface])));
   }, [surface]);
+  const reachedRef = useRef(reached);
+  reachedRef.current = reached;
+  const seenWaterRef = useRef(false);
 
   /* WHICH PAGE — the console or the Agent Commons — read from the address on
      arrival and written back to it on every move, so a reload, a shared link
@@ -238,6 +253,8 @@ export default function App() {
   sheetRef.current = sheet;
 
   const onVerdicts = useCallback((verdicts: Verdicts) => {
+    /* The ref moves with it, so Wellington, who joins her chat right after, reads what she just found. */
+    sheetRef.current = applySheetUpdates(sheetRef.current, verdicts);
     setSheet((current) => applySheetUpdates(current, verdicts));
   }, []);
 
@@ -256,10 +273,36 @@ export default function App() {
   }, []);
 
   const onLearned = useCallback((learned: Learned) => {
+    /* The ref moves with it, so the buttons under this same answer are the map's after it (25 Nov 2026). */
+    visitRef.current = { ...visitRef.current, context: learnedContext(visitRef.current.context, learned) };
     setVisit((v) => ({ ...v, context: learnedContext(v.context, learned) }));
   }, []);
 
-  const onRouted = useCallback((route: 'none' | 'eligibility' | 'quantification' | 'map' | 'paid', reply: string) => {
+  /* What the visitor tells Calvin or Violet joins the visit, and so the shared record (src/lib/told.ts). */
+  const onTold = useCallback((agent: Teller, given: GivenFacts, unfile?: boolean): string[] => {
+    const tell = (v: Visit) => toldVisit(v, agent, given, projectRecord({ visit: v, sheet: sheetRef.current }), unfile);
+    const { visit: next, refused } = tell(visitRef.current);
+    visitRef.current = next;
+    setVisit((v) => tell(v).visit);
+    return refused;
+  }, []);
+  const calvinTold = useCallback((given: GivenFacts, unfile?: boolean) => onTold('calvin', given, unfile), [onTold]);
+  const violetTold = useCallback((given: GivenFacts, unfile?: boolean) => onTold('violet', given, unfile), [onTold]);
+  /* The kind of project, for the guards on both chats, read as a turn is sent. */
+  const kindIs = useCallback(() => kindNow(visitRef.current, projectRecord({ visit: visitRef.current, sheet: sheetRef.current })), []);
+  /* Their part of Step 3 is ended, by a figure that came from the visitor's answers (25 Nov 2026). */
+  const calvinEnded = useCallback(() => {
+    if (visitRef.current.calvinDone) return;
+    visitRef.current = { ...visitRef.current, calvinDone: true };
+    setVisit((v) => ({ ...v, calvinDone: true }));
+  }, []);
+  const violetEnded = useCallback(() => {
+    if (visitRef.current.violetDone) return;
+    visitRef.current = { ...visitRef.current, violetDone: true };
+    setVisit((v) => ({ ...v, violetDone: true }));
+  }, []);
+
+  const onRouted = useCallback((route: 'none' | 'eligibility' | 'quantification' | 'water' | 'map' | 'paid', reply: string) => {
     setVisit((v) => applyWellingtonRoute(v, route, reply));
   }, []);
 
@@ -268,14 +311,24 @@ export default function App() {
      Unpinning clears only a place the pin wrote. From 30 Oct 2026 (A22) a pin
      at Partners also finishes that step, where a pathway read allows Quantify
      (pinnedVisit, in src/lib/visit.ts). */
+  /* WHO THE MAP CALLS decides it from 23 Nov 2026 (J4): Quantify is next where Calvin or Violet is called. The
+     site's own rule, pathwayAllowsQuantify, is switched off (src/lib/visit.ts). */
   const setPin = useCallback((pin: MapPin | null) => {
-    setVisit((v) => pinnedVisit(v, pin, pathwayAllowsQuantify(v, sheetRef.current)));
+    setVisit((v) => {
+      /* Asked with the pin in place: a calculator is called once Bridget has finished (core 0.3.0). */
+      const now = siteMap(projectRecord({ visit: { ...v, pin }, sheet: sheetRef.current }));
+      return pinnedVisit(v, pin, callOf(now, 'calvin').called || callOf(now, 'violet').called);
+    });
   }, []);
 
   /* The water estimate, Violet's, as her screen hands it over after every
      change (src/components/VioletWater.tsx). Kept in the visit, so the crew
      line, the report and the save read it. */
+  /* Her screen follows the record from the first fact Wellington hears, so it hands over an estimate before the
+     visitor has been to her desk. It counts only once they have (23 Nov 2026): her line never says "started"
+     about work nobody began. */
   const setWater = useCallback((water: WaterEstimate) => {
+    if (!seenWaterRef.current) return;
     setVisit((v) => ({ ...v, water }));
   }, []);
 
@@ -286,11 +339,43 @@ export default function App() {
      at that tab. */
   /* Look pass, 8 Sep 2026: his route no longer draws a button under his turn.
      He names the step in words, and the next steps live in the right rail. */
+  /* THE AGENT MAP GOES WITH EVERY ASK (J4, 23 Nov 2026), read at send time from what the shell holds. */
+  const mapNow = useRef<() => MapForWellington>(() => {
+    const record = projectRecord({ visit: visitRef.current, sheet: sheetRef.current, carbon: carbonRef.current });
+    return mapForWellington(record, siteMap(record, metFrom(reachedRef.current)));
+  });
+  /* WHAT COMES NEXT, read at answer time (24 Nov 2026, src/lib/steps.ts), and what the console does at the end. */
+  const nextNow = useRef<() => NextStep>(() => {
+    const record = projectRecord({ visit: visitRef.current, sheet: sheetRef.current, carbon: carbonRef.current });
+    return nextStep(record, siteMap(record, metFrom(reachedRef.current)));
+  });
+  /* The maintainer's sentence, where water benefits stay in play with no calculator (25 Nov 2026). */
+  const noticeNow = useRef<() => string>(() => {
+    const record = projectRecord({ visit: visitRef.current, sheet: sheetRef.current, carbon: carbonRef.current });
+    return waterHasNoCalculator(siteMap(record)) ? NO_CALCULATOR_YET : '';
+  });
+  const endingRef = useRef<Ending>({ open: setSurface, report: printScreeningReport, save: () => undefined });
   const ask = useMemo(
-    () => wellingtonAsk(onLearned, () => visitRef.current, onRouted, () => sheetRef.current, setSurface),
+    () =>
+      wellingtonAsk(
+        onLearned,
+        () => visitRef.current,
+        onRouted,
+        () => sheetRef.current,
+        setSurface,
+        () => mapNow.current(),
+        (to, line) => setVisit((v) => handedOver(v, to, line)),
+        (text) => sayToHim.current(text),
+        () => nextNow.current(),
+        { open: (to) => setSurface(to), report: () => endingRef.current.report(), save: () => endingRef.current.save() },
+        () => noticeNow.current()
+      ),
     [onLearned, onRouted]
   );
   const chat = useConversation(ask, WELLINGTON.name);
+  /* A chip under his reply sends its words as the visitor's own message (24 Nov 2026), read at tap time. */
+  const sayToHim = useRef<(text: string) => void>(() => undefined);
+  sayToHim.current = (text) => void chat.sendText(text);
 
   /* THE RECEIVER (item S13, built 9 Sep 2026; facts 15 Sep 2026). A visitor
      who typed a question into the production landing's box arrives here with
@@ -405,23 +490,61 @@ export default function App() {
     void askReturned();
   }, [surface, visit.stage, askReturned]);
 
-  /* CALVIN'S CARBON CALCULATOR IS THE OPEN CORE'S — @waterbots/calvin 0.5.1
-     from 22 Nov 2026 (0.5.0 earlier that day, 0.4.1 from 21 Nov, 0.3.0 from 16 Nov, 0.2.0 from 14 Nov), the maintainer's word,
-     and the water calculator beside it is Violet's D-3, from the same release. The project
-     comes from the visit's record alone (src/lib/calvinProject.ts); the engine
+  /* CALVIN'S CARBON CALCULATOR IS THE OPEN CORE'S — @waterbots/calvin 0.6.0
+     from 23 Nov 2026 (0.5.1 and 0.5.0 on 22 Nov, 0.4.1 from 21 Nov, 0.3.0 from 16 Nov, 0.2.0 from 14 Nov), the maintainer's word,
+     and the water calculator is Violet's D-3, on her own desk. The project
+     comes from the shared project record alone (src/lib/calvinProject.ts); the engine
      does every sum. ITS STATE LIVES WITH THE CALCULATOR from 16 Nov 2026
      (CalvinCarbon in src/components/CalvinCalculator.tsx), which opens again
      once the record names the technology, so every starting value is the
      package's own; the shell keeps only what it reads back: the figure the
      calculator's screen shows, and the facts still needed. The figure is
      shown elsewhere only once the visitor has opened Quantify. */
-  const project = useMemo(() => calvinProject(visit.context), [visit.context]);
   const [calvinSummary, setCalvinSummary] = useState<CalvinSummary>(NO_SUMMARY);
   const [seenQuantify, setSeenQuantify] = useState(false);
+  const [seenWater, setSeenWater] = useState(false);
   useEffect(() => {
     if (surface === 'quantification') setSeenQuantify(true);
+    if (surface === 'water') {
+      seenWaterRef.current = true;
+      setSeenWater(true);
+    }
   }, [surface]);
-  const carbon: CarbonFigure | null = seenQuantify ? calvinSummary.figure : null;
+  const carbonSeen: CarbonFigure | null = seenQuantify ? calvinSummary.figure : null;
+
+  /* THE SHARED PROJECT RECORD AND THE AGENT MAP (J3 and J4, 23 Nov 2026; src/lib/projectRecord.ts), worked out
+     again from the facts as they stand whenever one changes. Calvin's figure is added after his desk reads the
+     record, so a closed desk's figure never shows anywhere. */
+  const facts = useMemo(() => projectRecord({ visit, sheet }), [visit, sheet]);
+  const closed = useMemo(() => {
+    const m = siteMap(facts);
+    return { calvin: closedBy(m, 'calvin'), violet: closedBy(m, 'violet') };
+  }, [facts]);
+  /* The kind of project decides whether a figure shows, in core's own answer (25 Nov 2026). */
+  const counts = useMemo(() => ({ calvin: kindGivesFigure(facts, 'calvin'), violet: kindGivesFigure(facts, 'violet') }), [facts]);
+  const carbon: CarbonFigure | null = closed.calvin || !counts.calvin ? null : carbonSeen;
+  const carbonRef = useRef<CarbonFigure | null>(null);
+  carbonRef.current = carbon;
+  const record = useMemo(() => projectRecord({ visit, sheet, carbon }), [visit, sheet, carbon]);
+  const map = useMemo(() => siteMap(record, metFrom(reached)), [record, reached]);
+  const project = useMemo(() => calvinProjectFrom(facts), [facts]);
+  /* What was worked out at a closed desk is not part of the screening: not on the crew's lines, the report or the save. */
+  const counted = useMemo<Visit>(() => ((closed.violet || !counts.violet) && visit.water ? { ...visit, water: null } : visit), [visit, closed.violet, counts.violet]);
+  const closedDesks = useMemo<Surface[]>(() => [...(closed.calvin ? (['quantification'] as const) : []), ...(closed.violet ? (['water'] as const) : [])], [closed]);
+  /* THE CREW SHOWS ONLY WHO THE MAP HAS CALLED — the maintainer's ruling of 24 Nov 2026 (calledSurfaces,
+     src/lib/projectRecord.ts). An agent appears when the map calls them, or when Wellington has handed the visitor to
+     them, and never disappears after that. */
+  const calledNow = useMemo(() => calledSurfaces(map), [map]);
+  const [calledBefore, setCalledBefore] = useState<ReadonlySet<Surface>>(() => new Set([DEFAULT_SURFACE]));
+  const crewShown = useMemo<ReadonlySet<Surface>>(() => new Set([...calledBefore, ...calledNow, ...reached]), [calledBefore, calledNow, reached]);
+  useEffect(() => {
+    if (crewShown.size !== calledBefore.size) setCalledBefore(crewShown);
+  }, [crewShown, calledBefore]);
+  /* Violet's notes for the report: from what the visitor set, or from the record alone once they have seen her desk. */
+  const violetNotes = useMemo(() => {
+    if (visit.water) return violetAgentNoteLines(visit.water.result as unknown as ReturnType<typeof computeD3>);
+    return seenWater ? violetAgentNoteLines(computeD3(d3InputFromRecord(facts, 'ex-ante'))) : [];
+  }, [visit.water, seenWater, facts]);
 
   /* WELLINGTON COMES TO YOU — the maintainer's ruling of 14 Nov 2026. When an
      agent's step is done he joins the visitor in that agent's chat with the
@@ -431,12 +554,43 @@ export default function App() {
      own greet-back is not sent again. */
   const askHim = chat.askOpened;
   const wellingtonComes = useCallback(
-    async (at: 'eligibility' | 'map', composerId: string): Promise<AgentTurn | null> => {
+    async (at: Surface, composerId: string): Promise<AgentTurn | null> => {
+      if (at === 'desk') return null;
       greetedBack.current = true;
       return askHim({ opened: true, at, composerId });
     },
     [askHim]
   );
+
+  /* HE ASKS WHERE HE IS (25 Nov 2026). The map has him ask one thing more, home use, at the end of a step, in that agent's
+     chat. The visitor's next words there are his, so they go to his one conversation and his answer comes back with his
+     face. Read at the moment they are sent. */
+  const heAsks = useCallback((): boolean => {
+    const n = nextNow.current();
+    return n.kind === 'gather' && n.homeUse === true;
+  }, []);
+  const sendHim = chat.sendText;
+  const replyToHim = useCallback(
+    async (text: string, at: Surface, composerId: string): Promise<AgentTurn | null> => (at === 'desk' ? null : sendHim(text, { at, composerId })),
+    [sendHim]
+  );
+
+  /* THE SAME HAND-OFF FOR EVERY AGENT — the maintainer's ruling of 24 Nov 2026 (the shared console behaviours, line 5).
+     His line heads a desk when the visitor came by his "Meet <name>" button. By the crew list there was none, and a
+     desk's line was never asked for. Now the first time a desk shows without his line, and the map has not closed it,
+     he gives it: one ask on his own conversation, like his joining an agent's chat. The agent waits for it. If he
+     cannot answer, the desk opens without it and the agent says who they are (agent rule 17). */
+  const [linesAsked, setLinesAsked] = useState<ReadonlySet<Surface>>(() => new Set());
+  const [handingTo, setHandingTo] = useState<Surface | null>(null);
+  const needsLine = onConsole && surface !== 'desk' && !linesAsked.has(surface) && !closedDesks.includes(surface) && inviteFor(visit, surface) === '';
+  const hePends = chat.pending;
+  useEffect(() => {
+    if (!needsLine || hePends) return;
+    setLinesAsked((s) => new Set([...s, surface]));
+    setHandingTo(surface);
+    void askHim({ opened: true, at: 'handoff', to: surface }).finally(() => setHandingTo(null));
+  }, [needsLine, hePends, surface, askHim]);
+  const waitsForHim = (desk: Surface): boolean => handingTo === desk || (needsLine && surface === desk);
 
   /* THE RIGHT PANEL IS A QUIET LIST — W27, 14 Nov 2026: the crew, each with
      one plain line on where their part stands. Every handoff's button sits in
@@ -444,14 +598,17 @@ export default function App() {
   /* FEWER LINES UNTIL THERE IS NEWS — the maintainer's word of 21 Nov 2026:
      a member's line shows once it says what they found, or while their step
      is in view; until then the card is the face, the name and the role. */
-  const crewAll = useMemo(() => crewStatus(visit, sheet, carbon), [visit, sheet, carbon]);
+  const crewAll = useMemo(() => crewStatus(counted, sheet, carbon), [counted, sheet, carbon]);
   const crew = useMemo(() => {
     const news = crewNews(crewAll);
     const shown: Partial<Record<Surface, string>> = {};
     for (const key of Object.keys(crewAll) as Surface[]) if (news[key] || key === surface) shown[key] = crewAll[key];
+    /* A closed desk's card, where it had already shown, says so and never that it is ready (J4). */
+    if (uncoveredLabel(facts) && shown.quantification) shown.quantification = 'Not covered yet';
+    for (const key of closedDesks) shown[key] = key === 'water' && noCalculatorFor(map, 'violet') ? 'Not covered yet' : 'Unlikely for this project';
     return shown;
-  }, [crewAll, surface]);
-  const progress = useMemo(() => journeyProgress(visit, sheet), [visit, sheet]);
+  }, [crewAll, surface, closedDesks, map, facts]);
+  const progress = useMemo(() => journeyProgress(counted, sheet), [counted, sheet]);
 
   /* THE BRIDGE (item S7, built 8 Sep 2026). The click seals the visit as it
      stands — the record with its source tags, the pin, the worksheet, each
@@ -463,16 +620,16 @@ export default function App() {
      the tools line once a row is Fixable or Unknown. A tick whose box is no
      longer shown is not sent. */
   const [person, setPerson] = useState<PersonAsk>(NO_PERSON);
-  /* From 14 Nov 2026 the box shows whenever a path is ruled out, Blocked or
+  /* From 14 Nov 2026 the box shows whenever a path is unlikely, Blocked or
      not applying — the ruling of 23 Sep 2026, confirmed that day. */
   const showPerson = useMemo(
-    () => HER_PACKS.some((pack) => pathStatus(visit, sheet, pack) === 'ruled out'),
+    () => HER_PACKS.some((pack) => pathStatus(visit, sheet, pack) === 'unlikely'),
     [visit, sheet]
   );
   const onSeal = useCallback(async () => {
     setSealing({ kind: 'sealing' });
     try {
-      const seal = buildSeal(visit, sheet, showPerson ? person : NO_PERSON);
+      const seal = buildSeal(counted, sheet, showPerson ? person : NO_PERSON);
       const { ticketId } = await sealVisit(seal, seal.wantsHuman ? teamRows(sheet) : undefined);
       setSealing({ kind: 'sealed' });
       window.location.assign(handoffAddress(ticketId));
@@ -485,12 +642,30 @@ export default function App() {
             : 'Something went wrong on our side. Nothing was kept.',
       });
     }
-  }, [visit, sheet, person, showPerson]);
+  }, [counted, sheet, person, showPerson]);
+
+  endingRef.current = { open: setSurface, report: printScreeningReport, save: () => void onSeal() };
+  /* The way on from each desk, by what the map says is next. */
+  const next = useMemo(() => nextStep(record, map), [record, map]);
+  const wayOn = (here: Surface) => onward(next, endingRef.current, here);
+  /* Read when an agent's answer lands, from what the shell holds then. */
+  const wayOnNow = useRef<(here: Surface) => TurnButton[]>(() => []);
+  wayOnNow.current = (here) => onward(nextNow.current(), endingRef.current, here);
+  /* A CREW CARD OPENS THAT AGENT'S CHAT FIRST — 24 Nov 2026, item 9; Calvin's and Violet's from 25 Nov. */
+  const [chatAsked, setChatAsked] = useState<Partial<Record<Surface, number>>>({});
+  const openFromCrew = useCallback(
+    (to: Surface) => {
+      setChatAsked((c) => ({ ...c, [to]: (c[to] ?? 0) + 1 }));
+      setSurface(to);
+    },
+    [setSurface]
+  );
 
   const onDesk = surface === 'desk';
   const onMap = surface === 'map';
   const onEligibility = surface === 'eligibility';
   const onQuantification = surface === 'quantification';
+  const onWater = surface === 'water';
 
   /* ONE BLUE BUTTON AT A TIME — the maintainer's word of 16 Nov 2026
      (src/lib/blue.ts). Meet <name> under the latest turn on the step in view,
@@ -613,7 +788,7 @@ export default function App() {
                 style={{ position: 'absolute', inset: 0, visibility: onDesk ? undefined : 'hidden' }}
                 aria-hidden={!onDesk}
               >
-                  <Desk chat={chat} />
+                  <Desk chat={chat} showChat={chatAsked.desk} />
               </div>
 
               {/* BRIDGET'S SCREEN, kept mounted, hidden when off-surface — see
@@ -636,9 +811,20 @@ export default function App() {
                   quantifyNext={visit.stage === 'quantify'}
                   visible={onMap}
                   invite={visit.partnersInvite}
+                  onward={() => wayOnNow.current('map')}
+                  showChat={chatAsked.map}
+                  onPlace={(place) => setVisit((v) => ({ ...v, context: placedContext(v.context, place, (text) => countryIsoFor(text) !== null) }))}
+                  onHandedOn={() => {
+                    visitRef.current = { ...visitRef.current, partnersDone: true };
+                    setVisit((v) => ({ ...v, partnersDone: true }));
+                  }}
+                  waiting={waitsForHim('map')}
                   onWellington={wellingtonComes}
+                  heAsks={heAsks}
+                  onReplyToHim={replyToHim}
                   onMeet={onBridgetMeet}
                   onMapTab={setMapTabOpen}
+                  record={carriedRecord(visit.context)}
                 />
               </div>
 
@@ -660,24 +846,74 @@ export default function App() {
                   onOpenMap={openMap}
                   onNavigate={setSurface}
                   visible={onEligibility}
-                  eligibilityDone={sheetDone(visit, sheet)}
+                  eligibilityDone={phoebeDone(visit, sheet)}
                   invite={visit.eligibilityInvite}
+                  onward={() => wayOnNow.current('eligibility')}
+                  onHandedOn={() => {
+                    visitRef.current = { ...visitRef.current, eligibilityHanded: true };
+                    setVisit((v) => ({ ...v, eligibilityHanded: true }));
+                  }}
+                  showChat={chatAsked.eligibility}
+                  waiting={waitsForHim('eligibility')}
                   onWellington={wellingtonComes}
+                  heAsks={heAsks}
+                  onReplyToHim={replyToHim}
                   onMeet={onPhoebeMeet}
                 />
               </div>
 
               {/* CALVIN'S SCREEN, kept mounted like the others so its tab
-                  stays where the visitor left it. His two calculators are its
-                  Tool tab; the water estimate is the shell's, in the visit. */}
+                  stays where the visitor left it. His carbon calculator is its
+                  Tool tab; when the agent map closes his desk (J4), what would
+                  change it stands in the calculator's place. */}
               <div
                 style={{ position: 'absolute', inset: 0, visibility: onQuantification ? undefined : 'hidden' }}
                 aria-hidden={!onQuantification}
               >
                 <CalvinScreen
                   project={project}
+                  counts={counts.calvin}
+                  kindIs={kindIs}
                   onSummary={setCalvinSummary}
+                  unknownLabel={uncoveredLabel(facts)}
+                  invite={visit.quantifyInvite}
+                  wayOn={wayOn('quantification')}
+                  waiting={waitsForHim('quantification')}
+                  visible={onQuantification}
+                  showChat={chatAsked.quantification}
+                  onTold={calvinTold}
+                  onDone={calvinEnded}
+                  onward={() => wayOnNow.current('quantification')}
+                  onWellington={wellingtonComes}
+                  heAsks={heAsks}
+                  onReplyToHim={replyToHim}
+                  closed={closed.calvin ? <NotCalled pathway="carbon" reading={facts.pathways.carbon} onCommons={() => goTo('commons')} /> : null}
+                />
+              </div>
+
+              {/* VIOLET'S DESK, her own from 23 Nov 2026 (J5). What she gives
+                  back is the shell's, in the visit, as it was. */}
+              <div
+                style={{ position: 'absolute', inset: 0, visibility: onWater ? undefined : 'hidden' }}
+                aria-hidden={!onWater}
+              >
+                <VioletScreen
+                  record={facts}
+                  counts={counts.violet}
+                  kindIs={kindIs}
                   onWater={setWater}
+                  invite={visit.waterInvite}
+                  wayOn={wayOn('water')}
+                  waiting={waitsForHim('water')}
+                  visible={onWater}
+                  showChat={chatAsked.water}
+                  onTold={violetTold}
+                  onDone={violetEnded}
+                  onward={() => wayOnNow.current('water')}
+                  onWellington={wellingtonComes}
+                  heAsks={heAsks}
+                  onReplyToHim={replyToHim}
+                  closed={noCalculatorFor(map, 'violet') ? <NoCalculatorYet /> : closed.violet ? <NotCalled pathway="vwba" reading={facts.pathways.vwba} onCommons={() => goTo('commons')} /> : null}
                 />
               </div>
             </main>
@@ -689,7 +925,8 @@ export default function App() {
             <CrewRail
               active={surface}
               status={crew}
-              onNavigate={setSurface}
+              onNavigate={openFromCrew}
+              shown={crewShown}
               drawer={phone ? { open: drawer === 'crew', onClose: closeDrawer } : undefined}
             />
           </div>
@@ -738,7 +975,17 @@ export default function App() {
 
       {/* S21 — the screening report, print-only; "Export screening report"
           in the left rail opens the print dialog on it. */}
-      <ScreeningReport visit={visit} sheet={sheet} showPerson={showPerson} carbon={carbon} />
+      <ScreeningReport
+        visit={counted}
+        sheet={sheet}
+        showPerson={showPerson}
+        carbon={carbon}
+        record={record}
+        map={map}
+        /* A project he does not cover has no values of his to note (23 Nov 2026). */
+        calvinNotes={seenQuantify && !uncoveredLabel(facts) ? calvinSummary.noteLines : []}
+        violetNotes={violetNotes}
+      />
     </div>
   );
 }

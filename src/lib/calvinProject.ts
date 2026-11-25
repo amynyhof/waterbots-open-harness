@@ -13,32 +13,35 @@
  *
  *   - Technology: only for a drinking-water project (type C-19). Its Gold
  *     Standard class says which: a new community source (CWS) or water made
- *     safe in the home (HWT). Community treatment (CWT) and institutions (IWT)
- *     are "other" until the core maps them (proposal section 1, item 6), and
- *     the calculator says it does not cover them.
+ *     safe in the home (HWT). Community treatment (CWT), institutions (IWT) and a
+ *     new or alternative supply are not covered yet, and the calculator says so
+ *     (core 0.3.0, 25 Nov 2026).
  *   - Country: the visitor's place, matched word for word against the engine's
  *     own country list. One country named, or none — the rule the map uses
  *     (src/lib/placeBox.ts). A town alone is never looked up.
  *   - People served: as said, people or households, never converted here.
- *   - Already credited under V1.0 (`creditedUnderV1`): LEFT UNSET, the maintainer's word of
- *     16 Nov 2026, so every project gets calvin's V2.0-only view: one V2.0 figure, no V1.0
- *     figure, no transition, no ask for a V1.0 filing. Item A29 sets it from Phoebe's question.
+ *   - Already credited under V1.0 (`creditedUnderV1`): SET FROM THE SHARED RECORD from 23 Nov 2026 (J4,
+ *     item A29). Phoebe's own question settles it. A transitioning project sees the legacy calculator and
+ *     the transition; every other project gets calvin's V2.0-only view, as before.
  */
 
 import type { CalvinProject } from '@waterbots/calvin/screen';
+import type { ProjectRecord } from '@waterbots/core/record';
 import { COUNTRIES } from '@waterbots/calvin/engine';
+import { technologyCoverage } from '@waterbots/core/technologyLabels';
 import { DRINKING_WATER_TYPE } from './projectTypes.generated';
 import { foldPlace } from './placeBox';
 import type { VisitContext } from './visit';
 
 /** The installed package's version, held to the lockfile by scripts/check-calvin-package.mjs. */
-export const CALVIN_PACKAGE_VERSION = '0.5.1';
+export const CALVIN_PACKAGE_VERSION = '0.7.0';
 
-/** Violet's D-3 package, the water calculator from 22 Nov 2026, from the same release. */
-export const VIOLET_PACKAGE_VERSION = '0.5.1';
+/** Violet's D-3 package, the water calculator from 22 Nov 2026. */
+export const VIOLET_PACKAGE_VERSION = '0.7.0';
 
-/** The release tag both came from. */
-export const CALVIN_RELEASE = 'calvin-violet-v0.5.1';
+/** Each package has a release and a tag of its own from 23 Nov 2026 (J1). */
+export const CALVIN_RELEASE = 'calvin-v0.7.0';
+export const VIOLET_RELEASE = 'violet-v0.7.0';
 
 /** The ISO 3166-1 alpha-3 code of the one country the place names, or null. */
 export function countryIsoFor(place: string): string | null {
@@ -60,7 +63,12 @@ export function countryIsoFor(place: string): string | null {
   return found.size === 1 ? [...found][0] : null;
 }
 
-/** The core's technology for this visit's project, or undefined when the record does not say. */
+/**
+ * SWITCHED OFF, 23 NOV 2026 (J3): the code comes from core's one label list, through the shared record
+ * (src/lib/projectRecord.ts). Kept, not deleted; only `calvinProject` below still reads it.
+ *
+ * The core's technology for this visit's project, or undefined when the record does not say.
+ */
 export function technologyFor(context: Pick<VisitContext, 'type' | 'gsClass'>): CalvinProject['technology'] {
   if (context.type !== DRINKING_WATER_TYPE || !context.gsClass) return undefined;
   if (context.gsClass === 'CWS') return 'CWS';
@@ -68,7 +76,31 @@ export function technologyFor(context: Pick<VisitContext, 'type' | 'gsClass'>): 
   return 'other';
 }
 
-/** The project the calculator reads, from the visit's record alone. */
+/**
+ * The project the calculator reads, from the shared project record (J3, 23 Nov 2026). Nothing is filled in that
+ * the record does not hold. `@waterbots/calvin/agent` ships the same adapter (`calvinProjectFromRecord`); it is
+ * not imported here because that entry carries the whole engine a second time into the browser.
+ */
+export function calvinProjectFrom(record: ProjectRecord): CalvinProject {
+  const { facts, place } = record;
+  /* A label core's list says is not covered yet: his screen and his chat say so, and give no figure (core 0.3.0, 25 Nov
+     2026). Until then he was handed "other" for it. */
+  const label = facts.technology?.label;
+  const notCoveredYet = label !== undefined && facts.technology?.code === undefined && technologyCoverage(label) === 'not covered yet' ? label : undefined;
+  return {
+    name: facts.name ?? 'This project',
+    /* The calculator is the carbon calculator: opening it is the visitor
+       asking about carbon credits. Nothing else is said about the project. */
+    standards: ['carbon'],
+    ...(facts.technology?.code !== undefined ? { technology: facts.technology.code } : notCoveredYet !== undefined ? { notCoveredYet } : {}),
+    ...(place.country !== undefined ? { country: place.country.value } : {}),
+    ...(facts.population !== undefined ? { population: { ...facts.population.value } } : {}),
+    ...(facts.creditedUnderV1?.value === true ? { creditedUnderV1: true } : {}),
+    ...(facts.pumpPower !== undefined ? { pumpPower: facts.pumpPower.value } : {}),
+  };
+}
+
+/** SWITCHED OFF, 23 NOV 2026 (J3): `calvinProjectFrom` above takes its place. Kept, not deleted. */
 export function calvinProject(context: VisitContext): CalvinProject {
   const technology = technologyFor(context);
   const country = countryIsoFor(context.place);

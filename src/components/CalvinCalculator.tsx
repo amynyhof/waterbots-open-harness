@@ -1,7 +1,8 @@
 /**
  * Calvin's carbon calculator — the open core's, installed from the release
- * calvin-violet-v0.5.1 (@waterbots/calvin 0.5.1, core 0.1.2, engine gs4gg-carbon 0.19.0) from
- * 22 Nov 2026, after calvin-violet-v0.5.0 the same day; calvin-v0.4.1 from 21 Nov 2026; calvin-v0.3.0 from 16 Nov 2026; first calvin-v0.2.0, on the maintainer's word of 14 Nov 2026 (proposal the open-core proposal on #156,
+ * calvin-v0.7.0 (@waterbots/calvin 0.7.0, core 0.3.0, engine gs4gg-carbon 0.19.0) from 25 Nov 2026, after
+ * calvin-v0.6.0 on 23 Nov 2026,
+ * calvin-violet-v0.5.1 and v0.5.0 on 22 Nov 2026; calvin-v0.4.1 from 21 Nov 2026; calvin-v0.3.0 from 16 Nov 2026; first calvin-v0.2.0, on the maintainer's word of 14 Nov 2026 (proposal the open-core proposal on #156,
  * step 2).
  *
  * THE SAME CALCULATOR AND LOOK AS THE PAID SITE, LOCKED TO EX-ANTE. The state
@@ -19,6 +20,10 @@
  * the lens (the project facts and the controls) and the work surface (the
  * derivation, the version tabs, the tags).
  *
+ * HIS PLACE FROM 0.6.0 (J2, 23 Nov 2026). The host names it: the Free site on Quantify, the Agent Commons on
+ * his seat there. Neither has a note box. His export in both carries his own notes on the values still blank
+ * or assumed, under the label core gives them.
+ *
  * NO SAVE BUTTON. The core draws Save only when a host passes `onSave`, and
  * this site passes none: the save door is this site's, the site menu's one button.
  *
@@ -35,7 +40,7 @@
  * with it, so its report prints.
  */
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type MutableRefObject, type ReactNode } from 'react';
 import { createPortal, flushSync } from 'react-dom';
 import {
   CalculatorLens,
@@ -45,6 +50,8 @@ import {
   type CalculatorState,
   type CalvinProject,
 } from '@waterbots/calvin/screen';
+import type { NoteLine } from '@waterbots/core/notes';
+import type { Place } from '@waterbots/core/places';
 import '@waterbots/calvin/styles.css';
 import '../styles/calvin.css';
 import { CALVIN_PACKAGE_VERSION } from '../lib/calvinProject';
@@ -100,9 +107,11 @@ export interface CalvinSummary {
   figure: { er: number; version: string } | null;
   /** The facts it still needs, in a visitor's words. */
   missing: string[];
+  /** His notes on the values still blank or assumed, for the screening report. */
+  noteLines: NoteLine[];
 }
 
-export const NO_SUMMARY: CalvinSummary = { figure: null, missing: [] };
+export const NO_SUMMARY: CalvinSummary = { figure: null, missing: [], noteLines: [] };
 
 /**
  * THE CALCULATOR, WITH ITS STATE, STARTED FRESH WHEN THE TECHNOLOGY BECOMES
@@ -122,8 +131,14 @@ export function CalvinCarbon({
   header,
   onSummary,
   screening = false,
+  place,
+  seat,
 }: {
   project: CalvinProject;
+  /** Where Calvin is working: the Free site or the Agent Commons (J2, 23 Nov 2026). */
+  place: Place;
+  /** The calculator as it stands, for his chat to read and fill (25 Nov 2026). */
+  seat?: MutableRefObject<CalculatorState | null>;
   /** The host's top of the lens, given the facts still needed. */
   header?: (missing: string[]) => ReactNode;
   onSummary?: (summary: CalvinSummary) => void;
@@ -131,7 +146,7 @@ export function CalvinCarbon({
   screening?: boolean;
 }) {
   return (
-    <CalvinCarbonState key={project.technology ?? 'none'} project={project} header={header} onSummary={onSummary} screening={screening} />
+    <CalvinCarbonState key={project.technology ?? 'none'} project={project} header={header} onSummary={onSummary} screening={screening} place={place} seat={seat} />
   );
 }
 
@@ -140,13 +155,18 @@ function CalvinCarbonState({
   header,
   onSummary,
   screening,
+  place,
+  seat,
 }: {
   project: CalvinProject;
+  place: Place;
+  seat?: MutableRefObject<CalculatorState | null>;
   header?: (missing: string[]) => ReactNode;
   onSummary?: (summary: CalvinSummary) => void;
   screening: boolean;
 }) {
-  const calc = useCalculatorState(project, { exAnteOnly: true, unpinFigureBlock: true, hideExportButton: screening });
+  const calc = useCalculatorState(project, { exAnteOnly: true, unpinFigureBlock: true, hideExportButton: screening, place });
+  if (seat) seat.current = calc;
   /* THE COUNT FOLLOWS THE RECORD. The core reads the number served only when
      it opens, so a count said afterwards is handed on, the way a record save
      reaches a seat already open. Found on the first look, 14 Nov 2026. */
@@ -167,9 +187,14 @@ function CalvinCarbonState({
   const er = shown && calc.result ? calc.result.result.ER : null;
   const version = shown && calc.result ? calc.result.version : '';
   const missingKey = JSON.stringify(missing);
+  const notesKey = JSON.stringify(calc.noteLines);
   useEffect(() => {
-    onSummary?.({ figure: er === null ? null : { er, version }, missing: JSON.parse(missingKey) as string[] });
-  }, [er, version, missingKey, onSummary]);
+    onSummary?.({
+      figure: er === null ? null : { er, version },
+      missing: JSON.parse(missingKey) as string[],
+      noteLines: JSON.parse(notesKey) as NoteLine[],
+    });
+  }, [er, version, missingKey, notesKey, onSummary]);
 
   return (
     <>
@@ -211,6 +236,7 @@ function WorkingInReport({ calc, project }: { calc: CalculatorState; project: Ca
       canonPopulation={project.population?.served}
       creditingPeriodYears={calc.creditingPeriodYears}
       tables={calc.tables}
+      noteLines={calc.noteLines}
     />,
     slot,
   );
@@ -222,7 +248,19 @@ function WorkingInReport({ calc, project }: { calc: CalculatorState; project: Ca
  * Wellington; the left rail has no box for the place, so the line no longer
  * says to type it there.
  */
-export function RecordFacts({ missing }: { missing: string[] }) {
+export function RecordFacts({ missing, unknownLabel }: { missing: string[]; unknownLabel?: string }) {
+  /* The label is on the record and Calvin does not cover it (J3): said plainly, and never asked for again. Where core's own
+     list says it is not covered yet, his screen says it in his package's words and this line is not drawn (25 Nov 2026). */
+  if (unknownLabel && missing.includes('technology')) {
+    const rest = missing.filter((m) => m !== 'technology');
+    return (
+      <div style={{ marginBottom: 12 }}>
+        <p className="t-caption" style={{ margin: 0, color: 'var(--ink-2)' }}>
+          Calvin’s calculator does not cover this kind of project yet: {unknownLabel}.{rest.length > 0 ? ` Still needed: ${rest.join(', ')}. Tell Wellington.` : ''}
+        </p>
+      </div>
+    );
+  }
   if (missing.length === 0) return null;
   return (
     <div style={{ marginBottom: 12 }}>

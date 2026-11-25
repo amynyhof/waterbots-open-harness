@@ -18,6 +18,7 @@
  * files' generated model, here and again in the relay.
  */
 
+import { answersFrom } from './chips';
 import { cardFor, routeFor } from './phoebeCards';
 import type { PathwayUpdate, RowStatus, RowUpdate, Sheet } from './worksheetState';
 import {
@@ -43,6 +44,8 @@ const HAND_BACKS: readonly HandBack[] = ['none', 'wellington'];
 
 export interface PhoebeAnswer {
   reply: string;
+  /** Chips that answer the question just asked (24 Nov 2026). */
+  answers: string[];
   /** What the answer rests on, in the shared chat layer's shape. */
   evidence: Evidence[];
   rows: RowUpdate[];
@@ -135,6 +138,8 @@ export async function askPhoebe(
     introduced?: boolean;
     eligibilityDone?: boolean;
     sheet?: CarriedSheet[];
+    /** Where she is working (J2): the Free site, or alone in the Agent Commons. */
+    door?: 'free-site' | 'agent-commons';
     /** Card sets already loaded earlier this visit, so a stage does not unload. */
     loaded?: string[];
     /**
@@ -155,8 +160,10 @@ export async function askPhoebe(
       opened?: true;
       introduced?: true;
       eligibilityDone?: true;
+      door?: 'free-site' | 'agent-commons';
       stream?: true;
     } = { messages: history };
+    if (opts?.door) body.door = opts.door;
     if (opts?.onLive) body.stream = true;
     if (record) body.record = record;
     /* The rows go with every ask, from the console and from the Commons
@@ -212,6 +219,7 @@ export async function askPhoebe(
 
   return {
     reply: data.reply,
+    answers: answersFrom(data.answers),
     evidence: resolveEvidence(data.cited),
     rows: resolveRows(data.rows),
     pathways: resolvePathways(data.pathways),

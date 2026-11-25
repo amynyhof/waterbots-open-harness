@@ -92,7 +92,7 @@ const STAGE_LINES: Record<ScreeningStage, string> = {
   partners:
     'Screening step: Eligibility is done for this visit. Invite the Partners step — the map, where Bridget asks for the pin.',
   quantify:
-    'Screening step: Quantify is next. Calvin is not answering yet; point at the calculator.',
+    'Screening step: Quantify is next, with Calvin and Violet.',
 };
 
 function field(value: unknown): string {
@@ -178,6 +178,20 @@ export function recordBlock(record: ProjectRecord): string {
     `# ${RECORD_HEADING}`,
     '',
     'These are the visitor’s own words about their project, carried from the desk so they need not say them twice. They are facts about the project and never a verdict on any row of your worksheet; only the cards decide that.',
+    '',
+    ...recordLines(record),
+  ].join('\n');
+}
+
+/**
+ * The block as Bridget reads it (J3, 23 Nov 2026): the same fields, the same words, and what they are for. Her one
+ * question stays the pin.
+ */
+export function bridgetRecordBlock(record: ProjectRecord): string {
+  return [
+    `# ${RECORD_HEADING}`,
+    '',
+    'These are the visitor’s own words about their project, from the shared record. They are known, so never ask for them.',
     '',
     ...recordLines(record),
   ].join('\n');

@@ -12,17 +12,25 @@ agent's are in [AGENT_RULES.md](../../AGENT_RULES.md).
 - The Map tab opens on the country the visitor told Wellington, matched from Natural Earth's country
   names, or on the whole world when no single country is named; never a guess. The map zooms to the
   country as soon as the place is known.
-- She opens in her own words, from her voice card, and asks for the pin. Where Wellington's line shows
+- **Her first question starts from what Wellington heard**, then asks for a more exact place three ways: type a city or
+  district, type GPS numbers, or pin it on the map (the maintainer's ruling of 24 Nov 2026). A typed place goes on the
+  record in the visitor's own words, in front of the country. GPS numbers are read by code, never by her, and pin the
+  basin they fall in (`src/lib/gps.ts`). A visitor who would rather not goes on.
+- **After the pin she says little**: the water-stress reading, and that it is derived where it is. Never the size in
+  square kilometres, or more about the basin, unless asked.
+- She opens in her own words, from her voice card. Where Wellington's line shows
   above her first answer, he has introduced her, and she does not say again who she is (agent rule
   17). A pin brings the visitor back
   to Chat, where she gives the basin and its water-stress reading, and says when it is derived.
+- Where she asks the visitor to open the Map tab, a "Go to map" chip under her reply opens it (24 Nov 2026).
 - She never guesses, never names a project, partner, funder or place the visitor did not type, and
   never says she checks anything.
 
 ### What she adds to the project record (agent rule 10)
 
-- **Nothing herself, today.** The console keeps the pin and the basin's place when the visitor clicks
-  the map. Whether she should add anything is a **gap, for the maintainer**.
+- **The more exact place**, in the visitor's words (24 Nov 2026).
+- **The pinned basin**, in her own part of the shared record (J3, 23 Nov 2026). The console writes it when the
+  visitor clicks the map; she says nothing into the record herself. She reads the record the others read.
 
 ### Her reasons to send someone to the WaterBots team (agent rule 13)
 

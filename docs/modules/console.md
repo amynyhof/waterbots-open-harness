@@ -31,17 +31,47 @@ they stand here.
 - Every step is one agent screen: the agent's chat in bubbles, and tabs above it: Chat, Tool (when the
   agent has one), Knowledge pack and Credentials, in the agent's colour. The active crew card takes the
   same underline.
-- Where the chat is not live, the screen opens on Tool and the Chat tab holds one plain line.
+- Where the chat is not live (Calvin's, Violet's and Bridget's seats in the Agent Commons), the screen opens on Tool or
+  its Knowledge pack, and the Chat tab holds one plain line.
 - Memory is never a tab; it stays in the record, its source behind the (i).
 - Three consumers share one screen (the Commons, this site, the paid site), differing only in memory and
   tool depth.
+- **The crew shows only the agents the agent map has called** (the shared console behaviours, 24 Nov 2026, line
+  1). One not called yet is hidden, not dimmed; it appears when the map calls it and never disappears after
+  that. Later agents wait until the agent before them has finished; Calvin and Violet share Step 3.
+- **Chips answer the question just asked, and come first** (line 2). Then the one that opens a tab the agent asked
+  for, "Go to map" (line 3); last, at most one helper. An answer chip is sent as the visitor's own words, so it
+  never holds a fact the visitor has not said.
+- **An answer comes in the same turn** (line 4). A reply that ends by promising a look-up is never sent: the
+  question goes again at once, and if that does not answer it the visitor is told so (`api/_lookUp.ts`).
+- **The same hand-off for every agent** (line 5). Wellington's line heads each agent's page the first time it
+  opens, whichever way the visitor came. The agent waits for it.
 - The crew is the right column on every step, one status line each. Each line says what the agent is
   ready to do, then what they found, and shows only once it is news or while that agent's step is in
   view.
-- There is no "Next phase" chip on any step. Every handoff's button sits in the chat: a blue "Meet
-  <name>" and a quiet "Keep chatting". A "Meet …" button goes quiet once its agent is reached.
-- **One blue button at a time** (`src/lib/blue.ts`): "Meet <name>" under the latest turn on the step in
-  view, else Save, else the menu's Sign up. A form's Send on its own page.
+- **The journey is told by step** (the shared console behaviours, 24 Nov 2026, items 6 and 7; `src/lib/steps.ts`): Step 1
+  Eligibility, Step 2 Partners, Step 3 Quantify, in the journey's words. What comes next is read from the agent map. A
+  step is done when its agent has finished or handed on; the screening is never called done while a step is ahead.
+- **Every hand-off button has one format** (item 8): the step and the agent, "Step 2 of 3: Partners. Meet Bridget", in
+  the next agent's colour, whether or not the visitor has been there. Beside it, a quiet "Keep chatting". There is
+  always one to the next step; at the end, "Export screening report" and "Save and sign up" (item 10).
+- **A crew card opens that agent's Chat tab first** (item 9), for every agent. **Calvin's and Violet's chats** run on what
+  their packages ship (25 Nov 2026): the instructions, the settings and the list of what to ask. This site writes none of
+  its own but a short note after the block for the turn. Each answer fills the record and the calculator; a refused number's
+  message shows under the reply. Thirty
+  messages a day each, as for the other agents (`src/screen/useCalculatorChat.ts`, `api/_calculatorChat.ts`).
+- **Guards on both chats**, in code (25 Nov 2026, the maintainer's word; `api/_chatGuards.ts`). A number is filled in only where
+  the visitor gave it in that chat: never a default, an assumed value or one worked out from theirs. A kind of project is
+  filed only on their own words, and words for treatment never file a supply; core's own list says which kind gives a figure.
+  What does not pass goes back to the agent once, in the same turn; what still does not is left out, and a line says so. A
+  number out of range shows its message whether or not the agent sent it. The note tells each agent the four drinking-water
+  kinds.
+- **Step 3 is done** when each calculator the map calls has a figure that came from the visitor's answers (25 Nov 2026).
+  Opening a calculator ends nothing.
+- **Home use is asked when the map asks** (25 Nov 2026), by Wellington, before he introduces the next agent. In another
+  agent's chat, the visitor's next words are then his.
+- **One blue button at a time** (`src/lib/blue.ts`): Save, else the menu's Sign up. A form's Send on its own page. A
+  hand-off is in its agent's colour, so it is no longer the blue one (24 Nov 2026).
 - Wellington's desk opens on his chat alone; "About Wellington" beside his name brings back his
   Knowledge pack and Credentials.
 - No intro paragraph above the conversation; the map's line is one plain sentence.
@@ -66,12 +96,27 @@ they stand here.
 - Calvin's carbon calculator is the open core's, locked to ex-ante (`exAnteOnly`, sliders on), on
   Quantify and on the Commons. Its state lives with the calculator and opens again once the record names
   the technology.
-- Violet's D-3 screen sits under Calvin's "Water benefits" chip until Violet joins the crew. People
-  served come from the record; on the Commons, from its facts form.
-- Calvin's header says only what the record still lacks.
-- **One export during a screening.** On Quantify Calvin's own export is hidden (`hideExportButton`),
-  and "Export screening report" in the left rail carries his figure and his full working. The Commons
-  keeps his export.
+- **Violet is her own crew member** (the maintainer's word of 23 Nov 2026): her own seat and desk, beside
+  Calvin's on Quantify. Her seat word and job line are the crew list's. People served come from the
+  record; on the Commons, from her facts form.
+- **One calculator layout.** Violet's screen has Calvin's layout and her own colour, drawn by her package.
+  Her header pins at the top of the box that scrolls (`--wb-pin-top: 0px`).
+- **The agent map decides who is called** (J4). A pathway that reads unlikely closes its calculator's desk:
+  the desk says why, what would change it, and that the calculator can be read about in the Agent Commons,
+  where it does not open yet. Its agent is not called, so their card does not appear; one already in the
+  crew stays, and says it is unlikely for this project.
+- **No note box** on the Free site or in the Agent Commons. Each export carries the agents' own notes on
+  the values still blank or assumed, under the agent's label from core.
+- Calvin's header says only what the record still lacks, or that his calculator does not cover the kind of
+  project yet.
+- **Not covered yet** is core's own answer from core 0.3.0 (25 Nov 2026): community level treatment, institutional
+  treatment and a new or alternative supply get no carbon figure, and treatment of any kind gets no water figure.
+- **One fixed sentence** (the maintainer's, 25 Nov 2026), where water benefits stay in play and no calculator covers the
+  kind of project yet: `NO_CALCULATOR_YET` in `src/lib/projectRecord.ts`. It shows under Wellington's turn as Quantify
+  comes up, on Violet's desk and in the report.
+- **One export during a screening.** On Quantify Calvin's and Violet's own exports are hidden
+  (`hideExportButton`), and "Export screening report" in the left rail carries his figure, his full working
+  and her estimate. The Commons keeps theirs.
 
 ## The screening report
 
@@ -97,7 +142,7 @@ they stand here.
 - The frame and the content have different grounds: `--paper` is the content canvas, `--frame` the
   frame. An active navigation item rises one plane to `--card` with its 1px hairline.
 - Agent colours: Phoebe is Anemone, Bridget is Surf, Calvin is Reef with Deep Reef (`--deep-reef`) for
-  his text, Violet is Orchid and needs a text shade when she is built. Neither Reef nor Orchid carries
-  text. The Quantify seat is Calvin, not Vector; `--bot-vector` and `vector.svg` are kept.
+  his text, Violet is Orchid and still needs a text shade and a portrait: her name is ink and her initial
+  is drawn. Neither Reef nor Orchid carries text. The Quantify seat is Calvin, not Vector; `--bot-vector` and `vector.svg` are kept.
 - An agent colour never reads as a project status. Purple belongs on small tags, never washed behind
   numbers.

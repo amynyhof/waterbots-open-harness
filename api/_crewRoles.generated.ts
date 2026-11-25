@@ -12,4 +12,4 @@
  * Sources: knowledge-packs/product-shared/roster.yaml
  */
 
-export const CREW_ROLES_MD: string = "- Phoebe (Eligibility): Pathway eligibility and feasibility screening; What would change eligibility for a project already built and running.\n- Bridget (Partners): The project's place and basin on the map; Who the partners are and whose permission is needed.\n- Calvin (Calculator): Emission reductions and other impact numbers from the deterministic calculators; Methodology questions, answered from the retrieved source and cited.\n";
+export const CREW_ROLES_MD: string = "- Phoebe (Eligibility): Pathway eligibility and feasibility screening; What would change eligibility for a project already built and running.\n- Bridget (Partners): The project's place and basin on the map; Who the partners are and whose permission is needed.\n- Calvin (Carbon credits calculator): Emission reductions from the deterministic calculators; Methodology questions.\n- Violet (Volumetric water benefits calculator): The volumetric water benefit of a project that supplies water, from the deterministic calculator; Questions about the D-3 method.\n";

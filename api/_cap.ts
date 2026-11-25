@@ -63,6 +63,10 @@ export const WELLINGTON_DAILY_CAP = 30;
  */
 export const BRIDGET_DAILY_CAP = 30;
 
+/** Calvin's and Violet's caps: the same thirty as the other agents, each under their own key (25 Nov 2026). */
+export const CALVIN_DAILY_CAP = 30;
+export const VIOLET_DAILY_CAP = 30;
+
 /** Which agent is counting, and how many a visitor gets. */
 export interface CapAgent {
   /** The key prefix and the name in log lines, e.g. "phoebe". */
@@ -98,6 +102,8 @@ export const INTEREST_DAILY_CAP = 3;
 export const PHOEBE: CapAgent = { name: 'phoebe', cap: DAILY_CAP };
 export const WELLINGTON: CapAgent = { name: 'wellington', cap: WELLINGTON_DAILY_CAP };
 export const BRIDGET: CapAgent = { name: 'bridget', cap: BRIDGET_DAILY_CAP };
+export const CALVIN: CapAgent = { name: 'calvin', cap: CALVIN_DAILY_CAP };
+export const VIOLET: CapAgent = { name: 'violet', cap: VIOLET_DAILY_CAP };
 /** Not an agent, but it counts the same way. The key prefix is "handoff". */
 export const HANDOFF: CapAgent = { name: 'handoff', cap: HANDOFF_DAILY_CAP };
 /** Not an agent either. The key prefix is "carried". */

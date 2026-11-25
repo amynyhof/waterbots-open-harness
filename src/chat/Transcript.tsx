@@ -37,6 +37,7 @@
 
 import { useContext, type CSSProperties } from 'react';
 import { Reached } from './reached';
+import AgentFace from '../components/AgentFace';
 import AnswerBody from './AnswerBody';
 import type { AgentHost, AgentTurn, Turn } from './evidence';
 
@@ -46,6 +47,7 @@ export default function Transcript({
   pending,
   error,
   live = null,
+  thinkingHost,
 }: {
   host: AgentHost;
   turns: Turn[];
@@ -56,8 +58,11 @@ export default function Transcript({
    * own bubble in place of the thinking dots, and replaced by the answer.
    */
   live?: string | null;
+  /** Who is thinking, when it is not the host: Wellington, writing his hand-off line (24 Nov 2026). */
+  thinkingHost?: AgentHost;
 }) {
-  const accent = { '--turn-accent': `var(${host.colourToken})` } as CSSProperties;
+  const thinker = thinkingHost ?? host;
+  const accent = { '--turn-accent': `var(${thinker.colourToken})` } as CSSProperties;
 
   return (
     <>
@@ -77,13 +82,13 @@ export default function Transcript({
 
       {pending && !live && (
         <div className="wb-thinking" style={accent} role="status" aria-live="polite">
-          <HostFace host={host} thinking />
+          <HostFace host={thinker} thinking />
           <span className="wb-thinking-dots" aria-hidden>
             <span />
             <span />
             <span />
           </span>
-          <span className="wb-thinking-line">{host.thinkingLine}</span>
+          <span className="wb-thinking-line">{thinker.thinkingLine}</span>
         </div>
       )}
 
@@ -110,7 +115,7 @@ export default function Transcript({
 function HostFace({ host, thinking = false }: { host: AgentHost; thinking?: boolean }) {
   return (
     <span className={thinking ? 'wb-turn-face wb-turn-face-thinking' : 'wb-turn-face'} aria-hidden>
-      <img src={host.portrait} alt="" width={35} height={35} />
+      <AgentFace portrait={host.portrait} name={host.name} size={35} />
     </span>
   );
 }
@@ -127,7 +132,7 @@ function ReaderBubble({ text }: { text: string }) {
 
 function HostBubble({ host, turn, latest = false }: { host: AgentHost; turn: AgentTurn; latest?: boolean }) {
   const who = turn.speaker ?? host;
-  const accent = { '--turn-accent': `var(${who.colourToken})` } as CSSProperties;
+  const accent = { '--turn-accent': `var(${who.colourToken})`, ...(who.nameToken ? { '--turn-name': `var(${who.nameToken})` } : {}) } as CSSProperties;
   return (
     <div className="wb-turn wb-turn-host" style={accent}>
       <HostFace host={who} />
@@ -165,13 +170,28 @@ function HostBubble({ host, turn, latest = false }: { host: AgentHost; turn: Age
  * small, outlined and unfilled (P24). Only the latest turn draws them, so an old handoff's
  * buttons do not stay on the thread as if they were still the next step.
  */
-function TurnButtons({ turn }: { turn: AgentTurn }) {
+export function TurnButtons({ turn }: { turn: Pick<AgentTurn, 'buttons'> }) {
   /* A Meet button whose agent this visit has reached is drawn quiet (21 Nov 2026). */
   const reached = useContext(Reached);
   if (!turn.buttons?.length) return null;
   return (
     <div style={{ marginTop: 10, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
       {turn.buttons.map((button) => {
+        /* Every hand-off has one format, in the next agent's colour (24 Nov 2026). */
+        if (button.handoff) {
+          return (
+            <button
+              key={button.label}
+              type="button"
+              className="wb-handoff"
+              style={{ '--handoff': `var(${button.handoff.token})` } as CSSProperties}
+              onClick={button.go}
+            >
+              <AgentFace portrait={button.handoff.portrait} name={button.handoff.name} size={20} />
+              {button.label}
+            </button>
+          );
+        }
         const blue = button.primary && !(button.reaches && reached.has(button.reaches));
         return (
           <button

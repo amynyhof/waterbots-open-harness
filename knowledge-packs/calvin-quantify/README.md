@@ -20,8 +20,8 @@ Chat is not live. The calculator is.
 
 | Tool id | Live module |
 |---|---|
-| [vwba-2.0-d3-volume-provided](./tools/vwba-2.0-d3-volume-provided/) | `@waterbots/violet` 0.5.0, Violet's D-3, from the open core |
-| Carbon, V1.0 and V2.0 | `@waterbots/calvin` 0.5.0, from the open core |
+| [vwba-2.0-d3-volume-provided](./tools/vwba-2.0-d3-volume-provided/) | `@waterbots/violet` 0.6.0, Violet's D-3, from the open core, on her own desk |
+| Carbon, V1.0 and V2.0 | `@waterbots/calvin` 0.6.0, from the open core |
 | ~~[gs-sdws-legacy-v1](./tools/gs-sdws-legacy-v1/)~~ | ~~[`src/lib/gsSdws.ts`](../../src/lib/gsSdws.ts)~~ not registered from 14 Nov 2026 |
 | ~~[gs-sdws-paa-v2](./tools/gs-sdws-paa-v2/)~~ | ~~same module, second variant~~ not registered from 14 Nov 2026 |
 

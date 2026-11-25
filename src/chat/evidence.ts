@@ -94,11 +94,17 @@ export interface AgentTurn {
   /**
    * Buttons under the turn, from 14 Nov 2026: Wellington's "Meet Phoebe" and
    * "Keep chatting" at a handoff (W17), and Phoebe's "Learn more about …"
-   * (P22). Only the main next step is primary and blue; the rest are quiet
+   * (P22). From 24 Nov 2026 every agent's chips that answer the question just
+   * asked come first (src/lib/chips.ts). Only the main next step is primary and blue; the rest are quiet
    * chips (P24). Built by an adapter from fields, never from
    * prose, and drawn only under the latest turn.
    */
   buttons?: TurnButton[];
+  /**
+   * Wellington's, when he joins another agent's chat and asks something there: the chips that answer him (25 Nov 2026).
+   * The screen he joins draws them, because the box there is that agent's.
+   */
+  answers?: readonly string[];
   /**
    * One caption line under the answer, in the citation line's place and size.
    * An agent's adapter builds it from a structured field, never from prose —
@@ -122,6 +128,11 @@ export interface TurnButton {
   primary?: boolean;
   /** The step this button opens, for a "Meet …" button: once that step is reached it is drawn quiet (21 Nov 2026). */
   reaches?: Surface;
+  /**
+   * A hand-off to the next step, from 24 Nov 2026 (src/lib/steps.ts): drawn in the next agent's colour, the same for
+   * every agent, whether or not the visitor has been there.
+   */
+  handoff?: { token: string; portrait: string; name: string };
   /** Called on a tap. The layer knows no more than that. */
   go: () => void;
 }
@@ -137,6 +148,8 @@ export interface AgentHost {
   portrait: string;
   /** The identity colour token name, e.g. "--bot-phoebe". Read, never re-typed. */
   colourToken: string;
+  /** Where the accent itself may not carry text: the token the name above a bubble is set in (Reef and Orchid, the brand book). */
+  nameToken?: string;
   /** Composer placeholder and the standing note beneath it; no note, no line. */
   composerPlaceholder: string;
   composerNote?: string;
@@ -204,8 +217,13 @@ export interface AskMeta {
    * `open` is his own desk on a visitor's arrival: he speaks first (W29,
    * 16 Nov 2026).
    */
-  at?: 'eligibility' | 'map' | 'open';
+  at?: 'eligibility' | 'map' | 'quantification' | 'water' | 'open' | 'handoff';
   composerId?: string;
+  /**
+   * On a `handoff`: the desk the visitor has just opened without his hand-off, whose line he now gives. The same
+   * hand-off for every agent (24 Nov 2026).
+   */
+  to?: Surface;
 }
 
 /** One piece of a laid-out answer: prose, or a marker standing in the prose. */

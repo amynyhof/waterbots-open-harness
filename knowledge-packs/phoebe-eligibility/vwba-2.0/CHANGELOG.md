@@ -1,5 +1,11 @@
 # Changelog — vwba-2.0
 
+## 0.12.1 — 23 Nov 2026
+
+- **The read is said in the three words everyone uses** (RULINGS.md, section 3): the tool file's labels are now
+  Likely, More to learn and Unlikely. They read "Likely eligible", "Not enough known yet" and "Likely not". The
+  reads' ids, the rows and every card are unchanged.
+
 ## 0.12.0 — 25 Sep 2026
 
 - **The Knowledge tab's honest line is gone**, because it stopped being true: both packs are hers

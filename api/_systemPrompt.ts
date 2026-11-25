@@ -53,6 +53,8 @@ import {
   WATER_ROUTES_MD,
 } from './_cards.generated.js';
 import { AGENT_RULES_MD } from './_agentRules.generated.js';
+import { ANSWERS_SCHEMA } from './_chips.js';
+import { FINISH_RULE } from './_lookUp.js';
 import { AGENT_PRIMER_MD } from './_primer.generated.js';
 import { PHOEBE_TOOL_MD } from './_tool.generated.js';
 import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
@@ -200,6 +202,33 @@ export function setsFor(input: {
   return CARD_SETS.filter((set) => out.has(set));
 }
 
+/**
+ * The sets a call is given when the one before it did not end in an answer (24 Nov 2026, api/_lookUp.ts). A set she
+ * asks for comes with the one it is used with, because a row and its routes are read together and one question often
+ * needs both. With nothing new to give, or on the last call, it is every set of every pack still in play, so there is
+ * nothing left to ask for.
+ */
+export function nextSets(input: {
+  used: readonly CardSet[];
+  asked: CardSet | 'none';
+  pathways: { pack: string; state: string }[];
+  last: boolean;
+}): CardSet[] {
+  const out = new Set<CardSet>(input.used);
+  if (input.asked !== 'none' && !out.has(input.asked)) {
+    out.add(input.asked);
+    const [part, set] = input.asked.split(':');
+    const pair = set === 'eligibility' ? 'routes' : set === 'routes' ? 'eligibility' : null;
+    const other = `${part}:${pair}` as CardSet;
+    if (pair && CARD_SETS.includes(other)) out.add(other);
+    if (!input.last) return CARD_SETS.filter((s) => out.has(s));
+  }
+  const closed = new Set(
+    input.pathways.filter((p) => p.state === 'does-not-apply').map((p) => section(p.pack)?.sectionId)
+  );
+  return CARD_SETS.filter((s) => out.has(s) || !closed.has(s.split(':')[0]));
+}
+
 /** The staged half of the prompt: the cards this turn actually has. */
 export function cardsBlock(sets: readonly CardSet[]): string {
   const missing = CARD_SETS.filter((set) => !sets.includes(set));
@@ -221,7 +250,7 @@ export function cardsBlock(sets: readonly CardSet[]): string {
         '',
         `If a question needs one of those, set needCards to its name — ${askable
           .map((set) => `\`${set}\``)
-          .join(', ')} — and write one short sentence saying you are fetching it. The console asks the same question again with that set in front of you, and the visitor sees only that second answer. Never answer such a question from memory, and never tell the visitor you have no card for it: you do have it, it is simply not in front of you yet. One set per turn; ask for the one the question needs.`
+          .join(', ')} — and leave the reply empty. The console asks the same question again at once with that set in front of you, and the visitor sees only that answer. Never tell the visitor you are looking something up, never answer such a question from memory, and never tell the visitor you have no card for it: you do have it, it is simply not in front of you yet. One set per turn; ask for the one the question needs.`
       );
     }
   }
@@ -296,7 +325,7 @@ Before any question, read the block headed "What the visitor has already told We
 
 **When a path closes** (it does not apply, or a row is Blocked), say why in one plain line and go straight to the other path's first question. Never ask whether to move on.
 
-**Saying it is saving it.** On the same turn, put every path your reply closes in closes: the pack, the row or test that closes it, and the card's reason. A running project past its year is G12. Without it the worksheet, the report and Wellington all read "not enough known".
+**Saying it is saving it.** On the same turn, put every path your reply closes in closes: the pack, the row or test that closes it, and the card's reason. A running project past its year is G12. Without it the worksheet, the report and Wellington all read "more to learn".
 
 # What you know
 
@@ -347,7 +376,7 @@ When asked one of those, set abstained to true and say you do not have that card
 
 The agent primer below says who covers what, whether they answer, and where they are found. What the colleague covers, whether their chat is live, and which tab they are on — that is the whole of what may be said about a colleague. Do not add how their surface works, what else they might do, or what they are like; the facts widened into wording, never past them, or it is invention.
 
-**Some colleagues cannot answer yet.** Where the primer says an agent's chat is not live, pointing at them means pointing at their surface, not at a conversation. Do not offer to pass a question along.
+Do not offer to pass a question along.
 
 **This site holds no link to the consulting page yet:** name the page, never an address. A Blocked row also gets the WaterBots team's box beside the save button: see section 3.
 
@@ -392,7 +421,7 @@ ${STATE_RULES}
 
 ## 5. The read is three words, one line per pathway
 
-When you report where a pathway stands, take the read your worksheet gives and say it in rule 14's word: likely for Likely eligible, more to learn for Not enough known yet, unlikely for Likely not.
+When you report where a pathway stands, take the read your worksheet gives and say it in rule 14's word: likely, more to learn or unlikely.
 
 ${READ_RULES}
 
@@ -443,6 +472,8 @@ When every row you ask has a verdict for this visit, give the read, show the row
 
 # Your output
 
+${FINISH_RULE}
+
 Return JSON in the required shape; each field's description says what goes in it, needCards comes first, and closes is never forgotten. The reply is prose, with no markdown headings, citation text or card markers. Rows, pathways and sorts carry only what changed on this turn.
 
 # Plain words
@@ -490,8 +521,10 @@ export const RESPONSE_SCHEMA = {
     reply: {
       type: 'string',
       description:
-        "Phoebe's message. Prose only - no citation text, no card markers, no page numbers, no links. Four sentences and 400 characters at most.",
+        "Phoebe's message. Prose only - no citation text, no card markers, no page numbers, no links. Four sentences and 400 characters at most. Empty only when needCards names a set.",
     },
+    /* 24 Nov 2026: chips that answer the question just asked (api/_chips.ts). Required, [] when there are none. */
+    answers: ANSWERS_SCHEMA,
     /* W25, 14 Nov 2026: required, so a path ruled out in the reply is always
        saved on the worksheet the same turn (api/phoebe.ts). */
     closes: {
@@ -599,6 +632,6 @@ export const RESPONSE_SCHEMA = {
       description: 'A few words naming what was asked about, when abstaining.',
     },
   },
-  required: ['needCards', 'reply', 'closes', 'cited', 'handBack', 'abstained'],
+  required: ['needCards', 'reply', 'answers', 'closes', 'cited', 'handBack', 'abstained'],
   additionalProperties: false,
 };

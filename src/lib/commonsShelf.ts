@@ -161,13 +161,13 @@ const CALVIN_CARBON_CARD: ShelfCard = {
   grade: null,
 };
 
-/* FROM 22 NOV 2026 THE WATER CARD IS VIOLET'S D-3, the open core's, under Calvin
-   until she joins the crew (ruling E). Its words, stage and owner are the ones
-   this site's own D-3 pack carried, unchanged. */
-const CALVIN_WATER_CARD: ShelfCard = {
+/* FROM 22 NOV 2026 THE WATER CARD IS VIOLET'S D-3, the open core's, and from 23 Nov 2026 she holds it
+   herself (J5). Its words, stage and owner are the ones this site's own D-3 pack carried, unchanged. Its
+   address changed with its holder: the old one carried a full stop, which the interest form refuses. */
+const VIOLET_WATER_CARD: ShelfCard = {
   key: `pack-${WATER_METHOD_ID}`,
-  slug: `calvin-${WATER_METHOD_ID}`,
-  holder: crewMember('Calvin'),
+  slug: 'violet-water',
+  holder: crewMember('Violet'),
   title: WATER_D3_LISTING.name,
   line: WATER_D3_LISTING.shelfLine,
   tag: WATER_D3_LISTING.shelfDocument,
@@ -178,7 +178,7 @@ const CALVIN_WATER_CARD: ShelfCard = {
   grade: null,
 };
 
-const CALVIN_CARDS: ShelfCard[] = [CALVIN_CARBON_CARD, CALVIN_WATER_CARD];
+const CALVIN_CARDS: ShelfCard[] = [CALVIN_CARBON_CARD];
 
 const BRIDGET_CARD: ShelfCard = {
   key: 'bridget-map-datasets',
@@ -194,7 +194,7 @@ const BRIDGET_CARD: ShelfCard = {
 };
 
 /** The shelf, in the order the maintainer approved on the picture of 9 Sep 2026. */
-export const SHELF: ShelfCard[] = [PHOEBE_CARD, ...CALVIN_CARDS, BRIDGET_CARD];
+export const SHELF: ShelfCard[] = [PHOEBE_CARD, ...CALVIN_CARDS, VIOLET_WATER_CARD, BRIDGET_CARD];
 
 /** Modules named but not yet open, listed after the shelf. Her words, 28 Oct 2026. */
 export const PLANNED: PlannedModule[] = [

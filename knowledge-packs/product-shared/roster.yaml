@@ -15,41 +15,38 @@
 # confirmed by the open site's own check when the file is carried there. Until then
 # they stay "unconfirmed" and Wellington treats them as the plan, never as a promise.
 
-version: 0.3.1
-ruled: 2026-09-17
+version: 0.4.1
+ruled: 2026-11-23
 ruled_by: the maintainer
 
 notes: |
   One crew everywhere. Each door sets how much an agent may do (see levels).
-  Every seat also says whether it is built at that door, so Wellington only
-  routes to a seat that is really open there, and says honestly when one is
-  not open yet.
 
   How agents hand off: agents pass official values through the project
-  context, never by guessing. Example: Calvin posts an official emission
-  reduction to the project context. Goldie reads that number and posts back
-  an official revenue estimate. She never works out Calvin's number herself,
-  and her arithmetic follows the no-LLM-math rule (deterministic code, never
-  the model). This is a job-line note; nothing is built for Goldie yet.
-
-  Never invent a teammate. If someone asks for a seat that is not on this
-  list, say we do not have one yet and offer what we do have, including the
-  human consultant when that fits.
+  context. Example: Calvin posts an official emission reduction to the
+  project context. Goldie reads that number and posts back an official
+  revenue estimate.
 
 levels:
   meet: >-
-    Chats only from its own job card (what it knows, what it helps with). Asked
-    to do the work, it says it cannot do that here yet and hands back to
-    Wellington. Never invents.
+    Chats only from its own job card (what it knows, what it helps with). It
+    cannot do the work at this door yet.
   screen: Uses its tools. Keeps no memory.
   work: Uses its tools plus the saved project.
-  later: Not open at this door yet. No level ruled. Say so plainly.
+  later: Not open at this door yet. No level ruled.
   none: This seat does not appear at this door.
 
 doors:
-  free: The free site. Screening. No account, no saved project.
+  free: The Free site. Screening. No account, no saved project.
   commons: The Agent Commons on the open site, where the crew can be met.
-  paid: The paid site. A signed-in person on their own project.
+  paid: The Paid site. A signed-in person on their own project.
+
+# A place that is not a door. It has no level of its own.
+places:
+  lobby:
+    name: Lobby chat
+    what: The open chat on the Paid site's front page. Not a door. No saved project.
+    seats: [wellington]
 
 confirmed:
   paid: "yes — checked against this repository's code by the roster check"
@@ -61,11 +58,11 @@ seats:
     name: Wellington
     faces: [Wellington]
     seat: Team Lead
-    job: Hosts every door and orchestrates the six phases. Deploys the right specialist for the phase and tracks whether the project moved forward. Never produces a number.
+    job: Hosts every door and orchestrates the six phases. Deploys the right specialist for the phase and tracks whether the project moved forward.
     helps_with:
       - Finding where you are on the six-phase journey and the next step
       - Calling in the right seat for the phase
-      - Plain-English answers about safe water, impact funding, and the platform
+      - Answers about safe water, impact funding, and the platform
     phase: all
     doors:
       free: { level: screen, built: "unconfirmed" }
@@ -76,7 +73,7 @@ seats:
     name: Phoebe
     faces: [Phoebe]
     seat: Eligibility
-    job: Works out which monetization pathways a project could fit, and what would make it fit if it does not yet. Never guesses a pathway.
+    job: Works out which monetization pathways a project could fit, and what would make it fit if it does not yet.
     helps_with:
       - Pathway eligibility and feasibility screening
       - What would change eligibility for a project already built and running
@@ -103,16 +100,30 @@ seats:
   - id: calvin
     name: Calvin
     faces: [Calvin]
-    seat: Calculator
-    job: Quantify. Screening estimate on the free site, refined estimate with project memory on the paid site. Deterministic tools only. Never invents a number. Posts official values to the project context.
+    seat: Carbon credits calculator
+    job: Quantify. Screening estimate on the Free site, refined estimate with project memory on the Paid site. Posts official values to the project context.
     helps_with:
-      - Emission reductions and other impact numbers from the deterministic calculators
-      - Methodology questions, answered from the retrieved source and cited
+      - Emission reductions from the deterministic calculators
+      - Methodology questions
     phase: Quantify
     doors:
       free: { level: screen, built: "unconfirmed" }
       commons: { level: screen, built: "unconfirmed" }
       paid: { level: work, built: "yes" }
+
+  - id: violet
+    name: Violet
+    faces: [Violet]
+    seat: Volumetric water benefits calculator
+    job: Quantify. Counts the water a project provides, by the VWBA 2.0 method D-3, Volume Provided.
+    helps_with:
+      - The volumetric water benefit of a project that supplies water, from the deterministic calculator
+      - Questions about the D-3 method
+    phase: Quantify
+    doors:
+      free: { level: screen, built: "unconfirmed" }
+      commons: { level: screen, built: "unconfirmed" }
+      paid: { level: work, built: "no" }
 
   - id: reggie
     name: Reggie
@@ -132,7 +143,7 @@ seats:
     name: Goldie
     faces: [Goldie]
     seat: Revenue
-    job: Revenue specialist. Reads the official numbers other seats post to the project context, such as Calvin's emission reduction, and posts back an official revenue estimate. Never works out another seat's number herself. Her arithmetic is deterministic code, never the model.
+    job: Revenue specialist. Reads the official numbers other seats post to the project context, such as Calvin's emission reduction, and posts back an official revenue estimate.
     helps_with:
       - What a quantified impact could be worth on each pathway
     phase: Quantify

@@ -26,11 +26,14 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk';
+import { checkEntry } from '@waterbots/core/record';
 import { recordAbstention } from './_abstentions.js';
+import { JOINED, afterHomeUse, asksHomeUse, guardRoute, mapBlock, readMap, saysAllDone, stepEndNote, stepEndRoute, type Joined } from './_agentMap.js';
 import { CARRIED, WELLINGTON, countOneMessage, timeUntilReset } from './_cap.js';
+import { FINISH_NOTE, leavesWaiting } from './_lookUp.js';
 import { phoebeFound, readRecord, readSheet, readStage, stageBlock, visitBlock } from './_record.js';
 import { MIN_REPLY_CHARS, READING_GRADE, cardWordsIn, isDegenerateReply, isHardReply, readingGrade } from './_reply.js';
-import { validate } from './_wellingtonAnswer.js';
+import { validate, type Answer } from './_wellingtonAnswer.js';
 import { WELLINGTON_RESPONSE_SCHEMA, WELLINGTON_SYSTEM_PROMPT } from './_wellingtonPrompt.js';
 
 /**
@@ -96,22 +99,28 @@ export async function GET(): Promise<Response> {
 }
 
 /** The turn he answers when he joins another agent's chat, or opens his own. Never shown as a bubble. */
-const AT_TURN: Record<'eligibility' | 'map' | 'open', string> = {
+const AT_TURN: Record<Joined | 'open', string> = {
   eligibility: "(Phoebe's step is done. Wellington joins the visitor in her chat.)",
   map: "(Bridget's step is done. Wellington joins the visitor in her chat.)",
+  quantification: "(Calvin's part is done. Wellington joins the visitor in his chat.)",
+  water: "(Violet's part is done. Wellington joins the visitor in her chat.)",
   open: '(The visitor has just arrived and has not said anything yet.)',
 };
 
+/** The desks he hands a visitor to, by the step that opens each (24 Nov 2026). */
+const HAND_TO = { eligibility: 'Phoebe', map: 'Bridget', quantification: 'Calvin', water: 'Violet' } as const;
+type HandTo = keyof typeof HAND_TO;
+
+/** What he is told when the visitor reached a colleague's page by another way than his button. */
+function handoffNote(to: HandTo): string {
+  return `# Where you are speaking\n\nThe visitor has just opened ${HAND_TO[to]}'s page, and you have not handed them over yet. Do it now, the way you hand the visitor to any colleague: fill the introduction field, which heads ${HAND_TO[to]}'s page, and set the route to "${to}". Your reply is kept on your own desk: the same hand-off, in one short sentence. Ask nothing.`;
+}
+
 /** What he is told when he joins another agent's chat — 14 Nov 2026 — or opens his own desk (W29). */
-const AT_NOTE: Record<'eligibility' | 'map' | 'open', string> = {
-  /* W29, 16 Nov 2026: he speaks first on his desk when no question was carried in. */
-  open:
-    '# Where you are speaking\n\nThe visitor has just arrived on your desk and has said nothing yet. Speak first, in your own words: who you are and what the team does, then one question about their project. If the record already holds something, use it and ask only for what is missing. Set no route.',
-  eligibility:
-    "# Where you are speaking\n\nYou have joined the visitor in Phoebe's chat, because her step is done. In a line, say where things stand from what Phoebe found, then the one next step, and set the route to it; the console draws its button under your message. Never tell the visitor to come back to you.",
-  map:
-    "# Where you are speaking\n\nYou have joined the visitor in Bridget's chat, because the basin is pinned. In a line, say where things stand, then the one next step, and set the route to it; the console draws its button under your message. Never tell the visitor to come back to you.",
-};
+const OPEN_NOTE: string =
+  /* W29, 16 Nov 2026: he speaks first on his desk when no question was carried in. The notes for the end of a step are
+     worked out from the map (stepEndNote, api/_agentMap.ts) from 24 Nov 2026. */
+    '# Where you are speaking\n\nThe visitor has just arrived on your desk and has said nothing yet. Speak first, in your own words: who you are and what the team does, then one question about their project. If the record already holds something, use it and ask only for what is missing. Set no route.';
 
 export async function POST(req: Request): Promise<Response> {
   let body: {
@@ -122,6 +131,8 @@ export async function POST(req: Request): Promise<Response> {
     sheet?: unknown;
     returned?: unknown;
     at?: unknown;
+    to?: unknown;
+    map?: unknown;
   };
   try {
     body = (await req.json()) as {
@@ -132,6 +143,8 @@ export async function POST(req: Request): Promise<Response> {
       sheet?: unknown;
       returned?: unknown;
       at?: unknown;
+      to?: unknown;
+      map?: unknown;
     };
   } catch {
     return problem(400, 'That request could not be read.');
@@ -152,8 +165,15 @@ export async function POST(req: Request): Promise<Response> {
      agent's step is done he joins the visitor in that agent's chat with the
      next step; `at` names the step. Only with `returned`, and only these.
      `open` is his own desk on arrival: he speaks first (W29, 16 Nov 2026). */
-  const at =
-    returned && (body.at === 'eligibility' || body.at === 'map' || body.at === 'open') ? body.at : null;
+  /* THE SAME HAND-OFF FOR EVERY AGENT — the maintainer's ruling of 24 Nov 2026 (the shared console behaviours, line
+     5). `handoff` is sent the first time a colleague's page shows and he has not handed the visitor over: they came
+     by the crew list. `to` names the page, from a closed list. */
+  const joinedAt = JOINED.find((desk) => desk === body.at) ?? null;
+  const at = returned ? (joinedAt ?? (body.at === 'open' ? ('open' as const) : null)) : null;
+  /* THE VISITOR ANSWERS HIM THERE (25 Nov 2026): he asked something in another agent's chat, and their words came to him. */
+  const replyingAt = returned ? null : joinedAt;
+  const handTo =
+    returned && body.at === 'handoff' ? ((Object.keys(HAND_TO) as HandTo[]).find((s) => s === body.to) ?? null) : null;
 
   const messages = Array.isArray(body.messages) ? body.messages : null;
   if (!messages || (messages.length === 0 && !returned)) {
@@ -184,9 +204,9 @@ export async function POST(req: Request): Promise<Response> {
   }
   if (returned && (clean.length === 0 || clean[clean.length - 1].role !== 'user')) {
     /* The model needs a user turn. This line is never shown as a bubble. */
-    clean.push({ role: 'user', content: at ? AT_TURN[at] : '(The visitor came back from Eligibility.)' });
+    clean.push({ role: 'user', content: handTo ? `(The visitor has opened ${HAND_TO[handTo]}'s page. Wellington introduces them there.)` : at ? AT_TURN[at] : '(The visitor came back from Eligibility.)' });
     if (!lastQuestion) {
-      lastQuestion = at === 'open' ? '(opened the desk)' : at ? `(joined at ${at})` : '(came back from Eligibility)';
+      lastQuestion = handTo ? `(handed over to ${HAND_TO[handTo]})` : at === 'open' ? '(opened the desk)' : at ? `(joined at ${at})` : '(came back from Eligibility)';
     }
   }
   if (clean.length === 0 || clean[clean.length - 1].role !== 'user') {
@@ -200,7 +220,11 @@ export async function POST(req: Request): Promise<Response> {
      and he may still ask. */
   const record = readRecord(body.record);
   const stage = readStage(body.stage);
-  const visitText = record ? visitBlock(record, stage) : stage ? stageBlock(stage) : null;
+  /* THE AGENT MAP — J4, 23 Nov 2026 (api/_agentMap.ts). Where it came, its one next step takes the place of the
+     screening step's line, which is switched off then and kept for a page loaded before the map. */
+  const map = readMap(body.map);
+  const stepStage = map ? null : stage;
+  const visitText = record ? visitBlock(record, stepStage) : stepStage ? stageBlock(stepStage) : null;
 
   /* WHAT PHOEBE FOUND — item A17, 26 Sep 2026. Her worksheet as the shell
      holds it, checked in _record.ts, read into each pathway's read and the
@@ -290,9 +314,11 @@ export async function POST(req: Request): Promise<Response> {
   const client = new Anthropic({ apiKey });
 
   let response: Anthropic.Message;
+  let parsed: unknown;
+  let answer: Answer;
   const calledAt = Date.now();
 
-  const callModel = (): Promise<Anthropic.Message> =>
+  const callModel = (pass: number): Promise<Anthropic.Message> =>
     client.messages.create(
       {
         model: MODEL,
@@ -301,7 +327,10 @@ export async function POST(req: Request): Promise<Response> {
           { type: 'text', text: WELLINGTON_SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
           ...(visitText ? [{ type: 'text' as const, text: visitText }] : []),
           ...(found ? [{ type: 'text' as const, text: found.text }] : []),
-          ...(at ? [{ type: 'text' as const, text: AT_NOTE[at] }] : []),
+          ...(map ? [{ type: 'text' as const, text: mapBlock(map) }] : []),
+          ...(handTo ? [{ type: 'text' as const, text: handoffNote(handTo) }] : at ? [{ type: 'text' as const, text: at === 'open' ? OPEN_NOTE : stepEndNote(at, map) }] : replyingAt ? [{ type: 'text' as const, text: stepEndNote(replyingAt, map, true) }] : []),
+          /* The same question again: this one has to end in an answer (api/_lookUp.ts). */
+          ...(pass > 1 ? [{ type: 'text' as const, text: map && map.next !== 'report or sign-up' ? `${FINISH_NOTE} A step is still ahead, so never say the screening, or every step, is done.` : FINISH_NOTE }] : []),
         ],
         messages: clean,
         thinking: { type: 'adaptive' },
@@ -313,9 +342,12 @@ export async function POST(req: Request): Promise<Response> {
       { timeout: CALL_TIMEOUT_MS }
     );
 
+  /* ONE ANSWER, IN THE SAME TURN — 24 Nov 2026 (api/_lookUp.ts). A reply that ends by promising a look-up is never
+     sent: the same question goes again once, and if that does not end in an answer the visitor is told so. */
+  for (let pass = 1; ; pass += 1) {
   try {
     try {
-      response = await callModel();
+      response = await callModel(pass);
     } catch (first) {
       const status = pick(first, 'status');
       const elapsed = Date.now() - calledAt;
@@ -324,7 +356,7 @@ export async function POST(req: Request): Promise<Response> {
       console.error(
         `wellington: a 400 arrived after ${(elapsed / 1000).toFixed(1)}s, which is too late to be a malformed request — retrying once`
       );
-      response = await callModel();
+      response = await callModel(pass);
     }
   } catch (error) {
     return undelivered(fromApiError(error));
@@ -353,7 +385,6 @@ export async function POST(req: Request): Promise<Response> {
     .map((b) => b.text)
     .join('');
 
-  let parsed: unknown;
   try {
     parsed = JSON.parse(text);
   } catch {
@@ -365,8 +396,16 @@ export async function POST(req: Request): Promise<Response> {
 
   /* A class returned this turn is kept only beside a drinking-water type,
      confirmed this turn or already on the visit. */
-  const answer = validate(parsed, { type: record?.type, reads: found?.reads });
-  if (!answer) {
+  /* On a hand-off the page is already open, so the route is that page, whatever the field says. At the end of a step it
+     is the map's next one, so a hand-off never hangs on his remembering it (24 Nov 2026). */
+  const answersHomeUse = replyingAt !== null && map !== null && asksHomeUse(map) && pick(pick(parsed, 'context'), 'homeUse') !== undefined;
+  const set = handTo ?? (map && at && at !== 'open' ? stepEndRoute(at, map) : map && replyingAt ? (answersHomeUse ? afterHomeUse(map) : stepEndRoute(replyingAt, map)) : null);
+  const checked = validate(set !== null && typeof parsed === 'object' && parsed !== null ? { ...parsed, route: set } : parsed, { type: record?.type, ...(map ? {} : { reads: found?.reads }) });
+  /* The map's guard, in place of the reads' (J4): a desk the map has closed is never routed to, and an
+     introduction goes with its route. */
+  const route = checked && map ? guardRoute(checked.route, map) : checked?.route;
+  const read = checked && route !== undefined ? { ...checked, route, ...(route === checked.route ? {} : { introduction: undefined }) } : null;
+  if (!read) {
     console.error(`wellington: returned an empty answer — ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens`);
     return undelivered(
       problem(
@@ -376,9 +415,10 @@ export async function POST(req: Request): Promise<Response> {
     );
   }
 
-  if (isDegenerateReply(answer.reply)) {
+  /* On a hand-off his line to the colleague is what is shown; his reply beside it may be one short sentence. */
+  if (isDegenerateReply(read.reply) && !(handTo && read.introduction)) {
     console.error(
-      `wellington: returned an answer too short to be one — ${answer.reply.trim().length} characters against a floor of ${MIN_REPLY_CHARS}`
+      `wellington: returned an answer too short to be one — ${read.reply.trim().length} characters against a floor of ${MIN_REPLY_CHARS}`
     );
     return undelivered(
       problem(
@@ -386,6 +426,24 @@ export async function POST(req: Request): Promise<Response> {
         'Wellington returned an answer with almost nothing in it. This is a fault on our side rather than something you did, and asking again usually works.'
       )
     );
+  }
+
+  answer = read;
+  /* HE NEVER CALLS THE SCREENING DONE while a step is ahead (24 Nov 2026, item 7). The same question goes again once. */
+  const tooSoon = map !== null && map.next !== 'report or sign-up' && saysAllDone(answer.reply);
+  if (tooSoon) console.log(`wellington: the reply called the screening done with a step ahead, call ${pass}`);
+  /* A route draws the next step under his message, so the visitor is never left waiting there. */
+  const waits = answer.route === 'none' && leavesWaiting(answer.reply);
+  if (!waits && (!tooSoon || pass > 1)) break;
+  if (waits) console.log(`wellington: the reply promised a look-up and did not answer, call ${pass}`);
+  if (pass > 1) {
+    return undelivered(
+      problem(
+        502,
+        'Wellington went to look something up and did not come back with an answer. This is a fault on our side rather than something you did, and asking again usually works.'
+      )
+    );
+  }
   }
 
   /* The shared word list (14 Nov 2026): the plain-words list and the
@@ -409,6 +467,7 @@ export async function POST(req: Request): Promise<Response> {
 
   return json(200, {
     ...answer,
+    ...(refusedCount(parsed) ? { refused: refusedCount(parsed) } : {}),
     usage: {
       cacheRead: response.usage.cache_read_input_tokens ?? 0,
       cacheWrite: response.usage.cache_creation_input_tokens ?? 0,
@@ -416,6 +475,17 @@ export async function POST(req: Request): Promise<Response> {
       output: response.usage.output_tokens,
     },
   });
+}
+
+/**
+ * A COUNT CORE'S FACT CHECK REFUSES, and why — J3, 23 Nov 2026. `validate` keeps such a count off the record, as
+ * before; until then it was dropped without a word. The console says why under his turn.
+ */
+function refusedCount(parsed: unknown): string | null {
+  const served = pick(pick(parsed, 'context'), 'served');
+  if (served === undefined || served === null) return null;
+  const check = checkEntry('population.served', pick(served, 'count'));
+  return check.ok ? null : check.problem;
 }
 
 /* -------------------------------------------------------------------------

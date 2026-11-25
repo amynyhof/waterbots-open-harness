@@ -126,7 +126,7 @@ expect(
 );
 expect(
   'the transcript draws a reached Meet button quiet',
-  /const blue = button\.primary && !\(button\.reaches && reached\.has\(button\.reaches\)\)/.test(transcript) && /reaches: meet\.surface/.test(readFileSync(join('src', 'lib', 'wellington.ts'), 'utf8')),
+  /const blue = button\.primary && !\(button\.reaches && reached\.has\(button\.reaches\)\)/.test(transcript) && /reaches: surface/.test(readFileSync(join('src', 'lib', 'steps.ts'), 'utf8')),
   'a reached Meet button is still drawn blue'
 );
 expect(

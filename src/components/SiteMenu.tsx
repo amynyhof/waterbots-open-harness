@@ -21,7 +21,7 @@
  * SIGN IN AND ONE BUTTON — the same day. The button says "Sign up" until
  * something is on the record, then it is "Save and sign up"
  * (src/components/SaveDoor.tsx), on a laptop and on a phone. Under the top row,
- * when a path is ruled out, sits the box that sends the project to the team,
+ * when a path is unlikely, sits the box that sends the project to the team,
  * because it goes with Save.
  *
  * THIS SITE'S OWN TWO PAGES OPEN IN PLACE. Open Source and Agent Commons carry

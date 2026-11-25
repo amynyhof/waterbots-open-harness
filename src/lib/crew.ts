@@ -1,5 +1,5 @@
 /**
- * The crew, as the right column lists it — one home for the roster's four.
+ * The crew, as the right column lists it — one home for the roster's five (four until 23 Nov 2026).
  *
  * MOVED OUT OF CrewRail.tsx on 11 Sep 2026 (item S18, slice 2), where it had
  * lived since the desk took the production shape on 2 Sep. The Agent Commons
@@ -16,7 +16,7 @@
  * which screen the row opens. scripts/check-roster.mjs holds every name,
  * role and screen here to the roster in front of every build. ~~FOUR AGENTS,
  * AND THE ROSTER IS THE BOOK'S.~~ Wellington and Bridget are the shared crew,
- * Phoebe and Calvin extend it under BRAND.md §6. Nobody is minted here. Each row's identity colour is read from its token, never
+ * Phoebe and Calvin extend it under BRAND.md §6, and Violet joined by the maintainer's hand on 23 Nov 2026. Nobody is minted here. Each row's identity colour is read from its token, never
  * re-typed (§6), and whether the accent may carry the name as text is
  * recorded beside it, measured — Surf is 2.04:1 on white and never carries
  * text, so Bridget's name is set in ink wherever it appears.
@@ -31,6 +31,7 @@ import type { Surface } from './surfaces';
 export interface CrewMember {
   name: string;
   role: string;
+  /** Empty where the brand book has no portrait yet: the initial is drawn instead (components/AgentFace.tsx). */
   portrait: string;
   /** The identity token, read and never re-typed. */
   token: string;
@@ -73,7 +74,8 @@ export const CREW: CrewMember[] = [
   },
   {
     name: 'Calvin',
-    role: 'Calculator',
+    /* The roster's seat word, 23 Nov 2026; it read "Calculator" until then. */
+    role: 'Carbon credits calculator',
     portrait: calvinPortrait,
     token: '--bot-calvin',
     /* Reef is 4.13:1 on white and never carries text; his name is set in Deep
@@ -81,6 +83,18 @@ export const CREW: CrewMember[] = [
     nameInAccent: true,
     textToken: '--bot-calvin-text',
     surface: 'quantification',
+  },
+  {
+    /* HER OWN CREW MEMBER FROM 23 NOV 2026 (J5), the maintainer's word. Until then her D-3 screen sat
+       under Calvin's "Water benefits" chip. The seat word is the roster's. */
+    name: 'Violet',
+    role: 'Volumetric water benefits calculator',
+    /* The brand book holds no portrait of her yet, so her initial is drawn. Never invented. */
+    portrait: '',
+    token: '--bot-violet',
+    /* Orchid is 4.29:1 on white and has no text shade yet, so her name is set in ink, as Bridget's is. */
+    nameInAccent: false,
+    surface: 'water',
   },
 ];
 

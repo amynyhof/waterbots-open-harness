@@ -5,8 +5,8 @@
 Household and community water supply, ex-ante. Option 3 of Table D3.3. Screening
 tier. Consultant review.
 
-Live arithmetic is Violet's D-3 module from the open core, `@waterbots/violet` 0.5.0, installed
-from the release `calvin-violet-v0.5.0`. This site's own D-3 code is gone. This folder does not copy
+Live arithmetic is Violet's D-3 module from the open core, `@waterbots/violet` 0.6.0, installed
+from the release `violet-v0.6.0`, on Violet's own desk. This site's own D-3 code is gone. This folder does not copy
 the arithmetic and does not invent any.
 
 A blank without-project volume is never read as zero.

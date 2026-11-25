@@ -55,11 +55,15 @@
 
 import { useContext, useEffect, useRef, useState } from 'react';
 import bridgetPortrait from '../../brand/assets/bots/bridget.svg';
-import type { AgentHost, AgentTurn } from '../chat/evidence';
+import type { AgentHost, AgentTurn, TurnButton } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
 import { meetShowing } from '../lib/blue';
 import { Reached } from '../chat/reached';
 import { askBridget } from '../lib/bridgetClient';
+import { chipsFor, withWayOn } from '../lib/chips';
+import { answersHim, hisTurn } from '../screen/useCalculatorChat';
+import { basinAt, readGps } from '../lib/gps';
+import type { CarriedRecord } from '../lib/phoebeClient';
 import {
   AQUEDUCT_CITATION,
   AQUEDUCT_HREF,
@@ -94,6 +98,9 @@ export const BRIDGET: AgentHost = {
   thinkingLine: 'Bridget is looking at the map…',
 };
 
+/** Her Tool tab's name on screen, and the word "Go to map" is built from. */
+const MAP_TAB = 'Map';
+
 export default function BridgetScreen({
   onStatus,
   pin,
@@ -103,9 +110,17 @@ export default function BridgetScreen({
   quantifyNext,
   visible,
   invite = '',
+  waiting = false,
+  onward,
+  onPlace,
+  onHandedOn,
+  showChat = 0,
   onWellington,
   onMeet,
   onMapTab,
+  record = null,
+  heAsks,
+  onReplyToHim,
 }: {
   onStatus: (status: MapStatus) => void;
   pin: MapPin | null;
@@ -123,12 +138,27 @@ export default function BridgetScreen({
    * "Wellington comes to you", 14 Nov 2026. Display only, never sent to her.
    */
   invite?: string;
+  /** True while he is writing that line: she waits for it, so it heads her page whatever way the visitor came (24 Nov 2026). */
+  waiting?: boolean;
+  /** The buttons to what comes next, under her replies once her step is done (24 Nov 2026, src/lib/steps.ts). */
+  onward?: () => TurnButton[];
+  /** The more exact place the visitor typed, in their own words, for the record (24 Nov 2026). */
+  onPlace?: (place: string) => void;
+  /** Tells the shell her step is ended without a basin: the visitor would rather not give a place. */
+  onHandedOn?: () => void;
+  /** Bumped each time the visitor opens her from the crew, which opens her Chat tab first (24 Nov 2026). */
+  showChat?: number;
   /** Brings Wellington into her chat with the next step, once her part is done. */
-  onWellington?: (at: 'eligibility' | 'map', composerId: string) => Promise<AgentTurn | null>;
+  onWellington?: (at: Surface, composerId: string) => Promise<AgentTurn | null>;
+  /** Wellington has asked something here, so the visitor's next words are for him (25 Nov 2026). */
+  heAsks?: () => boolean;
+  onReplyToHim?: (text: string, at: Surface, composerId: string) => Promise<AgentTurn | null>;
   /** Tells the shell whether "Meet <name>" is under her chat's latest turn (one blue button, 16 Nov 2026). */
   onMeet?: (showing: boolean) => void;
   /** Tells the shell whether her Map tab is the one in view, so the map's line in the menu shows only with the map (21 Nov 2026). */
   onMapTab?: (open: boolean) => void;
+  /** The project record, the one Phoebe reads (J3, 23 Nov 2026). */
+  record?: CarriedRecord | null;
 }) {
   /* WELLINGTON COMES TO YOU — the maintainer's ruling of 14 Nov 2026. When her
      part is done (a basin reported, or a question not hers) he joins this chat
@@ -137,7 +167,7 @@ export default function BridgetScreen({
   async function wellingtonJoins() {
     if (!onWellington) return;
     const turn = await onWellington('map', 'wb-bridget-composer');
-    if (turn) chatRef.current.append([{ ...turn, speaker: WELLINGTON }]);
+    if (turn) chatRef.current.append([hisTurn(turn, heAsks, (text) => void chatRef.current.sendText(text))]);
   }
 
   async function ask(
@@ -145,15 +175,37 @@ export default function BridgetScreen({
     signal: AbortSignal,
     meta?: { opened?: boolean; introduced?: boolean; pinned?: boolean }
   ): Promise<AgentTurn> {
+    /* GPS NUMBERS ARE READ HERE, NEVER BY THE MODEL (24 Nov 2026, src/lib/gps.ts): a position in the visitor's message
+       pins the basin it falls in, as a click would, and she reports it in the same answer. */
+    const last = history[history.length - 1];
+    if (!meta?.opened && !meta?.pinned && last?.role === 'user' && answersHim(chatRef.current.turns, heAsks)) {
+      const his = await onReplyToHim?.(last.text, 'map', 'wb-bridget-composer');
+      if (his) return hisTurn(his, heAsks, (text) => void chatRef.current.sendText(text));
+    }
+    const typed = meta?.opened || meta?.pinned || last?.role !== 'user' ? null : readGps(last.text);
+    const found = typed ? await basinAt(typed) : null;
+    if (found?.kind === 'found') {
+      reported.current = found.pin.hybasId;
+      onPin(found.pin);
+      setFocus((f) => ({ box: found.box, key: (f?.key ?? 0) + 1 }));
+    }
     const answer = await askBridget(
       history.map(({ role, text }) => ({
         role: role === 'agent' ? ('assistant' as const) : ('user' as const),
         content: text,
       })),
-      { place, phone, pin, quantifyNext },
+      { place, phone, pin: found?.kind === 'found' ? found.pin : pin, quantifyNext, record },
       signal,
-      { opened: meta?.opened === true, introduced: meta?.opened === true && meta.introduced === true, pinned: meta?.pinned === true }
+      {
+        opened: meta?.opened === true,
+        introduced: meta?.opened === true && meta.introduced === true,
+        pinned: meta?.pinned === true || found?.kind === 'found',
+        ...(found ? { gps: found.kind } : {}),
+      }
     );
+    if (answer.place) onPlace?.(answer.place);
+    /* Handed on with no basin and no question of somebody else's: her step does not hold the visitor. */
+    if (meta?.opened !== true && answer.handBack === 'wellington' && !answer.abstained && !pin && found?.kind !== 'found') onHandedOn?.();
     /* After her answer lands, he joins: from the field alone. */
     if (answer.handBack === 'wellington') window.setTimeout(() => void wellingtonJoins(), 0);
     return {
@@ -161,6 +213,20 @@ export default function BridgetScreen({
       text: answer.reply,
       evidence: [],
       abstained: answer.abstained,
+      /* Where she asks for the Map tab, "Go to map" is the answer, and the only chip; otherwise the chips that answer
+         what she just asked (24 Nov 2026). Nothing once she has handed back, because his buttons come next. */
+      ...(answer.handBack === 'wellington'
+        ? {}
+        : {
+            buttons: withWayOn(
+              chipsFor({
+                answers: answer.showMap ? [] : answer.answers,
+                send: (text) => void chatRef.current.sendText(text),
+                tab: answer.showMap ? { label: MAP_TAB, open: () => setTab('tool') } : null,
+              }),
+              pin ? onward?.() : undefined
+            ),
+          }),
     };
   }
 
@@ -178,20 +244,23 @@ export default function BridgetScreen({
   /* The first time her step shows, she introduces herself and asks her one question. */
   const opened = useRef(false);
   useEffect(() => {
-    if (!visible || opened.current) return;
+    if (!visible || opened.current || waiting) return;
     opened.current = true;
     /* His line to her first, then her opening. */
     if (invite.trim()) {
       chatRef.current.seed([{ role: 'agent', text: invite.trim(), evidence: [], speaker: WELLINGTON }]);
     }
     void chatRef.current.askOpened({ opened: true, introduced: invite.trim() !== '' });
-  }, [visible, invite]);
+  }, [visible, invite, waiting]);
 
   /* The tab is held here, so a pin can bring the visitor back to Chat. */
   const [tab, setTab] = useState<ScreenTab>('chat');
   useEffect(() => {
     onMapTab?.(tab === 'tool');
   }, [tab, onMapTab]);
+  useEffect(() => {
+    if (showChat > 0) setTab('chat');
+  }, [showChat]);
 
   /* THE MAP ZOOMS TO THE COUNTRY BY ITSELF — the ruling of 31 Oct 2026, made
      firmer on 14 Nov 2026 (B2), after a walk where the visitor was asked to
@@ -237,11 +306,11 @@ export default function BridgetScreen({
   return (
     <AgentScreen
       host={BRIDGET}
-      toolLabel="Map"
+      toolLabel={MAP_TAB}
       active={tab}
       onActiveChange={setTab}
       tabs={{
-        chat: <ScreenChat host={BRIDGET} chat={chat} composerId="wb-bridget-composer" />,
+        chat: <ScreenChat host={BRIDGET} chat={chat} composerId="wb-bridget-composer" waitingFor={waiting ? WELLINGTON : undefined} />,
         tool: (
           <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
             <BasinMap onStatus={onStatus} pinnedHybas={pin?.hybasId ?? null} onPin={onPin} focus={focus} />
