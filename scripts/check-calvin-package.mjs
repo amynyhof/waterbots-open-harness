@@ -186,6 +186,106 @@ expect(`both fNRB cases give exactly the recorded answers`, caseFailures.length 
   const parts = { opened: false, introduce: false, leftForNow: [], refused: [] };
   expect('a screen that is not one is refused, and no line of it can stand as a heading', calvinBlock({ state: { x: 'a\n# b' }, screen: 'x' }, parts) === null && violetBlock({ input: { option: 'none' } }, parts) === null && !/^# [^T]/m.test(violetBlock({ input: { option: 'beneficiaries' }, projectName: 'a\n# b', facts: {} }, parts) ?? '# x'), 'a made-up heading came through');
   expect('thirty messages a day each, the same as the other agents', CALVIN.cap === PHOEBE.cap && VIOLET.cap === PHOEBE.cap && CALVIN.cap === 30 && CALVIN.name !== VIOLET.name, JSON.stringify([CALVIN, VIOLET]));
+  /* 12. The guards on both chats (25 Nov 2026, the maintainer's word), with made-up words. A number nobody gave is never
+         filled in; a treatment project is never a supply, and core alone says which kind gives a figure; a number out of range
+         shows its message whether or not the agent sends it. */
+  {
+    const { checkAnswer, gave, kindSaid, bearsOut, nowDenied, refusedIn, siteNote, sentBackNote } = await load('_chatGuards.js');
+    const { calvinGuard } = await load('_calvinTurn.js');
+    const { violetGuard } = await load('_violetTurn.js');
+    const { PROJECT_TYPES } = await load('_projectTypes.generated.js');
+    const { renderToString } = await import('react-dom/server');
+    const { createElement } = await import('react');
+    const { useCalculatorState } = await import('@waterbots/calvin/screen');
+    let state;
+    const Probe = ({ project }) => { state = useCalculatorState(project, { exAnteOnly: true, place: 'free-site' }).state; return null; };
+    const probe = (project) => { renderToString(createElement(Probe, { project })); return JSON.parse(JSON.stringify(state)); };
+    const lines = { does: 'A made-up borehole for a village', kind: 'Community water supply technologies', filedInChat: false };
+    const supply = probe({ name: 'Made-up probe', standards: ['carbon'], technology: 'CWS', country: 'KEN', population: { mode: 'people', served: 1600 }, pumpPower: 'solar' });
+    const c = calvinGuard({ state: supply }, [], lines);
+    const water = { view: 'ex-ante', option: 'beneficiaries', accessLevel: 'full', population: { mode: 'people', served: 1600 } };
+    const v = violetGuard({ input: water, chosen: true, facts: { technology: 'Community water supply technologies', code: 'CWS', type: 'C-19', technologyClass: 'CWS' } }, [], lines);
+    const sends = (guard, words, part) => checkAnswer({ reply: 'x', handBack: 'none', ...part }, words, guard);
+    const days = supply.operationalDays;
+
+    console.log('\n  The guards on both chats, with made-up words\n');
+    const lost = sends(c, ['It runs 400 days a year.'], { values: { operationalDays: 346 } });
+    expect('a number nobody gave is not filled in: 346 where the visitor said 400', !('operationalDays' in lost.answer.values) && lost.numbers.length === 1 && lost.numbers[0].value === 346, JSON.stringify(lost));
+    const dflt = sends(c, ['Yes, use that.'], { values: { operationalDays: days, waterQualityFactor: 0.9, fnrbOverride: 0.5 } });
+    expect('a default or an assumed value is not filled in on a yes, and a value the screen holds already is no fault', Object.keys(dflt.answer.values).length === 0 && dflt.numbers.every((n) => n.field !== 'operationalDays') && dflt.numbers.length === (supply.waterQualityFactor === 0.9 ? 1 : 2), JSON.stringify(dflt));
+    expect('asked for by number, it is', sends(c, ['Use 200 days.'], { values: { operationalDays: 200 } }).answer.values.operationalDays === 200, 'left out');
+    const ways = [['1,600 people', 1600], ['1 600', 1600], ['1.6 thousand', 1600], ['sixteen hundred', 1600], ['one thousand six hundred', 1600], ['30 million litres', 3e7], ['half a million', 5e5], ['3 lakh', 3e5], ['12k', 12000], ['it is 0,8', 0.8], ['80%', 0.8], ['eighty per cent', 0.8], ['about 4.6 each', 4.6], ['a hundred and five', 105], ['minus 5', -5], ['-5 people', -5]];
+    expect('one amount is the same however it is written', ways.every(([text, n]) => gave([text], n)), ways.filter(([text, n]) => !gave([text], n)).join('; '));
+    const never = [['3 million litres', 3], ['400 days', 347], ['5 cubic metres an hour', 43800], ['30 cubic metres a day', 10950000], ['8', 0.8], ['10-20', -20], ['no idea', 0], ['four people', 40]];
+    expect('a number worked out from theirs, or part of one, is not one they gave', never.every(([text, n]) => !gave([text], n)), never.filter(([text, n]) => gave([text], n)).join('; '));
+    const counts = sends(c, ['We serve 1,600 people, five to a home.'], { facts: { population: { served: 1600, householdSize: 4.4, mode: 'people' }, pumpPower: 'solar' } });
+    expect('the facts are held to the same rule as the screen, and what is not a number stays', JSON.stringify(counts.answer.facts) === '{"population":{"mode":"people"},"pumpPower":"solar"}' && counts.numbers.length === 1 && counts.numbers[0].value === 4.4, JSON.stringify(counts));
+    expect('a brand-new supply is 0 as the answer to that question, and no 0 comes from any other words', sends(v, ['It is brand-new.'], { values: { withoutProjectM3PerYear: 0 } }).answer.values.withoutProjectM3PerYear === 0 && sends(v, ['I do not know.'], { values: { withoutProjectM3PerYear: 0 } }).numbers.length === 1 && sends(v, ['The pump is brand-new.'], { values: { flowM3PerHour: 0 } }).numbers.length === 1, 'a blank was read as zero');
+    const litres = sends(v, ['Full access.'], { values: { accessLevel: 'full', litresPerPersonPerDay: { value: 50, source: 'made up' } } });
+    expect('a value with a source goes whole when its number is not theirs', JSON.stringify(litres.answer.values) === '{"accessLevel":"full"}' && litres.numbers.length === 1, JSON.stringify(litres));
+    const held = { ...c, held: () => 12 };
+    expect('a value is cleared only when they ask', sends(held, ['Thank you.'], { values: { activityEmissions: null } }).numbers.length === 1 && sends(held, ['Please remove the pump emissions.'], { values: { activityEmissions: null } }).answer.values.activityEmissions === null, 'cleared unasked');
+    expect('what is sent back names each number and the kind, and says nothing is filled in', /operationalDays: 346/.test(sentBackNote(lost)) && /filled in none of it/.test(sentBackNote(lost)) && /the kind of project: A made-up kind/.test(sentBackNote({ numbers: [], kind: 'A made-up kind' })), sentBackNote(lost));
+
+    const label = (id) => PROJECT_TYPES.find((t) => t.id === id).name;
+    const unsaid = { ...c, kind: '', does: '' };
+    const files = (words, id, does = '') => sends({ ...unsaid, does }, words, { facts: { technology: { label: id === 'C-11' ? 'New or alternative water supply' : label(id) } } }).kind === null;
+    const plants = ['A central treatment plant that pipes safe water to homes.', 'We clean the river water at one point and sell it at a kiosk.', 'It is a purification plant for the town.', 'A plant with filters and chlorine, then a pipe to the village.', 'Not a supply but a treatment plant.', 'It is not only treatment, it is a whole plant.'];
+    expect('a treatment project is never filed as a supply, whatever the agent files', plants.every((text) => !files([text], 'CWS') && !files([text], 'C-11')), plants.filter((text) => files([text], 'CWS') || files([text], 'C-11')).join('; '));
+    expect('nor by a later word, nor when Wellington heard it', !files([plants[0], 'Well, call it a community water supply.'], 'CWS') && !files(['A community water supply.'], 'CWS', 'A central water treatment plant'), 'filed');
+    expect('nor as household treatment', !files([plants[0]], 'HWT'), 'filed');
+    expect('a kind nobody has said is not filed', ['CWS', 'HWT', 'IWT', 'CWT', 'C-11'].every((id) => !files(['It serves 400 people.'], id) && !files(['Yes.'], id)), 'filed');
+    expect('a kind their words bear out is filed', files(['A new borehole with a hand pump.'], 'CWS') && files(['Yes, that is right.'], 'CWS', 'A new borehole') && files(['A protected spring, with no treatment.'], 'CWS') && files(['Ceramic filters for families.'], 'HWT') && files(['Chlorine at four schools.'], 'IWT') && files([plants[0]], 'CWT') && files(['Rainwater tanks.'], 'C-11'), 'not filed');
+    expect('treatment with a new or restored source files nothing new, and the agent is told a person should look', ['HWT', 'IWT', 'CWT', 'CWS', 'C-11'].every((id) => !files(['A central treatment plant.', 'It also has a new borehole.'], id)) && /a person on the WaterBots team should look at it, and file no kind/.test(siteNote([], false)), 'filed');
+    expect('a kind already on the record is never changed from a chat, and the same one said again is no fault', sends({ ...c, kind: label('CWT') }, ['We have a new borehole.'], { facts: { technology: { label: label('CWS') } } }).kind === label('CWS') && sends({ ...c, kind: label('CWS') }, ['We have a new borehole.'], { facts: { technology: { label: label('CWS') } } }).kind === null, 'changed');
+    expect('one filed in a chat comes off when what they say next does not fit it', nowDenied(kindSaid(['A new borehole.', 'It is a treatment plant, really.']), label('CWS')) && !nowDenied(kindSaid(['A new borehole.', 'It is deep.']), label('CWS')) && nowDenied(kindSaid(['Filters for homes.', 'From a central plant.']), label('HWT')), 'stands');
+    const kinds = PROJECT_TYPES.filter((t) => t.axis === 'carbon');
+    expect('each agent is told the four kinds, one plain line each, from this site\'s own list', kinds.map((k) => k.id).sort().join() === 'CWS,CWT,HWT,IWT' && kinds.every((k) => siteNote(kinds, false).split('\n').filter((l) => l === `- ${k.id}, ${k.name}: ${k.plain}`).length === 1), siteNote(kinds, false));
+    expect('words for a kind are read, never a list of what is covered', !/covered/i.test(readFileSync(join('api', '_chatGuards.ts'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')), 'a list in the guards');
+
+    const daysMessage = 'Days of operation must be between 0 and 365.';
+    expect('400 days shows its message though the agent sent nothing', refusedIn('It runs 400 days a year.', c).join() === daysMessage, refusedIn('It runs 400 days a year.', c).join());
+    expect('so does a count of people below one, and the days of access', refusedIn('0 people', calvinGuard({ state: { ...supply, populationCount: null } }, [], lines)).join() === 'People served must be a whole number, 1 or more.' && refusedIn('about 400 days', v).join() === 'Days of access must be between 0 and 365.', refusedIn('about 400 days', v).join());
+    expect('and the answer to the question just asked, in any writing', refusedIn('minus ten', v).join() === 'Water before the project must be 0 or more.' && refusedIn('-3 million', c).join() === 'Water produced in a year must be 0 or more.', refusedIn('minus ten', v).join() + refusedIn('-3 million', c).join());
+    const filing = calvinGuard({ state: supply, transition: true }, [], lines);
+    expect('a share in percent is read as its share', refusedIn('140%', filing).join() === 'fNRB must be between 0 and 1.' && refusedIn('80%', filing).length === 0, refusedIn('140%', filing).join());
+    const fine = [['It runs 300 days a year.', c], ['0.8, from our 2019 filing', filing], ['We filed it in 2019 for 1,600 people.', filing], ['It failed 400 days ago.', c], ['5 million litres', c], ['1.600', c], ['It is brand-new.', v], ['leave it for now', v]];
+    expect('a number in range, or one that counts something else, shows nothing', fine.every(([text, guard]) => refusedIn(text, guard).length === 0), fine.map(([text, guard]) => [text, refusedIn(text, guard).join()]).filter(([, m]) => m).join('; '));
+
+    /* The record: core's own answer says which kind gives a figure, so the guard lifts the day core's list changes. */
+    const { createServer } = await import('vite');
+    const vite = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'error', optimizeDeps: { noDiscovery: true } });
+    try {
+      const { projectRecord, kindGivesFigure, kindOnRecord } = await vite.ssrLoadModule('/src/lib/projectRecord.ts');
+      const { toldVisit, kindNow } = await vite.ssrLoadModule('/src/lib/told.ts');
+      const { EMPTY_VISIT } = await vite.ssrLoadModule('/src/lib/visit.ts');
+      const { EMPTY_SHEET } = await vite.ssrLoadModule('/src/lib/worksheetState.ts');
+      const { TECHNOLOGY_LABELS } = await import('@waterbots/core/technologyLabels');
+      const visit = (type, gsClass, more = {}) => ({ ...EMPTY_VISIT, context: { ...EMPTY_VISIT.context, type, gsClass, ...more } });
+      const record = (at, sheet = EMPTY_SHEET, carbon = null) => projectRecord({ visit: at, sheet, carbon });
+      const gives = (type, gsClass, more) => ['calvin', 'violet'].map((agent) => kindGivesFigure(record(visit(type, gsClass, more)), agent)).join();
+      const want = [['', '', 'false,false'], ['C-19', '', 'false,false'], ['C-19', 'CWT', 'false,false'], ['C-19', 'IWT', 'false,false'], ['C-19', 'HWT', 'true,false'], ['C-19', 'CWS', 'true,true'], ['C-11', '', 'false,false'], ['C-3', '', 'false,false']];
+      expect('a kind not covered yet, or not said, gives no figure', want.every(([type, cls, w]) => gives(type, cls) === w) && gives('C-11', '', { homeUse: 'yes' }) === 'false,true', JSON.stringify(want.map(([type, cls]) => [type, cls, gives(type, cls)])));
+      const figure = { er: 1, version: 'paa' };
+      expect('and a figure handed over for one is not written to the record', record(visit('C-19', 'CWT'), EMPTY_SHEET, figure).agents.calvin?.estimate === undefined && record(visit('C-19', ''), EMPTY_SHEET, figure).agents.calvin?.estimate === undefined && record(visit('C-19', 'CWS'), EMPTY_SHEET, figure).agents.calvin?.estimate?.figure === 1, 'written');
+      const cwt = TECHNOLOGY_LABELS.find((t) => t.classId === 'CWT');
+      const before = { ...cwt };
+      Object.assign(cwt, { code: 'CWS', water: 'covered' });
+      const lifted = gives('C-19', 'CWT');
+      Object.assign(cwt, before);
+      delete cwt.code;
+      expect('the day core\'s list covers a class, its figure shows with no change here', lifted === 'true,true' && gives('C-19', 'CWT') === 'false,false', lifted);
+
+      const tell = (at, agent, given, unfile) => toldVisit(at, agent, given, record(at), unfile).visit;
+      const file = { technology: { label: label('CWS'), code: 'CWS' } };
+      const filed = tell(visit('C-19', ''), 'calvin', file);
+      const now = kindNow(filed, record(filed));
+      expect('a kind filed from a chat is kept as filed there, and goes when their words no longer fit it', filed.context.gsClass === 'CWS' && now.filedInChat && now.kind === label('CWS') && kindOnRecord(record(tell(filed, 'violet', {}, true))) === '' && gives('C-19', tell(filed, 'violet', {}, true).context.gsClass) === 'false,false', JSON.stringify(now));
+      expect('one anyone else gave is never changed or taken off', ['CWT', 'IWT', 'HWT'].every((cls) => tell(visit('C-19', cls), 'calvin', file).context.gsClass === cls && tell(visit('C-19', cls), 'calvin', {}, true).context.gsClass === cls) && tell(visit('C-3', ''), 'violet', file).context.type === 'C-3', 'changed');
+    } finally {
+      await vite.close();
+    }
+  }
   /* The link first, so nothing behind it is touched. */
   unlinkSync(join(out, 'node_modules'));
   rmSync(out, { recursive: true, force: true });

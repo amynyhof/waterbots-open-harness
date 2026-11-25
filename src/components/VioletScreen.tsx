@@ -19,7 +19,9 @@ import type { VioletAnswer } from '@waterbots/violet';
 import { useD3State } from '@waterbots/violet/screen';
 import type { AgentHost, AgentTurn, TurnButton } from '../chat/evidence';
 import type { CalculatorAnswer } from '../lib/calculatorClient';
+import { waterKindNotSaid } from '../lib/projectRecord';
 import type { Surface } from '../lib/surfaces';
+import type { KindNow } from '../lib/told';
 import { WELLINGTON } from '../lib/wellington';
 import { VIOLET_PACKAGE_VERSION, VIOLET_RELEASE } from '../lib/calvinProject';
 import { WATER_D3_LISTING } from '../lib/methodPacks';
@@ -30,6 +32,7 @@ import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, { type PackView } from '../screen/KnowledgePackTab';
 import ScreenChat from '../screen/ScreenChat';
 import { settled, useCalculatorChat } from '../screen/useCalculatorChat';
+import { RecordFacts } from './CalvinCalculator';
 import HandOff from './HandOff';
 import VioletWater from './VioletWater';
 
@@ -49,6 +52,8 @@ export const VIOLET_NOT_LIVE_LINE = 'Violet is not answering here yet. The calcu
 
 export default function VioletScreen({
   record,
+  counts,
+  kindIs,
   onWater,
   closed = null,
   invite = '',
@@ -65,6 +70,10 @@ export default function VioletScreen({
 }: {
   /** The shared project record: her screen opens on it and follows it. */
   record: ProjectRecord;
+  /** Whether the kind of project gives a figure: core's answer, from the record (25 Nov 2026). */
+  counts: boolean;
+  /** The kind of project as it stands, for the guards on her chat. */
+  kindIs: () => KindNow;
   /** What her screen gives back after every change, handed to the shell for the crew line, the report and the save. */
   onWater: (water: WaterEstimate) => void;
   /** What her desk shows in place of the calculator when the agent map closes it (J4). */
@@ -79,8 +88,9 @@ export default function VioletScreen({
   visible: boolean;
   /** Bumped each time the visitor opens her from the crew, which opens her Chat tab first. */
   showChat?: number;
-  /** Writes what the visitor told her to the visit, and returns a message for each number refused. */
-  onTold: (given: GivenFacts) => string[];
+  /** Writes what the visitor told her to the visit, and returns a message for each number refused. A kind of project their
+      words no longer fit comes off the record. */
+  onTold: (given: GivenFacts, unfile?: boolean) => string[];
   /** Her part is done: a figure that came from the visitor's answers. */
   onDone: () => void;
   /** The way on, read when her answer lands. */
@@ -94,7 +104,9 @@ export default function VioletScreen({
   seat.current = state;
   const recordRef = useRef(record);
   recordRef.current = record;
-  const shows = (): boolean => seat.current.stop === null && seat.current.result.vwbM3PerYear !== null;
+  const countsNow = useRef(counts);
+  countsNow.current = counts;
+  const shows = (): boolean => countsNow.current && seat.current.stop === null && seat.current.result.vwbM3PerYear !== null;
 
   const { chat, tab, setTab, composerId } = useCalculatorChat({
     host: VIOLET,
@@ -104,6 +116,7 @@ export default function VioletScreen({
       turn: () => {
         const { facts } = recordRef.current;
         return {
+          ...kindIs(),
           input: seat.current.input,
           projectName: seat.current.project?.name ?? '',
           chosen: seat.current.chosen,
@@ -118,7 +131,7 @@ export default function VioletScreen({
       },
       apply: async (answer: CalculatorAnswer) => {
         const told = Object.keys(answer.facts).length > 0;
-        const refused = told ? onTold(answer.facts) : [];
+        const refused = told || answer.unfile ? onTold(answer.facts, answer.unfile) : [];
         await settled();
         const values = answer.values as VioletAnswer;
         let fill: ReturnType<typeof state.fill> | undefined;
@@ -147,6 +160,7 @@ export default function VioletScreen({
 
   /* Her figure needs the visitor to have said how the water can be counted, so one that shows came from their answers,
      in her chat or on her screen. */
+  const unsaid = waterKindNotSaid(record);
   const ended = state.chosen && shows() && !state.asks.some((ask) => ask.needed);
   useEffect(() => {
     if (ended) onDone();
@@ -171,8 +185,14 @@ export default function VioletScreen({
           <>
             <HandOff line="" wayOn={wayOn} framed />
             {closed}
+            {/* Nobody has said what kind of project it is, so there is no figure to show: the same line as Calvin's. */}
+            {!closed && unsaid && (
+              <div style={{ padding: '14px 18px 0' }}>
+                <RecordFacts missing={['technology']} />
+              </div>
+            )}
             {/* Kept mounted behind a closed desk, so nothing the visitor set is lost if the reading changes. */}
-            <div style={{ display: closed ? 'none' : 'contents' }}>
+            <div style={{ display: closed || unsaid ? 'none' : 'contents' }}>
               <VioletWater record={record} place="free-site" state={state} hideExportButton />
             </div>
           </>

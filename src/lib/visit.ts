@@ -101,6 +101,8 @@ export interface Told {
   country?: string;
   population?: { served?: number; mode?: ServedUnit; householdSize?: number };
   pumpPower?: 'hand' | 'gravity' | 'solar' | 'diesel' | 'grid';
+  /** The kind of project filed from this chat, so it can come off the record again: a class, or a type (src/lib/told.ts). */
+  kind?: string;
 }
 export type Teller = 'calvin' | 'violet';
 

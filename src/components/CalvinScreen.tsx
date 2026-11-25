@@ -40,6 +40,7 @@ import calvinPortrait from '../../brand/assets/bots/calvin.svg';
 import type { AgentHost, AgentTurn, TurnButton } from '../chat/evidence';
 import type { CalculatorAnswer } from '../lib/calculatorClient';
 import type { Surface } from '../lib/surfaces';
+import type { KindNow } from '../lib/told';
 import { WELLINGTON } from '../lib/wellington';
 import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
@@ -99,6 +100,8 @@ export function CalvinTool({
 
 export default function CalvinScreen({
   project,
+  counts,
+  kindIs,
   onSummary,
   unknownLabel,
   closed = null,
@@ -115,6 +118,10 @@ export default function CalvinScreen({
   onReplyToHim,
 }: {
   project: CalvinProject;
+  /** Whether the kind of project gives a figure: core's answer, from the record (25 Nov 2026). */
+  counts: boolean;
+  /** The kind of project as it stands, for the guards on his chat. */
+  kindIs: () => KindNow;
   /** The figure and the facts still needed, handed to the shell so the crew panel and the report read them. */
   onSummary: (summary: CalvinSummary) => void;
   /** The project's own label, when Calvin does not cover it. */
@@ -131,8 +138,9 @@ export default function CalvinScreen({
   visible: boolean;
   /** Bumped each time the visitor opens him from the crew, which opens his Chat tab first. */
   showChat?: number;
-  /** Writes what the visitor told him to the visit, and returns a message for each number refused. */
-  onTold: (given: GivenFacts) => string[];
+  /** Writes what the visitor told him to the visit, and returns a message for each number refused. A kind of project their
+      words no longer fit comes off the record. */
+  onTold: (given: GivenFacts, unfile?: boolean) => string[];
   /** His part is done: a figure that came from the visitor's answers. */
   onDone: () => void;
   /** The way on, read when his answer lands. */
@@ -142,9 +150,11 @@ export default function CalvinScreen({
   onReplyToHim: (text: string, at: Surface, composerId: string) => Promise<AgentTurn | null>;
 }) {
   const seat = useRef<CalculatorState | null>(null);
+  const countsNow = useRef(counts);
+  countsNow.current = counts;
   const shows = (): boolean => {
     const calc = seat.current;
-    return calc !== null && calc.result !== null && calc.missingFacts.length === 0 && !calc.fnrbRefusal && !calc.filedFnrbRefusal;
+    return countsNow.current && calc !== null && calc.result !== null && calc.missingFacts.length === 0 && !calc.fnrbRefusal && !calc.filedFnrbRefusal;
   };
   const { chat, tab, setTab, composerId } = useCalculatorChat({
     host: CALVIN,
@@ -154,9 +164,10 @@ export default function CalvinScreen({
       turn: (answered) => {
         const calc = seat.current;
         if (!calc) return null;
-        const figure = calc.paaResult;
+        const figure = countsNow.current ? calc.paaResult : null;
         const fnrb = figure?.provenance.find((p) => p.field === 'fNRB');
         return {
+          ...kindIs(),
           state: calc.state,
           screen: calc.pageContext(),
           /* Opening his chat ends nothing while he still has something to ask, so he is told his figure shows once the
@@ -171,7 +182,7 @@ export default function CalvinScreen({
       apply: async (answer: CalculatorAnswer) => {
         /* The record first, so the screen follows it, and then the screen's own values. */
         const told = Object.keys(answer.facts).length > 0;
-        const refused = told ? onTold(answer.facts) : [];
+        const refused = told || answer.unfile ? onTold(answer.facts, answer.unfile) : [];
         await settled();
         let fill: ReturnType<CalculatorState['fill']> | undefined;
         flushSync(() => {

@@ -6,9 +6,9 @@
  */
 
 import { readVioletAnswer, VIOLET_ANSWER_SCHEMA, VIOLET_CHAT, VIOLET_OPENED, VIOLET_TOOLS } from '@waterbots/violet';
-import { answerCalculatorChat, problem } from './_calculatorChat.js';
+import { answerCalculatorChat, problem, readKindLines } from './_calculatorChat.js';
 import { VIOLET } from './_cap.js';
-import { violetBlock, VIOLET_SYSTEM_PROMPT } from './_violetTurn.js';
+import { violetBlock, violetGuard, VIOLET_SYSTEM_PROMPT } from './_violetTurn.js';
 
 /** Most of the budget is spent before the first visible word. Stated, like the others'. */
 export const maxDuration = 60;
@@ -27,6 +27,7 @@ export async function POST(req: Request): Promise<Response> {
     schema: VIOLET_ANSWER_SCHEMA,
     tools: VIOLET_TOOLS,
     block: violetBlock,
+    guard: (turn, leftForNow) => violetGuard(turn, leftForNow, readKindLines(turn)),
     read: readVioletAnswer,
   });
 }

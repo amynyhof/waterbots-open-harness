@@ -28,6 +28,8 @@ import {
   AGENTS,
   emptyRecord,
   needsHomeUse,
+  recordTechnology,
+  recordWaterSupply,
   setAgentResults,
   setEligibilitySheet,
   technologyOfFacts,
@@ -100,6 +102,25 @@ export function technologyOf(context: Pick<VisitContext, 'type' | 'gsClass'>, sh
 /** A drinking-water project whose class nobody has said yet: its kind is not known, so nothing can be said about its cover. */
 function kindNotSaid(record: ProjectRecord): boolean {
   return record.facts.technology !== undefined && record.facts.technology.code === undefined && record.facts.technology.label === projectType(DRINKING_WATER_TYPE)?.name;
+}
+
+/** The kind of project on the record, in its label; '' while nobody has said it. */
+export function kindOnRecord(record: ProjectRecord): string {
+  return kindNotSaid(record) ? '' : (record.facts.technology?.label ?? '');
+}
+
+/**
+ * WHETHER THE KIND OF PROJECT GIVES A FIGURE — the maintainer's word, 25 Nov 2026. The answer is core's own, for each
+ * calculator, read from the record's kind and from nothing an agent says: no list of what is covered is kept here, so a
+ * class core starts to count gives its figure with no change on this site. A kind nobody has said gives none.
+ */
+export function kindGivesFigure(record: ProjectRecord, agent: 'calvin' | 'violet'): boolean {
+  return agent === 'calvin' ? recordTechnology(record) !== undefined : recordWaterSupply(record.facts) === 'covered';
+}
+
+/** Violet's calculator has nothing to count yet, because nobody has said what kind of project it is. */
+export function waterKindNotSaid(record: ProjectRecord): boolean {
+  return recordWaterSupply(record.facts) === 'not known' && !needsHomeUse(record.facts);
 }
 
 /**
@@ -275,12 +296,12 @@ export function projectRecord({ visit, sheet, carbon = null }: RecordInput): Pro
 
   /* WHAT THE VISITOR TOLD CALVIN AND VIOLET (src/lib/told.ts). Only a fact the record lacks is added, as core rules. */
   for (const agent of ['calvin', 'violet'] as const) {
-    const told = visit.told?.[agent];
-    if (told && Object.keys(told).length > 0) record = addGivenFacts(record, agent, told).record;
+    const { kind: _filed, ...told } = visit.told?.[agent] ?? {};
+    if (Object.keys(told).length > 0) record = addGivenFacts(record, agent, told).record;
   }
 
   /* CALVIN. The figure is his engine's; this file only writes it down. */
-  if (carbon) {
+  if (carbon && kindGivesFigure(record, 'calvin')) {
     record = setAgentResults(record, 'calvin', {
       estimate: { figure: carbon.er, unit: 'tCO₂e a year', method: carbon.version === 'paa' ? 'carbon-v2.0' : 'carbon-v1.0', engineVersion: GS4GG_CALCULATOR_VERSION },
       /* Opening his calculator ends nothing: a figure the visitor's answers gave does (25 Nov 2026). */
@@ -297,7 +318,7 @@ export function projectRecord({ visit, sheet, carbon = null }: RecordInput): Pro
     const input = visit.water.input as unknown as D3Input;
     const result = visit.water.result as unknown as D3Result;
     record = addVioletFacts(record, { ...violetGivenFacts(input), population: undefined }).record;
-    record = addVioletResults(record, { input, result, done: result.vwbM3PerYear !== null && visit.violetDone === true });
+    if (kindGivesFigure(record, 'violet')) record = addVioletResults(record, { input, result, done: result.vwbM3PerYear !== null && visit.violetDone === true });
   }
   return record;
 }

@@ -79,8 +79,8 @@ import ScreeningReport from './components/ScreeningReport';
 import { NO_SUMMARY, type CalvinSummary } from './components/CalvinCalculator';
 import { calvinProjectFrom, countryIsoFor } from './lib/calvinProject';
 import { carriedRecord } from './lib/phoebeClient';
-import { NO_CALCULATOR_YET, callOf, calledSurfaces, closedBy, mapForWellington, metFrom, nextStep, noCalculatorFor, projectRecord, siteMap, uncoveredLabel, waterHasNoCalculator, type MapForWellington, type NextStep } from './lib/projectRecord';
-import { toldVisit } from './lib/told';
+import { NO_CALCULATOR_YET, callOf, calledSurfaces, closedBy, kindGivesFigure, mapForWellington, metFrom, nextStep, noCalculatorFor, projectRecord, siteMap, uncoveredLabel, waterHasNoCalculator, type MapForWellington, type NextStep } from './lib/projectRecord';
+import { kindNow, toldVisit } from './lib/told';
 import type { GivenFacts } from '@waterbots/core/record';
 import { onward, type Ending } from './lib/steps';
 import { d3InputFromRecord, violetAgentNoteLines } from '@waterbots/violet';
@@ -279,14 +279,17 @@ export default function App() {
   }, []);
 
   /* What the visitor tells Calvin or Violet joins the visit, and so the shared record (src/lib/told.ts). */
-  const onTold = useCallback((agent: Teller, given: GivenFacts): string[] => {
-    const { visit: next, refused } = toldVisit(visitRef.current, agent, given);
+  const onTold = useCallback((agent: Teller, given: GivenFacts, unfile?: boolean): string[] => {
+    const tell = (v: Visit) => toldVisit(v, agent, given, projectRecord({ visit: v, sheet: sheetRef.current }), unfile);
+    const { visit: next, refused } = tell(visitRef.current);
     visitRef.current = next;
-    setVisit((v) => toldVisit(v, agent, given).visit);
+    setVisit((v) => tell(v).visit);
     return refused;
   }, []);
-  const calvinTold = useCallback((given: GivenFacts) => onTold('calvin', given), [onTold]);
-  const violetTold = useCallback((given: GivenFacts) => onTold('violet', given), [onTold]);
+  const calvinTold = useCallback((given: GivenFacts, unfile?: boolean) => onTold('calvin', given, unfile), [onTold]);
+  const violetTold = useCallback((given: GivenFacts, unfile?: boolean) => onTold('violet', given, unfile), [onTold]);
+  /* The kind of project, for the guards on both chats, read as a turn is sent. */
+  const kindIs = useCallback(() => kindNow(visitRef.current, projectRecord({ visit: visitRef.current, sheet: sheetRef.current })), []);
   /* Their part of Step 3 is ended, by a figure that came from the visitor's answers (25 Nov 2026). */
   const calvinEnded = useCallback(() => {
     if (visitRef.current.calvinDone) return;
@@ -517,14 +520,16 @@ export default function App() {
     const m = siteMap(facts);
     return { calvin: closedBy(m, 'calvin'), violet: closedBy(m, 'violet') };
   }, [facts]);
-  const carbon: CarbonFigure | null = closed.calvin ? null : carbonSeen;
+  /* The kind of project decides whether a figure shows, in core's own answer (25 Nov 2026). */
+  const counts = useMemo(() => ({ calvin: kindGivesFigure(facts, 'calvin'), violet: kindGivesFigure(facts, 'violet') }), [facts]);
+  const carbon: CarbonFigure | null = closed.calvin || !counts.calvin ? null : carbonSeen;
   const carbonRef = useRef<CarbonFigure | null>(null);
   carbonRef.current = carbon;
   const record = useMemo(() => projectRecord({ visit, sheet, carbon }), [visit, sheet, carbon]);
   const map = useMemo(() => siteMap(record, metFrom(reached)), [record, reached]);
   const project = useMemo(() => calvinProjectFrom(facts), [facts]);
   /* What was worked out at a closed desk is not part of the screening: not on the crew's lines, the report or the save. */
-  const counted = useMemo<Visit>(() => (closed.violet && visit.water ? { ...visit, water: null } : visit), [visit, closed.violet]);
+  const counted = useMemo<Visit>(() => ((closed.violet || !counts.violet) && visit.water ? { ...visit, water: null } : visit), [visit, closed.violet, counts.violet]);
   const closedDesks = useMemo<Surface[]>(() => [...(closed.calvin ? (['quantification'] as const) : []), ...(closed.violet ? (['water'] as const) : [])], [closed]);
   /* THE CREW SHOWS ONLY WHO THE MAP HAS CALLED — the maintainer's ruling of 24 Nov 2026 (calledSurfaces,
      src/lib/projectRecord.ts). An agent appears when the map calls them, or when Wellington has handed the visitor to
@@ -867,6 +872,8 @@ export default function App() {
               >
                 <CalvinScreen
                   project={project}
+                  counts={counts.calvin}
+                  kindIs={kindIs}
                   onSummary={setCalvinSummary}
                   unknownLabel={uncoveredLabel(facts)}
                   invite={visit.quantifyInvite}
@@ -892,6 +899,8 @@ export default function App() {
               >
                 <VioletScreen
                   record={facts}
+                  counts={counts.violet}
+                  kindIs={kindIs}
                   onWater={setWater}
                   invite={visit.waterInvite}
                   wayOn={wayOn('water')}

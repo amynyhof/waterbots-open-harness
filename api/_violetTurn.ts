@@ -8,9 +8,10 @@
 
 import { HOME_USES, PROJECT_TYPE_IDS, type ProjectFacts } from '@waterbots/core/record';
 import { TECHNOLOGY_CLASSES } from '@waterbots/core/technologyLabels';
-import { computeD3, violetChatContext, type D3Input } from '@waterbots/violet';
+import { computeD3, fillViolet, violetAsks, violetChatContext, type D3Input, type VioletAnswer } from '@waterbots/violet';
 import { AGENT_RULES_MD } from './_agentRules.generated.js';
 import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
+import type { TurnGuard } from './_chatGuards.js';
 import { VIOLET_KNOWLEDGE_MD, VIOLET_PROMPT_MD } from './_violetPrompt.generated.js';
 
 export const VIOLET_SYSTEM_PROMPT = [AGENT_RULES_MD, VIOLET_PROMPT_MD, VIOLET_KNOWLEDGE_MD, BUILD_STATUS_SHEET_MD].map((part) => part.trim()).join('\n\n') + '\n';
@@ -83,6 +84,43 @@ export function violetBlock(
     });
   } catch {
     /* An input her engine cannot take is a request this site never sends. */
+    return null;
+  }
+}
+
+/** One number, in the shape her answer takes it. */
+function answerWith(field: string, value: number): VioletAnswer {
+  if (field.startsWith('population.')) return { population: { [field.slice('population.'.length)]: value } };
+  if (field === LITRES) return { litresPerPersonPerDay: { value, source: 'the visitor' } };
+  return { [field]: value };
+}
+
+const LITRES = 'litresPerPersonPerDay.value';
+const ASKED: readonly string[] = [...NUMBERS, 'population.served', 'population.householdSize'];
+
+/** What the guards read of her screen. Every range and every message is her package's. */
+export function violetGuard(turn: unknown, leftForNow: readonly string[], lines: Pick<TurnGuard, 'does' | 'kind' | 'filedInChat'>): TurnGuard | null {
+  const t = object(turn);
+  const input = readD3Input(t.input);
+  if (!input) return null;
+  try {
+    const next = violetAsks(input, t.chosen === true, readKind(t.facts)).find((ask) => !leftForNow.includes(ask.key));
+    return {
+      ...lines,
+      asked: next && ASKED.includes(next.key) ? next.key : null,
+      held: (field) => {
+        const value = field.split('.').reduce<unknown>((at, key) => object(at)[key], input);
+        return typeof value === 'number' || value === null ? value : undefined;
+      },
+      refuses: (field, value) => fillViolet(input, answerWith(field, value)).refused[0]?.message ?? null,
+      named: {
+        days: 'daysOfAccessPerYear',
+        'hours a year': 'operatingHoursPerYear',
+        'litres a person': LITRES,
+        'people a household': 'population.householdSize',
+      },
+    };
+  } catch {
     return null;
   }
 }

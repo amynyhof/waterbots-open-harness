@@ -20,12 +20,33 @@ export interface CalculatorAnswer {
   facts: GivenFacts;
   /** The package's own shape; its screen's `fill` checks every value. */
   values: Record<string, unknown>;
+  /** Messages for numbers the visitor gave that are out of range, read from their own words. The agent has been told. */
+  refused: string[];
+  /** What the agent sent that the visitor did not give here, taken out by the relay (api/_chatGuards.ts). */
+  notFilled: number[];
+  notCleared: boolean;
+  notFiled: boolean;
+  /** What they have said since does not fit the kind one of these chats filed, so it comes off the record. */
+  unfile: boolean;
 }
 
 /** Thrown with a message that is already fit to show a reader. */
 export class CalculatorError extends Error {}
 
 const object = (value: unknown): Record<string, unknown> => (typeof value === 'object' && value !== null && !Array.isArray(value) ? (value as Record<string, unknown>) : {});
+
+/**
+ * The line under a reply when something the agent sent was taken out, so nothing that was not filled in reads as if it was
+ * (25 Nov 2026). Empty when nothing was.
+ */
+export function notTaken(answer: Pick<CalculatorAnswer, 'notFilled' | 'notCleared' | 'notFiled'>): string {
+  const numbers = [...new Set(answer.notFilled)].map((n) => n.toLocaleString('en', { maximumFractionDigits: 6 }));
+  return [
+    ...(numbers.length ? [`Not filled in: ${numbers.join(', ')}. You did not give ${numbers.length === 1 ? 'that number' : 'those numbers'} in this chat.`] : []),
+    ...(answer.notCleared ? ['Nothing was cleared.'] : []),
+    ...(answer.notFiled ? ['The kind of project was not changed.'] : []),
+  ].join(' ');
+}
 
 export async function askCalculator(
   name: 'Calvin' | 'Violet',
@@ -67,5 +88,10 @@ export async function askCalculator(
     leftForNow: Array.isArray(data.leftForNow) ? data.leftForNow.filter((k): k is string => typeof k === 'string') : [],
     facts: object(data.facts) as GivenFacts,
     values: object(data.values),
+    refused: Array.isArray(data.refused) ? data.refused.filter((m): m is string => typeof m === 'string') : [],
+    notFilled: Array.isArray(data.notFilled) ? data.notFilled.filter((n): n is number => typeof n === 'number') : [],
+    notCleared: data.notCleared === true,
+    notFiled: data.notFiled === true,
+    unfile: data.unfile === true,
   };
 }

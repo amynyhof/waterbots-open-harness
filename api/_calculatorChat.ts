@@ -16,6 +16,9 @@
  * THIRTY MESSAGES A DAY, per visitor, under each agent's own key (_cap.ts). A message is counted only when an answer is
  * actually delivered.
  *
+ * NOTHING IS FILLED IN THAT THE VISITOR DID NOT GIVE (25 Nov 2026; api/_chatGuards.ts). A number or a kind of project that
+ * is not in their own words here goes back to the agent once, in the same turn, and is taken out if it comes again.
+ *
  * WHAT COMES FROM THE BROWSER IS CHECKED. The screen's state lives there, so it crosses; every number and code in it is
  * read against its kind, and every string is one short line, so nothing in it can stand as a heading or an instruction.
  */
@@ -24,9 +27,11 @@ import Anthropic from '@anthropic-ai/sdk';
 import type { AgentTool } from '@waterbots/core/agent';
 import type { ChatSettings } from '@waterbots/core/chat';
 import { fromWire, toWire } from './_answerShape.js';
+import { checkAnswer, kindSaid, nowDenied, refusedIn, sentBackNote, siteNote, type Checked, type TurnGuard } from './_chatGuards.js';
 import { countOneMessage, timeUntilReset, type CapAgent } from './_cap.js';
 import { readDoor } from './_door.js';
 import { FINISH_NOTE, leavesWaiting } from './_lookUp.js';
+import { PROJECT_TYPES } from './_projectTypes.generated.js';
 import { MIN_REPLY_CHARS, READING_GRADE, isDegenerateReply, isHardReply, isLongReply, readingGrade, replyLength } from './_reply.js';
 
 /** How long the relay waits for the model before giving up. Phoebe's 120 seconds, same reasoning. */
@@ -40,6 +45,17 @@ const MAX_MESSAGE_CHARS = 4000;
 /** Rounds of tool calls before the model has to answer. */
 const MAX_TOOL_ROUNDS = 3;
 
+/** What both packages' readers give back. */
+interface AgentReply {
+  reply: string;
+  handBack: string;
+  facts?: unknown;
+  values?: unknown;
+}
+
+/** The four kinds of drinking-water project, with the site's own plain line for each (api/_projectTypes.generated.ts). */
+const KINDS = PROJECT_TYPES.filter((type) => type.axis === 'carbon');
+
 /** What one turn carries beside its messages, as the browser sends it, checked. */
 export interface TurnParts {
   opened: boolean;
@@ -49,7 +65,7 @@ export interface TurnParts {
   refused: string[];
 }
 
-export interface CalculatorAgent<Reply extends { reply: string; handBack: string }> {
+export interface CalculatorAgent<Reply extends AgentReply> {
   name: 'Calvin' | 'Violet';
   /** What the calculator is called when the agent cannot answer. */
   cap: CapAgent;
@@ -60,6 +76,8 @@ export interface CalculatorAgent<Reply extends { reply: string; handBack: string
   tools: readonly AgentTool[];
   /** The package's block for this turn, or null when what came cannot be read. */
   block: (turn: unknown, parts: TurnParts) => string | null;
+  /** What the guards read of the agent's screen, or null when what came cannot be read. */
+  guard: (turn: unknown, leftForNow: readonly string[]) => TurnGuard | null;
   read: (raw: unknown) => Reply | null;
 }
 
@@ -84,7 +102,12 @@ export function toolName(id: string): string {
   return id.slice(id.lastIndexOf('.') + 1);
 }
 
-export async function answerCalculatorChat<Reply extends { reply: string; handBack: string }>(req: Request, agent: CalculatorAgent<Reply>): Promise<Response> {
+/** The two lines about the project a turn carries for the guards: what it does, and the kind on the record. */
+export function readKindLines(turn: unknown): Pick<TurnGuard, 'does' | 'kind' | 'filedInChat'> {
+  return { does: line(pick(turn, 'does'), 280), kind: line(pick(turn, 'kind'), 120), filedInChat: pick(turn, 'filedInChat') === true };
+}
+
+export async function answerCalculatorChat<Reply extends AgentReply>(req: Request, agent: CalculatorAgent<Reply>): Promise<Response> {
   const { name } = agent;
   const log = name.toLowerCase();
   let body: Record<string, unknown>;
@@ -120,11 +143,21 @@ export async function answerCalculatorChat<Reply extends { reply: string; handBa
   if (clean.length === 0 ? opened : clean[0].role === 'assistant') clean.unshift({ role: 'user', content: agent.openedTurn });
   if (clean.length === 0 || clean[clean.length - 1].role !== 'user') return problem(400, 'No message was sent.');
 
+  const leftForNow = lines(body.leftForNow, 20, 60);
+  const guard = agent.guard(body.turn, leftForNow);
+  if (guard === null) return problem(400, 'That request could not be read.');
+  /* The visitor's own words in this chat, and nobody else's. */
+  const said = clean.flatMap((m) => (m.role === 'user' && typeof m.content === 'string' && m.content !== agent.openedTurn ? [m.content] : []));
+  /* A number they gave that is out of range: read here, so its message shows whether or not the agent sends it. */
+  const refusedNow = opened || said.length === 0 ? [] : refusedIn(said[said.length - 1], guard);
+  /* What they have said since does not fit the kind filed in a chat, so it comes off the record. */
+  const unfile = guard.filedInChat && guard.kind !== '' && nowDenied(kindSaid([guard.does, ...said]), guard.kind);
+
   const block = agent.block(body.turn, {
     opened: opened && clean.length === 1,
     introduce: opened && body.introduced !== true,
-    leftForNow: lines(body.leftForNow, 20, 60),
-    refused: lines(body.refused),
+    leftForNow,
+    refused: [...new Set([...lines(body.refused), ...refusedNow])],
   });
   if (block === null) return problem(400, 'That request could not be read.');
 
@@ -165,6 +198,8 @@ export async function answerCalculatorChat<Reply extends { reply: string; handBa
   const calledAt = Date.now();
   let rounds = 0;
   let pass = 1;
+  /* What an agent is told when the same question goes again. */
+  let again = '';
 
   const callModel = (): Promise<Anthropic.Message> =>
     client.messages.create(
@@ -174,8 +209,9 @@ export async function answerCalculatorChat<Reply extends { reply: string; handBa
         system: [
           { type: 'text', text: agent.system, cache_control: { type: 'ephemeral' } },
           { type: 'text', text: block },
-          /* The same question again: this one has to end in an answer (api/_lookUp.ts). */
-          ...(pass > 1 ? [{ type: 'text' as const, text: FINISH_NOTE }] : []),
+          { type: 'text', text: siteNote(KINDS, unfile) },
+          /* The same question again: this one has to end in an answer (api/_lookUp.ts), with what did not pass left out. */
+          ...(again ? [{ type: 'text' as const, text: again }] : []),
         ],
         messages: thread,
         tools,
@@ -187,7 +223,7 @@ export async function answerCalculatorChat<Reply extends { reply: string; handBa
     );
 
   let response: Anthropic.Message;
-  let answer: Reply;
+  let answer: Checked<Reply>;
   for (;;) {
     try {
       try {
@@ -234,25 +270,38 @@ export async function answerCalculatorChat<Reply extends { reply: string; handBa
       console.error(`${log}: returned an answer too short to be one — ${read.reply.trim().length} characters against a floor of ${MIN_REPLY_CHARS}`);
       return undelivered(problem(502, `${name} returned an answer with almost nothing in it. This is a fault on our side rather than something you did, and asking again usually works.`));
     }
-    answer = read;
+    /* A kind that has just come off the record is not filed again in the same breath. */
+    answer = checkAnswer(read, said, unfile ? { ...guard, kind: '' } : guard);
+    const sentBack = answer.numbers.length > 0 || answer.kind !== null;
+    if (sentBack) console.log(`${log}: ${answer.numbers.length} number(s) and ${answer.kind === null ? 'no' : 'a'} kind the visitor did not give, call ${pass}`);
     /* ONE ANSWER, IN THE SAME TURN (24 Nov 2026, item 4). Wellington joins on a hand-back, so nobody waits there. */
-    if (answer.handBack === 'wellington' || !leavesWaiting(answer.reply)) break;
-    console.log(`${log}: the reply promised a look-up and did not answer, call ${pass}`);
+    const waiting = read.handBack !== 'wellington' && leavesWaiting(read.reply);
+    if (!waiting && !sentBack) break;
+    if (waiting) console.log(`${log}: the reply promised a look-up and did not answer, call ${pass}`);
     if (pass > 1) {
+      if (!waiting) break;
       return undelivered(problem(502, `${name} went to look something up and did not come back with an answer. This is a fault on our side rather than something you did, and asking again usually works.`));
     }
+    again = [...(waiting ? [FINISH_NOTE] : []), ...(sentBack ? [sentBackNote(answer)] : [])].join('\n\n');
     pass += 1;
   }
 
   /* Length and reading level are logged, never blocked (agent rules 1 and 2), as for the others. */
-  if (isLongReply(answer.reply, agent.settings.reply)) {
-    const { sentences, chars } = replyLength(answer.reply);
+  const { reply } = answer.answer;
+  if (isLongReply(reply, agent.settings.reply)) {
+    const { sentences, chars } = replyLength(reply);
     console.log(`${log}: reply ran long — ${sentences} sentences, ${chars} characters`);
   }
-  if (isHardReply(answer.reply)) console.log(`${log}: reply read above grade ${READING_GRADE.average} — grade ${readingGrade(answer.reply)}`);
+  if (isHardReply(reply)) console.log(`${log}: reply read above grade ${READING_GRADE.average} — grade ${readingGrade(reply)}`);
 
   return json(200, {
-    ...answer,
+    ...answer.answer,
+    refused: refusedNow,
+    /* What was taken out, for the line under the reply. */
+    notFilled: answer.numbers.flatMap((n) => (n.value === null ? [] : [n.value])),
+    notCleared: answer.numbers.some((n) => n.value === null),
+    notFiled: answer.kind !== null,
+    unfile,
     usage: {
       cacheRead: response.usage.cache_read_input_tokens ?? 0,
       cacheWrite: response.usage.cache_creation_input_tokens ?? 0,

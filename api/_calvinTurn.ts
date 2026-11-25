@@ -4,8 +4,9 @@
  * In its own module with no SDK, so the check script can load it compiled as the platform compiles it.
  */
 
-import { calvinChatContext, type CalvinTurn } from '@waterbots/calvin/agent';
+import { CALVIN_ANSWER_VALUES, calvinAsks, calvinChatContext, fillCalvin, type CalvinTurn } from '@waterbots/calvin/agent';
 import { AGENT_RULES_MD } from './_agentRules.generated.js';
+import type { TurnGuard } from './_chatGuards.js';
 import { CALVIN_KNOWLEDGE_MD, CALVIN_PROMPT_MD } from './_calvinPrompt.generated.js';
 import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
 
@@ -72,6 +73,44 @@ export function calvinBlock(
     });
   } catch {
     /* A state his package cannot read is a request this site never sends. */
+    return null;
+  }
+}
+
+/** The screen's own name for a fact he asks for by the record's name. */
+const FIELD_OF: Record<string, string> = { 'population.served': 'populationCount', 'population.householdSize': 'householdSizeOverride' };
+const ON_SCREEN: readonly string[] = CALVIN_ANSWER_VALUES;
+
+/** What the guards read of his screen. Every range and every message is his package's. */
+export function calvinGuard(turn: unknown, leftForNow: readonly string[], lines: Pick<TurnGuard, 'does' | 'kind' | 'filedInChat'>): TurnGuard | null {
+  if (typeof turn !== 'object' || turn === null) return null;
+  const t = turn as Record<string, unknown>;
+  const state = readCalcState(t.state);
+  if (!state) return null;
+  const calc = state as unknown as CalvinTurn['state'];
+  const on = (field: string): string => FIELD_OF[field] ?? field;
+  try {
+    const transition = t.transition === true;
+    const notCoveredYet = oneLine(t.notCoveredYet, 120);
+    const next = calvinAsks(calc, { transition, ...(notCoveredYet ? { notCoveredYet } : {}) }).find((ask) => !leftForNow.includes(ask.key));
+    const asked = next && ON_SCREEN.includes(on(next.key)) ? on(next.key) : null;
+    return {
+      ...lines,
+      asked,
+      held: (field) => {
+        const value = state[on(field)];
+        return typeof value === 'number' || value === null ? value : undefined;
+      },
+      refuses: (field, value) => (ON_SCREEN.includes(field) ? (fillCalvin(calc, { values: { [field]: value } }).refused[0]?.message ?? null) : null),
+      named: {
+        days: 'operationalDays',
+        'hours a day': 'usageHoursPerDay',
+        'litres a person': 'litresPerPersonPerDay',
+        'people a household': 'householdSizeOverride',
+        fnrb: transition ? 'fnrbFiledV1' : 'fnrbOverride',
+      },
+    };
+  } catch {
     return null;
   }
 }

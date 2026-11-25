@@ -5,7 +5,8 @@
  *
  * HOW A CHAT GOES. The first time the desk shows, Wellington's line heads it and the agent speaks first. Each answer
  * writes its facts to the record and fills the calculator. A number that is refused is never used: its message shows under
- * the agent's reply, and the agent is told of it on the next turn.
+ * the agent's reply, whether or not the agent sent it, and the agent is told of it. A number or a kind of project that is
+ * not the visitor's own was taken out before it came here (api/_chatGuards.ts), and the line under the reply says so.
  *
  * WHEN THE PART IS DONE: the figure shows, nothing it needs is blank, and it came from the visitor's answers. Opening the
  * chat ends nothing while there is still something to ask. Then Wellington comes, as at every other desk.
@@ -17,7 +18,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { Ask } from '@waterbots/core/chat';
 import type { AgentHost, AgentTurn, Turn, TurnButton } from '../chat/evidence';
 import { useConversation, type Conversation } from '../chat/useConversation';
-import { askCalculator, type CalculatorAnswer } from '../lib/calculatorClient';
+import { askCalculator, notTaken, type CalculatorAnswer } from '../lib/calculatorClient';
 import { chipsFor, withWayOn } from '../lib/chips';
 import type { Surface } from '../lib/surfaces';
 import { WELLINGTON } from '../lib/wellington';
@@ -109,14 +110,18 @@ export function useCalculatorChat(o: CalculatorChatOptions): { chat: Conversatio
     );
     left.current = [...new Set([...left.current, ...answer.leftForNow])];
     const applied = await now.current.seat.apply(answer);
-    refused.current = applied.refused;
+    /* A message the agent has read already is not told twice. */
+    const messages = [...new Set([...answer.refused, ...applied.refused])];
+    refused.current = applied.refused.filter((message) => !answer.refused.includes(message));
+    const under = [...messages, notTaken(answer)].filter((text) => text !== '').join(' ');
 
     const asks = open();
     const ready = now.current.seat.figure() && !asks.some((a) => a.needed);
-    const done = ready && applied.refused.length === 0 && (asks.length === 0 || (answered.current && answer.handBack === 'wellington'));
+    const done = ready && under === '' && (asks.length === 0 || (answered.current && answer.handBack === 'wellington'));
     if (done) now.current.onDone();
-    /* He comes when the part is done, whether or not the field was set; and when the agent hands on something not theirs. */
-    const joins = done ? answer.handBack === 'wellington' || !joined.current : answer.handBack === 'wellington' && !opened;
+    /* He comes when the part is done, whether or not the field was set; and when the agent hands on something not theirs.
+       Not while a number was refused or not filled in: the visitor's answer to that comes first. */
+    const joins = done ? answer.handBack === 'wellington' || !joined.current : answer.handBack === 'wellington' && !opened && under === '';
     if (joins) {
       if (done) joined.current = true;
       window.setTimeout(() => void wellingtonJoins(), 0);
@@ -138,8 +143,8 @@ export function useCalculatorChat(o: CalculatorChatOptions): { chat: Conversatio
       role: 'agent',
       text: answer.reply,
       evidence: [],
-      /* A number that was refused: what it is and its range, in core's one message. */
-      ...(applied.refused.length ? { caption: applied.refused.join(' ') } : {}),
+      /* A number that was refused: what it is and its range, in core's one message. And what was not filled in. */
+      ...(under ? { caption: under } : {}),
       ...(buttons ? { buttons } : {}),
     };
   }

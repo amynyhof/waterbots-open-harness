@@ -57,8 +57,15 @@ they stand here.
   always one to the next step; at the end, "Export screening report" and "Save and sign up" (item 10).
 - **A crew card opens that agent's Chat tab first** (item 9), for every agent. **Calvin's and Violet's chats** run on what
   their packages ship (25 Nov 2026): the instructions, the settings and the list of what to ask. This site writes none of
-  its own. Each answer fills the record and the calculator; a refused number's message shows under the reply. Thirty
+  its own but a short note after the block for the turn. Each answer fills the record and the calculator; a refused number's
+  message shows under the reply. Thirty
   messages a day each, as for the other agents (`src/screen/useCalculatorChat.ts`, `api/_calculatorChat.ts`).
+- **Guards on both chats**, in code (25 Nov 2026, the maintainer's word; `api/_chatGuards.ts`). A number is filled in only where
+  the visitor gave it in that chat: never a default, an assumed value or one worked out from theirs. A kind of project is
+  filed only on their own words, and words for treatment never file a supply; core's own list says which kind gives a figure.
+  What does not pass goes back to the agent once, in the same turn; what still does not is left out, and a line says so. A
+  number out of range shows its message whether or not the agent sent it. The note tells each agent the four drinking-water
+  kinds.
 - **Step 3 is done** when each calculator the map calls has a figure that came from the visitor's answers (25 Nov 2026).
   Opening a calculator ends nothing.
 - **Home use is asked when the map asks** (25 Nov 2026), by Wellington, before he introduces the next agent. In another
