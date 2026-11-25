@@ -7,6 +7,7 @@ WaterBots is in beta. We are currently focused on carbon crediting and water ben
 
 ## New lately
 Newest first. Only the last three months are kept. When someone asks for a build update, an agent answers from this part and gives the date in words.
+- 25 November 2026: on the free site, Calvin and Violet now chat with you. They ask for the facts they need and fill in their calculators as you answer.
 - 22 November 2026: We are working on how our agents talk with you. They are becoming experts in their own areas, and on the free site and the paid site they now speak in a warmer voice, with simpler, more natural answers. Ask them your questions. They are glad to help.
 - 21 November 2026: on the free site, the Quantify step now gives a water figure from Violet's calculator, beside the carbon estimate from Calvin's calculator.
 
@@ -15,12 +16,13 @@ Live:
 - Wellington's chat. He learns about the project and points to the next step.
 - Phoebe's chat and her eligibility worksheet, for water benefits and for carbon credits.
 - Bridget's chat and the basin map, which shows water stress at the project's place.
+- Calvin's chat.
+- Violet's chat.
 - The Quantify step: a carbon estimate from Calvin's calculator, and a water figure from Violet's calculator. Violet's results are a draft until an outside expert has checked her method.
 - The screening report.
 - Saving a project to the paid site.
 
 Coming:
-- Calvin's chat.
 - Bridget finding other projects and funders on the map.
 - (ref) markers beside facts in the chat.
 - Calling Wellington by typing @wellington.

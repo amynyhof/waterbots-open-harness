@@ -13,7 +13,11 @@ GitHub's history keeps everything else. Newest last.
 - 21 Nov 2026: the release calvin-violet-v0.5.0 (#191): calvin 0.5.0 `0412d39b…`, violet 0.5.0 `b51f214c…`, core 0.1.1 `4e9be070…` (SHA-256), each checked against the release's `SHA256SUMS.txt`.
 - 22 Nov 2026: `RULINGS.md` `2aa63e76e1aea972d31427a2472b4dc4a1e7f083e1b31844f08a1d47761856d6` and `FAMILY_OPEN_CLOSE.md` `329dc4fc814e4a57d7e4c0306c73623c09b07c6d9669e173f0f29dbee638dbda` (#192).
 - 22 Nov 2026 (#193): `AGENT_RULES.md` three times, last `f45f2e243d359063bf5a820ca521e95769bdc0e4ae0661664d927ed11bf2a5fb`; `RULINGS.md` `d15271d623f0e48643386544465361c6a2553ce1c34fb77a1e6fade5c7dc1177`; `FAMILY_OPEN_CLOSE.md` `8672098fbc7767698580157d6b5eb9518fb29dc56cbd56a7c59c303709641734`; `BUILD_STATUS_SHEET.md`, new, `2cf7bdc4b3f046d9b99d472cf740fec085d19e30dbb6900547b8bd8b94a2ec6c`.
+- 23 Nov 2026 (#199): the release calvin-violet-v0.5.1: calvin 0.5.1 `8cbd1506244591614f9ac0908970df3ba9683d8ba67e747b17b0b3f52bd5eef1`, violet 0.5.1 `faa230e07a581cc5cda41a3a1ce9add778305f1d99d416efab2aa1ffffb5b8d6`, core 0.1.2 `51534f84aabd7f51bb36d9eefb2e76e78770ed9d096fef825a40a4cf9256efe7` (SHA-256).
 - 23 Nov 2026: the releases core-v0.2.0 `bae2b949fbb42c0b86e324fb8a62ddf8a26fb5c01b05eac97bc841c5db539160`, calvin-v0.6.0 `5ef48f7dae703f396ad25980872ec27ac6a4f72a627205de546badb182b6625e` and violet-v0.6.0 `7f94d0a1425b39e5dc2ac66de96ca2a3992fcc1328dd6278662db57b64cf578c` (SHA-256), and the crew list `roster.yaml` 0.4.1 `8b7730539ff91a2b413dbbfbd228d7c080ea0d06b91488d50918568ee401dca3`, each checked (family 1, second pull request).
+- 25 Nov 2026 (#200): the releases core-v0.3.0 `ceff1c9d250ca098f003838c09511fa38818d52c6e196ecd33e620309c3d6f31`, calvin-v0.7.0 `b9e5bb8e038b6d7c9a6ed1771b20e9c146fb282da48181598660e5b911f1ed89` and violet-v0.7.0 `6b334cd10c26441adbb59275182b8c671394646c34c356b15b974e89eb004599` (SHA-256), in place of the three of 23 Nov.
+- 25 Nov 2026: the carry out to the open core, Wellington, Phoebe and Bridget, from main after #200 (`0f16957`): 99 files in the handoff folder, packing list `8d58bacdf4cd70ed1e9bf9143d8c15c42d3f887809622737fdeb3217b4ef3999` (SHA-256).
+- 25 Nov 2026: `BUILD_STATUS_SHEET.md` `3b60c90c58aa833d70a1f53e8f37bbaf7b0dbd3b9112f19362dbbd5f5f6e3eb8` (SHA-256).
 
 ## Finished items, one line each
 
@@ -209,3 +213,7 @@ GitHub's history keeps everything else. Newest last.
 - 22 Nov 2026: #194 Docs amended: keep it light — checks run once, the build log one line per item, captures and dead pointers gone
 - 22 Nov 2026: #195 Docs amended: family 8 closed — findings filed, the engineer's delete list, stale plan wording fixed
 - 22 Nov 2026: SP3 finished: lane 1 auto-merge is on (`LANE1_AUTOMERGE` set 22 Nov 2026, 03:06 UTC); #195 merged by it.
+- 22 Nov 2026: #197 The build status sheet's new line of 22 November, carried byte for byte
+- 22 Nov 2026: #198 Built: family 1, first pull request — the agent rules with the lobby chat line, rules 6, 11 and 17, the sentence checks off, the v1 scope in the plan
+- 23 Nov 2026: #199 Built: J1, Calvin 0.5.1, Violet 0.5.1 and core 0.1.2 installed and pinned; the agent rules come from core
+- 25 Nov 2026: #200 Built: family 1, second pull request — core 0.3.0, Calvin 0.7.0 and Violet 0.7.0, both chats with their guards, Violet's own seat, the shared record and the agent map
