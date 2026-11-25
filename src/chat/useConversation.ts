@@ -43,9 +43,10 @@ export interface Conversation {
   /**
    * Send a given text — a frame that already holds the visitor's words hands
    * them over this way, so nothing is retyped. Same rules as `send`. The
-   * receiver of a carried question (item S13) says so in `meta`.
+   * receiver of a carried question (item S13) says so in `meta`. Returns the
+   * answer it added, or null, as `askOpened` does.
    */
-  sendText: (text: string, meta?: AskMeta) => Promise<void>;
+  sendText: (text: string, meta?: AskMeta) => Promise<AgentTurn | null>;
   /** Put turns on the thread without asking — Wellington's copied invite. */
   seed: (turns: Turn[]) => void;
   /** Add turns after what is there — Wellington joining another agent's chat. */
@@ -73,7 +74,7 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
   const sendText = useCallback(
     async (text: string, meta?: AskMeta) => {
       const question = text.trim();
-      if (!question || pending) return;
+      if (!question || pending) return null;
 
       const history: Turn[] = [...turns, { role: 'user', text: question }];
       setTurns(history);
@@ -87,8 +88,9 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
       try {
         const answer: AgentTurn = await ask(forAsk(history), controller.signal, meta, setLive);
         setTurns([...history, answer]);
+        return answer;
       } catch (failure) {
-        if (failure instanceof DOMException && failure.name === 'AbortError') return;
+        if (failure instanceof DOMException && failure.name === 'AbortError') return null;
         /* An adapter throws only messages already fit for a reader. Anything
            else gets a plain one rather than a stack trace or a silence. */
         setError(
@@ -96,6 +98,7 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
             ? failure.message
             : `Something went wrong reaching ${hostName}. Nothing has been recorded.`
         );
+        return null;
       } finally {
         setLive(null);
         setPending(false);
@@ -105,7 +108,7 @@ export function useConversation(ask: Ask, hostName: string): Conversation {
     [ask, pending, turns, hostName]
   );
 
-  const send = useCallback(() => sendText(draft), [sendText, draft]);
+  const send = useCallback(async () => void (await sendText(draft)), [sendText, draft]);
 
   const seed = useCallback((next: Turn[]) => {
     turnsRef.current = next;

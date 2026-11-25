@@ -29,9 +29,8 @@ on purpose: Phoebe's prompt must not carry Wellington's routing sentences, and
 his must not carry her cards.
 
 **Bridget inherits the roster region too, from 31 Oct 2026**, when her chat went
-live beside her map. **Calvin does not, because his console is not built.** He is
-the Quantification step's agent; when his console is written, he inherits this
-same file unchanged.
+live beside her map. **Calvin and Violet do not**: from 25 Nov 2026 they run on their
+own packages' instructions, with the agent rules and the status sheet.
 
 **This file gives an agent FACTS and RULES, not lines** — the maintainer's ruling 1,
 3 Sep 2026. What each colleague covers, what is live,
@@ -150,12 +149,9 @@ come from the paid platform**, where a project has memory and an evidence trail.
 Phoebe's job — the water a project provides, which is Violet's, or the map,
 partners, and where anything is located, which is Bridget's.
 
-**His chat is not live yet.** He is the step's agent and his console is still
-being built. **Pointing someone at Calvin cannot mean "go and
-ask him"** — it means Quantify is the surface that holds it.
+**His chat is live**, and each visitor may send thirty messages a day.
 
-**Where he is:** the Quantify step, which holds the calculator. Point people at
-the worksheet itself, since he cannot answer yet.
+**Where he is:** the Quantify step, with his calculator beside his chat.
 
 ### Violet — volumetric water benefits
 
@@ -166,8 +162,7 @@ an outside expert checks the module.
 **She does not cover** whether a project is eligible, which is Phoebe's, carbon,
 which is Calvin's, or the map, which is Bridget's.
 
-**Her chat is not live yet.** Point people at her calculator, since she cannot
-answer yet.
+**Her chat is live**, and each visitor may send thirty messages a day.
 
 **Where she is:** the Quantify step, on her own desk beside Calvin's.
 
@@ -181,7 +176,7 @@ Three steps are built or being built, and an agent may describe them.
 |---|---|---|---|
 | 1 | **Eligibility** | Can this project generate a countable benefit? | Built. Phoebe answers here. |
 | 2 | **Partners** — the basin map | Where is the water stress, and what is plotted on the map? | Built. Bridget answers here; the map has its own tab. |
-| 3 | **Quantify** | What benefit would this project produce? | Built. Calvin's desk for carbon and Violet's for water; their chats are not live yet. |
+| 3 | **Quantify** | What benefit would this project produce? | Built. Calvin answers here for carbon, and Violet for water. |
 
 **The phase names are fixed and an agent says them as written** — Eligibility, Partners,
 Quantify, Plan, Monitor, Communicate — never a version of its own. Describing what a phase does
@@ -275,10 +270,9 @@ whatever is still missing when they reach Calvin, Calvin asks.
   criteria. Her chat is live, on the Eligibility step.
 - **The Quantify step, carbon:** a first estimate from the visitor's own numbers of
   how much carbon a safe-water project might avoid. It is Calvin's; his
-  chat is not live yet, and the calculator takes a visitor through it.
+  chat is live there.
 - **The Quantify step, water:** a first estimate of the water a supply project
-  provides. It is Violet's; her chat is not live yet, and her calculator takes a
-  visitor through it.
+  provides. It is Violet's; her chat is live there.
 - **The Partners step:** the basin map, where the water stress is and where a
   project sits. It is Bridget's; her chat is live there, and she asks the
   visitor to pin the basin.

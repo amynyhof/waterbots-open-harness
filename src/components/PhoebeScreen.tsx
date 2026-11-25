@@ -66,6 +66,7 @@ import {
   type RouteCard,
 } from '../lib/phoebeCards';
 import { chipsFor, withWayOn } from '../lib/chips';
+import { answersHim, hisTurn } from '../screen/useCalculatorChat';
 import { askPhoebe, carriedRecord, carriedSheet } from '../lib/phoebeClient';
 import type { Surface } from '../lib/surfaces';
 import { nothingLeftToAsk, onePathDone, type VisitContext } from '../lib/visit';
@@ -138,6 +139,8 @@ export default function PhoebeScreen({
   onward,
   onHandedOn,
   showChat = 0,
+  heAsks,
+  onReplyToHim,
 }: {
   onVerdicts: (verdicts: Verdicts) => void;
   /** The visit's project record, carried to Phoebe with every ask. */
@@ -159,7 +162,10 @@ export default function PhoebeScreen({
   /** True while he is writing that line: she waits for it, so it heads her page whatever way the visitor came (24 Nov 2026). */
   waiting?: boolean;
   /** Brings Wellington into her chat with the next step, once her part is done. */
-  onWellington?: (at: 'eligibility' | 'map', composerId: string) => Promise<AgentTurn | null>;
+  onWellington?: (at: Surface, composerId: string) => Promise<AgentTurn | null>;
+  /** Wellington has asked something here, so the visitor's next words are for him (25 Nov 2026). */
+  heAsks?: () => boolean;
+  onReplyToHim?: (text: string, at: Surface, composerId: string) => Promise<AgentTurn | null>;
   /** Tells the shell whether "Meet <name>" is under her chat's latest turn (one blue button, 16 Nov 2026). */
   onMeet?: (showing: boolean) => void;
   /** The buttons to what comes next, under her replies once her step is done (24 Nov 2026, src/lib/steps.ts). */
@@ -178,7 +184,7 @@ export default function PhoebeScreen({
   async function wellingtonJoins() {
     if (!onWellington) return;
     const turn = await onWellington('eligibility', 'wb-phoebe-composer');
-    if (turn) chatRef.current.append([{ ...turn, speaker: WELLINGTON }]);
+    if (turn) chatRef.current.append([hisTurn(turn, heAsks, (text) => void chatRef.current.sendText(text))]);
     else joined.current = false;
   }
   const joined = useRef(false);
@@ -207,6 +213,11 @@ export default function PhoebeScreen({
     meta?: { opened?: boolean; introduced?: boolean },
     onLive?: (text: string | null) => void
   ): Promise<AgentTurn> {
+    const last = history[history.length - 1];
+    if (!meta?.opened && last?.role === 'user' && answersHim(chatRef.current.turns, heAsks)) {
+      const his = await onReplyToHim?.(last.text, 'eligibility', 'wb-phoebe-composer');
+      if (his) return hisTurn(his, heAsks, (text) => void chatRef.current.sendText(text));
+    }
     const answer = await askPhoebe(
       history.map(({ role, text }) => ({
         role: role === 'agent' ? ('assistant' as const) : ('user' as const),

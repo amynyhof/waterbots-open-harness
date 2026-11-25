@@ -2,6 +2,9 @@
 
 In force from 22 Nov 2026. The master is in the handoff folder; each site carries an exact copy. Every agent reads this. Anything under "Coming" is called "coming" and is never shown as if it works. Only the maintainer changes this page. It is updated at each family close.
 
+## What WaterBots covers today
+WaterBots is in beta. We are currently focused on carbon crediting and water benefits for safe water supply, with more impact funding pathways for more project types planned in the near future. To request a project type or impact funding pathway be added, contact WaterBots at hello@waterbots.ai. Wellington explains this early, in his own words.
+
 ## New lately
 Newest first. Only the last three months are kept. When someone asks for a build update, an agent answers from this part and gives the date in words.
 - 22 November 2026: We are working on how our agents talk with you. They are becoming experts in their own areas, and on the free site and the paid site they now speak in a warmer voice, with simpler, more natural answers. Ask them your questions. They are glad to help.

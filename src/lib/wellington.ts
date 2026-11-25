@@ -87,8 +87,14 @@ export function actionsFor(
   if (!meet || !onNavigate) return undefined;
   const desks = (next?.kind === 'call' && next.surfaces.includes(meet.surface) ? next.surfaces : [meet.surface]).filter((desk) => desk !== here);
   if (desks.length === 0) return undefined;
-  const handoffs = desks.map((surface) => handoffButton(surface, () => onNavigate(surface))).filter((b): b is TurnButton => b !== undefined);
+  const steps = next?.kind === 'call' || next?.kind === 'gather' ? next.steps : undefined;
+  const handoffs = desks.map((surface) => handoffButton(surface, () => onNavigate(surface), steps)).filter((b): b is TurnButton => b !== undefined);
   return [...handoffs, keepChatting(composerId)];
+}
+
+/** The desk he has joined, when he speaks in another agent's chat. */
+function deskOf(meta?: AskMeta): Surface | undefined {
+  return meta?.at === 'eligibility' || meta?.at === 'map' || meta?.at === 'quantification' || meta?.at === 'water' ? meta.at : undefined;
 }
 
 function keepChatting(composerId: string): TurnButton {
@@ -130,13 +136,15 @@ export function wellingtonAsk(
   say?: (text: string) => void,
   /** What comes next on the map, and what the console does at the end of the steps (24 Nov 2026, src/lib/steps.ts). */
   getNext?: () => NextStep,
-  ending?: Ending
+  ending?: Ending,
+  /** The maintainer's sentence, where water benefits stay in play and no calculator covers this kind of project yet. */
+  getNotice?: () => string
 ): Ask {
   /* THERE IS ALWAYS A WAY ON (24 Nov 2026). A hand-off, or the report and Save at the end, from the map whatever his
      field says; before it, the chips that answer what he just asked. */
   function buttonsAfter(route: WellingtonRoute, answers: readonly string[], meta?: AskMeta): TurnButton[] | undefined {
     const next = getNext?.();
-    const here: Surface | undefined = meta?.at === 'eligibility' || meta?.at === 'map' ? meta.at : undefined;
+    const here = deskOf(meta);
     const routed = actionsFor(route, onNavigate, meta?.composerId, next, here);
     /* His own hand-off first; and the map's way on beside it where he routed somewhere else. */
     if (routed) {
@@ -148,6 +156,16 @@ export function wellingtonAsk(
     const chips = say && ownDesk ? (chipsFor({ answers, send: say }) ?? []) : [];
     const all = [...chips, ...way, ...(here ? [keepChatting(meta?.composerId ?? 'wb-desk-composer')] : [])];
     return all.length ? all : undefined;
+  }
+
+  /* Where water benefits stay in play with no calculator, the sentence shows under his turn at the end of a step, once
+     the next step is Quantify or none (25 Nov 2026). From the map, never from his prose. */
+  function notice(meta?: AskMeta): string {
+    const next = getNext?.();
+    const atQuantify = next?.kind === 'done' || (next?.kind === 'call' && next.surfaces.every((s) => s === 'quantification' || s === 'water'));
+    /* Once, as Quantify comes up; not again at its end. */
+    const before = meta?.at === 'eligibility' || meta?.at === 'map';
+    return before && atQuantify ? (getNotice?.() ?? '') : '';
   }
 
   return async (history, signal, meta): Promise<AgentTurn> => {
@@ -184,13 +202,15 @@ export function wellingtonAsk(
     } else {
     onRouted(answer.route, answer.introduction ?? answer.reply, answer.introduction !== undefined);
     }
+    const caption = answer.refused ? REFUSED_LINE[answer.refused] : notice(meta);
     return {
       role: 'agent',
       text: answer.reply,
       evidence: [],
       abstained: answer.abstained,
       action: actionFor(answer.route),
-      ...(answer.refused ? { caption: REFUSED_LINE[answer.refused] } : {}),
+      answers: answer.answers,
+      ...(caption ? { caption } : {}),
       /* In another agent's chat, "Keep chatting" focuses that chat's box. */
       /* A handoff's two buttons are the answer to it. Otherwise, on his own desk, the chips that answer what he just
          asked; in another agent's chat the box is that agent's, so he draws none there. */

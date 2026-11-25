@@ -152,7 +152,7 @@ expect('a topic without an abstention is dropped', notAbst?.abstentionTopic === 
 {
   /* The journey told by step, 24 Nov 2026 (items 6 and 7): the relay's step names are the journey's own, the route at a
      step's end is the map's, and the screening is never called done while a step is ahead. */
-  const { STEP_NAMES, readMap: readStepMap, saysAllDone, stepEndRoute } = await loadApi('_agentMap.js');
+  const { STEP_NAMES, afterHomeUse, asksHomeUse, readMap: readStepMap, saysAllDone, stepEndNote, stepEndRoute } = await loadApi('_agentMap.js');
   const journey = [...readFileSync('src/lib/journey.ts', 'utf8').matchAll(/label: '([A-Za-z]+)', surface: '/g)].map((m) => m[1]);
   const at = (over) => readStepMap({ next: 'call', agent: 'calvin', agents: ['calvin', 'violet'], done: ['eligibility', 'partners'], ...over });
   expect(
@@ -160,9 +160,23 @@ expect('a topic without an abstention is dropped', notAbst?.abstentionTopic === 
     JSON.stringify(STEP_NAMES) === JSON.stringify(journey) &&
       stepEndRoute('map', at({})) === 'quantification' && stepEndRoute('map', at({ done: ['eligibility'] })) === null &&
       stepEndRoute('map', at({ next: 'report or sign-up', agent: undefined })) === 'none' &&
+      /* Step 3's two agents share it, so each part is read apart; a project with no calculator ahead has two steps. */
+      stepEndRoute('quantification', at({ agent: 'violet', agents: ['violet'] })) === 'water' && stepEndRoute('quantification', at({})) === null &&
+      /Step 2 of 2, Partners/.test(stepEndNote('map', at({ next: 'report or sign-up', agent: undefined, agents: [], steps: ['eligibility', 'partners'] }))) &&
       saysAllDone('Every step of the screening is done.') && saysAllDone('Your screening is complete.') &&
       !saysAllDone('Step 2, Partners, is done. Next is Step 3, Quantify.') && !saysAllDone('The screening is not done yet.'),
     JSON.stringify({ STEP_NAMES, journey })
+  );
+  /* Home use, asked when the map asks (core 0.3.0, 25 Nov 2026): one question, before anyone is introduced. */
+  const homeUse = at({ next: 'gather facts', facts: ['homeUse'], agent: 'bridget', agents: ['bridget'], done: ['eligibility'] });
+  expect(
+    'home use is asked before the next step is named, its answer is one of three and only beside a new supply, and then the next agent follows',
+    asksHomeUse(homeUse) && stepEndRoute('eligibility', homeUse) === 'none' && afterHomeUse(homeUse) === 'map' &&
+      /whether people use the water at home/.test(stepEndNote('eligibility', homeUse)) && /return it in context\.homeUse/.test(stepEndNote('eligibility', homeUse, true)) &&
+      validate({ reply: 'Thank you.', route: 'none', abstained: false, context: { homeUse: 'not sure' } }, { type: 'C-11' })?.context?.homeUse === 'not sure' &&
+      validate({ reply: 'Thank you.', route: 'none', abstained: false, context: { homeUse: 'yes' } }, { type: 'C-19' })?.context === undefined &&
+      validate({ reply: 'Thank you.', route: 'none', abstained: false, context: { homeUse: 'maybe' } }, { type: 'C-11' })?.context === undefined,
+    JSON.stringify(homeUse)
   );
 }
 expect(
@@ -330,7 +344,9 @@ expect('his reading level is rule 1 of the agent rules, 6th grade (22 Nov 2026),
     'the two buttons are not built from the route field'
   );
 }
-// His gate: 35,181 from 23 Nov 2026 (family 1, second pull request): Violet's seat and the agent map, measured 34,681, plus
+// His gate: 35,772 from 25 Nov 2026 (family 1, second pull request): the status sheet's new part, rule 6's fourth pair and
+// the line that he explains what WaterBots covers today, measured 35,272, plus 500. The maintainer allowed up to 1,000.
+// Before that 35,181 from 23 Nov 2026 (family 1, second pull request): Violet's seat and the agent map, measured 34,681, plus
 // 500. It was 33,310 from 22 Nov 2026 (family 1, after the maintainer's walk of #198): what each colleague helps
 // with, from the crew list, measured 32,810, plus 500. Before that the same day 32,537: rule 21's lobby-chat line
 // and rule 11's blank-facts line, measured 32,037, plus 500. From the maintainer's ruling of that day a session raises the gate itself by this
@@ -338,7 +354,7 @@ expect('his reading level is rule 1 of the agent rules, 6th grade (22 Nov 2026),
 // third time when the build status sheet came in for every agent and his build-update card went: 31,501.
 // Earlier the same day 29,896 (21 rules, measured 29,396) and 29,236 (19 rules); before that 26,199 from 24 Sep 2026.
 expect('the agent rules are 1 to 21, in order, and the notes for builders are not among them', (AGENT_RULES_MD.match(/^\d+\. /gm) ?? []).map((n) => parseInt(n, 10)).join(',') === Array.from({ length: 21 }, (_, i) => i + 1).join(',') && !/Notes for builders/.test(AGENT_RULES_MD), (AGENT_RULES_MD.match(/^\d+\. /gm) ?? []).join(' '));
-expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 35181 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
+expect('his prompt is small — no card sets', WELLINGTON_SYSTEM_PROMPT.length < 35772 && !/Criterion 1 —/.test(WELLINGTON_SYSTEM_PROMPT), `his ${WELLINGTON_SYSTEM_PROMPT.length} chars`);
 
 /* ---------------------------------------------------------------------------
    The record the desk carries to Phoebe — slice 3, 7 Sep 2026.
@@ -752,10 +768,11 @@ expect(
 );
 const quantified = applyWellingtonRoute(mapped, 'quantification', 'Open Quantify.');
 expect(
-  'Quantify invite names the calculator and says Calvin is not live',
+  'Quantify invite names the calculator and does not say Calvin is not live',
   quantified.stage === 'quantify' &&
     currentInvite(quantified)?.action.surface === 'quantification' &&
-    /not answering yet/.test(currentInvite(quantified).sentence),
+    /* His chat is live from 25 Nov 2026, so the line no longer says it is not. */
+    !/not answering/.test(currentInvite(quantified).sentence),
   JSON.stringify(currentInvite(quantified))
 );
 const navSource = readFileSync('src/components/NavRail.tsx', 'utf8');
@@ -1259,7 +1276,7 @@ console.log('\n  W28, W29 and V1 — the queued round, 16 Nov 2026');
   const app = readFileSync(join('src', 'App.tsx'), 'utf8');
   expect(
     'W29: the relay takes `open` only as an opened turn, with its own note and no route',
-    /body\.at === 'open'/.test(relay) && /returned && \(body\.at === 'eligibility'/.test(relay) &&
+    /body\.at === 'open'/.test(relay) && /const at = returned \? \(joinedAt \?\? \(body\.at === 'open'/.test(relay) &&
       /OPEN_NOTE: string =[\s\S]{0,400}'# Where you are speaking[^']*Speak first, in your own words[^']*Set no route\./.test(relay),
     'the open case is missing or not bound to an opened turn'
   );

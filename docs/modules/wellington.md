@@ -34,14 +34,19 @@ Wellington's own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md)
   the one next step and who is called. A route to a desk the map has closed is dropped. On an unlikely path
   he says what would change it; with no path forward he points to the WaterBots team.
 - A count below zero is refused, and the visitor is told why (J3).
-- **His prompt gate is 35,181 characters**, from 23 Nov 2026 (family 1): measured plus 500 (34,681), once
-  Violet's seat and the agent map came in. On 22 Nov 2026 33,310, once what each colleague helps with came
+- **His prompt gate is 35,772 characters**, from 25 Nov 2026 (family 1): measured plus 500 (35,272), once the status
+  sheet's part on what WaterBots covers today, rule 6's fourth pair and the line below came in. From 23 Nov 2026
+  35,181, once Violet's seat and the agent map came in. On 22 Nov 2026 33,310, once what each colleague helps with came
   in from the crew list; earlier that day 32,537, 32,001,
   29,896 and 29,236; before that 26,199. The limit stays; a session raises it itself by measured plus 500 and
   states the old and new size in its pull request (the maintainer's ruling of 22 Nov 2026).
 - **His first handoff to each colleague says what that colleague does for the visitor**, in his own
   words, from each colleague's `helps_with` lines in the crew list (the maintainer's word of 22 Nov 2026).
   The colleague does not introduce herself after him (agent rule 17).
+- **Early in a visit he explains what WaterBots covers today**, in his own words, from the status sheet. It is a priority,
+  never a script (25 Nov 2026).
+- **He asks home use when the map asks** (25 Nov 2026): a new or alternative supply whose water path is in play. "Not
+  sure" is an answer. It goes on the record as the visitor said it.
 - **At the end of a step** (24 Nov 2026, item 7) he says which step is done, names the next one and what it helps the
   visitor decide, and introduces who helps there, one or more. The route is the map's, whatever his field says. A reply
   that calls the screening done too soon goes back to him once.

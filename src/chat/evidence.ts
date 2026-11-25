@@ -101,6 +101,11 @@ export interface AgentTurn {
    */
   buttons?: TurnButton[];
   /**
+   * Wellington's, when he joins another agent's chat and asks something there: the chips that answer him (25 Nov 2026).
+   * The screen he joins draws them, because the box there is that agent's.
+   */
+  answers?: readonly string[];
+  /**
    * One caption line under the answer, in the citation line's place and size.
    * An agent's adapter builds it from a structured field, never from prose —
    * Phoebe's says what her worksheet holds after a turn that moved a row
@@ -143,6 +148,8 @@ export interface AgentHost {
   portrait: string;
   /** The identity colour token name, e.g. "--bot-phoebe". Read, never re-typed. */
   colourToken: string;
+  /** Where the accent itself may not carry text: the token the name above a bubble is set in (Reef and Orchid, the brand book). */
+  nameToken?: string;
   /** Composer placeholder and the standing note beneath it; no note, no line. */
   composerPlaceholder: string;
   composerNote?: string;
@@ -210,7 +217,7 @@ export interface AskMeta {
    * `open` is his own desk on a visitor's arrival: he speaks first (W29,
    * 16 Nov 2026).
    */
-  at?: 'eligibility' | 'map' | 'open' | 'handoff';
+  at?: 'eligibility' | 'map' | 'quantification' | 'water' | 'open' | 'handoff';
   composerId?: string;
   /**
    * On a `handoff`: the desk the visitor has just opened without his hand-off, whose line he now gives. The same

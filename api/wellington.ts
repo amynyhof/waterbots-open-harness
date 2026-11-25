@@ -28,7 +28,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { checkEntry } from '@waterbots/core/record';
 import { recordAbstention } from './_abstentions.js';
-import { guardRoute, mapBlock, readMap, saysAllDone, stepEndNote, stepEndRoute } from './_agentMap.js';
+import { JOINED, afterHomeUse, asksHomeUse, guardRoute, mapBlock, readMap, saysAllDone, stepEndNote, stepEndRoute, type Joined } from './_agentMap.js';
 import { CARRIED, WELLINGTON, countOneMessage, timeUntilReset } from './_cap.js';
 import { FINISH_NOTE, leavesWaiting } from './_lookUp.js';
 import { phoebeFound, readRecord, readSheet, readStage, stageBlock, visitBlock } from './_record.js';
@@ -99,9 +99,11 @@ export async function GET(): Promise<Response> {
 }
 
 /** The turn he answers when he joins another agent's chat, or opens his own. Never shown as a bubble. */
-const AT_TURN: Record<'eligibility' | 'map' | 'open', string> = {
+const AT_TURN: Record<Joined | 'open', string> = {
   eligibility: "(Phoebe's step is done. Wellington joins the visitor in her chat.)",
   map: "(Bridget's step is done. Wellington joins the visitor in her chat.)",
+  quantification: "(Calvin's part is done. Wellington joins the visitor in his chat.)",
+  water: "(Violet's part is done. Wellington joins the visitor in her chat.)",
   open: '(The visitor has just arrived and has not said anything yet.)',
 };
 
@@ -166,8 +168,10 @@ export async function POST(req: Request): Promise<Response> {
   /* THE SAME HAND-OFF FOR EVERY AGENT — the maintainer's ruling of 24 Nov 2026 (the shared console behaviours, line
      5). `handoff` is sent the first time a colleague's page shows and he has not handed the visitor over: they came
      by the crew list. `to` names the page, from a closed list. */
-  const at =
-    returned && (body.at === 'eligibility' || body.at === 'map' || body.at === 'open') ? body.at : null;
+  const joinedAt = JOINED.find((desk) => desk === body.at) ?? null;
+  const at = returned ? (joinedAt ?? (body.at === 'open' ? ('open' as const) : null)) : null;
+  /* THE VISITOR ANSWERS HIM THERE (25 Nov 2026): he asked something in another agent's chat, and their words came to him. */
+  const replyingAt = returned ? null : joinedAt;
   const handTo =
     returned && body.at === 'handoff' ? ((Object.keys(HAND_TO) as HandTo[]).find((s) => s === body.to) ?? null) : null;
 
@@ -324,7 +328,7 @@ export async function POST(req: Request): Promise<Response> {
           ...(visitText ? [{ type: 'text' as const, text: visitText }] : []),
           ...(found ? [{ type: 'text' as const, text: found.text }] : []),
           ...(map ? [{ type: 'text' as const, text: mapBlock(map) }] : []),
-          ...(handTo ? [{ type: 'text' as const, text: handoffNote(handTo) }] : at ? [{ type: 'text' as const, text: at === 'open' ? OPEN_NOTE : stepEndNote(at, map) }] : []),
+          ...(handTo ? [{ type: 'text' as const, text: handoffNote(handTo) }] : at ? [{ type: 'text' as const, text: at === 'open' ? OPEN_NOTE : stepEndNote(at, map) }] : replyingAt ? [{ type: 'text' as const, text: stepEndNote(replyingAt, map, true) }] : []),
           /* The same question again: this one has to end in an answer (api/_lookUp.ts). */
           ...(pass > 1 ? [{ type: 'text' as const, text: map && map.next !== 'report or sign-up' ? `${FINISH_NOTE} A step is still ahead, so never say the screening, or every step, is done.` : FINISH_NOTE }] : []),
         ],
@@ -394,7 +398,8 @@ export async function POST(req: Request): Promise<Response> {
      confirmed this turn or already on the visit. */
   /* On a hand-off the page is already open, so the route is that page, whatever the field says. At the end of a step it
      is the map's next one, so a hand-off never hangs on his remembering it (24 Nov 2026). */
-  const set = handTo ?? (map && (at === 'eligibility' || at === 'map') ? stepEndRoute(at, map) : null);
+  const answersHomeUse = replyingAt !== null && map !== null && asksHomeUse(map) && pick(pick(parsed, 'context'), 'homeUse') !== undefined;
+  const set = handTo ?? (map && at && at !== 'open' ? stepEndRoute(at, map) : map && replyingAt ? (answersHomeUse ? afterHomeUse(map) : stepEndRoute(replyingAt, map)) : null);
   const checked = validate(set !== null && typeof parsed === 'object' && parsed !== null ? { ...parsed, route: set } : parsed, { type: record?.type, ...(map ? {} : { reads: found?.reads }) });
   /* The map's guard, in place of the reads' (J4): a desk the map has closed is never routed to, and an
      introduction goes with its route. */

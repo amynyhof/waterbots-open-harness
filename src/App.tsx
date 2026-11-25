@@ -79,7 +79,9 @@ import ScreeningReport from './components/ScreeningReport';
 import { NO_SUMMARY, type CalvinSummary } from './components/CalvinCalculator';
 import { calvinProjectFrom, countryIsoFor } from './lib/calvinProject';
 import { carriedRecord } from './lib/phoebeClient';
-import { callOf, calledSurfaces, closedBy, mapForWellington, metFrom, nextStep, projectRecord, siteMap, uncoveredLabel, type MapForWellington, type NextStep } from './lib/projectRecord';
+import { NO_CALCULATOR_YET, callOf, calledSurfaces, closedBy, mapForWellington, metFrom, nextStep, noCalculatorFor, projectRecord, siteMap, uncoveredLabel, waterHasNoCalculator, type MapForWellington, type NextStep } from './lib/projectRecord';
+import { toldVisit } from './lib/told';
+import type { GivenFacts } from '@waterbots/core/record';
 import { onward, type Ending } from './lib/steps';
 import { d3InputFromRecord, violetAgentNoteLines } from '@waterbots/violet';
 import { computeD3 } from '@waterbots/violet/engine';
@@ -101,7 +103,7 @@ import {
 import BridgetScreen from './components/BridgetScreen';
 import PhoebeScreen from './components/PhoebeScreen';
 import CalvinScreen from './components/CalvinScreen';
-import NotCalled from './components/NotCalled';
+import NotCalled, { NoCalculatorYet } from './components/NotCalled';
 import VioletScreen from './components/VioletScreen';
 import SiteMenu from './components/SiteMenu';
 import { usePhone } from './lib/phone';
@@ -137,6 +139,7 @@ import {
   typedContext,
   type Learned,
   type MapPin,
+  type Teller,
   type Visit,
   type WaterEstimate,
 } from './lib/visit';
@@ -270,7 +273,30 @@ export default function App() {
   }, []);
 
   const onLearned = useCallback((learned: Learned) => {
+    /* The ref moves with it, so the buttons under this same answer are the map's after it (25 Nov 2026). */
+    visitRef.current = { ...visitRef.current, context: learnedContext(visitRef.current.context, learned) };
     setVisit((v) => ({ ...v, context: learnedContext(v.context, learned) }));
+  }, []);
+
+  /* What the visitor tells Calvin or Violet joins the visit, and so the shared record (src/lib/told.ts). */
+  const onTold = useCallback((agent: Teller, given: GivenFacts): string[] => {
+    const { visit: next, refused } = toldVisit(visitRef.current, agent, given);
+    visitRef.current = next;
+    setVisit((v) => toldVisit(v, agent, given).visit);
+    return refused;
+  }, []);
+  const calvinTold = useCallback((given: GivenFacts) => onTold('calvin', given), [onTold]);
+  const violetTold = useCallback((given: GivenFacts) => onTold('violet', given), [onTold]);
+  /* Their part of Step 3 is ended, by a figure that came from the visitor's answers (25 Nov 2026). */
+  const calvinEnded = useCallback(() => {
+    if (visitRef.current.calvinDone) return;
+    visitRef.current = { ...visitRef.current, calvinDone: true };
+    setVisit((v) => ({ ...v, calvinDone: true }));
+  }, []);
+  const violetEnded = useCallback(() => {
+    if (visitRef.current.violetDone) return;
+    visitRef.current = { ...visitRef.current, violetDone: true };
+    setVisit((v) => ({ ...v, violetDone: true }));
   }, []);
 
   const onRouted = useCallback((route: 'none' | 'eligibility' | 'quantification' | 'water' | 'map' | 'paid', reply: string) => {
@@ -286,7 +312,8 @@ export default function App() {
      site's own rule, pathwayAllowsQuantify, is switched off (src/lib/visit.ts). */
   const setPin = useCallback((pin: MapPin | null) => {
     setVisit((v) => {
-      const now = siteMap(projectRecord({ visit: v, sheet: sheetRef.current }));
+      /* Asked with the pin in place: a calculator is called once Bridget has finished (core 0.3.0). */
+      const now = siteMap(projectRecord({ visit: { ...v, pin }, sheet: sheetRef.current }));
       return pinnedVisit(v, pin, callOf(now, 'calvin').called || callOf(now, 'violet').called);
     });
   }, []);
@@ -319,6 +346,11 @@ export default function App() {
     const record = projectRecord({ visit: visitRef.current, sheet: sheetRef.current, carbon: carbonRef.current });
     return nextStep(record, siteMap(record, metFrom(reachedRef.current)));
   });
+  /* The maintainer's sentence, where water benefits stay in play with no calculator (25 Nov 2026). */
+  const noticeNow = useRef<() => string>(() => {
+    const record = projectRecord({ visit: visitRef.current, sheet: sheetRef.current, carbon: carbonRef.current });
+    return waterHasNoCalculator(siteMap(record)) ? NO_CALCULATOR_YET : '';
+  });
   const endingRef = useRef<Ending>({ open: setSurface, report: printScreeningReport, save: () => undefined });
   const ask = useMemo(
     () =>
@@ -332,7 +364,8 @@ export default function App() {
         (to, line) => setVisit((v) => handedOver(v, to, line)),
         (text) => sayToHim.current(text),
         () => nextNow.current(),
-        { open: (to) => setSurface(to), report: () => endingRef.current.report(), save: () => endingRef.current.save() }
+        { open: (to) => setSurface(to), report: () => endingRef.current.report(), save: () => endingRef.current.save() },
+        () => noticeNow.current()
       ),
     [onLearned, onRouted]
   );
@@ -496,7 +529,7 @@ export default function App() {
   /* THE CREW SHOWS ONLY WHO THE MAP HAS CALLED — the maintainer's ruling of 24 Nov 2026 (calledSurfaces,
      src/lib/projectRecord.ts). An agent appears when the map calls them, or when Wellington has handed the visitor to
      them, and never disappears after that. */
-  const calledNow = useMemo(() => calledSurfaces(record, map), [record, map]);
+  const calledNow = useMemo(() => calledSurfaces(map), [map]);
   const [calledBefore, setCalledBefore] = useState<ReadonlySet<Surface>>(() => new Set([DEFAULT_SURFACE]));
   const crewShown = useMemo<ReadonlySet<Surface>>(() => new Set([...calledBefore, ...calledNow, ...reached]), [calledBefore, calledNow, reached]);
   useEffect(() => {
@@ -516,11 +549,25 @@ export default function App() {
      own greet-back is not sent again. */
   const askHim = chat.askOpened;
   const wellingtonComes = useCallback(
-    async (at: 'eligibility' | 'map', composerId: string): Promise<AgentTurn | null> => {
+    async (at: Surface, composerId: string): Promise<AgentTurn | null> => {
+      if (at === 'desk') return null;
       greetedBack.current = true;
       return askHim({ opened: true, at, composerId });
     },
     [askHim]
+  );
+
+  /* HE ASKS WHERE HE IS (25 Nov 2026). The map has him ask one thing more, home use, at the end of a step, in that agent's
+     chat. The visitor's next words there are his, so they go to his one conversation and his answer comes back with his
+     face. Read at the moment they are sent. */
+  const heAsks = useCallback((): boolean => {
+    const n = nextNow.current();
+    return n.kind === 'gather' && n.homeUse === true;
+  }, []);
+  const sendHim = chat.sendText;
+  const replyToHim = useCallback(
+    async (text: string, at: Surface, composerId: string): Promise<AgentTurn | null> => (at === 'desk' ? null : sendHim(text, { at, composerId })),
+    [sendHim]
   );
 
   /* THE SAME HAND-OFF FOR EVERY AGENT — the maintainer's ruling of 24 Nov 2026 (the shared console behaviours, line 5).
@@ -552,9 +599,10 @@ export default function App() {
     const shown: Partial<Record<Surface, string>> = {};
     for (const key of Object.keys(crewAll) as Surface[]) if (news[key] || key === surface) shown[key] = crewAll[key];
     /* A closed desk's card, where it had already shown, says so and never that it is ready (J4). */
-    for (const key of closedDesks) shown[key] = 'Unlikely for this project';
+    if (uncoveredLabel(facts) && shown.quantification) shown.quantification = 'Not covered yet';
+    for (const key of closedDesks) shown[key] = key === 'water' && noCalculatorFor(map, 'violet') ? 'Not covered yet' : 'Unlikely for this project';
     return shown;
-  }, [crewAll, surface, closedDesks]);
+  }, [crewAll, surface, closedDesks, map, facts]);
   const progress = useMemo(() => journeyProgress(counted, sheet), [counted, sheet]);
 
   /* THE BRIDGE (item S7, built 8 Sep 2026). The click seals the visit as it
@@ -598,8 +646,7 @@ export default function App() {
   /* Read when an agent's answer lands, from what the shell holds then. */
   const wayOnNow = useRef<(here: Surface) => TurnButton[]>(() => []);
   wayOnNow.current = (here) => onward(nextNow.current(), endingRef.current, here);
-  /* A CREW CARD OPENS THAT AGENT'S CHAT FIRST — 24 Nov 2026, item 9. Calvin's and Violet's chats are not live, so their
-     screens still open on their calculator, under Wellington's line. */
+  /* A CREW CARD OPENS THAT AGENT'S CHAT FIRST — 24 Nov 2026, item 9; Calvin's and Violet's from 25 Nov. */
   const [chatAsked, setChatAsked] = useState<Partial<Record<Surface, number>>>({});
   const openFromCrew = useCallback(
     (to: Surface) => {
@@ -768,6 +815,8 @@ export default function App() {
                   }}
                   waiting={waitsForHim('map')}
                   onWellington={wellingtonComes}
+                  heAsks={heAsks}
+                  onReplyToHim={replyToHim}
                   onMeet={onBridgetMeet}
                   onMapTab={setMapTabOpen}
                   record={carriedRecord(visit.context)}
@@ -802,6 +851,8 @@ export default function App() {
                   showChat={chatAsked.eligibility}
                   waiting={waitsForHim('eligibility')}
                   onWellington={wellingtonComes}
+                  heAsks={heAsks}
+                  onReplyToHim={replyToHim}
                   onMeet={onPhoebeMeet}
                 />
               </div>
@@ -821,6 +872,14 @@ export default function App() {
                   invite={visit.quantifyInvite}
                   wayOn={wayOn('quantification')}
                   waiting={waitsForHim('quantification')}
+                  visible={onQuantification}
+                  showChat={chatAsked.quantification}
+                  onTold={calvinTold}
+                  onDone={calvinEnded}
+                  onward={() => wayOnNow.current('quantification')}
+                  onWellington={wellingtonComes}
+                  heAsks={heAsks}
+                  onReplyToHim={replyToHim}
                   closed={closed.calvin ? <NotCalled pathway="carbon" reading={facts.pathways.carbon} onCommons={() => goTo('commons')} /> : null}
                 />
               </div>
@@ -837,7 +896,15 @@ export default function App() {
                   invite={visit.waterInvite}
                   wayOn={wayOn('water')}
                   waiting={waitsForHim('water')}
-                  closed={closed.violet ? <NotCalled pathway="vwba" reading={facts.pathways.vwba} onCommons={() => goTo('commons')} /> : null}
+                  visible={onWater}
+                  showChat={chatAsked.water}
+                  onTold={violetTold}
+                  onDone={violetEnded}
+                  onward={() => wayOnNow.current('water')}
+                  onWellington={wellingtonComes}
+                  heAsks={heAsks}
+                  onReplyToHim={replyToHim}
+                  closed={noCalculatorFor(map, 'violet') ? <NoCalculatorYet /> : closed.violet ? <NotCalled pathway="vwba" reading={facts.pathways.vwba} onCommons={() => goTo('commons')} /> : null}
                 />
               </div>
             </main>

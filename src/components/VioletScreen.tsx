@@ -5,15 +5,22 @@
  * HER SEAT WORD AND HER JOB LINE ARE THE CREW LIST'S. The seat word is held to it by scripts/check-roster.mjs;
  * the job line is read from it (src/lib/rosterLine.ts).
  *
- * HER CHAT IS NOT LIVE, like Calvin's, so the screen opens on Tool and the Chat tab holds one plain line.
+ * HER CHAT IS LIVE FROM 25 NOV 2026, like Calvin's (src/screen/useCalculatorChat.ts). Her screen's state is her package's
+ * hook (`useD3State`), held here so the chat fills it. In the Agent Commons her chat is not live.
  *
  * HER COLOUR IS ORCHID, read from her token. Orchid never carries text (4.29:1 on white) and has no text shade
  * yet, so her name is set in ink. The brand book holds no portrait of her, so her initial is drawn (AgentFace).
  */
 
-import type { ReactNode } from 'react';
-import type { ProjectRecord } from '@waterbots/core/record';
-import type { AgentHost, TurnButton } from '../chat/evidence';
+import { useEffect, useRef, type ReactNode } from 'react';
+import { flushSync } from 'react-dom';
+import type { GivenFacts, ProjectRecord } from '@waterbots/core/record';
+import type { VioletAnswer } from '@waterbots/violet';
+import { useD3State } from '@waterbots/violet/screen';
+import type { AgentHost, AgentTurn, TurnButton } from '../chat/evidence';
+import type { CalculatorAnswer } from '../lib/calculatorClient';
+import type { Surface } from '../lib/surfaces';
+import { WELLINGTON } from '../lib/wellington';
 import { VIOLET_PACKAGE_VERSION, VIOLET_RELEASE } from '../lib/calvinProject';
 import { WATER_D3_LISTING } from '../lib/methodPacks';
 import { rosterJobAtDesk } from '../lib/rosterLine';
@@ -21,7 +28,8 @@ import type { WaterEstimate } from '../lib/visit';
 import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, { type PackView } from '../screen/KnowledgePackTab';
-import NotLiveChat from '../screen/NotLiveChat';
+import ScreenChat from '../screen/ScreenChat';
+import { settled, useCalculatorChat } from '../screen/useCalculatorChat';
 import HandOff from './HandOff';
 import VioletWater from './VioletWater';
 
@@ -30,12 +38,13 @@ export const VIOLET: AgentHost = {
   role: 'Volumetric water benefits calculator',
   portrait: '',
   colourToken: '--bot-violet',
+  nameToken: '--ink',
   composerPlaceholder: 'Reply to Violet',
   composerNote: 'Nothing is kept between visits.',
   thinkingLine: 'Violet is working it out…',
 };
 
-/** The one plain line, in the shape of Calvin's. */
+/** The one plain line, in the shape of Calvin's. In the Agent Commons alone from 25 Nov 2026. */
 export const VIOLET_NOT_LIVE_LINE = 'Violet is not answering here yet. The calculator works: type in what you know.';
 
 export default function VioletScreen({
@@ -45,6 +54,14 @@ export default function VioletScreen({
   invite = '',
   waiting = false,
   wayOn = [],
+  visible,
+  showChat = 0,
+  onTold,
+  onDone,
+  onward,
+  onWellington,
+  heAsks,
+  onReplyToHim,
 }: {
   /** The shared project record: her screen opens on it and follows it. */
   record: ProjectRecord;
@@ -58,21 +75,105 @@ export default function VioletScreen({
   waiting?: boolean;
   /** The buttons to what comes next (24 Nov 2026, src/lib/steps.ts). */
   wayOn?: TurnButton[];
+  /** True while her desk is the step in view: she speaks first then, not on mount. */
+  visible: boolean;
+  /** Bumped each time the visitor opens her from the crew, which opens her Chat tab first. */
+  showChat?: number;
+  /** Writes what the visitor told her to the visit, and returns a message for each number refused. */
+  onTold: (given: GivenFacts) => string[];
+  /** Her part is done: a figure that came from the visitor's answers. */
+  onDone: () => void;
+  /** The way on, read when her answer lands. */
+  onward: () => TurnButton[];
+  onWellington: (at: Surface, composerId: string) => Promise<AgentTurn | null>;
+  heAsks: () => boolean;
+  onReplyToHim: (text: string, at: Surface, composerId: string) => Promise<AgentTurn | null>;
 }) {
+  const state = useD3State({ record, place: 'free-site', lockView: 'ex-ante', onChange: (input, result) => onWater({ input, result }) });
+  const seat = useRef(state);
+  seat.current = state;
+  const recordRef = useRef(record);
+  recordRef.current = record;
+  const shows = (): boolean => seat.current.stop === null && seat.current.result.vwbM3PerYear !== null;
+
+  const { chat, tab, setTab, composerId } = useCalculatorChat({
+    host: VIOLET,
+    name: 'Violet',
+    desk: 'water',
+    seat: {
+      turn: () => {
+        const { facts } = recordRef.current;
+        return {
+          input: seat.current.input,
+          projectName: seat.current.project?.name ?? '',
+          chosen: seat.current.chosen,
+          refusals: seat.current.refusals,
+          facts: {
+            ...(facts.technology ? { technology: facts.technology.label, ...(facts.technology.code ? { code: facts.technology.code } : {}) } : {}),
+            ...(facts.type ? { type: facts.type.value } : {}),
+            ...(facts.technologyClass ? { technologyClass: facts.technologyClass.value } : {}),
+            ...(facts.homeUse ? { homeUse: facts.homeUse.value } : {}),
+          },
+        };
+      },
+      apply: async (answer: CalculatorAnswer) => {
+        const told = Object.keys(answer.facts).length > 0;
+        const refused = told ? onTold(answer.facts) : [];
+        await settled();
+        const values = answer.values as VioletAnswer;
+        let fill: ReturnType<typeof state.fill> | undefined;
+        flushSync(() => {
+          fill = seat.current.fill(values);
+        });
+        /* People served are the record's: what she put on her screen goes there too, and her screen follows it. */
+        const population = Object.fromEntries(Object.entries(values.population ?? {}).filter(([key]) => fill?.filled.includes(`population.${key}`)));
+        if (Object.keys(population).length > 0) onTold({ population });
+        await settled();
+        return { refused: [...new Set([...refused, ...(fill?.refused.map((r) => r.message) ?? [])])], filled: told || (fill?.filled.length ?? 0) > 0 };
+      },
+      asks: () => seat.current.asks,
+      figure: shows,
+    },
+    visible: visible && closed === null,
+    invite,
+    waiting,
+    showChat,
+    onward,
+    onWellington,
+    heAsks,
+    onReplyToHim,
+    onDone,
+  });
+
+  /* Her figure needs the visitor to have said how the water can be counted, so one that shows came from their answers,
+     in her chat or on her screen. */
+  const ended = state.chosen && shows() && !state.asks.some((ask) => ask.needed);
+  useEffect(() => {
+    if (ended) onDone();
+  }, [ended, onDone]);
+
   return (
     <AgentScreen
       host={VIOLET}
-      opensOn="tool"
+      active={tab}
+      onActiveChange={setTab}
+      dots={{ chat: tab === 'tool' && chat.turns.some((turn) => turn.role === 'agent') }}
       tabs={{
-        chat: <NotLiveChat host={VIOLET} line={VIOLET_NOT_LIVE_LINE} note={rosterJobAtDesk('violet')} lead={<HandOff line={invite} waiting={waiting} wayOn={wayOn} />} />,
+        chat: closed ? (
+          <>
+            <HandOff line="" wayOn={wayOn} framed />
+            {closed}
+          </>
+        ) : (
+          <ScreenChat host={VIOLET} chat={chat} composerId={composerId} waitingFor={waiting ? WELLINGTON : undefined} />
+        ),
         tool: (
           <>
-            {/* A closed desk has no line of his, and still has the way on. */}
-            {closed ? <HandOff line="" wayOn={wayOn} framed /> : <HandOff line={invite} waiting={waiting} wayOn={wayOn} framed />}
+            <HandOff line="" wayOn={wayOn} framed />
             {closed}
             {/* Kept mounted behind a closed desk, so nothing the visitor set is lost if the reading changes. */}
             <div style={{ display: closed ? 'none' : 'contents' }}>
-              <VioletWater record={record} place="free-site" onChange={onWater} hideExportButton />
+              <VioletWater record={record} place="free-site" state={state} hideExportButton />
             </div>
           </>
         ),

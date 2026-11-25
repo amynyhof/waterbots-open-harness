@@ -9,7 +9,8 @@
  * calvin-violet-v0.5.1 (@waterbots/calvin 0.5.1, @waterbots/violet 0.5.1, @waterbots/core 0.1.2) the same day, her
  * word ("carry 0.5.1 to both sites"): no sum changed, and core ships the agent rules every agent here reads; and to
  * three releases with a tag each on 23 Nov 2026 ("carry the release to both sites"): calvin-v0.6.0, violet-v0.6.0 and
- * core-v0.2.0. No sum changed.
+ * core-v0.2.0. No sum changed. On 25 Nov 2026, her word ("carry the release to both sites"): calvin-v0.7.0,
+ * violet-v0.7.0 and core-v0.3.0, with both agents' chats. No sum changed.
  *   6. The project the site hands Calvin sets `creditedUnderV1` from the shared record and never otherwise (item A29,
  *      J4, 23 Nov 2026): Phoebe's question settles it. Until then it was left unset (her word of 16 Nov 2026).
  *
@@ -35,26 +36,26 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const RELEASE = 'calvin-v0.6.0';
-const VIOLET_RELEASE = 'violet-v0.6.0';
+const RELEASE = 'calvin-v0.7.0';
+const VIOLET_RELEASE = 'violet-v0.7.0';
 const FILES = {
   '@waterbots/calvin': {
-    file: 'vendor/waterbots/waterbots-calvin-0.6.0.tgz',
-    version: '0.6.0',
-    sha256: '5ef48f7dae703f396ad25980872ec27ac6a4f72a627205de546badb182b6625e',
-    integrity: 'sha512-8YnEyjoRfgi3hQdrYCGfi13cptuI285fXuJLvNbCKN1KwOjyk1ddppvw0plXk8qEgDKRHLQUpfvX+dFmxaQIqA==',
+    file: 'vendor/waterbots/waterbots-calvin-0.7.0.tgz',
+    version: '0.7.0',
+    sha256: 'b9e5bb8e038b6d7c9a6ed1771b20e9c146fb282da48181598660e5b911f1ed89',
+    integrity: 'sha512-jkD2/ogm+wXzRTF4jNCcQ031PipAHTRuQVLy1FHSayk5P8aoWjEOgi5z503BsmQ3Mwh+Wv40AfGedemaXMZqcg==',
   },
   '@waterbots/violet': {
-    file: 'vendor/waterbots/waterbots-violet-0.6.0.tgz',
-    version: '0.6.0',
-    sha256: '7f94d0a1425b39e5dc2ac66de96ca2a3992fcc1328dd6278662db57b64cf578c',
-    integrity: 'sha512-sNNnNXVm1vUzqbhHs612vZEcW/NrktM7/+7jIfobs/HewQyfXfHbjTpAZR/1BGYDFME1s7hCCyEP3YqUNkYHWQ==',
+    file: 'vendor/waterbots/waterbots-violet-0.7.0.tgz',
+    version: '0.7.0',
+    sha256: '6b334cd10c26441adbb59275182b8c671394646c34c356b15b974e89eb004599',
+    integrity: 'sha512-CgvDXEltwrIrRB6CE9/fhKIvoI7a7n/4dh1g4S6zd9IBvu1hUP+69UagY+UgGBiDl3aw3jVqxHzlYeopacKdrg==',
   },
   '@waterbots/core': {
-    file: 'vendor/waterbots/waterbots-core-0.2.0.tgz',
-    version: '0.2.0',
-    sha256: 'bae2b949fbb42c0b86e324fb8a62ddf8a26fb5c01b05eac97bc841c5db539160',
-    integrity: 'sha512-8QfK5ku0j1NrIudieYCDIYYnDws+0wuV9C8qXCHgCP3MjgUrC4i3h8KVpAYmrnWDkjwNiYx48GmGYyYF18N1og==',
+    file: 'vendor/waterbots/waterbots-core-0.3.0.tgz',
+    version: '0.3.0',
+    sha256: 'ceff1c9d250ca098f003838c09511fa38818d52c6e196ecd33e620309c3d6f31',
+    integrity: 'sha512-yERniudcxtqZX9t3X4H+U4rO7yig4jUXHrsZlLCLGM2ePWiBTpvWOlekCIAVDqbvvfX3jyPOdj0ggV7ors3R7Q==',
   },
 };
 const ENGINE_VERSION = '0.19.0';
@@ -146,6 +147,49 @@ for (const c of expected.fnrbCases) {
 }
 expect(`both fNRB cases give exactly the recorded answers`, caseFailures.length === 0, caseFailures.join('; '));
 
+/* 11. Both chats run on what the packages ship (25 Nov 2026): the instructions are theirs, whole, after core's agent rules;
+       the settings the code carries are the ones in config.yaml; the answer's shape is the package's own, within the model
+       service's limits and back whole for its reader; and thirty messages a day each, as for the other agents. */
+{
+  const { spawnSync } = await import('node:child_process');
+  const { mkdtempSync, rmSync, symlinkSync, unlinkSync, writeFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { pathToFileURL } = await import('node:url');
+  const out = mkdtempSync(join(tmpdir(), 'wb-chat-api-'));
+  const built = spawnSync(process.execPath, [join('node_modules', 'typescript', 'bin', 'tsc'), '-p', 'tsconfig.api.json', '--noEmit', 'false', '--outDir', out, '--composite', 'false', '--declaration', 'false'], { encoding: 'utf8' });
+  expect('api/ compiles', built.status === 0, built.stdout);
+  writeFileSync(join(out, 'package.json'), '{"type":"module"}');
+  symlinkSync(join(process.cwd(), 'node_modules'), join(out, 'node_modules'), 'junction');
+  const load = (name) => import(pathToFileURL(join(out, name)).href);
+  const { toWire, fromWire, shapeCost, SHAPE_LIMITS } = await load('_answerShape.js');
+  const { CALVIN_SYSTEM_PROMPT, calvinBlock } = await load('_calvinTurn.js');
+  const { VIOLET_SYSTEM_PROMPT, violetBlock } = await load('_violetTurn.js');
+  const { CALVIN, VIOLET, PHOEBE } = await load('_cap.js');
+  const agent = await import('@waterbots/calvin/agent');
+  const violet = await import('@waterbots/violet');
+  const ship = (pkg, file) => readFileSync(join('node_modules', '@waterbots', pkg, 'dist', file), 'utf8').replace(/\r\n/g, '\n').trim();
+  const rules = ship('core', 'agent-rules.md').split('## How an agent talks')[1].trim();
+  for (const [name, system, pkg, chat] of [['Calvin', CALVIN_SYSTEM_PROMPT, 'calvin', agent.CALVIN_CHAT], ['Violet', VIOLET_SYSTEM_PROMPT, 'violet', violet.VIOLET_CHAT]]) {
+    const sheet = readFileSync(join('knowledge-packs', 'product-shared', 'BUILD_STATUS_SHEET.md'), 'utf8').replace(/\r\n/g, '\n').trim();
+    const parts = [rules, ship(pkg, 'prompt.md'), ship(pkg, 'knowledge.md'), sheet];
+    const left = parts.reduce((text, part) => text.split(part).join(''), system).replace('## How an agent talks', '').trim();
+    expect(`${name}'s instructions are the agent rules, the package's two files and the status sheet, and nothing of this site's`, parts.every((part) => system.includes(part)) && left === '', left.slice(0, 120));
+    const config = ship(pkg, 'config.yaml');
+    expect(`${name}'s settings are config.yaml's`, config.includes(`model: ${chat.model}`) && config.includes(`effort: ${chat.effort}`) && config.includes(`max_output_tokens: ${chat.maxOutputTokens}`) && config.includes(`sentences: ${chat.reply.sentences}, characters: ${chat.reply.chars}`), JSON.stringify(chat));
+  }
+  for (const [name, schema] of [['Calvin', agent.CALVIN_ANSWER_SCHEMA], ['Violet', violet.VIOLET_ANSWER_SCHEMA]]) {
+    const cost = shapeCost(toWire(schema));
+    expect(`${name}'s answer goes to the model within its limits`, cost.optional <= SHAPE_LIMITS.optional && cost.unions <= SHAPE_LIMITS.unions, JSON.stringify(cost));
+  }
+  const back = agent.readCalvinAnswer(fromWire({ reply: 'A made-up reply.', handBack: 'none', values: { numbers: agent.CALVIN_ANSWER_VALUES.map((name, i) => ({ name, value: i === 0 ? null : i })) } }));
+  expect('every number in his answer comes back in its own field, a cleared one too', back !== null && agent.CALVIN_ANSWER_VALUES.every((name, i) => back.values[name] === (i === 0 ? null : i)), JSON.stringify(back));
+  const parts = { opened: false, introduce: false, leftForNow: [], refused: [] };
+  expect('a screen that is not one is refused, and no line of it can stand as a heading', calvinBlock({ state: { x: 'a\n# b' }, screen: 'x' }, parts) === null && violetBlock({ input: { option: 'none' } }, parts) === null && !/^# [^T]/m.test(violetBlock({ input: { option: 'beneficiaries' }, projectName: 'a\n# b', facts: {} }, parts) ?? '# x'), 'a made-up heading came through');
+  expect('thirty messages a day each, the same as the other agents', CALVIN.cap === PHOEBE.cap && VIOLET.cap === PHOEBE.cap && CALVIN.cap === 30 && CALVIN.name !== VIOLET.name, JSON.stringify([CALVIN, VIOLET]));
+  /* The link first, so nothing behind it is touched. */
+  unlinkSync(join(out, 'node_modules'));
+  rmSync(out, { recursive: true, force: true });
+}
 /* 5. The old sealed copy is gone. */
 expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSync('carried'), 'carried/ still exists');
 /* 6. creditedUnderV1 comes from the shared record alone (A29, J4, 23 Nov 2026). */

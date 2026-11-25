@@ -1,6 +1,7 @@
 /**
  * Calvin's carbon calculator — the open core's, installed from the release
- * calvin-v0.6.0 (@waterbots/calvin 0.6.0, core 0.2.0, engine gs4gg-carbon 0.19.0) from 23 Nov 2026, after
+ * calvin-v0.7.0 (@waterbots/calvin 0.7.0, core 0.3.0, engine gs4gg-carbon 0.19.0) from 25 Nov 2026, after
+ * calvin-v0.6.0 on 23 Nov 2026,
  * calvin-violet-v0.5.1 and v0.5.0 on 22 Nov 2026; calvin-v0.4.1 from 21 Nov 2026; calvin-v0.3.0 from 16 Nov 2026; first calvin-v0.2.0, on the maintainer's word of 14 Nov 2026 (proposal the open-core proposal on #156,
  * step 2).
  *
@@ -39,7 +40,7 @@
  * with it, so its report prints.
  */
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type MutableRefObject, type ReactNode } from 'react';
 import { createPortal, flushSync } from 'react-dom';
 import {
   CalculatorLens,
@@ -131,10 +132,13 @@ export function CalvinCarbon({
   onSummary,
   screening = false,
   place,
+  seat,
 }: {
   project: CalvinProject;
   /** Where Calvin is working: the Free site or the Agent Commons (J2, 23 Nov 2026). */
   place: Place;
+  /** The calculator as it stands, for his chat to read and fill (25 Nov 2026). */
+  seat?: MutableRefObject<CalculatorState | null>;
   /** The host's top of the lens, given the facts still needed. */
   header?: (missing: string[]) => ReactNode;
   onSummary?: (summary: CalvinSummary) => void;
@@ -142,7 +146,7 @@ export function CalvinCarbon({
   screening?: boolean;
 }) {
   return (
-    <CalvinCarbonState key={project.technology ?? 'none'} project={project} header={header} onSummary={onSummary} screening={screening} place={place} />
+    <CalvinCarbonState key={project.technology ?? 'none'} project={project} header={header} onSummary={onSummary} screening={screening} place={place} seat={seat} />
   );
 }
 
@@ -152,14 +156,17 @@ function CalvinCarbonState({
   onSummary,
   screening,
   place,
+  seat,
 }: {
   project: CalvinProject;
   place: Place;
+  seat?: MutableRefObject<CalculatorState | null>;
   header?: (missing: string[]) => ReactNode;
   onSummary?: (summary: CalvinSummary) => void;
   screening: boolean;
 }) {
   const calc = useCalculatorState(project, { exAnteOnly: true, unpinFigureBlock: true, hideExportButton: screening, place });
+  if (seat) seat.current = calc;
   /* THE COUNT FOLLOWS THE RECORD. The core reads the number served only when
      it opens, so a count said afterwards is handed on, the way a record save
      reaches a seat already open. Found on the first look, 14 Nov 2026. */
@@ -242,7 +249,8 @@ function WorkingInReport({ calc, project }: { calc: CalculatorState; project: Ca
  * says to type it there.
  */
 export function RecordFacts({ missing, unknownLabel }: { missing: string[]; unknownLabel?: string }) {
-  /* The label is on the record and Calvin does not cover it (J3): said plainly, and never asked for again. */
+  /* The label is on the record and Calvin does not cover it (J3): said plainly, and never asked for again. Where core's own
+     list says it is not covered yet, his screen says it in his package's words and this line is not drawn (25 Nov 2026). */
   if (unknownLabel && missing.includes('technology')) {
     const rest = missing.filter((m) => m !== 'technology');
     return (

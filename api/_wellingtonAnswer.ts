@@ -45,7 +45,15 @@ export interface LearnedContext {
   stage?: ProjectStageId;
   /** People served, as the visitor said it — people or households, never converted. */
   served?: Served;
+  /** A new or alternative supply: whether people use the water at home (25 Nov 2026). */
+  homeUse?: HomeUse;
 }
+
+/** Core's own three answers (HOME_USES, @waterbots/core/record). "not sure" is one: nobody is asked again. */
+export const HOME_USES = ['yes', 'no', 'not sure'] as const;
+export type HomeUse = (typeof HOME_USES)[number];
+/** The one type it is a fact about. */
+const HOME_USE_TYPE = 'C-11';
 
 /**
  * PEOPLE SERVED — 27 Sep 2026, the maintainer's rulings on the people-served
@@ -157,6 +165,8 @@ export function validate(value: unknown, known: KnownContext = {}): Answer | nul
     if (stage) out.stage = stage;
     const served = readServed(c.served);
     if (served) out.served = served;
+    const homeUse = HOME_USES.find((h) => h === c.homeUse);
+    if (homeUse && typeInForce === HOME_USE_TYPE) out.homeUse = homeUse;
     if (Object.keys(out).length > 0) context = out;
   }
 

@@ -28,10 +28,11 @@ import {
   type ProjectStageId,
   type ProjectTypeId,
 } from './projectTypes.generated';
+import type { AskMeta } from '../chat/evidence';
 import { answersFrom } from './chips';
 import type { MapForWellington } from './projectRecord';
 import type { Surface } from './surfaces';
-import type { Served } from './visit';
+import type { HomeUse, Served } from './visit';
 
 export type WellingtonRoute = 'none' | 'eligibility' | 'quantification' | 'water' | 'map' | 'paid';
 
@@ -43,7 +44,11 @@ export interface Learned {
   gsClass?: GsClassId;
   stage?: ProjectStageId;
   served?: Served;
+  homeUse?: HomeUse;
 }
+
+/** Core's own three words for it (25 Nov 2026). */
+const HOME_USES: readonly HomeUse[] = ['yes', 'no', 'not sure'];
 
 /** Ten million, the relay's own ceiling (api/_wellingtonAnswer.ts). */
 const MAX_SERVED = 10_000_000;
@@ -118,7 +123,7 @@ export async function askWellington(
    * it, each row by id and state only — never her own sentences. `returned` is
    * true on the one turn the desk sends when the visitor comes back from her.
    */
-  found: { sheet?: FoundSheet[]; returned?: boolean; at?: 'eligibility' | 'map' | 'open' | 'handoff'; to?: Surface; map?: MapForWellington } = {}
+  found: { sheet?: FoundSheet[]; returned?: boolean; at?: AskMeta['at']; to?: Surface; map?: MapForWellington } = {}
 ): Promise<WellingtonAnswer> {
   let response: Response;
   try {
@@ -129,7 +134,7 @@ export async function askWellington(
       stage?: typeof stage;
       sheet?: FoundSheet[];
       returned?: true;
-      at?: 'eligibility' | 'map' | 'open' | 'handoff';
+      at?: AskMeta['at'];
       to?: Surface;
       map?: MapForWellington;
       door?: 'free-site';
@@ -201,6 +206,8 @@ export async function askWellington(
     if (projectStage) learned.stage = projectStage;
     const served = readServed(c.served);
     if (served) learned.served = served;
+    const homeUse = HOME_USES.find((h) => h === c.homeUse);
+    if (homeUse) learned.homeUse = homeUse;
   }
 
   const introduction =

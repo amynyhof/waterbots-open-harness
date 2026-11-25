@@ -61,6 +61,7 @@ import { meetShowing } from '../lib/blue';
 import { Reached } from '../chat/reached';
 import { askBridget } from '../lib/bridgetClient';
 import { chipsFor, withWayOn } from '../lib/chips';
+import { answersHim, hisTurn } from '../screen/useCalculatorChat';
 import { basinAt, readGps } from '../lib/gps';
 import type { CarriedRecord } from '../lib/phoebeClient';
 import {
@@ -118,6 +119,8 @@ export default function BridgetScreen({
   onMeet,
   onMapTab,
   record = null,
+  heAsks,
+  onReplyToHim,
 }: {
   onStatus: (status: MapStatus) => void;
   pin: MapPin | null;
@@ -146,7 +149,10 @@ export default function BridgetScreen({
   /** Bumped each time the visitor opens her from the crew, which opens her Chat tab first (24 Nov 2026). */
   showChat?: number;
   /** Brings Wellington into her chat with the next step, once her part is done. */
-  onWellington?: (at: 'eligibility' | 'map', composerId: string) => Promise<AgentTurn | null>;
+  onWellington?: (at: Surface, composerId: string) => Promise<AgentTurn | null>;
+  /** Wellington has asked something here, so the visitor's next words are for him (25 Nov 2026). */
+  heAsks?: () => boolean;
+  onReplyToHim?: (text: string, at: Surface, composerId: string) => Promise<AgentTurn | null>;
   /** Tells the shell whether "Meet <name>" is under her chat's latest turn (one blue button, 16 Nov 2026). */
   onMeet?: (showing: boolean) => void;
   /** Tells the shell whether her Map tab is the one in view, so the map's line in the menu shows only with the map (21 Nov 2026). */
@@ -161,7 +167,7 @@ export default function BridgetScreen({
   async function wellingtonJoins() {
     if (!onWellington) return;
     const turn = await onWellington('map', 'wb-bridget-composer');
-    if (turn) chatRef.current.append([{ ...turn, speaker: WELLINGTON }]);
+    if (turn) chatRef.current.append([hisTurn(turn, heAsks, (text) => void chatRef.current.sendText(text))]);
   }
 
   async function ask(
@@ -172,6 +178,10 @@ export default function BridgetScreen({
     /* GPS NUMBERS ARE READ HERE, NEVER BY THE MODEL (24 Nov 2026, src/lib/gps.ts): a position in the visitor's message
        pins the basin it falls in, as a click would, and she reports it in the same answer. */
     const last = history[history.length - 1];
+    if (!meta?.opened && !meta?.pinned && last?.role === 'user' && answersHim(chatRef.current.turns, heAsks)) {
+      const his = await onReplyToHim?.(last.text, 'map', 'wb-bridget-composer');
+      if (his) return hisTurn(his, heAsks, (text) => void chatRef.current.sendText(text));
+    }
     const typed = meta?.opened || meta?.pinned || last?.role !== 'user' ? null : readGps(last.text);
     const found = typed ? await basinAt(typed) : null;
     if (found?.kind === 'found') {

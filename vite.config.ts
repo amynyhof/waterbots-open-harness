@@ -59,6 +59,8 @@ const RELAYS: Relay[] = [
   flat('phoebe'),
   flat('wellington'),
   flat('bridget'),
+  flat('calvin'),
+  flat('violet'),
   flat('interest'),
   flat('supporters'),
   flat('supporter-post'),

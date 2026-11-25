@@ -13,9 +13,9 @@
  *
  *   - Technology: only for a drinking-water project (type C-19). Its Gold
  *     Standard class says which: a new community source (CWS) or water made
- *     safe in the home (HWT). Community treatment (CWT) and institutions (IWT)
- *     are "other", and the calculator says it does not cover them. Community
- *     treatment waits for the experts (the maintainer's ruling of 23 Nov 2026).
+ *     safe in the home (HWT). Community treatment (CWT), institutions (IWT) and a
+ *     new or alternative supply are not covered yet, and the calculator says so
+ *     (core 0.3.0, 25 Nov 2026).
  *   - Country: the visitor's place, matched word for word against the engine's
  *     own country list. One country named, or none — the rule the map uses
  *     (src/lib/placeBox.ts). A town alone is never looked up.
@@ -28,19 +28,20 @@
 import type { CalvinProject } from '@waterbots/calvin/screen';
 import type { ProjectRecord } from '@waterbots/core/record';
 import { COUNTRIES } from '@waterbots/calvin/engine';
-import { DRINKING_WATER_TYPE, GS_CLASS_IDS, projectType } from './projectTypes.generated';
+import { technologyCoverage } from '@waterbots/core/technologyLabels';
+import { DRINKING_WATER_TYPE } from './projectTypes.generated';
 import { foldPlace } from './placeBox';
 import type { VisitContext } from './visit';
 
 /** The installed package's version, held to the lockfile by scripts/check-calvin-package.mjs. */
-export const CALVIN_PACKAGE_VERSION = '0.6.0';
+export const CALVIN_PACKAGE_VERSION = '0.7.0';
 
 /** Violet's D-3 package, the water calculator from 22 Nov 2026. */
-export const VIOLET_PACKAGE_VERSION = '0.6.0';
+export const VIOLET_PACKAGE_VERSION = '0.7.0';
 
 /** Each package has a release and a tag of its own from 23 Nov 2026 (J1). */
-export const CALVIN_RELEASE = 'calvin-v0.6.0';
-export const VIOLET_RELEASE = 'violet-v0.6.0';
+export const CALVIN_RELEASE = 'calvin-v0.7.0';
+export const VIOLET_RELEASE = 'violet-v0.7.0';
 
 /** The ISO 3166-1 alpha-3 code of the one country the place names, or null. */
 export function countryIsoFor(place: string): string | null {
@@ -82,19 +83,20 @@ export function technologyFor(context: Pick<VisitContext, 'type' | 'gsClass'>): 
  */
 export function calvinProjectFrom(record: ProjectRecord): CalvinProject {
   const { facts, place } = record;
+  /* A label core's list says is not covered yet: his screen and his chat say so, and give no figure (core 0.3.0, 25 Nov
+     2026). Until then he was handed "other" for it. */
   const label = facts.technology?.label;
-  /* A class the record holds with no code is one Calvin does not cover. He is handed "other" for it, as he always
-     was, so his screen says so in his own words and gives no figure (the ruling of 23 Nov 2026). */
-  const uncovered = facts.technology?.code === undefined && GS_CLASS_IDS.some((id) => projectType(id)?.name === label);
+  const notCoveredYet = label !== undefined && facts.technology?.code === undefined && technologyCoverage(label) === 'not covered yet' ? label : undefined;
   return {
     name: facts.name ?? 'This project',
     /* The calculator is the carbon calculator: opening it is the visitor
        asking about carbon credits. Nothing else is said about the project. */
     standards: ['carbon'],
-    ...(facts.technology?.code !== undefined ? { technology: facts.technology.code } : uncovered ? { technology: 'other' as const } : {}),
+    ...(facts.technology?.code !== undefined ? { technology: facts.technology.code } : notCoveredYet !== undefined ? { notCoveredYet } : {}),
     ...(place.country !== undefined ? { country: place.country.value } : {}),
     ...(facts.population !== undefined ? { population: { ...facts.population.value } } : {}),
     ...(facts.creditedUnderV1?.value === true ? { creditedUnderV1: true } : {}),
+    ...(facts.pumpPower !== undefined ? { pumpPower: facts.pumpPower.value } : {}),
   };
 }
 

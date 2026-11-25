@@ -31,7 +31,8 @@ they stand here.
 - Every step is one agent screen: the agent's chat in bubbles, and tabs above it: Chat, Tool (when the
   agent has one), Knowledge pack and Credentials, in the agent's colour. The active crew card takes the
   same underline.
-- Where the chat is not live, the screen opens on Tool and the Chat tab holds one plain line.
+- Where the chat is not live (Calvin's, Violet's and Bridget's seats in the Agent Commons), the screen opens on Tool or
+  its Knowledge pack, and the Chat tab holds one plain line.
 - Memory is never a tab; it stays in the record, its source behind the (i).
 - Three consumers share one screen (the Commons, this site, the paid site), differing only in memory and
   tool depth.
@@ -54,8 +55,14 @@ they stand here.
 - **Every hand-off button has one format** (item 8): the step and the agent, "Step 2 of 3: Partners. Meet Bridget", in
   the next agent's colour, whether or not the visitor has been there. Beside it, a quiet "Keep chatting". There is
   always one to the next step; at the end, "Export screening report" and "Save and sign up" (item 10).
-- **A crew card opens that agent's Chat tab first** (item 9). Calvin's and Violet's chats wait for their instructions
-  from the open core, so until then their screens open on their calculator.
+- **A crew card opens that agent's Chat tab first** (item 9), for every agent. **Calvin's and Violet's chats** run on what
+  their packages ship (25 Nov 2026): the instructions, the settings and the list of what to ask. This site writes none of
+  its own. Each answer fills the record and the calculator; a refused number's message shows under the reply. Thirty
+  messages a day each, as for the other agents (`src/screen/useCalculatorChat.ts`, `api/_calculatorChat.ts`).
+- **Step 3 is done** when each calculator the map calls has a figure that came from the visitor's answers (25 Nov 2026).
+  Opening a calculator ends nothing.
+- **Home use is asked when the map asks** (25 Nov 2026), by Wellington, before he introduces the next agent. In another
+  agent's chat, the visitor's next words are then his.
 - **One blue button at a time** (`src/lib/blue.ts`): Save, else the menu's Sign up. A form's Send on its own page. A
   hand-off is in its agent's colour, so it is no longer the blue one (24 Nov 2026).
 - Wellington's desk opens on his chat alone; "About Wellington" beside his name brings back his
@@ -95,8 +102,11 @@ they stand here.
   the values still blank or assumed, under the agent's label from core.
 - Calvin's header says only what the record still lacks, or that his calculator does not cover the kind of
   project yet.
-- **Community level water treatment is not counted** (the maintainer's ruling of 23 Nov 2026): no code and no
-  carbon figure, until the experts are asked. Institutional treatment is not covered either.
+- **Not covered yet** is core's own answer from core 0.3.0 (25 Nov 2026): community level treatment, institutional
+  treatment and a new or alternative supply get no carbon figure, and treatment of any kind gets no water figure.
+- **One fixed sentence** (the maintainer's, 25 Nov 2026), where water benefits stay in play and no calculator covers the
+  kind of project yet: `NO_CALCULATOR_YET` in `src/lib/projectRecord.ts`. It shows under Wellington's turn as Quantify
+  comes up, on Violet's desk and in the report.
 - **One export during a screening.** On Quantify Calvin's and Violet's own exports are hidden
   (`hideExportButton`), and "Export screening report" in the left rail carries his figure, his full working
   and her estimate. The Commons keeps theirs.

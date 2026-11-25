@@ -86,6 +86,24 @@ export function servedWords(served: Served): string {
   return `${served.count.toLocaleString('en-US')} ${unit}`;
 }
 
+/**
+ * WHETHER PEOPLE USE THE WATER AT HOME — the agent map's one more fact for a new or alternative supply (C-11), asked once
+ * the water path is in play (core 0.3.0, 25 Nov 2026). "not sure" is an answer. The words are core's.
+ */
+export type HomeUse = 'yes' | 'no' | 'not sure';
+export const HOME_USE_TYPE = 'C-11';
+
+/**
+ * PROJECT FACTS THE VISITOR TOLD CALVIN OR VIOLET that Wellington's fields do not hold, for the shared record (agent rule
+ * 10). The shapes are core's (GivenFacts, @waterbots/core/record), written out because this file is compiled alone.
+ */
+export interface Told {
+  country?: string;
+  population?: { served?: number; mode?: ServedUnit; householdSize?: number };
+  pumpPower?: 'hand' | 'gravity' | 'solar' | 'diesel' | 'grid';
+}
+export type Teller = 'calvin' | 'violet';
+
 export interface VisitContext {
   /**
    * What the project does, in the visitor's own words to Wellington. The
@@ -102,6 +120,8 @@ export interface VisitContext {
   stage: ProjectStage;
   /** People served, as the visitor said it. Null until they say. */
   served: Served | null;
+  /** A new or alternative supply only: whether people use the water at home. Absent until they say. */
+  homeUse?: HomeUse;
   provenance: {
     does: Provenance;
     name: Provenance;
@@ -147,6 +167,7 @@ export interface Learned {
   gsClass?: GsClassId;
   stage?: ProjectStageId;
   served?: Served;
+  homeUse?: HomeUse;
 }
 
 /**
@@ -194,6 +215,12 @@ export function learnedContext(context: VisitContext, learned: Learned): VisitCo
   if (learned.stage) take('stage', learned.stage);
   if (learned.served) {
     next = { ...next, served: learned.served, provenance: { ...next.provenance, served: 'chat' } };
+  }
+  /* A fact about a new or alternative supply and nothing else. */
+  if (learned.homeUse && next.type === HOME_USE_TYPE) next = { ...next, homeUse: learned.homeUse };
+  else if (next.homeUse && next.type !== HOME_USE_TYPE) {
+    const { homeUse: _gone, ...rest } = next;
+    next = rest;
   }
   return next;
 }
@@ -314,6 +341,11 @@ export interface Visit {
   partnersDone?: boolean;
   /** Phoebe has handed the visitor on with a path done or closed: what she has not read is "more to learn" (24 Nov 2026). */
   eligibilityHanded?: boolean;
+  /** What the visitor told Calvin and Violet about the project, for the shared record (25 Nov 2026). */
+  told?: Partial<Record<Teller, Told>>;
+  /** Their part of Step 3 is ended, with a figure that came from the visitor's answers (25 Nov 2026). Opening ends nothing. */
+  calvinDone?: boolean;
+  violetDone?: boolean;
   /** True once he has invited Partners while the stage is partners. */
   invitedPartners: boolean;
   /** True once he has invited Quantify. */
@@ -667,7 +699,7 @@ function quantifyInvite(): DeskRow {
     key: 'invite-quantify',
     from: 'wellington',
     sentence:
-      'The Quantify step can work out a screening figure. Calvin is not answering yet; the calculator works.',
+      'The Quantify step can work out a screening figure.',
     action: { kind: 'surface', label: 'Open Quantify', surface: 'quantification' },
     primary: true,
   };
@@ -830,8 +862,9 @@ export function crewStatus(
   const bridget = visit.pin ? `Basin found: ${visit.pin.stressLabel.toLowerCase()} water stress` : READY.map;
 
   /* Each has a line of their own from 23 Nov 2026 (J5); Violet's estimate was on Calvin's line until then. */
-  const calvin = carbon ? 'Carbon estimate ready' : READY.quantification;
-  const violet = !visit.water ? READY.water : visit.water.result.vwbM3PerYear !== null ? 'Water estimate ready' : 'Estimate started';
+  /* Ready once their part is done: opening a desk is not an estimate (25 Nov 2026). */
+  const calvin = !carbon ? READY.quantification : visit.calvinDone ? 'Carbon estimate ready' : 'Estimate started';
+  const violet = !visit.water ? READY.water : visit.water.result.vwbM3PerYear !== null && visit.violetDone ? 'Water estimate ready' : 'Estimate started';
   return { desk: wellington, eligibility: phoebe, map: bridget, quantification: calvin, water: violet };
 }
 

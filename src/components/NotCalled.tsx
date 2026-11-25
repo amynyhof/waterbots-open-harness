@@ -3,11 +3,14 @@
  * unlikely pathway's agent is not called in the screening. The visitor is told why, what would change it, and
  * that they may browse it in the Agent Commons. Its row there does not open yet (the maintainer's word of 28 Oct
  * 2026), and the line says so. Every word about the project comes from the shared record's reading.
+ *
+ * NO CALCULATOR YET (25 Nov 2026): where the pathway stays in play and no calculator covers this kind of project, the desk
+ * shows the maintainer's one sentence and nothing else.
  */
 
 import type { PathwayReading } from '@waterbots/core/record';
 import type { StandardId } from '@waterbots/core/standards';
-import { PATHWAY_NAME } from '../lib/projectRecord';
+import { NO_CALCULATOR_YET, PATHWAY_NAME } from '../lib/projectRecord';
 import { COMMONS_LABEL } from '../lib/pages';
 import { SCREEN_COLUMN } from '../screen/ScreenChat';
 
@@ -37,6 +40,16 @@ export default function NotCalled({
           </button>
           ; it does not open there yet.
         </p>
+      </div>
+    </div>
+  );
+}
+
+export function NoCalculatorYet() {
+  return (
+    <div style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
+      <div data-no-calculator style={{ maxWidth: SCREEN_COLUMN, margin: '0 auto', padding: '24px 16px' }}>
+        <p className="t-body" style={{ margin: 0, fontSize: 14.5, lineHeight: 1.55, color: 'var(--ink-2)' }}>{NO_CALCULATOR_YET}</p>
       </div>
     </div>
   );

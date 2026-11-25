@@ -132,7 +132,7 @@ function ReaderBubble({ text }: { text: string }) {
 
 function HostBubble({ host, turn, latest = false }: { host: AgentHost; turn: AgentTurn; latest?: boolean }) {
   const who = turn.speaker ?? host;
-  const accent = { '--turn-accent': `var(${who.colourToken})` } as CSSProperties;
+  const accent = { '--turn-accent': `var(${who.colourToken})`, ...(who.nameToken ? { '--turn-name': `var(${who.nameToken})` } : {}) } as CSSProperties;
   return (
     <div className="wb-turn wb-turn-host" style={accent}>
       <HostFace host={who} />

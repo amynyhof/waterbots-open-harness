@@ -339,6 +339,27 @@ const BUNDLES = [
     stale: 'An agent would deploy following agent rules the maintainer has since changed.',
   },
   {
+    label: 'calvin',
+    target: 'api/_calvinPrompt.generated.ts',
+    /* CALVIN'S OWN INSTRUCTIONS AND NOTES, as his package ships them, whole (calvin-v0.7.0, 25 Nov 2026). This site
+       writes none of its own for him. */
+    sources: [
+      { name: 'CALVIN_PROMPT_MD', file: 'node_modules/@waterbots/calvin/dist/prompt.md' },
+      { name: 'CALVIN_KNOWLEDGE_MD', file: 'node_modules/@waterbots/calvin/dist/knowledge.md' },
+    ],
+    stale: 'Calvin would deploy on instructions his package no longer ships.',
+  },
+  {
+    label: 'violet',
+    target: 'api/_violetPrompt.generated.ts',
+    /* VIOLET'S, the same (violet-v0.7.0). */
+    sources: [
+      { name: 'VIOLET_PROMPT_MD', file: 'node_modules/@waterbots/violet/dist/prompt.md' },
+      { name: 'VIOLET_KNOWLEDGE_MD', file: 'node_modules/@waterbots/violet/dist/knowledge.md' },
+    ],
+    stale: 'Violet would deploy on instructions her package no longer ships.',
+  },
+  {
     label: 'primer',
     target: 'api/_primer.generated.ts',
     /* The primer moved into the shared pack on 17 Sep 2026; it was at the

@@ -37,7 +37,7 @@ import type { AgentMap } from '@waterbots/core/agentMap';
 import type { ProjectRecord } from '@waterbots/core/record';
 import { D3_ENGINE_VERSION } from '@waterbots/violet/engine';
 import { deskRows, pathStatus, servedWords, WATER_SUPPLY_TYPES, type CarbonFigure, type Visit } from '../lib/visit';
-import { closedBy, pathwayForPack } from '../lib/projectRecord';
+import { NO_CALCULATOR_YET, closedBy, noCalculatorFor, pathwayForPack, waterHasNoCalculator } from '../lib/projectRecord';
 import { GS4GG_CALCULATOR_VERSION } from '@waterbots/calvin/engine';
 import { CALVIN_PACKAGE_VERSION, VIOLET_PACKAGE_VERSION } from '../lib/calvinProject';
 import { SCREENING_WORKING_SLOT } from './CalvinCalculator';
@@ -172,6 +172,8 @@ export default function ScreeningReport({
   const violet = deskRows(visit, sheet).filter((row) => row.from === 'violet');
   const calvinClosed = closedBy(map, 'calvin');
   const violetClosed = closedBy(map, 'violet');
+  /* Water benefits stay in play with no calculator: the maintainer's sentence (25 Nov 2026). */
+  const noWaterCalculator = waterHasNoCalculator(map);
   const pin = visit.pin;
 
   return (
@@ -272,8 +274,9 @@ export default function ScreeningReport({
           note={`${row.sentence} Worked out by the open core's D-3 engine, version ${D3_ENGINE_VERSION}, in @waterbots/violet ${VIOLET_PACKAGE_VERSION}.`}
         />
       ))}
-      {violetClosed && <p style={{ fontSize: 11 }}>Violet was not called: water benefits read unlikely. Section 2 says what would change it.</p>}
-      {violet.length === 0 && !violetClosed && <p style={{ fontSize: 11 }}>Not done yet.</p>}
+      {noWaterCalculator && <p style={{ fontSize: 11 }}>{NO_CALCULATOR_YET}</p>}
+      {violetClosed && !noCalculatorFor(map, 'violet') && <p style={{ fontSize: 11 }}>Violet was not called: water benefits read unlikely. Section 2 says what would change it.</p>}
+      {violet.length === 0 && !noWaterCalculator && (!violetClosed || noCalculatorFor(map, 'violet')) && <p style={{ fontSize: 11 }}>Not done yet.</p>}
       {!violetClosed && <NotesOnValues lines={violetNotes} agent="Violet" />}
 
       <footer style={{ marginTop: 18, borderTop: '1px solid var(--line)', paddingTop: 6, fontSize: 9.5, color: 'var(--ink-3)' }}>

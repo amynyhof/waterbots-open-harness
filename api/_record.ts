@@ -92,7 +92,7 @@ const STAGE_LINES: Record<ScreeningStage, string> = {
   partners:
     'Screening step: Eligibility is done for this visit. Invite the Partners step — the map, where Bridget asks for the pin.',
   quantify:
-    'Screening step: Quantify is next. Calvin is not answering yet; point at the calculator.',
+    'Screening step: Quantify is next, with Calvin and Violet.',
 };
 
 function field(value: unknown): string {
