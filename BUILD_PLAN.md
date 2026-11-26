@@ -357,6 +357,7 @@ as the crew rail, holding the tally; the blue "Keep chatting" outline; soft shad
 
 **S36 · No warning before unsaved work is lost.** After v1 · WALKTHROUGH. Rulings section 5: the site warns a user before unsaved work
 is lost. Found on the coach's list of 26 Nov 2026: no such warning is there yet.
+
 **S38 · The Tool tab tidy.** v1 mark: open · WALKTHROUGH. From the coach's list of 26 Nov 2026 (its item 37), for both sites, the
 shared page first: "Wellington, Team Lead" shows twice; the project name should be easy to fix; Bridget's name colour; full-body
 Wellington art. Which of these this site shows is not yet checked. The colour and the art come from the brand book, by the
