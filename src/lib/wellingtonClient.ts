@@ -168,7 +168,7 @@ export async function askWellington(
     throw new WellingtonError('Wellington answered in a shape this console could not read.');
   }
 
-  lastAsking = typeof data.asking === 'string' && /^[w.-]{1,60}$/.test(data.asking) ? data.asking : undefined;
+  lastAsking = typeof data.asking === 'string' && /^[\w.-]{1,60}$/.test(data.asking) ? data.asking : undefined;
 
   const route = ROUTES.includes(data.route as WellingtonRoute) ? (data.route as WellingtonRoute) : 'none';
 

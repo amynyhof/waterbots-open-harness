@@ -85,6 +85,6 @@ export async function askCalculator(
     values: object(data.values),
     refused: Array.isArray(data.refused) ? data.refused.filter((m): m is string => typeof m === 'string') : [],
     told: typeof data.told === 'string' ? data.told.trim().slice(0, 600) : '',
-    ...(typeof data.asking === 'string' && /^[w.-]{1,60}$/.test(data.asking) ? { asking: data.asking } : {}),
+    ...(typeof data.asking === 'string' && /^[\w.-]{1,60}$/.test(data.asking) ? { asking: data.asking } : {}),
   };
 }

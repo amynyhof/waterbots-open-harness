@@ -181,7 +181,7 @@ export async function answerCalculatorChat<Reply extends AgentReply>(req: Reques
   const leftForNow = lines(body.leftForNow, 20, 60);
   const facts = turnFacts(body.turn);
   /* The question the agent's last reply asked, sent back by the browser: one of its own keys, never a sentence. */
-  const asked = typeof body.asked === 'string' && /^[w.-]{1,60}$/.test(body.asked) ? body.asked : undefined;
+  const asked = typeof body.asked === 'string' && /^[\w.-]{1,60}$/.test(body.asked) ? body.asked : undefined;
   const guard = agent.guard(body.turn, leftForNow, facts, asked);
   if (guard === null) return problem(400, 'That request could not be read.');
   /* The visitor's own words in this chat, and nobody else's. */
