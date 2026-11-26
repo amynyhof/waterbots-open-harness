@@ -6,7 +6,7 @@
  * files are load-bearing UI input as well as published documents. This
  * script is the guard on that.
  *
- * It re-derives every card set INDEPENDENTLY of src/lib/phoebeCards.ts rather
+ * It re-derives every card set INDEPENDENTLY of her package's card reader rather
  * than importing it. Importing the module would only prove the module agrees
  * with itself. Deriving the same facts a second way is what makes this a
  * check — the same reasoning behind check-attribution reading the built
@@ -21,8 +21,9 @@
  * pack already names; an eligibility card is held to a "Can it be fixed?"
  * value and a Phase word from their closed lists; a feasibility card to its
  * "guidance, not a gate" framing; a pack's README version to the head of its
- * CHANGELOG (ruling R10). The relay's generated copy of the two water files
- * is still checked for staleness; nothing else reaches the relay.
+ * CHANGELOG (ruling R10). From 26 Nov 2026 the cards Phoebe reads, and her
+ * worksheet with them, are her package's (@waterbots/phoebe 0.1.0), carried
+ * from these files byte for byte; this script holds the package's copy to them.
  *
  * Run it with the others:
  *   node scripts/check-cards.mjs
@@ -274,17 +275,14 @@ for (const pack of PACKS) {
   }
 }
 
-/* ---- The relay's copy of the cards -------------------------------------- */
+/* ---- Her package's copy of the cards ------------------------------------ */
 
-/* api/_cards.generated.ts carries the water pack's four sets into the
-   serverless function, one constant each from 25 Sep 2026, because her prompt
-   is staged and the relay chooses which sets a turn is given. If a copy has
-   drifted, the deployed relay answers from stale cards while the worksheet
-   shows the current ones — a disagreement no visitor could see. The carbon
-   pack's three sets joined on 25 Sep 2026, pull request B. */
-const generated = 'api/_cards.generated.ts';
+/* FROM 26 NOV 2026 her package carries the cards she reads (@waterbots/phoebe 0.1.0), one constant each, byte for byte from
+   these files. Until then this site generated its own copy for the relay, api/_cards.generated.ts. If the package's copy
+   has drifted from the files here, she answers from cards this site does not hold — a disagreement no visitor could see. */
+const generated = 'node_modules/@waterbots/phoebe/dist/generated/cards.generated.js';
 if (!existsSync(generated)) {
-  note(`${generated} has not been generated — run: node scripts/build-prompt-modules.mjs`);
+  note(`${generated} is not installed — run: npm ci`);
 } else {
   const current = readFileSync(generated, 'utf8');
   for (const [name, file] of [
@@ -297,9 +295,9 @@ if (!existsSync(generated)) {
     ['CARBON_ROUTES_MD', `${SEAT}/gs-paa-v2.0/cards/routes-cards-gs.md`],
   ]) {
     /* Same LF normalisation the generator applies — see its note on why. */
-    const expected = `export const ${name}: string = ${JSON.stringify(read(file))};`;
+    const expected = `export const ${name} = ${JSON.stringify(read(file))};`;
     if (!current.includes(expected)) {
-      note(`${generated} is stale for ${file} — run: node scripts/build-prompt-modules.mjs`);
+      note(`${generated} differs from ${file}: her package's card is not this site's, byte for byte`);
     }
   }
 }
@@ -322,8 +320,8 @@ if (problems.length) {
   for (const p of problems) console.log(`  - ${p}`);
   console.log(
     '\nThe worksheet and the Knowledge pack tab read these files directly, so a\n' +
-      'formatting change here changes the product. Fix the card, or update\n' +
-      'src/lib/phoebeCards.ts and this script together.'
+      'formatting change here changes the product. Fix the card here and in\n' +
+      'her package together, and this script with them.'
   );
   process.exit(1);
 }

@@ -4,9 +4,10 @@
  * In its own module with no SDK, so the check script can load it compiled as the platform compiles it.
  */
 
-import { CALVIN_ANSWER_VALUES, calvinAsks, calvinChatContext, fillCalvin, type CalvinTurn } from '@waterbots/calvin/agent';
+import { calvinAsks, calvinChatContext, guardCalvinReply, type CalvinReply, type CalvinTurn } from '@waterbots/calvin/agent';
+import { carbonAnswer, type ProjectFacts } from '@waterbots/core/record';
 import { AGENT_RULES_MD } from './_agentRules.generated.js';
-import type { TurnGuard } from './_chatGuards.js';
+import type { ReplyGuard, TurnParts } from './_calculatorChat.js';
 import { CALVIN_KNOWLEDGE_MD, CALVIN_PROMPT_MD } from './_calvinPrompt.generated.js';
 import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
 
@@ -37,10 +38,12 @@ export function readCalcState(value: unknown): Record<string, unknown> | null {
   return typeof value === 'object' && value !== null && !Array.isArray(value) && plain(value, 0) ? (value as Record<string, unknown>) : null;
 }
 
-export function calvinBlock(
-  turn: unknown,
-  parts: { opened: boolean; introduce: boolean; leftForNow: string[]; refused: string[] }
-): string | null {
+/** What his method does with the project, under each version in use: core's one table, from the facts (calvin 0.8.0). */
+function answers(facts: ProjectFacts): Pick<CalvinTurn, 'answer' | 'answerV1'> {
+  return { answer: carbonAnswer(facts, '2026'), ...(facts.creditedUnderV1?.value === true ? { answerV1: carbonAnswer(facts, '2021') } : {}) };
+}
+
+export function calvinBlock(turn: unknown, parts: TurnParts, facts: ProjectFacts): string | null {
   if (typeof turn !== 'object' || turn === null) return null;
   const t = turn as Record<string, unknown>;
   const state = readCalcState(t.state);
@@ -66,6 +69,8 @@ export function calvinBlock(
       sliders: t.sliders === true,
       transition: t.transition === true,
       ...(notCoveredYet ? { notCoveredYet } : {}),
+      facts,
+      ...answers(facts),
       opened: parts.opened,
       introduce: parts.introduce,
       leftForNow: parts.leftForNow,
@@ -77,39 +82,22 @@ export function calvinBlock(
   }
 }
 
-/** The screen's own name for a fact he asks for by the record's name. */
-const FIELD_OF: Record<string, string> = { 'population.served': 'populationCount', 'population.householdSize': 'householdSizeOverride' };
-const ON_SCREEN: readonly string[] = CALVIN_ANSWER_VALUES;
-
-/** What the guards read of his screen. Every range and every message is his package's. */
-export function calvinGuard(turn: unknown, leftForNow: readonly string[], lines: Pick<TurnGuard, 'does' | 'kind' | 'filedInChat'>): TurnGuard | null {
+/**
+ * THE GUARDS ON HIS NUMBERS are his package's (`guardCalvinReply`, calvin 0.8.0): a number the visitor did not give here
+ * goes back to him once, then comes out, and the visitor is told; a number they gave out of range has its message.
+ */
+export function calvinGuard(turn: unknown, leftForNow: readonly string[], facts: ProjectFacts): ReplyGuard<CalvinReply> | null {
   if (typeof turn !== 'object' || turn === null) return null;
   const t = turn as Record<string, unknown>;
   const state = readCalcState(t.state);
   if (!state) return null;
   const calc = state as unknown as CalvinTurn['state'];
-  const on = (field: string): string => FIELD_OF[field] ?? field;
   try {
-    const transition = t.transition === true;
     const notCoveredYet = oneLine(t.notCoveredYet, 120);
-    const next = calvinAsks(calc, { transition, ...(notCoveredYet ? { notCoveredYet } : {}) }).find((ask) => !leftForNow.includes(ask.key));
-    const asked = next && ON_SCREEN.includes(on(next.key)) ? on(next.key) : null;
-    return {
-      ...lines,
-      asked,
-      held: (field) => {
-        const value = state[on(field)];
-        return typeof value === 'number' || value === null ? value : undefined;
-      },
-      refuses: (field, value) => (ON_SCREEN.includes(field) ? (fillCalvin(calc, { values: { [field]: value } }).refused[0]?.message ?? null) : null),
-      named: {
-        days: 'operationalDays',
-        'hours a day': 'usageHoursPerDay',
-        'litres a person': 'litresPerPersonPerDay',
-        'people a household': 'householdSizeOverride',
-        fnrb: transition ? 'fnrbFiledV1' : 'fnrbOverride',
-      },
-    };
+    const next = calvinAsks(calc, { transition: t.transition === true, ...(notCoveredYet ? { notCoveredYet } : {}), ...answers(facts) }).find((ask) => !leftForNow.includes(ask.key));
+    const asked = next?.key;
+    const check = (reply: CalvinReply, messages: readonly string[]) => guardCalvinReply(reply, { state: calc, messages, ...(asked ? { asked } : {}) });
+    return { check, outOfRange: (messages) => check({ reply: '', handBack: 'none', leftForNow: [] }, messages).outOfRange };
   } catch {
     return null;
   }

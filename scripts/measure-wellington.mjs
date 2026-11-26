@@ -22,26 +22,8 @@
  * the replies for the first run of each, so the maintainer reads his words.
  */
 
-import { spawnSync } from 'node:child_process';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
-import { createRequire } from 'node:module';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-
-/* The relay's own reading-grade counter (V1, 16 Nov 2026), so the walk and the log count alike. */
-const replyOut = mkdtempSync(join(tmpdir(), 'wb-wwalk-reply-'));
-const compileReply = spawnSync(
-  process.execPath,
-  [join('node_modules', 'typescript', 'bin', 'tsc'), join('api', '_reply.ts'), '--outDir', replyOut, '--module', 'commonjs', '--target', 'es2022', '--skipLibCheck'],
-  { encoding: 'utf8' }
-);
-if (compileReply.status !== 0) {
-  console.error(compileReply.stdout || compileReply.stderr);
-  process.exit(1);
-}
-writeFileSync(join(replyOut, 'package.json'), '{"type":"commonjs"}');
-const { READING_GRADE, readingGrade, walkGrades } = createRequire(import.meta.url)(join(replyOut, '_reply.js'));
-rmSync(replyOut, { recursive: true, force: true });
+/* The relay's own reading-grade counter (V1, 16 Nov 2026), so the walk and the log count alike: core's from 26 Nov 2026. */
+const { READING_GRADE, readingGrade, walkGrades } = await import('@waterbots/core/reply');
 
 const BASE = process.env.WB_BASE ?? 'http://localhost:5173';
 const RUNS = Number(process.argv[2] ?? 3);

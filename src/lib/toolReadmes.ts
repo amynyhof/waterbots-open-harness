@@ -4,7 +4,7 @@
  * BUILD-ORDER STEP 1 under "V1 — the done line", 24 Sep 2026, ruling R10 on
  * the Knowledge-tab proposal: every pack shows its version, and the version is
  * read from the committed file that declares it. Phoebe's two packs are in the
- * new pack shape and src/lib/phoebeCards.ts reads their pack READMEs. Calvin's
+ * new pack shape and Phoebe's package (@waterbots/phoebe) reads their pack READMEs. Calvin's
  * and Bridget's packs are still in the old shape, where each TOOL FOLDER is
  * the versioned thing, so their versions are read one per tool row. When item
  * K9 moves those packs to the new shape, this module follows them.
@@ -15,7 +15,7 @@
  *
  * IT FAILS LOUDLY. A README whose opening line has been reworded stops the
  * page rather than showing a tab with a version silently missing — the same
- * choice phoebeCards makes, for the same reason: an empty state that looks
+ * choice her package makes, for the same reason: an empty state that looks
  * deliberate is worse than an error that is not.
  */
 
@@ -28,7 +28,7 @@ import stressReadme from '../../knowledge-packs/bridget-map/tools/wri-aqueduct-4
 /**
  * Windows checks these files out with CRLF and Vercel's builders with LF, and
  * every pattern below keys off line ends. Same normalisation, same reason, as
- * src/lib/phoebeCards.ts.
+ * Phoebe's package (@waterbots/phoebe).
  */
 const lf = (text: string) => text.replace(/\r\n/g, '\n');
 

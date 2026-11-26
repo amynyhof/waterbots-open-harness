@@ -8,7 +8,7 @@
  * file, so a drift between a tool file and the cards it cites is a drift in
  * four places at once. This script is the guard on that.
  *
- * IT RE-DERIVES THE CARDS A SECOND WAY rather than importing src/lib/phoebeCards.ts,
+ * IT RE-DERIVES THE CARDS A SECOND WAY rather than importing her package (@waterbots/phoebe),
  * for the same reason check-cards does: importing the module would only prove the
  * module agrees with itself. It reads the card files, the pack README and the
  * tool file, and holds them to each other.

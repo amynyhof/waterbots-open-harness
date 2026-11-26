@@ -12,8 +12,10 @@
  * place the visit becomes a seal, and it reads only:
  *
  *   - the record fields with their source tags — what it does, its type, its
- *     class beside a drinking-water type, its stage, people served as said (from
- *     27 Sep 2026, never converted), where, what it is called;
+ *     stage, people served as said (from 27 Sep 2026, never converted), where,
+ *     what it is called;
+ *   - from 26 Nov 2026 (shape 2, core 0.4.0), no class: `kindTicket`, the kind
+ *     facts the visitor gave, in core's own save-ticket shape (`kindTicket`);
  *   - `kind`, the retired word, derived from the type and asked of nobody,
  *     because production's receiver still reads it (item O14, the save-door
  *     patch of 25 Sep 2026);
@@ -35,9 +37,9 @@
  * ticket. A reload after the click starts over, as any reload does.
  */
 
-import { HER_PACKS, section } from './worksheet.generated';
-import { stateOf, type Sheet } from './worksheetState';
-import { pathwayKind } from './projectTypes.generated';
+import { factsWithKind } from '@waterbots/core/projectKinds';
+import { DRINKING_WATER_TYPE, PROJECT_TYPE_IDS, kindTicket, type KindTicket } from '@waterbots/core/record';
+import { HER_PACKS, section, stateOf, type Sheet } from '@waterbots/phoebe';
 import { HANDOFF_LANDING } from './site';
 import { WATER_METHOD_ID, WATER_METHOD_NAME, type Visit, type WaterEstimate } from './visit';
 
@@ -73,11 +75,18 @@ export interface SealField {
   source: '' | 'typed' | 'chat' | 'pin';
 }
 
+/** The retired word, derived from the type and asked of nobody; api/_handoff.ts says why it still rides. */
+function pathwayKind(type: string): '' | 'water' | 'both' | 'neither' {
+  if (type === '') return '';
+  if (type === DRINKING_WATER_TYPE) return 'both';
+  if (type === 'NONE') return 'neither';
+  return (PROJECT_TYPE_IDS as readonly string[]).includes(type) ? 'water' : '';
+}
+
 export interface SealBody {
   record: {
     does: SealField;
     type: SealField;
-    gsClass: SealField;
     stage: SealField;
     kind: SealField;
     place: SealField;
@@ -85,6 +94,8 @@ export interface SealBody {
     /** People served, as said — digits and a unit, or both blank. Ruling R4, 27 Sep 2026. */
     served: SealField & { unit: '' | 'people' | 'households' };
   };
+  /** The kind facts the visitor gave, as core's save ticket holds them, with the rules' version. */
+  kindTicket: KindTicket;
   pin: {
     hybasId: number;
     pfafId: number;
@@ -181,7 +192,7 @@ function waterAnswers(water: WaterEstimate): Record<string, string> {
 
 export function buildSeal(visit: Visit, sheet: Sheet, person: PersonAsk = NO_PERSON): SealBody {
   const { context, pin } = visit;
-  const field = (name: 'does' | 'type' | 'gsClass' | 'stage' | 'place' | 'name'): SealField => ({
+  const field = (name: 'does' | 'type' | 'stage' | 'place' | 'name'): SealField => ({
     value: context[name],
     source: context.provenance[name],
   });
@@ -190,7 +201,6 @@ export function buildSeal(visit: Visit, sheet: Sheet, person: PersonAsk = NO_PER
     record: {
       does: field('does'),
       type: field('type'),
-      gsClass: field('gsClass'),
       stage: field('stage'),
       /* Derived from the type, never asked. It carries the type's own source
          tag, because the type is the fact it is derived from. Where no type is
@@ -202,6 +212,8 @@ export function buildSeal(visit: Visit, sheet: Sheet, person: PersonAsk = NO_PER
         ? { value: String(context.served.count), unit: context.served.unit, source: context.provenance.served }
         : { value: '', unit: '', source: '' },
     },
+    /* Core's own save ticket, from the facts as the visitor gave them: only what they said, never a blank filled in. */
+    kindTicket: kindTicket({ facts: factsWithKind(context.kindFacts) }),
     pin: pin
       ? {
           hybasId: pin.hybasId,

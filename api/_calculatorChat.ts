@@ -16,8 +16,10 @@
  * THIRTY MESSAGES A DAY, per visitor, under each agent's own key (_cap.ts). A message is counted only when an answer is
  * actually delivered.
  *
- * NOTHING IS FILLED IN THAT THE VISITOR DID NOT GIVE (25 Nov 2026; api/_chatGuards.ts). A number or a kind of project that
- * is not in their own words here goes back to the agent once, in the same turn, and is taken out if it comes again.
+ * NOTHING IS FILLED IN THAT THE VISITOR DID NOT GIVE. From 26 Nov 2026 the guards are each package's own
+ * (`guardCalvinReply`, `guardVioletReply`): a number that is not in the visitor's own words here goes back to the agent
+ * once, in the same turn, and is taken out if it comes again, and the visitor is told. Nobody is asked for a kind of project:
+ * the source, the treatment and whether the water is safe are plain facts, and core works out from them what the agent does.
  *
  * WHAT COMES FROM THE BROWSER IS CHECKED. The screen's state lives there, so it crosses; every number and code in it is
  * read against its kind, and every string is one short line, so nothing in it can stand as a heading or an instruction.
@@ -26,13 +28,13 @@
 import Anthropic from '@anthropic-ai/sdk';
 import type { AgentTool } from '@waterbots/core/agent';
 import type { ChatSettings } from '@waterbots/core/chat';
+import { factsWithKind, readKindFacts } from '@waterbots/core/projectKinds';
+import { HOME_USES, PROJECT_TYPE_IDS, type ProjectFacts } from '@waterbots/core/record';
 import { fromWire, toWire } from './_answerShape.js';
-import { checkAnswer, kindSaid, nowDenied, refusedIn, sentBackNote, siteNote, type Checked, type TurnGuard } from './_chatGuards.js';
 import { countOneMessage, timeUntilReset, type CapAgent } from './_cap.js';
 import { readDoor } from './_door.js';
-import { FINISH_NOTE, leavesWaiting } from './_lookUp.js';
-import { PROJECT_TYPES } from './_projectTypes.generated.js';
-import { MIN_REPLY_CHARS, READING_GRADE, isDegenerateReply, isHardReply, isLongReply, readingGrade, replyLength } from './_reply.js';
+import { FINISH_NOTE, leavesWaiting } from '@waterbots/core/lookUp';
+import { MIN_REPLY_CHARS, READING_GRADE, isDegenerateReply, isHardReply, isLongReply, readingGrade, replyLength } from '@waterbots/core/reply';
 
 /** How long the relay waits for the model before giving up. Phoebe's 120 seconds, same reasoning. */
 const CALL_TIMEOUT_MS = 120_000;
@@ -53,9 +55,6 @@ interface AgentReply {
   values?: unknown;
 }
 
-/** The four kinds of drinking-water project, with the site's own plain line for each (api/_projectTypes.generated.ts). */
-const KINDS = PROJECT_TYPES.filter((type) => type.axis === 'carbon');
-
 /** What one turn carries beside its messages, as the browser sends it, checked. */
 export interface TurnParts {
   opened: boolean;
@@ -63,6 +62,23 @@ export interface TurnParts {
   introduce: boolean;
   leftForNow: string[];
   refused: string[];
+}
+
+/** What a package's guard gives back for one answer: the answer with what did not pass taken out, and the lines about it. */
+export interface Guarded<Reply> {
+  reply: Reply;
+  /** Sent back to the agent once, in the same turn. */
+  returned: string | null;
+  /** Shown to the visitor under the reply: what was taken out. */
+  told: string | null;
+  outOfRange: string | null;
+}
+
+/** The package's guard, read from the agent's screen as it stands. */
+export interface ReplyGuard<Reply> {
+  check: (reply: Reply, messages: readonly string[]) => Guarded<Reply>;
+  /** The message for a number the visitor gave that is out of range, read from their own words before the agent answers. */
+  outOfRange: (messages: readonly string[]) => string | null;
 }
 
 export interface CalculatorAgent<Reply extends AgentReply> {
@@ -73,11 +89,12 @@ export interface CalculatorAgent<Reply extends AgentReply> {
   system: string;
   openedTurn: string;
   schema: Record<string, unknown>;
-  tools: readonly AgentTool[];
+  /** The package's tools for the project's facts: the record decides them, never the model. */
+  tools: (facts: ProjectFacts) => readonly AgentTool[];
   /** The package's block for this turn, or null when what came cannot be read. */
-  block: (turn: unknown, parts: TurnParts) => string | null;
-  /** What the guards read of the agent's screen, or null when what came cannot be read. */
-  guard: (turn: unknown, leftForNow: readonly string[]) => TurnGuard | null;
+  block: (turn: unknown, parts: TurnParts, facts: ProjectFacts) => string | null;
+  /** The package's guard on the agent's screen as it stands, or null when what came cannot be read. */
+  guard: (turn: unknown, leftForNow: readonly string[], facts: ProjectFacts) => ReplyGuard<Reply> | null;
   read: (raw: unknown) => Reply | null;
 }
 
@@ -102,9 +119,20 @@ export function toolName(id: string): string {
   return id.slice(id.lastIndexOf('.') + 1);
 }
 
-/** The two lines about the project a turn carries for the guards: what it does, and the kind on the record. */
-export function readKindLines(turn: unknown): Pick<TurnGuard, 'does' | 'kind' | 'filedInChat'> {
-  return { does: line(pick(turn, 'does'), 280), kind: line(pick(turn, 'kind'), 120), filedInChat: pick(turn, 'filedInChat') === true };
+/**
+ * THE PROJECT'S FACTS a turn carries, as core's record holds them (core 0.4.0): the source, the treatment and whether the
+ * water is safe, the type, home use, and whether the project is already credited under V1.0. Only a word on core's list,
+ * or a yes or no, is kept; what the agent does with the project is worked out from them here, never taken from the browser.
+ */
+export function turnFacts(turn: unknown): ProjectFacts {
+  const source = { by: 'site intake' as const, note: 'the project record' };
+  const facts = factsWithKind(readKindFacts(pick(turn, 'kindFacts')), 'site intake');
+  const type = PROJECT_TYPE_IDS.find((id) => id === pick(turn, 'type'));
+  if (type) facts.type = { value: type, source };
+  const homeUse = HOME_USES.find((h) => h === pick(turn, 'homeUse'));
+  if (homeUse) facts.homeUse = { value: homeUse, source };
+  if (pick(turn, 'transition') === true) facts.creditedUnderV1 = { value: true, source };
+  return facts;
 }
 
 export async function answerCalculatorChat<Reply extends AgentReply>(req: Request, agent: CalculatorAgent<Reply>): Promise<Response> {
@@ -144,21 +172,21 @@ export async function answerCalculatorChat<Reply extends AgentReply>(req: Reques
   if (clean.length === 0 || clean[clean.length - 1].role !== 'user') return problem(400, 'No message was sent.');
 
   const leftForNow = lines(body.leftForNow, 20, 60);
-  const guard = agent.guard(body.turn, leftForNow);
+  const facts = turnFacts(body.turn);
+  const guard = agent.guard(body.turn, leftForNow, facts);
   if (guard === null) return problem(400, 'That request could not be read.');
   /* The visitor's own words in this chat, and nobody else's. */
   const said = clean.flatMap((m) => (m.role === 'user' && typeof m.content === 'string' && m.content !== agent.openedTurn ? [m.content] : []));
   /* A number they gave that is out of range: read here, so its message shows whether or not the agent sends it. */
-  const refusedNow = opened || said.length === 0 ? [] : refusedIn(said[said.length - 1], guard);
-  /* What they have said since does not fit the kind filed in a chat, so it comes off the record. */
-  const unfile = guard.filedInChat && guard.kind !== '' && nowDenied(kindSaid([guard.does, ...said]), guard.kind);
+  const outOfRange = opened || said.length === 0 ? null : guard.outOfRange(said);
+  const refusedNow = outOfRange ? [outOfRange] : [];
 
   const block = agent.block(body.turn, {
     opened: opened && clean.length === 1,
     introduce: opened && body.introduced !== true,
     leftForNow,
     refused: [...new Set([...lines(body.refused), ...refusedNow])],
-  });
+  }, facts);
   if (block === null) return problem(400, 'That request could not be read.');
 
   /* Shape first, then whether we can actually answer: the same order as the others. */
@@ -188,7 +216,8 @@ export async function answerCalculatorChat<Reply extends AgentReply>(req: Reques
   };
 
   const client = new Anthropic({ apiKey });
-  const tools: Anthropic.Tool[] = agent.tools.map((tool) => ({
+  const agentTools = agent.tools(facts);
+  const tools: Anthropic.Tool[] = agentTools.map((tool) => ({
     name: toolName(tool.id),
     description: tool.description,
     input_schema: tool.inputSchema as Anthropic.Tool.InputSchema,
@@ -209,7 +238,6 @@ export async function answerCalculatorChat<Reply extends AgentReply>(req: Reques
         system: [
           { type: 'text', text: agent.system, cache_control: { type: 'ephemeral' } },
           { type: 'text', text: block },
-          { type: 'text', text: siteNote(KINDS, unfile) },
           /* The same question again: this one has to end in an answer (api/_lookUp.ts), with what did not pass left out. */
           ...(again ? [{ type: 'text' as const, text: again }] : []),
         ],
@@ -223,7 +251,8 @@ export async function answerCalculatorChat<Reply extends AgentReply>(req: Reques
     );
 
   let response: Anthropic.Message;
-  let answer: Checked<Reply>;
+  let answer: Reply;
+  let told: string | null = null;
   for (;;) {
     try {
       try {
@@ -249,7 +278,7 @@ export async function answerCalculatorChat<Reply extends AgentReply>(req: Reques
     if (response.stop_reason === 'tool_use' && calls.length > 0) {
       rounds += 1;
       thread.push({ role: 'assistant', content: response.content });
-      thread.push({ role: 'user', content: await Promise.all(calls.map((call) => runTool(agent.tools, call))) });
+      thread.push({ role: 'user', content: await Promise.all(calls.map((call) => runTool(agentTools, call))) });
       continue;
     }
 
@@ -270,10 +299,11 @@ export async function answerCalculatorChat<Reply extends AgentReply>(req: Reques
       console.error(`${log}: returned an answer too short to be one — ${read.reply.trim().length} characters against a floor of ${MIN_REPLY_CHARS}`);
       return undelivered(problem(502, `${name} returned an answer with almost nothing in it. This is a fault on our side rather than something you did, and asking again usually works.`));
     }
-    /* A kind that has just come off the record is not filed again in the same breath. */
-    answer = checkAnswer(read, said, unfile ? { ...guard, kind: '' } : guard);
-    const sentBack = answer.numbers.length > 0 || answer.kind !== null;
-    if (sentBack) console.log(`${log}: ${answer.numbers.length} number(s) and ${answer.kind === null ? 'no' : 'a'} kind the visitor did not give, call ${pass}`);
+    const guarded = guard.check(read, said);
+    answer = guarded.reply;
+    told = guarded.told;
+    const sentBack = guarded.returned !== null;
+    if (sentBack) console.log(`${log}: a number the visitor did not give, call ${pass}`);
     /* ONE ANSWER, IN THE SAME TURN (24 Nov 2026, item 4). Wellington joins on a hand-back, so nobody waits there. */
     const waiting = read.handBack !== 'wellington' && leavesWaiting(read.reply);
     if (!waiting && !sentBack) break;
@@ -282,12 +312,12 @@ export async function answerCalculatorChat<Reply extends AgentReply>(req: Reques
       if (!waiting) break;
       return undelivered(problem(502, `${name} went to look something up and did not come back with an answer. This is a fault on our side rather than something you did, and asking again usually works.`));
     }
-    again = [...(waiting ? [FINISH_NOTE] : []), ...(sentBack ? [sentBackNote(answer)] : [])].join('\n\n');
+    again = [...(waiting ? [FINISH_NOTE] : []), ...(guarded.returned !== null ? [guarded.returned] : [])].join('\n\n');
     pass += 1;
   }
 
   /* Length and reading level are logged, never blocked (agent rules 1 and 2), as for the others. */
-  const { reply } = answer.answer;
+  const { reply } = answer;
   if (isLongReply(reply, agent.settings.reply)) {
     const { sentences, chars } = replyLength(reply);
     console.log(`${log}: reply ran long — ${sentences} sentences, ${chars} characters`);
@@ -295,13 +325,10 @@ export async function answerCalculatorChat<Reply extends AgentReply>(req: Reques
   if (isHardReply(reply)) console.log(`${log}: reply read above grade ${READING_GRADE.average} — grade ${readingGrade(reply)}`);
 
   return json(200, {
-    ...answer.answer,
+    ...answer,
     refused: refusedNow,
-    /* What was taken out, for the line under the reply. */
-    notFilled: answer.numbers.flatMap((n) => (n.value === null ? [] : [n.value])),
-    notCleared: answer.numbers.some((n) => n.value === null),
-    notFiled: answer.kind !== null,
-    unfile,
+    /* What was taken out, for the line under the reply: the package's own words. */
+    told: told ?? '',
     usage: {
       cacheRead: response.usage.cache_read_input_tokens ?? 0,
       cacheWrite: response.usage.cache_creation_input_tokens ?? 0,

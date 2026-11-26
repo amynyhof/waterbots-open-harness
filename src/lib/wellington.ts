@@ -20,10 +20,9 @@ import { handoffButton, onward, type Ending } from './steps';
 import type { Surface } from './surfaces';
 import { carriedSheet } from './phoebeClient';
 import type { Learned, Visit } from './visit';
-import type { MapForWellington, NextStep } from './projectRecord';
+import type { MapNote, NextStep } from './projectRecord';
 import { askWellington, type FoundSheet, type VisitRecord, type WellingtonRoute } from './wellingtonClient';
-import { HER_PACKS } from './worksheet.generated';
-import type { Sheet } from './worksheetState';
+import { HER_PACKS, type Sheet } from '@waterbots/phoebe';
 
 export const WELLINGTON: AgentHost = {
   name: 'Wellington',
@@ -106,13 +105,13 @@ function recordFrom(visit: Visit): VisitRecord | null {
   const record: VisitRecord = {
     does: visit.context.does.trim(),
     type: visit.context.type,
-    gsClass: visit.context.gsClass,
+    kindFacts: visit.context.kindFacts,
     stage: visit.context.stage,
     place: visit.context.place.trim(),
     name: visit.context.name.trim(),
     ...(visit.context.served ? { served: visit.context.served } : {}),
   };
-  return record.does || record.type || record.stage || record.place || record.name || record.served ? record : null;
+  return record.does || record.type || record.stage || record.place || record.name || record.served || Object.keys(record.kindFacts).length > 0 ? record : null;
 }
 
 /**
@@ -129,7 +128,7 @@ export function wellingtonAsk(
   /** Opens a step, for the "Meet <name>" button at a handoff (W17). */
   onNavigate?: (surface: Surface) => void,
   /** The agent map as it stands, read at send time (J4). */
-  getMap?: () => MapForWellington,
+  getMap?: () => MapNote,
   /** His hand-off line for a desk the visitor opened by another way than his button (24 Nov 2026). */
   onHandedOver?: (to: Surface, line: string) => void,
   /** Sends a chip's words as the visitor's own message on his desk (24 Nov 2026). */

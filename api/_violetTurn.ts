@@ -6,12 +6,11 @@
  * In its own module with no SDK, so the check script can load it compiled as the platform compiles it.
  */
 
-import { HOME_USES, PROJECT_TYPE_IDS, type ProjectFacts } from '@waterbots/core/record';
-import { TECHNOLOGY_CLASSES } from '@waterbots/core/technologyLabels';
-import { computeD3, fillViolet, violetAsks, violetChatContext, type D3Input, type VioletAnswer } from '@waterbots/violet';
+import type { ProjectFacts } from '@waterbots/core/record';
+import { computeD3, guardVioletReply, violetAsks, violetChatContext, type D3Input, type VioletReply } from '@waterbots/violet';
 import { AGENT_RULES_MD } from './_agentRules.generated.js';
 import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
-import type { TurnGuard } from './_chatGuards.js';
+import type { ReplyGuard, TurnParts } from './_calculatorChat.js';
 import { VIOLET_KNOWLEDGE_MD, VIOLET_PROMPT_MD } from './_violetPrompt.generated.js';
 
 export const VIOLET_SYSTEM_PROMPT = [AGENT_RULES_MD, VIOLET_PROMPT_MD, VIOLET_KNOWLEDGE_MD, BUILD_STATUS_SHEET_MD].map((part) => part.trim()).join('\n\n') + '\n';
@@ -44,27 +43,7 @@ export function readD3Input(value: unknown): D3Input | null {
   return input as unknown as D3Input;
 }
 
-/** The kind of project, from the closed lists. The label is the site's own for it. */
-function readKind(value: unknown): ProjectFacts {
-  const v = object(value);
-  const source = { by: 'site intake' as const, note: 'the project record' };
-  const facts: ProjectFacts = {};
-  const label = oneLine(v.technology, 120);
-  const code = v.code === 'CWS' || v.code === 'HWT' ? v.code : undefined;
-  if (label) facts.technology = { label, ...(code ? { code } : {}), source };
-  const type = PROJECT_TYPE_IDS.find((id) => id === v.type);
-  if (type) facts.type = { value: type, source };
-  const technologyClass = TECHNOLOGY_CLASSES.find((id) => id === v.technologyClass);
-  if (technologyClass) facts.technologyClass = { value: technologyClass, source };
-  const homeUse = HOME_USES.find((h) => h === v.homeUse);
-  if (homeUse) facts.homeUse = { value: homeUse, source };
-  return facts;
-}
-
-export function violetBlock(
-  turn: unknown,
-  parts: { opened: boolean; introduce: boolean; leftForNow: string[]; refused: string[] }
-): string | null {
+export function violetBlock(turn: unknown, parts: TurnParts, facts: ProjectFacts): string | null {
   const t = object(turn);
   const input = readD3Input(t.input);
   if (!input) return null;
@@ -75,7 +54,7 @@ export function violetBlock(
       input,
       result: computeD3(input),
       refusals: Array.isArray(t.refusals) ? t.refusals.map((r) => oneLine(r, 200)).filter((r) => r !== '').slice(0, 8) : [],
-      facts: readKind(t.facts),
+      facts,
       chosen: t.chosen === true,
       opened: parts.opened,
       introduce: parts.introduce,
@@ -88,38 +67,18 @@ export function violetBlock(
   }
 }
 
-/** One number, in the shape her answer takes it. */
-function answerWith(field: string, value: number): VioletAnswer {
-  if (field.startsWith('population.')) return { population: { [field.slice('population.'.length)]: value } };
-  if (field === LITRES) return { litresPerPersonPerDay: { value, source: 'the visitor' } };
-  return { [field]: value };
-}
-
-const LITRES = 'litresPerPersonPerDay.value';
-const ASKED: readonly string[] = [...NUMBERS, 'population.served', 'population.householdSize'];
-
-/** What the guards read of her screen. Every range and every message is her package's. */
-export function violetGuard(turn: unknown, leftForNow: readonly string[], lines: Pick<TurnGuard, 'does' | 'kind' | 'filedInChat'>): TurnGuard | null {
+/**
+ * THE GUARDS ON HER NUMBERS are her package's (`guardVioletReply`, violet 0.8.0): a number the visitor did not give here
+ * goes back to her once, then comes out, and the visitor is told; a number they gave out of range has its message.
+ */
+export function violetGuard(turn: unknown, leftForNow: readonly string[], facts: ProjectFacts): ReplyGuard<VioletReply> | null {
   const t = object(turn);
   const input = readD3Input(t.input);
   if (!input) return null;
   try {
-    const next = violetAsks(input, t.chosen === true, readKind(t.facts)).find((ask) => !leftForNow.includes(ask.key));
-    return {
-      ...lines,
-      asked: next && ASKED.includes(next.key) ? next.key : null,
-      held: (field) => {
-        const value = field.split('.').reduce<unknown>((at, key) => object(at)[key], input);
-        return typeof value === 'number' || value === null ? value : undefined;
-      },
-      refuses: (field, value) => fillViolet(input, answerWith(field, value)).refused[0]?.message ?? null,
-      named: {
-        days: 'daysOfAccessPerYear',
-        'hours a year': 'operatingHoursPerYear',
-        'litres a person': LITRES,
-        'people a household': 'population.householdSize',
-      },
-    };
+    const asked = violetAsks(input, t.chosen === true, facts).find((ask) => !leftForNow.includes(ask.key))?.key;
+    const check = (reply: VioletReply, messages: readonly string[]) => guardVioletReply(reply, { input, messages, ...(asked ? { asked } : {}) });
+    return { check, outOfRange: (messages) => check({ reply: '', handBack: 'none', leftForNow: [], facts: {}, values: {} }, messages).outOfRange };
   } catch {
     return null;
   }

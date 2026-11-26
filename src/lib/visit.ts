@@ -24,17 +24,22 @@
  * else, and this site keeps no copy.
  */
 
-import { HER_PACKS, section, verdictRows } from './worksheet.generated';
+import { factsWithKind, type GivenKindFacts } from '@waterbots/core/projectKinds';
+import type { ProjectStage as ProjectStageId, ProjectTypeId } from '@waterbots/core/record';
 import {
+  HER_PACKS,
+  classFor,
   contextFor,
   counts,
-  packDone,
+  nothingLeftToAsk as nothingLeftOn,
+  onePathDone as onePathDoneOn,
   pathwayState,
   readiness,
+  section,
   stateOf,
+  verdictRows,
   type Sheet,
-} from './worksheetState';
-import { DRINKING_WATER_TYPE, type GsClassId, type ProjectStageId, type ProjectTypeId } from './projectTypes.generated';
+} from '@waterbots/phoebe';
 import type { Surface } from './surfaces';
 
 /* --------------------------------------------------------------------------
@@ -54,8 +59,18 @@ import type { Surface } from './surfaces';
  * and stay dead.
  */
 export type ProjectType = '' | ProjectTypeId;
-export type ProjectClass = '' | GsClassId;
 export type ProjectStage = '' | ProjectStageId;
+
+/**
+ * WHERE THE WATER COMES FROM, WHETHER IT IS TREATED AND WHERE, AND WHETHER IT IS SAFE (26 Nov 2026, core 0.4.0). Plain
+ * facts, in core's words (`@waterbots/core/projectKinds`). Nobody is asked for a kind or a class: core works out how the
+ * project is counted from these. Whoever the visitor tells, the last word they said stands, and every reading is worked
+ * out again from it (RULINGS.md, section 4).
+ */
+export type KindFacts = GivenKindFacts;
+
+/** The agents a visitor may tell a kind fact to. */
+export type KindTeller = 'wellington' | 'calvin' | 'violet';
 
 /**
  * Where a context field came from. Provenance stays honest on the card:
@@ -101,8 +116,6 @@ export interface Told {
   country?: string;
   population?: { served?: number; mode?: ServedUnit; householdSize?: number };
   pumpPower?: 'hand' | 'gravity' | 'solar' | 'diesel' | 'grid';
-  /** The kind of project filed from this chat, so it can come off the record again: a class, or a type (src/lib/told.ts). */
-  kind?: string;
 }
 export type Teller = 'calvin' | 'violet';
 
@@ -118,7 +131,10 @@ export interface VisitContext {
   /** Where it is, in their words — or the pinned basin's, if they left it blank. */
   place: string;
   type: ProjectType;
-  gsClass: ProjectClass;
+  /** The source, the treatment and whether the water is safe, as the visitor said them. Empty until they say. */
+  kindFacts: KindFacts;
+  /** Who each kind fact was said to, for the record's source. Left out: Wellington. */
+  kindFactsBy?: Partial<Record<keyof KindFacts, KindTeller>>;
   stage: ProjectStage;
   /** People served, as the visitor said it. Null until they say. */
   served: Served | null;
@@ -129,7 +145,6 @@ export interface VisitContext {
     name: Provenance;
     place: Provenance;
     type: Provenance;
-    gsClass: Provenance;
     stage: Provenance;
     served: Provenance;
   };
@@ -145,7 +160,8 @@ export function somethingOnRecord(visit: { context: VisitContext; pin: unknown }
   return (
     Boolean(visit.pin) ||
     c.served !== null ||
-    [c.does, c.name, c.place, c.type, c.gsClass, c.stage].some((v) => String(v).trim() !== '')
+    Object.keys(c.kindFacts).length > 0 ||
+    [c.does, c.name, c.place, c.type, c.stage].some((v) => String(v).trim() !== '')
   );
 }
 
@@ -154,19 +170,18 @@ export const EMPTY_CONTEXT: VisitContext = {
   name: '',
   place: '',
   type: '',
-  gsClass: '',
+  kindFacts: {},
   stage: '',
   served: null,
-  provenance: { does: '', name: '', place: '', type: '', gsClass: '', stage: '', served: '' },
+  provenance: { does: '', name: '', place: '', type: '', stage: '', served: '' },
 };
 
 /** What Wellington learned this turn, from the visitor's own words and their yes. */
-export interface Learned {
+export interface Learned extends KindFacts {
   does?: string;
   name?: string;
   place?: string;
   type?: ProjectTypeId;
-  gsClass?: GsClassId;
   stage?: ProjectStageId;
   served?: Served;
   homeUse?: HomeUse;
@@ -193,7 +208,7 @@ export function typedContext(context: VisitContext, field: 'name' | 'place', val
  */
 export function learnedContext(context: VisitContext, learned: Learned): VisitContext {
   let next = context;
-  const take = (field: 'does' | 'name' | 'place' | 'type' | 'gsClass' | 'stage', value: string) => {
+  const take = (field: 'does' | 'name' | 'place' | 'type' | 'stage', value: string) => {
     if (next.provenance[field] === 'typed') return;
     next = {
       ...next,
@@ -208,12 +223,7 @@ export function learnedContext(context: VisitContext, learned: Learned): VisitCo
   const held = next.provenance.place === 'chat' ? next.place.trim().toLowerCase() : '';
   if (learned.place && !(held !== heard && held.includes(heard))) take('place', learned.place);
   if (learned.type) take('type', learned.type);
-  /* A class is a fact about a drinking-water project and nothing else: it
-     lands only beside C-19, and a type that is not C-19 clears any class. */
-  if (next.type !== DRINKING_WATER_TYPE && next.gsClass) {
-    next = { ...next, gsClass: '', provenance: { ...next.provenance, gsClass: '' } };
-  }
-  if (learned.gsClass && next.type === DRINKING_WATER_TYPE) take('gsClass', learned.gsClass);
+  next = withKind(next, learned);
   if (learned.stage) take('stage', learned.stage);
   if (learned.served) {
     next = { ...next, served: learned.served, provenance: { ...next.provenance, served: 'chat' } };
@@ -225,6 +235,30 @@ export function learnedContext(context: VisitContext, learned: Learned): VisitCo
     next = rest;
   }
   return next;
+}
+
+/** The kind facts a turn gave, in place of what the visit held: the last word the visitor said stands. */
+export function withKind(context: VisitContext, given: KindFacts, by: KindTeller = 'wellington'): VisitContext {
+  const said = Object.fromEntries(
+    (['waterSource', 'treatment', 'sourceSafe', 'outThreeMonths', 'repairPlanned', 'noRepairThreeMonths', 'publicPiped', 'pipedShownUnsafe'] as const)
+      .filter((key) => given[key] !== undefined)
+      .map((key) => [key, given[key]])
+  ) as KindFacts;
+  if (Object.keys(said).length === 0 || Object.entries(said).every(([key, value]) => context.kindFacts[key as keyof KindFacts] === value)) return context;
+  const kindFactsBy = { ...context.kindFactsBy };
+  for (const key of Object.keys(said) as (keyof KindFacts)[]) {
+    if (by === 'wellington') delete kindFactsBy[key];
+    else kindFactsBy[key] = by;
+  }
+  return { ...context, kindFacts: { ...context.kindFacts, ...said }, kindFactsBy };
+}
+
+/**
+ * THE CLASS PHOEBE'S ROWS ARE SORTED BY, in her packs' word, from the facts as they stand: her package's own reading of the
+ * kind core works out (`classFor`). "" while the facts name none. Nobody is asked for it.
+ */
+export function herClass(visit: { context: Pick<VisitContext, 'kindFacts'> }): string {
+  return classFor({ facts: factsWithKind(visit.context.kindFacts) });
 }
 
 /**
@@ -375,19 +409,11 @@ export const EMPTY_VISIT: Visit = {
  * be a wait for something that is never coming.
  */
 export function eligibilityDone(visit: Visit, sheet: Sheet): boolean {
-  return onePathDone(sheet, visit.context.gsClass);
+  return onePathDoneOn(sheet, herClass(visit));
 }
 
-/** One path she reads is done or closed. */
-export function onePathDone(sheet: Sheet, gsClass: string): boolean {
-  const packs = HER_PACKS.filter((pack) => section(pack) !== undefined);
-  if (packs.length === 0) return false;
-  return packs.some((pack) => {
-    const context = contextFor(sheet, pack, gsClass);
-    if (pathwayState(sheet, pack, context) === 'does-not-apply') return true;
-    return packDone(sheet, pack, context);
-  });
-}
+/** One path she reads is done or closed: her package's rule. */
+export const onePathDone = onePathDoneOn;
 
 /**
  * HER PART IS DONE, as the agent map reads it (J4, 23 Nov 2026): `eligibilityDone`, and she has looked at every
@@ -403,17 +429,7 @@ export function phoebeDone(visit: Visit, sheet: Sheet): boolean {
  * Every question she asks has an answer, on every pathway still open. Stricter than `phoebeDone`: with this, there is
  * nothing left for her to ask, so Wellington comes whether or not her answer handed back (24 Nov 2026).
  */
-export function nothingLeftToAsk(sheet: Sheet, gsClass: string): boolean {
-  const packs = HER_PACKS.filter((pack) => section(pack) !== undefined);
-  return (
-    packs.length > 0 &&
-    packs.every((pack) => {
-      const context = contextFor(sheet, pack, gsClass);
-      /* A path that does not apply, or with a row that stops it, is closed: she asks nothing more there. */
-      return pathwayState(sheet, pack, context) === 'does-not-apply' || readiness(sheet, pack, context) === 'likely-not' || packDone(sheet, pack, context);
-    })
-  );
-}
+export const nothingLeftToAsk = nothingLeftOn;
 
 /** Opening Eligibility during learn starts that stage. Later stages stay put. */
 export function openedEligibility(visit: Visit): Visit {
@@ -558,7 +574,7 @@ export function deskRows(visit: Visit, sheet: Sheet): DeskRow[] {
   for (const pack of HER_PACKS) {
     const part = section(pack);
     if (!part) continue;
-    const context = contextFor(sheet, pack, visit.context.gsClass);
+    const context = contextFor(sheet, pack, herClass(visit));
     const state = pathwayState(sheet, pack, context);
     const tally = counts(sheet, pack, context);
     const looked = verdictRows(pack, context).filter(
@@ -717,7 +733,7 @@ function quantifyInvite(): DeskRow {
  */
 export function pathwayAllowsQuantify(visit: Visit, sheet: Sheet): boolean {
   return HER_PACKS.filter((pack) => section(pack) !== undefined).some((pack) => {
-    const context = contextFor(sheet, pack, visit.context.gsClass);
+    const context = contextFor(sheet, pack, herClass(visit));
     if (pathwayState(sheet, pack, context) === 'does-not-apply') return false;
     const read = readiness(sheet, pack, context);
     return read === 'likely-eligible' || read === 'not-enough-known';
@@ -778,7 +794,7 @@ export function inviteSurface(visit: Visit): Surface | null {
 export function journeyProgress(visit: Visit, sheet: Sheet): Record<'eligibility' | 'partners' | 'quantify', boolean> {
   return {
     eligibility: HER_PACKS.some((pack) =>
-      verdictRows(pack, contextFor(sheet, pack, visit.context.gsClass)).some(
+      verdictRows(pack, contextFor(sheet, pack, herClass(visit))).some(
         (row) => stateOf(sheet, pack, row.id).state !== 'unchecked'
       )
     ),
@@ -803,7 +819,7 @@ const SHORT_PATH: Record<string, string> = { water: 'water', carbon: 'carbon' };
  * A path that does not apply and a path with a Blocked row are both unlikely.
  */
 export function pathStatus(visit: Visit, sheet: Sheet, pack: string): 'likely' | 'unlikely' | 'more to learn' | 'not started' {
-  const context = contextFor(sheet, pack, visit.context.gsClass);
+  const context = contextFor(sheet, pack, herClass(visit));
   if (pathwayState(sheet, pack, context) === 'does-not-apply') return 'unlikely';
   const read = readiness(sheet, pack, context);
   if (read === 'likely-not') return 'unlikely';

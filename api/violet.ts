@@ -5,8 +5,8 @@
  * NAMED METHOD EXPORTS, NOT A DEFAULT EXPORT — load-bearing; scripts/check-api-exports.mjs fails the build otherwise.
  */
 
-import { readVioletAnswer, VIOLET_ANSWER_SCHEMA, VIOLET_CHAT, VIOLET_OPENED, VIOLET_TOOLS } from '@waterbots/violet';
-import { answerCalculatorChat, problem, readKindLines } from './_calculatorChat.js';
+import { readVioletAnswer, VIOLET_ANSWER_SCHEMA, VIOLET_CHAT, VIOLET_OPENED, violetToolsFor } from '@waterbots/violet';
+import { answerCalculatorChat, problem } from './_calculatorChat.js';
 import { VIOLET } from './_cap.js';
 import { violetBlock, violetGuard, VIOLET_SYSTEM_PROMPT } from './_violetTurn.js';
 
@@ -25,9 +25,10 @@ export async function POST(req: Request): Promise<Response> {
     system: VIOLET_SYSTEM_PROMPT,
     openedTurn: VIOLET_OPENED,
     schema: VIOLET_ANSWER_SCHEMA,
-    tools: VIOLET_TOOLS,
+    /* The record decides her tool, never the model (violet 0.8.0). */
+    tools: violetToolsFor,
     block: violetBlock,
-    guard: (turn, leftForNow) => violetGuard(turn, leftForNow, readKindLines(turn)),
+    guard: violetGuard,
     read: readVioletAnswer,
   });
 }

@@ -6,7 +6,7 @@
  * ruling the same day, a section of modules that are seeking partners.
  *
  * NOTHING IS TYPED TWICE. Phoebe's card reads her committed card sets
- * (src/lib/phoebeCards.ts); Calvin's three read the method pack registry
+ * (her package (@waterbots/phoebe)); Calvin's three read the method pack registry
  * (src/lib/methodPacks.ts), one card per live pack, so a pack added to the
  * registry has a card here the same day; Bridget's names the map's two
  * datasets, which the licences module cites. The only words that live here
@@ -35,7 +35,7 @@
 import { crewMember, type CrewMember } from './crew';
 import { WATER_D3_LISTING } from './methodPacks';
 import { WATER_METHOD_ID } from './visit';
-import { CRITERIA } from './phoebeCards';
+import { CRITERIA } from '@waterbots/phoebe';
 
 /**
  * A MODULE'S STAGE AND OWNER — maintainer's rulings, 28 Oct 2026. The owner

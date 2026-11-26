@@ -38,11 +38,11 @@ export class BridgetError extends Error {}
 
 export async function askBridget(
   history: { role: 'user' | 'assistant'; content: string }[],
-  visit: { place: string; phone: boolean; pin: MapPin | null; quantifyNext: boolean; record?: CarriedRecord | null },
+  visit: { place: string; phone: boolean; pin: MapPin | null; record?: CarriedRecord | null },
   signal?: AbortSignal,
   opts?: { opened?: boolean; introduced?: boolean; pinned?: boolean; gps?: 'found' | 'outside' | 'failed' }
 ): Promise<BridgetAnswer> {
-  const body: Record<string, unknown> = { messages: history, phone: visit.phone, quantifyNext: visit.quantifyNext, door: 'free-site' };
+  const body: Record<string, unknown> = { messages: history, phone: visit.phone, door: 'free-site' };
   if (visit.record) body.record = visit.record;
   if (visit.place.trim()) body.place = visit.place.trim();
   if (visit.pin) {

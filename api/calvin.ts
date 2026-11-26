@@ -5,8 +5,8 @@
  * NAMED METHOD EXPORTS, NOT A DEFAULT EXPORT — load-bearing; scripts/check-api-exports.mjs fails the build otherwise.
  */
 
-import { CALVIN_ANSWER_SCHEMA, CALVIN_CHAT, CALVIN_OPENED, GS4GG_CARBON_TOOLS, readCalvinAnswer } from '@waterbots/calvin/agent';
-import { answerCalculatorChat, problem, readKindLines } from './_calculatorChat.js';
+import { CALVIN_ANSWER_SCHEMA, CALVIN_CHAT, CALVIN_OPENED, calvinToolsFor, readCalvinAnswer } from '@waterbots/calvin/agent';
+import { answerCalculatorChat, problem } from './_calculatorChat.js';
 import { calvinBlock, calvinGuard, CALVIN_SYSTEM_PROMPT } from './_calvinTurn.js';
 import { CALVIN } from './_cap.js';
 
@@ -25,9 +25,10 @@ export async function POST(req: Request): Promise<Response> {
     system: CALVIN_SYSTEM_PROMPT,
     openedTurn: CALVIN_OPENED,
     schema: CALVIN_ANSWER_SCHEMA,
-    tools: GS4GG_CARBON_TOOLS,
+    /* The record decides his tools, never the model (calvin 0.8.0). */
+    tools: calvinToolsFor,
     block: calvinBlock,
-    guard: (turn, leftForNow) => calvinGuard(turn, leftForNow, readKindLines(turn)),
+    guard: calvinGuard,
     read: readCalvinAnswer,
   });
 }

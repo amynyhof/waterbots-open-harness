@@ -107,7 +107,6 @@ export default function BridgetScreen({
   onPin,
   place,
   phone,
-  quantifyNext,
   visible,
   invite = '',
   waiting = false,
@@ -129,8 +128,6 @@ export default function BridgetScreen({
   place: string;
   onNavigate: (surface: Surface) => void;
   phone: boolean;
-  /** True when the right rail offers Quantify: then Calvin is next after the pin, not Wellington. */
-  quantifyNext: boolean;
   /** True while Partners is the visible step — her first answer runs then, not on mount. */
   visible: boolean;
   /**
@@ -194,7 +191,7 @@ export default function BridgetScreen({
         role: role === 'agent' ? ('assistant' as const) : ('user' as const),
         content: text,
       })),
-      { place, phone, pin: found?.kind === 'found' ? found.pin : pin, quantifyNext, record },
+      { place, phone, pin: found?.kind === 'found' ? found.pin : pin, record },
       signal,
       {
         opened: meta?.opened === true,

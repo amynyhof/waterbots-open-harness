@@ -6,69 +6,21 @@
  * could be anything else is not read: it has to look like a position (a decimal point, a degree sign or a compass
  * letter on both) and lie on the globe.
  *
+ * THE READING IS BRIDGET'S PACKAGE'S (`readGps`, `basinContaining`, @waterbots/bridget 0.1.0, 26 Nov 2026). The map's data
+ * stays with this site until the rights check, so the basins are handed in from here.
+ *
  * NO NEW DATA. The basin is found in the two files the map already draws: the detailed basins (Level 6, WRI's published
  * figures) and the water-stress lookup. A point in no basin, or a layer that could not be loaded, is said as it is.
  */
 
-import type { Geometry } from 'geojson';
+import { basinContaining, type Point } from '@waterbots/bridget';
 import { DETAIL_LAYER, featureBbox, type Bbox } from './basins';
 import { loadBasins } from './loadBasins';
 import { STRESS_URL, styleFor, type StressDocument } from './stress';
 import type { MapPin } from './visit';
 
-export interface Point {
-  lat: number;
-  lon: number;
-}
-
-/** One number of a position: degrees, perhaps minutes and seconds, perhaps a compass letter before or after. */
-const PART =
-  "([NSEW])?\\s*([+-−]?\\d{1,3}(?:\\.\\d+)?)\\s*(?:(°|deg(?:rees)?)\\s*(?:(\\d{1,2}(?:\\.\\d+)?)\\s*['’′]\\s*(?:(\\d{1,2}(?:\\.\\d+)?)\\s*(?:\"|”|″|''))?)?)?\\s*([NSEW])?(?![\\w°])";
-const PAIR = new RegExp(`(?<![\\w.])${PART}[\\s,;/]+(?:(?:and|lon|long|longitude|lng)\\s*[:=]?\\s*)?${PART}`, 'i');
-
-function readPart(m: RegExpMatchArray, at: number): { value: number; axis: 'lat' | 'lon' | null; marked: boolean } | null {
-  const [before, whole, degree, minutes, seconds, after] = m.slice(at, at + 6);
-  const letter = (before ?? after ?? '').toUpperCase();
-  let value = Number(whole.replace('−', '-'));
-  if (!Number.isFinite(value)) return null;
-  const negative = value < 0 || whole.trim().startsWith('-') || whole.trim().startsWith('−');
-  value = Math.abs(value) + Number(minutes ?? 0) / 60 + Number(seconds ?? 0) / 3600;
-  if (negative || letter === 'S' || letter === 'W') value = -value;
-  const axis = letter === 'N' || letter === 'S' ? 'lat' : letter === 'E' || letter === 'W' ? 'lon' : null;
-  return { value, axis, marked: letter !== '' || degree !== undefined || /\.\d/.test(whole) };
-}
-
-/** The one position in a message, or null when there is none. Latitude comes first unless the letters say otherwise. */
-export function readGps(message: string): Point | null {
-  const m = message.match(PAIR);
-  if (!m) return null;
-  const a = readPart(m, 1);
-  const b = readPart(m, 7);
-  if (!a || !b || !a.marked || !b.marked) return null;
-  if (a.axis !== null && a.axis === b.axis) return null;
-  const swapped = a.axis === 'lon' || b.axis === 'lat';
-  const point = swapped ? { lat: b.value, lon: a.value } : { lat: a.value, lon: b.value };
-  return Math.abs(point.lat) <= 90 && Math.abs(point.lon) <= 180 ? point : null;
-}
-
-/** Whether a point is inside one ring, by counting the edges a line to the west of it crosses. */
-function inRing([lon, lat]: [number, number], ring: number[][]): boolean {
-  let inside = false;
-  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-    const [xi, yi] = ring[i];
-    const [xj, yj] = ring[j];
-    if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
-  }
-  return inside;
-}
-
-/** Whether a point is inside a shape: in an outer ring and in none of its holes. */
-export function inGeometry(point: Point, geometry: Geometry | null): boolean {
-  if (!geometry) return false;
-  const at: [number, number] = [point.lon, point.lat];
-  const polygons = geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.type === 'MultiPolygon' ? geometry.coordinates : [];
-  return polygons.some(([outer, ...holes]) => outer !== undefined && inRing(at, outer) && !holes.some((hole) => inRing(at, hole)));
-}
+export { readGps } from '@waterbots/bridget';
+export type { Point };
 
 export type Found = { kind: 'found'; pin: MapPin; box: Bbox } | { kind: 'outside' } | { kind: 'failed' };
 
@@ -82,7 +34,7 @@ export async function basinAt(point: Point): Promise<Found> {
         return (await res.json()) as StressDocument;
       }),
     ]);
-    const hit = basins.features.find((feature) => inGeometry(point, feature.geometry));
+    const hit = basinContaining(point, basins.features);
     if (!hit) return { kind: 'outside' };
     const p = hit.properties;
     return {

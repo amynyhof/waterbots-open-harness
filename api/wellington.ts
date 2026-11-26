@@ -18,23 +18,57 @@
  * abstention, and only those are written to the shared log, marked as his —
  * maintainer's ruling C, 2 Sep 2026.
  *
- * THE PROMPT IS CACHED. It is small — the base rules, the roster, his region —
- * and identical on every request, so it carries a cache breakpoint. Nothing
- * volatile may be added above that breakpoint. The visit record rides as a
- * second system block AFTER that breakpoint, the way Phoebe's does, so only
- * this small block changes between visitors.
+ * THE PROMPT IS CACHED. It is identical on every request, so it carries a
+ * cache breakpoint. Nothing volatile may be added above that breakpoint. The
+ * visit record rides as a second system block AFTER that breakpoint, the way
+ * Phoebe's does, so only this small block changes between visitors.
+ *
+ * HE IS HIS PACKAGE'S FROM 26 NOV 2026 (@waterbots/wellington 0.1.0, J5): his
+ * instructions for the Free site (`wellingtonInstructions`), the blocks for one
+ * turn (`wellingtonBlocks`), his answer's shape and its checks
+ * (`checkWellingtonTurn`), his reading of the agent map and his step notes.
+ * This site hands in its shared texts, and keeps the call to the model and its
+ * key, the daily limits and what a visitor is told when something fails. He
+ * asks for no kind and no class: he gathers where the water comes from, whether
+ * it is treated and where, and whether it is safe, as plain facts.
  */
 
 import Anthropic from '@anthropic-ai/sdk';
-import { checkEntry } from '@waterbots/core/record';
+import { MIN_REPLY_CHARS, READING_GRADE, isHardReply, readingGrade } from '@waterbots/core/reply';
+import { cardWordsIn } from '@waterbots/phoebe';
+import {
+  JOINED,
+  WELLINGTON_RESPONSE_SCHEMA,
+  checkWellingtonTurn,
+  openedLine,
+  readMap,
+  refusedCount,
+  wellingtonBlocks,
+  wellingtonInstructions,
+  type Joined,
+  type Opened,
+  type TurnInput,
+  type WellingtonAnswer,
+} from '@waterbots/wellington';
 import { recordAbstention } from './_abstentions.js';
-import { JOINED, afterHomeUse, asksHomeUse, guardRoute, mapBlock, readMap, saysAllDone, stepEndNote, stepEndRoute, type Joined } from './_agentMap.js';
+import { AGENT_RULES_MD } from './_agentRules.generated.js';
 import { CARRIED, WELLINGTON, countOneMessage, timeUntilReset } from './_cap.js';
-import { FINISH_NOTE, leavesWaiting } from './_lookUp.js';
-import { phoebeFound, readRecord, readSheet, readStage, stageBlock, visitBlock } from './_record.js';
-import { MIN_REPLY_CHARS, READING_GRADE, cardWordsIn, isDegenerateReply, isHardReply, readingGrade } from './_reply.js';
-import { validate, type Answer } from './_wellingtonAnswer.js';
-import { WELLINGTON_RESPONSE_SCHEMA, WELLINGTON_SYSTEM_PROMPT } from './_wellingtonPrompt.js';
+import { BEFORE_AFTER_MD, PLAIN_WORDS_MD } from './_plainWords.generated.js';
+import { AGENT_PRIMER_MD } from './_primer.generated.js';
+import { foundPathways, readCarried, readSheet } from './_record.js';
+import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
+
+/**
+ * HIS INSTRUCTIONS, his package's for the Free site, built once at module load from the texts this site holds: core's
+ * agent rules, the roster part of the primer, the plain-words list and its examples, and the build status sheet.
+ */
+export const WELLINGTON_SYSTEM_PROMPT = wellingtonInstructions('free-site', {
+  agentRules: AGENT_RULES_MD,
+  roster: AGENT_PRIMER_MD,
+  plainWords: PLAIN_WORDS_MD,
+  beforeAfter: BEFORE_AFTER_MD,
+  statusSheet: BUILD_STATUS_SHEET_MD,
+});
 
 /**
  * The same tier as Phoebe — Claude Opus 5 — by the maintainer's ruling B of
@@ -98,30 +132,6 @@ export async function GET(): Promise<Response> {
   return problem(405, 'This endpoint takes POST requests only.');
 }
 
-/** The turn he answers when he joins another agent's chat, or opens his own. Never shown as a bubble. */
-const AT_TURN: Record<Joined | 'open', string> = {
-  eligibility: "(Phoebe's step is done. Wellington joins the visitor in her chat.)",
-  map: "(Bridget's step is done. Wellington joins the visitor in her chat.)",
-  quantification: "(Calvin's part is done. Wellington joins the visitor in his chat.)",
-  water: "(Violet's part is done. Wellington joins the visitor in her chat.)",
-  open: '(The visitor has just arrived and has not said anything yet.)',
-};
-
-/** The desks he hands a visitor to, by the step that opens each (24 Nov 2026). */
-const HAND_TO = { eligibility: 'Phoebe', map: 'Bridget', quantification: 'Calvin', water: 'Violet' } as const;
-type HandTo = keyof typeof HAND_TO;
-
-/** What he is told when the visitor reached a colleague's page by another way than his button. */
-function handoffNote(to: HandTo): string {
-  return `# Where you are speaking\n\nThe visitor has just opened ${HAND_TO[to]}'s page, and you have not handed them over yet. Do it now, the way you hand the visitor to any colleague: fill the introduction field, which heads ${HAND_TO[to]}'s page, and set the route to "${to}". Your reply is kept on your own desk: the same hand-off, in one short sentence. Ask nothing.`;
-}
-
-/** What he is told when he joins another agent's chat — 14 Nov 2026 — or opens his own desk (W29). */
-const OPEN_NOTE: string =
-  /* W29, 16 Nov 2026: he speaks first on his desk when no question was carried in. The notes for the end of a step are
-     worked out from the map (stepEndNote, api/_agentMap.ts) from 24 Nov 2026. */
-    '# Where you are speaking\n\nThe visitor has just arrived on your desk and has said nothing yet. Speak first, in your own words: who you are and what the team does, then one question about their project. If the record already holds something, use it and ask only for what is missing. Set no route.';
-
 export async function POST(req: Request): Promise<Response> {
   let body: {
     messages?: IncomingMessage[];
@@ -172,8 +182,9 @@ export async function POST(req: Request): Promise<Response> {
   const at = returned ? (joinedAt ?? (body.at === 'open' ? ('open' as const) : null)) : null;
   /* THE VISITOR ANSWERS HIM THERE (25 Nov 2026): he asked something in another agent's chat, and their words came to him. */
   const replyingAt = returned ? null : joinedAt;
-  const handTo =
-    returned && body.at === 'handoff' ? ((Object.keys(HAND_TO) as HandTo[]).find((s) => s === body.to) ?? null) : null;
+  const handTo: Joined | null = returned && body.at === 'handoff' ? (JOINED.find((s) => s === body.to) ?? null) : null;
+  /* What opened this turn, when the visitor did not type it: his package's own words for each (`openedLine`). */
+  const opened: Opened | undefined = !returned ? undefined : handTo ? { handoff: handTo } : at ? { at } : { returned: true };
 
   const messages = Array.isArray(body.messages) ? body.messages : null;
   if (!messages || (messages.length === 0 && !returned)) {
@@ -204,34 +215,33 @@ export async function POST(req: Request): Promise<Response> {
   }
   if (returned && (clean.length === 0 || clean[clean.length - 1].role !== 'user')) {
     /* The model needs a user turn. This line is never shown as a bubble. */
-    clean.push({ role: 'user', content: handTo ? `(The visitor has opened ${HAND_TO[handTo]}'s page. Wellington introduces them there.)` : at ? AT_TURN[at] : '(The visitor came back from Eligibility.)' });
+    clean.push({ role: 'user', content: openedLine(opened ?? { returned: true }) });
     if (!lastQuestion) {
-      lastQuestion = handTo ? `(handed over to ${HAND_TO[handTo]})` : at === 'open' ? '(opened the desk)' : at ? `(joined at ${at})` : '(came back from Eligibility)';
+      lastQuestion = handTo ? `(handed over at ${handTo})` : at === 'open' ? '(opened the desk)' : at ? `(joined at ${at})` : '(came back from Eligibility)';
     }
   }
   if (clean.length === 0 || clean[clean.length - 1].role !== 'user') {
     return problem(400, 'No message was sent.');
   }
 
-  /* THE VISIT THE DESK ALREADY HOLDS — 16 Sep 2026. The visitor's own words
-     about the project, checked in _record.ts, or null. It rides as a second
-     system block AFTER the cache breakpoint, so his rules stay cached and
-     only this small block changes between visitors. Empty visit: no block,
-     and he may still ask. */
-  const record = readRecord(body.record);
-  const stage = readStage(body.stage);
-  /* THE AGENT MAP — J4, 23 Nov 2026 (api/_agentMap.ts). Where it came, its one next step takes the place of the
-     screening step's line, which is switched off then and kept for a page loaded before the map. */
+  /* THE VISIT THE DESK ALREADY HOLDS — 16 Sep 2026. The visitor's own words about the project, read on to core's record
+     (api/_record.ts), or null. It rides as a block AFTER the cache breakpoint, so his rules stay cached and only these
+     small blocks change between visitors. */
+  const record = readCarried(body.record);
+  /* THE AGENT MAP — J4, 23 Nov 2026, worked out in the browser from core's map and read again here by his package. */
   const map = readMap(body.map);
-  const stepStage = map ? null : stage;
-  const visitText = record ? visitBlock(record, stepStage) : stepStage ? stageBlock(stepStage) : null;
-
-  /* WHAT PHOEBE FOUND — item A17, 26 Sep 2026. Her worksheet as the shell
-     holds it, checked in _record.ts, read into each pathway's read and the
-     rows behind it by id and tool-file title. Never her own sentences. It
-     rides after the breakpoint beside the visit, or not at all when she has
-     found nothing yet. Its reads also feed the route guard. */
-  const found = phoebeFound(readSheet(body.sheet), record);
+  /* WHAT PHOEBE FOUND — item A17, 26 Sep 2026. Her worksheet as the shell holds it, read into each pathway's read and the
+     rows behind it by id and tool-file title. Never her own sentences. */
+  const found = foundPathways(readSheet(body.sheet), record);
+  const turn = (pass: number): TurnInput => ({
+    place: 'free-site',
+    record,
+    map,
+    found,
+    ...(opened ? { opened } : {}),
+    ...(replyingAt ? { replyingAt } : {}),
+    pass,
+  });
 
   /* Shape first, then whether we can actually answer — same order as Phoebe's,
      for the same reason. */
@@ -315,7 +325,7 @@ export async function POST(req: Request): Promise<Response> {
 
   let response: Anthropic.Message;
   let parsed: unknown;
-  let answer: Answer;
+  let answer: WellingtonAnswer;
   const calledAt = Date.now();
 
   const callModel = (pass: number): Promise<Anthropic.Message> =>
@@ -325,12 +335,9 @@ export async function POST(req: Request): Promise<Response> {
         max_tokens: MAX_TOKENS,
         system: [
           { type: 'text', text: WELLINGTON_SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
-          ...(visitText ? [{ type: 'text' as const, text: visitText }] : []),
-          ...(found ? [{ type: 'text' as const, text: found.text }] : []),
-          ...(map ? [{ type: 'text' as const, text: mapBlock(map) }] : []),
-          ...(handTo ? [{ type: 'text' as const, text: handoffNote(handTo) }] : at ? [{ type: 'text' as const, text: at === 'open' ? OPEN_NOTE : stepEndNote(at, map) }] : replyingAt ? [{ type: 'text' as const, text: stepEndNote(replyingAt, map, true) }] : []),
-          /* The same question again: this one has to end in an answer (api/_lookUp.ts). */
-          ...(pass > 1 ? [{ type: 'text' as const, text: map && map.next !== 'report or sign-up' ? `${FINISH_NOTE} A step is still ahead, so never say the screening, or every step, is done.` : FINISH_NOTE }] : []),
+          /* His package's blocks for this turn, in order: the visit, what Phoebe found, the map, what opened the turn, and
+             on a second call the note that it has to end in an answer. */
+          ...wellingtonBlocks(turn(pass)).map((text) => ({ type: 'text' as const, text })),
         ],
         messages: clean,
         thinking: { type: 'adaptive' },
@@ -394,18 +401,20 @@ export async function POST(req: Request): Promise<Response> {
     );
   }
 
-  /* A class returned this turn is kept only beside a drinking-water type,
-     confirmed this turn or already on the visit. */
-  /* On a hand-off the page is already open, so the route is that page, whatever the field says. At the end of a step it
-     is the map's next one, so a hand-off never hangs on his remembering it (24 Nov 2026). */
-  const answersHomeUse = replyingAt !== null && map !== null && asksHomeUse(map) && pick(pick(parsed, 'context'), 'homeUse') !== undefined;
-  const set = handTo ?? (map && at && at !== 'open' ? stepEndRoute(at, map) : map && replyingAt ? (answersHomeUse ? afterHomeUse(map) : stepEndRoute(replyingAt, map)) : null);
-  const checked = validate(set !== null && typeof parsed === 'object' && parsed !== null ? { ...parsed, route: set } : parsed, { type: record?.type, ...(map ? {} : { reads: found?.reads }) });
-  /* The map's guard, in place of the reads' (J4): a desk the map has closed is never routed to, and an
-     introduction goes with its route. */
-  const route = checked && map ? guardRoute(checked.route, map) : checked?.route;
-  const read = checked && route !== undefined ? { ...checked, route, ...(route === checked.route ? {} : { introduction: undefined }) } : null;
-  if (!read) {
+  /* HIS PACKAGE CHECKS THE ANSWER (`checkWellingtonTurn`): the route on a hand-off or at a step's end is the map's, a
+     desk the map has closed is never routed to, an introduction goes with its route, and a reply that promises a look-up
+     or calls the screening done too soon goes again once. */
+  const outcome = checkWellingtonTurn(parsed, turn(pass));
+  if (outcome.ok) {
+    answer = outcome.answer;
+    break;
+  }
+  if ('again' in outcome && pass === 1) {
+    console.log(`wellington: ${outcome.again === 'look-up' ? 'the reply promised a look-up and did not answer' : 'the reply called the screening done with a step ahead'}, call ${pass}`);
+    continue;
+  }
+  const fault = 'fault' in outcome ? outcome.fault : 'no answer';
+  if (fault === 'empty') {
     console.error(`wellington: returned an empty answer — ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens`);
     return undelivered(
       problem(
@@ -414,12 +423,8 @@ export async function POST(req: Request): Promise<Response> {
       )
     );
   }
-
-  /* On a hand-off his line to the colleague is what is shown; his reply beside it may be one short sentence. */
-  if (isDegenerateReply(read.reply) && !(handTo && read.introduction)) {
-    console.error(
-      `wellington: returned an answer too short to be one — ${read.reply.trim().length} characters against a floor of ${MIN_REPLY_CHARS}`
-    );
+  if (fault === 'too short') {
+    console.error(`wellington: returned an answer too short to be one, against a floor of ${MIN_REPLY_CHARS}`);
     return undelivered(
       problem(
         502,
@@ -427,23 +432,12 @@ export async function POST(req: Request): Promise<Response> {
       )
     );
   }
-
-  answer = read;
-  /* HE NEVER CALLS THE SCREENING DONE while a step is ahead (24 Nov 2026, item 7). The same question goes again once. */
-  const tooSoon = map !== null && map.next !== 'report or sign-up' && saysAllDone(answer.reply);
-  if (tooSoon) console.log(`wellington: the reply called the screening done with a step ahead, call ${pass}`);
-  /* A route draws the next step under his message, so the visitor is never left waiting there. */
-  const waits = answer.route === 'none' && leavesWaiting(answer.reply);
-  if (!waits && (!tooSoon || pass > 1)) break;
-  if (waits) console.log(`wellington: the reply promised a look-up and did not answer, call ${pass}`);
-  if (pass > 1) {
-    return undelivered(
-      problem(
-        502,
-        'Wellington went to look something up and did not come back with an answer. This is a fault on our side rather than something you did, and asking again usually works.'
-      )
-    );
-  }
+  return undelivered(
+    problem(
+      502,
+      'Wellington went to look something up and did not come back with an answer. This is a fault on our side rather than something you did, and asking again usually works.'
+    )
+  );
   }
 
   /* The shared word list (14 Nov 2026): the plain-words list and the
@@ -454,7 +448,7 @@ export async function POST(req: Request): Promise<Response> {
 
   /* READING LEVEL (V1, 16 Nov 2026): 3rd- to 6th-grade English. A reply above
      grade 6 is logged, never blocked; the measured walks fail on the bars.
-     See readingGrade in api/_reply.ts. */
+     See readingGrade in @waterbots/core/reply. */
   if (isHardReply(answer.reply)) {
     console.log(`wellington: reply read above grade ${READING_GRADE.average} — grade ${readingGrade(answer.reply)}`);
   }
@@ -475,17 +469,6 @@ export async function POST(req: Request): Promise<Response> {
       output: response.usage.output_tokens,
     },
   });
-}
-
-/**
- * A COUNT CORE'S FACT CHECK REFUSES, and why — J3, 23 Nov 2026. `validate` keeps such a count off the record, as
- * before; until then it was dropped without a word. The console says why under his turn.
- */
-function refusedCount(parsed: unknown): string | null {
-  const served = pick(pick(parsed, 'context'), 'served');
-  if (served === undefined || served === null) return null;
-  const check = checkEntry('population.served', pick(served, 'count'));
-  return check.ok ? null : check.problem;
 }
 
 /* -------------------------------------------------------------------------

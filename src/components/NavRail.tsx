@@ -32,7 +32,7 @@
 import { useEffect, useState } from 'react';
 import { SITE_LABEL, SITE_URL } from '../lib/site';
 import { pathForInterest } from '../lib/pages';
-import { PROJECT_STAGES, projectType } from '../lib/projectTypes.generated';
+import { STAGE_WORDS as PROJECT_STAGES, typeWords as projectType } from '@waterbots/core/projectWords';
 import { servedWords, type Provenance, type VisitContext } from '../lib/visit';
 
 const EXPANDED = 224;
@@ -331,20 +331,14 @@ export default function NavRail({
   );
 }
 
-/** The type row's value: the standard's name, and the class beside a drinking-water type. */
+/** The type row's value: the standard's name, in core's one copy of the words. No class is shown: none is asked. */
 function typeWords(context: VisitContext): string {
-  const type = context.type ? projectType(context.type) : undefined;
-  if (!type) return '';
-  const gsClass = context.gsClass ? projectType(context.gsClass) : undefined;
-  return gsClass ? `${type.name} · ${gsClass.name}` : type.name;
+  return (context.type ? projectType(context.type) : undefined)?.name ?? '';
 }
 
-/** The one-line definitions, behind the value on hover. */
+/** The one-line definition, behind the value on hover. */
 function typeHint(context: VisitContext): string | undefined {
-  const type = context.type ? projectType(context.type) : undefined;
-  if (!type) return undefined;
-  const gsClass = context.gsClass ? projectType(context.gsClass) : undefined;
-  return gsClass ? `${type.plain} ${gsClass.plain}` : type.plain;
+  return (context.type ? projectType(context.type) : undefined)?.plain;
 }
 
 /**

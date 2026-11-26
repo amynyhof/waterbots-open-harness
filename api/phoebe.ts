@@ -22,50 +22,91 @@
  * second. So the static half stays cached when the stage moves, a run of turns
  * inside one stage is read at about a tenth of the input price, and a visitor
  * on one pathway is never read the other pathway's cards. The maintainer's
- * ruling R6, 25 Sep 2026; the staging itself is in _systemPrompt.ts.
+ * ruling R6, 25 Sep 2026; the staging itself is her package's (setsFor, nextSets).
  *
  * Nothing volatile may be added above those breakpoints.
  */
 
 import Anthropic from '@anthropic-ai/sdk';
-import { recordAbstention } from './_abstentions.js';
+import { leavesWaiting, showable } from '@waterbots/core/lookUp';
+import { MIN_REPLY_CHARS, READING_GRADE, isDegenerateReply, isHardReply, readingGrade, replyLength } from '@waterbots/core/reply';
 import {
-  MIN_REPLY_CHARS,
+  CARD_SETS,
+  MAX_PASSES,
+  PHOEBE_ANSWER_SCHEMA,
   PHOEBE_REPLY_LIMIT,
-  READING_GRADE,
+  OPENED_TURN,
   cardWordsIn,
-  isDegenerateReply,
-  isHardReply,
-  isLongReply,
-  readingGrade,
-  replyLength,
-} from './_reply.js';
-import { needCardsSoFar, replySoFar } from './_replyStream.js';
+  isLongPhoebeReply,
+  needCardsSoFar,
+  needsOf,
+  nextSets,
+  openedAnswer,
+  phoebeInstructions,
+  phoebeTurn,
+  readPhoebeAnswer,
+  replySoFar,
+  type CardSet,
+  type PhoebeAnswer as Answer,
+  type PhoebeDoor,
+} from '@waterbots/phoebe';
+import { recordAbstention } from './_abstentions.js';
+import { AGENT_RULES_MD } from './_agentRules.generated.js';
 import { PHOEBE, countOneMessage, timeUntilReset } from './_cap.js';
-import { phoebeDoorBlock, readDoor } from './_door.js';
-import { readChips } from './_chips.js';
-import { FINISH_NOTE, leavesWaiting, showable } from './_lookUp.js';
-import { readHandBack, type HandBack } from './_handBack.js';
-import { CARD_SETS, RESPONSE_SCHEMA, SYSTEM_PROMPT, cardsBlock, nextSets, setsFor, type CardSet } from './_systemPrompt.js';
-import {
-  MAX_BECAUSE_CHARS,
-  phoebeNotesBlock,
-  readRecord,
-  readSheet,
-  recordBlock,
-  worksheetBlock,
-  type PackSheet,
-} from './_record.js';
-import {
-  HER_PACKS,
-  PATHWAY_STATE_IDS,
-  ROW_STATE_IDS,
-  TOOL_SECTIONS,
-  pathwayStateOf,
-  section,
-  verdictRows,
-  type RowContext,
-} from './_worksheet.generated.js';
+import { readDoor } from './_door.js';
+import { BEFORE_AFTER_MD, PLAIN_WORDS_MD } from './_plainWords.generated.js';
+import { AGENT_PRIMER_MD } from './_primer.generated.js';
+import { readCarried, readSheet } from './_record.js';
+import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
+
+/**
+ * THE LINES THAT FIT THIS SITE ALONE, which her package leaves to the site (`siteLines`, @waterbots/phoebe 0.1.0). Each is
+ * her own line from this site's instructions before 26 Nov 2026, word for word; none is new. Her package holds the rest.
+ */
+const SITE_LINES: readonly string[] = [
+  'At the Free site and the Agent Commons doors you work at the screen level: you use your tools and keep no memory.',
+  'You have no memory. Each visit starts blank, and you cannot remember anything from a previous conversation. If someone refers to an earlier session, say plainly that you do not keep anything between visits. Do not pretend to remember and do not apologise at length.',
+  '**This site holds no link to the consulting page yet:** name the page, never an address.',
+  '**When you set a Blocked row, the console shows the box to reach the WaterBots team**, beside the save button; point to it.',
+  '**A transitioning project hears one more fact, once**, on the card that finds it: a transition-assistance module, overseen by trusted consultants, is coming to the paid site, and the visitor can save the project and sign up for access. Said there and nowhere else.',
+  '**You never say a phase runs here.** Say the phase name as written — Eligibility, Partners, Quantify, Plan, Monitor, Communicate — point at the step, never at a tab, and never at a "seat", a "console", a "dispatch" or a "surface". The one tab you name is your own Tool tab, when you say where the worksheet can be followed.',
+  "Rule 8's (ref) marker is the worksheet's on this site.",
+];
+
+/** The lines that fit one door of this site only. */
+const DOOR_LINES: Record<PhoebeDoor, readonly string[]> = {
+  'free-site': ['When your part is done, or a question is not yours, Wellington joins the visitor in this chat with the next step. You never send them back to him.'],
+  'agent-commons': [
+    'On the Agent Commons you are opened alone, with no desk and no Wellington in reach; there the same field sends the visitor back to the shelf of knowledge packs, and the console draws that door itself.',
+  ],
+  'paid-site': [],
+  mcp: [],
+};
+
+/**
+ * HER INSTRUCTIONS, her package's (`phoebeInstructions`, 26 Nov 2026, J5), one set for each door this site opens her at,
+ * built once at module load from the texts this site holds. Each is byte-identical on every request, so it is cached.
+ */
+const SYSTEM_PROMPTS: Record<'free-site' | 'agent-commons', string> = Object.fromEntries(
+  (['free-site', 'agent-commons'] as const).map((door) => [
+    door,
+    phoebeInstructions({
+      door,
+      agentRules: AGENT_RULES_MD,
+      primer: AGENT_PRIMER_MD,
+      statusSheet: BUILD_STATUS_SHEET_MD,
+      plainWords: PLAIN_WORDS_MD,
+      beforeAfter: BEFORE_AFTER_MD,
+      siteLines: [...SITE_LINES, ...DOOR_LINES[door]],
+    }),
+  ])
+) as Record<'free-site' | 'agent-commons', string>;
+
+/** Her answer's shape, as her package gives it. */
+export const RESPONSE_SCHEMA = PHOEBE_ANSWER_SCHEMA;
+
+/** The instructions at the Free site door, for the checks that measure them. */
+export const SYSTEM_PROMPT = SYSTEM_PROMPTS['free-site'];
 
 /**
  * Claude Sonnet 5 — the maintainer's ruling of 21 Aug 2026.
@@ -165,13 +206,6 @@ const CALL_TIMEOUT_MS = 120_000;
  */
 const LATE_400_MS = 5_000;
 
-/**
- * How many times one question may go to the model before it has to end in an answer — 24 Nov 2026. It was two, and the
- * second could end in "let me pull that up" (api/_lookUp.ts). The first call has the cards the visit has reached, the
- * second the set she asked for, and the third every set still in play. A loop is impossible, and it is one answer to
- * the visitor, so it is one message of their thirty.
- */
-const MAX_PASSES = 3;
 
 /** Reads a property off an unknown thrown value without assuming its shape. */
 function pick(value: unknown, key: string): unknown {
@@ -304,53 +338,28 @@ export async function POST(req: Request): Promise<Response> {
   if (opened && (clean.length === 0 || clean[clean.length - 1].role !== 'user')) {
     /* Display-only on the thread: Wellington's copied invite. The model still
        needs a user turn. This sentence is never shown as a visitor bubble. */
-    clean.push({ role: 'user', content: '(The visitor opened Eligibility.)' });
+    clean.push({ role: 'user', content: OPENED_TURN });
     if (!lastQuestion) lastQuestion = '(opened Eligibility)';
   }
   if (clean.length === 0 || clean[clean.length - 1].role !== 'user') {
     return problem(400, 'No question was sent.');
   }
 
-  /* THE RECORD THE DESK CARRIES IN — slice 3, 7 Sep 2026. The visitor's own
-     words about the project, checked in _record.ts, or null. It rides as a
-     second system block AFTER the cache breakpoint, so her cards stay cached
-     and only this small block changes between visitors. */
-  const record = readRecord(body.record);
-  const notes = phoebeNotesBlock({ opened, introduced, eligibilityDone });
-  /* Which door she is at (J2, item A27, 23 Nov 2026), after the breakpoints. */
-  const door = phoebeDoorBlock(readDoor(body.door));
-
-  /* THE WORKSHEET AS IT STANDS — contract line 3, item A15, step 3,
-     21 Sep 2026; per pack, with five states, from 25 Sep 2026. The rows the
-     shell holds, checked in _record.ts, or null for an old client. It rides as
-     a system block AFTER both cache breakpoints, beside the record, so her
-     cards stay cached and only these small blocks change between asks. Every
-     verdict in it is her own. */
-  const sheet = readSheet(body.sheet);
-  /* NOT ON HER FIRST TURN — found 14 Nov 2026, when she skipped her hello on
-     the maintainer's walk. The block tells her to "start from the first row
-     still unchecked", and on the opened turn that pulled against message 1;
-     the sheet is empty then in any case. */
-  const sheetText = sheet && !opened ? worksheetBlock(sheet, record) : null;
-
-  /* WHICH CARDS THIS TURN GETS — ruling R6, staged loading. The pathway states
-     come from her own answers to the applies tests, worked out by the same
-     function the console draws with, so the stage is never guessed at. A set
-     the visit has already been given rides along in `loaded`, because a set she
-     has used must not disappear from under her mid-conversation. */
+  /* THE RECORD THE DESK CARRIES IN — slice 3, 7 Sep 2026, read on to core's record (api/_record.ts), or null; and which
+     door she is at (J2, item A27, 23 Nov 2026). Her worksheet as the shell holds it, held to her tool files. Her package
+     builds the blocks for the turn after her instructions (`phoebeTurn`): the cards it reaches, the door, the record, the
+     worksheet (never on her first turn) and the visit's notes. Every verdict in them is her own. */
+  const record = readCarried(body.record);
+  const door: 'free-site' | 'agent-commons' = readDoor(body.door) === 'agent-commons' ? 'agent-commons' : 'free-site';
+  const sheet = readSheet(body.sheet) ?? { rows: {}, sorts: {} };
+  /* A set the visit has already been given rides along in `loaded`, because a set she has used must not disappear from
+     under her mid-conversation (ruling R6, staged loading). */
   const loaded = Array.isArray(body.loaded)
     ? body.loaded.filter((set): set is string => typeof set === 'string')
     : [];
-  const pathways = pathwaysOf(sheet, record);
-  const sets = setsFor({
-    pathways,
-    loaded,
-    allMet: allMet(sheet, record),
-    /* P29: a running project's start date is asked first, so the card that
-       judges it is in front of her when the answer comes. */
-    running: record?.stage === 'running',
-  });
-
+  const turnFor = (again: boolean, sets?: readonly CardSet[]) =>
+    phoebeTurn({ door, record, sheet, loaded, opened, introduced, eligibilityDone, again, ...(sets ? { sets } : {}) });
+  const { sets, pathways } = turnFor(false);
 
   /* The configuration check sits AFTER the request is validated, on purpose.
      Reporting "Phoebe is not connected" for a malformed request would send
@@ -466,6 +475,7 @@ export async function POST(req: Request): Promise<Response> {
      returned), and while it is written the reply's text is read out of it for
      the visitor. */
   const callModel = (withSets: readonly CardSet[], writer: ReturnType<typeof passWriter>, pass: number): Promise<Anthropic.Message> => {
+    const [cards, ...rest] = turnFor(pass > 1, withSets).blocks;
     const stream = client.messages.stream(
       {
         model: MODEL,
@@ -475,14 +485,10 @@ export async function POST(req: Request): Promise<Response> {
            so the first stays cached across a stage change. Everything below
            them is this visitor's and is not cached. */
         system: [
-          { type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
-          { type: 'text', text: cardsBlock(withSets), cache_control: { type: 'ephemeral' } },
-          ...(door ? [{ type: 'text' as const, text: door }] : []),
-          ...(record ? [{ type: 'text' as const, text: recordBlock(record) }] : []),
-          ...(sheetText ? [{ type: 'text' as const, text: sheetText }] : []),
-          ...(notes ? [{ type: 'text' as const, text: notes }] : []),
-          /* The same question again: this one has to end in an answer. */
-          ...(pass > 1 ? [{ type: 'text' as const, text: FINISH_NOTE }] : []),
+          { type: 'text', text: SYSTEM_PROMPTS[door], cache_control: { type: 'ephemeral' } },
+          { type: 'text', text: cards, cache_control: { type: 'ephemeral' } },
+          /* The door, the record, the worksheet, the notes, and on a further call the note that it has to end now. */
+          ...rest.map((text) => ({ type: 'text' as const, text })),
         ],
         messages: clean,
         /* Stated rather than inherited. This model thinks adaptively whether
@@ -587,7 +593,7 @@ export async function POST(req: Request): Promise<Response> {
        which described a different fault and sent two days of hunting in the
        wrong direction. Item A4. Do not paper over it by accepting an empty
        reply: showing a blank turn would be the dishonest fix. */
-    const answer = readAnswer(parsed);
+    const answer = readPhoebeAnswer(parsed);
     if (!answer) {
       console.error(
         `phoebe: returned an empty answer — ${message.usage.output_tokens} of ${MAX_TOKENS} output tokens, most of it hidden thinking`
@@ -604,7 +610,7 @@ export async function POST(req: Request): Promise<Response> {
        character. readAnswer() refuses a reply that is empty once trimmed;
        measured on 28 Aug 2026, four replies of one to three characters got past
        it and reached callers. Refused here for the same reason and with the same
-       honest message — see api/_reply.ts for where the number comes from and
+       honest message — see @waterbots/core/reply for where the number comes from and
        why this is not the schema minimum item A4 refused. */
     if (isDegenerateReply(answer.reply)) {
       console.error(
@@ -679,7 +685,7 @@ export async function POST(req: Request): Promise<Response> {
   }
   /* MESSAGE 1 SETS NOTHING (P14, 14 Nov 2026): on the opened turn any row, test
      or sort she returns is dropped, so the worksheet waits for message 2. */
-  if (opened) answer = { ...answer, rows: [], pathways: [], sorts: [] };
+  if (opened) answer = openedAnswer(answer);
 
   /* Recorded before the answer goes out, and awaited rather than left running:
      once a Response is returned the platform may stop this function where it
@@ -692,8 +698,8 @@ export async function POST(req: Request): Promise<Response> {
   /* A LONG REPLY IS COUNTED, NOT REFUSED — the maintainer's word of
      13 Nov 2026 (P10): two or three short sentences, then one question. A real
      answer still reaches the visitor; the log says so, so real traffic can be
-     counted, and the measured walk fails on one. See api/_reply.ts. */
-  if (isLongReply(answer.reply)) {
+     counted, and the measured walk fails on one. See her package, @waterbots/phoebe. */
+  if (isLongPhoebeReply(answer.reply)) {
     const length = replyLength(answer.reply);
     console.log(
       `phoebe: reply ran long — ${length.sentences} sentences and ${length.chars} characters, against ${PHOEBE_REPLY_LIMIT.sentences} and ${PHOEBE_REPLY_LIMIT.chars}`
@@ -701,13 +707,13 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   /* CARD WORDS ARE COUNTED THE SAME WAY (P23, 14 Nov 2026): logged here, and
-     the measured walk fails on one. See CARD_WORDS in api/_reply.ts. */
+     the measured walk fails on one. See CARD_WORDS in her package, @waterbots/phoebe. */
   const cardWords = cardWordsIn(answer.reply);
   if (cardWords.length) console.log(`phoebe: reply used card words — ${cardWords.join(', ')}`);
 
   /* READING LEVEL (V1, 16 Nov 2026): 3rd- to 6th-grade English. A reply above
      grade 6 is logged, never blocked; the measured walks fail on the bars.
-     See readingGrade in api/_reply.ts. */
+     See readingGrade in @waterbots/core/reply. */
   if (isHardReply(answer.reply)) {
     console.log(`phoebe: reply read above grade ${READING_GRADE.average} — grade ${readingGrade(answer.reply)}`);
   }
@@ -806,276 +812,6 @@ function streamed(
 
 /* -------------------------------------------------------------------------
    The stage, and reading her answer. Her output is checked, not trusted.
-------------------------------------------------------------------------- */
-
-/**
- * What the project is known to be, for sorting which rows it has.
- *
- * The record's class is Wellington's; the sheet's sorts are Phoebe's own tests'.
- * Either fills the same context, and the pack's own lists say which word is a
- * class and which is a version.
- */
-function contextOf(record: ReturnType<typeof readRecord>, pack: string, sorts?: string[]): RowContext {
-  const found = section(pack);
-  const sorted = sorts?.find((word) => found?.appliesTo.some((entry) => entry.id === word));
-  const version = sorts?.find((word) => found?.versionFlags.some((entry) => entry.id === word));
-  const gsClass = sorted ?? (record?.gsClass ? record.gsClass.toLowerCase() : '');
-  return { ...(gsClass ? { gsClass } : {}), ...(version ? { versionFlag: version } : {}) };
-}
-
-/**
- * Each pack's pathway state, from her own answers to its applies tests.
- *
- * Worked out by the same function the console draws with, so the cards a turn
- * is given and the sections a visitor sees cannot disagree about which pathway
- * is in play.
- */
-function pathwaysOf(
-  sheets: PackSheet[] | null,
-  record: ReturnType<typeof readRecord>
-): { pack: string; state: string; open: number }[] {
-  return HER_PACKS.map((pack) => {
-    const sheet = sheets?.find((s) => s.pack === pack);
-    if (!sheet) return { pack, state: 'unchecked', open: 0 };
-    const states: Record<string, string> = {};
-    for (const row of sheet.rows) states[row.id] = row.state;
-    const context = contextOf(record, pack, sheet.sorts);
-    /* The rows she asks there that have no verdict yet: while the water pack
-       has any, the next question is on it, and the carbon pack waits (setsFor). */
-    const open = verdictRows(pack, context).filter((row) => (states[row.id] ?? 'unchecked') === 'unchecked').length;
-    return { pack, state: pathwayStateOf(pack, states, context), open };
-  });
-}
-
-/**
- * True when every row she asks on a pathway is Met.
- *
- * It is one of the two doors to the feasibility cards (ruling R6): the
- * considerations are for choosing between projects that already qualify, so a
- * project that has just cleared the rows is exactly when they become useful.
- */
-function allMet(sheets: PackSheet[] | null, record: ReturnType<typeof readRecord>): boolean {
-  if (!sheets) return false;
-  return sheets.some((sheet) => {
-    const rows = verdictRows(sheet.pack, contextOf(record, sheet.pack, sheet.sorts));
-    if (rows.length === 0) return false;
-    return rows.every((row) => sheet.rows.find((held) => held.id === row.id)?.state === 'met');
-  });
-}
-
-/** The card set an answer asks for, or "none". */
-function needsOf(value: unknown): CardSet | 'none' {
-  const asked = pick(value, 'needCards');
-  return (CARD_SETS as readonly unknown[]).includes(asked) ? (asked as CardSet) : 'none';
-}
-
-interface Answer {
-  reply: string;
-  /** Chips that answer the question the reply ends with (24 Nov 2026, _chips.ts). */
-  answers: string[];
-  /** Card tokens, `section:set/id`. The console renders each one's citation. */
-  cited: string[];
-  rows: { pack: string; id: string; state: string; because?: string; routes?: string[] }[];
-  pathways: { pack: string; id: string; state: string; because?: string }[];
-  sorts: { pack: string; value: string }[];
-  /** Ruling R6: a set she may ask for when this turn does not carry it. */
-  needCards: 'none' | CardSet;
-  /** Contract line 8: the way back to Wellington, a field the console acts on. See _handBack.ts. */
-  handBack: HandBack;
-  /** P15, 14 Nov 2026: the message that says her quiz is on the Tool tab. */
-  showTool: boolean;
-  /** P21, 14 Nov 2026: one idea for a "Learn more about …" button, or "". */
-  learnMore: string;
-  abstained: boolean;
-  abstentionTopic?: string;
-}
-
-/** The longest "Learn more about …" topic shown; longer is dropped, not cut. */
-const MAX_LEARN_MORE_CHARS = 48;
-
-/** A card token is `section:set/id`, and the section has to be one of the tool's. */
-const TOKEN = /^([a-z][a-z0-9-]*):([a-z]+)\/([A-Za-z0-9-]+)$/;
-const CARD_SET_WORDS = ['applies', 'eligibility', 'feasibility', 'routes'];
-const SECTION_IDS = TOOL_SECTIONS.map((s) => s.sectionId);
-
-/**
- * The states that carry a sentence.
- *
- * The tool file says what each state carries: a Met row one sentence on what
- * settled it, an Unknown row what to find out, a Blocked row the card's own
- * reason. A Fixable row carries its route card's id "and never prose alone",
- * and it is held to a sentence here as well, because the older rule it replaces
- * refused a shortfall with no way out — a verdict that only reports failure is
- * not an acceptable output. So a Fixable row carries both: the id the console
- * draws the route from, and her own sentence saying what it would take, which
- * is what crosses to the paid site on the seal.
- */
-const CARRIES_A_SENTENCE = ['met', 'fixable', 'unknown', 'blocked'];
-
-function readAnswer(value: unknown): Answer | null {
-  if (typeof value !== 'object' || value === null) return null;
-  const v = value as Record<string, unknown>;
-
-  if (typeof v.reply !== 'string' || v.reply.trim() === '') return null;
-
-  /* A token whose shape or whose section is wrong is dropped here; whether the
-     card behind it exists is the console's to know, because the console is
-     where the card files are parsed and the citation is rendered. A token it
-     cannot resolve is dropped there and its marker leaves the prose with it. */
-  const cited: string[] = [];
-  if (Array.isArray(v.cited)) {
-    for (const raw of v.cited) {
-      if (typeof raw !== 'string') continue;
-      const token = raw.trim();
-      const match = token.match(TOKEN);
-      if (!match) continue;
-      if (!SECTION_IDS.includes(match[1]) || !CARD_SET_WORDS.includes(match[2])) continue;
-      if (!cited.includes(token)) cited.push(token);
-    }
-  }
-
-  /* EVERY VERDICT IS HELD TO THE TOOL FILE. A row that does not exist in that
-     pack, a state that is not one of the five, a Fixable row with no route from
-     its own list, a Blocked row whose card says the miss can be fixed, or a
-     state that carries a sentence and has none: each is dropped whole rather
-     than shown. A verdict that cannot be defended is not an acceptable output,
-     and showing it would be worse than losing it. */
-  const rows: Answer['rows'] = [];
-  if (Array.isArray(v.rows)) {
-    for (const raw of v.rows) {
-      if (typeof raw !== 'object' || raw === null) continue;
-      const u = raw as Record<string, unknown>;
-      const pack = typeof u.pack === 'string' ? u.pack : '';
-      const id = typeof u.id === 'string' ? u.id : '';
-      const state = typeof u.state === 'string' ? u.state : '';
-      const row = section(pack)?.rows.find((r) => r.id === id);
-      if (!row) continue;
-      if (!(ROW_STATE_IDS as readonly string[]).includes(state) || state === 'unchecked') continue;
-      const because = typeof u.because === 'string' ? u.because.trim() : '';
-      const routes = Array.isArray(u.routes)
-        ? u.routes.filter((r): r is string => typeof r === 'string' && row.routes.includes(r))
-        : [];
-      if (state === 'fixable' && routes.length === 0) continue;
-      if (state === 'blocked' && row.fixable === 'yes') continue;
-      if (CARRIES_A_SENTENCE.includes(state) && because === '') continue;
-      if (because.length > MAX_BECAUSE_CHARS) continue;
-      rows.push({
-        pack,
-        id,
-        state,
-        ...(because ? { because } : {}),
-        ...(routes.length ? { routes } : {}),
-      });
-    }
-  }
-
-  const pathways: Answer['pathways'] = [];
-  if (Array.isArray(v.pathways)) {
-    for (const raw of v.pathways) {
-      if (typeof raw !== 'object' || raw === null) continue;
-      const u = raw as Record<string, unknown>;
-      const pack = typeof u.pack === 'string' ? u.pack : '';
-      const id = typeof u.id === 'string' ? u.id : '';
-      const state = typeof u.state === 'string' ? u.state : '';
-      const row = section(pack)?.rows.find((r) => r.id === id);
-      if (!row || row.takes.of !== 'pathway-state') continue;
-      if (!(PATHWAY_STATE_IDS as readonly string[]).includes(state) || state === 'unchecked') continue;
-      const because = typeof u.because === 'string' ? u.because.trim() : '';
-      /* A pathway that does not apply says why, because that sentence is the
-         whole of what a visitor gets from it. */
-      if (state === 'does-not-apply' && because === '') continue;
-      if (because.length > MAX_BECAUSE_CHARS) continue;
-      pathways.push({ pack, id, state, ...(because ? { because } : {}) });
-    }
-  }
-
-  /* A word that sorts the rows is one of that pack's own — a class from its
-     applies-to list or a version from its version list. "all" is refused: an
-     absent key already says it, and two ways of saying one thing is what
-     drifts. */
-  const sorts: { pack: string; value: string }[] = [];
-  if (Array.isArray(v.sorts)) {
-    for (const raw of v.sorts) {
-      if (typeof raw !== 'object' || raw === null) continue;
-      const u = raw as Record<string, unknown>;
-      const pack = typeof u.pack === 'string' ? u.pack : '';
-      const word = typeof u.value === 'string' ? u.value : '';
-      const found = section(pack);
-      if (!found || word === 'all') continue;
-      const known =
-        found.appliesTo.some((entry) => entry.id === word) ||
-        found.versionFlags.some((entry) => entry.id === word);
-      if (!known) continue;
-      sorts.push({ pack, value: word });
-    }
-  }
-
-  const needCards = needsOf(v);
-
-  /* Checked against the closed list, never trusted: an unknown hand-back is
-     "none", the ordinary turn, and the console draws nothing for it. */
-  /* W25, THE MAINTAINER'S WORD OF 14 NOV 2026: SAYING IT IS SAVING IT. On her
-     walk Phoebe told the visitor carbon was ruled out (a project started in
-     2018), but no row recorded it, so the worksheet, the save and Wellington
-     all read "not enough known". Every path her reply rules out now rides in
-     `closes`, a required field, and is saved here: a test that does not
-     apply, or a Blocked row where the card allows one. A row whose card says
-     it can always be fixed is never Blocked, and is logged rather than saved. */
-  if (Array.isArray(v.closes)) {
-    for (const raw of v.closes) {
-      if (typeof raw !== 'object' || raw === null) continue;
-      const u = raw as Record<string, unknown>;
-      const pack = typeof u.pack === 'string' ? u.pack : '';
-      const id = typeof u.id === 'string' ? u.id : '';
-      const because = typeof u.because === 'string' ? u.because.trim() : '';
-      const row = section(pack)?.rows.find((r) => r.id === id);
-      if (!row || because === '' || because.length > MAX_BECAUSE_CHARS) {
-        console.warn(`phoebe: a ruled-out path could not be saved — ${pack}/${id}`);
-        continue;
-      }
-      if (row.takes.of === 'pathway-state') {
-        const at = pathways.findIndex((p) => p.pack === pack && p.id === id);
-        const saved = { pack, id, state: 'does-not-apply', because };
-        if (at >= 0) pathways[at] = saved;
-        else pathways.push(saved);
-      } else if (row.fixable !== 'yes') {
-        const at = rows.findIndex((r) => r.pack === pack && r.id === id);
-        const saved = { pack, id, state: 'blocked', because };
-        if (at >= 0) rows[at] = saved;
-        else rows.push(saved);
-      } else {
-        console.warn(`phoebe: said ${pack}/${id} rules a path out, but its card says it can be fixed — not saved`);
-      }
-    }
-  }
-
-  const handBack = readHandBack(v.handBack);
-
-  const abstained = v.abstained === true;
-  const topic = typeof v.abstentionTopic === 'string' ? v.abstentionTopic.trim() : '';
-
-  /* A button label is a few words on one line, or nothing. */
-  const learnRaw = typeof v.learnMore === 'string' ? v.learnMore.trim().replace(/[.?!]+$/, '') : '';
-  const learnMore = learnRaw.length <= MAX_LEARN_MORE_CHARS && !/[\n\r]/.test(learnRaw) ? learnRaw : '';
-
-  return {
-    reply: v.reply.trim(),
-    answers: readChips(v.answers, v.reply),
-    cited,
-    rows,
-    pathways,
-    sorts,
-    needCards,
-    handBack,
-    showTool: v.showTool === true,
-    learnMore,
-    abstained,
-    ...(abstained && topic ? { abstentionTopic: topic } : {}),
-  };
-}
-
-/* -------------------------------------------------------------------------
-   Responses. Every failure says what happened, in words a visitor can read.
 ------------------------------------------------------------------------- */
 
 function json(status: number, payload: unknown, headers?: Record<string, string>): Response {

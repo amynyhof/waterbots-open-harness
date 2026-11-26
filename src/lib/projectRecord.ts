@@ -1,227 +1,76 @@
 /**
- * THE SHARED PROJECT RECORD AND THE AGENT MAP, on this site — J3 and J4, 23 Nov 2026.
+ * THE SHARED PROJECT RECORD AND THE AGENT MAP, on this site — J3 and J4, 23 Nov 2026; on the agents' packages from
+ * 26 Nov 2026 (J5).
  *
- * ONE RECORD FOR ONE PROJECT, in the open core's shape (@waterbots/core/record). It is worked out from what
- * the shell already holds, the visit and Phoebe's worksheet, every time either changes. Nothing is kept from
- * before, so a fact that changes changes every reading with it (RULINGS.md, section 4), and no two places can
- * hold a fact differently. Nothing here is stored; the visit still ends with the page.
+ * ONE RECORD FOR ONE PROJECT, in the open core's shape (@waterbots/core/record). It is worked out from what the shell
+ * already holds, the visit and Phoebe's worksheet, every time either changes. Nothing is kept from before, so a fact that
+ * changes changes every reading with it (RULINGS.md, section 4), and no two places can hold a fact differently. Nothing
+ * here is stored; the visit still ends with the page.
+ *
+ * A NEW PROJECT STARTS FROM CORE'S NEW RECORD (`newProjectRecord`, core 0.4.0), under today's rules. Nobody is asked for a
+ * kind or a class: the source, the treatment and whether the water is safe are plain facts, and core works out from them
+ * what Calvin and Violet do (`carbonAnswer`, `waterAnswer`). No list of what is covered is kept here.
  *
  * WHO ADDS WHAT (agent rule 10).
- *   - Wellington: the name, the technology in this site's own label, people or households served, the country.
- *   - Phoebe: each pathway's reading, with its reason and what would change it; whether the project is already
- *     credited under the carbon method's V1.0; the class, where her own test settled it and the record had none.
+ *   - Wellington: the name, what it does, the type, the stage, people or households served, the place; and the source,
+ *     the treatment and the water's safety, under whoever the visitor told them to.
+ *   - Phoebe: her package's own part (`addPhoebeResults`): each pathway's reading, her worksheet, whether the project is
+ *     already credited under the carbon method's V1.0, and whether her step is done.
  *   - Bridget: the pinned basin, in her own part.
- *   - Calvin: his V2.0 figure. Violet: the access level and the water before the project, her inputs, her figure.
+ *   - Calvin: his figure. Violet: the access level and the water before the project, her inputs, her figure.
  *
- * THE CODES ARE CORE'S, NEVER GUESSED. A technology label is turned into the record's code by core's one label
- * list. A label the list does not know, or does not cover yet, gets no code. From core 0.3.0 (25 Nov 2026) that is
- * core's own answer for community level and institutional treatment too, so this site's guard of 23 Nov is gone.
- *
- * THE MAP IS CORE'S (@waterbots/core/agentMap). It says who is called, which method applies, the steps and the one next
- * step. From core 0.3.0 it is told which pathways this site reads and which agents it has, so nothing is taken out of
- * its question any more.
+ * THE MAP IS CORE'S (@waterbots/core/agentMap), and Wellington reads it through his package (`mapNote`).
  */
 
 import { agentMap, stepOf, type AgentCall, type AgentMap, type Step } from '@waterbots/core/agentMap';
+import { NO_CALCULATOR_YET as CORE_NO_CALCULATOR_YET, type Answer, type KindFact } from '@waterbots/core/projectKinds';
 import {
   addGivenFacts,
   AGENTS,
-  emptyRecord,
-  needsHomeUse,
-  recordTechnology,
-  recordWaterSupply,
+  carbonAnswer,
+  carbonAnswers,
+  newProjectRecord,
   setAgentResults,
-  setEligibilitySheet,
-  technologyOfFacts,
+  waterAnswer,
   type AgentId,
   type GivenFacts,
-  type PathwayReading,
   type ProjectRecord,
-  type Source,
 } from '@waterbots/core/record';
 import type { StandardId } from '@waterbots/core/standards';
-import { technologyCoverage } from '@waterbots/core/technologyLabels';
+import { READ_HERE as HER_READS, addPhoebeResults, packFor as herPackFor, pathwayForPack as herPathwayForPack, type Sheet } from '@waterbots/phoebe';
 import { addVioletFacts, addVioletResults, violetGivenFacts } from '@waterbots/violet';
 import type { D3Input, D3Result } from '@waterbots/violet/engine';
 import { GS4GG_CALCULATOR_VERSION } from '@waterbots/calvin/engine';
+import { mapNote, type MapNote } from '@waterbots/wellington';
 import { countryIsoFor } from './calvinProject';
-import { cardFor, routeFor } from './phoebeCards';
-import { DRINKING_WATER_TYPE, GS_CLASS_IDS, projectType, type GsClassId } from './projectTypes.generated';
 import type { Surface } from './surfaces';
-import { nothingLeftToAsk, phoebeDone, type CarbonFigure, type Visit, type VisitContext } from './visit';
-import { HER_PACKS, pathwayRows, section, verdictRows } from './worksheet.generated';
-import { contextFor, packDone, pathwayState, readiness, stateOf, touched, type Sheet } from './worksheetState';
+import type { CarbonFigure, KindFacts, Visit } from './visit';
 
-/** The funding pathway each section of Phoebe's worksheet is, in core's word. */
-const PATHWAY_OF: Record<string, StandardId> = { water: 'vwba', carbon: 'carbon' };
-
-/** The pathways this site reads: one for each pack Phoebe works. */
-export const READ_HERE: readonly StandardId[] = HER_PACKS.map((pack) => PATHWAY_OF[section(pack)?.sectionId ?? '']).filter(
-  (p): p is StandardId => p !== undefined
-);
+/** The pathways this site reads: one for each pack Phoebe works (her package's list). */
+export const READ_HERE: readonly StandardId[] = HER_READS;
 
 /** The pathway one of Phoebe's packs is. */
-export function pathwayForPack(pack: string): StandardId | undefined {
-  return PATHWAY_OF[section(pack)?.sectionId ?? ''];
-}
+export const pathwayForPack = herPathwayForPack;
 
 /** The pack behind a pathway, or undefined when this site reads none for it. */
-export function packFor(pathway: StandardId): string | undefined {
-  return HER_PACKS.find((pack) => PATHWAY_OF[section(pack)?.sectionId ?? ''] === pathway);
-}
+export const packFor = herPackFor;
 
 /* --------------------------------------------------------------------------
-   The technology, in this site's label and core's code.
+   What each calculator does with the project: core's answer, from the facts.
    -------------------------------------------------------------------------- */
 
-/** The class the project has: the record's, or the one Phoebe's own test settled where the record has none. */
-export function classOf(context: Pick<VisitContext, 'type' | 'gsClass'>, sheet: Sheet): { id: string; by: 'wellington' | 'phoebe' } | null {
-  if (context.gsClass) return { id: context.gsClass, by: 'wellington' };
-  if (context.type && context.type !== DRINKING_WATER_TYPE) return null;
-  for (const pack of HER_PACKS) {
-    const words = section(pack)?.appliesTo.map((w) => w.id) ?? [];
-    const settled = (sheet.sorts[pack] ?? []).find((word) => words.includes(word));
-    const id = settled === undefined ? undefined : GS_CLASS_IDS.find((c) => c.toLowerCase() === settled);
-    if (id) return { id, by: 'phoebe' };
-  }
-  return null;
+/** What Calvin or Violet does with the project as it stands: core's one table, read from the facts alone. */
+export function answerFor(record: Pick<ProjectRecord, 'facts'>, agent: 'calvin' | 'violet'): Answer {
+  return agent === 'calvin' ? carbonAnswer(record.facts) : waterAnswer(record.facts);
 }
 
 /**
- * The technology as the record holds it: core's label and code for a drinking-water class or a new supply
- * (`technologyOfFacts`), and the type's own name, with no code, for anything else.
+ * True when the calculator counts the project as it stands, so a figure may show. For Calvin, under any version in use: a
+ * project already credited under V1.0 is counted under each version on its own (core 0.4.0).
  */
-export function technologyOf(context: Pick<VisitContext, 'type' | 'gsClass'>, sheet: Sheet): (NonNullable<GivenFacts['technology']> & { by: 'wellington' | 'phoebe' }) | null {
-  const found = classOf(context, sheet);
-  const named = technologyOfFacts(found ? DRINKING_WATER_TYPE : context.type || undefined, found?.id as GsClassId | undefined);
-  if (named) return { ...named, by: found?.by ?? 'wellington' };
-  const label = context.type ? projectType(context.type)?.name : undefined;
-  return label ? { label, by: 'wellington' } : null;
-}
-
-/** A drinking-water project whose class nobody has said yet: its kind is not known, so nothing can be said about its cover. */
-function kindNotSaid(record: ProjectRecord): boolean {
-  return record.facts.technology !== undefined && record.facts.technology.code === undefined && record.facts.technology.label === projectType(DRINKING_WATER_TYPE)?.name;
-}
-
-/** The kind of project on the record, in its label; '' while nobody has said it. */
-export function kindOnRecord(record: ProjectRecord): string {
-  return kindNotSaid(record) ? '' : (record.facts.technology?.label ?? '');
-}
-
-/**
- * WHETHER THE KIND OF PROJECT GIVES A FIGURE — the maintainer's word, 25 Nov 2026. The answer is core's own, for each
- * calculator, read from the record's kind and from nothing an agent says: no list of what is covered is kept here, so a
- * class core starts to count gives its figure with no change on this site. A kind nobody has said gives none.
- */
-export function kindGivesFigure(record: ProjectRecord, agent: 'calvin' | 'violet'): boolean {
-  return agent === 'calvin' ? recordTechnology(record) !== undefined : recordWaterSupply(record.facts) === 'covered';
-}
-
-/** Violet's calculator has nothing to count yet, because nobody has said what kind of project it is. */
-export function waterKindNotSaid(record: ProjectRecord): boolean {
-  return recordWaterSupply(record.facts) === 'not known' && !needsHomeUse(record.facts);
-}
-
-/**
- * The label of a project Calvin does not cover, for his screen to say so; undefined when he covers it, or when the
- * visitor has not said enough yet (nothing, or a drinking-water project whose class is still blank).
- */
-export function uncoveredLabel(record: ProjectRecord): string | undefined {
-  const technology = record.facts.technology;
-  if (!technology || technology.code !== undefined || kindNotSaid(record)) return undefined;
-  return technology.label;
-}
-
-/** The same, where core's list itself says "not covered yet": the label his package and his chat are told. */
-export function notCoveredLabel(record: ProjectRecord): string | undefined {
-  const label = uncoveredLabel(record);
-  return label !== undefined && technologyCoverage(label) === 'not covered yet' ? label : undefined;
-}
-
-/** Whether Phoebe's own test says the project already earns credits under V1.0; undefined until it is settled. */
-export function creditedUnderV1(sheet: Sheet): boolean | undefined {
-  const sorts = Object.values(sheet.sorts).flat();
-  if (sorts.includes('transitioning')) return true;
-  if (sorts.includes('new')) return false;
-  return undefined;
-}
-
-/* --------------------------------------------------------------------------
-   Each pathway's reading, with its reason and what would change it.
-   -------------------------------------------------------------------------- */
-
-/** The card's title for a row, or its tool-file title. */
-function titleOf(pack: string, row: { id: string; card: string; title: string }): string {
-  return cardFor(pack, row.card)?.title ?? row.title;
-}
-
-/** Up to four titles, then how many more there are. */
-function listed(titles: string[]): string {
-  return titles.length <= 4 ? titles.join('; ') : `${titles.slice(0, 4).join('; ')}; and ${titles.length - 4} more`;
-}
-
-/** "Asked by Phoebe": her rows and the pack's version, for the reading's source. */
-function sourceOf(pack: string): Source {
-  return { by: 'phoebe', note: `Worked out from her worksheet rows, ${section(pack)?.sectionName ?? pack}, pack ${pack} ${section(pack)?.version ?? ''}`.trim() };
-}
-
-/**
- * One pathway's reading, or undefined while Phoebe is still on it.
- *
- * Unlikely as soon as a test says the path does not apply or a row is Blocked. Likely once every row she asks is
- * Met. More to learn once her part is done and some of it is still open. Until then there is no reading: an
- * absence is never one.
- */
-export function pathwayReading(pack: string, sheet: Sheet, gsClass: string, herPartDone: boolean): PathwayReading | undefined {
-  const context = contextFor(sheet, pack, gsClass);
-  const source = sourceOf(pack);
-  const stops = [
-    ...pathwayRows(pack, context).filter((row) => (stateOf(sheet, pack, row.id).state as string) === 'does-not-apply'),
-    ...verdictRows(pack, context).filter((row) => stateOf(sheet, pack, row.id).state === 'blocked'),
-  ];
-  if (pathwayState(sheet, pack, context) === 'does-not-apply' || readiness(sheet, pack, context) === 'likely-not') {
-    return {
-      reading: 'unlikely',
-      reason: stops
-        .map((row) => {
-          const because = stateOf(sheet, pack, row.id).because;
-          return because ? `${titleOf(pack, row)}: ${because}` : `${titleOf(pack, row)}.`;
-        })
-        .join(' '),
-      wouldChange: `A different answer on: ${listed(stops.map((row) => titleOf(pack, row)))}.`,
-      source,
-    };
-  }
-  if (readiness(sheet, pack, context) === 'likely-eligible') {
-    return {
-      reading: 'likely',
-      reason: 'Every question Phoebe asks about it here is in place.',
-      wouldChange: 'A different answer to any of those questions.',
-      source,
-    };
-  }
-  if (!packDone(sheet, pack, context) && !herPartDone) return undefined;
-  const rows = verdictRows(pack, context);
-  const fixable = rows.filter((row) => stateOf(sheet, pack, row.id).state === 'fixable');
-  const open = rows.filter((row) => ['unknown', 'unchecked'].includes(stateOf(sheet, pack, row.id).state));
-  const met = rows.length - fixable.length - open.length;
-  const routes = [...new Set(fixable.flatMap((row) => stateOf(sheet, pack, row.id).routes ?? []))]
-    .map((id) => routeFor(pack, id)?.title)
-    .filter((t): t is string => t !== undefined);
-  const missing = open.map((row) => titleOf(pack, row));
-  return {
-    reading: 'more to learn',
-    reason: touched(sheet, pack, context) === 0 ? 'Phoebe has not asked about it yet.' : `${met} of ${rows.length} questions are in place so far.`,
-    wouldChange: [
-      missing.length ? `Finding out: ${listed(missing)}.` : '',
-      fixable.length ? `Fixing: ${listed(routes.length ? routes : fixable.map((row) => titleOf(pack, row)))}.` : '',
-    ]
-      .filter(Boolean)
-      .join(' '),
-    ...(missing.length ? { missing } : {}),
-    source,
-  };
+export function counted(record: Pick<ProjectRecord, 'facts'>, agent: 'calvin' | 'violet'): boolean {
+  if (agent === 'violet') return waterAnswer(record.facts).says === 'counted';
+  return Object.values(carbonAnswers(record.facts)).some((answer) => answer.says === 'counted');
 }
 
 /* --------------------------------------------------------------------------
@@ -231,61 +80,49 @@ export function pathwayReading(pack: string, sheet: Sheet, gsClass: string, herP
 export interface RecordInput {
   visit: Visit;
   sheet: Sheet;
-  /** Calvin's V2.0 figure, once his screen shows it. */
+  /** Calvin's figure, once his screen shows it. */
   carbon?: CarbonFigure | null;
+}
+
+/** The kind facts as the visit holds them, grouped by the agent they were said to. */
+function kindByAgent(visit: Visit): Partial<Record<AgentId, KindFacts>> {
+  const out: Partial<Record<AgentId, KindFacts>> = {};
+  for (const [key, value] of Object.entries(visit.context.kindFacts) as [KindFact, unknown][]) {
+    if (value === undefined) continue;
+    const by = visit.context.kindFactsBy?.[key] ?? 'wellington';
+    out[by] = { ...out[by], [key]: value } as KindFacts;
+  }
+  return out;
 }
 
 /** The shared project record, worked out from the visit and the worksheet as they stand. */
 export function projectRecord({ visit, sheet, carbon = null }: RecordInput): ProjectRecord {
   const { context } = visit;
-  let record = emptyRecord();
+  let record = newProjectRecord();
 
   /* WELLINGTON. What the visitor told him counts as a question he asked; what they typed themselves does not. */
-  const typed: Source = { by: 'person', note: 'typed on the project card' };
+  const typed = { by: 'person' as const, note: 'typed on the project card' };
   const name = context.name.trim();
   const country = context.provenance.place === 'pin' ? null : countryIsoFor(context.place);
   if (name && context.provenance.name === 'typed') record.facts.name = name;
   if (country && context.provenance.place === 'typed') record.place.country = { value: country, source: typed };
-  const technology = technologyOf(context, sheet);
   const place = context.provenance.place === 'pin' ? '' : context.place.trim();
+  const kinds = kindByAgent(visit);
   record = addGivenFacts(record, 'wellington', {
     ...(name ? { name } : {}),
     ...(context.does.trim() ? { does: context.does.trim() } : {}),
     ...(context.type ? { type: context.type } : {}),
-    ...(context.type === DRINKING_WATER_TYPE && context.gsClass ? { technologyClass: context.gsClass } : {}),
+    ...kinds.wellington,
     ...(context.stage ? { stage: context.stage } : {}),
     ...(context.homeUse ? { homeUse: context.homeUse } : {}),
     ...(context.served ? { population: { mode: context.served.unit, served: context.served.count } } : {}),
     ...(place ? { placeWords: place } : {}),
     ...(country ? { country } : {}),
   }).record;
-  /* The technology is the type and the class said once more, in core's label, so it is not counted as one more question. */
-  if (technology?.by === 'wellington') {
-    record.facts.technology = { label: technology.label, ...(technology.code ? { code: technology.code } : {}), source: { by: 'person', note: 'given to wellington' } };
-  }
 
-  /* PHOEBE. */
-  const credited = creditedUnderV1(sheet);
-  record = addGivenFacts(record, 'phoebe', {
-    ...(technology?.by === 'phoebe' ? { technology: { label: technology.label, ...(technology.code ? { code: technology.code } : {}) } } : {}),
-    ...(credited !== undefined ? { creditedUnderV1: credited } : {}),
-  }).record;
-  /* Her part is done by the rule her own screen keeps (phoebeDone, src/lib/visit.ts), or once she has handed the visitor
-     on with a path done or closed, so nobody is sent back to a step she has ended (24 Nov 2026). */
-  const done = phoebeDone(visit, sheet) || visit.eligibilityHanded === true;
-  for (const pack of HER_PACKS) {
-    const pathway = PATHWAY_OF[section(pack)?.sectionId ?? ''];
-    const read = pathway ? pathwayReading(pack, sheet, context.gsClass, done) : undefined;
-    if (pathway && read) record.pathways[pathway] = read;
-  }
-  for (const pack of HER_PACKS) record = setEligibilitySheet(record, pack, { rows: sheet.rows[pack] ?? {}, sorts: sheet.sorts[pack] ?? [] });
-  record = setAgentResults(record, 'phoebe', {
-    /* Her step is ended, for what comes next and who shows: every path has its reading, and nothing is left for her to ask
-       or she has handed the visitor on (24 Nov 2026). Her readings keep the rule above. */
-    done:
-      READ_HERE.every((p) => record.pathways[p] !== undefined) &&
-      (visit.eligibilityHanded === true || nothingLeftToAsk(sheet, context.gsClass)),
-  });
+  /* PHOEBE, by her package's own helper. Her step is ended once she has handed the visitor on with a path done or closed,
+     so nobody is sent back to a step she has ended (24 Nov 2026). */
+  record = addPhoebeResults(record, sheet, { handedOn: visit.eligibilityHanded === true });
 
   /* BRIDGET. The basin, in core's own place for it. Her step is done with a basin, or once she has handed the visitor on
      without one: we are guides, not gates (24 Nov 2026). */
@@ -294,14 +131,17 @@ export function projectRecord({ visit, sheet, carbon = null }: RecordInput): Pro
   }
   if (visit.pin || visit.partnersDone) record = setAgentResults(record, 'bridget', { done: true });
 
-  /* WHAT THE VISITOR TOLD CALVIN AND VIOLET (src/lib/told.ts). Only a fact the record lacks is added, as core rules. */
+  /* WHAT THE VISITOR TOLD CALVIN AND VIOLET (src/lib/told.ts). Only a fact the record lacks is added, as core rules; the
+     source and the treatment they told them are on the visit's one list of kind facts, the newest word standing. */
   for (const agent of ['calvin', 'violet'] as const) {
-    const { kind: _filed, ...told } = visit.told?.[agent] ?? {};
+    const told: GivenFacts = { ...visit.told?.[agent], ...kinds[agent] };
     if (Object.keys(told).length > 0) record = addGivenFacts(record, agent, told).record;
   }
 
-  /* CALVIN. The figure is his engine's; this file only writes it down. */
-  if (carbon && kindGivesFigure(record, 'calvin')) {
+  /* CALVIN. The figure is his engine's; this file only writes it down, and only while core says his method counts the
+     project, under the version the figure is for. A fact that changes takes a figure that no longer fits off. */
+  const version = carbon?.version === 'paa' ? '2026' : '2021';
+  if (carbon && carbonAnswer(record.facts, version).says === 'counted') {
     record = setAgentResults(record, 'calvin', {
       estimate: { figure: carbon.er, unit: 'tCO₂e a year', method: carbon.version === 'paa' ? 'carbon-v2.0' : 'carbon-v1.0', engineVersion: GS4GG_CALCULATOR_VERSION },
       /* Opening his calculator ends nothing: a figure the visitor's answers gave does (25 Nov 2026). */
@@ -309,16 +149,12 @@ export function projectRecord({ visit, sheet, carbon = null }: RecordInput): Pro
     });
   }
 
-  /* A class his calculator does not cover gives no figure, so his part could never end and the visitor would be sent to
-     him for ever. It is ended here with no figure, and Wellington says why (24 Nov 2026). */
-  if (!carbon && technology && uncoveredLabel(record)) record = setAgentResults(record, 'calvin', { done: true });
-
   /* VIOLET, by her own package's helpers. */
   if (visit.water) {
     const input = visit.water.input as unknown as D3Input;
     const result = visit.water.result as unknown as D3Result;
     record = addVioletFacts(record, { ...violetGivenFacts(input), population: undefined }).record;
-    if (kindGivesFigure(record, 'violet')) record = addVioletResults(record, { input, result, done: result.vwbM3PerYear !== null && visit.violetDone === true });
+    if (counted(record, 'violet')) record = addVioletResults(record, { input, result, done: result.vwbM3PerYear !== null && visit.violetDone === true });
   }
   return record;
 }
@@ -334,21 +170,9 @@ export function metFrom(reached: ReadonlySet<Surface>): AgentId[] {
   return [...reached].map((s) => AGENT_AT[s]);
 }
 
-/**
- * Core's map for this site: the two pathways Phoebe reads here, and the five agents this site has.
- *
- * ONE ANSWER IS PUT RIGHT. A drinking-water project whose class nobody has said yet carries its type's own name, which is
- * not on core's label list, and core answers "not covered yet" for a label it does not know. Nobody has said what it is,
- * so the true answer is that the map is waiting for it (reported to the open core, 25 Nov 2026).
- */
+/** Core's map for this site: the two pathways Phoebe reads here, and the five agents this site has. */
 export function siteMap(record: ProjectRecord, met: readonly AgentId[] = []): AgentMap {
-  const map = agentMap({ place: 'free-site', record, met, reads: READ_HERE, crew: AGENTS });
-  if (!kindNotSaid(record)) return map;
-  return {
-    ...map,
-    agents: map.agents.map((c) => (!c.called && c.because === 'not covered yet' ? { ...c, because: 'waiting for basic facts' as const } : c)),
-    pathways: map.pathways.map((p) => (p.noMethod === 'not covered yet' ? { ...p, agent: 'violet' as const, noMethod: 'waiting for basic facts' as const } : p)),
-  };
+  return agentMap({ place: 'free-site', record, met, reads: READ_HERE, crew: AGENTS });
 }
 
 /** One agent's call on the map. */
@@ -381,9 +205,8 @@ export function waterHasNoCalculator(map: AgentMap): boolean {
   return noCalculatorFor(map, 'violet');
 }
 
-/** What the screen says then — the maintainer's own sentence, 25 Nov 2026. Never reworded here. */
-export const NO_CALCULATOR_YET =
-  'We do not have a calculator for this kind of project yet. To ask for it to be added, contact WaterBots at hello@waterbots.ai.';
+/** What the screen says then — the maintainer's own sentence, 25 Nov 2026, from core's one copy. */
+export const NO_CALCULATOR_YET = CORE_NO_CALCULATOR_YET;
 
 /**
  * WHO THE MAP HAS CALLED, for the crew column — the maintainer's ruling of 24 Nov 2026, the shared console behaviours,
@@ -418,14 +241,11 @@ export function stepAt(map: AgentMap, surface: Surface): StepWords | undefined {
 }
 
 /**
- * WHAT COMES NEXT, read from the map — the maintainer's ruling of 24 Nov 2026 (src/lib/steps.ts draws it).
+ * WHAT COMES NEXT, read from the map — the maintainer's ruling of 24 Nov 2026 (src/lib/steps.ts draws it). It is
+ * Wellington's own reading of the map (`mapNote`, his package), so the screen and his chat never disagree.
  *
- * It is the map's own one next step, with two things added. Step 3 names every calculator the map calls that is not done,
- * not the first alone. And once Phoebe has read every path, a missing country no longer holds the visitor at "gather
- * facts": Wellington asks for it, and the next step is still there. A visitor never reaches a dead end.
- *
- * HOME USE is asked when the map asks (core 0.3.0, 25 Nov 2026): a new or alternative supply whose water path is in play.
- * Wellington asks it, wherever he is, before he names the next agent; `then` is who that will be.
+ * HOME USE is asked when the map asks: a new or alternative supply whose water path is in play. Wellington asks it,
+ * wherever he is, before he names the next agent; `then` is who that will be.
  */
 export type NextStep =
   | { kind: 'gather'; homeUse?: boolean; then?: Surface[]; steps?: Partial<Record<Surface, StepWords>> }
@@ -433,18 +253,23 @@ export type NextStep =
   | { kind: 'team' }
   | { kind: 'done' };
 
+/** The desk of each agent the map names. */
+const DESK_OF: Record<Exclude<AgentId, 'wellington'>, Surface> = { phoebe: 'eligibility', bridget: 'map', calvin: 'quantification', violet: 'water' };
+
+/** Wellington's reading of the map, as his package gives it. */
+export function mapForWellington(record: ProjectRecord, map: AgentMap): MapNote {
+  const note = mapNote(record, map, { reads: READ_HERE });
+  if (!note) throw new Error('The agent map was run for the lobby chat, which this site does not have.');
+  return note;
+}
+
 export function nextStep(record: ProjectRecord, map: AgentMap): NextStep {
-  if (record.agents.phoebe?.done !== true) {
-    const read = READ_HERE.every((pathway) => record.pathways[pathway] !== undefined);
-    /* Until her step is ended the next step is Phoebe's, whatever else the facts already call. */
-    return read || callOf(map, 'phoebe').called ? { kind: 'call', surfaces: ['eligibility'], steps: stepsOf(map, ['eligibility']) } : { kind: 'gather' };
-  }
-  if (READ_HERE.every((pathway) => record.pathways[pathway]?.reading === 'unlikely')) return { kind: 'team' };
-  const ahead = (agent: AgentId) => callOf(map, agent).called && record.agents[agent]?.done !== true;
-  const calculators = (['quantification', 'water'] as const).filter((surface) => ahead(AGENT_AT[surface]));
-  const surfaces: Surface[] = ahead('bridget') ? ['map'] : [...calculators];
-  if (asksHomeUse(record, map)) return { kind: 'gather', homeUse: true, then: surfaces, steps: stepsOf(map, surfaces) };
-  return surfaces.length ? { kind: 'call', surfaces, steps: stepsOf(map, surfaces) } : { kind: 'done' };
+  const note = mapForWellington(record, map);
+  const surfaces = note.agents.filter((a): a is Exclude<AgentId, 'wellington'> => a !== 'wellington').map((a) => DESK_OF[a]);
+  if (note.next === 'point to the WaterBots team') return { kind: 'team' };
+  if (note.next === 'report or sign-up') return { kind: 'done' };
+  if (note.next === 'call') return { kind: 'call', surfaces, steps: stepsOf(map, surfaces) };
+  return note.facts.includes('homeUse') ? { kind: 'gather', homeUse: true, then: surfaces, steps: stepsOf(map, surfaces) } : { kind: 'gather' };
 }
 
 function stepsOf(map: AgentMap, surfaces: readonly Surface[]): Partial<Record<Surface, StepWords>> {
@@ -456,70 +281,12 @@ function stepsOf(map: AgentMap, surfaces: readonly Surface[]): Partial<Record<Su
   return out;
 }
 
-/** The map's own rule for asking home use, read where a missing country would otherwise stand in front of it. */
-export function asksHomeUse(record: ProjectRecord, map: AgentMap): boolean {
-  if (map.next.step === 'gather facts' && map.next.facts.includes('homeUse')) return true;
-  return record.agents.phoebe?.done === true && needsHomeUse(record.facts) && !kindNotSaid(record) && map.pathways.some((p) => p.pathway === 'vwba' && p.inPlay);
-}
-
 /** The steps that are done, by the journey's own keys. */
 export function stepsDone(record: ProjectRecord, map: AgentMap): ('eligibility' | 'partners' | 'quantify')[] {
-  const next = nextStep(record, map);
-  const phoebe = record.agents.phoebe?.done === true;
-  const bridget = record.agents.bridget?.done === true;
-  return [
-    ...(phoebe ? (['eligibility'] as const) : []),
-    ...(phoebe && bridget ? (['partners'] as const) : []),
-    /* Only where a calculator gave a figure: a project no calculator is called for has no Step 3 to call done. */
-    ...(next.kind === 'done' && (record.agents.calvin?.estimate || record.agents.violet?.estimate) ? (['quantify'] as const) : []),
-  ];
+  return mapForWellington(record, map).done;
 }
 
 /** Each pathway's plain name, as the screens say it. */
 export const PATHWAY_NAME: Partial<Record<StandardId, string>> = { vwba: 'Water benefits', carbon: 'Carbon credits' };
 
-/**
- * The map as Wellington's relay reads it: codes and the card titles in "what would change it". Never Phoebe's
- * own sentences (docs/modules/wellington.md), which stay in the record's reasons.
- */
-export interface MapForWellington {
-  next: string;
-  agent?: string;
-  facts?: string[];
-  called: string[];
-  closed: string[];
-  readings: { pathway: string; reading: string; wouldChange?: string }[];
-  transitioning: boolean;
-  /** The steps that are done, by the journey's keys, and every agent who helps with the next one (24 Nov 2026). */
-  done: string[];
-  agents: string[];
-  /** Calvin's calculator does not cover this kind of project, so he is not the next step. */
-  uncovered: boolean;
-  /** Water benefits stay in play and no calculator covers this kind of project yet (25 Nov 2026). */
-  noWaterCalculator: boolean;
-  /** The steps this project has, by the journey's keys, in order. */
-  steps: string[];
-}
-
-export function mapForWellington(record: ProjectRecord, map: AgentMap): MapForWellington {
-  const next = nextStep(record, map);
-  const ahead = next.kind === 'call' ? next.surfaces : next.kind === 'gather' ? (next.then ?? []) : [];
-  const agents = ahead.map((surface) => AGENT_AT[surface]);
-  const facts = [...(map.next.step === 'gather facts' ? map.next.facts.filter((f) => f !== 'homeUse') : []), ...(next.kind === 'gather' && next.homeUse ? ['homeUse'] : [])];
-  return {
-    next: next.kind === 'call' ? 'call' : next.kind === 'gather' ? 'gather facts' : next.kind === 'team' ? 'point to the WaterBots team' : 'report or sign-up',
-    ...(agents.length ? { agent: agents[0] } : {}),
-    ...(facts.length ? { facts } : {}),
-    done: stepsDone(record, map),
-    agents,
-    uncovered: uncoveredLabel(record) !== undefined && callOf(map, 'calvin').called,
-    noWaterCalculator: waterHasNoCalculator(map),
-    steps: map.steps.map((step) => step.id),
-    called: map.agents.filter((c) => c.called).map((c) => c.agent),
-    closed: map.agents.filter((c) => closedBy(map, c.agent)).map((c) => c.agent),
-    readings: map.pathways.flatMap((p) =>
-      p.reading === null ? [] : [{ pathway: p.pathway, reading: p.reading, ...(record.pathways[p.pathway]?.wouldChange ? { wouldChange: record.pathways[p.pathway]!.wouldChange } : {}) }]
-    ),
-    transitioning: record.facts.creditedUnderV1?.value === true,
-  };
-}
+export type { MapNote };

@@ -25,7 +25,7 @@
 import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { createServer } from 'node:http';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, rmSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -70,11 +70,15 @@ const compile = spawnSync(
 if (compile.status !== 0) {
   console.error('\n  FAILED — api/ did not compile, so nothing below could be checked.\n');
   console.error(compile.stdout || compile.stderr);
-  rmSync(out, { recursive: true, force: true });
+  try { unlinkSync(join(out, 'node_modules')); } catch {}
+rmSync(out, { recursive: true, force: true });
   process.exit(1);
 }
 
 writeFileSync(join(out, 'package.json'), '{"type":"module"}');
+/* The seal's reader uses core's lists from 26 Nov 2026 (@waterbots/core 0.4.0), so the compiled folder sees this site's
+   installed packages through a link, as check-calvin-package does. */
+symlinkSync(join(process.cwd(), 'node_modules'), join(out, 'node_modules'), 'junction');
 const load = (name) => import(pathToFileURL(join(out, name)).href);
 
 /* ---------------------------------------------------------------------------
@@ -178,7 +182,6 @@ const sample = () => ({
   record: {
     does: { value: 'Protects a spring and pipes it to a village', source: 'chat' },
     type: { value: 'C-19', source: 'chat' },
-    gsClass: { value: 'CWS', source: 'chat' },
     stage: { value: 'paper', source: 'chat' },
     /* Derived from the type: C-19 is the one type both standards' lists name,
        so the word is "both". The save-door patch of 25 Sep 2026. */
@@ -188,6 +191,8 @@ const sample = () => ({
     /* People served, as said — households never converted. 27 Sep 2026. */
     served: { value: '240', unit: 'households', source: 'chat' },
   },
+  /* SHAPE 2, 26 Nov 2026: no class; the kind facts the visitor gave, in core's save-ticket shape. Made up. */
+  kindTicket: { waterSource: 'existing', treatment: 'none', sourceSafe: true, rules: 1 },
   pin: {
     hybasId: 1040021560,
     pfafId: 142534,
@@ -255,14 +260,14 @@ expect(
   `got shape ${parsed.shape}, sealedAt ${parsed.sealedAt}`
 );
 expect(
-  'what is stored is the visit as sent — the record with its source tags, the pin, the worksheet, the packs',
-  JSON.stringify({ record: parsed.record, pin: parsed.pin, worksheet: parsed.worksheet, packs: parsed.packs }) ===
+  'what is stored is the visit as sent — the record with its source tags, the kind facts, the pin, the worksheet, the packs',
+  JSON.stringify({ record: parsed.record, kindTicket: parsed.kindTicket, pin: parsed.pin, worksheet: parsed.worksheet, packs: parsed.packs }) ===
     JSON.stringify(sample()),
   'the stored seal differs from what was sent'
 );
 expect(
-  'what is stored holds only the five ruled parts and the shape name',
-  Object.keys(parsed).sort().join(',') === 'packs,pin,record,sealedAt,shape,worksheet',
+  'what is stored holds only the ruled parts and the shape name',
+  Object.keys(parsed).sort().join(',') === 'kindTicket,packs,pin,record,sealedAt,shape,worksheet',
   `got ${Object.keys(parsed).join(', ')}`
 );
 
@@ -359,15 +364,16 @@ await refused(
   400,
   'record.type.value'
 );
+/* From 26 Nov 2026 (shape 2) a class is not part of a seal at all: nobody is asked for one. */
 await refused(
-  'a class beside a type that is not drinking water is turned away',
+  'a class is turned away: it is not part of a seal',
   (() => {
     const s = sample();
-    s.record.type.value = 'C-11';
+    s.record.gsClass = { value: 'CWS', source: 'chat' };
     return s;
   })(),
   400,
-  'record.gsClass.value'
+  'gsClass'
 );
 await refused(
   'a stage outside the closed set is turned away',
@@ -517,7 +523,7 @@ expect(
   asked.status === 200 &&
     askedStored.wantsHuman === true &&
     askedStored.humanNote === 'The sponsor cannot change the design.' &&
-    Object.keys(askedStored).sort().join(',') === 'humanNote,packs,pin,record,sealedAt,shape,wantsHuman,worksheet',
+    Object.keys(askedStored).sort().join(',') === 'humanNote,kindTicket,packs,pin,record,sealedAt,shape,wantsHuman,worksheet',
   `got ${asked.status}: ${JSON.stringify(askedStored).slice(0, 200)}`
 );
 expect(
@@ -737,37 +743,45 @@ expect('a GET on the seal address is a plain 405, pointing at the claim', opened
 
 console.log('\n  The seal the desk builds\n');
 
+/* FROM 26 NOV 2026 the seal and the visit read the agents' packages (@waterbots/core, @waterbots/phoebe), whose subpaths
+   tsc's plain Node resolution cannot follow, so each file is turned into CommonJS on its own by esbuild, and the folder sees
+   this site's installed packages through a link. The build type-checks these files in any case (tsc -b). */
 const libOut = mkdtempSync(join(tmpdir(), 'wb-handoff-lib-'));
 const compileLib = spawnSync(
   process.execPath,
   [
-    join('node_modules', 'typescript', 'bin', 'tsc'),
+    join('node_modules', 'esbuild', 'bin', 'esbuild'),
     join('src', 'lib', 'handoff.ts'),
+    join('src', 'lib', 'visit.ts'),
+    join('src', 'lib', 'site.ts'),
     join('src', 'lib', 'methodPacks.ts'),
     /* Compiled by name from 14 Nov 2026: the registry no longer imports it. */
     join('src', 'lib', 'gsSdws.ts'),
-    '--outDir', libOut,
-    '--module', 'commonjs',
-    '--moduleResolution', 'node',
-    '--target', 'es2022',
-    '--skipLibCheck',
-    '--esModuleInterop',
+    `--outdir=${libOut}`,
+    '--format=cjs',
+    '--platform=node',
+    '--target=es2022',
+    '--log-level=error',
   ],
   { encoding: 'utf8' }
 );
+symlinkSync(join(process.cwd(), 'node_modules'), join(libOut, 'node_modules'), 'junction');
 if (compileLib.status !== 0) {
   console.error('\n  FAILED — src/lib/handoff.ts did not compile.\n');
   console.error(compileLib.stdout || compileLib.stderr);
   server.close();
-  rmSync(out, { recursive: true, force: true });
-  rmSync(libOut, { recursive: true, force: true });
+  try { unlinkSync(join(out, 'node_modules')); } catch {}
+rmSync(out, { recursive: true, force: true });
+  try { unlinkSync(join(libOut, 'node_modules')); } catch {}
+rmSync(libOut, { recursive: true, force: true });
   process.exit(1);
 }
 writeFileSync(join(libOut, 'package.json'), '{"type":"commonjs"}');
 const requireLib = createRequire(import.meta.url);
 const { buildSeal, handoffAddress, teamRows } = requireLib(join(libOut, 'handoff.js'));
 const { EMPTY_VISIT, typedContext, learnedContext, pinnedContext } = requireLib(join(libOut, 'visit.js'));
-const { pathwayKind } = requireLib(join(libOut, 'projectTypes.generated.js'));
+/* The retired word's rule lives with the seal's reader from 26 Nov 2026; the type list it read is core's. */
+const { pathwayKind } = await load('_handoff.js');
 
 /* THE WATER ESTIMATE IN THE SEAL, from 22 Nov 2026: Violet's D-3 screen hands the
    site what the visitor set and what her engine gave back. A MADE-UP estimate
@@ -978,7 +992,7 @@ try {
 expect(
   'the body is the seal as stored — shape, sealed-at, and the visit the desk built',
   claimed.shape === SEAL_SHAPE && typeof claimed.sealedAt === 'string' &&
-    JSON.stringify({ record: claimed.record, pin: claimed.pin, worksheet: claimed.worksheet, packs: claimed.packs }) === JSON.stringify(built),
+    JSON.stringify({ record: claimed.record, kindTicket: claimed.kindTicket, pin: claimed.pin, worksheet: claimed.worksheet, packs: claimed.packs }) === JSON.stringify(built),
   wonText.slice(0, 200)
 );
 expect('the seal is gone from the store once claimed', !values.has(sealKey(throughTicket)), 'the seal is still in the store');
@@ -1021,7 +1035,9 @@ expect('seal, claim, gone: the whole bridge in one pass', roundTripOut.status ==
 --------------------------------------------------------------------------- */
 
 server.close();
+try { unlinkSync(join(out, 'node_modules')); } catch {}
 rmSync(out, { recursive: true, force: true });
+try { unlinkSync(join(libOut, 'node_modules')); } catch {}
 rmSync(libOut, { recursive: true, force: true });
 
 console.log('');

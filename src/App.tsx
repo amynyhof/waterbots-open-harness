@@ -79,8 +79,8 @@ import ScreeningReport from './components/ScreeningReport';
 import { NO_SUMMARY, type CalvinSummary } from './components/CalvinCalculator';
 import { calvinProjectFrom, countryIsoFor } from './lib/calvinProject';
 import { carriedRecord } from './lib/phoebeClient';
-import { NO_CALCULATOR_YET, callOf, calledSurfaces, closedBy, kindGivesFigure, mapForWellington, metFrom, nextStep, noCalculatorFor, projectRecord, siteMap, uncoveredLabel, waterHasNoCalculator, type MapForWellington, type NextStep } from './lib/projectRecord';
-import { kindNow, toldVisit } from './lib/told';
+import { NO_CALCULATOR_YET, callOf, calledSurfaces, closedBy, counted as countedBy, mapForWellington, metFrom, nextStep, noCalculatorFor, projectRecord, siteMap, waterHasNoCalculator, type MapNote, type NextStep } from './lib/projectRecord';
+import { toldVisit, turnFacts } from './lib/told';
 import type { GivenFacts } from '@waterbots/core/record';
 import { onward, type Ending } from './lib/steps';
 import { d3InputFromRecord, violetAgentNoteLines } from '@waterbots/violet';
@@ -113,14 +113,8 @@ import { Reached } from './chat/reached';
 import { DEFAULT_SURFACE, type Surface } from './lib/surfaces';
 import { useConversation } from './chat/useConversation';
 import { WELLINGTON, wellingtonAsk } from './lib/wellington';
-import {
-  EMPTY_SHEET,
-  applyUpdates as applySheetUpdates,
-  type Sheet,
-  type Verdicts,
-} from './lib/worksheetState';
+import { EMPTY_SHEET, HER_PACKS, applyUpdates as applySheetUpdates, type Sheet, type Verdicts } from '@waterbots/phoebe';
 import { phoebeDone } from './lib/visit';
-import { HER_PACKS } from './lib/worksheet.generated';
 import {
   EMPTY_VISIT,
   applyEligibilityProgress,
@@ -279,17 +273,17 @@ export default function App() {
   }, []);
 
   /* What the visitor tells Calvin or Violet joins the visit, and so the shared record (src/lib/told.ts). */
-  const onTold = useCallback((agent: Teller, given: GivenFacts, unfile?: boolean): string[] => {
-    const tell = (v: Visit) => toldVisit(v, agent, given, projectRecord({ visit: v, sheet: sheetRef.current }), unfile);
+  const onTold = useCallback((agent: Teller, given: GivenFacts): string[] => {
+    const tell = (v: Visit) => toldVisit(v, agent, given);
     const { visit: next, refused } = tell(visitRef.current);
     visitRef.current = next;
     setVisit((v) => tell(v).visit);
     return refused;
   }, []);
-  const calvinTold = useCallback((given: GivenFacts, unfile?: boolean) => onTold('calvin', given, unfile), [onTold]);
-  const violetTold = useCallback((given: GivenFacts, unfile?: boolean) => onTold('violet', given, unfile), [onTold]);
-  /* The kind of project, for the guards on both chats, read as a turn is sent. */
-  const kindIs = useCallback(() => kindNow(visitRef.current, projectRecord({ visit: visitRef.current, sheet: sheetRef.current })), []);
+  const calvinTold = useCallback((given: GivenFacts) => onTold('calvin', given), [onTold]);
+  const violetTold = useCallback((given: GivenFacts) => onTold('violet', given), [onTold]);
+  /* The project's facts, which the relay works out what each calculator does from (core 0.4.0), read as a turn is sent. */
+  const kindIs = useCallback(() => turnFacts(visitRef.current), []);
   /* Their part of Step 3 is ended, by a figure that came from the visitor's answers (25 Nov 2026). */
   const calvinEnded = useCallback(() => {
     if (visitRef.current.calvinDone) return;
@@ -340,7 +334,7 @@ export default function App() {
   /* Look pass, 8 Sep 2026: his route no longer draws a button under his turn.
      He names the step in words, and the next steps live in the right rail. */
   /* THE AGENT MAP GOES WITH EVERY ASK (J4, 23 Nov 2026), read at send time from what the shell holds. */
-  const mapNow = useRef<() => MapForWellington>(() => {
+  const mapNow = useRef<() => MapNote>(() => {
     const record = projectRecord({ visit: visitRef.current, sheet: sheetRef.current, carbon: carbonRef.current });
     return mapForWellington(record, siteMap(record, metFrom(reachedRef.current)));
   });
@@ -520,8 +514,8 @@ export default function App() {
     const m = siteMap(facts);
     return { calvin: closedBy(m, 'calvin'), violet: closedBy(m, 'violet') };
   }, [facts]);
-  /* The kind of project decides whether a figure shows, in core's own answer (25 Nov 2026). */
-  const counts = useMemo(() => ({ calvin: kindGivesFigure(facts, 'calvin'), violet: kindGivesFigure(facts, 'violet') }), [facts]);
+  /* What core works out from the project's facts decides whether a figure shows (core 0.4.0, 26 Nov 2026). */
+  const counts = useMemo(() => ({ calvin: countedBy(facts, 'calvin'), violet: countedBy(facts, 'violet') }), [facts]);
   const carbon: CarbonFigure | null = closed.calvin || !counts.calvin ? null : carbonSeen;
   const carbonRef = useRef<CarbonFigure | null>(null);
   carbonRef.current = carbon;
@@ -604,10 +598,12 @@ export default function App() {
     const shown: Partial<Record<Surface, string>> = {};
     for (const key of Object.keys(crewAll) as Surface[]) if (news[key] || key === surface) shown[key] = crewAll[key];
     /* A closed desk's card, where it had already shown, says so and never that it is ready (J4). */
-    if (uncoveredLabel(facts) && shown.quantification) shown.quantification = 'Not covered yet';
-    for (const key of closedDesks) shown[key] = key === 'water' && noCalculatorFor(map, 'violet') ? 'Not covered yet' : 'Unlikely for this project';
+    for (const key of closedDesks) {
+      const calculator = key === 'water' ? 'violet' : key === 'quantification' ? 'calvin' : null;
+      shown[key] = calculator && noCalculatorFor(map, calculator) ? 'Not covered yet' : 'Unlikely for this project';
+    }
     return shown;
-  }, [crewAll, surface, closedDesks, map, facts]);
+  }, [crewAll, surface, closedDesks, map]);
   const progress = useMemo(() => journeyProgress(counted, sheet), [counted, sheet]);
 
   /* THE BRIDGE (item S7, built 8 Sep 2026). The click seals the visit as it
@@ -808,7 +804,6 @@ export default function App() {
                   place={visit.context.provenance.place === 'pin' ? '' : visit.context.place}
                   onNavigate={setSurface}
                   phone={phone}
-                  quantifyNext={visit.stage === 'quantify'}
                   visible={onMap}
                   invite={visit.partnersInvite}
                   onward={() => wayOnNow.current('map')}
@@ -875,7 +870,6 @@ export default function App() {
                   counts={counts.calvin}
                   kindIs={kindIs}
                   onSummary={setCalvinSummary}
-                  unknownLabel={uncoveredLabel(facts)}
                   invite={visit.quantifyInvite}
                   wayOn={wayOn('quantification')}
                   waiting={waitsForHim('quantification')}
@@ -983,7 +977,7 @@ export default function App() {
         record={record}
         map={map}
         /* A project he does not cover has no values of his to note (23 Nov 2026). */
-        calvinNotes={seenQuantify && !uncoveredLabel(facts) ? calvinSummary.noteLines : []}
+        calvinNotes={seenQuantify && counts.calvin ? calvinSummary.noteLines : []}
         violetNotes={violetNotes}
       />
     </div>

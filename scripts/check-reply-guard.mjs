@@ -15,6 +15,12 @@
  *
  * The api folder is compiled the way the platform compiles it, the same way
  * check-cap.mjs does, so this tests what deploys rather than the source.
+ *
+ * FROM 26 NOV 2026 the reply checks every agent shares are core's
+ * (@waterbots/core/reply), and Phoebe's own counts and her streamed reply's
+ * reader are her package's (@waterbots/phoebe 0.1.0), carried from this site's
+ * api/_reply.ts and api/_replyStream.ts. This checks the installed packages, the
+ * code that deploys, against the same measured replies.
  */
 
 import { spawnSync } from 'node:child_process';
@@ -64,9 +70,7 @@ if (compile.status !== 0) {
 }
 
 writeFileSync(join(out, 'package.json'), '{"type":"module"}');
-const { MIN_REPLY_CHARS, isDegenerateReply } = await import(
-  pathToFileURL(join(out, '_reply.js')).href
-);
+const { MIN_REPLY_CHARS, isDegenerateReply } = await import('@waterbots/core/reply');
 
 console.log('Reply guard — what counts as an answer\n');
 console.log(`  the floor is ${MIN_REPLY_CHARS} characters\n`);
@@ -142,9 +146,8 @@ expect(
    holds the counting both of them use.
 --------------------------------------------------------------------------- */
 
-const { PHOEBE_REPLY_LIMIT, replyLength, isLongReply, cardWordsIn } = await import(
-  pathToFileURL(join(out, '_reply.js')).href
-);
+const { replyLength } = await import('@waterbots/core/reply');
+const { PHOEBE_REPLY_LIMIT, isLongPhoebeReply: isLongReply, cardWordsIn } = await import('@waterbots/phoebe');
 
 console.log('\n  How long a reply runs (Phoebe, 13 Nov 2026)');
 const target =
@@ -233,9 +236,7 @@ expect(
    counting, the names left out, and every relay and walk wired to it.
 --------------------------------------------------------------------------- */
 
-const { READING_GRADE, readingGrade, gradedWords, syllables, isHardReply, walkGrades } = await import(
-  pathToFileURL(join(out, '_reply.js')).href
-);
+const { READING_GRADE, readingGrade, gradedWords, syllables, isHardReply, walkGrades } = await import('@waterbots/core/reply');
 const { readFileSync } = await import('node:fs');
 
 console.log('\n  Reading level (V1, 16 Nov 2026)');
@@ -294,7 +295,7 @@ for (const walk of ['measure-phoebe-walk.mjs', 'measure-wellington.mjs']) {
    Reading her reply out of an answer still being written (P13, streaming).
 --------------------------------------------------------------------------- */
 
-const { replySoFar, needCardsSoFar } = await import(pathToFileURL(join(out, '_replyStream.js')).href);
+const { replySoFar, needCardsSoFar } = await import('@waterbots/phoebe');
 
 console.log('\n  Her reply, read while it is written');
 const whole = JSON.stringify({ needCards: 'none', reply: 'Line one.\nShe said "yes" — café ✓. Next?', cited: [] });
