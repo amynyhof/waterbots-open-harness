@@ -747,24 +747,29 @@ console.log('\n  The seal the desk builds\n');
    tsc's plain Node resolution cannot follow, so each file is turned into CommonJS on its own by esbuild, and the folder sees
    this site's installed packages through a link. The build type-checks these files in any case (tsc -b). */
 const libOut = mkdtempSync(join(tmpdir(), 'wb-handoff-lib-'));
-const compileLib = spawnSync(
-  process.execPath,
-  [
-    join('node_modules', 'esbuild', 'bin', 'esbuild'),
-    join('src', 'lib', 'handoff.ts'),
-    join('src', 'lib', 'visit.ts'),
-    join('src', 'lib', 'site.ts'),
-    join('src', 'lib', 'methodPacks.ts'),
-    /* Compiled by name from 14 Nov 2026: the registry no longer imports it. */
-    join('src', 'lib', 'gsSdws.ts'),
-    `--outdir=${libOut}`,
-    '--format=cjs',
-    '--platform=node',
-    '--target=es2022',
-    '--log-level=error',
-  ],
-  { encoding: 'utf8' }
-);
+/* esbuild's own JavaScript interface, so it runs the same on every platform. */
+const { buildSync } = await import('esbuild');
+const compileLib = (() => {
+  try {
+    buildSync({
+      entryPoints: [
+        join('src', 'lib', 'handoff.ts'),
+        join('src', 'lib', 'visit.ts'),
+        join('src', 'lib', 'site.ts'),
+        join('src', 'lib', 'methodPacks.ts'),
+        join('src', 'lib', 'gsSdws.ts'),
+      ],
+      outdir: libOut,
+      format: 'cjs',
+      platform: 'node',
+      target: 'es2022',
+      logLevel: 'error',
+    });
+    return { status: 0, stdout: '', stderr: '' };
+  } catch (error) {
+    return { status: 1, stdout: '', stderr: String(error) };
+  }
+})();
 symlinkSync(join(process.cwd(), 'node_modules'), join(libOut, 'node_modules'), 'junction');
 if (compileLib.status !== 0) {
   console.error('\n  FAILED — src/lib/handoff.ts did not compile.\n');
