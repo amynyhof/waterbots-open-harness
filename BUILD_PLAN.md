@@ -110,6 +110,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 One set of nine families for all three repositories, the maintainer's word of 21 Nov 2026. It replaces this file's seven
 (Agents, Surfaces, Operations, Knowledge, Data, Cleanup, Safety pass) and its sprints. An item kept its number, its words and its
 v1 step or "After v1" mark; only its family changed. Within a family, v1 items come first. Starting a family's sprint is her decision.
+Family 10, Project data and evidence, was added by the maintainer on 25 Nov 2026.
 
 ### 1 · Agent orchestration
 
@@ -119,7 +120,6 @@ What belongs here: how agents plug into both sites; the one shared project recor
 
 GUIDING LINE: Wellington manages the team to gather what the project needs and keep it moving. The other agents do their tasks, collect what they need, and report back to him. He helps with the next steps.
 
-- **J1.** Release Calvin and Violet 0.5.1 as one joined release. After it, each agent gets its own release, so one agent can be updated without the other. Both sites install the same release in the same batch.
 - **J2.** Doors. Each host tells each agent which door it is at: Free site, Paid site, Agent Commons or MCP (agent rule 21). An agent working alone asks for what it needs itself. This covers how Calvin opens in the Agent Commons.
 - **J3.** The shared project record. Every agent adds its facts and results to one record, and the paid site reads it (agent rule 10). It holds each pathway's reading (likely, more to learn, unlikely) with its reason and what would change it. It refuses a count below zero where it is entered. One shared list turns each site's technology label into the record's code.
 - **J4.** The agent map. ONE map, kept in the core, reads the project's facts and the door, and says which agents are in play, which method applies, and what comes next. It is worked out from facts, so the same project always gets the same agents. Wellington leads from it on both sites. It replaces one-off rules. It must cover at least: on "likely" or "more to learn" a pathway's calculator agent is called and shows; on "unlikely" it is not called, and the visitor is told what would change it; with no pathway forward Bridget is not called and Wellington points to the WaterBots team; a transitioning project also sees the legacy calculator (today it does not); one entry for each carbon method. Session C proposes the design FIRST; the maintainer approves it before anyone builds it.
@@ -168,6 +168,17 @@ in the Commons. This replaces "the water calculator always shows". Built from a 
 D-n modules in the Commons; not on the roster yet, by her hand. **Moved to v1 on her ruling of 21 Nov 2026:** Violet becomes her own
 crew member on the v1 road, through the shared spec with both sites. Until then her D-3 screen sits under Calvin's "Water
 benefits" chip (22 Nov 2026). Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026). **Built 23 Nov 2026 (J5):** her own seat and desk, from the crew list. Left, by the maintainer's hand: her portrait (her initial is drawn), her Orchid text shade (her name is ink), and the brand book's §6, which still says no agent called Violet.
+
+**A33 · Waiting on core: what the walk of 26 Nov 2026 found.** v1 · BONES. Found on the preview walk of pull request 202, with the
+real model; sent to core on 26 Nov 2026. Not this repository's to build: each comes back in a core release, installed here.
+- Calvin fills yes-or-no facts the visitor never gave, and a figure rested on his guess. Core is fixing it for every agent, with
+  plain facts about each door (this site has no Project Record page to point to). Pull request 202 is held for it: install that
+  release into 202, walk the treatment plant test again, then merge.
+- Phoebe's readings do not run again when the source or the treatment changes.
+- "What it does" keeps the old words after the visitor changes the project.
+- Violet says "Good to see you again" on her first turn with a visitor.
+- A project core holds for one more fact ("held for now") is shown as "no calculator yet".
+- Bridget's "still being built" words of 31 October 2026 are put back.
 
 **A20 · Phoebe's runaway call is cut off, not prevented.** After v1 · PARK. One request in seventy-five
 spent all 16,000 output tokens; `CALL_TIMEOUT_MS`, 120 seconds, ends it. Done is a real count once there
@@ -231,6 +242,13 @@ card and plain-words line against a grade-6 target; printed, never enforced. Not
 **C2 · Two sealed cards point at retired pages: a routine knowledge update.** After v1 · BONES. Her ruling of 22 Nov 2026: the sealed cards stay as they are, and these fixes wait for the routine knowledge updates of this family. The water eligibility cards point at "Pace and posture" in the old `AGENT_RULES.md`, and the carbon eligibility cards at `CITATIONS.md` (retired in #192). Every other old pointer was fixed on 22 Nov 2026.
 
 **K15 · Two copied-text matches.** After v1 · BONES. The ten-word match in the carbon eligibility cards and the nine-word match in the carbon grader notes wait for the maintainer's knowledge pack review sprint (her word of 23 Nov 2026).
+
+**K16 · Card T4's transition-module line.** After v1 · BONES. Found 25 Nov 2026. The card says a transition-assistance module is
+coming to the paid site; the build status sheet says it is live there. The card is sealed, so its words are the maintainer's.
+
+**K17 · Phoebe's nine site lines.** After v1 · BONES. Found 26 Nov 2026 (pull request 202). Her package leaves a place for lines true
+at this site alone, and nine of her own lines from this site's instructions are handed in there word for word, card T4's line
+among them. Whether each stays, moves into her package or goes is the maintainer's to say.
 
 ### 4 · Console and surfaces
 
@@ -308,6 +326,23 @@ the build log as it stood at #193, in GitHub's history). Closed on 22 Nov 2026, 
 symbols and the Beta sticker are gone (calvin 0.5.0); Violet's labels sit above their boxes on a phone. Still open: the Commons
 rows for the calculators and Phoebe, and the "beta" at the bottom left.
 
+**S32 · The Agent Commons shows its own typed list.** After v1 · PARTNER. Found 26 Nov 2026. The Commons list is typed in this
+site's code (`src/lib/commonsShelf.ts`) and does not read the installed packages, so an agent installed from the core does not
+appear there by itself. The maintainer expected packaged agents to appear. With S26.
+
+**S33 · The Commons changes in Calvin's and Violet's release notes.** After v1 · PARTNER. Found 26 Nov 2026. Calvin 0.8.0 asks for his
+project built from the record in the Agent Commons too, and Violet 0.8.0 for her temporary record there to start from core's new
+record. Not made: the paste of 26 Nov 2026 said to change nothing in the Commons.
+
+**S34 · A desk opens at the last desk's scroll position.** After v1 · WALKTHROUGH. Found on the walk of 26 Nov 2026. Moving from
+Calvin's long chat to Violet's desk kept the scroll position, so her short desk looked blank until scrolled up.
+
+**S35 · The four look-only items of 24 Nov 2026.** After v1 · WALKTHROUGH. The beta note above the typing box; the left rail as wide
+as the crew rail, holding the tally; the blue "Keep chatting" outline; soft shading on the map.
+
+**S36 · No warning before unsaved work is lost.** After v1 · WALKTHROUGH. Rulings section 5: the site warns a user before unsaved work
+is lost. Found on the coach's list of 26 Nov 2026: no such warning is there yet.
+
 ### 5 · v1 proof and grading
 
 What belongs here: showing it works: real-filing matches, same numbers, whole-journey walks, question counts, exams, the grading rig.
@@ -374,6 +409,10 @@ stalls the page. Look at whether the pin redraws every polygon, and whether the 
 
 **O17 · The first page weighs 1,201 kB.** After v1 · WALKTHROUGH. v2, her word of 31 Oct 2026. The site's one script
 file, past the build's own 500 kB warning (776 kB when logged, 795 kB on #167 with the country boxes, 1,200.69 kB measured 21 Nov 2026). Done is a measured figure she rules on, and what was cut. With O12.
+
+**O18 · Calvin's record reader doubles his engine data in the browser.** After v1 · WALKTHROUGH. Found 26 Nov 2026 (pull request 202).
+`calvinProjectFromRecord`, which his 0.8.0 release notes say to use, brings a second copy of his engine's data into the browser:
+the site's script grew from 370 to 410 kB compressed. Sent to core on 26 Nov 2026; waiting on core. With O17.
 
 **O13 · Banned words in old code.** After v1 · BONES. `validate()` in `api/_wellingtonAnswer.ts` and its
 callers, and "console" in Bridget's and Calvin's dock copy. One hygiene pass; no behaviour changes.
@@ -465,3 +504,14 @@ What belongs here: what outside experts review, what we owe partners, and what w
 **SP6 · A human engineer reviews the structure.** Now, not blocking v1 · BONES. One question put to a person:
 what would you keep, what would you fix first, what would you worry about. It covers all three repositories. The
 review itself is her hand's work, outside this repository (rule zero); only its findings come back here, as items.
+
+### 10 · Project data and evidence
+
+What belongs here: saving, the save's shape, versions, and the report's pinned inputs. Added by the maintainer on 25 Nov 2026.
+
+**E1 · The save's new shape, `handoff/2`.** v1 · BONES. Built in pull request 202, 26 Nov 2026: the class goes, and `kindTicket`
+carries the source, the treatment and the water's safety in core's own save-ticket shape. The paid site's receiver for both shapes
+is live. Merges with pull request 202, after core's fix release (A33) is installed and the treatment plant test is walked again.
+
+Relabelled here from other families: none. The two nearest stay where they are, for the maintainer to place: J6 (saving a screening
+into the paid site) sits in family 1's ruled v1 scope, and S21 (the screening report) in Console and surfaces.
