@@ -105,9 +105,9 @@ the proposal to install Calvin from the open core, merged with her word on its o
 
 ---
 
-## The nine families
+## The ten families
 
-One set of nine families for all three repositories, the maintainer's word of 21 Nov 2026. It replaces this file's seven
+One set of families for all three repositories: nine by the maintainer's word of 21 Nov 2026, and the tenth added on 25 Nov 2026. It replaces this file's seven
 (Agents, Surfaces, Operations, Knowledge, Data, Cleanup, Safety pass) and its sprints. An item kept its number, its words and its
 v1 step or "After v1" mark; only its family changed. Within a family, v1 items come first. Starting a family's sprint is her decision.
 Family 10, Project data and evidence, was added by the maintainer on 25 Nov 2026.
@@ -184,6 +184,12 @@ list came back in core 0.5.0 and is in the build log.
 reads the mark that a fact her readings rest on changed only on a turn where the visitor writes to her. Until then her readings are
 off: the report says "more to learn", and Wellington sends the visitor back to her. Whether the site should call her by itself is
 the maintainer's to say.
+
+**A35 · The rulings pages still describe the class.** v1 mark: open · BONES. From the coach's list of 26 Nov 2026 (its item 10).
+Since core 0.4.0 nobody is asked for a kind or a class, but this site's rulings pages still say so: `docs/modules/wellington.md` (he
+asks the type and, for drinking water, its class), `save-and-carry.md` (the save carries `gsClass`), `phoebe.md` (her sorts include
+the technology class) and `console.md` (a kind of project); and road step 3 here still reads "type and class". A shared job: core's
+own rulings for Phoebe, Wellington and Bridget are core's part (Session C). Rulings pages change on the maintainer's words.
 
 **A20 · Phoebe's runaway call is cut off, not prevented.** After v1 · PARK. One request in seventy-five
 spent all 16,000 output tokens; `CALL_TIMEOUT_MS`, 120 seconds, ends it. Done is a real count once there
@@ -353,6 +359,11 @@ line above Calvin's calculator (`RecordFacts`) names what his package's list say
 said no single technology, it named "technology", a word the site no longer asks for, and sent the visitor to Wellington while
 Calvin asks for the fact himself. It was there before core 0.5.0. The words are the maintainer's.
 
+**S38 · The Tool tab tidy.** v1 mark: open · WALKTHROUGH. From the coach's list of 26 Nov 2026 (its item 37), for both sites, the
+shared page first: "Wellington, Team Lead" shows twice; the project name should be easy to fix; Bridget's name colour; full-body
+Wellington art. Which of these this site shows is not yet checked. The colour and the art come from the brand book, by the
+maintainer's hand.
+
 ### 5 · v1 proof and grading
 
 What belongs here: showing it works: real-filing matches, same numbers, whole-journey walks, question counts, exams, the grading rig.
@@ -500,6 +511,11 @@ different code; a full commit hash cannot. Lane 3 (it edits CI); proposal first.
 **SP5 · Check linting, formatting and strict typing; switch on what is missing.** After v1 · BONES. Find out which
 of the three the repository already runs, and turn on the ones it does not. Proposal first, with what is on and
 what is off.
+
+**SP8 · One command to update the block list.** v1 mark: open · BONES. From the coach's list of 26 Nov 2026 (its item 50). The
+name scan's list is in two places, the maintainer's file and each repository's secret `NAMES_TO_BLOCK`, and she changes them by
+hand. A shared job for all three repositories: one command that updates her file and every repository's secret together. Which
+repository holds it is hers to say. Proposal first.
 
 ### 9 · Experts and partners
 
