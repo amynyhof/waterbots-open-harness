@@ -7,6 +7,7 @@ WaterBots is in beta. We are currently focused on carbon crediting and water ben
 
 ## New lately
 Newest first. Only the last three months are kept. When someone asks for a build update, an agent answers from this part and gives the date in words.
+- 26 November 2026: on the free site, all five agents now work together to understand your project. What one agent learns, the others can use, so their tools give you answers that fit your project.
 - 25 November 2026: on the free site, Calvin and Violet now chat with you. They ask for the facts they need and fill in their calculators as you answer.
 - 22 November 2026: We are working on how our agents talk with you. They are becoming experts in their own areas, and on the free site and the paid site they now speak in a warmer voice, with simpler, more natural answers. Ask them your questions. They are glad to help.
 - 21 November 2026: on the free site, the Quantify step now gives a water figure from Violet's calculator, beside the carbon estimate from Calvin's calculator.
@@ -31,6 +32,7 @@ Coming:
 ## Paid site
 Live:
 - Wellington, on the front page and on the Dispatches desk.
+- Calvin's chat. He asks for the facts he needs and fills in his calculator as you answer.
 - Calvin and the Gold Standard Safe Water carbon calculator: the older method, the newer method, and the change between them, with (ref) markers.
 - The transition module: a checklist and a report that exports as a PDF.
 - The Project Record page.
