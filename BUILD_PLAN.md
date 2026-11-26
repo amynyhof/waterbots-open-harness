@@ -157,7 +157,7 @@ to this site:** the sign-up address, the confirmed roster columns, and a `roster
 - Rule 10: Bridget adds nothing to the project record herself; the console stores the pin.
 - Rule 8: no (ref) marker beside a fact in the chat; Phoebe's sources show on her worksheet rows.
 
-**A30 · The walk of 21 Nov 2026 — what the agents knew and handed on.** v1 · BONES. Eight findings from her walk (full list:
+**A30 · The walk of 21 Nov 2026 — what the agents knew and handed on.** v1 (coach, for the maintainer, 26 Nov) · BONES. Eight findings from her walk (full list:
 the build log as it stood at #193, in GitHub's history). The D-3 swap and the water calculator's re-asking closed on 22 Nov 2026; six wait for this sprint.
 **Her rulings of 21 Nov 2026 for it** (whole in the build log as it stood at #193, in GitHub's history): the words are "likely", "more to learn" and "unlikely",
 never "ruled out"; on likely the host calls that pathway's calculator agent and it shows; on more to learn the same, flagged as
@@ -169,7 +169,7 @@ D-n modules in the Commons; not on the roster yet, by her hand. **Moved to v1 on
 crew member on the v1 road, through the shared spec with both sites. Until then her D-3 screen sits under Calvin's "Water
 benefits" chip (22 Nov 2026). Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026). **Built 23 Nov 2026 (J5):** her own seat and desk, from the crew list. Left, by the maintainer's hand: her portrait (her initial is drawn), her Orchid text shade (her name is ink), and the brand book's §6, which still says no agent called Violet.
 
-**A33 · Waiting on core: what the walks of 26 Nov 2026 found.** v1 · BONES. Found on the preview walks of pull request 202, with
+**A33 · Waiting on core: what the walks of 26 Nov 2026 found.** v1 (coach, for the maintainer, 26 Nov), its first three lines; its fourth line After v1 (coach, for the maintainer, 26 Nov) · BONES. Found on the preview walks of pull request 202, with
 the real model. Not this repository's to build: each comes back in a core release, installed here. The rest of the first walk's
 list came back in core 0.5.0 and is in the build log.
 - A project core holds for one more fact ("held for now") is still shown as "no calculator yet". The crew list now uses core's
@@ -178,20 +178,20 @@ list came back in core 0.5.0 and is in the build log.
   Wellington and the report followed the worksheet.
 - An agent can tell the visitor a fact is on the record when the guard dropped it ("I've put that on the record"). The release
   says the agent asks for it in its own words.
-- Calvin's replies can carry a stray "(ref)".
+- Calvin's replies can carry a stray "(ref)". After v1 (coach, for the maintainer, 26 Nov).
 
-**A34 · Phoebe is not called by herself when a fact changes.** v1 · BONES. Found 26 Nov 2026 (pull request 202). Her package
+**A34 · Phoebe is not called by herself when a fact changes.** v1 (coach, for the maintainer, 26 Nov) · BONES. Found 26 Nov 2026 (pull request 202). Her package
 reads the mark that a fact her readings rest on changed only on a turn where the visitor writes to her. Until then her readings are
 off: the report says "more to learn", and Wellington sends the visitor back to her. Whether the site should call her by itself is
 the maintainer's to say.
 
-**A35 · The rulings pages still describe the class.** v1 mark: open · BONES. From the coach's list of 26 Nov 2026 (its item 10).
+**A35 · The rulings pages still describe the class.** v1 (coach, for the maintainer, 26 Nov) · BONES. From the coach's list of 26 Nov 2026 (its item 10).
 Since core 0.4.0 nobody is asked for a kind or a class, but this site's rulings pages still say so: `docs/modules/wellington.md` (he
 asks the type and, for drinking water, its class), `save-and-carry.md` (the save carries `gsClass`), `phoebe.md` (her sorts include
 the technology class) and `console.md` (a kind of project); and road step 3 here still reads "type and class". A shared job: core's
 own rulings for Phoebe, Wellington and Bridget are core's part (Session C). Rulings pages change on the maintainer's words.
 
-**S37 · "Still needed: technology. Tell Wellington."** After v1 · WALKTHROUGH. Found on the walk of 26 Nov 2026. This site's own
+**S37 · "Still needed: technology. Tell Wellington."** v1 (coach, for the maintainer, 26 Nov) · WALKTHROUGH. Found on the walk of 26 Nov 2026. This site's own
 line above Calvin's calculator (`RecordFacts`) names what his package's list says is missing. Once the source and the treatment
 said no single technology, it named "technology", a word the site no longer asks for, and sent the visitor to Wellington while
 Calvin asks for the fact himself. It was there before core 0.5.0. The words are the maintainer's. Moved here from Console and
@@ -202,7 +202,7 @@ releases first.
 
 What belongs here: the maths, method values, defaults, labels and where each value comes from.
 
-**CM1 · The walk of 21 Nov 2026 — the water calculator's inputs.** v1 · BONES. One finding from her walk of the live
+**CM1 · The walk of 21 Nov 2026 — the water calculator's inputs.** v1 (coach, for the maintainer, 26 Nov) · BONES. One finding from her walk of the live
 site: a minus number of people was ignored with no message. The full list: the build log as it stood at #193, in GitHub's history. From 22 Nov 2026 the water
 calculator has no people box (Violet takes the count from the record). **Closed by J3, 23 Nov 2026:** a count below zero said to
 Wellington is refused by core's fact check, and the visitor is told why. Waits on the maintainer's walk.
@@ -217,7 +217,7 @@ yet.
 
 What belongs here: what the agents are allowed to know: cards, packs, hosted copies.
 
-**A25 · Agents' knowledge copies refresh whenever their files change.** v1 · BONES. Her word of 31 Oct 2026. The primer,
+**A25 · Agents' knowledge copies refresh whenever their files change.** v1 (coach, for the maintainer, 26 Nov) · BONES. Her word of 31 Oct 2026. The primer,
 the cards and the lists reach the relays as generated copies (`scripts/build-prompt-modules.mjs`), written by hand; CI's
 `--check` fails a stale copy, but nothing refreshes one. Done is a copy that cannot ship stale and needs no hand. Proposal first.
 
@@ -249,7 +249,7 @@ name, and M14's justified sub-national area. The card sets are sealed until a re
 **K13 · A reading-grade figure for route cards.** After v1 · PARK. `check-cards` prints a grade for every route
 card and plain-words line against a grade-6 target; printed, never enforced. Not built.
 
-**K14 · Knowledge the agent rules left behind.** After v1 · BONES. Found 22 Nov 2026.
+**K14 · Knowledge the agent rules left behind.** v1 (coach, for the maintainer, 26 Nov) · BONES. Found 22 Nov 2026.
 - Rule 7: Wellington's basic facts about water benefits and carbon credits live in his instructions, not in a pack with a source.
 - The shared roster still carries live-or-coming facts that the build status sheet now holds, such as "his chat is not live yet" and the journey table's State column.
 
@@ -270,13 +270,13 @@ What belongs here: what a visitor sees and clicks, the same on both sites: layou
 
 **A26 · Wellington's rewrite.** Step 3 · v1 · BONES. Built 5 Nov 2026 as approved; her walks' fixes, the voice card and "Wellington comes to you" 12–14 Nov 2026. His prompt is 35,272 against a gate of 35,772, measured 25 Nov 2026 in family 1's second pull request. Waiting on the one measured walk before v1 (A32).
 
-**A28 · Phoebe's walk fixes.** v1 · BONES. Her word of 12–14 Nov 2026: rounds two and three (#173), the limit of 4 sentences or 400 characters approved 14 Nov. On the preview her first word came at 4.8 to 6.1 seconds and whole answers took 5.8 to 9.3 (14 Nov). The skipped hello is fixed. From 14 Nov a voice card, the shared plain-words list, the order of questions, and a ruled-out path saved the same turn (W25). Waiting on the one measured walk before v1 (A32).
+**A28 · Phoebe's walk fixes.** v1 (coach, for the maintainer, 26 Nov) · BONES. Her word of 12–14 Nov 2026: rounds two and three (#173), the limit of 4 sentences or 400 characters approved 14 Nov. On the preview her first word came at 4.8 to 6.1 seconds and whole answers took 5.8 to 9.3 (14 Nov). The skipped hello is fixed. From 14 Nov a voice card, the shared plain-words list, the order of questions, and a ruled-out path saved the same turn (W25). Waiting on the one measured walk before v1 (A32).
 
 **S21 · The screening report exports free.** Step 8 · v1. Her word of 23 Sep 2026: every tool, with or
 without answers, exportable as an easy-to-read, properly cited document. The screening report is the first
 export, in the phase-tags shape. **A first version is built on her word of 14 Nov 2026 (#173)**: print-only, from the left rail, growing with the visit, in the feel of the core's ReportView. From 16 Nov 2026 (#174) it is the one export on Quantify, and it carries Calvin's figure and his full working.
 
-**S25 · Tap size on phones.** v1 · WALKTHROUGH. Her word of 31 Oct 2026, after her preview check of #167. Every control a
+**S25 · Tap size on phones.** v1 (coach, for the maintainer, 26 Nov) · WALKTHROUGH. Her word of 31 Oct 2026, after her preview check of #167. Every control a
 visitor taps, measured at phone width against a size she rules; S24's 44px for the main site's menu is the same question
 there. Proposal first, with the measurements. This includes the map's + and - buttons, on both sites, the shared page first (the
 coach's list of 26 Nov 2026; core's plan will point here).
@@ -341,24 +341,24 @@ the build log as it stood at #193, in GitHub's history). Closed on 22 Nov 2026, 
 symbols and the Beta sticker are gone (calvin 0.5.0); Violet's labels sit above their boxes on a phone. Still open: the Commons
 rows for the calculators and Phoebe, and the "beta" at the bottom left.
 
-**S32 · The Agent Commons shows its own typed list.** After v1 · PARTNER. Found 26 Nov 2026. The Commons list is typed in this
+**S32 · The Agent Commons shows its own typed list.** v1 (coach, for the maintainer, 26 Nov) · PARTNER. Found 26 Nov 2026. The Commons list is typed in this
 site's code (`src/lib/commonsShelf.ts`) and does not read the installed packages, so an agent installed from the core does not
 appear there by itself. The maintainer expected packaged agents to appear. With S26.
 
-**S33 · The Commons changes in Calvin's and Violet's release notes.** After v1 · PARTNER. Found 26 Nov 2026. Calvin 0.8.0 asks for his
+**S33 · The Commons changes in Calvin's and Violet's release notes.** v1 (coach, for the maintainer, 26 Nov) · PARTNER. Found 26 Nov 2026. Calvin 0.8.0 asks for his
 project built from the record in the Agent Commons too, and Violet 0.8.0 for her temporary record there to start from core's new
 record. Not made: the paste of 26 Nov 2026 said to change nothing in the Commons.
 
-**S34 · A desk opens at the last desk's scroll position.** After v1 · WALKTHROUGH. Found on the walk of 26 Nov 2026. Moving from
+**S34 · A desk opens at the last desk's scroll position.** v1 (coach, for the maintainer, 26 Nov) · WALKTHROUGH. Found on the walk of 26 Nov 2026. Moving from
 Calvin's long chat to Violet's desk kept the scroll position, so her short desk looked blank until scrolled up.
 
-**S35 · The four look-only items of 24 Nov 2026.** After v1 · WALKTHROUGH. The beta note above the typing box; the left rail as wide
-as the crew rail, holding the tally; the blue "Keep chatting" outline; soft shading on the map.
+**S35 · The four look-only items of 24 Nov 2026.** Two marks · WALKTHROUGH. After v1: the beta note above the typing box; the left rail as wide
+as the crew rail, holding the tally. v1 (coach, for the maintainer, 26 Nov): the blue "Keep chatting" outline; soft shading on the map.
 
-**S36 · No warning before unsaved work is lost.** After v1 · WALKTHROUGH. Rulings section 5: the site warns a user before unsaved work
+**S36 · No warning before unsaved work is lost.** v1 (coach, for the maintainer, 26 Nov) · WALKTHROUGH. Rulings section 5: the site warns a user before unsaved work
 is lost. Found on the coach's list of 26 Nov 2026: no such warning is there yet.
 
-**S38 · The Tool tab tidy.** v1 mark: open · WALKTHROUGH. From the coach's list of 26 Nov 2026 (its item 37), for both sites, the
+**S38 · The Tool tab tidy.** v1 (coach, for the maintainer, 26 Nov) · WALKTHROUGH. From the coach's list of 26 Nov 2026 (its item 37), for both sites, the
 shared page first: "Wellington, Team Lead" shows twice; the project name should be easy to fix; Bridget's name colour; full-body
 Wellington art. Which of these this site shows is not yet checked. The colour and the art come from the brand book, by the
 maintainer's hand.
@@ -409,12 +409,12 @@ What belongs here: secrets, names to block, alerts, repo settings, speed and wei
 
 Routine hygiene, about once a month: check that nothing in this repo repeats or disagrees with a master page (rulings, agent rules, family page, status sheet). Fix what does.
 
-**A20 · Phoebe's runaway call is cut off, not prevented.** After v1 · PARK. One request in seventy-five
+**A20 · Phoebe's runaway call is cut off, not prevented.** After v1 (coach, for the maintainer, 26 Nov) · PARK. One request in seventy-five
 spent all 16,000 output tokens; `CALL_TIMEOUT_MS`, 120 seconds, ends it. Done is a real count once there
 is traffic, then a smaller budget with a measured reason or a line saying the timeout is enough. Moved here from Agent
 orchestration on 26 Nov 2026. See O19: the platform ends the call at 60 seconds, before this timeout.
 
-**O19 · The platform cuts off the agent relays at 60 seconds.** v1 mark: open · BONES. Found, not chased (the coach's list of 26 Nov
+**O19 · The platform cuts off the agent relays at 60 seconds.** v1 (coach, for the maintainer, 26 Nov) · BONES. Found, not chased (the coach's list of 26 Nov
 2026). Every agent relay here sets `maxDuration = 60`, so the platform ends a call at 60 seconds, while the relays' own
 `CALL_TIMEOUT_MS` is 120 seconds and never fires. Not looked into further.
 
@@ -520,7 +520,7 @@ different code; a full commit hash cannot. Lane 3 (it edits CI); proposal first.
 of the three the repository already runs, and turn on the ones it does not. Proposal first, with what is on and
 what is off.
 
-**SP8 · One command to update the block list.** v1 mark: open · BONES. From the coach's list of 26 Nov 2026 (its item 50). The
+**SP8 · One command to update the block list.** After v1 (coach, for the maintainer, 26 Nov) · BONES. From the coach's list of 26 Nov 2026 (its item 50). The
 name scan's list is in two places, the maintainer's file and each repository's secret `NAMES_TO_BLOCK`, and she changes them by
 hand. A shared job for all three repositories: one command that updates her file and every repository's secret together. Which
 repository holds it is hers to say. Proposal first.
@@ -529,7 +529,7 @@ repository holds it is hers to say. Proposal first.
 
 What belongs here: what outside experts review, what we owe partners, and what we send them.
 
-**SP7 · Ask the experts: does community level water treatment count as a community water supply for the carbon method?** v1 mark: open.
+**SP7 · Ask the experts: does community level water treatment count as a community water supply for the carbon method?** v1 (coach, for the maintainer, 26 Nov).
 
 **SP6 · A human engineer reviews the structure.** Now, not blocking v1 · BONES. One question put to a person:
 what would you keep, what would you fix first, what would you worry about. It covers all three repositories. The
