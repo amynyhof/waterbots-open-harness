@@ -22,7 +22,6 @@ GitHub's history keeps everything else. Newest last.
 
 ## Finished items, one line each
 
-- 25 Aug 2026: #1 Docs amended: session close-out — Phoebe live, three production fault…
 - 26 Aug 2026: #2 Phoebe's step 4: the daily cap, the abstention log, and the token budget fix behind item A4
 - 26 Aug 2026: #3 Docs amended: session close-out — step 4 live in production, confirmed after merge
 - 26 Aug 2026: #4 Docs amended: the bridge logged, "Knowledge Pack" made canon, the design canon noted as incoming
@@ -218,3 +217,6 @@ GitHub's history keeps everything else. Newest last.
 - 22 Nov 2026: #198 Built: family 1, first pull request — the agent rules with the lobby chat line, rules 6, 11 and 17, the sentence checks off, the v1 scope in the plan
 - 23 Nov 2026: #199 Built: J1, Calvin 0.5.1, Violet 0.5.1 and core 0.1.2 installed and pinned; the agent rules come from core
 - 25 Nov 2026: #200 Built: family 1, second pull request — core 0.3.0, Calvin 0.7.0 and Violet 0.7.0, both chats with their guards, Violet's own seat, the shared record and the agent map
+- 25 Nov 2026: #201 The build status sheet of 25 Nov 2026, carried byte for byte, and the build log's missing lines
+- 26 Nov 2026: #203 Family 1 close, steps 1 to 3 and 7: the sprint's findings in their families, family 10 added, J1 out
+- 26 Nov 2026: #202 Built: family 1, third pull request — all five agents from their packages (J5), core's new record, the save's new shape `handoff/2` (E1); then core's fix release: an agent fills a fact only when the visitor gave it, each door's facts, no Project Record page on either calculator, a changed fact takes Phoebe's readings and "What it does" off, Violet's first turn, Bridget's words of 31 October back (A33, in part), one copy of Calvin's engine data (O18)
