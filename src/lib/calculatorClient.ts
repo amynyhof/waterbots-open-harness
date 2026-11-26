@@ -34,8 +34,9 @@ export class CalculatorError extends Error {}
 const object = (value: unknown): Record<string, unknown> => (typeof value === 'object' && value !== null && !Array.isArray(value) ? (value as Record<string, unknown>) : {});
 
 /**
- * The line under a reply when something the agent sent was taken out, so nothing that was not filled in reads as if it was
- * (25 Nov 2026). The words are the agent's package's own (`takenOut`, core 0.4.0). Empty when nothing was.
+ * The line under a reply when a number the agent sent was taken out, so nothing that was not filled in reads as if it was
+ * (25 Nov 2026). The words are the agent's package's own. From core 0.5.0 it names only refused numbers: a fact the
+ * visitor did not give is dropped quietly, and the agent asks for it. Empty when nothing was.
  */
 export function notTaken(answer: Pick<CalculatorAnswer, 'told'>): string {
   return answer.told;
