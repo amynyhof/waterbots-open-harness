@@ -4,9 +4,11 @@
  * In its own module with no SDK, so the check script can load it compiled as the platform compiles it.
  */
 
-import { CALVIN_ANSWER_VALUES, calvinAsks, calvinChatContext, fillCalvin, type CalvinTurn } from '@waterbots/calvin/agent';
+import { calvinAsks, calvinChatContext, guardCalvinReply, type CalvinReply, type CalvinTurn } from '@waterbots/calvin/agent';
+import { carbonAnswer, type ProjectFacts } from '@waterbots/core/record';
 import { AGENT_RULES_MD } from './_agentRules.generated.js';
-import type { TurnGuard } from './_chatGuards.js';
+import type { ReplyGuard, TurnParts } from './_calculatorChat.js';
+import { FREE_SITE_DOOR } from './_door.js';
 import { CALVIN_KNOWLEDGE_MD, CALVIN_PROMPT_MD } from './_calvinPrompt.generated.js';
 import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
 
@@ -37,10 +39,12 @@ export function readCalcState(value: unknown): Record<string, unknown> | null {
   return typeof value === 'object' && value !== null && !Array.isArray(value) && plain(value, 0) ? (value as Record<string, unknown>) : null;
 }
 
-export function calvinBlock(
-  turn: unknown,
-  parts: { opened: boolean; introduce: boolean; leftForNow: string[]; refused: string[] }
-): string | null {
+/** What his method does with the project, under each version in use: core's one table, from the facts (calvin 0.8.0). */
+function answers(facts: ProjectFacts): Pick<CalvinTurn, 'answer' | 'answerV1'> {
+  return { answer: carbonAnswer(facts, '2026'), ...(facts.creditedUnderV1?.value === true ? { answerV1: carbonAnswer(facts, '2021') } : {}) };
+}
+
+export function calvinBlock(turn: unknown, parts: TurnParts, facts: ProjectFacts): string | null {
   if (typeof turn !== 'object' || turn === null) return null;
   const t = turn as Record<string, unknown>;
   const state = readCalcState(t.state);
@@ -66,10 +70,15 @@ export function calvinBlock(
       sliders: t.sliders === true,
       transition: t.transition === true,
       ...(notCoveredYet ? { notCoveredYet } : {}),
+      facts,
+      ...answers(facts),
       opened: parts.opened,
       introduce: parts.introduce,
       leftForNow: parts.leftForNow,
       refused: parts.refused,
+      /* This door's facts, and whether the visitor has talked with him before (calvin 0.9.0). */
+      door: FREE_SITE_DOOR,
+      talkedBefore: parts.talkedBefore,
     });
   } catch {
     /* A state his package cannot read is a request this site never sends. */
@@ -77,39 +86,24 @@ export function calvinBlock(
   }
 }
 
-/** The screen's own name for a fact he asks for by the record's name. */
-const FIELD_OF: Record<string, string> = { 'population.served': 'populationCount', 'population.householdSize': 'householdSizeOverride' };
-const ON_SCREEN: readonly string[] = CALVIN_ANSWER_VALUES;
-
-/** What the guards read of his screen. Every range and every message is his package's. */
-export function calvinGuard(turn: unknown, leftForNow: readonly string[], lines: Pick<TurnGuard, 'does' | 'kind' | 'filedInChat'>): TurnGuard | null {
+/**
+ * THE GUARDS ON HIS NUMBERS AND HIS FACTS are his package's (`guardCalvinReply`, calvin 0.9.0): a number the visitor did not
+ * give here goes back to him once, then comes out, and the visitor is told; a number they gave out of range has its message.
+ * A fact the visitor did not give is dropped quietly and stays blank: a yes or no only counts as the answer to the question
+ * his last reply asked (`asked`, its `asking`), and anything else only in the visitor's own words. He is told once, and asks.
+ */
+export function calvinGuard(turn: unknown, leftForNow: readonly string[], facts: ProjectFacts, asked: string | undefined): ReplyGuard<CalvinReply> | null {
   if (typeof turn !== 'object' || turn === null) return null;
   const t = turn as Record<string, unknown>;
   const state = readCalcState(t.state);
   if (!state) return null;
   const calc = state as unknown as CalvinTurn['state'];
-  const on = (field: string): string => FIELD_OF[field] ?? field;
   try {
-    const transition = t.transition === true;
+    const guard = (reply: CalvinReply, messages: readonly string[], key: string | undefined) => guardCalvinReply(reply, { state: calc, messages, facts, ...(key ? { asked: key } : {}) });
+    /* An out-of-range number's message, read before he answers: for the question he asked, or else the one his screen asks next. */
     const notCoveredYet = oneLine(t.notCoveredYet, 120);
-    const next = calvinAsks(calc, { transition, ...(notCoveredYet ? { notCoveredYet } : {}) }).find((ask) => !leftForNow.includes(ask.key));
-    const asked = next && ON_SCREEN.includes(on(next.key)) ? on(next.key) : null;
-    return {
-      ...lines,
-      asked,
-      held: (field) => {
-        const value = state[on(field)];
-        return typeof value === 'number' || value === null ? value : undefined;
-      },
-      refuses: (field, value) => (ON_SCREEN.includes(field) ? (fillCalvin(calc, { values: { [field]: value } }).refused[0]?.message ?? null) : null),
-      named: {
-        days: 'operationalDays',
-        'hours a day': 'usageHoursPerDay',
-        'litres a person': 'litresPerPersonPerDay',
-        'people a household': 'householdSizeOverride',
-        fnrb: transition ? 'fnrbFiledV1' : 'fnrbOverride',
-      },
-    };
+    const next = asked ?? calvinAsks(calc, { transition: t.transition === true, ...(notCoveredYet ? { notCoveredYet } : {}), ...answers(facts) }).find((ask) => !leftForNow.includes(ask.key))?.key;
+    return { check: (reply, messages) => guard(reply, messages, asked), outOfRange: (messages) => guard({ reply: '', handBack: 'none', leftForNow: [] }, messages, next).outOfRange };
   } catch {
     return null;
   }

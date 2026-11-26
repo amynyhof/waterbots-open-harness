@@ -20,56 +20,25 @@
  * the visitor's yes. "What kind" retired the same day.
  */
 
-import {
-  GS_CLASS_IDS,
-  PROJECT_STAGE_IDS,
-  PROJECT_TYPE_IDS,
-  type GsClassId,
-  type ProjectStageId,
-  type ProjectTypeId,
-} from './projectTypes.generated';
+import { readKindFacts } from '@waterbots/core/projectKinds';
+import { HOME_USES, PROJECT_STAGES, PROJECT_TYPE_IDS } from '@waterbots/core/record';
+import { readServed } from '@waterbots/wellington';
 import type { AskMeta } from '../chat/evidence';
 import { answersFrom } from './chips';
-import type { MapForWellington } from './projectRecord';
+import type { MapNote } from './projectRecord';
 import type { Surface } from './surfaces';
-import type { HomeUse, Served } from './visit';
+import type { KindFacts, Learned, Served } from './visit';
 
 export type WellingtonRoute = 'none' | 'eligibility' | 'quantification' | 'water' | 'map' | 'paid';
 
-export interface Learned {
-  does?: string;
-  name?: string;
-  place?: string;
-  type?: ProjectTypeId;
-  gsClass?: GsClassId;
-  stage?: ProjectStageId;
-  served?: Served;
-  homeUse?: HomeUse;
-}
+export type { Learned };
 
-/** Core's own three words for it (25 Nov 2026). */
-const HOME_USES: readonly HomeUse[] = ['yes', 'no', 'not sure'];
-
-/** Ten million, the relay's own ceiling (api/_wellingtonAnswer.ts). */
-const MAX_SERVED = 10_000_000;
-
-/** A whole count from 1 to ten million and a listed unit, or nothing. */
-function readServed(value: unknown): Served | undefined {
-  if (typeof value !== 'object' || value === null) return undefined;
-  const v = value as Record<string, unknown>;
-  const unit = v.unit === 'people' || v.unit === 'households' ? v.unit : undefined;
-  const count = v.count;
-  if (!unit || typeof count !== 'number' || !Number.isInteger(count) || count < 1 || count > MAX_SERVED) {
-    return undefined;
-  }
-  return { count, unit };
-}
-
-/** The visit as the relay's `readRecord` expects it. Empty strings are fine; omit the object when nothing is filled. */
+/** The visit as the relay reads it (api/_record.ts). Empty strings are fine; omit the object when nothing is filled. */
 export interface VisitRecord {
   does: string;
   type: string;
-  gsClass: string;
+  /** The source, the treatment and whether the water is safe, as the visitor said them (core 0.4.0). */
+  kindFacts: KindFacts;
   stage: string;
   place: string;
   name: string;
@@ -104,6 +73,13 @@ const ROUTES: WellingtonRoute[] = ['none', 'eligibility', 'quantification', 'wat
 
 const REFUSED = ['below zero', 'zero', 'not a whole number', 'not a number'] as const;
 
+/**
+ * THE QUESTION HIS LAST REPLY ASKED (core 0.5.0, 26 Nov 2026): its `asking`, wherever he said it this visit, sent back as
+ * `asked` on his next turn. His package takes a yes or no only as the answer to it. It lives as long as the page does,
+ * as the visit does.
+ */
+let lastAsking: string | undefined;
+
 export async function askWellington(
   history: { role: 'user' | 'assistant'; content: string }[],
   signal?: AbortSignal,
@@ -123,7 +99,7 @@ export async function askWellington(
    * it, each row by id and state only — never her own sentences. `returned` is
    * true on the one turn the desk sends when the visitor comes back from her.
    */
-  found: { sheet?: FoundSheet[]; returned?: boolean; at?: AskMeta['at']; to?: Surface; map?: MapForWellington } = {}
+  found: { sheet?: FoundSheet[]; returned?: boolean; at?: AskMeta['at']; to?: Surface; map?: MapNote } = {}
 ): Promise<WellingtonAnswer> {
   let response: Response;
   try {
@@ -136,14 +112,16 @@ export async function askWellington(
       returned?: true;
       at?: AskMeta['at'];
       to?: Surface;
-      map?: MapForWellington;
+      map?: MapNote;
       door?: 'free-site';
+      asked?: string;
     } = {
       messages: history,
       door: 'free-site',
     };
     /* The agent map (J4, 23 Nov 2026), worked out by core from the shared record. He leads from it. */
     if (found.map) body.map = found.map;
+    if (lastAsking) body.asked = lastAsking;
     if (carried) body.carried = true;
     if (record) body.record = record;
     if (stage !== 'learn') body.stage = stage;
@@ -190,6 +168,8 @@ export async function askWellington(
     throw new WellingtonError('Wellington answered in a shape this console could not read.');
   }
 
+  lastAsking = typeof data.asking === 'string' && /^[\w.-]{1,60}$/.test(data.asking) ? data.asking : undefined;
+
   const route = ROUTES.includes(data.route as WellingtonRoute) ? (data.route as WellingtonRoute) : 'none';
 
   const learned: Learned = {};
@@ -200,11 +180,10 @@ export async function askWellington(
     if (typeof c.place === 'string' && c.place.trim()) learned.place = c.place.trim();
     const type = PROJECT_TYPE_IDS.find((id) => id === c.type);
     if (type) learned.type = type;
-    const gsClass = GS_CLASS_IDS.find((id) => id === c.gsClass);
-    if (gsClass) learned.gsClass = gsClass;
-    const projectStage = PROJECT_STAGE_IDS.find((id) => id === c.stage);
+    Object.assign(learned, readKindFacts(c));
+    const projectStage = PROJECT_STAGES.find((id) => id === c.stage);
     if (projectStage) learned.stage = projectStage;
-    const served = readServed(c.served);
+    const served: Served | undefined = readServed(c.served);
     if (served) learned.served = served;
     const homeUse = HOME_USES.find((h) => h === c.homeUse);
     if (homeUse) learned.homeUse = homeUse;

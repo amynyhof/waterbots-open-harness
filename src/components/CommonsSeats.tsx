@@ -44,14 +44,10 @@ import { checkEntry, emptyRecord, type ProjectRecord } from '@waterbots/core/rec
 import { COUNTRIES } from '@waterbots/calvin/engine';
 import type { AgentTurn, AskMeta } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
-import {
-  EMPTY_SHEET,
-  applyUpdates,
-  contextFor,
-  worksheetCaption,
-  type Sheet,
-} from '../lib/worksheetState';
-import { HER_PACKS } from '../lib/worksheet.generated';
+import { EMPTY_SHEET, HER_PACKS, applyUpdates, contextFor, worksheetCaption, type Sheet } from '@waterbots/phoebe';
+import { EligibilityWorksheet } from '@waterbots/phoebe/screen';
+import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
+import '../styles/phoebe.css';
 import { askPhoebe, carriedSheet } from '../lib/phoebeClient';
 import AgentScreen, { type ScreenTab } from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
@@ -62,7 +58,6 @@ import { BRIDGET, BRIDGET_PACK } from './BridgetScreen';
 import { VIOLET, VIOLET_NOT_LIVE_LINE, VIOLET_PACK } from './VioletScreen';
 import VioletWater from './VioletWater';
 import { CALVIN, CALVIN_NOT_LIVE_LINE, CALVIN_PACK, CalvinTool } from './CalvinScreen';
-import EligibilityWorksheet from './EligibilityWorksheet';
 import { PHOEBE, PHOEBE_PACK, phoebeButtons } from './PhoebeScreen';
 
 export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
@@ -146,7 +141,12 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
       dots={{ tool: toolDot, chat: tab === 'tool' && chat.turns.some((turn) => turn.role === 'agent') }}
       tabs={{
         chat: <ScreenChat host={PHOEBE} chat={chat} composerId="wb-commons-phoebe-composer" />,
-        tool: <EligibilityWorksheet sheet={sheet} gsClass="" herPacks={HER_PACKS} />,
+        /* Her package's Tool tab, the same worksheet as before (@waterbots/phoebe 0.1.0), in this site's tokens. */
+        tool: (
+          <div className="wb-phoebe-tool">
+            <EligibilityWorksheet sheet={sheet} gsClass="" herPacks={HER_PACKS} portrait={phoebePortrait} resetsOnReload />
+          </div>
+        ),
         pack: <KnowledgePackTab view={PHOEBE_PACK} />,
         credentials: <CredentialsTab host={PHOEBE} />,
       }}
@@ -261,6 +261,8 @@ export function CalvinCommonsSeat() {
     return {
       name: 'Your project',
       standards: ['carbon'],
+      /* No Project Record page at this door either (calvin 0.9.0). */
+      recordPage: false,
       ...(facts.technology ? { technology: facts.technology } : {}),
       ...(facts.country ? { country: facts.country } : {}),
       ...(served !== undefined ? { population: { mode: facts.unit, served } } : {}),

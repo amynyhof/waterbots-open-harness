@@ -46,20 +46,16 @@
  * TWO MORE, FROM 13 NOV 2026 (the maintainer's second round for Phoebe):
  *
  *   LONG REPLIES FAIL THE WALK (P10). Every reply is counted with the relay's
- *     own counter (api/_reply.ts) against her ceiling, four sentences and 400
+ *     own counter (her package's, @waterbots/phoebe) against her ceiling, four sentences and 400
  *     characters; the one message her prompt lets run longer, the hand-back
  *     that shows the rows done later, is left out by its field. Any other long
  *     reply is listed and the script exits 1.
  *   CARD WORDS FAIL THE WALK TOO (P23, 14 Nov 2026), counted by the relay's
- *     own list (CARD_WORDS in api/_reply.ts).
+ *     own list (CARD_WORDS in her package).
  *   TIME TO FIRST WORD (P13). The walk asks as the console does, streamed, and
  *     reports how long each answer took to show its first word and to finish.
  */
 
-import { spawnSync } from 'node:child_process';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
-import { createRequire } from 'node:module';
-import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const BASE = process.env.WB_BASE ?? 'http://localhost:5173';
@@ -69,45 +65,21 @@ const BUDGET = Number(process.argv[4] ?? 10);
 const MAX_TURNS = 14;
 const PACKS = WHICH === 'water' ? ['vwba-2.0'] : WHICH === 'carbon' ? ['gs-paa-v2.0'] : ['vwba-2.0', 'gs-paa-v2.0'];
 
-/* The rows and the reads come from the tool file, through the generated model,
-   so this instrument cannot drift from what she is actually asked to walk. */
-const out = mkdtempSync(join(tmpdir(), 'wb-walk-'));
-const compile = spawnSync(
-  process.execPath,
-  [
-    join('node_modules', 'typescript', 'bin', 'tsc'),
-    join('src', 'lib', 'worksheet.generated.ts'),
-    '--outDir', out,
-    '--module', 'commonjs',
-    '--moduleResolution', 'node',
-    '--target', 'es2022',
-    '--skipLibCheck',
-  ],
-  { encoding: 'utf8' }
-);
-if (compile.status !== 0) {
-  console.error(compile.stdout || compile.stderr);
-  process.exit(1);
-}
-writeFileSync(join(out, 'package.json'), '{"type":"commonjs"}');
-const { askedRows, readinessOf, pathwayStateOf, section, READINESS_LABEL, ROW_STATE_LABEL, PATHWAY_STATE_LABEL } =
-  createRequire(import.meta.url)(join(out, 'worksheet.generated.js'));
-rmSync(out, { recursive: true, force: true });
+/* The rows and the reads come from the tool file, through her package's generated model (@waterbots/phoebe 0.1.0, from
+   26 Nov 2026), so this instrument cannot drift from what she is actually asked to walk. Her package reads a worksheet, so
+   a pack's states are handed to it as one. */
+const phoebe = await import('@waterbots/phoebe');
+const { askedRows, section } = phoebe;
+const asSheet = (pack, held) => ({ rows: { [pack]: Object.fromEntries(Object.entries(held).map(([id, state]) => [id, { state }])) }, sorts: {} });
+const readinessOf = (pack, held, context) => phoebe.readiness(asSheet(pack, held), pack, context);
+const pathwayStateOf = (pack, held, context) => phoebe.pathwayState(asSheet(pack, held), pack, context);
+const READINESS_LABEL = phoebe.READ_LABEL;
+const ROW_STATE_LABEL = phoebe.STATE_LABEL;
+const PATHWAY_STATE_LABEL = phoebe.PATHWAY_LABEL;
 
-/* The relay's own length counter, so the walk and the log count alike. */
-const replyOut = mkdtempSync(join(tmpdir(), 'wb-walk-reply-'));
-const compileReply = spawnSync(
-  process.execPath,
-  [join('node_modules', 'typescript', 'bin', 'tsc'), join('api', '_reply.ts'), '--outDir', replyOut, '--module', 'commonjs', '--target', 'es2022', '--skipLibCheck'],
-  { encoding: 'utf8' }
-);
-if (compileReply.status !== 0) {
-  console.error(compileReply.stdout || compileReply.stderr);
-  process.exit(1);
-}
-writeFileSync(join(replyOut, 'package.json'), '{"type":"commonjs"}');
-const { PHOEBE_REPLY_LIMIT, READING_GRADE, replyLength, isLongReply, cardWordsIn, readingGrade, walkGrades } = createRequire(import.meta.url)(join(replyOut, '_reply.js'));
-rmSync(replyOut, { recursive: true, force: true });
+/* The relay's own length counter, so the walk and the log count alike: core's shared checks and her own. */
+const { READING_GRADE, replyLength, readingGrade, walkGrades } = await import('@waterbots/core/reply');
+const { PHOEBE_REPLY_LIMIT, isLongPhoebeReply: isLongReply, cardWordsIn } = phoebe;
 
 /* Every row she asks, pack by pack, in the tool files' order. The scripted
    visitor answers whichever is first still unchecked, so a walk that skips

@@ -56,192 +56,6 @@ import { join } from 'node:path';
 
 const PACKS_MARKER = '{{FITTED_PACKS}}';
 
-/* ---------------------------------------------------------------------------
-   The project types — item A16, built 24 Sep 2026.
-
-   ONE FILE, ONE PARSER, TWO READERS. `product-shared/project-types.md` is
-   the cited list Wellington matches a visitor's project to: twenty VWBA
-   activity types, four Gold Standard technology classes, and "none of these".
-   The relay needs it twice — as the short list in his prompt, and as the
-   closed lists his logged type, class and stage are checked against — and
-   the browser needs it once, to show the standard's name and its plain
-   sentence on the rail. Three readers parsing one markdown table would be
-   three parsers that can drift, so this script parses it once and writes
-   two modules, one under api/ and one under src/lib/, both committed and
-   both under the staleness gate.
-
-   THE SHORT FORM, the maintainer's ruling of 24 Sep 2026: one line per type
-   — the id, the standard's own name, the plain sentence — and no per-row
-   page cites, because he never writes citation text. The cites stay on the
-   file, for people and for Phoebe's applies cards. A page reference inside
-   a plain sentence is dropped from the short form for the same reason.
---------------------------------------------------------------------------- */
-
-const TYPE_ROW = /^\| (C-\d{1,2}|HWT|IWT|CWT|CWS|NONE) \| ([^|]+?) \| ([^|]+?) \|$/;
-
-function parseProjectTypes(text) {
-  const types = [];
-  for (const line of text.split('\n')) {
-    const m = line.match(TYPE_ROW);
-    if (!m) continue;
-    const [, id, name, plainRaw] = m;
-    const axis = id === 'NONE' ? 'none' : id.startsWith('C-') ? 'water' : 'carbon';
-    /* Cites inside the sentence — "(Table 2, p. 6; Table 3, p. 9)",
-       "(Appendix C, pp. 37–39; the note itself on p. 39)" — come out of the
-       short form. Any other bracket stays. */
-    const plain = plainRaw
-      .replace(/\s*\((?:Table|Appendix|§)[^)]*\)/g, '')
-      .replace(/\s+/g, ' ')
-      .trim();
-    types.push({ id, name: name.trim(), plain, axis });
-  }
-  const water = types.filter((t) => t.axis === 'water').length;
-  const carbon = types.filter((t) => t.axis === 'carbon').length;
-  const none = types.filter((t) => t.axis === 'none').length;
-  if (water !== 20 || carbon !== 4 || none !== 1) {
-    throw new Error(
-      `project-types.md parsed to ${water} water types, ${carbon} carbon classes and ${none} "none" rows; expected 20, 4 and 1. The table's shape has changed, and both generated modules would be wrong.`
-    );
-  }
-  const ids = new Set(types.map((t) => t.id));
-  if (ids.size !== types.length) throw new Error('project-types.md carries a duplicate id.');
-  return types;
-}
-
-/** The short list as Wellington reads it. */
-function projectTypesShortForm(types) {
-  const line = (t) => `- ${t.id} — ${t.name}: ${t.plain}`;
-  return [
-    '## Water stewardship activity types — the VWBA guidebook',
-    '',
-    ...types.filter((t) => t.axis === 'water').map(line),
-    '',
-    '## Safe-water technology classes — the Gold Standard methodology, asked only for a drinking-water project (C-19)',
-    '',
-    ...types.filter((t) => t.axis === 'carbon').map(line),
-    '',
-    '## None of these',
-    '',
-    ...types.filter((t) => t.axis === 'none').map(line),
-    '',
-  ].join('\n');
-}
-
-/** The stages Wellington asks, from the guide-not-gate addendum §2, 23 Sep 2026. */
-const PROJECT_STAGES = [
-  { id: 'paper', words: 'on paper', plain: 'still a plan — nothing has been spent on building it yet' },
-  { id: 'building', words: 'being built', plain: 'work has started and it is not running yet' },
-  { id: 'running', words: 'already running', plain: 'it is in use today' },
-];
-
-/**
- * WHAT EACH COLLEAGUE HELPS WITH, from the crew list (roster.yaml) — the
- * maintainer's word of 22 Nov 2026, after her walk of #198. When Wellington hands
- * a visitor to a colleague for the first time, he says what that colleague does
- * for them, in his own words, from these facts. Every colleague on this site's
- * crew (src/lib/crew.ts, which check-roster holds to the roster), other than
- * himself, is listed by the name this site shows: the seat's first face. A
- * colleague with no `helps_with` line throws, naming it: nothing is invented.
- */
-function renderCrewRoles(text) {
-  const { parse } = createRequire(import.meta.url)('yaml');
-  const roster = parse(text);
-  const onSite = new Set(
-    [...readFileSync('src/lib/crew.ts', 'utf8').matchAll(/^\s{4}name: '([^']+)'/gm)].map((m) => m[1])
-  );
-  if (onSite.size === 0) throw new Error('src/lib/crew.ts names no crew member, so the colleagues cannot be listed.');
-  const lines = [];
-  for (const seat of roster.seats ?? []) {
-    const name = (seat.faces ?? [])[0] ?? seat.name;
-    if (seat.id === 'wellington' || !onSite.has(name)) continue;
-    const helps = (seat.helps_with ?? []).map((h) => String(h).trim()).filter(Boolean);
-    if (!name || helps.length === 0) {
-      throw new Error(`The crew list gives no plain line on what the seat "${seat.id}" helps with (helps_with), so Wellington cannot say it.`);
-    }
-    lines.push(`- ${name} (${seat.seat}): ${helps.join('; ')}.`);
-  }
-  if (lines.length === 0) throw new Error('The crew list opens no colleague at the free door.');
-  return `export const CREW_ROLES_MD: string = ${JSON.stringify(lines.join('\n') + '\n')};\n`;
-}
-
-function renderProjectTypes(text) {
-  const types = parseProjectTypes(text);
-  const short = projectTypesShortForm(types);
-  const typeIds = types.filter((t) => t.axis !== 'carbon').map((t) => t.id);
-  const classIds = types.filter((t) => t.axis === 'carbon').map((t) => t.id);
-  return [
-    `/** The list as Wellington reads it: id, the standard's name, one plain sentence; no cites. */`,
-    `export const PROJECT_TYPES_MD: string = ${JSON.stringify(short)};`,
-    '',
-    `export interface ProjectType { id: string; name: string; plain: string; axis: 'water' | 'carbon' | 'none' }`,
-    '',
-    `/** Every row of the file, in file order. */`,
-    `export const PROJECT_TYPES: readonly ProjectType[] = ${JSON.stringify(types, null, 2)};`,
-    '',
-    `/** What \`type\` may hold: the twenty water-axis ids and NONE. A class is never a type. */`,
-    `export const PROJECT_TYPE_IDS = ${JSON.stringify(typeIds)} as const;`,
-    `export type ProjectTypeId = (typeof PROJECT_TYPE_IDS)[number];`,
-    '',
-    `/** What \`gsClass\` may hold, and only beside a drinking-water project, C-19. */`,
-    `export const GS_CLASS_IDS = ${JSON.stringify(classIds)} as const;`,
-    `export type GsClassId = (typeof GS_CLASS_IDS)[number];`,
-    '',
-    `/** The one type that also takes a class. */`,
-    `export const DRINKING_WATER_TYPE: ProjectTypeId = 'C-19';`,
-    '',
-    `/** The stage of a project, as Wellington asks it and logs it on the visitor's yes. */`,
-    `export const PROJECT_STAGES = ${JSON.stringify(PROJECT_STAGES, null, 2)} as const;`,
-    `export const PROJECT_STAGE_IDS = ${JSON.stringify(PROJECT_STAGES.map((s) => s.id))} as const;`,
-    `export type ProjectStageId = (typeof PROJECT_STAGE_IDS)[number];`,
-    '',
-    `export function projectType(id: string): ProjectType | undefined {`,
-    `  return PROJECT_TYPES.find((t) => t.id === id);`,
-    `}`,
-    '',
-    `/**`,
-    ` * The retired "what kind" word, derived from the type — the save-door patch`,
-    ` * of 25 Sep 2026.`,
-    ` *`,
-    ` * "What kind" was Wellington's question until 24 Sep 2026, when the project`,
-    ` * type replaced it (item A16). PRODUCTION'S RECEIVER STILL READS`,
-    ` * \`record.kind\`, and a seal without it arrived there as an empty record —`,
-    ` * the maintainer's live test of 25 Sep 2026, where a full desk conversation`,
-    ` * crossed and came back as "your screening didn't make it across". So the`,
-    ` * seal carries the word again, derived here from the type and never asked of`,
-    ` * anyone, until her carry updates production's side. Item O14.`,
-    ` *`,
-    ` * IT IS A HINT, NEVER A VERDICT. It says which standards' lists name this`,
-    ` * kind of activity. Which pathway a project actually fits is Phoebe's to`,
-    ` * find, on her applies cards (item A16), and her verdicts cross in the`,
-    ` * worksheet, not here.`,
-    ` *`,
-    ` * "carbon" is in the list because production reads the word and because a`,
-    ` * carbon-only type could join the list later. No type on the list yields it`,
-    ` * today: the four Gold Standard classes sit on the carbon axis, and a class`,
-    ` * is never a type.`,
-    ` */`,
-    `export const PATHWAY_KINDS = ['', 'water', 'carbon', 'both', 'neither'] as const;`,
-    `export type PathwayKind = (typeof PATHWAY_KINDS)[number];`,
-    '',
-    `export function pathwayKind(type: string): PathwayKind {`,
-    `  if (type === '') return '';`,
-    `  /* The one type both standards name: the guidebook's potable-water row,`,
-    `     which is also the safe-water carbon method's whole subject. */`,
-    `  if (type === DRINKING_WATER_TYPE) return 'both';`,
-    `  const found = projectType(type);`,
-    `  /* A class is not a type, and nor is anything off the list. The seal's own`,
-    `     reader refuses both before this is reached. */`,
-    `  if (!found || found.axis === 'carbon') return '';`,
-    `  /* "None of these" means no listed type matched, not that no pathway`,
-    `     applies: the guidebook's table is not a closed list, and the applies`,
-    `     test is what decides. */`,
-    `  if (found.axis === 'none') return 'neither';`,
-    `  return 'water';`,
-    `}`,
-    '',
-  ].join('\n');
-}
-
 const COUNT_WORD = ['no', 'one', 'two', 'three', 'four', 'five', 'six'];
 
 function fittedPackSentence() {
@@ -299,31 +113,6 @@ function fittedPackSentence() {
  */
 const BUNDLES = [
   {
-    label: 'cards',
-    target: 'api/_cards.generated.ts',
-    /* EVERY SET SHE MAY BE GIVEN, ONE CONSTANT EACH — from 25 Sep 2026. Her
-       prompt no longer carries them all on every request: the relay loads a set
-       when the visit reaches the stage that needs it (ruling R6, staged
-       loading), so each set is its own export and the relay decides. The cards
-       moved into Phoebe's pack on 17 Sep 2026; they were at the repository root
-       before that day. The carbon pack's sets join this list at pull request B
-       of build-order step 3. */
-    sources: [
-      { name: 'WATER_APPLIES_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/applies-cards-vwba.md' },
-      { name: 'WATER_ELIGIBILITY_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/eligibility-cards-vwba.md' },
-      { name: 'WATER_ROUTES_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/routes-cards-vwba.md' },
-      { name: 'WATER_FEASIBILITY_MD', file: 'knowledge-packs/phoebe-eligibility/vwba-2.0/cards/feasibility-cards-vwba.md' },
-      /* The carbon pack joined on 25 Sep 2026, pull request B of build-order
-         step 3. Its three sets are hers to read from that day; they are staged
-         like the water pack's, so a visitor on one pathway is never read the
-         other. */
-      { name: 'CARBON_APPLIES_MD', file: 'knowledge-packs/phoebe-eligibility/gs-paa-v2.0/cards/applies-cards-gs.md' },
-      { name: 'CARBON_ELIGIBILITY_MD', file: 'knowledge-packs/phoebe-eligibility/gs-paa-v2.0/cards/eligibility-cards-gs.md' },
-      { name: 'CARBON_ROUTES_MD', file: 'knowledge-packs/phoebe-eligibility/gs-paa-v2.0/cards/routes-cards-gs.md' },
-    ],
-    stale: 'The relay would deploy with out-of-date cards.',
-  },
-  {
     label: 'agent-rules',
     target: 'api/_agentRules.generated.ts',
     /* THE FOUNDATIONAL AGENT RULES, in force from 22 Nov 2026. AGENT_RULES.md is
@@ -350,6 +139,14 @@ const BUNDLES = [
     stale: 'Calvin would deploy on instructions his package no longer ships.',
   },
   {
+    label: 'bridget',
+    target: 'api/_bridgetPrompt.generated.ts',
+    /* BRIDGET'S OWN INSTRUCTIONS, as her package ships them, whole (bridget-v0.1.0, 26 Nov 2026). Her package builds them for
+       this site's place (`bridgetInstructions`); this site writes none of its own for her. */
+    sources: [{ name: 'BRIDGET_PROMPT_MD', file: 'node_modules/@waterbots/bridget/dist/prompt.md' }],
+    stale: 'Bridget would deploy on instructions her package no longer ships.',
+  },
+  {
     label: 'violet',
     target: 'api/_violetPrompt.generated.ts',
     /* VIOLET'S, the same (violet-v0.7.0). */
@@ -366,27 +163,6 @@ const BUNDLES = [
        repository root before that day. */
     sources: [{ name: 'AGENT_PRIMER_MD', file: 'knowledge-packs/product-shared/agent-primer.md', region: 'AGENT-FACING' }],
     stale: 'The relay would deploy with an out-of-date primer, so an agent could describe a colleague in words the maintainer never approved.',
-  },
-  {
-    label: 'wellington',
-    target: 'api/_wellingtonPrimer.generated.ts',
-    sources: [{ name: 'WELLINGTON_PRIMER_MD', file: 'knowledge-packs/product-shared/agent-primer.md', region: 'WELLINGTON-FACING' }],
-    stale: 'Wellington would deploy with an out-of-date region, so he could welcome and route in words the maintainer never signed.',
-  },
-  {
-    label: 'types',
-    target: 'api/_projectTypes.generated.ts',
-    /* The project-type list, parsed rather than embedded — item A16, 24 Sep
-       2026. The same render is written a second time under src/lib/ so the
-       rail reads the same rows; see the bundle after this one. */
-    sources: [{ name: 'PROJECT_TYPES', file: 'knowledge-packs/product-shared/project-types.md', render: renderProjectTypes }],
-    stale: 'Wellington would deploy matching to a list of types the maintainer has since changed, and his relay would check a logged type against the wrong list.',
-  },
-  {
-    label: 'types (browser)',
-    target: 'src/lib/projectTypes.generated.ts',
-    sources: [{ name: 'PROJECT_TYPES', file: 'knowledge-packs/product-shared/project-types.md', render: renderProjectTypes }],
-    stale: "The rail would name a type or a definition the file no longer carries.",
   },
   {
     label: 'status-sheet',
@@ -409,14 +185,6 @@ const BUNDLES = [
       { name: 'BEFORE_AFTER_MD', file: 'knowledge-packs/product-shared/before-and-after.md', region: 'AGENT-FACING' },
     ],
     stale: 'An agent would deploy translating method terms with a list the maintainer has since changed.',
-  },
-  {
-    label: 'crew-roles',
-    target: 'api/_crewRoles.generated.ts',
-    /* What each colleague helps with, from the crew list, for Wellington's first
-       handoff to each (the maintainer's word of 22 Nov 2026, after her walk of #198). */
-    sources: [{ name: 'CREW_ROLES_MD', file: 'knowledge-packs/product-shared/roster.yaml', render: renderCrewRoles }],
-    stale: 'Wellington would deploy saying what a colleague helps with from a crew list the maintainer has since changed.',
   },
 ];
 

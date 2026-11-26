@@ -19,17 +19,9 @@
  */
 
 import { answersFrom } from './chips';
-import { cardFor, routeFor } from './phoebeCards';
-import type { PathwayUpdate, RowStatus, RowUpdate, Sheet } from './worksheetState';
-import {
-  PATHWAY_STATE_IDS,
-  ROW_STATE_IDS,
-  TOOL_SECTIONS,
-  section,
-  type PathwayStateId,
-  type RowStateId,
-} from './worksheet.generated';
+import { evidenceFor, readPhoebeAnswer, section, type PathwayUpdate, type RowStatus, type RowUpdate, type Sheet } from '@waterbots/phoebe';
 import type { Evidence } from '../chat/evidence';
+import type { KindFacts } from './visit';
 
 /**
  * The hand-back — contract line 8, item A15, step 4, 21 Sep 2026. A field
@@ -76,25 +68,29 @@ export class PhoebeError extends Error {}
 export interface CarriedRecord {
   does: string;
   type: string;
-  gsClass: string;
+  /** The source, the treatment and whether the water is safe, as the visitor said them (core 0.4.0). */
+  kindFacts: KindFacts;
   stage: string;
   place: string;
   name: string;
   /** People served, as the visitor said it — ruling R5, 27 Sep 2026, so she need not ask again. */
   served?: { count: number; unit: string } | null;
+  /** A fact her readings rest on changed since she worked them out (core 0.5.0): her turn works them all out again. */
+  factsChanged?: true;
 }
 
-export function carriedRecord(context: CarriedRecord): CarriedRecord | null {
+export function carriedRecord(context: Omit<CarriedRecord, 'factsChanged'> & { readingsOff?: boolean }): CarriedRecord | null {
   const record: CarriedRecord = {
     does: context.does.trim(),
     type: context.type,
-    gsClass: context.gsClass,
+    kindFacts: context.kindFacts,
     stage: context.stage,
     place: context.place.trim(),
     name: context.name.trim(),
     ...(context.served ? { served: context.served } : {}),
+    ...(context.readingsOff ? { factsChanged: true as const } : {}),
   };
-  return record.does || record.type || record.stage || record.place || record.name || record.served
+  return record.does || record.type || record.stage || record.place || record.name || record.served || Object.keys(record.kindFacts).length > 0
     ? record
     : null;
 }
@@ -213,23 +209,25 @@ export async function askPhoebe(
     );
   }
 
-  if (typeof data.reply !== 'string') {
+  /* Her answer is held to her tool files again here, by her package's own check (`readPhoebeAnswer`): a row, a state, a
+     route or a card that is not on its list is dropped rather than shown. */
+  const checked = typeof data.reply === 'string' ? readPhoebeAnswer(data) : null;
+  if (!checked) {
     throw new PhoebeError('Phoebe answered in a shape this console could not read.');
   }
 
   return {
-    reply: data.reply,
+    reply: checked.reply,
     answers: answersFrom(data.answers),
-    evidence: resolveEvidence(data.cited),
-    rows: resolveRows(data.rows),
-    pathways: resolvePathways(data.pathways),
-    sorts: resolveSorts(data.sorts),
-    handBack: HAND_BACKS.find((h) => h === data.handBack) ?? 'none',
-    showTool: data.showTool === true,
-    learnMore: typeof data.learnMore === 'string' ? data.learnMore.trim().slice(0, 48) : '',
-    abstained: data.abstained === true,
-    abstentionTopic:
-      typeof data.abstentionTopic === 'string' ? data.abstentionTopic : undefined,
+    evidence: evidenceFor(checked.cited),
+    rows: checked.rows as RowUpdate[],
+    pathways: checked.pathways as PathwayUpdate[],
+    sorts: checked.sorts,
+    handBack: HAND_BACKS.find((h) => h === checked.handBack) ?? 'none',
+    showTool: checked.showTool,
+    learnMore: checked.learnMore,
+    abstained: checked.abstained,
+    abstentionTopic: checked.abstentionTopic,
     loaded: Array.isArray(data.loaded) ? data.loaded.filter((s): s is string => typeof s === 'string') : undefined,
     usage: data.usage as PhoebeAnswer['usage'],
   };
@@ -291,142 +289,4 @@ async function readStream(response: Response, onLive?: (text: string | null) => 
   throw new PhoebeError(
     'Phoebe stopped part-way through that answer and it did not finish. Nothing has been recorded. Asking again usually works.'
   );
-}
-
-/**
- * Phoebe's adapter into the shared chat layer.
- *
- * She returns a pack and a card name. This turns each one into an Evidence
- * record the layer can render — the card's title, its plain words, and the
- * citation, all read from the committed card file. She supplies none of it
- * beyond the name, which is the whole point: see CITATIONS.md (retired in #192). A route card
- * she names comes through the same door, so the fix a visitor reads is the
- * pack's own sentence with its own citation.
- */
-function resolveEvidence(value: unknown): Evidence[] {
-  if (!Array.isArray(value)) return [];
-  const out: Evidence[] = [];
-  const seen = new Set<string>();
-
-  for (const raw of value) {
-    if (typeof raw !== 'string') continue;
-    const token = raw.trim();
-    if (seen.has(token)) continue;
-
-    /* `water:eligibility/4` — the section, the set, the card's own id. THE
-       EVIDENCE ID IS THE TOKEN ITSELF, because the same token is the marker she
-       writes in her prose: if the two were built differently they could differ,
-       and a marker with no evidence behind it reaches the reader as brackets. */
-    const match = token.match(/^([a-z][a-z0-9-]*):([a-z]+)\/(.+)$/);
-    if (!match) continue;
-    const [, sectionId, set, id] = match;
-    const pack = TOOL_SECTIONS.find((part) => part.sectionId === sectionId)?.pack;
-    if (!pack) continue;
-
-    /* A reference to a card that does not exist is dropped in silence here
-       rather than rendered — showing a citation for a missing card would be
-       the fabrication this whole arrangement exists to prevent. The marker
-       leaves the prose with it. */
-    if (set === 'routes') {
-      const route = routeFor(pack, id);
-      if (!route) continue;
-      seen.add(token);
-      out.push({
-        id: token,
-        label: `Route ${route.id} — ${route.title}`,
-        citation: route.citation,
-        plainEnglish: route.route,
-      });
-      continue;
-    }
-    const card = cardFor(pack, `${set}/${id}`);
-    if (!card) continue;
-    seen.add(token);
-    out.push({
-      id: token,
-      label: `${setWord(set)} ${card.id} — ${card.title}`,
-      citation: card.citation,
-      plainEnglish: card.plain,
-    });
-  }
-  return out;
-}
-
-function setWord(set: string): string {
-  if (set === 'eligibility') return 'Criterion';
-  if (set === 'feasibility') return 'Consideration';
-  if (set === 'applies') return 'Does this apply —';
-  return 'Card';
-}
-
-/** A row update is dropped unless its pack, its row and its state all exist. */
-function resolveRows(value: unknown): RowUpdate[] {
-  if (!Array.isArray(value)) return [];
-  const out: RowUpdate[] = [];
-  for (const raw of value) {
-    if (typeof raw !== 'object' || raw === null) continue;
-    const u = raw as Record<string, unknown>;
-    const pack = typeof u.pack === 'string' ? u.pack : '';
-    const id = typeof u.id === 'string' ? u.id : '';
-    const state = ROW_STATE_IDS.find((s) => s === u.state) as RowStateId | undefined;
-    if (!pack || !id || !state) continue;
-    const row = section(pack)?.rows.find((r) => r.id === id);
-    if (!row) continue;
-    const because = typeof u.because === 'string' ? u.because.trim() : '';
-    const routes = Array.isArray(u.routes)
-      ? u.routes.filter((r): r is string => typeof r === 'string' && row.routes.includes(r))
-      : [];
-    out.push({
-      pack,
-      id,
-      state,
-      ...(because ? { because } : {}),
-      ...(routes.length ? { routes } : {}),
-    });
-  }
-  return out;
-}
-
-function resolvePathways(value: unknown): PathwayUpdate[] {
-  if (!Array.isArray(value)) return [];
-  const out: PathwayUpdate[] = [];
-  for (const raw of value) {
-    if (typeof raw !== 'object' || raw === null) continue;
-    const u = raw as Record<string, unknown>;
-    const pack = typeof u.pack === 'string' ? u.pack : '';
-    const id = typeof u.id === 'string' ? u.id : '';
-    const state = PATHWAY_STATE_IDS.find((s) => s === u.state) as PathwayStateId | undefined;
-    if (!pack || !id || !state) continue;
-    if (!section(pack)?.rows.some((r) => r.id === id)) continue;
-    const because = typeof u.because === 'string' ? u.because.trim() : '';
-    out.push({ pack, id, state, ...(because ? { because } : {}) });
-  }
-  return out;
-}
-
-/**
- * What her tests settled about which rows a project has: its class, its
- * version, or both.
- *
- * A word a pack does not declare is dropped, and so is "all", which is what an
- * absent key already says. The shell holds them per pack; the relay checks the
- * same list before they get here.
- */
-function resolveSorts(value: unknown): { pack: string; value: string }[] {
-  if (!Array.isArray(value)) return [];
-  const out: { pack: string; value: string }[] = [];
-  for (const raw of value) {
-    if (typeof raw !== 'object' || raw === null) continue;
-    const u = raw as Record<string, unknown>;
-    const pack = typeof u.pack === 'string' ? u.pack : '';
-    const word = typeof u.value === 'string' ? u.value : '';
-    const found = section(pack);
-    if (!found || word === 'all') continue;
-    const known =
-      found.appliesTo.some((entry) => entry.id === word) ||
-      found.versionFlags.some((entry) => entry.id === word);
-    if (!known) continue;
-    out.push({ pack, value: word });
-  }
-  return out;
 }

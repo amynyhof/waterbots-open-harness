@@ -27,16 +27,14 @@
  */
 
 import type { ReactNode } from 'react';
-import { cardFor, type Citation } from '../lib/phoebeCards';
+import { HER_PACKS, cardFor, contextFor, pathwayRows, section, stateOf, verdictRows, type Citation, type Sheet } from '@waterbots/phoebe';
 import { AQUEDUCT_CITATION, HYDROBASINS_CITATION, PRODUCT_NAME } from '../lib/licences';
-import { PROJECT_STAGES, projectType } from '../lib/projectTypes.generated';
-import { HER_PACKS, section, verdictRows, pathwayRows } from '../lib/worksheet.generated';
-import { contextFor, stateOf, type Sheet } from '../lib/worksheetState';
+import { STAGE_WORDS as PROJECT_STAGES, typeWords as projectType } from '@waterbots/core/projectWords';
 import { NotesOnValues, type NoteLine } from '@waterbots/core/notes';
 import type { AgentMap } from '@waterbots/core/agentMap';
 import type { ProjectRecord } from '@waterbots/core/record';
 import { D3_ENGINE_VERSION } from '@waterbots/violet/engine';
-import { deskRows, pathStatus, servedWords, WATER_SUPPLY_TYPES, type CarbonFigure, type Visit } from '../lib/visit';
+import { deskRows, herClass, pathStatus, servedWords, WATER_SUPPLY_TYPES, type CarbonFigure, type Visit } from '../lib/visit';
 import { NO_CALCULATOR_YET, closedBy, noCalculatorFor, pathwayForPack, waterHasNoCalculator } from '../lib/projectRecord';
 import { GS4GG_CALCULATOR_VERSION } from '@waterbots/calvin/engine';
 import { CALVIN_PACKAGE_VERSION, VIOLET_PACKAGE_VERSION } from '../lib/calvinProject';
@@ -134,14 +132,13 @@ export default function ScreeningReport({
 }) {
   const c = visit.context;
   const type = c.type ? projectType(c.type) : undefined;
-  const gsClass = c.gsClass ? projectType(c.gsClass) : undefined;
   const stage = PROJECT_STAGES.find((s) => s.id === c.stage);
   const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
   const paths = HER_PACKS.filter((pack) => section(pack) !== undefined).map((pack) => {
     const pathway = pathwayForPack(pack);
     const part = section(pack)!;
-    const context = contextFor(sheet, pack, c.gsClass);
+    const context = contextFor(sheet, pack, herClass(visit));
     const status = pathStatus(visit, sheet, pack);
     const line = (id: string, card: string): ReportLine => {
       const held = stateOf(sheet, pack, id);
@@ -191,7 +188,7 @@ export default function ScreeningReport({
       <Heading>1. Your project, as you told Wellington</Heading>
       <Row k="Project name" v={c.name.trim() || AWAITING} />
       <Row k="What it does" v={c.does.trim() || AWAITING} />
-      <Row k="What type" v={type ? (gsClass ? `${type.name} · ${gsClass.name}` : type.name) : AWAITING} note={type?.plain} />
+      <Row k="What type" v={type ? type.name : AWAITING} note={type?.plain} />
       <Row k="Stage" v={stage?.words ?? AWAITING} />
       {(c.served || WATER_SUPPLY_TYPES.includes(c.type)) && <Row k="People served" v={c.served ? servedWords(c.served) : AWAITING} />}
       <Row k="Where it is" v={c.place.trim() || AWAITING} />

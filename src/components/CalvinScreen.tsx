@@ -39,8 +39,8 @@ import { GS4GG_CALCULATOR_VERSION } from '@waterbots/calvin/engine';
 import calvinPortrait from '../../brand/assets/bots/calvin.svg';
 import type { AgentHost, AgentTurn, TurnButton } from '../chat/evidence';
 import type { CalculatorAnswer } from '../lib/calculatorClient';
+import type { TurnFacts } from '../lib/told';
 import type { Surface } from '../lib/surfaces';
-import type { KindNow } from '../lib/told';
 import { WELLINGTON } from '../lib/wellington';
 import AgentScreen from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
@@ -103,7 +103,6 @@ export default function CalvinScreen({
   counts,
   kindIs,
   onSummary,
-  unknownLabel,
   closed = null,
   invite = '',
   waiting = false,
@@ -120,12 +119,10 @@ export default function CalvinScreen({
   project: CalvinProject;
   /** Whether the kind of project gives a figure: core's answer, from the record (25 Nov 2026). */
   counts: boolean;
-  /** The kind of project as it stands, for the guards on his chat. */
-  kindIs: () => KindNow;
+  /** The project's facts as the record holds them, which the relay works out what the agent does from (core 0.4.0). */
+  kindIs: () => TurnFacts;
   /** The figure and the facts still needed, handed to the shell so the crew panel and the report read them. */
   onSummary: (summary: CalvinSummary) => void;
-  /** The project's own label, when Calvin does not cover it. */
-  unknownLabel?: string;
   /** What his desk shows in place of the calculator when the agent map closes it (J4). */
   closed?: ReactNode;
   /** Wellington's hand-off line, at the head of his desk (24 Nov 2026). */
@@ -140,7 +137,7 @@ export default function CalvinScreen({
   showChat?: number;
   /** Writes what the visitor told him to the visit, and returns a message for each number refused. A kind of project their
       words no longer fit comes off the record. */
-  onTold: (given: GivenFacts, unfile?: boolean) => string[];
+  onTold: (given: GivenFacts) => string[];
   /** His part is done: a figure that came from the visitor's answers. */
   onDone: () => void;
   /** The way on, read when his answer lands. */
@@ -182,7 +179,7 @@ export default function CalvinScreen({
       apply: async (answer: CalculatorAnswer) => {
         /* The record first, so the screen follows it, and then the screen's own values. */
         const told = Object.keys(answer.facts).length > 0;
-        const refused = told || answer.unfile ? onTold(answer.facts, answer.unfile) : [];
+        const refused = told ? onTold(answer.facts) : [];
         await settled();
         let fill: ReturnType<CalculatorState['fill']> | undefined;
         flushSync(() => {
@@ -236,7 +233,7 @@ export default function CalvinScreen({
                 project={project}
                 place="free-site"
                 /* Only when the record lacks something: an empty header would still draw its frame. */
-                header={(missing) => (missing.length > 0 && project.notCoveredYet === undefined ? <RecordFacts missing={missing} unknownLabel={unknownLabel} /> : null)}
+                header={(missing) => (missing.length > 0 && project.notCoveredYet === undefined ? <RecordFacts missing={missing} /> : null)}
                 onSummary={onSummary}
                 screening
                 seat={seat}

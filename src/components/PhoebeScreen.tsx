@@ -9,7 +9,7 @@
  * tabs: Chat, her conversation in bubbles on her Anemone tint; Tool, the
  * eligibility worksheet, which the shell still holds so her verdicts and its
  * rows cannot disagree; Knowledge pack, every approved card set in both her
- * packs, water then carbon, assembled from src/lib/phoebeCards.ts so every
+ * packs, water then carbon, assembled from her package (@waterbots/phoebe) so every
  * word is a committed card's — the two water sets she reads from today and
  * the five she does not yet, said so on the tab (23 Sep 2026);
  * Credentials, exam and scores only, honest that no exam has been sat.
@@ -43,9 +43,6 @@ import type { AgentHost, AgentTurn, TurnButton } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
 import { meetShowing } from '../lib/blue';
 import { Reached } from '../chat/reached';
-import type { Citation } from '../lib/citation';
-import { worksheetCaption, contextFor, applyUpdates, type Sheet, type Verdicts } from '../lib/worksheetState';
-import { HER_PACKS } from '../lib/worksheet.generated';
 import { WELLINGTON } from '../lib/wellington';
 import {
   APPROVED_ON,
@@ -64,12 +61,21 @@ import {
   type PackInfo,
   type Phase,
   type RouteCard,
-} from '../lib/phoebeCards';
+  HER_PACKS,
+  worksheetCaption,
+  contextFor,
+  applyUpdates,
+  type Citation,
+  type Sheet,
+  type Verdicts,
+} from '@waterbots/phoebe';
+import { EligibilityWorksheet } from '@waterbots/phoebe/screen';
+import '../styles/phoebe.css';
 import { chipsFor, withWayOn } from '../lib/chips';
 import { answersHim, hisTurn } from '../screen/useCalculatorChat';
 import { askPhoebe, carriedRecord, carriedSheet } from '../lib/phoebeClient';
 import type { Surface } from '../lib/surfaces';
-import { nothingLeftToAsk, onePathDone, type VisitContext } from '../lib/visit';
+import { herClass, nothingLeftToAsk, onePathDone, type VisitContext } from '../lib/visit';
 import AgentScreen, { type ScreenTab } from '../screen/AgentScreen';
 import CredentialsTab from '../screen/CredentialsTab';
 import KnowledgePackTab, {
@@ -79,7 +85,6 @@ import KnowledgePackTab, {
   type PackView,
 } from '../screen/KnowledgePackTab';
 import ScreenChat from '../screen/ScreenChat';
-import EligibilityWorksheet from './EligibilityWorksheet';
 
 export const PHOEBE: AgentHost = {
   name: 'Phoebe',
@@ -138,6 +143,7 @@ export default function PhoebeScreen({
   onMeet,
   onward,
   onHandedOn,
+  onWorkedAgain,
   showChat = 0,
   heAsks,
   onReplyToHim,
@@ -172,6 +178,8 @@ export default function PhoebeScreen({
   onward?: () => TurnButton[];
   /** Tells the shell her step is ended: she handed the visitor on with a path done or closed (24 Nov 2026). */
   onHandedOn?: () => void;
+  /** Tells the shell she has worked her readings out again, after a fact they rest on changed (core 0.5.0). */
+  onWorkedAgain?: () => void;
   /** Bumped each time the visitor opens her from the crew, which opens her Chat tab first (24 Nov 2026). */
   showChat?: number;
 }) {
@@ -241,6 +249,9 @@ export default function PhoebeScreen({
 
     if (answer.loaded) loaded.current = answer.loaded;
     if (answer.showTool) setToolDot(true);
+    /* She was told a fact changed, and this turn worked every reading out again: her results go on the record, and the
+       mark comes off (`addPhoebeResults`, phoebe 0.2.0). Her first hello sets nothing, so it clears nothing. */
+    if (carried?.factsChanged && meta?.opened !== true) onWorkedAgain?.();
 
     /* Her side effect, fired before the turn is returned so a failed request
        never half-moves the worksheet. */
@@ -252,17 +263,17 @@ export default function PhoebeScreen({
     /* He joins once her answer has landed, from the field alone. */
     /* HE COMES AT THE END OF HER STEP, EVERY TIME (24 Nov 2026). It hung on her remembering the field. Where nothing
        is left for her to ask, and she was told so on this ask, he comes whether or not she set it, once. */
-    const done = eligibilityDone && nothingLeftToAsk(sheet, record.gsClass) && meta?.opened !== true && !joined.current;
+    const done = eligibilityDone && nothingLeftToAsk(sheet, herClass({ context: record })) && meta?.opened !== true && !joined.current;
     const joins = answer.handBack === 'wellington' || done;
     const after = applyUpdates(sheet, {
       rows: answer.rows,
       pathways: answer.pathways,
       sorts: answer.sorts,
     });
-    if (answer.handBack === 'wellington' && !answer.abstained && onePathDone(after, record.gsClass)) onHandedOn?.();
+    if (answer.handBack === 'wellington' && !answer.abstained && onePathDone(after, herClass({ context: record }))) onHandedOn?.();
     if (joins) {
       /* Coming for a question that is not hers, part-way, is not the end of her step. */
-      if (nothingLeftToAsk(after, record.gsClass)) joined.current = true;
+      if (nothingLeftToAsk(after, herClass({ context: record }))) joined.current = true;
       window.setTimeout(() => void wellingtonJoins(), 0);
     }
 
@@ -283,7 +294,7 @@ export default function PhoebeScreen({
               after,
               HER_PACKS.map((pack) => ({
                 pack,
-                context: contextFor(after, pack, record.gsClass),
+                context: contextFor(after, pack, herClass({ context: record })),
               }))
             ),
           }
@@ -300,7 +311,7 @@ export default function PhoebeScreen({
                 (text) => void chatRef.current.sendText(text),
                 { label: 'Tool', open: () => onTab('tool') }
               ),
-              nothingLeftToAsk(after, record.gsClass) ? onward?.() : undefined
+              nothingLeftToAsk(after, herClass({ context: record })) ? onward?.() : undefined
             ),
           }),
     };
@@ -342,12 +353,16 @@ export default function PhoebeScreen({
       tabs={{
         chat: <ScreenChat host={PHOEBE} chat={chat} composerId="wb-phoebe-composer" waitingFor={waiting ? WELLINGTON : undefined} />,
         tool: (
-          <EligibilityWorksheet
-            sheet={sheet}
-            gsClass={record.gsClass}
-            herPacks={HER_PACKS}
-            onOpenMap={onOpenMap}
-          />
+          <div className="wb-phoebe-tool">
+            <EligibilityWorksheet
+              sheet={sheet}
+              gsClass={herClass({ context: record })}
+              herPacks={HER_PACKS}
+              onOpenMap={onOpenMap}
+              portrait={phoebePortrait}
+              resetsOnReload
+            />
+          </div>
         ),
         pack: <KnowledgePackTab view={PHOEBE_PACK} />,
         credentials: <CredentialsTab host={PHOEBE} />,

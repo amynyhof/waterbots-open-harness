@@ -19,25 +19,56 @@
  * lives in _cap.ts; what a visitor is told about it lives here. A message is
  * counted only when an answer is actually delivered.
  *
- * THE HAND-BACK IS A FIELD (contract line 8, _handBack.ts), and the console
- * draws the way back to Dispatches from it, never from her prose. After a pin,
- * where the right rail offers Quantify (`quantifyNext`), Calvin is next and
- * there is no way back drawn at all: settleHandBack in _bridgetPin.ts.
+ * THE HAND-BACK IS A FIELD, and the console acts on it, never on her prose.
+ * After a pin Wellington joins with the next step (`settleBridgetAnswer`).
+ *
+ * SHE IS HER PACKAGE'S FROM 26 NOV 2026 (@waterbots/bridget 0.1.0, J5): her
+ * instructions, the pin and place checks, the blocks for a turn and the checks
+ * on her answer. The map screen and its data stay with this site until the
+ * rights check.
  *
  * THE PROMPT IS CACHED. The place, the device and the pin ride as a second
  * system block after the breakpoint, so only that small block changes.
  */
 
 import Anthropic from '@anthropic-ai/sdk';
+import { MIN_REPLY_CHARS, READING_GRADE, isHardReply, readingGrade } from '@waterbots/core/reply';
+import {
+  BRIDGET_ANSWER_SCHEMA,
+  bridgetInstructions,
+  bridgetRecordBlock,
+  chatForTurn,
+  readBridgetAnswer,
+  readGpsOutcome,
+  readPin,
+  readPlace,
+  replyVerdict,
+  settleBridgetAnswer,
+  turnBlocks,
+  visitBlock,
+  type BridgetAnswer as Answer,
+} from '@waterbots/bridget';
 import { recordAbstention } from './_abstentions.js';
-import { readGpsOutcome, readHeardPlace, readPin, readPlace, settleHandBack, visitBlock } from './_bridgetPin.js';
-import { BRIDGET_RESPONSE_SCHEMA, BRIDGET_SYSTEM_PROMPT } from './_bridgetPrompt.js';
+import { AGENT_RULES_MD } from './_agentRules.generated.js';
+import { BRIDGET_PROMPT_MD } from './_bridgetPrompt.generated.js';
 import { BRIDGET, countOneMessage, timeUntilReset } from './_cap.js';
-import { readChips } from './_chips.js';
-import { readHandBack, type HandBack } from './_handBack.js';
-import { FINISH_NOTE, leavesWaiting } from './_lookUp.js';
-import { bridgetRecordBlock, readRecord } from './_record.js';
-import { MIN_REPLY_CHARS, READING_GRADE, isDegenerateReply, isHardReply, readingGrade } from './_reply.js';
+import { AGENT_PRIMER_MD } from './_primer.generated.js';
+import { FREE_SITE_DOOR } from './_door.js';
+import { readCarried } from './_record.js';
+import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
+
+/**
+ * HER INSTRUCTIONS, her package's for the Free site (`bridgetInstructions`, @waterbots/bridget 0.1.0, 26 Nov 2026), built
+ * once at module load from her own prompt as her package ships it and the texts this site holds. The map screen and its
+ * data stay with this site until the rights check.
+ */
+export const BRIDGET_SYSTEM_PROMPT = bridgetInstructions({
+  place: 'free-site',
+  prompt: BRIDGET_PROMPT_MD,
+  agentRules: AGENT_RULES_MD,
+  primer: AGENT_PRIMER_MD,
+  statusSheet: BUILD_STATUS_SHEET_MD,
+});
 
 /** The same tier as her colleagues, for their measured reason (item A6): a voice that goes silent is the worse fault. */
 const MODEL = 'claude-opus-5';
@@ -59,12 +90,6 @@ const MAX_TURNS = 40;
 
 /** Long enough for a real message, short enough to refuse an essay. */
 const MAX_MESSAGE_CHARS = 4000;
-
-/** The turns no visitor typed. Never shown as a bubble; the prompt names both. */
-const OPENED_TURN = '(The visitor opened Partners.)';
-/* Rule 17, 22 Nov 2026: Wellington's line shows above her first answer, so he has introduced her. */
-const OPENED_INTRODUCED_TURN = '(The visitor opened Partners. Wellington has introduced you.)';
-const PINNED_TURN = '(The visitor pinned a basin.)';
 
 function pick(value: unknown, key: string): unknown {
   return typeof value === 'object' && value !== null
@@ -99,7 +124,6 @@ export async function POST(req: Request): Promise<Response> {
     place?: unknown;
     phone?: unknown;
     pin?: unknown;
-    quantifyNext?: unknown;
     record?: unknown;
     gps?: unknown;
   };
@@ -113,7 +137,6 @@ export async function POST(req: Request): Promise<Response> {
   const opened = body.opened === true;
   const introduced = opened && body.introduced === true;
   const pinned = body.pinned === true;
-  const quantifyNext = body.quantifyNext === true;
   const pin = readPin(body.pin);
 
   /* A pinned turn with no pin that holds is not one: there is nothing to report. */
@@ -132,45 +155,29 @@ export async function POST(req: Request): Promise<Response> {
     );
   }
 
-  const clean: Anthropic.MessageParam[] = [];
-  let lastQuestion = '';
   for (const m of messages) {
     if (m?.role !== 'user' && m?.role !== 'assistant') {
       return problem(400, 'That request could not be read.');
     }
-    if (typeof m.content !== 'string' || m.content.trim() === '') continue;
-    if (m.content.length > MAX_MESSAGE_CHARS) {
+    if (typeof m.content === 'string' && m.content.length > MAX_MESSAGE_CHARS) {
       return problem(
         400,
         `That message is longer than Bridget can take in at once — the limit is ${MAX_MESSAGE_CHARS.toLocaleString()} characters. Try the most important part first.`
       );
     }
-    clean.push({ role: m.role, content: m.content });
-    if (m.role === 'user') lastQuestion = m.content;
   }
-
-  /* Her first answer follows the turn the console sent, which is never kept as
-     a bubble, so a thread that starts with her opens on that turn again. The
-     model needs a user turn first. */
-  if (clean.length > 0 && clean[0].role === 'assistant') {
-    clean.unshift({ role: 'user', content: OPENED_TURN });
-  }
-  const lastIsUser = clean.length > 0 && clean[clean.length - 1].role === 'user';
-  if (pinned && !lastIsUser) {
-    clean.push({ role: 'user', content: PINNED_TURN });
-    lastQuestion = '(pinned a basin)';
-  } else if (opened && clean.length === 0) {
-    clean.push({ role: 'user', content: introduced ? OPENED_INTRODUCED_TURN : OPENED_TURN });
-    lastQuestion = '(opened Partners)';
-  }
-  if (clean.length === 0 || clean[clean.length - 1].role !== 'user') {
-    return problem(400, 'No message was sent.');
-  }
+  /* Her package lays out the turn (`chatForTurn`): her first answer follows the turn the console sent, which is never kept
+     as a bubble, and a pin or an opening with nothing typed reads as its own line. */
+  const turn = chatForTurn(messages, { opened, introduced, pinned });
+  if (!turn) return problem(400, 'No message was sent.');
+  const clean: Anthropic.MessageParam[] = turn.chat;
+  const lastIsUser = turn.typed;
+  const lastQuestion = turn.typed ? turn.lastWords : pinned ? '(pinned a basin)' : '(opened Partners)';
 
   const gps = readGpsOutcome(body.gps);
-  const visitText = visitBlock(readPlace(body.place), body.phone === true, pin, quantifyNext, gps);
-  /* THE PROJECT RECORD, the one Phoebe reads (J3, 23 Nov 2026), so she never asks for what it holds. */
-  const record = readRecord(body.record);
+  const visitText = visitBlock(readPlace(body.place), body.phone === true, pin, gps);
+  /* THE PROJECT RECORD, the one Phoebe reads (J3, 23 Nov 2026), read on to core's record, so she never asks for what it holds. */
+  const record = readCarried(body.record);
   const recordText = record ? bridgetRecordBlock(record) : null;
 
   /* Shape first, then whether we can actually answer — same order as Phoebe's. */
@@ -226,16 +233,15 @@ export async function POST(req: Request): Promise<Response> {
         max_tokens: MAX_TOKENS,
         system: [
           { type: 'text', text: BRIDGET_SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
-          { type: 'text', text: visitText },
-          ...(recordText ? [{ type: 'text' as const, text: recordText }] : []),
-          /* The same question again: this one has to end in an answer (api/_lookUp.ts). */
-          ...(pass > 1 ? [{ type: 'text' as const, text: FINISH_NOTE }] : []),
+          /* Her package's blocks: the visit, the record, this door's facts (core 0.5.0), and on a second call the note
+             that it has to end now. */
+          ...turnBlocks(visitText, recordText, pass > 1, { place: 'free-site', facts: FREE_SITE_DOOR }).map((text) => ({ type: 'text' as const, text })),
         ],
         messages: clean,
         thinking: { type: 'adaptive' },
         output_config: {
           effort: EFFORT,
-          format: { type: 'json_schema', schema: BRIDGET_RESPONSE_SCHEMA },
+          format: { type: 'json_schema', schema: BRIDGET_ANSWER_SCHEMA },
         },
       },
       { timeout: CALL_TIMEOUT_MS }
@@ -292,7 +298,18 @@ export async function POST(req: Request): Promise<Response> {
     return undelivered(problem(502, 'Bridget answered in a shape this console could not read. Try asking again.'));
   }
 
-  const read = readAnswer(parsed);
+  /* HER PACKAGE CHECKS THE ANSWER (`readBridgetAnswer`) and decides (`replyVerdict`): send it, ask the same question once
+     more because it promised a look-up, or say it could not be shown. */
+  const read = readBridgetAnswer(parsed);
+  const verdict = replyVerdict(read, { pinned, call: pass });
+  if (verdict === 'send' && read) {
+    answer = read;
+    break;
+  }
+  if (verdict === 'again') {
+    console.log(`bridget: the reply promised a look-up and did not answer, call ${pass}`);
+    continue;
+  }
   if (!read) {
     console.error(`bridget: returned an empty answer — ${response.usage.output_tokens} of ${MAX_TOKENS} output tokens`);
     return undelivered(
@@ -302,11 +319,8 @@ export async function POST(req: Request): Promise<Response> {
       )
     );
   }
-
-  if (isDegenerateReply(read.reply)) {
-    console.error(
-      `bridget: returned an answer too short to be one — ${read.reply.trim().length} characters against a floor of ${MIN_REPLY_CHARS}`
-    );
+  if (read.reply.trim().length < MIN_REPLY_CHARS) {
+    console.error(`bridget: returned an answer too short to be one — ${read.reply.trim().length} characters against a floor of ${MIN_REPLY_CHARS}`);
     return undelivered(
       problem(
         502,
@@ -314,24 +328,17 @@ export async function POST(req: Request): Promise<Response> {
       )
     );
   }
-
-  answer = read;
-  /* Wellington joins with the next step after a pin or a hand-back, so the visitor is never left waiting there. */
-  if (pinned || answer.handBack === 'wellington' || !leavesWaiting(answer.reply)) break;
-  console.log(`bridget: the reply promised a look-up and did not answer, call ${pass}`);
-  if (pass > 1) {
-    return undelivered(
-      problem(
-        502,
-        'Bridget went to look something up and did not come back with an answer. This is a fault on our side rather than something you did, and asking again usually works.'
-      )
-    );
-  }
+  return undelivered(
+    problem(
+      502,
+      'Bridget went to look something up and did not come back with an answer. This is a fault on our side rather than something you did, and asking again usually works.'
+    )
+  );
   }
 
   /* READING LEVEL (V1, 16 Nov 2026): 3rd- to 6th-grade English. A reply above
      grade 6 is logged, never blocked; the measured walks fail on the bars.
-     See readingGrade in api/_reply.ts. */
+     See readingGrade in @waterbots/core/reply. */
   if (isHardReply(answer.reply)) {
     console.log(`bridget: reply read above grade ${READING_GRADE.average} — grade ${readingGrade(answer.reply)}`);
   }
@@ -342,12 +349,9 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   return json(200, {
-    ...answer,
-    /* The more exact place, only in the visitor's own words from this turn (24 Nov 2026). */
-    place: lastIsUser ? readHeardPlace(answer.place, lastQuestion) : '',
-    /* Her first message always asks for the Map tab (her prompt's opening), so the chip is there whatever the field says. */
-    showMap: !pinned && (answer.showMap || (opened && !pin)),
-    handBack: settleHandBack(answer.handBack, { pinned, quantifyNext, abstained: answer.abstained }),
+    /* Settled by her package: the more exact place only in the visitor's own words from this turn, the Map tab's chip on
+       her first message, and the hand-back after a pin. */
+    ...settleBridgetAnswer(answer, { typed: lastIsUser, lastWords: turn.lastWords, opened, pinned, pin }),
     usage: {
       cacheRead: response.usage.cache_read_input_tokens ?? 0,
       cacheWrite: response.usage.cache_creation_input_tokens ?? 0,
@@ -356,44 +360,6 @@ export async function POST(req: Request): Promise<Response> {
     },
   });
 }
-
-/* -------------------------------------------------------------------------
-   Reading her answer. Her output is checked, not trusted.
-------------------------------------------------------------------------- */
-
-interface Answer {
-  reply: string;
-  /** Chips that answer the question the reply ends with (24 Nov 2026, _chips.ts). */
-  answers: string[];
-  /** The reply asks the visitor to open the Map tab: the console draws "Go to map" (24 Nov 2026). */
-  showMap: boolean;
-  /** The more exact place the visitor typed, or "" (24 Nov 2026). */
-  place: string;
-  handBack: HandBack;
-  abstained: boolean;
-  abstentionTopic?: string;
-}
-
-function readAnswer(value: unknown): Answer | null {
-  if (typeof value !== 'object' || value === null) return null;
-  const v = value as Record<string, unknown>;
-  if (typeof v.reply !== 'string' || v.reply.trim() === '') return null;
-  const abstained = v.abstained === true;
-  const topic = typeof v.abstentionTopic === 'string' ? v.abstentionTopic.trim() : '';
-  return {
-    reply: v.reply.trim(),
-    answers: readChips(v.answers, v.reply),
-    showMap: v.showMap === true,
-    place: typeof v.place === 'string' ? v.place : '',
-    handBack: readHandBack(v.handBack),
-    abstained,
-    ...(abstained && topic ? { abstentionTopic: topic } : {}),
-  };
-}
-
-/* -------------------------------------------------------------------------
-   Responses. Every failure says what happened, in words a visitor can read.
-------------------------------------------------------------------------- */
 
 function json(status: number, payload: unknown, headers?: Record<string, string>): Response {
   return new Response(JSON.stringify(payload), {

@@ -22,12 +22,10 @@ export interface CalculatorAnswer {
   values: Record<string, unknown>;
   /** Messages for numbers the visitor gave that are out of range, read from their own words. The agent has been told. */
   refused: string[];
-  /** What the agent sent that the visitor did not give here, taken out by the relay (api/_chatGuards.ts). */
-  notFilled: number[];
-  notCleared: boolean;
-  notFiled: boolean;
-  /** What they have said since does not fit the kind one of these chats filed, so it comes off the record. */
-  unfile: boolean;
+  /** What the agent sent that the visitor did not give here, taken out by the relay: the package's own line, or ''. */
+  told: string;
+  /** The key of the one thing this reply asks for (core 0.5.0). Sent back as `asked` on the next turn. */
+  asking?: string;
 }
 
 /** Thrown with a message that is already fit to show a reader. */
@@ -37,22 +35,17 @@ const object = (value: unknown): Record<string, unknown> => (typeof value === 'o
 
 /**
  * The line under a reply when something the agent sent was taken out, so nothing that was not filled in reads as if it was
- * (25 Nov 2026). Empty when nothing was.
+ * (25 Nov 2026). The words are the agent's package's own (`takenOut`, core 0.4.0). Empty when nothing was.
  */
-export function notTaken(answer: Pick<CalculatorAnswer, 'notFilled' | 'notCleared' | 'notFiled'>): string {
-  const numbers = [...new Set(answer.notFilled)].map((n) => n.toLocaleString('en', { maximumFractionDigits: 6 }));
-  return [
-    ...(numbers.length ? [`Not filled in: ${numbers.join(', ')}. You did not give ${numbers.length === 1 ? 'that number' : 'those numbers'} in this chat.`] : []),
-    ...(answer.notCleared ? ['Nothing was cleared.'] : []),
-    ...(answer.notFiled ? ['The kind of project was not changed.'] : []),
-  ].join(' ');
+export function notTaken(answer: Pick<CalculatorAnswer, 'told'>): string {
+  return answer.told;
 }
 
 export async function askCalculator(
   name: 'Calvin' | 'Violet',
   history: { role: 'user' | 'assistant'; content: string }[],
   turn: Record<string, unknown>,
-  opts: { opened: boolean; introduced: boolean; leftForNow: readonly string[]; refused: readonly string[] },
+  opts: { opened: boolean; introduced: boolean; leftForNow: readonly string[]; refused: readonly string[]; asked?: string; talkedBefore: boolean },
   signal?: AbortSignal
 ): Promise<CalculatorAnswer> {
   const body: Record<string, unknown> = { messages: history, door: 'free-site', turn };
@@ -60,6 +53,8 @@ export async function askCalculator(
   if (opts.introduced) body.introduced = true;
   if (opts.leftForNow.length) body.leftForNow = opts.leftForNow;
   if (opts.refused.length) body.refused = opts.refused;
+  if (opts.asked) body.asked = opts.asked;
+  if (opts.talkedBefore) body.talkedBefore = true;
 
   let response: Response;
   try {
@@ -89,9 +84,7 @@ export async function askCalculator(
     facts: object(data.facts) as GivenFacts,
     values: object(data.values),
     refused: Array.isArray(data.refused) ? data.refused.filter((m): m is string => typeof m === 'string') : [],
-    notFilled: Array.isArray(data.notFilled) ? data.notFilled.filter((n): n is number => typeof n === 'number') : [],
-    notCleared: data.notCleared === true,
-    notFiled: data.notFiled === true,
-    unfile: data.unfile === true,
+    told: typeof data.told === 'string' ? data.told.trim().slice(0, 600) : '',
+    ...(typeof data.asking === 'string' && /^[\w.-]{1,60}$/.test(data.asking) ? { asking: data.asking } : {}),
   };
 }

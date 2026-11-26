@@ -11,11 +11,10 @@
  *
  * WHAT THE SEAL HOLDS, as ruled:
  *
- *   - the record fields — what it does, its type, its class where it is a
- *     drinking-water project, its stage, where it is, what it is called —
- *     each with its source tag: typed, told Wellington, or from the pin
- *     (type, class and stage for "what kind" from 24 Sep 2026, item A16;
- *     told to production once, item O14); people served as the visitor
+ *   - the record fields — what it does, its type, its stage, where it is,
+ *     what it is called — each with its source tag: typed, told Wellington,
+ *     or from the pin (type and stage for "what kind" from 24 Sep 2026, item
+ *     A16; told to production once, item O14); people served as the visitor
  *     said it, a count and "people" or "households", never converted, from
  *     27 Sep 2026 (ruling R4 of the people-served proposal; production
  *     ignores it until the maintainer carries its storage);
@@ -26,8 +25,15 @@
  *     screening had not made it across. So the word rides alongside the three
  *     new fields until her carry updates production's side, and it retires
  *     here on that day. Item O14. Where it comes from, and why it is a hint
- *     and never a verdict, is written above `pathwayKind` in
- *     `_projectTypes.generated.ts`;
+ *     and never a verdict, is written above `pathwayKind` below;
+ *   - FROM 26 NOV 2026, SHAPE 2 (core 0.4.0): no class. `kindTicket` carries the
+ *     project's kind facts as plain values, in core's own shape and words
+ *     (`kindTicket` in @waterbots/core/record): where the water comes from,
+ *     where it is treated, whether it is safe, and the yes-or-no facts asked
+ *     only where they apply, with the version of the rules they were given
+ *     under. Each is there only where the visitor said it; a blank is left out,
+ *     never filled. The paid site reads it back with core's `addKindTicket`
+ *     and works the kind out itself. A visitor is never asked for a kind;
  *   - the basin pin as ids: the HydroSHEDS and Pfafstetter ids, the level,
  *     the stress label, the published area;
  *   - Phoebe's worksheet: each criterion's state and its way forward;
@@ -65,21 +71,30 @@
  */
 
 import { randomBytes } from 'node:crypto';
-import {
-  DRINKING_WATER_TYPE,
-  GS_CLASS_IDS,
-  PATHWAY_KINDS,
-  PROJECT_STAGE_IDS,
-  PROJECT_TYPE_IDS,
-  pathwayKind,
-  type GsClassId,
-  type PathwayKind,
-  type ProjectStageId,
-  type ProjectTypeId,
-} from './_projectTypes.generated.js';
+import { KIND_FACTS, PROJECT_RULES, TREATMENTS, WATER_SOURCES, YES_NO_FACTS } from '@waterbots/core/projectKinds';
+import { DRINKING_WATER_TYPE, PROJECT_STAGES, PROJECT_TYPE_IDS, type KindTicket, type ProjectStage, type ProjectTypeId } from '@waterbots/core/record';
 
-/** The name of this shape, so production can tell a seal from anything else. */
-export const SEAL_SHAPE = 'waterbots-open-harness/handoff/1';
+/**
+ * The name of this shape, so production can tell a seal from anything else, and one shape from the other. Shape 1 carried
+ * the class; shape 2, from 26 Nov 2026, carries the kind facts in its place (`kindTicket`).
+ */
+export const SEAL_SHAPE = 'waterbots-open-harness/handoff/2';
+
+/** The retired word, derived from the type and asked of nobody. Production's receiver still reads it. */
+export const PATHWAY_KINDS = ['', 'water', 'carbon', 'both', 'neither'] as const;
+export type PathwayKind = (typeof PATHWAY_KINDS)[number];
+
+/**
+ * The word for a type. Every type on the guidebook's list is a water stewardship type, so "water"; the drinking-water
+ * type is also the safe-water carbon method's whole subject, so "both"; "none of these" means no type on the list matched,
+ * not that no pathway applies, so "neither". No type yields "carbon" today; production reads the word. Blank for no type.
+ */
+export function pathwayKind(type: string): PathwayKind {
+  if (type === '') return '';
+  if (type === DRINKING_WATER_TYPE) return 'both';
+  if (type === 'NONE') return 'neither';
+  return (PROJECT_TYPE_IDS as readonly string[]).includes(type) ? 'water' : '';
+}
 
 /** One hour, as ruled. After this the store forgets the seal on its own. */
 export const TICKET_TTL_SECONDS = 60 * 60;
@@ -109,8 +124,7 @@ export const MAX_HUMAN_NOTE_CHARS = 280;
 
 export type SealSource = '' | 'typed' | 'chat' | 'pin';
 export type SealType = '' | ProjectTypeId;
-export type SealClass = '' | GsClassId;
-export type SealStage = '' | ProjectStageId;
+export type SealStage = '' | ProjectStage;
 /** The retired word, derived from the type. See `pathwayKind`. */
 export type SealKind = PathwayKind;
 export type SealCriterionState = 'unchecked' | 'met' | 'not-yet';
@@ -118,8 +132,7 @@ export type SealPackStatus = 'complete' | 'incomplete' | 'pending' | 'blocked';
 
 const SOURCES: readonly SealSource[] = ['', 'typed', 'chat', 'pin'];
 const TYPES: readonly SealType[] = ['', ...PROJECT_TYPE_IDS];
-const CLASSES: readonly SealClass[] = ['', ...GS_CLASS_IDS];
-const STAGES_OF_PROJECT: readonly SealStage[] = ['', ...PROJECT_STAGE_IDS];
+const STAGES_OF_PROJECT: readonly SealStage[] = ['', ...PROJECT_STAGES];
 const KINDS: readonly SealKind[] = PATHWAY_KINDS;
 const STATES: readonly SealCriterionState[] = ['unchecked', 'met', 'not-yet'];
 const STATUSES: readonly SealPackStatus[] = ['complete', 'incomplete', 'pending', 'blocked'];
@@ -132,7 +145,6 @@ export interface SealField {
 export interface SealRecord {
   does: SealField;
   type: SealField & { value: SealType };
-  gsClass: SealField & { value: SealClass };
   stage: SealField & { value: SealStage };
   kind: SealField & { value: SealKind };
   place: SealField;
@@ -178,6 +190,8 @@ export interface SealPack {
 /** What the client sends. The server adds the shape name and the timestamp. */
 export interface SealBody {
   record: SealRecord;
+  /** The kind facts the visitor gave, as core's save ticket holds them (shape 2). */
+  kindTicket: KindTicket;
   pin: SealPin | null;
   worksheet: SealCriterion[];
   packs: SealPack[];
@@ -268,16 +282,11 @@ function readServed(value: unknown): SealRecord['served'] {
 }
 
 function readRecord(value: unknown): SealRecord {
-  const v = object(value, 'record', ['does', 'type', 'gsClass', 'stage', 'kind', 'place', 'name', 'served']);
+  const v = object(value, 'record', ['does', 'type', 'stage', 'kind', 'place', 'name', 'served']);
   const type = field(v.type, 'record.type', MAX_LABEL_CHARS);
-  const gsClass = field(v.gsClass, 'record.gsClass', MAX_LABEL_CHARS);
   const stage = field(v.stage, 'record.stage', MAX_LABEL_CHARS);
   const kind = field(v.kind, 'record.kind', MAX_LABEL_CHARS);
   const typeValue = oneOf(type.value, 'record.type.value', TYPES);
-  const classValue = oneOf(gsClass.value, 'record.gsClass.value', CLASSES);
-  if (classValue !== '' && typeValue !== DRINKING_WATER_TYPE) {
-    refuse(`record.gsClass.value is set but record.type.value is not ${DRINKING_WATER_TYPE}, the one type that takes a class`);
-  }
   /* The pair has to agree. `kind` is derived from the type and nothing else,
      so a seal whose two fields disagree was not built by this site's sender
      and is turned away rather than passed on. The source tag is not held to
@@ -293,13 +302,33 @@ function readRecord(value: unknown): SealRecord {
   return {
     does: field(v.does, 'record.does', MAX_DOES_CHARS),
     type: { value: typeValue, source: type.source },
-    gsClass: { value: classValue, source: gsClass.source },
     stage: { value: oneOf(stage.value, 'record.stage.value', STAGES_OF_PROJECT), source: stage.source },
     kind: { value: kindValue, source: kind.source },
     place: field(v.place, 'record.place', MAX_PLACE_CHARS),
     name: field(v.name, 'record.name', MAX_NAME_CHARS),
     served: readServed(v.served),
   };
+}
+
+/**
+ * The kind facts, as core's save ticket holds them. Only core's own keys, a word on core's list or a yes or no for each, and
+ * the version of the rules: anything else refuses the seal, as every other part does.
+ */
+function readKindTicket(value: unknown): KindTicket {
+  const v = object(value, 'kindTicket', [...KIND_FACTS, 'rules']);
+  const ticket: KindTicket = {};
+  if (v.waterSource !== undefined) ticket.waterSource = oneOf(v.waterSource, 'kindTicket.waterSource', WATER_SOURCES);
+  if (v.treatment !== undefined) ticket.treatment = oneOf(v.treatment, 'kindTicket.treatment', TREATMENTS);
+  for (const key of YES_NO_FACTS) {
+    if (v[key] === undefined) continue;
+    if (typeof v[key] !== 'boolean') refuse(`kindTicket.${key} is not true or false`);
+    ticket[key] = v[key] as boolean;
+  }
+  if (v.rules !== undefined) {
+    if (!Number.isInteger(v.rules) || (v.rules as number) < 1 || (v.rules as number) > PROJECT_RULES) refuse(`kindTicket.rules is not a version from 1 to ${PROJECT_RULES}`);
+    ticket.rules = v.rules as number;
+  }
+  return ticket;
 }
 
 function readPin(value: unknown): SealPin | null {
@@ -373,12 +402,13 @@ function readPacks(value: unknown): SealPack[] {
  */
 export function readSeal(value: unknown): SealReading {
   try {
-    const v = object(value, 'the seal', ['record', 'pin', 'worksheet', 'packs', 'wantsHuman', 'humanNote']);
-    if (!('record' in v) || !('pin' in v) || !('worksheet' in v) || !('packs' in v)) {
-      refuse('the seal is missing one of record, pin, worksheet, packs');
+    const v = object(value, 'the seal', ['record', 'kindTicket', 'pin', 'worksheet', 'packs', 'wantsHuman', 'humanNote']);
+    if (!('record' in v) || !('kindTicket' in v) || !('pin' in v) || !('worksheet' in v) || !('packs' in v)) {
+      refuse('the seal is missing one of record, kindTicket, pin, worksheet, packs');
     }
     const seal: SealBody = {
       record: readRecord(v.record),
+      kindTicket: readKindTicket(v.kindTicket),
       pin: readPin(v.pin),
       worksheet: readWorksheet(v.worksheet),
       packs: readPacks(v.packs),

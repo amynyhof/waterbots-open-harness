@@ -41,7 +41,8 @@ const ROSTER = 'knowledge-packs/product-shared/roster.yaml';
 const CREW = 'src/lib/crew.ts';
 const SHELF = 'src/lib/commonsShelf.ts';
 const PRIMER = 'knowledge-packs/product-shared/agent-primer.md';
-const PROMPT = 'api/_wellingtonPrompt.ts';
+/* Wellington's instructions are his package's from 26 Nov 2026 (@waterbots/wellington 0.1.0). */
+const PROMPT = 'node_modules/@waterbots/wellington/dist/prompt.md';
 
 /* ---------------------------------------------------------------------------
    The words the roster may use for `built`, and what each one lets the
@@ -368,10 +369,14 @@ console.log(`\n  ${PROMPT}\n`);
 
 {
   const promptLines = readFileSync(PROMPT, 'utf8').replace(/\r\n/g, '\n').split('\n');
-  const index = promptLines.findIndex((l) => /The \w+ people on this site are you, /.test(l));
-  expect('the prompt has its people sentence', index >= 0, `${PROMPT} — no "The … people on this site are you, …" sentence`);
+  /* His package says "The team has five people: you, …"; this site's own prompt said "The five people on this site are you, …". */
+  const PEOPLE = /The (\w+) people on this site are you, ([^.]+)\.|The team has (\w+) people: you, ([^.]+)\./;
+  const index = promptLines.findIndex((l) => PEOPLE.test(l));
+  expect('the prompt has its people sentence', index >= 0, `${PROMPT} — no "The team has … people: you, …" sentence`);
   if (index >= 0) {
-    const [, word, rest] = promptLines[index].match(/The (\w+) people on this site are you, ([^.]+)\./);
+    const m = promptLines[index].match(PEOPLE);
+    const word = m[1] ?? m[3];
+    const rest = m[2] ?? m[4];
     const named = rest.split(/,\s*|\s+and\s+/).map((s) => s.trim()).filter(Boolean);
     const others = crew.filter((m) => m.name !== 'Wellington').map((m) => m.name);
     const where = `${PROMPT}:${index + 1}`;
@@ -389,7 +394,9 @@ console.log(`\n  ${PROMPT}\n`);
    specialist with a chat is one row here.
 --------------------------------------------------------------------------- */
 
-const LEVEL_PROMPTS = { Phoebe: 'api/_systemPrompt.ts', Bridget: 'api/_bridgetPrompt.ts' };
+/* Phoebe's level sentence is one of the lines this site hands her package; Bridget's is in her package's lines for the Free
+   site (26 Nov 2026). */
+const LEVEL_PROMPTS = { Phoebe: 'api/phoebe.ts', Bridget: 'node_modules/@waterbots/bridget/dist/instructions.js' };
 
 console.log('\n  Level sentences\n');
 

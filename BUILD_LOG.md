@@ -18,6 +18,7 @@ GitHub's history keeps everything else. Newest last.
 - 25 Nov 2026 (#200): the releases core-v0.3.0 `ceff1c9d250ca098f003838c09511fa38818d52c6e196ecd33e620309c3d6f31`, calvin-v0.7.0 `b9e5bb8e038b6d7c9a6ed1771b20e9c146fb282da48181598660e5b911f1ed89` and violet-v0.7.0 `6b334cd10c26441adbb59275182b8c671394646c34c356b15b974e89eb004599` (SHA-256), in place of the three of 23 Nov.
 - 25 Nov 2026: the carry out to the open core, Wellington, Phoebe and Bridget, from main after #200 (`0f16957`): 99 files in the handoff folder, packing list `8d58bacdf4cd70ed1e9bf9143d8c15c42d3f887809622737fdeb3217b4ef3999` (SHA-256).
 - 25 Nov 2026: `BUILD_STATUS_SHEET.md` `3b60c90c58aa833d70a1f53e8f37bbaf7b0dbd3b9112f19362dbbd5f5f6e3eb8` (SHA-256).
+- 26 Nov 2026: the releases core-v0.5.0 `187a49e7b7acbda4a646a296a8aded5c54dd4ebaf4853a6d254730e50f2abf71`, calvin-v0.9.0 `5f6c77ca0a33fa25b8964f9e88a50e5baa58f6c9d9e7a97d6906e6808af47e14`, violet-v0.9.0 `408a12f9920e2eda6744aad5f7f5253a5d33ea4ef4387e55ebdadb3ece931679`, phoebe-v0.2.0 `c9abb169f203d0d7cbf47df122d70ecd0411ca06ae3872f2b94d6a85ccd55a55`, wellington-v0.2.0 `18145856f460b23386a7e318de2ee3ded4986d1ed37ccb6c05e940b32dda49f9` and bridget-v0.2.0 `c09f50a8813b3dd599ad846bcea423beedde1b012bce32b74462ecd5960132ea` (SHA-256), installed in one step, one copy of core, in place of the three of 25 Nov. The releases of earlier that day (core-v0.4.0 and the five agents' before these) were installed first in the same pull request.
 
 ## Finished items, one line each
 

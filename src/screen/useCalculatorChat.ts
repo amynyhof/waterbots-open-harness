@@ -6,7 +6,7 @@
  * HOW A CHAT GOES. The first time the desk shows, Wellington's line heads it and the agent speaks first. Each answer
  * writes its facts to the record and fills the calculator. A number that is refused is never used: its message shows under
  * the agent's reply, whether or not the agent sent it, and the agent is told of it. A number or a kind of project that is
- * not the visitor's own was taken out before it came here (api/_chatGuards.ts), and the line under the reply says so.
+ * not the visitor's own was taken out before it came here, by the agent's package, and the line under the reply says so.
  *
  * WHEN THE PART IS DONE: the figure shows, nothing it needs is blank, and it came from the visitor's answers. Opening the
  * chat ends nothing while there is still something to ask. Then Wellington comes, as at every other desk.
@@ -79,6 +79,9 @@ export function useCalculatorChat(o: CalculatorChatOptions): { chat: Conversatio
   const refused = useRef<string[]>([]);
   const answered = useRef(false);
   const joined = useRef(false);
+  /* What the agent's last reply asked, sent back as `asked`; and whether it has answered the visitor before (core 0.5.0). */
+  const asking = useRef<string | undefined>(undefined);
+  const talked = useRef(false);
   const open = () => now.current.seat.asks().filter((ask) => !left.current.includes(ask.key));
 
   async function wellingtonJoins() {
@@ -105,9 +108,11 @@ export function useCalculatorChat(o: CalculatorChatOptions): { chat: Conversatio
       o.name,
       history.map(({ role, text }) => ({ role: role === 'agent' ? ('assistant' as const) : ('user' as const), content: text })),
       turn,
-      { opened, introduced: opened && meta?.introduced === true, leftForNow: left.current, refused: refused.current },
+      { opened, introduced: opened && meta?.introduced === true, leftForNow: left.current, refused: refused.current, asked: asking.current, talkedBefore: talked.current },
       signal
     );
+    asking.current = answer.asking;
+    talked.current = true;
     left.current = [...new Set([...left.current, ...answer.leftForNow])];
     const applied = await now.current.seat.apply(answer);
     /* A message the agent has read already is not told twice. */

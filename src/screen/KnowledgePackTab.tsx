@@ -5,7 +5,7 @@
  * cards, versions, sources.
  *
  * IT DOES NOT KNOW WHOSE PACK IT IS SHOWING. An agent's seat assembles a
- * PackView from its own registry — Phoebe's from src/lib/phoebeCards.ts —
+ * PackView from its own registry — Phoebe's from her package (@waterbots/phoebe) —
  * and this draws it: a heading, an optional honest line, then one section
  * per pack, each with its tags, its version, one source line and its sets of
  * rows, each set with its own approval chip. A row opens to its layers and

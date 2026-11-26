@@ -1,3 +1,6 @@
-b9e5bb8e038b6d7c9a6ed1771b20e9c146fb282da48181598660e5b911f1ed89 *waterbots-calvin-0.7.0.tgz
-ceff1c9d250ca098f003838c09511fa38818d52c6e196ecd33e620309c3d6f31 *waterbots-core-0.3.0.tgz
-6b334cd10c26441adbb59275182b8c671394646c34c356b15b974e89eb004599 *waterbots-violet-0.7.0.tgz
+187a49e7b7acbda4a646a296a8aded5c54dd4ebaf4853a6d254730e50f2abf71 *waterbots-core-0.5.0.tgz
+5f6c77ca0a33fa25b8964f9e88a50e5baa58f6c9d9e7a97d6906e6808af47e14 *waterbots-calvin-0.9.0.tgz
+408a12f9920e2eda6744aad5f7f5253a5d33ea4ef4387e55ebdadb3ece931679 *waterbots-violet-0.9.0.tgz
+c9abb169f203d0d7cbf47df122d70ecd0411ca06ae3872f2b94d6a85ccd55a55 *waterbots-phoebe-0.2.0.tgz
+18145856f460b23386a7e318de2ee3ded4986d1ed37ccb6c05e940b32dda49f9 *waterbots-wellington-0.2.0.tgz
+c09f50a8813b3dd599ad846bcea423beedde1b012bce32b74462ecd5960132ea *waterbots-bridget-0.2.0.tgz

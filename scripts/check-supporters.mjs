@@ -23,7 +23,7 @@
 
 import { spawn, spawnSync } from 'node:child_process';
 import { createServer } from 'node:http';
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -50,6 +50,9 @@ if (compile.status !== 0) {
   process.exit(1);
 }
 writeFileSync(join(out, 'package.json'), '{"type":"module"}');
+/* The team email reads the agents' packages from 26 Nov 2026 (@waterbots/core, @waterbots/phoebe), so the compiled folder
+   sees this site's installed packages through a link, as check-calvin-package does. */
+symlinkSync(join(process.cwd(), 'node_modules'), join(out, 'node_modules'), 'junction');
 const sup = await import(pathToFileURL(join(out, '_supporters.js')).href);
 const { POST } = await import(pathToFileURL(join(out, 'interest.js')).href);
 const { GET } = await import(pathToFileURL(join(out, 'supporters.js')).href);
@@ -398,6 +401,8 @@ expect('nothing in the store is given an expiry for supporters', !/EXPIRE[^\n]*s
 
 globalThis.fetch = realFetch;
 server.close();
+/* The link first, so nothing behind it is touched. */
+unlinkSync(join(out, 'node_modules'));
 rmSync(out, { recursive: true, force: true });
 
 console.log('\n  The page says what the server keeps');

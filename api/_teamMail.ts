@@ -23,20 +23,24 @@
  * so; an unticked save never touches this file.
  */
 
-import type { SealBody } from './_handoff.js';
-import { projectType, PROJECT_STAGES } from './_projectTypes.generated.js';
+import { factsWithKind, readKindFacts } from '@waterbots/core/projectKinds';
+import { STAGE_WORDS as PROJECT_STAGES, typeWords as projectType } from '@waterbots/core/projectWords';
 import {
   HER_PACKS,
+  PATHWAY_LABEL as PATHWAY_STATE_LABEL,
   PATHWAY_STATE_IDS,
-  PATHWAY_STATE_LABEL,
-  READINESS_LABEL,
+  READ_LABEL as READINESS_LABEL,
   ROW_STATE_IDS,
-  pathwayStateOf,
-  readinessOf,
+  classFor,
+  contextFor,
+  pathwayState,
+  readiness,
   section,
   verdictRows,
   type RowContext,
-} from './_worksheet.generated.js';
+  type RowStateId,
+} from '@waterbots/phoebe';
+import type { SealBody } from './_handoff.js';
 
 /** Where the email goes. The maintainer's word; not a setting. */
 export const TEAM_ADDRESS = 'hello@waterbots.ai';
@@ -113,13 +117,17 @@ export function readForTeam(value: unknown): TeamReading {
   return { forTeam: out };
 }
 
-/** The same sorting the console does: her tests first, then the record's class. */
+/** One pathway's rows as her package's worksheet holds them. */
+function sheetOf(pathway: TeamPathway) {
+  return {
+    rows: { [pathway.pack]: Object.fromEntries(Object.entries(pathway.states).map(([id, state]) => [id, { state: state as RowStateId }])) },
+    sorts: { [pathway.pack]: pathway.sorts },
+  };
+}
+
+/** The same sorting the console does, by her package: her tests first, then the class core works out from the facts. */
 function contextOf(pathway: TeamPathway, gsClass: string): RowContext {
-  const found = section(pathway.pack);
-  const sorted = pathway.sorts.find((w) => found?.appliesTo.some((v) => v.id === w && v.id !== 'all'));
-  const version = pathway.sorts.find((w) => found?.versionFlags.some((v) => v.id === w));
-  const held = sorted ?? (gsClass ? gsClass.toLowerCase() : '');
-  return { ...(held ? { gsClass: held } : {}), ...(version ? { versionFlag: version } : {}) };
+  return contextFor(sheetOf(pathway), pathway.pack, gsClass);
 }
 
 /** A visitor's words on one line, for the subject. */
@@ -150,6 +158,8 @@ export function composeTeamMail(seal: SealBody, forTeam: TeamPathway[]): TeamMai
         ? `${type.id}, ${type.name}`
         : 'not known yet';
   const stage = PROJECT_STAGES.find((s) => s.id === record.stage.value)?.words ?? 'not known yet';
+  /* The class her rows are sorted by, worked out by core from the kind facts the visitor gave (core 0.4.0). */
+  const gsClass = classFor({ facts: factsWithKind(readKindFacts(seal.kindTicket)) });
 
   const lines: string[] = [
     'A visitor to open.waterbots.ai saved their project and asked for a person at WaterBots to look at it.',
@@ -165,14 +175,14 @@ export function composeTeamMail(seal: SealBody, forTeam: TeamPathway[]): TeamMai
     const found = section(pack);
     if (!found) continue;
     const pathway = forTeam.find((p) => p.pack === pack) ?? { pack, states: {}, blocked: {}, sorts: [] };
-    const context = contextOf(pathway, record.gsClass.value);
-    const state = pathwayStateOf(pack, pathway.states, context);
+    const context = contextOf(pathway, gsClass);
+    const state = pathwayState(sheetOf(pathway), pack, context);
     const title = found.sectionName.replace(/^The /, '');
     const heading = title.charAt(0).toUpperCase() + title.slice(1);
     if (state === 'does-not-apply') {
       lines.push(`${heading}: ${PATHWAY_STATE_LABEL[state]}.`);
     } else {
-      lines.push(`${heading}: ${READINESS_LABEL[readinessOf(pack, pathway.states, context)]}.`);
+      lines.push(`${heading}: ${READINESS_LABEL[readiness(sheetOf(pathway), pack, context)]}.`);
       for (const row of verdictRows(pack, context)) {
         if (pathway.states[row.id] !== 'blocked') continue;
         const because = pathway.blocked[row.id];

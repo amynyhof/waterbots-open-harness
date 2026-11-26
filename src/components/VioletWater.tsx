@@ -57,6 +57,8 @@ export default function VioletWater({
         place={place}
         lockView="ex-ante"
         unpinFigureBlock
+        /* This site has no Project Record page, so her screen never points to one (violet 0.9.0). */
+        recordPage={false}
         hideExportButton={hideExportButton}
       />
     </div>

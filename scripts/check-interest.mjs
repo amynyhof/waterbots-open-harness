@@ -15,7 +15,7 @@
  */
 
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -42,6 +42,9 @@ if (compile.status !== 0) {
   process.exit(1);
 }
 writeFileSync(join(out, 'package.json'), '{"type":"module"}');
+/* The team email reads the agents' packages from 26 Nov 2026 (@waterbots/core, @waterbots/phoebe), so the compiled folder
+   sees this site's installed packages through a link, as check-calvin-package does. */
+symlinkSync(join(process.cwd(), 'node_modules'), join(out, 'node_modules'), 'junction');
 const api = await import(pathToFileURL(join(out, '_interest.js')).href);
 const { POST } = await import(pathToFileURL(join(out, 'interest.js')).href);
 const { INTEREST } = await import(pathToFileURL(join(out, '_cap.js')).href);
@@ -157,6 +160,8 @@ res = await post(good);
 body = await res.json();
 expect('on a test copy it says the form works only on the live site, and nothing was kept', res.status === 503 && /test copy/.test(body.error) && /Nothing was kept/.test(body.error), body.error);
 globalThis.fetch = realFetch;
+/* The link first, so nothing behind it is touched. */
+unlinkSync(join(out, 'node_modules'));
 rmSync(out, { recursive: true, force: true });
 
 console.log('\n  The page says what the server keeps');

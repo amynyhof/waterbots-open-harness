@@ -140,16 +140,23 @@ the same thirty messages a day.
   pins a basin for the visit. What the visitor tells him fills the context card, labelled as from
   the conversation, and never overwrites what they typed.
 - **Quantification step.** Two desks, both calculators from the open core and both ex-ante. On
-  Calvin's, **carbon credits**: `@waterbots/calvin` 0.6.0 from the release `calvin-v0.6.0`, Gold
+  Calvin's, **carbon credits**: `@waterbots/calvin` 0.8.0 from the release `calvin-v0.8.0`, Gold
   Standard's *Emission Reductions from Safe Drinking Water Supply*, V1.0 and V2.0, its engine doing
   every sum. On Violet's, **water benefits**: **VWBA 2.0 · D-3 Volume Provided**,
-  `@waterbots/violet` 0.6.0 from `violet-v0.6.0`, for household and community water supply: people served come from
+  `@waterbots/violet` 0.8.0 from `violet-v0.8.0`, for household and community water supply: people served come from
   the project record, every result says "Draft — pending expert review", and **a blank
   without-project volume is never read as zero**. This site works none of either figure out.
 - **The shared project record and the agent map.** One record in the open core's shape, worked out from the
   visit and Phoebe's worksheet (`src/lib/projectRecord.ts`), and core's agent map read from it: who is called,
   which method applies and the one next step. Wellington leads from it. A pathway that reads unlikely has its
-  calculator's desk closed, and the visitor is told what would change it.
+  calculator's desk closed, and the visitor is told what would change it. A new project starts from core's new
+  record, and nobody is asked for a kind or a class: where the water comes from, whether it is treated and where,
+  and whether it is safe are plain facts, and core works out how the project is counted (core 0.4.0).
+- **Every agent from its own package in the open core**, from 26 Nov 2026: `@waterbots/wellington`,
+  `@waterbots/phoebe`, `@waterbots/bridget`, `@waterbots/calvin` and `@waterbots/violet`, with one copy of
+  `@waterbots/core`, each pinned to its release file in `vendor/waterbots/`. Their instructions, answer shapes and
+  checks are the packages'. This site keeps the call to the model and its key, the daily limits, the screens, the
+  map and its data, and saving.
 - **A shared chat layer** that every agent on this site uses, so citations are rendered one way
   rather than reinvented per agent.
 
@@ -162,8 +169,9 @@ honest gap is more useful than an answer nobody can tell is wrong.
 
 Both card sets live in her Knowledge Pack,
 [`knowledge-packs/phoebe-eligibility/vwba-2.0/cards/`](./knowledge-packs/phoebe-eligibility/vwba-2.0/cards/),
-from 17 Sep 2026. The pack is their one home; the worksheet and Phoebe's relay both read from
-there.
+from 17 Sep 2026. The pack is their one home. From 26 Nov 2026 her package (`@waterbots/phoebe`) carries
+them byte for byte, and the worksheet and her relay read them there; `check-cards` holds the package's copy to
+the files here.
 
 **She never writes a citation.** She names the card each answer rests on; the console looks that
 card up in the committed file and renders the citation itself, on the worksheet row it supports. A
@@ -249,8 +257,7 @@ confident, wrong number with nothing looking broken; and `check-gs-sdws` proves
 both carbon packs reproduce every recorded reference figure to four decimal places, that the
 derived emission factor lands on every recorded point, and that a blank share, a blank leakage
 figure or an unchosen method leaves the result honest rather than zero; and `check-wellington`
-proves his relay checks the model's output rather than trusting it, that his region of the primer
-reaches him and only him, that no prompt tells any agent to say anything word for word, that a typed
+proves (his relay's own checks on the model's output are his package's from 26 Nov 2026) that a typed
 context entry is never overwritten by what he heard, that the shell holds his one conversation, and
 that a filled visit record is passed to him so he does not re-ask those fields; and `check-roster`
 proves this site agrees with the one crew list, `knowledge-packs/product-shared/roster.yaml`,

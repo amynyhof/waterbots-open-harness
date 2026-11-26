@@ -1,0 +1,20 @@
+/* Phoebe's Tool tab, the eligibility worksheet, in this site's tokens — 26 Nov 2026 (@waterbots/phoebe 0.1.0).
+
+   Her worksheet is her package's own screen (`EligibilityWorksheet`, @waterbots/phoebe/screen), styled with core's token
+   names. This file only sets this site's names for them, exactly as calvin.css and violet.css do for Calvin and Violet;
+   no new colour:
+   - her colour is this site's own token for her;
+   - the source-document link reads in tide's text colour, as it did on this site's own worksheet. */
+
+.wb-phoebe-tool {
+  --agent: var(--bot-phoebe);
+  --tide: var(--tide-text);
+  --fg-1: var(--ink);
+  --fg-2: var(--ink-2);
+  --fg-3: var(--ink-3);
+  --radius-sm: var(--r-xs);
+  --radius-md: var(--r-sm);
+  --radius-pill: var(--r-pill);
+  --ease-out: var(--ease);
+  --duration-base: var(--dur);
+}

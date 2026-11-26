@@ -248,19 +248,9 @@ function WorkingInReport({ calc, project }: { calc: CalculatorState; project: Ca
  * Wellington; the left rail has no box for the place, so the line no longer
  * says to type it there.
  */
-export function RecordFacts({ missing, unknownLabel }: { missing: string[]; unknownLabel?: string }) {
-  /* The label is on the record and Calvin does not cover it (J3): said plainly, and never asked for again. Where core's own
-     list says it is not covered yet, his screen says it in his package's words and this line is not drawn (25 Nov 2026). */
-  if (unknownLabel && missing.includes('technology')) {
-    const rest = missing.filter((m) => m !== 'technology');
-    return (
-      <div style={{ marginBottom: 12 }}>
-        <p className="t-caption" style={{ margin: 0, color: 'var(--ink-2)' }}>
-          Calvin’s calculator does not cover this kind of project yet: {unknownLabel}.{rest.length > 0 ? ` Still needed: ${rest.join(', ')}. Tell Wellington.` : ''}
-        </p>
-      </div>
-    );
-  }
+export function RecordFacts({ missing }: { missing: string[] }) {
+  /* A project a calculator does not count gives no figure, and core says why in its own words on the calculator's screen,
+     or the agent map does not call the calculator at all (core 0.4.0, 26 Nov 2026): no line of this site's says it. */
   if (missing.length === 0) return null;
   return (
     <div style={{ marginBottom: 12 }}>
