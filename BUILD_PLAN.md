@@ -124,12 +124,12 @@ GUIDING LINE: Wellington manages the team to gather what the project needs and k
 - **J3.** The shared project record. Every agent adds its facts and results to one record, and the paid site reads it (agent rule 10). It holds each pathway's reading (likely, more to learn, unlikely) with its reason and what would change it. It refuses a count below zero where it is entered. One shared list turns each site's technology label into the record's code.
 - **J4.** The agent map. ONE map, kept in the core, reads the project's facts and the door, and says which agents are in play, which method applies, and what comes next. It is worked out from facts, so the same project always gets the same agents. Wellington leads from it on both sites. It replaces one-off rules. It must cover at least: on "likely" or "more to learn" a pathway's calculator agent is called and shows; on "unlikely" it is not called, and the visitor is told what would change it; with no pathway forward Bridget is not called and Wellington points to the WaterBots team; a transitioning project also sees the legacy calculator (today it does not); one entry for each carbon method. Session C proposes the design FIRST; the maintainer approves it before anyone builds it.
 - **J5.** Finalize all five current agents in v1: Wellington, Phoebe, Bridget, Calvin and Violet, each as an installable package in the core. Bridget's map data needs a rights check before it goes into a public repo. Violet becomes her own crew member on both sites, through the shared spec.
-- **J6.** Saving a screening into the paid site: the count of people served crosses over correctly, and the paid record never shows "people" as a unit nobody chose.
+- **J6.** Moved to family 10, Project data and evidence, on 26 Nov 2026. Still in this ruled scope.
 - **J7.** The maintainer signs off the first water-benefit activity type (safe drinking water supply). No building.
 - **J8.** Reword the 30 lines the seed checks catch on the paid site, before the next agent moves into the core.
 - **J9.** Close the gaps against the agent rules: agents never talk about their own limits (rule 6); a build rule for a needed fact left blank (rule 11); no repeat introductions (rule 17); the link to the WaterBots team and the consulting page (rule 13; the address waits on the maintainer).
 
-**Where this repository stands on them.** J4's design is approved as Session C designed it (22 Nov 2026), with the maintainer's lobby chat on the paid site, not a door and not this repository's. **Built in the first pull request:** J9's rules 6, 11 and 17 (A31); rule 13's link waits on the address. **J1 in its own pull request, 22 Nov 2026:** calvin-violet-v0.5.1 installed (Calvin 0.5.1, Violet 0.5.1, core 0.1.2), no sum changed; every agent here reads rules 1 to 21 from core. **The second pull request, 23 Nov 2026:** core 0.2.0, Calvin 0.6.0 and Violet 0.6.0 installed, no sum changed; each agent told its place (J2, A27); Violet her own crew member (J5, A23); the shared record and the fact check where a count is entered (J3); the agent map, with the site's own rules it replaces switched off (J4, A29, A30); the agents' notes in the export. **Her walk of 24 Nov 2026**, the five shared console behaviours, in the same pull request: an answer in the same turn, the crew, the chips, "Go to map", and the same hand-off for every agent. For Session C: core's map calls Bridget and Violet from the type alone, before Phoebe has read a path, so this site waits for her (`calledSurfaces`). **Her walk of 24 Nov, items 6 to 8 and 10, and Bridget's first question:** built in the same pull request. **25 Nov 2026, in the same pull request:** core 0.3.0, Calvin 0.7.0 and Violet 0.7.0 installed, no sum changed; Calvin's and Violet's chats (item 9) on what the packages ship; Step 3 done by a figure from the visitor's answers; home use asked when the map asks; the site's own guard, its map workarounds and its label look-up removed; the status sheet's new part. Four guards on both chats, in code: the visitor's own numbers and kind of project, and the message for a number out of range. Each chat still wants its first measured run with the real model. **26 Nov 2026, the third pull request, on her word ("The carry is named"):** core 0.4.0, Calvin 0.8.0, Violet 0.8.0 and the first releases of Phoebe, Wellington and Bridget installed in one step, one copy of core, no sum changed; all five agents come from their packages, and this site's own copies of their instructions, answer shapes and checks are gone (J5). A new project starts from core's new record: the source, the treatment and whether the water is safe are plain facts, and nobody is asked for a kind or a class. The save sends its new shape (`handoff/2`); the paid site's receiver takes both shapes. Bridget's map and its data stay here until the rights check. **The same day, core's fix release, in the same pull request:** core 0.5.0, Calvin 0.9.0, Violet 0.9.0, and Phoebe, Wellington and Bridget 0.2.0, no sum changed. An agent fills a fact only when the visitor gave it; each agent is told this door's facts; neither calculator screen points to a Project Record page; a fact that changes takes Phoebe's readings and the old line for what the project does off, and her next turn works them out again. Merged 26 Nov 2026 (#202). **Still open here:** this site's side of J6; D3 (J5). J7 is the maintainer's; J8 is Session A's.
+**Where this repository stands on them.** J4's design is approved as Session C designed it (22 Nov 2026), with the maintainer's lobby chat on the paid site, not a door and not this repository's. **Built in the first pull request:** J9's rules 6, 11 and 17 (A31); rule 13's link waits on the address. **J1 in its own pull request, 22 Nov 2026:** calvin-violet-v0.5.1 installed (Calvin 0.5.1, Violet 0.5.1, core 0.1.2), no sum changed; every agent here reads rules 1 to 21 from core. **The second pull request, 23 Nov 2026:** core 0.2.0, Calvin 0.6.0 and Violet 0.6.0 installed, no sum changed; each agent told its place (J2, A27); Violet her own crew member (J5, A23); the shared record and the fact check where a count is entered (J3); the agent map, with the site's own rules it replaces switched off (J4, A29, A30); the agents' notes in the export. **Her walk of 24 Nov 2026**, the five shared console behaviours, in the same pull request: an answer in the same turn, the crew, the chips, "Go to map", and the same hand-off for every agent. For Session C: core's map calls Bridget and Violet from the type alone, before Phoebe has read a path, so this site waits for her (`calledSurfaces`). **Her walk of 24 Nov, items 6 to 8 and 10, and Bridget's first question:** built in the same pull request. **25 Nov 2026, in the same pull request:** core 0.3.0, Calvin 0.7.0 and Violet 0.7.0 installed, no sum changed; Calvin's and Violet's chats (item 9) on what the packages ship; Step 3 done by a figure from the visitor's answers; home use asked when the map asks; the site's own guard, its map workarounds and its label look-up removed; the status sheet's new part. Four guards on both chats, in code: the visitor's own numbers and kind of project, and the message for a number out of range. Each chat still wants its first measured run with the real model. **26 Nov 2026, the third pull request, on her word ("The carry is named"):** core 0.4.0, Calvin 0.8.0, Violet 0.8.0 and the first releases of Phoebe, Wellington and Bridget installed in one step, one copy of core, no sum changed; all five agents come from their packages, and this site's own copies of their instructions, answer shapes and checks are gone (J5). A new project starts from core's new record: the source, the treatment and whether the water is safe are plain facts, and nobody is asked for a kind or a class. The save sends its new shape (`handoff/2`); the paid site's receiver takes both shapes. Bridget's map and its data stay here until the rights check. **The same day, core's fix release, in the same pull request:** core 0.5.0, Calvin 0.9.0, Violet 0.9.0, and Phoebe, Wellington and Bridget 0.2.0, no sum changed. An agent fills a fact only when the visitor gave it; each agent is told this door's facts; neither calculator screen points to a Project Record page; a fact that changes takes Phoebe's readings and the old line for what the project does off, and her next turn works them out again. Merged 26 Nov 2026 (#202). **Still open here:** this site's side of J6 (now in family 10); D3 (J5). J7 is the maintainer's; J8 is Session A's.
 
 **A21 · Calvin's brief — his chat, the engine, carbon beside water.** Step 5 · BONES. **27 Oct 2026: replaced by** the proposal to install Calvin from the open core (#156, in GitHub's history):
 Calvin's engine and screens from the open core, React 19, Wellington asks the core facts first. Ruled; six open.
@@ -191,9 +191,12 @@ asks the type and, for drinking water, its class), `save-and-carry.md` (the save
 the technology class) and `console.md` (a kind of project); and road step 3 here still reads "type and class". A shared job: core's
 own rulings for Phoebe, Wellington and Bridget are core's part (Session C). Rulings pages change on the maintainer's words.
 
-**A20 · Phoebe's runaway call is cut off, not prevented.** After v1 · PARK. One request in seventy-five
-spent all 16,000 output tokens; `CALL_TIMEOUT_MS`, 120 seconds, ends it. Done is a real count once there
-is traffic, then a smaller budget with a measured reason or a line saying the timeout is enough.
+**S37 · "Still needed: technology. Tell Wellington."** After v1 · WALKTHROUGH. Found on the walk of 26 Nov 2026. This site's own
+line above Calvin's calculator (`RecordFacts`) names what his package's list says is missing. Once the source and the treatment
+said no single technology, it named "technology", a word the site no longer asks for, and sent the visitor to Wellington while
+Calvin asks for the fact himself. It was there before core 0.5.0. The words are the maintainer's. Moved here from Console and
+surfaces on 26 Nov 2026. A shared job: core's F1.6 (Calvin's missing facts still name "technology") is the same job, and core
+releases first.
 
 ### 2 · Calculators and methods
 
@@ -275,7 +278,8 @@ export, in the phase-tags shape. **A first version is built on her word of 14 No
 
 **S25 · Tap size on phones.** v1 · WALKTHROUGH. Her word of 31 Oct 2026, after her preview check of #167. Every control a
 visitor taps, measured at phone width against a size she rules; S24's 44px for the main site's menu is the same question
-there. Proposal first, with the measurements.
+there. Proposal first, with the measurements. This includes the map's + and - buttons, on both sites, the shared page first (the
+coach's list of 26 Nov 2026; core's plan will point here).
 
 **A10 · Wellington's answers run long.** After v1 · BONES. The target is two or three plain sentences; his
 replies ran four or five. Done is a measured pass on the length rule, counts and not impressions, and a
@@ -354,11 +358,6 @@ as the crew rail, holding the tally; the blue "Keep chatting" outline; soft shad
 **S36 · No warning before unsaved work is lost.** After v1 · WALKTHROUGH. Rulings section 5: the site warns a user before unsaved work
 is lost. Found on the coach's list of 26 Nov 2026: no such warning is there yet.
 
-**S37 · "Still needed: technology. Tell Wellington."** After v1 · WALKTHROUGH. Found on the walk of 26 Nov 2026. This site's own
-line above Calvin's calculator (`RecordFacts`) names what his package's list says is missing. Once the source and the treatment
-said no single technology, it named "technology", a word the site no longer asks for, and sent the visitor to Wellington while
-Calvin asks for the fact himself. It was there before core 0.5.0. The words are the maintainer's.
-
 **S38 · The Tool tab tidy.** v1 mark: open · WALKTHROUGH. From the coach's list of 26 Nov 2026 (its item 37), for both sites, the
 shared page first: "Wellington, Team Lead" shows twice; the project name should be easy to fix; Bridget's name colour; full-body
 Wellington art. Which of these this site shows is not yet checked. The colour and the art come from the brand book, by the
@@ -409,6 +408,15 @@ Nothing here.
 What belongs here: secrets, names to block, alerts, repo settings, speed and weight, stale rules and docs, close-outs.
 
 Routine hygiene, about once a month: check that nothing in this repo repeats or disagrees with a master page (rulings, agent rules, family page, status sheet). Fix what does.
+
+**A20 · Phoebe's runaway call is cut off, not prevented.** After v1 · PARK. One request in seventy-five
+spent all 16,000 output tokens; `CALL_TIMEOUT_MS`, 120 seconds, ends it. Done is a real count once there
+is traffic, then a smaller budget with a measured reason or a line saying the timeout is enough. Moved here from Agent
+orchestration on 26 Nov 2026. See O19: the platform ends the call at 60 seconds, before this timeout.
+
+**O19 · The platform cuts off the agent relays at 60 seconds.** v1 mark: open · BONES. Found, not chased (the coach's list of 26 Nov
+2026). Every agent relay here sets `maxDuration = 60`, so the platform ends a call at 60 seconds, while the relays' own
+`CALL_TIMEOUT_MS` is 120 seconds and never fires. Not looked into further.
 
 **O16 · Real-project figures in the carried bundle, public since #132.** Step 5 · BONES. The sweep of 3 Oct 2026
 found one real filing's figures in `presets.ts`, `emissions-legacy.ts` and `MANIFEST.md` (`carried/` deleted 14 Nov 2026). #244 is the paid site's
@@ -521,7 +529,7 @@ repository holds it is hers to say. Proposal first.
 
 What belongs here: what outside experts review, what we owe partners, and what we send them.
 
-**SP7 · Ask the experts: does community level water treatment count as a community water supply for the carbon method?**
+**SP7 · Ask the experts: does community level water treatment count as a community water supply for the carbon method?** v1 mark: open.
 
 **SP6 · A human engineer reviews the structure.** Now, not blocking v1 · BONES. One question put to a person:
 what would you keep, what would you fix first, what would you worry about. It covers all three repositories. The
@@ -531,7 +539,11 @@ review itself is her hand's work, outside this repository (rule zero); only its 
 
 What belongs here: saving, the save's shape, versions, and the report's pinned inputs. Added by the maintainer on 25 Nov 2026.
 
-No open items. E1, the save's new shape, merged on 26 Nov 2026 (#202) and is in the build log.
+E1, the save's new shape, merged on 26 Nov 2026 (#202) and is in the build log.
 
-Relabelled here from other families: none. The two nearest stay where they are, for the maintainer to place: J6 (saving a screening
-into the paid site) sits in family 1's ruled v1 scope, and S21 (the screening report) in Console and surfaces.
+**J6 · Saving a screening into the paid site: this site's side.** v1 · BONES. Moved here from family 1 on 26 Nov 2026; it is still in
+family 1's v1 scope, ruled by the maintainer on 22 Nov 2026. Its words there: "Saving a screening into the paid site: the count of
+people served crosses over correctly, and the paid record never shows "people" as a unit nobody chose." A shared job: the paid site's
+part is its receiver and the carry-over test (paid #323), and the paid site goes first when the save changes.
+
+S21 (the screening report) stays in Console and surfaces.
