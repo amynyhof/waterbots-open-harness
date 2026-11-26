@@ -60,7 +60,11 @@ export function readCarried(value: unknown): ProjectRecord | null {
   if (stage) given.stage = stage;
   if (served) given.population = { served: served.count, mode: served.unit };
   if (Object.keys(given).length === 0) return null;
-  return addGivenFacts(newProjectRecord(), 'wellington', given).record;
+  const record = addGivenFacts(newProjectRecord(), 'wellington', given).record;
+  /* A fact Phoebe's readings rest on changed since she worked them out (core 0.5.0): her turn reads it from her part of the
+     record, and works every reading out again. Only exactly `true` counts. */
+  if (v.factsChanged === true) record.agents.phoebe = { ...record.agents.phoebe, factsChanged: true };
+  return record;
 }
 
 /**

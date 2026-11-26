@@ -11,6 +11,7 @@ import { computeD3, guardVioletReply, violetAsks, violetChatContext, type D3Inpu
 import { AGENT_RULES_MD } from './_agentRules.generated.js';
 import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
 import type { ReplyGuard, TurnParts } from './_calculatorChat.js';
+import { FREE_SITE_DOOR } from './_door.js';
 import { VIOLET_KNOWLEDGE_MD, VIOLET_PROMPT_MD } from './_violetPrompt.generated.js';
 
 export const VIOLET_SYSTEM_PROMPT = [AGENT_RULES_MD, VIOLET_PROMPT_MD, VIOLET_KNOWLEDGE_MD, BUILD_STATUS_SHEET_MD].map((part) => part.trim()).join('\n\n') + '\n';
@@ -60,6 +61,9 @@ export function violetBlock(turn: unknown, parts: TurnParts, facts: ProjectFacts
       introduce: parts.introduce,
       leftForNow: parts.leftForNow,
       refused: parts.refused,
+      /* This door's facts, and whether the visitor has talked with her before (violet 0.9.0). */
+      door: FREE_SITE_DOOR,
+      talkedBefore: parts.talkedBefore,
     });
   } catch {
     /* An input her engine cannot take is a request this site never sends. */
@@ -68,17 +72,21 @@ export function violetBlock(turn: unknown, parts: TurnParts, facts: ProjectFacts
 }
 
 /**
- * THE GUARDS ON HER NUMBERS are her package's (`guardVioletReply`, violet 0.8.0): a number the visitor did not give here
- * goes back to her once, then comes out, and the visitor is told; a number they gave out of range has its message.
+ * THE GUARDS ON HER NUMBERS AND HER FACTS are her package's (`guardVioletReply`, violet 0.9.0): a number the visitor did not
+ * give here goes back to her once, then comes out, and the visitor is told; a number they gave out of range has its message.
+ * A fact the visitor did not give is dropped quietly and stays blank: a yes or no only counts as the answer to the question
+ * her last reply asked (`asked`, its `asking`), and anything else only in the visitor's own words. She is told once, and asks.
  */
-export function violetGuard(turn: unknown, leftForNow: readonly string[], facts: ProjectFacts): ReplyGuard<VioletReply> | null {
+export function violetGuard(turn: unknown, leftForNow: readonly string[], facts: ProjectFacts, asked: string | undefined): ReplyGuard<VioletReply> | null {
   const t = object(turn);
   const input = readD3Input(t.input);
   if (!input) return null;
   try {
-    const asked = violetAsks(input, t.chosen === true, facts).find((ask) => !leftForNow.includes(ask.key))?.key;
-    const check = (reply: VioletReply, messages: readonly string[]) => guardVioletReply(reply, { input, messages, ...(asked ? { asked } : {}) });
-    return { check, outOfRange: (messages) => check({ reply: '', handBack: 'none', leftForNow: [], facts: {}, values: {} }, messages).outOfRange };
+    const guard = (reply: VioletReply, messages: readonly string[], key: string | undefined) => guardVioletReply(reply, { input, messages, facts, ...(key ? { asked: key } : {}) });
+    /* An out-of-range number's message, read before she answers: for the question she asked, or else the one her screen asks next. */
+    const next = asked ?? violetAsks(input, t.chosen === true, facts).find((ask) => !leftForNow.includes(ask.key))?.key;
+    const empty: VioletReply = { reply: '', handBack: 'none', leftForNow: [], facts: {}, values: {} };
+    return { check: (reply, messages) => guard(reply, messages, asked), outOfRange: (messages) => guard(empty, messages, next).outOfRange };
   } catch {
     return null;
   }

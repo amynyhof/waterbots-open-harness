@@ -9,7 +9,17 @@
  * In its own module with no dependency, so the check script can load it compiled as the platform compiles it.
  */
 
+import type { DoorFacts } from '@waterbots/core/places';
+
 export const DOORS = ['free-site', 'agent-commons'] as const;
+
+/**
+ * THIS SITE'S DOOR FACTS (core 0.5.0, 26 Nov 2026), passed to every agent's turn here. The project is not saved; nothing
+ * is kept after the visit unless the visitor chooses Save and sign up; and there is no Project Record page. Core's list
+ * for when a change is kept has three words: "on save" is the nearest true one. The Agent Commons passes none: core
+ * knows that door's facts itself.
+ */
+export const FREE_SITE_DOOR: DoorFacts = { savedProject: false, changesKept: 'on save', recordPage: false };
 export type Door = (typeof DOORS)[number];
 
 export function readDoor(value: unknown): Door | null {

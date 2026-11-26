@@ -261,6 +261,8 @@ export function CalvinCommonsSeat() {
     return {
       name: 'Your project',
       standards: ['carbon'],
+      /* No Project Record page at this door either (calvin 0.9.0). */
+      recordPage: false,
       ...(facts.technology ? { technology: facts.technology } : {}),
       ...(facts.country ? { country: facts.country } : {}),
       ...(served !== undefined ? { population: { mode: facts.unit, served } } : {}),

@@ -55,6 +55,7 @@ import { AGENT_RULES_MD } from './_agentRules.generated.js';
 import { CARRIED, WELLINGTON, countOneMessage, timeUntilReset } from './_cap.js';
 import { BEFORE_AFTER_MD, PLAIN_WORDS_MD } from './_plainWords.generated.js';
 import { AGENT_PRIMER_MD } from './_primer.generated.js';
+import { FREE_SITE_DOOR } from './_door.js';
 import { foundPathways, readCarried, readSheet } from './_record.js';
 import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
 
@@ -143,6 +144,7 @@ export async function POST(req: Request): Promise<Response> {
     at?: unknown;
     to?: unknown;
     map?: unknown;
+    asked?: unknown;
   };
   try {
     body = (await req.json()) as {
@@ -155,6 +157,7 @@ export async function POST(req: Request): Promise<Response> {
       at?: unknown;
       to?: unknown;
       map?: unknown;
+      asked?: unknown;
     };
   } catch {
     return problem(400, 'That request could not be read.');
@@ -213,6 +216,10 @@ export async function POST(req: Request): Promise<Response> {
     clean.push({ role: m.role, content: m.content });
     if (m.role === 'user') lastQuestion = m.content;
   }
+  /* THE VISITOR'S OWN WORDS in this chat, and nobody else's (core 0.5.0): his package fills a fact about the kind only
+     from them, and a yes or no only as the answer to the question his last reply asked (`asked`, its `asking`). */
+  const said = clean.flatMap((m) => (m.role === 'user' && typeof m.content === 'string' ? [m.content] : []));
+  const asked = typeof body.asked === 'string' && /^[w.-]{1,60}$/.test(body.asked) ? body.asked : undefined;
   if (returned && (clean.length === 0 || clean[clean.length - 1].role !== 'user')) {
     /* The model needs a user turn. This line is never shown as a bubble. */
     clean.push({ role: 'user', content: openedLine(opened ?? { returned: true }) });
@@ -241,6 +248,9 @@ export async function POST(req: Request): Promise<Response> {
     ...(opened ? { opened } : {}),
     ...(replyingAt ? { replyingAt } : {}),
     pass,
+    messages: said,
+    ...(asked ? { asked } : {}),
+    door: FREE_SITE_DOOR,
   });
 
   /* Shape first, then whether we can actually answer — same order as Phoebe's,

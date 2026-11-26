@@ -140,6 +140,12 @@ export interface VisitContext {
   served: Served | null;
   /** A new or alternative supply only: whether people use the water at home. Absent until they say. */
   homeUse?: HomeUse;
+  /**
+   * A fact Phoebe's readings rest on changed after the visitor first gave it (core 0.5.0, 26 Nov 2026): the source, the
+   * treatment, another kind fact, or home use. Her readings are off the record until her next turn, which works every row
+   * and pathway out again; then it clears. As core's `changeFacts` does on a record.
+   */
+  readingsOff?: boolean;
   provenance: {
     does: Provenance;
     name: Provenance;
@@ -207,7 +213,9 @@ export function typedContext(context: VisitContext, field: 'name' | 'place', val
  * check that his context came back as stated, never inferred.
  */
 export function learnedContext(context: VisitContext, learned: Learned): VisitContext {
-  let next = context;
+  /* The kind facts first: a source or a treatment that changes takes the old line for what it does off, and a new line in
+     the same answer takes its place (core 0.5.0). */
+  let next = withKind(context, learned);
   const take = (field: 'does' | 'name' | 'place' | 'type' | 'stage', value: string) => {
     if (next.provenance[field] === 'typed') return;
     next = {
@@ -223,13 +231,12 @@ export function learnedContext(context: VisitContext, learned: Learned): VisitCo
   const held = next.provenance.place === 'chat' ? next.place.trim().toLowerCase() : '';
   if (learned.place && !(held !== heard && held.includes(heard))) take('place', learned.place);
   if (learned.type) take('type', learned.type);
-  next = withKind(next, learned);
   if (learned.stage) take('stage', learned.stage);
   if (learned.served) {
     next = { ...next, served: learned.served, provenance: { ...next.provenance, served: 'chat' } };
   }
   /* A fact about a new or alternative supply and nothing else. */
-  if (learned.homeUse && next.type === HOME_USE_TYPE) next = { ...next, homeUse: learned.homeUse };
+  if (learned.homeUse && next.type === HOME_USE_TYPE) next = { ...next, homeUse: learned.homeUse, ...(next.homeUse && next.homeUse !== learned.homeUse ? { readingsOff: true } : {}) };
   else if (next.homeUse && next.type !== HOME_USE_TYPE) {
     const { homeUse: _gone, ...rest } = next;
     next = rest;
@@ -250,7 +257,12 @@ export function withKind(context: VisitContext, given: KindFacts, by: KindTeller
     if (by === 'wellington') delete kindFactsBy[key];
     else kindFactsBy[key] = by;
   }
-  return { ...context, kindFacts: { ...context.kindFacts, ...said }, kindFactsBy };
+  /* A FACT THAT CHANGES, as core's `changeFacts` rules (core 0.5.0): one the visitor had given, now said otherwise. Every
+     reading is worked out again, and what the project does was said about the old source and treatment, so it comes off. */
+  const changed = (Object.keys(said) as (keyof KindFacts)[]).filter((key) => context.kindFacts[key] !== undefined && context.kindFacts[key] !== said[key]);
+  const next: VisitContext = { ...context, kindFacts: { ...context.kindFacts, ...said }, kindFactsBy, ...(changed.length > 0 ? { readingsOff: true } : {}) };
+  if (changed.includes('waterSource') || changed.includes('treatment')) return { ...next, does: '', provenance: { ...next.provenance, does: '' } };
+  return next;
 }
 
 /**
@@ -820,6 +832,11 @@ const SHORT_PATH: Record<string, string> = { water: 'water', carbon: 'carbon' };
  */
 export function pathStatus(visit: Visit, sheet: Sheet, pack: string): 'likely' | 'unlikely' | 'more to learn' | 'not started' {
   const context = contextFor(sheet, pack, herClass(visit));
+  /* A fact her readings rest on changed: no old reading stands until she has worked it out again (core 0.5.0). */
+  if (visit.context.readingsOff) {
+    const looked = verdictRows(pack, context).some((row) => stateOf(sheet, pack, row.id).state !== 'unchecked');
+    return looked || pathwayState(sheet, pack, context) !== 'unchecked' ? 'more to learn' : 'not started';
+  }
   if (pathwayState(sheet, pack, context) === 'does-not-apply') return 'unlikely';
   const read = readiness(sheet, pack, context);
   if (read === 'likely-not') return 'unlikely';

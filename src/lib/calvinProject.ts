@@ -29,14 +29,14 @@ import { COUNTRIES } from '@waterbots/calvin/engine';
 import { foldPlace } from './placeBox';
 
 /** The installed package's version, held to the lockfile by scripts/check-calvin-package.mjs. */
-export const CALVIN_PACKAGE_VERSION = '0.8.0';
+export const CALVIN_PACKAGE_VERSION = '0.9.0';
 
 /** Violet's D-3 package, the water calculator from 22 Nov 2026. */
-export const VIOLET_PACKAGE_VERSION = '0.8.0';
+export const VIOLET_PACKAGE_VERSION = '0.9.0';
 
 /** Each package has a release and a tag of its own from 23 Nov 2026 (J1). */
-export const CALVIN_RELEASE = 'calvin-v0.8.0';
-export const VIOLET_RELEASE = 'violet-v0.8.0';
+export const CALVIN_RELEASE = 'calvin-v0.9.0';
+export const VIOLET_RELEASE = 'violet-v0.9.0';
 
 /** The ISO 3166-1 alpha-3 code of the one country the place names, or null. */
 export function countryIsoFor(place: string): string | null {
@@ -61,8 +61,9 @@ export function countryIsoFor(place: string): string | null {
 /**
  * The project the calculator reads, from the shared project record: his package's own adapter
  * (`calvinProjectFromRecord`, calvin 0.8.0). Under today's rules the kind of project is worked out from the record's
- * facts, never from a label. Nothing is filled in that the record does not hold.
+ * facts, never from a label. Nothing is filled in that the record does not hold. This site has no Project Record page, so
+ * his screen never points to one (`recordPage: false`, calvin 0.9.0).
  */
 export function calvinProjectFrom(record: ProjectRecord): CalvinProject {
-  return calvinProjectFromRecord(record);
+  return { ...calvinProjectFromRecord(record), recordPage: false };
 }

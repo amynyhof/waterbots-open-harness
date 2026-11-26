@@ -73,6 +73,13 @@ const ROUTES: WellingtonRoute[] = ['none', 'eligibility', 'quantification', 'wat
 
 const REFUSED = ['below zero', 'zero', 'not a whole number', 'not a number'] as const;
 
+/**
+ * THE QUESTION HIS LAST REPLY ASKED (core 0.5.0, 26 Nov 2026): its `asking`, wherever he said it this visit, sent back as
+ * `asked` on his next turn. His package takes a yes or no only as the answer to it. It lives as long as the page does,
+ * as the visit does.
+ */
+let lastAsking: string | undefined;
+
 export async function askWellington(
   history: { role: 'user' | 'assistant'; content: string }[],
   signal?: AbortSignal,
@@ -107,12 +114,14 @@ export async function askWellington(
       to?: Surface;
       map?: MapNote;
       door?: 'free-site';
+      asked?: string;
     } = {
       messages: history,
       door: 'free-site',
     };
     /* The agent map (J4, 23 Nov 2026), worked out by core from the shared record. He leads from it. */
     if (found.map) body.map = found.map;
+    if (lastAsking) body.asked = lastAsking;
     if (carried) body.carried = true;
     if (record) body.record = record;
     if (stage !== 'learn') body.stage = stage;
@@ -158,6 +167,8 @@ export async function askWellington(
   if (typeof data.reply !== 'string') {
     throw new WellingtonError('Wellington answered in a shape this console could not read.');
   }
+
+  lastAsking = typeof data.asking === 'string' && /^[w.-]{1,60}$/.test(data.asking) ? data.asking : undefined;
 
   const route = ROUTES.includes(data.route as WellingtonRoute) ? (data.route as WellingtonRoute) : 'none';
 

@@ -75,9 +75,11 @@ export interface CarriedRecord {
   name: string;
   /** People served, as the visitor said it — ruling R5, 27 Sep 2026, so she need not ask again. */
   served?: { count: number; unit: string } | null;
+  /** A fact her readings rest on changed since she worked them out (core 0.5.0): her turn works them all out again. */
+  factsChanged?: true;
 }
 
-export function carriedRecord(context: CarriedRecord): CarriedRecord | null {
+export function carriedRecord(context: Omit<CarriedRecord, 'factsChanged'> & { readingsOff?: boolean }): CarriedRecord | null {
   const record: CarriedRecord = {
     does: context.does.trim(),
     type: context.type,
@@ -86,6 +88,7 @@ export function carriedRecord(context: CarriedRecord): CarriedRecord | null {
     place: context.place.trim(),
     name: context.name.trim(),
     ...(context.served ? { served: context.served } : {}),
+    ...(context.readingsOff ? { factsChanged: true as const } : {}),
   };
   return record.does || record.type || record.stage || record.place || record.name || record.served || Object.keys(record.kindFacts).length > 0
     ? record

@@ -123,6 +123,11 @@ export function projectRecord({ visit, sheet, carbon = null }: RecordInput): Pro
   /* PHOEBE, by her package's own helper. Her step is ended once she has handed the visitor on with a path done or closed,
      so nobody is sent back to a step she has ended (24 Nov 2026). */
   record = addPhoebeResults(record, sheet, { handedOn: visit.eligibilityHanded === true });
+  /* A FACT HER READINGS REST ON CHANGED (core 0.5.0): each pathway's reading comes off and her part is not done, until her
+     next turn works them out again. Her rows stay on her worksheet for her to check. As core's `changeFacts` does. */
+  if (visit.context.readingsOff && Object.keys(record.pathways).length + Object.keys(record.eligibility ?? {}).length > 0) {
+    record = { ...record, pathways: {}, agents: { ...record.agents, phoebe: { ...record.agents.phoebe, done: false, factsChanged: true } } };
+  }
 
   /* BRIDGET. The basin, in core's own place for it. Her step is done with a basin, or once she has handed the visitor on
      without one: we are guides, not gates (24 Nov 2026). */

@@ -53,6 +53,7 @@ import { AGENT_RULES_MD } from './_agentRules.generated.js';
 import { BRIDGET_PROMPT_MD } from './_bridgetPrompt.generated.js';
 import { BRIDGET, countOneMessage, timeUntilReset } from './_cap.js';
 import { AGENT_PRIMER_MD } from './_primer.generated.js';
+import { FREE_SITE_DOOR } from './_door.js';
 import { readCarried } from './_record.js';
 import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
 
@@ -232,8 +233,9 @@ export async function POST(req: Request): Promise<Response> {
         max_tokens: MAX_TOKENS,
         system: [
           { type: 'text', text: BRIDGET_SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
-          /* Her package's blocks: the visit, the record, and on a second call the note that it has to end now. */
-          ...turnBlocks(visitText, recordText, pass > 1).map((text) => ({ type: 'text' as const, text })),
+          /* Her package's blocks: the visit, the record, this door's facts (core 0.5.0), and on a second call the note
+             that it has to end now. */
+          ...turnBlocks(visitText, recordText, pass > 1, { place: 'free-site', facts: FREE_SITE_DOOR }).map((text) => ({ type: 'text' as const, text })),
         ],
         messages: clean,
         thinking: { type: 'adaptive' },

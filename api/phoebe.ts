@@ -53,7 +53,7 @@ import {
 import { recordAbstention } from './_abstentions.js';
 import { AGENT_RULES_MD } from './_agentRules.generated.js';
 import { PHOEBE, countOneMessage, timeUntilReset } from './_cap.js';
-import { readDoor } from './_door.js';
+import { FREE_SITE_DOOR, readDoor } from './_door.js';
 import { BEFORE_AFTER_MD, PLAIN_WORDS_MD } from './_plainWords.generated.js';
 import { AGENT_PRIMER_MD } from './_primer.generated.js';
 import { readCarried, readSheet } from './_record.js';
@@ -358,7 +358,7 @@ export async function POST(req: Request): Promise<Response> {
     ? body.loaded.filter((set): set is string => typeof set === 'string')
     : [];
   const turnFor = (again: boolean, sets?: readonly CardSet[]) =>
-    phoebeTurn({ door, record, sheet, loaded, opened, introduced, eligibilityDone, again, ...(sets ? { sets } : {}) });
+    phoebeTurn({ door, record, ...(door === 'free-site' ? { doorFacts: FREE_SITE_DOOR } : {}), sheet, loaded, opened, introduced, eligibilityDone, again, ...(sets ? { sets } : {}) });
   const { sets, pathways } = turnFor(false);
 
   /* The configuration check sits AFTER the request is validated, on purpose.

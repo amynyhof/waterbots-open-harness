@@ -18,7 +18,9 @@
  *
  * NOTHING IS FILLED IN THAT THE VISITOR DID NOT GIVE. From 26 Nov 2026 the guards are each package's own
  * (`guardCalvinReply`, `guardVioletReply`): a number that is not in the visitor's own words here goes back to the agent
- * once, in the same turn, and is taken out if it comes again, and the visitor is told. Nobody is asked for a kind of project:
+ * once, in the same turn, and is taken out if it comes again, and the visitor is told. From core 0.5.0 the same guard
+ * holds every other fact: a yes or no only as the answer to the question the agent's last reply asked, anything else only
+ * in the visitor's own words. A refused fact is dropped quietly and stays blank; the agent is told once, and asks. Nobody is asked for a kind of project:
  * the source, the treatment and whether the water is safe are plain facts, and core works out from them what the agent does.
  *
  * WHAT COMES FROM THE BROWSER IS CHECKED. The screen's state lives there, so it crosses; every number and code in it is
@@ -62,6 +64,8 @@ export interface TurnParts {
   introduce: boolean;
   leftForNow: string[];
   refused: string[];
+  /** The visitor has talked with this agent before in this visit (core 0.5.0), so a first turn never greets them as known. */
+  talkedBefore: boolean;
 }
 
 /** What a package's guard gives back for one answer: the answer with what did not pass taken out, and the lines about it. */
@@ -93,8 +97,11 @@ export interface CalculatorAgent<Reply extends AgentReply> {
   tools: (facts: ProjectFacts) => readonly AgentTool[];
   /** The package's block for this turn, or null when what came cannot be read. */
   block: (turn: unknown, parts: TurnParts, facts: ProjectFacts) => string | null;
-  /** The package's guard on the agent's screen as it stands, or null when what came cannot be read. */
-  guard: (turn: unknown, leftForNow: readonly string[], facts: ProjectFacts) => ReplyGuard<Reply> | null;
+  /**
+   * The package's guard on the agent's screen as it stands, or null when what came cannot be read. `asked` is the key its
+   * last reply asked for (its `asking`): a yes or no is taken only as the answer to it (core 0.5.0).
+   */
+  guard: (turn: unknown, leftForNow: readonly string[], facts: ProjectFacts, asked: string | undefined) => ReplyGuard<Reply> | null;
   read: (raw: unknown) => Reply | null;
 }
 
@@ -173,7 +180,9 @@ export async function answerCalculatorChat<Reply extends AgentReply>(req: Reques
 
   const leftForNow = lines(body.leftForNow, 20, 60);
   const facts = turnFacts(body.turn);
-  const guard = agent.guard(body.turn, leftForNow, facts);
+  /* The question the agent's last reply asked, sent back by the browser: one of its own keys, never a sentence. */
+  const asked = typeof body.asked === 'string' && /^[w.-]{1,60}$/.test(body.asked) ? body.asked : undefined;
+  const guard = agent.guard(body.turn, leftForNow, facts, asked);
   if (guard === null) return problem(400, 'That request could not be read.');
   /* The visitor's own words in this chat, and nobody else's. */
   const said = clean.flatMap((m) => (m.role === 'user' && typeof m.content === 'string' && m.content !== agent.openedTurn ? [m.content] : []));
@@ -186,6 +195,7 @@ export async function answerCalculatorChat<Reply extends AgentReply>(req: Reques
     introduce: opened && body.introduced !== true,
     leftForNow,
     refused: [...new Set([...lines(body.refused), ...refusedNow])],
+    talkedBefore: body.talkedBefore === true,
   }, facts);
   if (block === null) return problem(400, 'That request could not be read.');
 
@@ -303,7 +313,7 @@ export async function answerCalculatorChat<Reply extends AgentReply>(req: Reques
     answer = guarded.reply;
     told = guarded.told;
     const sentBack = guarded.returned !== null;
-    if (sentBack) console.log(`${log}: a number the visitor did not give, call ${pass}`);
+    if (sentBack) console.log(`${log}: a number or a fact the visitor did not give, call ${pass}`);
     /* ONE ANSWER, IN THE SAME TURN (24 Nov 2026, item 4). Wellington joins on a hand-back, so nobody waits there. */
     const waiting = read.handBack !== 'wellington' && leavesWaiting(read.reply);
     if (!waiting && !sentBack) break;

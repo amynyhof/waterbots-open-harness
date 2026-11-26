@@ -12,7 +12,9 @@
  * core-v0.2.0. No sum changed. On 25 Nov 2026, her word ("carry the release to both sites"): calvin-v0.7.0,
  * violet-v0.7.0 and core-v0.3.0, with both agents' chats. No sum changed. On 26 Nov 2026, her word ("The carry is named"):
  * the six releases of that day in one step, so the site has one copy of core — core-v0.4.0, calvin-v0.8.0, violet-v0.8.0,
- * phoebe-v0.1.0, wellington-v0.1.0 and bridget-v0.1.0. No sum changed; all five agents come from their packages.
+ * phoebe-v0.1.0, wellington-v0.1.0 and bridget-v0.1.0. No sum changed; all five agents come from their packages. Later on 26 Nov
+ * 2026, her word ("The fix is released"): core-v0.5.0, calvin-v0.9.0, violet-v0.9.0, phoebe-v0.2.0, wellington-v0.2.0 and
+ * bridget-v0.2.0 in one step: an agent fills a fact only when the visitor gave it. No sum changed.
  *   6. The project the site hands Calvin sets `creditedUnderV1` from the shared record and never otherwise (item A29,
  *      J4, 23 Nov 2026): Phoebe's question settles it. Until then it was left unset (her word of 16 Nov 2026).
  *
@@ -38,44 +40,44 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const RELEASE = 'calvin-v0.8.0';
-const VIOLET_RELEASE = 'violet-v0.8.0';
+const RELEASE = 'calvin-v0.9.0';
+const VIOLET_RELEASE = 'violet-v0.9.0';
 const FILES = {
   '@waterbots/calvin': {
-    file: 'vendor/waterbots/waterbots-calvin-0.8.0.tgz',
-    version: '0.8.0',
-    sha256: '773337e184de502091ed3486fab1529f96b592f5be44e309622707694b6c1e75',
-    integrity: 'sha512-zTGwBXk0TUcg2kTOf0I7b/NSs0l2NZWzjl9qbWvhogex9QHxOKo8FRf+VlG8kzueaalckHL4WzSF+WYHG7eY5g==',
+    file: 'vendor/waterbots/waterbots-calvin-0.9.0.tgz',
+    version: '0.9.0',
+    sha256: '5f6c77ca0a33fa25b8964f9e88a50e5baa58f6c9d9e7a97d6906e6808af47e14',
+    integrity: 'sha512-kCjvDjgm4W2YDJSM3uja9E6yuX/2xdMWs4a9go7mX3pBkGiOjJgzfQmOlHI6OBwOGY+VfGOAADEqafiYwavj8w==',
   },
   '@waterbots/violet': {
-    file: 'vendor/waterbots/waterbots-violet-0.8.0.tgz',
-    version: '0.8.0',
-    sha256: 'a058fc515b9efef224d9a553a18b4acbc0743eadadf7585ec60225f43f43fd51',
-    integrity: 'sha512-Vxr/dSkKLaKvynjF6ExK4pmO5J5eW7KQERO8pN87ekaz2aCavoZPuKuPAGxyZjrlXc1CZcIqR9ICH6WMA2/fqA==',
+    file: 'vendor/waterbots/waterbots-violet-0.9.0.tgz',
+    version: '0.9.0',
+    sha256: '408a12f9920e2eda6744aad5f7f5253a5d33ea4ef4387e55ebdadb3ece931679',
+    integrity: 'sha512-Z1G3mlGl37wtRVWnUBafcTEe+yAWrsQviSlbE1zqVnzxCwMB22aNf6zMCbDsnjSeDEnW4XUPgR9APHOl5Pb9bQ==',
   },
   '@waterbots/core': {
-    file: 'vendor/waterbots/waterbots-core-0.4.0.tgz',
-    version: '0.4.0',
-    sha256: '992efbbc9fd7100ca1a96ff9c635f9134432bfcab82a0d89648809c1fb899ccb',
-    integrity: 'sha512-sr5ke2XCuCREGBjd2jMc5lJDQ3ocB/90LVW/NFnwGbhtK3xZYZVHs2NzvZeYpcjuB9bOMvE9pV1S2DF3qsWPZg==',
+    file: 'vendor/waterbots/waterbots-core-0.5.0.tgz',
+    version: '0.5.0',
+    sha256: '187a49e7b7acbda4a646a296a8aded5c54dd4ebaf4853a6d254730e50f2abf71',
+    integrity: 'sha512-QTM5+2qBb755WN3ciS2JIEIto+Himpx9E8sIpBkh46N67G9NrYZu+TFPRgNICwbprPOKp7mSLOrVvS4Kgx7cEA==',
   },
   '@waterbots/phoebe': {
-    file: 'vendor/waterbots/waterbots-phoebe-0.1.0.tgz',
-    version: '0.1.0',
-    sha256: 'abcb8a80b689187c2c1a7090260c041f9f56d3b88fe7a0d402603687cbf08cbe',
-    integrity: 'sha512-+cC/TKCxDFkyC3NAsId46e2XSt3U11bLKsSTA/lGgZBc8/AiJtVp04+Otg0Q+5dIYtEhpfKZg6APxJWEW3/5DA==',
+    file: 'vendor/waterbots/waterbots-phoebe-0.2.0.tgz',
+    version: '0.2.0',
+    sha256: 'c9abb169f203d0d7cbf47df122d70ecd0411ca06ae3872f2b94d6a85ccd55a55',
+    integrity: 'sha512-xGmxL6j1nDd347OQmzz0CHrGQAvq165Rfvu1Kr1Na297y8KxCf2veTF23oJVtF1Jw/RgkJLgjCJoRfOuldbl6A==',
   },
   '@waterbots/wellington': {
-    file: 'vendor/waterbots/waterbots-wellington-0.1.0.tgz',
-    version: '0.1.0',
-    sha256: 'c2a26e473da2861074fedffebab2d8c53a12c2ad3c687bbaa8cc32a5ac71fc1c',
-    integrity: 'sha512-xYu8cCwu/cpA8Y2o7X8Hrrl1nrH06RFrC1UXPSiUx+0+X7yL0Gzo06o2FSscxetRup35pEUBx6ozwTjb7X+iUg==',
+    file: 'vendor/waterbots/waterbots-wellington-0.2.0.tgz',
+    version: '0.2.0',
+    sha256: '18145856f460b23386a7e318de2ee3ded4986d1ed37ccb6c05e940b32dda49f9',
+    integrity: 'sha512-yKS9gpSr3iNa7ARCxMWf5HNb9GabL+TSBId/CsMCLbu0BsoIROHLESYotCMR5mqCgeBPxl/iiG3lYPMrcjdA9g==',
   },
   '@waterbots/bridget': {
-    file: 'vendor/waterbots/waterbots-bridget-0.1.0.tgz',
-    version: '0.1.0',
-    sha256: '2e76dd78a44e3691094deb2a40409b0d561a7146315ead9d8b044227b48365b9',
-    integrity: 'sha512-qPCu/OiCjtBHWoPeem7uh0+U3Z6roUQdKf13w7EUKm861xXEkYtHwdX3+z5QeofNgMWQcG6VQmHf2L5g6k5RyA==',
+    file: 'vendor/waterbots/waterbots-bridget-0.2.0.tgz',
+    version: '0.2.0',
+    sha256: 'c09f50a8813b3dd599ad846bcea423beedde1b012bce32b74462ecd5960132ea',
+    integrity: 'sha512-nD8B4woVDTq7SRntqjaoS+8+xxwIYxA0hgBlHn9kJpypdWuFAM1qKQqZXy1pw7N0Pj5IUhRCcL48NoDaO35JRQ==',
   },
 };
 const ENGINE_VERSION = '0.19.0';

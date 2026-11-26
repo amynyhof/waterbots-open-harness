@@ -79,6 +79,9 @@ export function useCalculatorChat(o: CalculatorChatOptions): { chat: Conversatio
   const refused = useRef<string[]>([]);
   const answered = useRef(false);
   const joined = useRef(false);
+  /* What the agent's last reply asked, sent back as `asked`; and whether it has answered the visitor before (core 0.5.0). */
+  const asking = useRef<string | undefined>(undefined);
+  const talked = useRef(false);
   const open = () => now.current.seat.asks().filter((ask) => !left.current.includes(ask.key));
 
   async function wellingtonJoins() {
@@ -105,9 +108,11 @@ export function useCalculatorChat(o: CalculatorChatOptions): { chat: Conversatio
       o.name,
       history.map(({ role, text }) => ({ role: role === 'agent' ? ('assistant' as const) : ('user' as const), content: text })),
       turn,
-      { opened, introduced: opened && meta?.introduced === true, leftForNow: left.current, refused: refused.current },
+      { opened, introduced: opened && meta?.introduced === true, leftForNow: left.current, refused: refused.current, asked: asking.current, talkedBefore: talked.current },
       signal
     );
+    asking.current = answer.asking;
+    talked.current = true;
     left.current = [...new Set([...left.current, ...answer.leftForNow])];
     const applied = await now.current.seat.apply(answer);
     /* A message the agent has read already is not told twice. */

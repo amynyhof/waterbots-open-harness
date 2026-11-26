@@ -79,13 +79,14 @@ import ScreeningReport from './components/ScreeningReport';
 import { NO_SUMMARY, type CalvinSummary } from './components/CalvinCalculator';
 import { calvinProjectFrom, countryIsoFor } from './lib/calvinProject';
 import { carriedRecord } from './lib/phoebeClient';
+import { noFigureWords } from '@waterbots/core/agentMap';
 import { NO_CALCULATOR_YET, callOf, calledSurfaces, closedBy, counted as countedBy, mapForWellington, metFrom, nextStep, noCalculatorFor, projectRecord, siteMap, waterHasNoCalculator, type MapNote, type NextStep } from './lib/projectRecord';
 import { toldVisit, turnFacts } from './lib/told';
 import type { GivenFacts } from '@waterbots/core/record';
 import { onward, type Ending } from './lib/steps';
 import { d3InputFromRecord, violetAgentNoteLines } from '@waterbots/violet';
 import { computeD3 } from '@waterbots/violet/engine';
-import type { CarbonFigure } from './lib/visit';
+import type { CarbonFigure, VisitContext } from './lib/visit';
 import type { AgentTurn, TurnButton } from './chat/evidence';
 import Commons from './components/Commons';
 import InterestPage from './components/InterestPage';
@@ -597,10 +598,13 @@ export default function App() {
     const news = crewNews(crewAll);
     const shown: Partial<Record<Surface, string>> = {};
     for (const key of Object.keys(crewAll) as Surface[]) if (news[key] || key === surface) shown[key] = crewAll[key];
-    /* A closed desk's card, where it had already shown, says so and never that it is ready (J4). */
+    /* A closed desk's card, where it had already shown, says so and never that it is ready (J4). A calculator with no
+       figure here says core's words for it, the same sentence as its desk (`noFigureWords`, core 0.5.0). */
     for (const key of closedDesks) {
       const calculator = key === 'water' ? 'violet' : key === 'quantification' ? 'calvin' : null;
-      shown[key] = calculator && noCalculatorFor(map, calculator) ? 'Not covered yet' : 'Unlikely for this project';
+      const call = calculator ? callOf(map, calculator) : null;
+      const words = call && !call.called ? noFigureWords(call.because) : null;
+      shown[key] = words ?? 'Unlikely for this project';
     }
     return shown;
   }, [crewAll, surface, closedDesks, map]);
@@ -847,6 +851,11 @@ export default function App() {
                   onHandedOn={() => {
                     visitRef.current = { ...visitRef.current, eligibilityHanded: true };
                     setVisit((v) => ({ ...v, eligibilityHanded: true }));
+                  }}
+                  onWorkedAgain={() => {
+                    const worked = (c: VisitContext): VisitContext => ({ ...c, readingsOff: false });
+                    visitRef.current = { ...visitRef.current, context: worked(visitRef.current.context) };
+                    setVisit((v) => ({ ...v, context: worked(v.context) }));
                   }}
                   showChat={chatAsked.eligibility}
                   waiting={waitsForHim('eligibility')}

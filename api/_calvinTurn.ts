@@ -8,6 +8,7 @@ import { calvinAsks, calvinChatContext, guardCalvinReply, type CalvinReply, type
 import { carbonAnswer, type ProjectFacts } from '@waterbots/core/record';
 import { AGENT_RULES_MD } from './_agentRules.generated.js';
 import type { ReplyGuard, TurnParts } from './_calculatorChat.js';
+import { FREE_SITE_DOOR } from './_door.js';
 import { CALVIN_KNOWLEDGE_MD, CALVIN_PROMPT_MD } from './_calvinPrompt.generated.js';
 import { BUILD_STATUS_SHEET_MD } from './_statusSheet.generated.js';
 
@@ -75,6 +76,9 @@ export function calvinBlock(turn: unknown, parts: TurnParts, facts: ProjectFacts
       introduce: parts.introduce,
       leftForNow: parts.leftForNow,
       refused: parts.refused,
+      /* This door's facts, and whether the visitor has talked with him before (calvin 0.9.0). */
+      door: FREE_SITE_DOOR,
+      talkedBefore: parts.talkedBefore,
     });
   } catch {
     /* A state his package cannot read is a request this site never sends. */
@@ -83,21 +87,23 @@ export function calvinBlock(turn: unknown, parts: TurnParts, facts: ProjectFacts
 }
 
 /**
- * THE GUARDS ON HIS NUMBERS are his package's (`guardCalvinReply`, calvin 0.8.0): a number the visitor did not give here
- * goes back to him once, then comes out, and the visitor is told; a number they gave out of range has its message.
+ * THE GUARDS ON HIS NUMBERS AND HIS FACTS are his package's (`guardCalvinReply`, calvin 0.9.0): a number the visitor did not
+ * give here goes back to him once, then comes out, and the visitor is told; a number they gave out of range has its message.
+ * A fact the visitor did not give is dropped quietly and stays blank: a yes or no only counts as the answer to the question
+ * his last reply asked (`asked`, its `asking`), and anything else only in the visitor's own words. He is told once, and asks.
  */
-export function calvinGuard(turn: unknown, leftForNow: readonly string[], facts: ProjectFacts): ReplyGuard<CalvinReply> | null {
+export function calvinGuard(turn: unknown, leftForNow: readonly string[], facts: ProjectFacts, asked: string | undefined): ReplyGuard<CalvinReply> | null {
   if (typeof turn !== 'object' || turn === null) return null;
   const t = turn as Record<string, unknown>;
   const state = readCalcState(t.state);
   if (!state) return null;
   const calc = state as unknown as CalvinTurn['state'];
   try {
+    const guard = (reply: CalvinReply, messages: readonly string[], key: string | undefined) => guardCalvinReply(reply, { state: calc, messages, facts, ...(key ? { asked: key } : {}) });
+    /* An out-of-range number's message, read before he answers: for the question he asked, or else the one his screen asks next. */
     const notCoveredYet = oneLine(t.notCoveredYet, 120);
-    const next = calvinAsks(calc, { transition: t.transition === true, ...(notCoveredYet ? { notCoveredYet } : {}), ...answers(facts) }).find((ask) => !leftForNow.includes(ask.key));
-    const asked = next?.key;
-    const check = (reply: CalvinReply, messages: readonly string[]) => guardCalvinReply(reply, { state: calc, messages, ...(asked ? { asked } : {}) });
-    return { check, outOfRange: (messages) => check({ reply: '', handBack: 'none', leftForNow: [] }, messages).outOfRange };
+    const next = asked ?? calvinAsks(calc, { transition: t.transition === true, ...(notCoveredYet ? { notCoveredYet } : {}), ...answers(facts) }).find((ask) => !leftForNow.includes(ask.key))?.key;
+    return { check: (reply, messages) => guard(reply, messages, asked), outOfRange: (messages) => guard({ reply: '', handBack: 'none', leftForNow: [] }, messages, next).outOfRange };
   } catch {
     return null;
   }

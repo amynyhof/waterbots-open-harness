@@ -143,6 +143,7 @@ export default function PhoebeScreen({
   onMeet,
   onward,
   onHandedOn,
+  onWorkedAgain,
   showChat = 0,
   heAsks,
   onReplyToHim,
@@ -177,6 +178,8 @@ export default function PhoebeScreen({
   onward?: () => TurnButton[];
   /** Tells the shell her step is ended: she handed the visitor on with a path done or closed (24 Nov 2026). */
   onHandedOn?: () => void;
+  /** Tells the shell she has worked her readings out again, after a fact they rest on changed (core 0.5.0). */
+  onWorkedAgain?: () => void;
   /** Bumped each time the visitor opens her from the crew, which opens her Chat tab first (24 Nov 2026). */
   showChat?: number;
 }) {
@@ -246,6 +249,9 @@ export default function PhoebeScreen({
 
     if (answer.loaded) loaded.current = answer.loaded;
     if (answer.showTool) setToolDot(true);
+    /* She was told a fact changed, and this turn worked every reading out again: her results go on the record, and the
+       mark comes off (`addPhoebeResults`, phoebe 0.2.0). Her first hello sets nothing, so it clears nothing. */
+    if (carried?.factsChanged && meta?.opened !== true) onWorkedAgain?.();
 
     /* Her side effect, fired before the turn is returned so a failed request
        never half-moves the worksheet. */
