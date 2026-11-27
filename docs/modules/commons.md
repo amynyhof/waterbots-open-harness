@@ -11,8 +11,11 @@ The Commons' own rulings. The whole site's are in [RULINGS.md](../../RULINGS.md)
   rig, never an invented case. Credentials reads "not yet graded" until a real card from the rig exists.
 - **An agent opens alone**: no crew beside it and no next steps, only the way back to the list.
 - The list is the crew: there is no crew column on the Commons.
-- Every module is in one list, centred under the site menu, with a display-only community rating. Only
-  Phoebe's opens; the rest say "Coming soon" or seek partners by email.
+- Every module is in one list, centred under the site menu, with a display-only community rating.
+- **The Agent Commons is v1** (the maintainer, 26 Nov 2026). It lists the agents that are really installed,
+  from each package's own card, through core's Commons reader. Phoebe, Calvin and Violet open there.
+  Wellington and Bridget are installed but kept to the two sites, so they are listed and do not open.
+  A module not built yet says "Coming soon" or seeks partners by email.
 - An open module lives at `/commons/<slug>`, shareable, with "About this module" beside it.
 - A module's status is one of six stages, from seeking partners to graduated, drawn as bars with an (i).
 - On the Commons, Phoebe's Tool tab reads "Eligibility quiz".
