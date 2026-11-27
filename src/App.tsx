@@ -87,6 +87,7 @@ import { onward, type Ending } from './lib/steps';
 import { d3InputFromRecord, violetAgentNoteLines } from '@waterbots/violet';
 import { computeD3 } from '@waterbots/violet/engine';
 import type { CarbonFigure, VisitContext } from './lib/visit';
+import { EXPORT_SAID, printScreeningReport } from './lib/exportReport';
 import type { AgentTurn, TurnButton } from './chat/evidence';
 import Commons from './components/Commons';
 import InterestPage from './components/InterestPage';
@@ -135,25 +136,11 @@ import {
   type Learned,
   type MapPin,
   type Teller,
+  railTally,
   type Visit,
   type WaterEstimate,
 } from './lib/visit';
 
-/**
- * Prints the screening report and nothing else (S21). The page is marked while
- * it prints, so Calvin's own report, from the open core, stays out of it
- * (src/styles/base.css). The mark comes off when printing ends.
- */
-function printScreeningReport() {
-  const body = document.body;
-  const done = () => {
-    body.classList.remove('wb-print-screening');
-    window.removeEventListener('afterprint', done);
-  };
-  body.classList.add('wb-print-screening');
-  window.addEventListener('afterprint', done);
-  window.print();
-}
 
 export default function App() {
   const [status, setStatus] = useState<MapStatus | null>(null);
@@ -233,6 +220,12 @@ export default function App() {
      page change or a wider window closes whichever is open. */
   const phone = usePhone();
   const [drawer, setDrawer] = useState<'project' | 'crew' | null>(null);
+  /* What the site said after an export that opened no print window (rule 13). */
+  const [exportSaid, setExportSaid] = useState('');
+  const exportReport = useCallback(() => {
+    setExportSaid('');
+    printScreeningReport((outcome) => setExportSaid(EXPORT_SAID[outcome]));
+  }, []);
   const closeDrawer = useCallback(() => setDrawer(null), []);
   useEffect(() => {
     setDrawer(null);
@@ -644,7 +637,37 @@ export default function App() {
     }
   }, [counted, sheet, person, showPerson]);
 
-  endingRef.current = { open: setSurface, report: printScreeningReport, save: () => void onSeal() };
+  /* A DESK OPENS AT ITS TOP (the shared console page of 26 Nov 2026, rule 5; S34).
+     Each desk keeps its own scroll while hidden, so moving from Calvin's long desk
+     to Violet's short one could open hers part way down, looking blank. On every
+     move, the desk now in view starts at its top. Only scrolled boxes that show
+     are touched, after the move has drawn. */
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      for (const box of document.querySelectorAll<HTMLElement>('.wb-page-console div')) {
+        if (box.scrollTop > 0 && getComputedStyle(box).visibility === 'visible') box.scrollTop = 0;
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [surface]);
+
+  /* A WARNING BEFORE UNSAVED WORK IS LOST (the shared console page of 26 Nov 2026,
+     rule 12; RULINGS.md section 5; S36). Leaving or reloading with something on the
+     record, and before the save has sent it, the browser asks first. A browser
+     shows its own words for this; no site can set them. The save's own move to
+     the paid site is not stopped. */
+  const unsaved = somethingOnRecord(visit) && sealing.kind !== 'sealing' && sealing.kind !== 'sealed';
+  useEffect(() => {
+    if (!unsaved) return;
+    const warn = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = '';
+    };
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [unsaved]);
+
+  endingRef.current = { open: setSurface, report: exportReport, save: () => void onSeal() };
   /* The way on from each desk, by what the map says is next. */
   const next = useMemo(() => nextStep(record, map), [record, map]);
   const wayOn = (here: Surface) => onward(next, endingRef.current, here);
@@ -758,7 +781,8 @@ export default function App() {
         <NavRail
           context={visit.context}
           onTyped={onTyped}
-          report={{ show: somethingOnRecord(visit), onExport: printScreeningReport }}
+          report={{ show: somethingOnRecord(visit), onExport: exportReport, said: exportSaid, onDismiss: () => setExportSaid('') }}
+          tally={railTally(visit, sheet)}
           onInterest={() => navigate(pathForInterest())}
           drawer={phone ? { open: drawer === 'project', onClose: closeDrawer } : undefined}
         />

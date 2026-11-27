@@ -346,7 +346,9 @@ const { PLAIN_WORDS_MD, BEFORE_AFTER_MD } = await loadApi('_plainWords.generated
       /handoffButton\(surface/.test(wellingtonLib) && /'Keep chatting'/.test(wellingtonLib) && /buttonsAfter\(answer\.route/.test(wellingtonLib) &&
       /\.wb-handoff \{[^}]*border: 1px solid var\(--handoff\);/.test(readFileSync(join('src', 'styles', 'base.css'), 'utf8')) &&
       /const blue = button\.primary && !\(button\.reaches && reached\.has\(button\.reaches\)\)/.test(readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8')) &&
-      /blue \? 'btn btn-primary' : 'wb-chip'/.test(readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8')) &&
+      /* Family 4, rule 4: the same quiet chip, and "Keep chatting" with a blue outline. */
+      /blue \? 'btn btn-primary' : button\.label === KEEP_CHATTING \? 'wb-chip wb-chip-keep' : 'wb-chip'/.test(readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8')) &&
+      /\.wb-chip\.wb-chip-keep \{[^}]*border-color: var\(--tide\);/.test(readFileSync(join('src', 'styles', 'base.css'), 'utf8')) &&
       /\.wb-chip \{[^}]*background: transparent;/.test(readFileSync(join('src', 'styles', 'base.css'), 'utf8')),
     'the two buttons are not built from the route field'
   );
@@ -850,7 +852,9 @@ expect(
       /save=\{onConsole \? saveDoor : undefined\}/.test(appSource)
     );
   })() &&
-    /onExport: printScreeningReport/.test(appSource) && /body\.classList\.add\('wb-print-screening'\)/.test(appSource) &&
+    /* Family 4: the export and its honest fallback live in src/lib/exportReport.ts. */
+    /onExport: exportReport/.test(appSource) && /printScreeningReport\(\(outcome\) => setExportSaid/.test(appSource) &&
+    /body\.classList\.add\('wb-print-screening'\)/.test(readFileSync('src/lib/exportReport.ts', 'utf8')) &&
     !/Next steps|TOOLS_LINE/.test(railSource),
   "the report is not in the left rail, or Save is not the menu's one button, or the team box is not with it"
 );

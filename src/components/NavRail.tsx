@@ -33,7 +33,8 @@ import { useEffect, useState } from 'react';
 import { SITE_LABEL, SITE_URL } from '../lib/site';
 import { pathForInterest } from '../lib/pages';
 import { STAGE_WORDS as PROJECT_STAGES, typeWords as projectType } from '@waterbots/core/projectWords';
-import { servedWords, type Provenance, type VisitContext } from '../lib/visit';
+import { servedWords, type Provenance, type RailTally, type VisitContext } from '../lib/visit';
+import { EXPORT_HOW } from '../lib/exportReport';
 
 const EXPANDED = 224;
 const COLLAPSED = 52;
@@ -75,18 +76,24 @@ export interface ReportDoor {
   show: boolean;
   /** Opens the print dialog on the screening report (S21). */
   onExport: () => void;
+  /** What the site said when no print window opened (rule 13); empty otherwise. */
+  said?: string;
+  onDismiss?: () => void;
 }
 
 export default function NavRail({
   context,
   onTyped,
   report,
+  tally = [],
   onInterest,
   drawer,
 }: {
   context: VisitContext;
   onTyped: (field: 'name' | 'place', value: string) => void;
   report: ReportDoor;
+  /** Phoebe's progress, per funding path, in the rail and not the chat (rule 2). */
+  tally?: RailTally[];
   /** Opens the Register your interest form (16 Nov 2026). */
   onInterest?: () => void;
   /** On a phone: the rail is a sliding panel, open or shut by the shell. */
@@ -133,7 +140,8 @@ export default function NavRail({
       aria-label="This visit"
       aria-hidden={drawer ? !drawer.open : undefined}
       style={{
-        width: open ? EXPANDED : COLLAPSED,
+        /* As wide as the crew rail (the shared console page of 26 Nov 2026, rule 2). A phone's drawer keeps its own width. */
+        width: open ? (drawer ? EXPANDED : 'var(--chat-rail)') : COLLAPSED,
         flex: 'none',
         display: 'flex',
         flexDirection: 'column',
@@ -192,48 +200,58 @@ export default function NavRail({
               />
               {/* THE NAME SHOWS ONCE, HERE — look pass, 8 Sep 2026. The card
                   is where a visitor names the project, by typing or by telling
-                  Wellington; the record below no longer repeats it. A name he
-                  heard reads as a value; a blank or typed one is an input.
+                  Wellington; the record below no longer repeats it.
                   FROM 21 NOV 2026, the maintainer's word, the input is a clear
                   place to type: a "Project name" label over a box, and
                   Wellington asks for the name in the chat. */}
-              {context.provenance.name === 'chat' ? (
-                <span
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    lineHeight: 1.3,
-                    color: 'var(--ink)',
-                    overflowWrap: 'anywhere',
-                  }}
-                >
-                  {name}
-                </span>
-              ) : (
-                <label htmlFor="wb-project-name" className="t-caption wb-rail-name-label">
-                  Project name
-                </label>
-              )}
+              {/* THE PROJECT NAME IS EASY TO FIX (the shared console page of 26 Nov 2026, rule 10):
+                  always a box, whoever gave the name. A name typed here is the visitor's own and is
+                  never overwritten (src/lib/visit.ts). */}
+              <label htmlFor="wb-project-name" className="t-caption wb-rail-name-label">
+                Project name
+              </label>
             </div>
-            {context.provenance.name !== 'chat' && (
-              <input
-                id="wb-project-name"
-                className="wb-rail-name wb-rail-name-box"
-                type="text"
-                value={context.name}
-                onChange={(e) => onTyped('name', e.target.value)}
-                placeholder={NAME_PLACEHOLDER}
-                maxLength={160}
-              />
-            )}
+            <input
+              id="wb-project-name"
+              className="wb-rail-name wb-rail-name-box"
+              type="text"
+              value={context.name}
+              onChange={(e) => onTyped('name', e.target.value)}
+              placeholder={NAME_PLACEHOLDER}
+              maxLength={160}
+            />
           </div>
 
           {/* S21 — the screening report, under the project. Quiet: blue is for
               the one main next step. */}
           {report.show && (
-            <button type="button" className="wb-report-button" onClick={report.onExport} style={{ marginTop: 10 }}>
-              Export screening report
-            </button>
+            <>
+              <button type="button" className="wb-report-button" onClick={report.onExport} style={{ marginTop: 10 }}>
+                Export screening report
+              </button>
+              <p className="wb-report-how">{EXPORT_HOW}</p>
+              {report.said && (
+                <p className="wb-report-said" role="status">
+                  {report.said}{' '}
+                  <button type="button" className="wb-link-button" onClick={report.onDismiss}>
+                    Close
+                  </button>
+                </p>
+              )}
+            </>
+          )}
+
+          {/* PROGRESS, IN THE RAIL (rule 2): Phoebe's questions per funding path. */}
+          {tally.length > 0 && (
+            <div className="wb-rail-tally" aria-label="Progress">
+              <div className="eyebrow" style={{ marginBottom: 6 }}>Progress</div>
+              {tally.map((t) => (
+                <div key={t.name} className="wb-rail-tally-row">
+                  <span>{t.name}</span>
+                  <span className="t-mono">{t.done} of {t.of} questions</span>
+                </div>
+              ))}
+            </div>
           )}
 
           {/* THE RECORD his interview populates — from 21 Nov 2026, the

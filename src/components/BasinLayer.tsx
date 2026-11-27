@@ -23,8 +23,8 @@ import { styleFor, type StressLookup } from '../lib/stress';
 import type { MapPin } from '../lib/visit';
 
 /**
- * One stroke for every basin regardless of value, so the boundary reads as
- * geography and the fill alone carries the data.
+ * The ink line a basin shows under the pointer (from family 4 the edges between
+ * basins are soft: softEdge, below).
  */
 const STROKE: Pick<PathOptions, 'color' | 'weight' | 'opacity'> = {
   color: '#5B6478', // --ink-3
@@ -52,8 +52,18 @@ function styleForFeature(
 ): PathOptions {
   const key = f ? stress[String(f.properties.PFAF_ID)] : undefined;
   const s = styleFor(key);
-  const stroke = f && f.properties.HYBAS_ID === pinnedHybas ? PINNED_STROKE : STROKE;
+  const stroke = f && f.properties.HYBAS_ID === pinnedHybas ? PINNED_STROKE : softEdge(s.fill, s.fillOpacity);
   return { ...stroke, fillColor: s.fill, fillOpacity: s.fillOpacity };
+}
+
+/**
+ * SOFT SHADING, NO HARD LINES BETWEEN BASINS (the shared console page of 26 Nov
+ * 2026, rule 9). Each basin's edge takes its own fill, at its own opacity, so
+ * neighbours meet without a drawn line and without a hairline gap between them.
+ * The pinned basin keeps its Tide outline; STROKE now shows only under the pointer.
+ */
+function softEdge(fill: string, fillOpacity: number): Pick<PathOptions, 'color' | 'weight' | 'opacity'> {
+  return { color: fill, weight: 0.6, opacity: fillOpacity };
 }
 
 function padded(b: Bbox, ratio: number): Bbox {
@@ -154,8 +164,9 @@ export default function BasinLayer({
 
       const pinned = p.HYBAS_ID === pinnedHybas;
       layer.on({
-        mouseover: (e) => e.target.setStyle(pinned ? PINNED_STROKE : { weight: 1.6, opacity: 0.95 }),
-        mouseout: (e) => e.target.setStyle(pinned ? PINNED_STROKE : STROKE),
+        /* Under the pointer only, the old ink line shows which basin it is. */
+        mouseover: (e) => e.target.setStyle(pinned ? PINNED_STROKE : { ...STROKE, weight: 1.6, opacity: 0.95 }),
+        mouseout: (e) => e.target.setStyle(pinned ? PINNED_STROKE : softEdge(s.fill, s.fillOpacity)),
         click: () => {
           if (!onPin) return;
           onPin(

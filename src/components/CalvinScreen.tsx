@@ -30,6 +30,7 @@
  * (src/styles/tokens.css).
  */
 
+import { crewMember } from '../lib/crew';
 import { useRef, type MutableRefObject, type ReactNode } from 'react';
 import { flushSync } from 'react-dom';
 import type { CalculatorState, CalvinProject } from '@waterbots/calvin/screen';
@@ -54,7 +55,8 @@ import { GS_SDWS_LEGACY_V1, GS_SDWS_PAA_V2 } from '../lib/gsSdws';
 
 export const CALVIN: AgentHost = {
   name: 'Calvin',
-  role: 'Carbon credits calculator',
+  /* One role word per agent, the crew file's (the shared console page of 26 Nov 2026, rule 7; A14). */
+  role: crewMember('Calvin').role,
   portrait: calvinPortrait,
   colourToken: '--bot-calvin',
   nameToken: '--bot-calvin-text',

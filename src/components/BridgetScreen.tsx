@@ -53,6 +53,7 @@
  * never text, so her name is set in ink, as everywhere else.
  */
 
+import { crewMember } from '../lib/crew';
 import { useContext, useEffect, useRef, useState } from 'react';
 import bridgetPortrait from '../../brand/assets/bots/bridget.svg';
 import type { AgentHost, AgentTurn, TurnButton } from '../chat/evidence';
@@ -89,7 +90,8 @@ import BasinMap, { type MapStatus } from './BasinMap';
 
 export const BRIDGET: AgentHost = {
   name: 'Bridget',
-  role: 'Map',
+  /* One role word per agent, the crew file's (the shared console page of 26 Nov 2026, rule 7; A14). */
+  role: crewMember('Bridget').role,
   portrait: bridgetPortrait,
   colourToken: '--bot-bridget',
   composerPlaceholder: 'Reply to Bridget',

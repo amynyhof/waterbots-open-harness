@@ -13,6 +13,7 @@
  * he is named on this site. Not "Floor manager", and not "host" as a title.
  */
 
+import { crewMember } from './crew';
 import wellingtonPortrait from '../../brand/assets/bots/wellington.svg';
 import type { AgentHost, AgentTurn, Ask, AskMeta, TurnAction, TurnButton } from '../chat/evidence';
 import { chipsFor } from './chips';
@@ -26,7 +27,8 @@ import { HER_PACKS, type Sheet } from '@waterbots/phoebe';
 
 export const WELLINGTON: AgentHost = {
   name: 'Wellington',
-  role: 'Team Lead',
+  /* One role word per agent, the crew file's (rule 7; A14). */
+  role: crewMember('Wellington').role,
   portrait: wellingtonPortrait,
   colourToken: '--bot-wellington',
   composerPlaceholder: 'Reply to Wellington',

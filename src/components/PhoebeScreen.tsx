@@ -37,6 +37,7 @@
  * the maintainer's word: the site says it is early once, beside waterbots.ai.
  */
 
+import { crewMember } from '../lib/crew';
 import { useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
 import type { AgentHost, AgentTurn, TurnButton } from '../chat/evidence';
@@ -88,7 +89,8 @@ import ScreenChat from '../screen/ScreenChat';
 
 export const PHOEBE: AgentHost = {
   name: 'Phoebe',
-  role: 'Eligibility and Feasibility',
+  /* One role word per agent, the crew file's (the shared console page of 26 Nov 2026, rule 7; A14). */
+  role: crewMember('Phoebe').role,
   portrait: phoebePortrait,
   colourToken: '--bot-phoebe',
   composerPlaceholder: 'Tell her about your project, or ask her a question.',

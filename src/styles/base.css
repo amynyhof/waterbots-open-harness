@@ -2110,6 +2110,46 @@ button.wb-info {
 
 /* THE REPORT BUTTON in the left rail, under the project (S21): quiet, because
    blue is for the one main next step. */
+/* Family 4 (the shared console page of 26 Nov 2026): the Export button's words
+   (rule 13), what the site says when no print window opened, and Phoebe's
+   progress in the rail (rule 2). Tokens only. */
+.wb-report-how {
+  margin: 6px 2px 0;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--ink-3);
+}
+.wb-report-said {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--card);
+}
+.wb-link-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: var(--tide);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.wb-rail-tally {
+  margin-top: 16px;
+  padding-left: 4px;
+}
+.wb-rail-tally-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
 .wb-report-button {
   display: block;
   width: 100%;
@@ -2434,4 +2474,83 @@ button.wb-info {
 .wb-about-link {
   margin-left: 6px;
   font-size: 12px;
+}
+
+/* FAMILY 4, CONSOLE AND SURFACES (the shared console page of 26 Nov 2026). Tokens only. */
+
+/* Rule 3: the beta note, just above the typing box on every screen. */
+.wb-beta-note {
+  margin: 0 0 8px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--ink-3);
+}
+
+/* Rule 4: "Keep chatting" wears a blue outline; every other chip stays as it is. */
+.wb-chip.wb-chip-keep {
+  border-color: var(--tide);
+}
+
+/* Rule 8: everything a visitor taps is at least 44 pixels on a phone, the map's
+   + and − included. The phone width is the site's own (src/lib/phone.ts). */
+@media (max-width: 900px) {
+  .wb-app button:not(.wb-link-button),
+  .wb-app [role='tab'],
+  .wb-app a.btn,
+  .wb-app select,
+  .wb-app input[type='text'],
+  .wb-app input[type='number'],
+  .wb-drawer button:not(.wb-link-button),
+  .wb-drawer a {
+    min-height: 44px;
+  }
+  .wb-chip,
+  .wb-handoff {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .wb-app textarea {
+    min-height: 44px;
+  }
+  /* The menu's wordmark and links: the same look, a 44-pixel place to tap. */
+  .wb-site-menu a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* Small marks inside a line keep their size; an unseen layer around each takes the tap. */
+  .wb-info,
+  .wb-link-button {
+    position: relative;
+  }
+  .wb-info::after,
+  .wb-link-button::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(44px, 100%);
+    height: 44px;
+    transform: translate(-50%, -50%);
+  }
+  .leaflet-control-zoom a,
+  .leaflet-touch .leaflet-bar a {
+    width: 44px !important;
+    height: 44px !important;
+    line-height: 44px !important;
+    font-size: 20px !important;
+  }
+}
+
+/* Rule 6: every chat shows lists. The same size and ink as a reply's prose. */
+.wb-answer-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.wb-answer-list li + li {
+  margin-top: 3px;
 }

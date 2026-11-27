@@ -71,7 +71,7 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
   async function ask(
     history: { role: 'user' | 'agent'; text: string }[],
     signal: AbortSignal,
-    _meta?: AskMeta,
+    meta?: AskMeta,
     onLive?: (text: string | null) => void
   ): Promise<AgentTurn> {
     /* No record: the Commons carries no visit. The seat's own rows do go,
@@ -84,7 +84,14 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
       })),
       null,
       signal,
-      { sheet: carriedSheet(sheet, HER_PACKS), loaded: loaded.current, onLive, door: 'agent-commons' }
+      {
+        sheet: carriedSheet(sheet, HER_PACKS),
+        loaded: loaded.current,
+        onLive,
+        door: 'agent-commons',
+        /* Her opened turn: nobody has introduced her here, so she says who she is (rule 17). */
+        ...(meta?.opened ? { opened: true } : {}),
+      }
     );
     if (answer.loaded) loaded.current = answer.loaded;
     if (answer.showTool) setToolDot(true);
