@@ -400,7 +400,17 @@ and reads its water facts. Every fact traceable to its source; no invented value
 
 What belongs here: paid-only structure: roles, organizations, programs, documents.
 
-Nothing here.
+**P1 · Findable projects on the map.** v1 (the maintainer, 27 Nov 2026), the last piece of v1, after family 4 · PARTNER.
+When a screening is done, the visitor may choose to put the project on the map. That choice needs sign-up, so the project
+is kept. The listing shows the organisation, the project's name, its likely pathways and its estimated benefits, clearly
+labelled as screening estimates and never as verified. Others can follow the project, ask to be invited, or ask to learn
+more through a contact button, with no email shown. Monitoring data and project details stay private unless the person is
+invited. A shared job, the shared page first: this site's part is the choice at the end of a screening and the listings
+on Bridget's map; the paid site keeps the listing. Not the same as D2 (project points from a registry), which stays where
+it is.
+
+**P2 · A funder lane.** v2 (the maintainer, 27 Nov 2026) · PARK. A pointer only; the paid site holds the work. A funder
+can ask to follow projects and group them into their own portfolios. Cohorts group organisations.
 
 ### 8 · Security and hygiene
 
