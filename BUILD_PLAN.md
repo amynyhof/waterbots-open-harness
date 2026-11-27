@@ -22,7 +22,8 @@
 - **VWBA covers water supply project types only.**
 - **Defaults rule.** See RULINGS.md, section 2.
 - **Build rule.** Each module (screening, transition, VWBA, report) has its own inputs, outputs and
-  card. Each module standing alone in the Agent Commons is v2.
+  card. Each module standing alone in the Agent Commons is v1: the maintainer moved the Agent Commons to v1 on
+  26 Nov 2026 (it was v2).
 
 **New items go to v1 only if they block the finish line.** Anything else goes to After v1.
 
@@ -69,7 +70,7 @@ The finish line is the fence above and nothing else. These are the conditions ea
 - **Calvin** talks; picks the pack from the record; asks only for what is missing; his carbon number comes
   from the same engine as the paid site. Done when the same inputs give the same numbers on both sites (the fence).
 - **Bridget**: map and pin as today. She introduces herself, says what the map shows, hands back.
-- **Commons**: v2, not a v1 condition (her word, 30 Oct 2026).
+- **Commons**: v1. The maintainer moved it to v1 on 26 Nov 2026; it was v2, not a v1 condition (her word, 30 Oct 2026).
 - **The screening report exports free.**
 - **Card sets are sealed at their versions on 23 Sep 2026.** No new cards until a real project fails
   on one.
@@ -98,7 +99,7 @@ the proposal to install Calvin from the open core, merged with her word on its o
 | 8 | **The save carries every input the figures rest on**, never a computed number (old step 7). | Steps 2 to 5. The paid site's receiver reads them: her carry (O14), its item #243. | A test visit saved here opens on the paid site with every input filled. |
 | 9 | **The v1 walks**: whole screenings, counted and compared. | Everything above; the paid site runs the same open core release. | Questions counted on each walk and the average reported; the paid site's carbon and VWBA figures on each saved project equal the screening's, or each difference is explained or shown in the paid site's report after the save; written in BUILD_LOG; she has watched one. |
 
-**After v1, not needed for the finish line:** A14; npm (v2); the Commons and S23, benchmarks and pass rates, Phoebe's 80% among them (v2).
+**After v1, not needed for the finish line:** A14; npm (v2); S23, benchmarks and pass rates, Phoebe's 80% among them (v2). The Commons left this line on 26 Nov 2026, when the maintainer moved it to v1.
 
 - **Wellington's prompt gate is 35,772 characters (25 Nov 2026, measured 35,272), and Phoebe's largest case 209,982** (measured plus 500, family 1's second pull request). The limits stay. From her ruling of 22 Nov 2026 a session raises them itself by measured plus 500, without asking, and states the old and new size in its pull request.
 - **Her own walk of the preview stands in for the measured walk on everyday pull requests** (her ruling of 22 Nov 2026). The measured walk runs once before v1, when the model key has a safe home (A32).
@@ -169,7 +170,7 @@ D-n modules in the Commons; not on the roster yet, by her hand. **Moved to v1 on
 crew member on the v1 road, through the shared spec with both sites. Until then her D-3 screen sits under Calvin's "Water
 benefits" chip (22 Nov 2026). Her Orchid (4.29:1) needs a darker text shade when she is built, as Calvin has Deep Reef (1 Nov 2026). **Built 23 Nov 2026 (J5):** her own seat and desk, from the crew list. Left, by the maintainer's hand: her portrait (her initial is drawn), her Orchid text shade (her name is ink), and the brand book's §6, which still says no agent called Violet.
 
-**A33 · Waiting on core: what the walks of 26 Nov 2026 found.** v1 (coach, for the maintainer, 26 Nov), its first three lines; its fourth line After v1 (coach, for the maintainer, 26 Nov) · BONES. Found on the preview walks of pull request 202, with
+**A33 · Waiting on core: what the walks of 26 Nov 2026 found.** v1 (coach, for the maintainer, 26 Nov), all four lines · BONES. Found on the preview walks of pull request 202, with
 the real model. Not this repository's to build: each comes back in a core release, installed here. The rest of the first walk's
 list came back in core 0.5.0 and is in the build log.
 - A project core holds for one more fact ("held for now") is still shown as "no calculator yet". The crew list now uses core's
@@ -178,7 +179,7 @@ list came back in core 0.5.0 and is in the build log.
   Wellington and the report followed the worksheet.
 - An agent can tell the visitor a fact is on the record when the guard dropped it ("I've put that on the record"). The release
   says the agent asks for it in its own words.
-- Calvin's replies can carry a stray "(ref)". After v1 (coach, for the maintainer, 26 Nov).
+- Calvin's replies can carry a stray "(ref)". v1 (coach, for the maintainer, 26 Nov): it breaks agent rule 8.
 
 **A34 · Phoebe is not called by herself when a fact changes.** v1 (coach, for the maintainer, 26 Nov) · BONES. Found 26 Nov 2026 (pull request 202). Her package
 reads the mark that a fact her readings rest on changed only on a turn where the visitor writes to her. Until then her readings are
@@ -352,8 +353,8 @@ record. Not made: the paste of 26 Nov 2026 said to change nothing in the Commons
 **S34 · A desk opens at the last desk's scroll position.** v1 (coach, for the maintainer, 26 Nov) · WALKTHROUGH. Found on the walk of 26 Nov 2026. Moving from
 Calvin's long chat to Violet's desk kept the scroll position, so her short desk looked blank until scrolled up.
 
-**S35 · The four look-only items of 24 Nov 2026.** Two marks · WALKTHROUGH. After v1: the beta note above the typing box; the left rail as wide
-as the crew rail, holding the tally. v1 (coach, for the maintainer, 26 Nov): the blue "Keep chatting" outline; soft shading on the map.
+**S35 · The four look-only items of 24 Nov 2026.** v1 (coach, for the maintainer, 26 Nov), all four · WALKTHROUGH. The beta note above the
+typing box; the left rail as wide as the crew rail, holding the tally; the blue "Keep chatting" outline; soft shading on the map.
 
 **S36 · No warning before unsaved work is lost.** v1 (coach, for the maintainer, 26 Nov) · WALKTHROUGH. Rulings section 5: the site warns a user before unsaved work
 is lost. Found on the coach's list of 26 Nov 2026: no such warning is there yet.
