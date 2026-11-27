@@ -16,6 +16,7 @@
  * the project after it starts" is made of.
  */
 
+import { CONSOLE_STEPS, type ConsoleStep } from '@waterbots/core/consoleWords';
 import type { Surface } from './surfaces';
 
 export interface JourneyPhase {
@@ -25,14 +26,17 @@ export interface JourneyPhase {
   surface: Surface | null;
 }
 
-export const JOURNEY: JourneyPhase[] = [
-  { key: 'eligibility', label: 'Eligibility', surface: 'eligibility' },
-  { key: 'partners', label: 'Partners', surface: 'map' },
-  { key: 'quantify', label: 'Quantify', surface: 'quantification' },
-  { key: 'plan', label: 'Plan', surface: null },
-  { key: 'monitor', label: 'Monitor', surface: null },
-  { key: 'communicate', label: 'Communicate', surface: null },
-];
+/* The six steps' names are core's (CONSOLE_STEPS, consoleWords.ts, family 4), in core's order; this list adds only the desk each opens here. */
+const OPENS: Record<ConsoleStep, Surface | null> = {
+  Eligibility: 'eligibility',
+  Partners: 'map',
+  Quantify: 'quantification',
+  Plan: null,
+  Monitor: null,
+  Communicate: null,
+};
+
+export const JOURNEY: JourneyPhase[] = CONSOLE_STEPS.map((label) => ({ key: label.toLowerCase(), label, surface: OPENS[label] }));
 
 /**
  * The surface the journey bar marks for the one in view. Violet's desk, 'water', is the Quantify

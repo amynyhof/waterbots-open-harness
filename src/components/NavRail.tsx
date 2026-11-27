@@ -34,7 +34,7 @@ import { SITE_LABEL, SITE_URL } from '../lib/site';
 import { pathForInterest } from '../lib/pages';
 import { STAGE_WORDS as PROJECT_STAGES, typeWords as projectType } from '@waterbots/core/projectWords';
 import { servedWords, type Provenance, type RailTally, type VisitContext } from '../lib/visit';
-import { EXPORT_HOW } from '../lib/exportReport';
+import { EXPORT_BUTTON, EXPORT_HOW } from '../lib/exportReport';
 
 const EXPANDED = 224;
 const COLLAPSED = 52;
@@ -227,7 +227,7 @@ export default function NavRail({
           {report.show && (
             <>
               <button type="button" className="wb-report-button" onClick={report.onExport} style={{ marginTop: 10 }}>
-                Export screening report
+                {EXPORT_BUTTON}
               </button>
               <p className="wb-report-how">{EXPORT_HOW}</p>
               {report.said && (
@@ -241,14 +241,21 @@ export default function NavRail({
             </>
           )}
 
-          {/* PROGRESS, IN THE RAIL (rule 2): Phoebe's questions per funding path. */}
+          {/* PROGRESS, IN THE RAIL (rule 2): Phoebe 0.3.0's tally, per funding path, in her own words. */}
           {tally.length > 0 && (
             <div className="wb-rail-tally" aria-label="Progress">
               <div className="eyebrow" style={{ marginBottom: 6 }}>Progress</div>
               {tally.map((t) => (
-                <div key={t.name} className="wb-rail-tally-row">
-                  <span>{t.name}</span>
-                  <span className="t-mono">{t.done} of {t.of} questions</span>
+                <div key={t.pack} className="wb-rail-tally-path">
+                  <div className="wb-rail-tally-row">
+                    <span>{t.name}</span>
+                    <span className="t-mono">{t.looked} of {t.rows} looked at</span>
+                  </div>
+                  {t.states.length > 0 && (
+                    <div className="wb-rail-tally-states">
+                      {t.states.map((s) => `${s.count} ${s.label}`).join(' · ')}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

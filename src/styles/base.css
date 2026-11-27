@@ -1947,6 +1947,14 @@ button.wb-info {
     height: auto !important;
     overflow: visible !important;
   }
+  /* Calvin's calculator lies over its tab (CalvinCalculator.tsx), which on a desk fills the screen. Here the tab has
+     no height of its own, so on a phone his calculator flows at its own height instead, or it would be 0 pixels tall
+     and his Export out of reach (found 27 Nov 2026, family 4, once his Commons row opened). */
+  .wb-module-page .wb-calvin-stack {
+    position: relative !important;
+    inset: auto !important;
+    overflow: visible !important;
+  }
   /* The chat fills the screen under the menu, the way back (46px and its
      hairline) and the tabs (44px); with the keyboard up, all but the tabs. */
   .wb-module-page .wb-tabpanel-chat.is-active {
@@ -2142,6 +2150,14 @@ button.wb-info {
   margin-top: 16px;
   padding-left: 4px;
 }
+.wb-rail-tally-path + .wb-rail-tally-path {
+  margin-top: 6px;
+}
+.wb-rail-tally-states {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--ink-3);
+}
 .wb-rail-tally-row {
   display: flex;
   justify-content: space-between;
@@ -2167,63 +2183,22 @@ button.wb-info {
   border-color: var(--ink-4);
 }
 
-/* THE SCREENING REPORT (S21) is print-only, as the paid calculator's export is:
-   hidden on screen, and the only thing printed.
-
-   TWO EXPORTS TAKE TURNS, from 14 Nov 2026, when Calvin's calculator came from the
-   open core with its own report and print rules (@waterbots/calvin/styles.css),
-   which hide everything but its .print-report. "Export screening report" marks
-   the page with .wb-print-screening while it prints: then only this report
-   prints and Calvin's stays hidden. Unmarked, Calvin's own export prints his,
-   and only the one on the page in view. */
-.wb-report {
+/* THE SCREENING REPORT (S21) is print-only: hidden on screen. From 27 Nov 2026 (family 4)
+   core's print part (@waterbots/core/print, with its rules in report.css, which
+   @waterbots/calvin/styles.css carries) copies it into a print area of its own under
+   <body> and prints only that, or opens it in its own tab, so no console panel can clip
+   it and a cancelled print leaves nothing behind. This site keeps only its look. Core's
+   own reports also use the class .wb-report, so the hiding is by this report's own class. */
+.wb-screening-report {
   display: none;
 }
-@media print {
-  .wb-page.is-off .print-report,
-  .wb-module-page.is-off .print-report {
-    display: none !important;
-  }
-  body.wb-print-screening .print-report {
-    display: none !important;
-  }
-  /* Calvin's full working is the one report of his that does print with it:
-     drawn inside the screening report, in its own place in section 4, and in
-     the flow of the page rather than over it (16 Nov 2026, #174). */
-  body.wb-print-screening .wb-report .print-report {
-    display: block !important;
-    position: static !important;
-    margin-top: 10px;
-  }
-  body.wb-print-screening .wb-report,
-  body.wb-print-screening .wb-report * {
-    visibility: visible !important;
-  }
-  body.wb-print-screening,
-  body.wb-print-screening #root {
-    height: auto !important;
-    overflow: visible !important;
-    background: #ffffff;
-  }
-  body.wb-print-screening .wb-app {
-    height: auto !important;
-    display: block !important;
-    background: #ffffff !important;
-  }
-  body.wb-print-screening .wb-app > :not(.wb-report) {
-    display: none !important;
-  }
-  body.wb-print-screening .wb-report {
-    display: block;
-    color: var(--ink);
-    font-family: var(--font-sans);
-    max-width: 7.5in;
-    margin: 0 auto;
-  }
-  @page {
-    size: letter portrait;
-    margin: 1in;
-  }
+.wb-print-root .wb-screening-report,
+body.wb-report-tab .wb-screening-report {
+  display: block;
+  max-width: 7.5in;
+  margin: 0 auto;
+  color: var(--ink);
+  font-family: var(--font-sans);
 }
 
 /* ---------------------------------------------------------------------------
@@ -2491,7 +2466,7 @@ button.wb-info {
   border-color: var(--tide);
 }
 
-/* Rule 8: everything a visitor taps is at least 44 pixels on a phone, the map's
+/* Rule 8: everything a visitor taps is at least 44 pixels on a phone (core's --wb-tap), the map's
    + and − included. The phone width is the site's own (src/lib/phone.ts). */
 @media (max-width: 900px) {
   .wb-app button:not(.wb-link-button),
@@ -2502,23 +2477,23 @@ button.wb-info {
   .wb-app input[type='number'],
   .wb-drawer button:not(.wb-link-button),
   .wb-drawer a {
-    min-height: 44px;
+    min-height: var(--wb-tap, 44px);
   }
   .wb-chip,
   .wb-handoff {
     display: inline-flex;
     align-items: center;
-    min-height: 44px;
+    min-height: var(--wb-tap, 44px);
   }
   .wb-app textarea {
-    min-height: 44px;
+    min-height: var(--wb-tap, 44px);
   }
   /* The menu's wordmark and links: the same look, a 44-pixel place to tap. */
   .wb-site-menu a {
     display: inline-flex;
     align-items: center;
-    min-height: 44px;
-    min-width: 44px;
+    min-height: var(--wb-tap, 44px);
+    min-width: var(--wb-tap, 44px);
   }
   /* Small marks inside a line keep their size; an unseen layer around each takes the tap. */
   .wb-info,
@@ -2531,15 +2506,15 @@ button.wb-info {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: max(44px, 100%);
-    height: 44px;
+    width: max(var(--wb-tap, 44px), 100%);
+    height: var(--wb-tap, 44px);
     transform: translate(-50%, -50%);
   }
   .leaflet-control-zoom a,
   .leaflet-touch .leaflet-bar a {
-    width: 44px !important;
-    height: 44px !important;
-    line-height: 44px !important;
+    width: var(--wb-tap, 44px) !important;
+    height: var(--wb-tap, 44px) !important;
+    line-height: var(--wb-tap, 44px) !important;
     font-size: 20px !important;
   }
 }

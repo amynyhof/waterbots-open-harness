@@ -26,6 +26,7 @@
  * Nothing is kept: the report is the visit as it stands, printed.
  */
 
+import { SCREENING_REPORT_ID } from '../lib/exportReport';
 import type { ReactNode } from 'react';
 import { HER_PACKS, cardFor, contextFor, pathwayRows, section, stateOf, verdictRows, type Citation, type Sheet } from '@waterbots/phoebe';
 import { AQUEDUCT_CITATION, HYDROBASINS_CITATION, PRODUCT_NAME } from '../lib/licences';
@@ -174,7 +175,7 @@ export default function ScreeningReport({
   const pin = visit.pin;
 
   return (
-    <article className="wb-report" aria-hidden>
+    <article id={SCREENING_REPORT_ID} className="wb-report wb-screening-report" aria-hidden>
       <header style={{ borderBottom: '2px solid var(--ink)', paddingBottom: 8 }}>
         <div style={{ fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink-2)' }}>
           {PRODUCT_NAME} · open.waterbots.ai

@@ -35,6 +35,7 @@
  * on every row, and no way to rate. Nothing is counted or stored.
  */
 
+import { COMMONS_WORDS } from '@waterbots/core/commons';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { SUPPORTERS_PATH, pathForInterest } from '../lib/pages';
 import { SUPPORTERS_LINK } from '../lib/supporters';
@@ -271,7 +272,7 @@ function ModuleRow({ card, onOpen, onInterest }: { card: ShelfCard; onOpen: () =
         <Stage stage={card.stage} />
       </Cell>
       <Cell label="Owner">{card.owner}</Cell>
-      <Cell label="Grade">not yet graded</Cell>
+      <Cell label="Grade">{COMMONS_WORDS.notGraded}</Cell>
       <Cell label="Community rating">
         <Rating />
       </Cell>
@@ -390,7 +391,7 @@ function PlannedRow({ planned, seeking = false }: { planned: PlannedModule; seek
       <Cell label="Owner">{planned.owner}</Cell>
       <Cell label="Grade">
         {/* A module seeking partners has nothing to grade yet: a dash, her word of 28 Oct 2026. */}
-        {seeking ? <span style={{ color: 'var(--ink-3)' }}>—</span> : 'not yet graded'}
+        {seeking ? <span style={{ color: 'var(--ink-3)' }}>—</span> : COMMONS_WORDS.notGraded}
       </Cell>
       <Cell label="Community rating">
         <Rating />
@@ -424,7 +425,7 @@ function InstalledRow({ installed }: { installed: InstalledModule }) {
       <Cell label="Method">{none}</Cell>
       <Cell label="Stage">{none}</Cell>
       <Cell label="Owner">{none}</Cell>
-      <Cell label="Grade">not yet graded</Cell>
+      <Cell label="Grade">{COMMONS_WORDS.notGraded}</Cell>
       <Cell label="Community rating">
         <Rating />
       </Cell>

@@ -40,9 +40,7 @@ import { Reached } from './reached';
 import AgentFace from '../components/AgentFace';
 import AnswerBody from './AnswerBody';
 import type { AgentHost, AgentTurn, Turn } from './evidence';
-
-/** The chip that puts the cursor back in the chat box (src/lib/wellington.ts). */
-const KEEP_CHATTING = 'Keep chatting';
+import { KEEP_CHATTING } from '@waterbots/core/consoleWords';
 
 export default function Transcript({
   host,

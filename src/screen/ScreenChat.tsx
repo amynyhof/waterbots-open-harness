@@ -29,7 +29,7 @@ import Transcript from '../chat/Transcript';
 import type { AgentHost } from '../chat/evidence';
 import type { Conversation } from '../chat/useConversation';
 import { ScreenMore } from './AgentScreen';
-import { BETA_NOTE } from '../lib/site';
+import { BETA_NOTE } from '@waterbots/core/consoleWords';
 
 /** Shared chat column: 816px. */
 export const SCREEN_COLUMN = 816;
@@ -102,7 +102,7 @@ export default function ScreenChat({
       >
         <div style={{ maxWidth: SCREEN_COLUMN, margin: '0 auto', padding: '0 16px' }}>
           {/* THE BETA NOTE, just above the typing box on every screen (the shared
-              console page of 26 Nov 2026, rule 3). Its words wait on the maintainer. */}
+              console page of 26 Nov 2026, rule 3), in core's words. Their final words wait on the maintainer. */}
           <p className="wb-beta-note">{BETA_NOTE}</p>
           <div style={{ display: 'flex', gap: 8, alignItems: 'flex-end' }}>
             <textarea

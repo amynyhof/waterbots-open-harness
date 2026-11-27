@@ -27,12 +27,17 @@
  * the type when the first one arrives. No mock grade, ever.
  */
 
+import { commonsAgents, type CommonsAgent } from '@waterbots/core/commons';
+import { AGENT_CARD as PHOEBE_CARD } from '@waterbots/phoebe';
+import { AGENT_CARD as CALVIN_CARD } from '@waterbots/calvin';
+import { AGENT_CARD as VIOLET_CARD } from '@waterbots/violet';
+import { AGENT_CARD as BRIDGET_CARD } from '@waterbots/bridget';
+import { AGENT_CARD as WELLINGTON_CARD } from '@waterbots/wellington';
 import { crewMember, type CrewMember } from './crew';
 import { WATER_D3_LISTING } from './methodPacks';
 import { WATER_METHOD_ID } from './visit';
 import { CRITERIA } from '@waterbots/phoebe';
 import modulesRaw from '../content/commons-modules.json?raw';
-import rosterRaw from '../../knowledge-packs/product-shared/roster.yaml?raw';
 
 /**
  * A MODULE'S STAGE AND OWNER — maintainer's rulings, 28 Oct 2026. The owner
@@ -150,29 +155,20 @@ const READS: Record<string, () => string> = {
 };
 
 /* ---------------------------------------------------------------------------
-   The installed agents, read at build time. Core's Commons reader replaces this when it ships.
+   The installed agents, from core's Commons reader (core 0.6.0, F4.3; the shared console page, rule 15): each
+   package's own card, its version and the places it works. Core says which open here.
 --------------------------------------------------------------------------- */
 
-/**
- * Each installed @waterbots package's own version, by its folder (the package's name after "@waterbots/"). Only the
- * `version` field is taken, so nothing else of a package.json reaches the page.
- */
+/** Every agent as the Commons shows it, installed first, in the crew list's order. */
+export const COMMONS_AGENTS: CommonsAgent[] = commonsAgents([PHOEBE_CARD, CALVIN_CARD, VIOLET_CARD, BRIDGET_CARD, WELLINGTON_CARD]);
+
+/** Each installed agent's version, by its id (the package's name after "@waterbots/"). */
 const INSTALLED: Record<string, string> = Object.fromEntries(
-  Object.entries(
-    import.meta.glob<string>('../../node_modules/@waterbots/*/package.json', { eager: true, import: 'version', exhaustive: true })
-  ).map(([path, version]) => [/@waterbots\/([^/]+)\/package\.json$/.exec(path)?.[1] ?? path, version])
+  COMMONS_AGENTS.flatMap((agent) => (agent.status === 'installed' && agent.version ? [[agent.id, agent.version]] : []))
 );
 
-/** The crew list's seats: id, name and the level the Commons door gives each. Read, never edited (as rosterLine.ts). */
-const SEATS: { id: string; name: string; commons: string }[] = rosterRaw
-  .replace(/\r\n/g, '\n')
-  .split(/\n  - id: /)
-  .slice(1)
-  .map((block) => ({
-    id: block.split('\n')[0].trim(),
-    name: /^    name: (.+)$/m.exec(block)?.[1]?.trim() ?? '',
-    commons: /^      commons: \{ level: ([a-z]+)/m.exec(block)?.[1] ?? '',
-  }));
+/** Whether core says the agent opens in the Commons (its card lists the Commons as a place it works). */
+const OPENS_HERE = new Set(COMMONS_AGENTS.filter((agent) => agent.opens).map((agent) => agent.id));
 
 /* ---------------------------------------------------------------------------
    Reading the content file. Every field is checked; a wrong one throws, naming the row.
@@ -250,7 +246,8 @@ function shelfCard(row: Raw, i: number): ShelfCard {
     tag: text(row, 'tag', at),
     ...(tagHref ? { tagHref } : {}),
     ...(packKey ? { packKey } : {}),
-    opens: row.opens,
+    /* It opens only where the content file says so and core's reader agrees (Bridget's card keeps her to the two sites). */
+    opens: row.opens && OPENS_HERE.has(installed ?? ''),
     stage: stageOf(row, at),
     owner: ownerOf(row, at),
     grade: null,
@@ -298,13 +295,10 @@ export const PLANNED: PlannedModule[] = rows(CONTENT, 'planned').map(plannedModu
 export const SEEKING: PlannedModule[] = rows(CONTENT, 'seeking').map(plannedModule('seeking'));
 
 /**
- * Installed agents with no row (S32): a package that is a seat on the crew list, that the crew list lets appear at the
- * Commons, and that no row names. Core is not a seat, and Wellington's Commons level is "none", so today this is empty.
+ * Installed agents with no row (S32): core's reader lists every installed agent, so one that no row names still shows,
+ * as a plain row of its name and version. Today that is Wellington, who does not open here (his card keeps him to the
+ * two sites and the lobby chat).
  */
-export const INSTALLED_WITHOUT_ROW: InstalledModule[] = Object.entries(INSTALLED)
-  .filter(([id]) => !SHELF.some((card) => card.packageName === `@waterbots/${id}`))
-  .flatMap(([id, version]) => {
-    const seat = SEATS.find((s) => s.id === id);
-    if (!seat || seat.commons === 'none' || seat.commons === '') return [];
-    return [{ key: `installed-${id}`, agent: seat.name, packageName: `@waterbots/${id}`, version, grade: null }];
-  });
+export const INSTALLED_WITHOUT_ROW: InstalledModule[] = COMMONS_AGENTS.filter(
+  (agent) => agent.status === 'installed' && agent.version !== null && !SHELF.some((card) => card.packageName === `@waterbots/${agent.id}`)
+).map((agent) => ({ key: `installed-${agent.id}`, agent: agent.name, packageName: `@waterbots/${agent.id}`, version: agent.version ?? '', grade: null }));

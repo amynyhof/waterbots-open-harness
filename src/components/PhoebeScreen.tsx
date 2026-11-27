@@ -63,8 +63,6 @@ import {
   type Phase,
   type RouteCard,
   HER_PACKS,
-  worksheetCaption,
-  contextFor,
   applyUpdates,
   type Citation,
   type Sheet,
@@ -288,19 +286,8 @@ export default function PhoebeScreen({
          and a stray marker is dropped from the text for want of evidence. */
       evidence: [],
       abstained: answer.abstained,
-      /* The shown line — contract line 5: what the worksheet holds after this
-         turn, from her verdicts alone, only under a turn that moved a row. */
-      ...(moved
-        ? {
-            caption: worksheetCaption(
-              after,
-              HER_PACKS.map((pack) => ({
-                pack,
-                context: contextFor(after, pack, herClass({ context: record })),
-              }))
-            ),
-          }
-        : {}),
+      /* No line under her turn (Phoebe 0.3.0, the shared console page of 26 Nov 2026, rule 2):
+         her progress is data for the left rail (worksheetTally), never a line in the chat. */
       /* The chips that answer what she just asked, then "Learn more about …" where
          she named an idea (P22). No helper under her first hello, and nothing once
          she has handed back, because his buttons come next. */

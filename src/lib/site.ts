@@ -89,11 +89,3 @@ export const HANDOFF_LANDING = 'https://www.waterbots.ai/welcome';
 /** The site menu's Sign up: the same welcome page, with no project to carry. */
 export const MENU_SIGN_UP: MenuLink = { label: 'Sign up', href: HANDOFF_LANDING };
 
-/**
- * THE BETA NOTE, just above the typing box on every screen (the shared console
- * page of 26 Nov 2026, rule 3): the status sheet's "What WaterBots covers today"
- * sentence, and that WaterBots is in beta and can get things wrong. The exact
- * words wait on the maintainer; this is today's value.
- */
-export const BETA_NOTE =
-  'WaterBots is in beta and can get things wrong. We are currently focused on carbon crediting and water benefits for safe water supply.';

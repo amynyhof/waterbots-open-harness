@@ -14,6 +14,7 @@
  */
 
 import { crewMember } from './crew';
+import { KEEP_CHATTING } from '@waterbots/core/consoleWords';
 import wellingtonPortrait from '../../brand/assets/bots/wellington.svg';
 import type { AgentHost, AgentTurn, Ask, AskMeta, TurnAction, TurnButton } from '../chat/evidence';
 import { chipsFor } from './chips';
@@ -99,7 +100,7 @@ function deskOf(meta?: AskMeta): Surface | undefined {
 }
 
 function keepChatting(composerId: string): TurnButton {
-  return { label: 'Keep chatting', go: () => document.getElementById(composerId)?.focus() };
+  return { label: KEEP_CHATTING, go: () => document.getElementById(composerId)?.focus() };
 }
 
 /** The visit as the relay expects it, or nothing when every field is blank. */

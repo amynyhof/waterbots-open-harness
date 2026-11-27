@@ -87,7 +87,8 @@ import { onward, type Ending } from './lib/steps';
 import { d3InputFromRecord, violetAgentNoteLines } from '@waterbots/violet';
 import { computeD3 } from '@waterbots/violet/engine';
 import type { CarbonFigure, VisitContext } from './lib/visit';
-import { EXPORT_SAID, printScreeningReport } from './lib/exportReport';
+import { exportSaid as saidFor, printScreeningReport } from './lib/exportReport';
+import { UNSAVED_WARNING } from '@waterbots/core/consoleWords';
 import type { AgentTurn, TurnButton } from './chat/evidence';
 import Commons from './components/Commons';
 import InterestPage from './components/InterestPage';
@@ -224,7 +225,7 @@ export default function App() {
   const [exportSaid, setExportSaid] = useState('');
   const exportReport = useCallback(() => {
     setExportSaid('');
-    printScreeningReport((outcome) => setExportSaid(EXPORT_SAID[outcome]));
+    void printScreeningReport().then((outcome) => setExportSaid(saidFor(outcome)));
   }, []);
   const closeDrawer = useCallback(() => setDrawer(null), []);
   useEffect(() => {
@@ -342,7 +343,7 @@ export default function App() {
     const record = projectRecord({ visit: visitRef.current, sheet: sheetRef.current, carbon: carbonRef.current });
     return waterHasNoCalculator(siteMap(record)) ? NO_CALCULATOR_YET : '';
   });
-  const endingRef = useRef<Ending>({ open: setSurface, report: printScreeningReport, save: () => undefined });
+  const endingRef = useRef<Ending>({ open: setSurface, report: () => undefined, save: () => undefined });
   const ask = useMemo(
     () =>
       wellingtonAsk(
@@ -661,7 +662,8 @@ export default function App() {
     if (!unsaved) return;
     const warn = (event: BeforeUnloadEvent) => {
       event.preventDefault();
-      event.returnValue = '';
+      /* Core's words (UNSAVED_WARNING). Most browsers show their own words in place of a site's. */
+      event.returnValue = UNSAVED_WARNING;
     };
     window.addEventListener('beforeunload', warn);
     return () => window.removeEventListener('beforeunload', warn);

@@ -38,6 +38,8 @@ import {
   section,
   stateOf,
   verdictRows,
+  worksheetTally,
+  type TallyLine,
   type Sheet,
 } from '@waterbots/phoebe';
 import type { Surface } from './surfaces';
@@ -576,32 +578,18 @@ const PLAIN_READ: Record<string, string> = {
  * because a row that named a number while the benefit was incomplete would be
  * claiming more than the worksheet does. The save row is always last.
  */
-/** One funding path's progress on Phoebe's worksheet, for the left rail. */
-export interface RailTally {
-  name: string;
-  done: number;
-  of: number;
-}
+/** One funding path's progress on Phoebe's worksheet, for the left rail: her package's own tally line. */
+export type RailTally = TallyLine;
 
 /**
- * PROGRESS IN THE LEFT RAIL, NOT THE CHAT (the shared console page of 26 Nov 2026,
- * rule 2): how many of Phoebe's questions each funding path has had looked at,
- * worked out from her worksheet's rows, never from her words. Empty until she has
- * looked at one. Phoebe 0.3.0 is to send her tally as data; until then the site
- * counts her rows itself.
+ * PROGRESS IN THE LEFT RAIL, NOT THE CHAT (the shared console page of 26 Nov 2026, rule 2): Phoebe 0.3.0's tally,
+ * as data, drawn from her verdicts and never her prose. A funding path she has not looked at yet is left out.
  */
 export function railTally(visit: Visit, sheet: Sheet): RailTally[] {
-  const out: RailTally[] = [];
-  for (const pack of HER_PACKS) {
-    const part = section(pack);
-    if (!part) continue;
-    const context = contextFor(sheet, pack, herClass(visit));
-    const rows = verdictRows(pack, context);
-    const done = rows.filter((row) => stateOf(sheet, pack, row.id).state !== 'unchecked').length;
-    if (rows.length === 0) continue;
-    out.push({ name: PLAIN_PATH[part.sectionId] ?? part.sectionName, done, of: rows.length });
-  }
-  return out.some((t) => t.done > 0) ? out : [];
+  return worksheetTally(
+    sheet,
+    HER_PACKS.map((pack) => ({ pack, context: contextFor(sheet, pack, herClass(visit)) }))
+  ).map((line) => ({ ...line, name: PLAIN_PATH[section(line.pack)?.sectionId ?? ''] ?? line.name }));
 }
 
 export function deskRows(visit: Visit, sheet: Sheet): DeskRow[] {
