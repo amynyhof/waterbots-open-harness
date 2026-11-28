@@ -121,7 +121,8 @@ const journey = readFileSync(join('src', 'components', 'JourneyBar.tsx'), 'utf8'
 const transcript = readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8');
 expect(
   'the steps on top are a progress line: only the phone row\'s Project and Crew click',
-  (journey.match(/<button/g) ?? []).length === 2 && !/onNavigate/.test(journey) && /AFTER_SAVE_LABEL/.test(journey) && !/GATED_NOTE/.test(journey),
+  /* Three buttons from family 4 (rule 19): the phone row's Project and Crew, and Crew at the end of the bar from 600 to 1279 pixels. */
+  (journey.match(/<button/g) ?? []).length === 3 && /className="wb-journey-crew" onClick=\{onCrew\}/.test(journey) && !/onNavigate/.test(journey) && /AFTER_SAVE_LABEL/.test(journey) && !/GATED_NOTE/.test(journey),
   'the bar still clicks, or Plan, Monitor and Communicate are not one mark'
 );
 expect(
@@ -152,7 +153,8 @@ expect(
 );
 expect(
   'on a phone, Save is the blue one only while no panel covers the menu',
-  /const saveInView = onConsole && somethingOnRecord\(visit\) && \(!phone \|\| drawer === null\);/.test(app),
+  /* From family 4 (rule 19) a panel can cover the menu under 1280 pixels too: the crew is a drawer there. */
+  /const saveInView = onConsole && somethingOnRecord\(visit\) && \(!narrow \|\| drawer === null\);/.test(app),
   'Save counts as in view under an open panel'
 );
 expect(

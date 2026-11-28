@@ -30,6 +30,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import { useNarrow } from '../lib/phone';
 import { SITE_LABEL, SITE_URL } from '../lib/site';
 import { pathForInterest } from '../lib/pages';
 import { STAGE_WORDS as PROJECT_STAGES, typeWords as projectType } from '@waterbots/core/projectWords';
@@ -40,7 +41,8 @@ const EXPANDED = 224;
 const COLLAPSED = 52;
 
 /** Narrowed below this after landing, the rail collapses. The reader can still expand it. */
-const AUTO_COLLAPSE_BELOW = 1180;
+/* Under 1280 pixels the rail folds to its slim strip, and opens on tap (the shared console page, rule 19; it was 1180). */
+const AUTO_COLLAPSE_BELOW = 1280;
 
 /** The collapsed rail's title when the visit has not named its project. Not a value. */
 const UNNAMED = 'Unnamed project';
@@ -102,7 +104,10 @@ export default function NavRail({
   /* OPEN ON LANDING, whatever the width — the maintainer's walk of 13 Nov
      2026: the record is the first thing a visitor should see filling. A
      later resize still follows the viewport until the reader chooses. */
-  const [railOpen, setOpen] = useState(true);
+  /* From family 4 (rule 19) it lands folded under 1280 pixels, in place of the 13 Nov 2026 rule that it opens whatever
+     the width; the shared console page wins. */
+  const narrow = useNarrow();
+  const [railOpen, setOpen] = useState(() => typeof window === 'undefined' || window.innerWidth >= AUTO_COLLAPSE_BELOW);
   /* A phone's panel always shows the whole record; shut, it is off the screen. */
   const open = drawer ? true : railOpen;
 
@@ -141,7 +146,8 @@ export default function NavRail({
       aria-hidden={drawer ? !drawer.open : undefined}
       style={{
         /* As wide as the crew rail (the shared console page of 26 Nov 2026, rule 2). A phone's drawer keeps its own width. */
-        width: open ? (drawer ? EXPANDED : 'var(--chat-rail)') : COLLAPSED,
+        /* From 600 to 1279 pixels, opened from its slim strip, it keeps its own width, so the chat keeps most of it (rule 19). */
+        width: open ? (drawer || narrow ? EXPANDED : 'var(--chat-rail)') : COLLAPSED,
         flex: 'none',
         display: 'flex',
         flexDirection: 'column',
@@ -173,7 +179,7 @@ export default function NavRail({
       )}
 
       {open ? (
-        <div style={{ padding: '14px 12px 0', overflowY: 'auto', minHeight: 0 }}>
+        <div style={{ padding: '14px 12px 0', overflowY: 'auto', overflowX: 'hidden', minHeight: 0 }}>
           <div className="eyebrow" style={{ marginBottom: 10, paddingLeft: 4 }}>
             Project
           </div>

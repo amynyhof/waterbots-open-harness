@@ -89,7 +89,7 @@ export default function CrewRow({
           {member.role}
         </span>
         {status && (
-          <span style={{ display: 'block', fontSize: 12, lineHeight: 1.4, color: 'var(--ink-2)', marginTop: 4 }}>
+          <span style={{ display: 'block', fontSize: 14, lineHeight: 1.4, color: 'var(--ink-2)', marginTop: 4 }}>
             {status}
           </span>
         )}

@@ -435,8 +435,8 @@ expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSy
     'the working prints with the screening report, through core\'s print part, with his time stamp set first',
     (() => {
       const exporter = readFileSync(join('src', 'lib', 'exportReport.ts'), 'utf8');
-      return /import \{ printReport, type ExportOutcome \} from '@waterbots\/core\/print';/.test(exporter) &&
-        /window\.dispatchEvent\(new Event\(REPORT_STAMP_EVENT\)\);\s*return printReport\(report\);/.test(exporter) &&
+      return /import \{ openReportInTab, printReport, type ExportOutcome \} from '@waterbots\/core\/print';/.test(exporter) &&
+        /window\.dispatchEvent\(new Event\(REPORT_STAMP_EVENT\)\);\s*if \(opensInTab\(\)\) return openReportInTab\(report\) \? 'tab-chosen' : 'failed';\s*return printReport\(report\);/.test(exporter) &&
         /\.wb-print-root \.wb-screening-report,\s*body\.wb-report-tab \.wb-screening-report \{\s*display: block;/.test(base) &&
         /addEventListener\(REPORT_STAMP_EVENT, before\)/.test(holder) && /reportStamp\(\)/.test(holder);
     })(),

@@ -57,12 +57,15 @@ export default function JourneyBar({
   active: inView,
   progress,
   phone,
+  onCrew,
 }: {
   active: Surface;
   /** Which open phases have something from this visit, keyed by phase key. */
   progress: Record<string, boolean>;
   /** On a phone: the one row, and what its two buttons open. */
   phone?: { onProject: () => void; onCrew: () => void };
+  /** From 600 to 1279 pixels the crew is a drawer: this opens it, from the end of the bar (rule 19). */
+  onCrew?: () => void;
 }) {
   /* Violet's desk is Quantify's second desk, so the bar marks Quantify there too. */
   const active = phaseSurface(inView);
@@ -118,7 +121,9 @@ export default function JourneyBar({
           gap: 0,
           padding: '8px var(--gutter)',
           borderBottom: '1px solid var(--line)',
-          overflow: 'hidden',
+          /* The step bar never cuts off a step: it wraps (the shared console page, rule 19). */
+          flexWrap: 'wrap',
+          rowGap: 6,
         }}
       >
         {/* DISPATCHES, FIRST, THEN A HAIRLINE — the desk, not a phase. */}
@@ -172,8 +177,15 @@ export default function JourneyBar({
 
         {/* PLAN, MONITOR, COMMUNICATE — one quiet mark (21 Nov 2026). */}
         <span className="wb-phase wb-phase-later" title={AFTER_SAVE_NOTE} aria-label={`${AFTER_SAVE_LABEL}: ${AFTER_SAVE_NOTE}`} style={{ flex: 'none' }}>
-          <span style={{ fontSize: compact ? 11 : 12, color: 'var(--ink-4)', whiteSpace: 'nowrap' }}>{AFTER_SAVE_LABEL}</span>
+          {/* --ink-3, not --ink-4: it must pass the normal contrast test (the shared console page, rule 21). */}
+          <span style={{ fontSize: compact ? 11 : 12, color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>{AFTER_SAVE_LABEL}</span>
         </span>
+        {/* THE CREW, FROM 600 TO 1279 PIXELS, is a drawer: this opens it (the shared console page, rule 19). */}
+        {onCrew && (
+          <button type="button" className="wb-journey-crew" onClick={onCrew}>
+            Crew<span aria-hidden> ›</span>
+          </button>
+        )}
       </nav>
     </div>
   );

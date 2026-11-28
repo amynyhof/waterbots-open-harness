@@ -109,7 +109,7 @@ import CalvinScreen from './components/CalvinScreen';
 import NotCalled, { NoCalculatorYet } from './components/NotCalled';
 import VioletScreen from './components/VioletScreen';
 import SiteMenu from './components/SiteMenu';
-import { usePhone } from './lib/phone';
+import { useNarrow, usePhone } from './lib/phone';
 import { blueButton, meetShowing } from './lib/blue';
 import type { SaveDoor } from './components/SaveDoor';
 import { Reached } from './chat/reached';
@@ -220,6 +220,8 @@ export default function App() {
      maintainer's word of 29 Oct 2026 (src/lib/phone.ts). A step change, a
      page change or a wider window closes whichever is open. */
   const phone = usePhone();
+  /* Under 1280 pixels the crew is a drawer, opened from "Crew" (the shared console page, rule 19). True on a phone too. */
+  const narrow = useNarrow();
   const [drawer, setDrawer] = useState<'project' | 'crew' | null>(null);
   /* What the site said after an export that opened no print window (rule 13). */
   const [exportSaid, setExportSaid] = useState('');
@@ -230,7 +232,7 @@ export default function App() {
   const closeDrawer = useCallback(() => setDrawer(null), []);
   useEffect(() => {
     setDrawer(null);
-  }, [surface, page, phone]);
+  }, [surface, page, phone, narrow]);
 
   /* The worksheet lives here so Phoebe's answers and the rows she is filling
      in cannot disagree. It is plain component state and nothing writes it to
@@ -702,10 +704,10 @@ export default function App() {
   const onBridgetMeet = useCallback((showing: boolean) => setMeetOn((m) => (m.map === showing ? m : { ...m, map: showing })), []);
   const meetInView =
     onConsole &&
-    !(phone && drawer !== null) &&
+    !(narrow && drawer !== null) &&
     ((onDesk && meetShowing(chat.turns, reached)) || (onEligibility && meetOn.eligibility) || (onMap && meetOn.map));
   /* Save is the site menu's one button (21 Nov 2026). On a phone an open panel covers the menu, so it counts only while no panel is open. */
-  const saveInView = onConsole && somethingOnRecord(visit) && (!phone || drawer === null);
+  const saveInView = onConsole && somethingOnRecord(visit) && (!narrow || drawer === null);
   /* A page with a form of its own — the interest form, and the supporters page from 18 Nov 2026 — makes its Send the blue one. */
   const blue = blueButton({ meet: meetInView, save: saveInView, form: onInterest || onSupporters });
 
@@ -794,6 +796,7 @@ export default function App() {
             active={surface}
             progress={progress}
             phone={phone ? { onProject: () => setDrawer('project'), onCrew: () => setDrawer('crew') } : undefined}
+            onCrew={narrow && !phone ? () => setDrawer('crew') : undefined}
           />
 
           <div style={{ flex: 1, minHeight: 0, display: 'flex', overflow: 'hidden' }}>
@@ -956,13 +959,13 @@ export default function App() {
               status={crew}
               onNavigate={openFromCrew}
               shown={crewShown}
-              drawer={phone ? { open: drawer === 'crew', onClose: closeDrawer } : undefined}
+              drawer={narrow ? { open: drawer === 'crew', onClose: closeDrawer } : undefined}
             />
           </div>
         </div>
 
         {/* The shade behind an open panel on a phone; a tap on it closes the panel. */}
-        {phone && drawer !== null && <div className="wb-scrim" aria-hidden onClick={closeDrawer} />}
+        {narrow && drawer !== null && <div className="wb-scrim" aria-hidden onClick={closeDrawer} />}
       </div>
       </Reached.Provider>
 

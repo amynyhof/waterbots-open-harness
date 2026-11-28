@@ -64,8 +64,12 @@ export default function Commons({
      says so: /commons/anything, /commons/anything/else, /commons/ all become
      /commons. From 26 Nov 2026 (S33) each agent's module opens, so each
      agent's own address answers. */
+  /* NO SILENT WRONG DESK (the shared console page, rule 24, the walk of 27 Nov 2026): the list says, in plain words,
+     why the address asked for did not open. */
+  const [asked, setAsked] = useState('');
   useEffect(() => {
     if (pageFromPath(path) === 'commons' && open === null && path !== COMMONS_PATH) {
+      setAsked(notOpenWords(slug));
       navigate(COMMONS_PATH, { replace: true });
     }
   }, [path, slug, open, navigate]);
@@ -123,6 +127,14 @@ export default function Commons({
           hidden, as everywhere in this shell. */}
       <div className="wb-commons-panes" style={{ flex: 1, minHeight: 0, position: 'relative' }}>
         <Pane shown={onShelf}>
+          {asked && (
+            <p className="wb-commons-asked" role="status">
+              {asked}{' '}
+              <button type="button" className="wb-link-button" onClick={() => setAsked('')}>
+                Close
+              </button>
+            </p>
+          )}
           <CommonsShelf
             onOpen={openCard}
             onInterest={(card) => navigate(pathForInterest(card.slug))}
@@ -233,4 +245,14 @@ function Pane({ shown, children }: { shown: boolean; children: React.ReactNode }
       {children}
     </div>
   );
+}
+
+/** Why an address in the Agent Commons opened the list instead (rule 24). */
+function notOpenWords(slug: string | null): string {
+  const card = slug === null ? undefined : SHELF.find((c) => c.slug === slug);
+  if (card) {
+    const name = card.holder.name;
+    return `${name}'s module is listed here but does not open in the Agent Commons. ${name} works with you on the free site and the paid site.`;
+  }
+  return 'Nothing in the Agent Commons answers to that address, so here is the whole list.';
 }

@@ -1,10 +1,9 @@
 /**
  * The phone layout's three facts — the maintainer's word of 29 Oct 2026, from
- * the mobile check of the same day. At 900px and narrower the site lays out
- * for a phone; above it nothing here changes a thing.
+ * the mobile check of the same day. From family 4 (27 Nov 2026) the phone
+ * layout is under 600px; from 600 to 1279 the crew is a drawer.
  *
- * 1. WHETHER THIS IS A PHONE. One media query, the same 900px the Commons'
- *    own phone rules use, read by the shell to turn the left rail and the
+ * 1. WHETHER THIS IS A PHONE. One media query, read by the shell to turn the left rail and the
  *    crew into panels that slide over the page.
  * 2. THE SCREEN'S REAL HEIGHT, as --app-h. The visual viewport is what is
  *    left above an open keyboard; a chat sized to it keeps its box in view.
@@ -18,20 +17,32 @@
 
 import { useEffect, useState } from 'react';
 
-export const PHONE_QUERY = '(max-width: 900px)';
+/* FAMILY 4, RULE 19 (the walk of 27 Nov 2026): the phone layout is under 600 pixels (it was 900). From 600 to 1279 the
+   crew is a drawer and the left rail a slim strip (NARROW_QUERY); from 1280, three columns. */
+export const PHONE_QUERY = '(max-width: 599px)';
+export const NARROW_QUERY = '(max-width: 1279px)';
+
+/** Under 1280 pixels: the crew is a drawer (rule 19). True on a phone too. */
+export function useNarrow(): boolean {
+  return useQuery(NARROW_QUERY);
+}
 
 export function usePhone(): boolean {
-  const [phone, setPhone] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia(PHONE_QUERY).matches
+  return useQuery(PHONE_QUERY);
+}
+
+function useQuery(query: string): boolean {
+  const [matches, setMatches] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(query).matches
   );
   useEffect(() => {
-    const list = window.matchMedia(PHONE_QUERY);
-    const onChange = () => setPhone(list.matches);
+    const list = window.matchMedia(query);
+    const onChange = () => setMatches(list.matches);
     onChange();
     list.addEventListener('change', onChange);
     return () => list.removeEventListener('change', onChange);
-  }, []);
-  return phone;
+  }, [query]);
+  return matches;
 }
 
 /** A field that raises the keyboard: a text box, never a checkbox or a button. */

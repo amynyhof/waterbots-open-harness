@@ -1707,7 +1707,10 @@ button.wb-info {
   display: none;
 }
 
-@media (max-width: 900px) {
+/* FAMILY 4, RULE 19 (the shared console page, from the walk of 27 Nov 2026): three layouts. Under 600 pixels, the phone
+   layout below. From 600 to 1279, the chat keeps the middle, the left rail folds to its slim strip, and the crew is a
+   drawer (the drawer rules, next). From 1280, three columns. The Commons' and the content's own narrow rules stay at 900. */
+@media (max-width: 599px) {
   /* THE PAGE SCROLLS, and the menu goes with it. A screen that holds a chat
      fills exactly what is left below the menu, so its box is in view. */
   html,
@@ -1758,6 +1761,51 @@ button.wb-info {
     font-size: 16px !important;
   }
 
+  /* ONE ROW ON A PHONE (21 Nov 2026): the step's name, with a small dot for
+     each step, between "Project" and "Crew". The rings above it are gone. */
+  .wb-phone-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 4px;
+    border-bottom: 1px solid var(--line);
+  }
+  .wb-phone-bar-button {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 10px;
+    background: transparent;
+    border: 0;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--tide-text);
+    white-space: pre;
+    cursor: pointer;
+  }
+  .wb-phone-bar-name {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .wb-phone-bar-dots {
+    display: inline-flex;
+    gap: 4px;
+    margin-right: 8px;
+    vertical-align: 1px;
+  }
+
+}
+
+@media (max-width: 1279px) {
   /* THE LEFT RAIL AND THE CREW SLIDE OVER THE PAGE, one at a time, above the
      map's own layers; the shade behind closes them. */
   .wb-drawer {
@@ -1809,48 +1857,9 @@ button.wb-info {
     cursor: pointer;
   }
 
-  /* ONE ROW ON A PHONE (21 Nov 2026): the step's name, with a small dot for
-     each step, between "Project" and "Crew". The rings above it are gone. */
-  .wb-phone-bar {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 0 4px;
-    border-bottom: 1px solid var(--line);
-  }
-  .wb-phone-bar-button {
-    flex: none;
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0 10px;
-    background: transparent;
-    border: 0;
-    font-family: var(--font-sans);
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--tide-text);
-    white-space: pre;
-    cursor: pointer;
-  }
-  .wb-phone-bar-name {
-    flex: 1;
-    min-width: 0;
-    text-align: center;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .wb-phone-bar-dots {
-    display: inline-flex;
-    gap: 4px;
-    margin-right: 8px;
-    vertical-align: 1px;
-  }
+}
 
+@media (max-width: 900px) {
   /* An agent's tabs stay on one line: tighter, and the row slides sideways
      on the narrowest phones rather than wrapping. */
   .wb-tabs {
@@ -2466,16 +2475,15 @@ body.wb-report-tab .wb-screening-report {
   border-color: var(--tide);
 }
 
-/* Rule 8: everything a visitor taps is at least 44 pixels on a phone (core's --wb-tap), the map's
-   + and − included. The phone width is the site's own (src/lib/phone.ts). */
-@media (max-width: 900px) {
-  .wb-app button:not(.wb-link-button),
+/* Rules 8 and 20: everything a visitor taps is at least 44 pixels (core's --wb-tap), at every width, not only on a
+   phone (the walk of 27 Nov 2026), the map's + and − included. */
+  .wb-app button:not(.wb-link-button):not(.wb-info),
   .wb-app [role='tab'],
   .wb-app a.btn,
   .wb-app select,
   .wb-app input[type='text'],
   .wb-app input[type='number'],
-  .wb-drawer button:not(.wb-link-button),
+  .wb-drawer button:not(.wb-link-button):not(.wb-info),
   .wb-drawer a {
     min-height: var(--wb-tap, 44px);
   }
@@ -2517,7 +2525,6 @@ body.wb-report-tab .wb-screening-report {
     line-height: var(--wb-tap, 44px) !important;
     font-size: 20px !important;
   }
-}
 
 /* Rule 6: every chat shows lists. The same size and ink as a reply's prose. */
 .wb-answer-list {
@@ -2528,4 +2535,100 @@ body.wb-report-tab .wb-screening-report {
 }
 .wb-answer-list li + li {
   margin-top: 3px;
+}
+
+/* Rule 19: from 600 to 1279 pixels the crew is a drawer, opened from the end of the step bar. Tokens only. */
+.wb-journey-crew {
+  flex: none;
+  margin-left: 12px;
+  padding: 0 12px;
+  min-height: var(--wb-tap, 44px);
+  border: 0;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--tide-text);
+  cursor: pointer;
+}
+
+/* Rule 24: the Commons says why an address did not open (src/components/Commons.tsx). Tokens only. */
+.wb-commons-asked {
+  max-width: 760px;
+  margin: 16px auto 0;
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--card);
+}
+
+/* RULE 21, TEXT IS READABLE (the shared console page, from the walk of 27 Nov 2026): body text at least 16 pixels; rail
+   and label text at least 14 pixels. These classes and the step bar's words carry the site's small text, so they take
+   the floor; an inline size beneath them gives way. Colour stays as it is; the one label that failed the contrast test
+   ("After you save", --ink-4) takes --ink-3 in JourneyBar.tsx. The (i) mark's glyph is an icon with its own label. */
+.wb-app :is(.t-caption, .eyebrow, .t-mono, .tag, .wb-report-button, .wb-report-how, .wb-report-said, .wb-interest-cta,
+  .wb-rail-link, .wb-row-action, .wb-beta-note, .wb-send-desk, .wb-rail-tally-row, .wb-rail-tally-states, .wb-chip,
+  .wb-handoff, .wb-record-toggle, .wb-rail-name-label, .wb-journey-crew, .wb-phone-bar-button, .wb-phone-bar-name,
+  .wb-commons-asked, .wb-tab, .wb-thinking-line),
+.wb-app .wb-journey span:not([aria-hidden]),
+.wb-site-menu :is(.wb-site-menu-link, .wb-site-menu-fold-word, .wb-site-menu-readout) {
+  font-size: 14px !important;
+}
+.wb-app :is(.wb-bubble, .wb-bubble p, .wb-bubble li, .wb-answer-list, .t-body),
+.wb-app .wb-composer {
+  font-size: 16px !important;
+}
+/* Rule 20: the two links at the foot of the left rail, and the site menu's fold button, are 44 pixels each way. */
+.wb-app :is(.wb-interest-cta, .wb-rail-link) {
+  min-height: var(--wb-tap, 44px);
+}
+.wb-site-menu-fold-button {
+  min-width: var(--wb-tap, 44px);
+  min-height: var(--wb-tap, 44px);
+}
+
+/* Rules 20 and 21 on this site's own Commons and interest pages (the walk of 27 Nov 2026). Calvin's and Violet's own
+   screens inside the Commons are drawn by their packages; their small text is core's to fix. */
+.wb-page-commons :is(.wb-shelf-scroll li, .wb-shelf-scroll li strong, .wb-module-row div, .wb-module-row span,
+  .wb-module-about dt, .wb-module-about dd, .wb-module-about dd *, .wb-crumb-rest, .wb-hit, .wb-form-label, .wb-form-check) {
+  font-size: 14px !important;
+}
+/* The Commons' small links and buttons take a 44-pixel place to tap at every width, as they already did on a phone. */
+.wb-page-commons :is(.wb-hit, .wb-shelf-scroll a),
+.wb-quiet-link {
+  position: relative;
+}
+.wb-page-commons :is(.wb-hit, .wb-shelf-scroll a)::after,
+.wb-quiet-link::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, var(--wb-tap, 44px));
+  height: max(100%, var(--wb-tap, 44px));
+  transform: translate(-50%, -50%);
+}
+.wb-page-commons .wb-module-row button,
+.wb-app .wb-tab {
+  min-width: var(--wb-tap, 44px);
+}
+/* A checkbox's place to tap is its whole row, the label it sits in. */
+.wb-page-commons label.wb-form-check {
+  display: flex;
+  align-items: center;
+  min-height: var(--wb-tap, 44px);
+}
+.wb-page-commons input[type='text'],
+.wb-page-commons input[type='email'] {
+  min-height: var(--wb-tap, 44px);
+}
+
+/* Rule 21 keeps the brand's letter spacing at the larger size, so a label that no longer fits its rail wraps onto a
+   second line rather than pushing past the rail's edge (rule 19). */
+.wb-app .wb-record-toggle {
+  white-space: normal;
+  flex-wrap: wrap;
 }

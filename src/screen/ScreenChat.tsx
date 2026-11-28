@@ -109,7 +109,7 @@ export default function ScreenChat({
               ref={composer}
               id={composerId}
               className="wb-composer wb-composer-desk"
-              rows={1}
+              rows={2}
               value={chat.draft}
               disabled={chat.pending || waitingFor !== undefined}
               onChange={(e) => chat.setDraft(e.target.value)}
