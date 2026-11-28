@@ -1760,49 +1760,6 @@ button.wb-info {
   select {
     font-size: 16px !important;
   }
-
-  /* ONE ROW ON A PHONE (21 Nov 2026): the step's name, with a small dot for
-     each step, between "Project" and "Crew". The rings above it are gone. */
-  .wb-phone-bar {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 0 4px;
-    border-bottom: 1px solid var(--line);
-  }
-  .wb-phone-bar-button {
-    flex: none;
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0 10px;
-    background: transparent;
-    border: 0;
-    font-family: var(--font-sans);
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--tide-text);
-    white-space: pre;
-    cursor: pointer;
-  }
-  .wb-phone-bar-name {
-    flex: 1;
-    min-width: 0;
-    text-align: center;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .wb-phone-bar-dots {
-    display: inline-flex;
-    gap: 4px;
-    margin-right: 8px;
-    vertical-align: 1px;
-  }
-
 }
 
 @media (max-width: 1279px) {
@@ -2537,21 +2494,6 @@ body.wb-report-tab .wb-screening-report {
   margin-top: 3px;
 }
 
-/* Rule 19: from 600 to 1279 pixels the crew is a drawer, opened from the end of the step bar. Tokens only. */
-.wb-journey-crew {
-  flex: none;
-  margin-left: 12px;
-  padding: 0 12px;
-  min-height: var(--wb-tap, 44px);
-  border: 0;
-  background: transparent;
-  font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--tide-text);
-  cursor: pointer;
-}
-
 /* Rule 24: the Commons says why an address did not open (src/components/Commons.tsx). Tokens only. */
 .wb-commons-asked {
   max-width: 760px;
@@ -2571,7 +2513,7 @@ body.wb-report-tab .wb-screening-report {
    ("After you save", --ink-4) takes --ink-3 in JourneyBar.tsx. The (i) mark's glyph is an icon with its own label. */
 .wb-app :is(.t-caption, .eyebrow, .t-mono, .tag, .wb-report-button, .wb-report-how, .wb-report-said, .wb-interest-cta,
   .wb-rail-link, .wb-row-action, .wb-beta-note, .wb-send-desk, .wb-rail-tally-row, .wb-rail-tally-states, .wb-chip,
-  .wb-handoff, .wb-record-toggle, .wb-rail-name-label, .wb-journey-crew, .wb-phone-bar-button, .wb-phone-bar-name,
+  .wb-handoff, .wb-record-toggle, .wb-rail-name-label, .wb-menu-bar-name, .wb-drawer-close,
   .wb-commons-asked, .wb-tab, .wb-thinking-line),
 .wb-app .wb-journey span:not([aria-hidden]),
 .wb-site-menu :is(.wb-site-menu-link, .wb-site-menu-fold-word, .wb-site-menu-readout) {
@@ -2631,4 +2573,122 @@ body.wb-report-tab .wb-screening-report {
 .wb-app .wb-record-toggle {
   white-space: normal;
   flex-wrap: wrap;
+}
+
+/* RULE 26, ONE MENU UNDER 1280 PIXELS (the shared console page, the maintainer's word of 28 Nov 2026): one slim bar
+   above the chat and tool, with the menu button and the name of the place; the steps, the desk's tabs, the crew and the
+   rail inside one panel (App.tsx, JourneyBar.tsx, MenuTabs.tsx). Tokens only. */
+.wb-menu-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px var(--gutter, 16px);
+  border-bottom: 1px solid var(--line);
+}
+.wb-menu-bar-button {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--wb-tap, 44px);
+  height: var(--wb-tap, 44px);
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+}
+.wb-menu-bar-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+@media (max-width: 1279px) {
+  .wb-console-menu {
+    width: min(360px, 92vw) !important;
+    overflow-y: auto;
+    background: var(--paper);
+  }
+  /* The desk's own row of tabs lives in the menu here, so the chat and tool get the screen. */
+  .wb-page-console .wb-tabs {
+    display: none !important;
+  }
+  /* The beta note is one short line. */
+  .wb-beta-long {
+    display: none;
+  }
+}
+@media (min-width: 1280px) {
+  .wb-beta-short {
+    display: none;
+  }
+}
+.wb-console-menu-head {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.wb-console-menu-head .wb-drawer-close {
+  margin: -12px -6px -12px auto;
+}
+.wb-console-menu-part {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.wb-console-menu-part > .eyebrow {
+  margin-bottom: 10px;
+}
+.wb-menu-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.wb-menu-steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 32px;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.wb-menu-steps li[aria-current='step'] {
+  font-weight: 600;
+  color: var(--ink);
+}
+.wb-menu-step-dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid;
+  border-radius: var(--r-pill);
+}
+.wb-menu-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wb-menu-tab {
+  min-height: var(--wb-tap, 44px);
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--card);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.wb-menu-tab.is-selected {
+  border-color: var(--tide);
+  font-weight: 600;
+}
+/* Inside the menu the crew and the rail sit at the menu's width, with no edge of their own. */
+.wb-console-menu :is(.wb-crew-embedded, .wb-rail-embedded) {
+  min-height: 0;
 }

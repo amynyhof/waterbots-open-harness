@@ -120,9 +120,9 @@ console.log('\n  The agents lead (21 Nov 2026)');
 const journey = readFileSync(join('src', 'components', 'JourneyBar.tsx'), 'utf8');
 const transcript = readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8');
 expect(
-  'the steps on top are a progress line: only the phone row\'s Project and Crew click',
-  /* Three buttons from family 4 (rule 19): the phone row's Project and Crew, and Crew at the end of the bar from 600 to 1279 pixels. */
-  (journey.match(/<button/g) ?? []).length === 3 && /className="wb-journey-crew" onClick=\{onCrew\}/.test(journey) && !/onNavigate/.test(journey) && /AFTER_SAVE_LABEL/.test(journey) && !/GATED_NOTE/.test(journey),
+  'the steps on top are a progress line: only the slim bar\'s menu button clicks',
+  /* From family 4 (rule 26) one button: the slim bar's menu button under 1280 pixels. The steps themselves never click. */
+  (journey.match(/<button/g) ?? []).length === 1 && /className="wb-menu-bar-button"\s+onClick=\{menu\.onOpen\}/.test(journey) && !/onNavigate/.test(journey) && /AFTER_SAVE_LABEL/.test(journey) && !/GATED_NOTE/.test(journey),
   'the bar still clicks, or Plan, Monitor and Communicate are not one mark'
 );
 expect(

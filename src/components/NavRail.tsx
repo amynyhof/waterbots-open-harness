@@ -30,14 +30,12 @@
  */
 
 import { useEffect, useState } from 'react';
-import { useNarrow } from '../lib/phone';
 import { SITE_LABEL, SITE_URL } from '../lib/site';
 import { pathForInterest } from '../lib/pages';
 import { STAGE_WORDS as PROJECT_STAGES, typeWords as projectType } from '@waterbots/core/projectWords';
 import { servedWords, type Provenance, type RailTally, type VisitContext } from '../lib/visit';
 import { EXPORT_BUTTON, EXPORT_HOW } from '../lib/exportReport';
 
-const EXPANDED = 224;
 const COLLAPSED = 52;
 
 /** Narrowed below this after landing, the rail collapses. The reader can still expand it. */
@@ -89,7 +87,7 @@ export default function NavRail({
   report,
   tally = [],
   onInterest,
-  drawer,
+  embedded = false,
 }: {
   context: VisitContext;
   onTyped: (field: 'name' | 'place', value: string) => void;
@@ -98,18 +96,17 @@ export default function NavRail({
   tally?: RailTally[];
   /** Opens the Register your interest form (16 Nov 2026). */
   onInterest?: () => void;
-  /** On a phone: the rail is a sliding panel, open or shut by the shell. */
-  drawer?: { open: boolean; onClose: () => void };
+  /** Under 1280 pixels the rail is drawn inside the one menu (the shared console page, rule 26): open, full width, no toggle. */
+  embedded?: boolean;
 }) {
   /* OPEN ON LANDING, whatever the width — the maintainer's walk of 13 Nov
      2026: the record is the first thing a visitor should see filling. A
      later resize still follows the viewport until the reader chooses. */
   /* From family 4 (rule 19) it lands folded under 1280 pixels, in place of the 13 Nov 2026 rule that it opens whatever
      the width; the shared console page wins. */
-  const narrow = useNarrow();
   const [railOpen, setOpen] = useState(() => typeof window === 'undefined' || window.innerWidth >= AUTO_COLLAPSE_BELOW);
   /* A phone's panel always shows the whole record; shut, it is off the screen. */
-  const open = drawer ? true : railOpen;
+  const open = embedded ? true : railOpen;
 
   /* Only follows the viewport until the reader expresses a preference. */
   const [touched, setTouched] = useState(false);
@@ -141,28 +138,21 @@ export default function NavRail({
 
   return (
     <nav
-      className={drawer ? `chrome wb-drawer wb-drawer-left${drawer.open ? ' is-open' : ''}` : 'chrome'}
+      className={embedded ? 'wb-rail-embedded' : 'chrome'}
       aria-label="This visit"
-      aria-hidden={drawer ? !drawer.open : undefined}
       style={{
-        /* As wide as the crew rail (the shared console page of 26 Nov 2026, rule 2). A phone's drawer keeps its own width. */
-        /* From 600 to 1279 pixels, opened from its slim strip, it keeps its own width, so the chat keeps most of it (rule 19). */
-        width: open ? (drawer || narrow ? EXPANDED : 'var(--chat-rail)') : COLLAPSED,
+        /* As wide as the crew rail (the shared console page of 26 Nov 2026, rule 2); inside the menu, the menu's width. */
+        width: embedded ? 'auto' : open ? 'var(--chat-rail)' : COLLAPSED,
         flex: 'none',
         display: 'flex',
         flexDirection: 'column',
-        borderRight: '1px solid var(--line)',
+        borderRight: embedded ? 0 : '1px solid var(--line)',
         borderBottom: 0,
         transition: `width var(--dur) var(--ease)`,
-        overflow: 'hidden',
+        overflow: embedded ? 'visible' : 'hidden',
       }}
     >
-      {drawer ? (
-        <button className="wb-rail-toggle" onClick={drawer.onClose} aria-label="Close the project panel">
-          <Chevron open />
-          <span className="t-caption">Close</span>
-        </button>
-      ) : (
+      {embedded ? null : (
         <button
           className="wb-rail-toggle"
           onClick={() => {

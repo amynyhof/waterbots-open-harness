@@ -44,7 +44,7 @@ export default function CrewRail({
   status,
   onNavigate,
   shown,
-  drawer,
+  embedded = false,
 }: {
   active: Surface;
   /** One plain line per member, keyed by the step each one opens. */
@@ -52,23 +52,22 @@ export default function CrewRail({
   onNavigate: (surface: Surface) => void;
   /** The desks of the agents the map has called. The one in view is always among them, so nobody loses their place. */
   shown: ReadonlySet<Surface>;
-  /** On a phone: the column is a sliding panel, open or shut by the shell. */
-  drawer?: { open: boolean; onClose: () => void };
+  /** Under 1280 pixels the crew is drawn inside the one menu (the shared console page, rule 26). */
+  embedded?: boolean;
 }) {
   return (
     <aside
-      className={drawer ? `chrome wb-drawer wb-drawer-right${drawer.open ? ' is-open' : ''}` : 'chrome'}
+      className={embedded ? 'wb-crew-embedded' : 'chrome'}
       aria-label="The crew"
-      aria-hidden={drawer ? !drawer.open : undefined}
       style={{
-        width: 'var(--chat-rail)',
+        width: embedded ? 'auto' : 'var(--chat-rail)',
         flex: 'none',
         display: 'flex',
         flexDirection: 'column',
-        borderLeft: '1px solid var(--line)',
+        borderLeft: embedded ? 0 : '1px solid var(--line)',
         borderBottom: 0,
         minHeight: 0,
-        overflowY: 'auto',
+        overflowY: embedded ? 'visible' : 'auto',
         overflowX: 'hidden',
       }}
     >
@@ -87,11 +86,6 @@ export default function CrewRail({
       >
         <span aria-hidden style={{ width: 22, height: 1, background: 'var(--ink-4)' }} />
         The crew
-        {drawer && (
-          <button type="button" className="wb-drawer-close" onClick={drawer.onClose} aria-label="Close the crew panel">
-            Close
-          </button>
-        )}
       </div>
 
       <div style={{ padding: '0 12px 16px', display: 'flex', flexDirection: 'column', gap: 4 }}>

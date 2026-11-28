@@ -829,7 +829,8 @@ expect(
 expect(
   'W27: the right panel is the crew, one plain status line each, with no next-step rows (14 Nov 2026)',
   /* `counted` is the visit less what was worked out at a desk the map closed (J4, 23 Nov 2026). */
-  /crewStatus\(counted, sheet, carbon\)/.test(appSource) && /status=\{crew\}/.test(appSource) && !/nextStepRows/.test(appSource),
+  /* From family 4 (rule 26) the crew's props are shared by the right panel and the menu: `crewProps`. */
+  /crewStatus\(counted, sheet, carbon\)/.test(appSource) && /const crewProps = \{ active: surface, status: crew,/.test(appSource) && !/nextStepRows/.test(appSource),
   'the right panel still draws next-step rows'
 );
 expect(

@@ -31,6 +31,9 @@ import type { Conversation } from '../chat/useConversation';
 import { ScreenMore } from './AgentScreen';
 import { BETA_NOTE } from '@waterbots/core/consoleWords';
 
+/** The beta note's first sentence, for one short line under 1280 pixels (rule 26). */
+const BETA_SHORT = BETA_NOTE.slice(0, BETA_NOTE.indexOf('. ') + 1);
+
 /** Shared chat column: 816px. */
 export const SCREEN_COLUMN = 816;
 
@@ -103,7 +106,11 @@ export default function ScreenChat({
         <div style={{ maxWidth: SCREEN_COLUMN, margin: '0 auto', padding: '0 16px' }}>
           {/* THE BETA NOTE, just above the typing box on every screen (the shared
               console page of 26 Nov 2026, rule 3), in core's words. Their final words wait on the maintainer. */}
-          <p className="wb-beta-note">{BETA_NOTE}</p>
+          {/* Under 1280 pixels it is one short line: its first sentence, core's own words (rule 26). */}
+          <p className="wb-beta-note">
+            <span className="wb-beta-long">{BETA_NOTE}</span>
+            <span className="wb-beta-short">{BETA_SHORT}</span>
+          </p>
           <div style={{ display: 'flex', gap: 8, alignItems: 'flex-end' }}>
             <textarea
               ref={composer}

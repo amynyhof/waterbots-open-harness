@@ -72,7 +72,8 @@ import { readCarriedFacts, readCarriedQuestion, withoutCarried } from './lib/car
 import { pageFromPath, pathForInterest, pathForPage, type Page } from './lib/pages';
 import { type MapStatus } from './components/BasinMap';
 import NavRail from './components/NavRail';
-import JourneyBar from './components/JourneyBar';
+import JourneyBar, { JourneySteps } from './components/JourneyBar';
+import MenuTabs from './components/MenuTabs';
 import Desk from './components/Desk';
 import CrewRail from './components/CrewRail';
 import ScreeningReport from './components/ScreeningReport';
@@ -222,7 +223,7 @@ export default function App() {
   const phone = usePhone();
   /* Under 1280 pixels the crew is a drawer, opened from "Crew" (the shared console page, rule 19). True on a phone too. */
   const narrow = useNarrow();
-  const [drawer, setDrawer] = useState<'project' | 'crew' | null>(null);
+  const [drawer, setDrawer] = useState<'menu' | null>(null);
   /* What the site said after an export that opened no print window (rule 13). */
   const [exportSaid, setExportSaid] = useState('');
   const exportReport = useCallback(() => {
@@ -671,6 +672,15 @@ export default function App() {
     return () => window.removeEventListener('beforeunload', warn);
   }, [unsaved]);
 
+  /* The rail and the crew: beside the chat from 1280 pixels, inside the one menu below it (rule 26). */
+  const railProps = {
+    context: visit.context,
+    onTyped,
+    report: { show: somethingOnRecord(visit), onExport: exportReport, said: exportSaid, onDismiss: () => setExportSaid('') },
+    tally: railTally(visit, sheet),
+    onInterest: () => navigate(pathForInterest()),
+  };
+
   endingRef.current = { open: setSurface, report: exportReport, save: () => void onSeal() };
   /* The way on from each desk, by what the map says is next. */
   const next = useMemo(() => nextStep(record, map), [record, map]);
@@ -687,6 +697,7 @@ export default function App() {
     },
     [setSurface]
   );
+  const crewProps = { active: surface, status: crew, onNavigate: openFromCrew, shown: crewShown };
 
   const onDesk = surface === 'desk';
   const onMap = surface === 'map';
@@ -782,21 +793,13 @@ export default function App() {
         style={{ position: 'absolute', inset: 0, display: 'flex', overflow: 'hidden', visibility: onConsole ? 'visible' : 'hidden' }}
         aria-hidden={!onConsole}
       >
-        <NavRail
-          context={visit.context}
-          onTyped={onTyped}
-          report={{ show: somethingOnRecord(visit), onExport: exportReport, said: exportSaid, onDismiss: () => setExportSaid('') }}
-          tally={railTally(visit, sheet)}
-          onInterest={() => navigate(pathForInterest())}
-          drawer={phone ? { open: drawer === 'project', onClose: closeDrawer } : undefined}
-        />
+        {!narrow && <NavRail {...railProps} />}
 
         <div style={{ flex: 1, minWidth: 0, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
           <JourneyBar
             active={surface}
             progress={progress}
-            phone={phone ? { onProject: () => setDrawer('project'), onCrew: () => setDrawer('crew') } : undefined}
-            onCrew={narrow && !phone ? () => setDrawer('crew') : undefined}
+            menu={narrow ? { open: drawer === 'menu', onOpen: () => setDrawer('menu') } : undefined}
           />
 
           <div style={{ flex: 1, minHeight: 0, display: 'flex', overflow: 'hidden' }}>
@@ -954,17 +957,39 @@ export default function App() {
                 site menu from 21 Nov 2026, so it is reachable from every step.
                 The host docks that stood here on the map and on quantification
                 are retired; each agent's screen holds its own chat in the centre. */}
-            <CrewRail
-              active={surface}
-              status={crew}
-              onNavigate={openFromCrew}
-              shown={crewShown}
-              drawer={narrow ? { open: drawer === 'crew', onClose: closeDrawer } : undefined}
-            />
+            {!narrow && <CrewRail {...crewProps} />}
           </div>
         </div>
 
-        {/* The shade behind an open panel on a phone; a tap on it closes the panel. */}
+        {/* ONE MENU UNDER 1280 PIXELS (the shared console page, rule 26): the steps, the desk's tabs, the crew and the
+            rail, in one panel that slides over the page from the slim bar's menu button. The shade behind closes it. */}
+        {narrow && (
+          <div
+            id="wb-console-menu"
+            className={`chrome wb-drawer wb-drawer-left wb-console-menu${drawer === 'menu' ? ' is-open' : ''}`}
+            role="dialog"
+            aria-label="Menu"
+            aria-hidden={drawer !== 'menu'}
+          >
+            <div className="wb-console-menu-head">
+              <span className="eyebrow">Menu</span>
+              <button type="button" className="wb-drawer-close" onClick={closeDrawer} aria-label="Close the menu">
+                Close
+              </button>
+            </div>
+            <section className="wb-console-menu-part" aria-label="Steps">
+              <div className="eyebrow">Steps</div>
+              <JourneySteps active={surface} progress={progress} />
+            </section>
+            {drawer === 'menu' && <MenuTabs onPick={closeDrawer} />}
+            <section className="wb-console-menu-part">
+              <CrewRail {...crewProps} embedded />
+            </section>
+            <section className="wb-console-menu-part">
+              <NavRail {...railProps} embedded />
+            </section>
+          </div>
+        )}
         {narrow && drawer !== null && <div className="wb-scrim" aria-hidden onClick={closeDrawer} />}
       </div>
       </Reached.Provider>
