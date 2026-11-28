@@ -72,7 +72,8 @@ import { readCarriedFacts, readCarriedQuestion, withoutCarried } from './lib/car
 import { pageFromPath, pathForInterest, pathForPage, type Page } from './lib/pages';
 import { type MapStatus } from './components/BasinMap';
 import NavRail from './components/NavRail';
-import JourneyBar from './components/JourneyBar';
+import JourneyBar, { JourneySteps } from './components/JourneyBar';
+import MenuTabs from './components/MenuTabs';
 import Desk from './components/Desk';
 import CrewRail from './components/CrewRail';
 import ScreeningReport from './components/ScreeningReport';
@@ -87,6 +88,8 @@ import { onward, type Ending } from './lib/steps';
 import { d3InputFromRecord, violetAgentNoteLines } from '@waterbots/violet';
 import { computeD3 } from '@waterbots/violet/engine';
 import type { CarbonFigure, VisitContext } from './lib/visit';
+import { exportSaid as saidFor, printScreeningReport } from './lib/exportReport';
+import { UNSAVED_WARNING } from '@waterbots/core/consoleWords';
 import type { AgentTurn, TurnButton } from './chat/evidence';
 import Commons from './components/Commons';
 import InterestPage from './components/InterestPage';
@@ -107,7 +110,7 @@ import CalvinScreen from './components/CalvinScreen';
 import NotCalled, { NoCalculatorYet } from './components/NotCalled';
 import VioletScreen from './components/VioletScreen';
 import SiteMenu from './components/SiteMenu';
-import { usePhone } from './lib/phone';
+import { useNarrow, usePhone } from './lib/phone';
 import { blueButton, meetShowing } from './lib/blue';
 import type { SaveDoor } from './components/SaveDoor';
 import { Reached } from './chat/reached';
@@ -135,25 +138,11 @@ import {
   type Learned,
   type MapPin,
   type Teller,
+  railTally,
   type Visit,
   type WaterEstimate,
 } from './lib/visit';
 
-/**
- * Prints the screening report and nothing else (S21). The page is marked while
- * it prints, so Calvin's own report, from the open core, stays out of it
- * (src/styles/base.css). The mark comes off when printing ends.
- */
-function printScreeningReport() {
-  const body = document.body;
-  const done = () => {
-    body.classList.remove('wb-print-screening');
-    window.removeEventListener('afterprint', done);
-  };
-  body.classList.add('wb-print-screening');
-  window.addEventListener('afterprint', done);
-  window.print();
-}
 
 export default function App() {
   const [status, setStatus] = useState<MapStatus | null>(null);
@@ -232,11 +221,19 @@ export default function App() {
      maintainer's word of 29 Oct 2026 (src/lib/phone.ts). A step change, a
      page change or a wider window closes whichever is open. */
   const phone = usePhone();
-  const [drawer, setDrawer] = useState<'project' | 'crew' | null>(null);
+  /* Under 1280 pixels the crew is a drawer, opened from "Crew" (the shared console page, rule 19). True on a phone too. */
+  const narrow = useNarrow();
+  const [drawer, setDrawer] = useState<'menu' | null>(null);
+  /* What the site said after an export that opened no print window (rule 13). */
+  const [exportSaid, setExportSaid] = useState('');
+  const exportReport = useCallback(() => {
+    setExportSaid('');
+    void printScreeningReport().then((outcome) => setExportSaid(saidFor(outcome)));
+  }, []);
   const closeDrawer = useCallback(() => setDrawer(null), []);
   useEffect(() => {
     setDrawer(null);
-  }, [surface, page, phone]);
+  }, [surface, page, phone, narrow]);
 
   /* The worksheet lives here so Phoebe's answers and the rows she is filling
      in cannot disagree. It is plain component state and nothing writes it to
@@ -349,7 +346,7 @@ export default function App() {
     const record = projectRecord({ visit: visitRef.current, sheet: sheetRef.current, carbon: carbonRef.current });
     return waterHasNoCalculator(siteMap(record)) ? NO_CALCULATOR_YET : '';
   });
-  const endingRef = useRef<Ending>({ open: setSurface, report: printScreeningReport, save: () => undefined });
+  const endingRef = useRef<Ending>({ open: setSurface, report: () => undefined, save: () => undefined });
   const ask = useMemo(
     () =>
       wellingtonAsk(
@@ -644,7 +641,47 @@ export default function App() {
     }
   }, [counted, sheet, person, showPerson]);
 
-  endingRef.current = { open: setSurface, report: printScreeningReport, save: () => void onSeal() };
+  /* A DESK OPENS AT ITS TOP (the shared console page of 26 Nov 2026, rule 5; S34).
+     Each desk keeps its own scroll while hidden, so moving from Calvin's long desk
+     to Violet's short one could open hers part way down, looking blank. On every
+     move, the desk now in view starts at its top. Only scrolled boxes that show
+     are touched, after the move has drawn. */
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      for (const box of document.querySelectorAll<HTMLElement>('.wb-page-console div')) {
+        if (box.scrollTop > 0 && getComputedStyle(box).visibility === 'visible') box.scrollTop = 0;
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [surface]);
+
+  /* A WARNING BEFORE UNSAVED WORK IS LOST (the shared console page of 26 Nov 2026,
+     rule 12; RULINGS.md section 5; S36). Leaving or reloading with something on the
+     record, and before the save has sent it, the browser asks first. A browser
+     shows its own words for this; no site can set them. The save's own move to
+     the paid site is not stopped. */
+  const unsaved = somethingOnRecord(visit) && sealing.kind !== 'sealing' && sealing.kind !== 'sealed';
+  useEffect(() => {
+    if (!unsaved) return;
+    const warn = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      /* Core's words (UNSAVED_WARNING). Most browsers show their own words in place of a site's. */
+      event.returnValue = UNSAVED_WARNING;
+    };
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [unsaved]);
+
+  /* The rail and the crew: beside the chat from 1280 pixels, inside the one menu below it (rule 26). */
+  const railProps = {
+    context: visit.context,
+    onTyped,
+    report: { show: somethingOnRecord(visit), onExport: exportReport, said: exportSaid, onDismiss: () => setExportSaid('') },
+    tally: railTally(visit, sheet),
+    onInterest: () => navigate(pathForInterest()),
+  };
+
+  endingRef.current = { open: setSurface, report: exportReport, save: () => void onSeal() };
   /* The way on from each desk, by what the map says is next. */
   const next = useMemo(() => nextStep(record, map), [record, map]);
   const wayOn = (here: Surface) => onward(next, endingRef.current, here);
@@ -660,6 +697,7 @@ export default function App() {
     },
     [setSurface]
   );
+  const crewProps = { active: surface, status: crew, onNavigate: openFromCrew, shown: crewShown };
 
   const onDesk = surface === 'desk';
   const onMap = surface === 'map';
@@ -677,10 +715,10 @@ export default function App() {
   const onBridgetMeet = useCallback((showing: boolean) => setMeetOn((m) => (m.map === showing ? m : { ...m, map: showing })), []);
   const meetInView =
     onConsole &&
-    !(phone && drawer !== null) &&
+    !(narrow && drawer !== null) &&
     ((onDesk && meetShowing(chat.turns, reached)) || (onEligibility && meetOn.eligibility) || (onMap && meetOn.map));
   /* Save is the site menu's one button (21 Nov 2026). On a phone an open panel covers the menu, so it counts only while no panel is open. */
-  const saveInView = onConsole && somethingOnRecord(visit) && (!phone || drawer === null);
+  const saveInView = onConsole && somethingOnRecord(visit) && (!narrow || drawer === null);
   /* A page with a form of its own — the interest form, and the supporters page from 18 Nov 2026 — makes its Send the blue one. */
   const blue = blueButton({ meet: meetInView, save: saveInView, form: onInterest || onSupporters });
 
@@ -755,19 +793,13 @@ export default function App() {
         style={{ position: 'absolute', inset: 0, display: 'flex', overflow: 'hidden', visibility: onConsole ? 'visible' : 'hidden' }}
         aria-hidden={!onConsole}
       >
-        <NavRail
-          context={visit.context}
-          onTyped={onTyped}
-          report={{ show: somethingOnRecord(visit), onExport: printScreeningReport }}
-          onInterest={() => navigate(pathForInterest())}
-          drawer={phone ? { open: drawer === 'project', onClose: closeDrawer } : undefined}
-        />
+        {!narrow && <NavRail {...railProps} />}
 
         <div style={{ flex: 1, minWidth: 0, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
           <JourneyBar
             active={surface}
             progress={progress}
-            phone={phone ? { onProject: () => setDrawer('project'), onCrew: () => setDrawer('crew') } : undefined}
+            menu={narrow ? { open: drawer === 'menu', onOpen: () => setDrawer('menu') } : undefined}
           />
 
           <div style={{ flex: 1, minHeight: 0, display: 'flex', overflow: 'hidden' }}>
@@ -925,18 +957,40 @@ export default function App() {
                 site menu from 21 Nov 2026, so it is reachable from every step.
                 The host docks that stood here on the map and on quantification
                 are retired; each agent's screen holds its own chat in the centre. */}
-            <CrewRail
-              active={surface}
-              status={crew}
-              onNavigate={openFromCrew}
-              shown={crewShown}
-              drawer={phone ? { open: drawer === 'crew', onClose: closeDrawer } : undefined}
-            />
+            {!narrow && <CrewRail {...crewProps} />}
           </div>
         </div>
 
-        {/* The shade behind an open panel on a phone; a tap on it closes the panel. */}
-        {phone && drawer !== null && <div className="wb-scrim" aria-hidden onClick={closeDrawer} />}
+        {/* ONE MENU UNDER 1280 PIXELS (the shared console page, rule 26): the steps, the desk's tabs, the crew and the
+            rail, in one panel that slides over the page from the slim bar's menu button. The shade behind closes it. */}
+        {narrow && (
+          <div
+            id="wb-console-menu"
+            className={`chrome wb-drawer wb-drawer-left wb-console-menu${drawer === 'menu' ? ' is-open' : ''}`}
+            role="dialog"
+            aria-label="Menu"
+            aria-hidden={drawer !== 'menu'}
+          >
+            <div className="wb-console-menu-head">
+              <span className="eyebrow">Menu</span>
+              <button type="button" className="wb-drawer-close" onClick={closeDrawer} aria-label="Close the menu">
+                Close
+              </button>
+            </div>
+            <section className="wb-console-menu-part" aria-label="Steps">
+              <div className="eyebrow">Steps</div>
+              <JourneySteps active={surface} progress={progress} />
+            </section>
+            {drawer === 'menu' && <MenuTabs onPick={closeDrawer} />}
+            <section className="wb-console-menu-part">
+              <CrewRail {...crewProps} embedded />
+            </section>
+            <section className="wb-console-menu-part">
+              <NavRail {...railProps} embedded />
+            </section>
+          </div>
+        )}
+        {narrow && drawer !== null && <div className="wb-scrim" aria-hidden onClick={closeDrawer} />}
       </div>
       </Reached.Provider>
 

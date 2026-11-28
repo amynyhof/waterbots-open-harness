@@ -1,0 +1,119 @@
+{
+  "about": [
+    "The Agent Commons list of modules, one row each (item S26, 26 Nov 2026). A row changes here, without touching code.",
+    "src/lib/commonsShelf.ts reads this file, checks every field and fails the build, naming the row, when one is wrong.",
+    "Three lists, drawn in this order: 'shelf' (modules with an agent of the crew), 'planned' and 'seeking'.",
+    "A value written as { \"read\": \"<name>\" } is read from a registry that already holds it, so it is never typed twice; the names are listed in commonsShelf.ts (READS).",
+    "'holder' is a crew member's name (src/lib/crew.ts); 'package' is the installed agent the row belongs to, whose version the row shows.",
+    "'stage' is one of the six stages; 'owner' is one of the four owners in commonsShelf.ts. An owner is never a partner's name, until a partner owns a module and the maintainer says so.",
+    "There is no grade here. Every grade reads 'not yet graded' until a real card from the one outside grading rig exists (ONE GRADER, REAL ONLY)."
+  ],
+  "shelf": [
+    {
+      "note": "Phoebe's tag is the short name of the document her first card cites, read from her package, as her pack tab reads it.",
+      "key": "phoebe-vwba-cards",
+      "slug": "phoebe",
+      "holder": "Phoebe",
+      "package": "@waterbots/phoebe",
+      "title": "Eligibility and feasibility cards",
+      "line": "Whether a water project can count a volumetric water benefit, and what would make the case stronger.",
+      "tag": { "read": "phoebe-first-card-document" },
+      "opens": true,
+      "stage": "In development",
+      "owner": "WaterBots"
+    },
+    {
+      "note": "From 14 Nov 2026 carbon is the open core's calculator, one card for both versions. Stage and owner are the carbon packs' of 28 Oct 2026, unchanged. Opens from 26 Nov 2026 (S33).",
+      "key": "pack-calvin-carbon",
+      "slug": "calvin-carbon",
+      "holder": "Calvin",
+      "package": "@waterbots/calvin",
+      "title": "Carbon credits from safe drinking water",
+      "line": "A first estimate of the carbon credits a safe drinking water project could earn, under Gold Standard's methodology, versions 1.0 and 2.0.",
+      "tag": "Gold Standard SDWS",
+      "tagHref": "https://globalgoals.goldstandard.org/429-ee-sws-emission-reductions-from-safe-drinking-water-supply/",
+      "packKey": "calvin-carbon",
+      "opens": true,
+      "stage": "Expert review",
+      "owner": "WaterBots + partner (to be named)"
+    },
+    {
+      "note": "From 22 Nov 2026 the water card is Violet's D-3, the open core's, and from 23 Nov 2026 she holds it herself (J5). Its words come from the water method registry (src/lib/methodPacks.ts). Opens from 26 Nov 2026 (S33).",
+      "key": { "read": "water-pack-key" },
+      "slug": "violet-water",
+      "holder": "Violet",
+      "package": "@waterbots/violet",
+      "title": { "read": "water-d3-name" },
+      "line": { "read": "water-d3-shelf-line" },
+      "tag": { "read": "water-d3-shelf-document" },
+      "packKey": { "read": "water-method-id" },
+      "opens": true,
+      "stage": "Proposed",
+      "owner": "WaterBots"
+    },
+    {
+      "note": "Bridget's card names the map's two datasets, which the licences module cites. Opens from 26 Nov 2026 (S33).",
+      "key": "bridget-map-datasets",
+      "slug": "bridget",
+      "holder": "Bridget",
+      "package": "@waterbots/bridget",
+      "title": "The map’s two datasets",
+      "line": "Where the world’s river basins are, and how stressed each one’s water is.",
+      "tag": "HydroSHEDS · WRI Aqueduct 4.0",
+      "opens": true,
+      "stage": "In development",
+      "owner": "WaterBots"
+    }
+  ],
+  "planned": [
+    {
+      "note": "Named but not yet open. Her words, 28 Oct 2026. No portrait is drawn for the agent.",
+      "key": "health-impact-guide",
+      "agent": "Heather",
+      "title": "Health impact guide",
+      "line": "Estimates the health benefits of water and sanitation projects.",
+      "method": "Evidence review (in development)",
+      "stage": "Proposed",
+      "owner": "Partner pending"
+    }
+  ],
+  "seeking": [
+    {
+      "note": "Seeking a build partner and a domain consultant, her ruling of 28 Oct 2026. No agent yet; the grade shows a dash, as nothing exists to grade.",
+      "key": "water-quality-benefits",
+      "agent": null,
+      "title": "Water quality benefits",
+      "line": "Measures how much a project improves water quality (sediment, nutrients, bacteria, temperature and metals) and how that benefit can be credibly claimed.",
+      "method": "Water Quality Benefit Accounting guidebook (WRI, LimnoTech, TNC, 2025)",
+      "stage": "Seeking partners",
+      "owner": "Open to partners"
+    },
+    {
+      "key": "wash-multiple-benefits",
+      "agent": null,
+      "title": "WASH multiple benefits",
+      "line": "Estimates and values the benefits of water, sanitation and hygiene access, like better health, time saved and income.",
+      "method": "WASH Benefits Accounting Framework (WASH4Work, LimnoTech, CEO Water Mandate, 2024)",
+      "stage": "Seeking partners",
+      "owner": "Open to partners"
+    },
+    {
+      "key": "sanitation-impact",
+      "agent": null,
+      "title": "Sanitation impact",
+      "line": "Counts the greenhouse gas a safe sanitation service avoids, mostly methane from untreated waste.",
+      "method": "Gold Standard Safe Sanitation Services (SASS), draft",
+      "stage": "Seeking partners",
+      "owner": "Open to partners"
+    },
+    {
+      "key": "solar-energy-credits",
+      "agent": null,
+      "title": "Solar energy credits",
+      "line": "Counts the clean electricity a renewable system (often solar) makes, so it can earn renewable energy credits.",
+      "method": "Peace Renewable Energy Credits (P-RECs), issued under the I-REC standard",
+      "stage": "Seeking partners",
+      "owner": "Open to partners"
+    }
+  ]
+}

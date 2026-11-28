@@ -33,6 +33,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { AFTER_SAVE_LABEL, AFTER_SAVE_NOTE, JOURNEY, phaseSurface } from '../lib/journey';
 import { DESK_LABEL, type Surface } from '../lib/surfaces';
+import { CREW } from '../lib/crew';
 
 /**
  * Below this many pixels of bar, the labels no longer fit and the bar
@@ -56,13 +57,13 @@ function markStyle(mark: Mark): CSSProperties {
 export default function JourneyBar({
   active: inView,
   progress,
-  phone,
+  menu,
 }: {
   active: Surface;
   /** Which open phases have something from this visit, keyed by phase key. */
   progress: Record<string, boolean>;
-  /** On a phone: the one row, and what its two buttons open. */
-  phone?: { onProject: () => void; onCrew: () => void };
+  /** Under 1280 pixels: the one slim bar, with the menu button and the name of the place (the shared console page, rule 26). */
+  menu?: { open: boolean; onOpen: () => void };
 }) {
   /* Violet's desk is Quantify's second desk, so the bar marks Quantify there too. */
   const active = phaseSurface(inView);
@@ -84,24 +85,29 @@ export default function JourneyBar({
   const step = OPEN.findIndex((phase) => phase.surface === active);
   const stepName = step < 0 ? DESK_LABEL : `${step + 1} · ${OPEN[step].label}`;
 
-  if (phone) {
+  /* ONE MENU UNDER 1280 PIXELS (the shared console page, rule 26, the maintainer's word of 28 Nov 2026): one slim bar
+     above the chat and tool, with the menu button and the name of the place. The steps, the desk's tabs, the crew and
+     the rail are inside the menu (App.tsx). This replaces the phone's one row and the crew drawer of rule 19. */
+  if (menu) {
+    const who = CREW.find((member) => member.surface === inView)?.name;
     return (
-      <div className="chrome wb-phone-bar" style={{ flex: 'none' }}>
-        <button type="button" className="wb-phone-bar-button" onClick={phone.onProject}>
-          <span aria-hidden>‹ </span>Project
+      <div className="chrome wb-menu-bar" style={{ flex: 'none' }}>
+        <button
+          type="button"
+          className="wb-menu-bar-button"
+          onClick={menu.onOpen}
+          aria-expanded={menu.open}
+          aria-controls="wb-console-menu"
+          aria-label="Open the menu"
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
+            <path d="M3 5.5h14M3 10h14M3 14.5h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          </svg>
         </button>
-        <span className="wb-phone-bar-name" aria-live="polite">
-          <span className="wb-phone-bar-dots" aria-hidden>
-            <span className="wb-phase-dot" style={markStyle(onDesk ? 'here' : 'none')} />
-            {OPEN.map((phase) => (
-              <span key={phase.key} className="wb-phase-dot" style={markStyle(markOf(phase.key, phase.surface))} />
-            ))}
-          </span>
+        <span className="wb-menu-bar-name" aria-live="polite">
           {stepName}
+          {who ? ` · ${who}` : ''}
         </span>
-        <button type="button" className="wb-phone-bar-button" onClick={phone.onCrew}>
-          Crew<span aria-hidden> ›</span>
-        </button>
       </div>
     );
   }
@@ -118,7 +124,9 @@ export default function JourneyBar({
           gap: 0,
           padding: '8px var(--gutter)',
           borderBottom: '1px solid var(--line)',
-          overflow: 'hidden',
+          /* The step bar never cuts off a step: it wraps (the shared console page, rule 19). */
+          flexWrap: 'wrap',
+          rowGap: 6,
         }}
       >
         {/* DISPATCHES, FIRST, THEN A HAIRLINE — the desk, not a phase. */}
@@ -172,9 +180,38 @@ export default function JourneyBar({
 
         {/* PLAN, MONITOR, COMMUNICATE — one quiet mark (21 Nov 2026). */}
         <span className="wb-phase wb-phase-later" title={AFTER_SAVE_NOTE} aria-label={`${AFTER_SAVE_LABEL}: ${AFTER_SAVE_NOTE}`} style={{ flex: 'none' }}>
-          <span style={{ fontSize: compact ? 11 : 12, color: 'var(--ink-4)', whiteSpace: 'nowrap' }}>{AFTER_SAVE_LABEL}</span>
+          {/* --ink-3, not --ink-4: it must pass the normal contrast test (the shared console page, rule 21). */}
+          <span style={{ fontSize: compact ? 11 : 12, color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>{AFTER_SAVE_LABEL}</span>
         </span>
       </nav>
     </div>
+  );
+}
+
+/**
+ * THE STEPS, INSIDE THE MENU UNDER 1280 PIXELS (rule 26): the same marks as the bar, one step to a line. A progress
+ * list, as the bar is: a visitor moves by the crew.
+ */
+export function JourneySteps({ active: inView, progress }: { active: Surface; progress: Record<string, boolean> }) {
+  const active = phaseSurface(inView);
+  const markOf = (key: string, surface: Surface | null): Mark =>
+    surface === active ? 'here' : progress[key] ? 'has' : 'none';
+  return (
+    <ol className="wb-menu-steps">
+      <li aria-current={active === 'desk' ? 'step' : undefined}>
+        <span className="wb-menu-step-dot" aria-hidden style={markStyle(active === 'desk' ? 'here' : 'none')} />
+        {DESK_LABEL}
+      </li>
+      {OPEN.map((phase, i) => (
+        <li key={phase.key} aria-current={phase.surface === active ? 'step' : undefined}>
+          <span className="wb-menu-step-dot" aria-hidden style={markStyle(markOf(phase.key, phase.surface))} />
+          {i + 1} · {phase.label}
+        </li>
+      ))}
+      <li title={AFTER_SAVE_NOTE}>
+        <span className="wb-menu-step-dot" aria-hidden style={markStyle('none')} />
+        {AFTER_SAVE_LABEL}
+      </li>
+    </ol>
   );
 }

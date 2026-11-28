@@ -29,14 +29,14 @@ import { COUNTRIES } from '@waterbots/calvin/engine';
 import { foldPlace } from './placeBox';
 
 /** The installed package's version, held to the lockfile by scripts/check-calvin-package.mjs. */
-export const CALVIN_PACKAGE_VERSION = '0.9.0';
+export const CALVIN_PACKAGE_VERSION = '0.10.0';
 
 /** Violet's D-3 package, the water calculator from 22 Nov 2026. */
-export const VIOLET_PACKAGE_VERSION = '0.9.0';
+export const VIOLET_PACKAGE_VERSION = '0.10.0';
 
 /** Each package has a release and a tag of its own from 23 Nov 2026 (J1). */
-export const CALVIN_RELEASE = 'calvin-v0.9.0';
-export const VIOLET_RELEASE = 'violet-v0.9.0';
+export const CALVIN_RELEASE = 'calvin-v0.10.0';
+export const VIOLET_RELEASE = 'violet-v0.10.0';
 
 /** The ISO 3166-1 alpha-3 code of the one country the place names, or null. */
 export function countryIsoFor(place: string): string | null {

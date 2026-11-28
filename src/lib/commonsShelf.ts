@@ -1,41 +1,43 @@
 /**
- * The Agent Commons shelf — one entry per knowledge pack, assembled from the
- * registries that already exist. Item S18, slice 2, built 11 Sep 2026. From
- * 28 Oct 2026 the page draws them as a list of modules, one row each, with a
- * stage and an owner, and a planned module after them; and from a second
- * ruling the same day, a section of modules that are seeking partners.
+ * The Agent Commons shelf — one entry per knowledge pack. Item S18, slice 2, built 11 Sep 2026. From 28 Oct 2026 the
+ * page draws them as a list of modules, one row each, with a stage and an owner, a planned module after them, and a
+ * section of modules that are seeking partners.
  *
- * NOTHING IS TYPED TWICE. Phoebe's card reads her committed card sets
- * (her package (@waterbots/phoebe)); Calvin's three read the method pack registry
- * (src/lib/methodPacks.ts), one card per live pack, so a pack added to the
- * registry has a card here the same day; Bridget's names the map's two
- * datasets, which the licences module cites. The only words that live here
- * alone are the one line on what a pack is good at where no registry carries
- * one — Phoebe's and Bridget's — and Bridget's short tag.
+ * THE ROWS LIVE IN A CONTENT FILE OF THEIR OWN from 26 Nov 2026 (item S26): src/content/commons-modules.json. A row's
+ * words, stage, owner and whether it opens change there, without touching code. This file keeps the types, reads that
+ * file, checks every field, and throws, naming the row and the field, when one is wrong — so a bad row fails the build
+ * rather than drawing a blank or a made-up cell.
  *
- * SHORT LINES AND SHORT NAMES, from slice 3 — maintainer's ruling, 11 Sep
- * 2026: ~~Calvin's lines were each pack's `measures` sentence and every tag
- * the citation's full document title~~, which ran a card to twice the drawn
- * height. Each pack now carries a `shelf` line and short name in the registry,
- * written once, and the card reads those.
+ * NOTHING IS TYPED TWICE. A value the registries already hold is written in the content file as `{ "read": "<name>" }`
+ * and read here from the registry (READS, below): Phoebe's tag from her committed card sets (her package,
+ * @waterbots/phoebe), and Violet's title, line and tag from the water method registry (src/lib/methodPacks.ts).
  *
- * WELLINGTON HAS NO CARD. He carries no knowledge pack; the shelf says so in
- * one line at its foot rather than drawing an empty card for him.
+ * THE INSTALLED AGENTS (item S32, 26 Nov 2026). Each row names the installed package it belongs to, and the row shows
+ * that package's own version, read from its package.json at build time. An installed agent that has no row still
+ * appears, as a plain row of its package name and version, where the crew list lets it appear at the Commons.
+ * THE OPEN CORE'S COMMONS READER REPLACES THIS when it ships: until then this file stands in for it, reading
+ * node_modules/@waterbots/* at build time.
  *
- * THE GRADE IS NULL ON EVERY CARD, AND ONLY ONE THING MAY EVER FILL IT.
- * Maintainer's rulings of 9 Sep 2026, canon: ONE GRADER — the grading rig
- * kept outside this repository is the only public grade, and this site's own
- * checks are internal gates, never a score; REAL ONLY — a grade comes from
- * real projects and real packs run through that rig, never an invented case.
- * Until a real card from that rig exists, every chip reads "not yet graded",
- * and slice 4 widens the type when the first one arrives. No mock grade,
- * ever.
+ * WELLINGTON HAS NO CARD. He carries no knowledge pack, and the crew list gives him no place at the Commons door.
+ *
+ * THE GRADE IS NULL ON EVERY CARD, AND ONLY ONE THING MAY EVER FILL IT. Maintainer's rulings of 9 Sep 2026, canon: ONE
+ * GRADER — the grading rig kept outside this repository is the only public grade, and this site's own checks are
+ * internal gates, never a score; REAL ONLY — a grade comes from real projects and real packs run through that rig,
+ * never an invented case. Until a real card from that rig exists, every chip reads "not yet graded", and slice 4 widens
+ * the type when the first one arrives. No mock grade, ever.
  */
 
+import { commonsAgents, type CommonsAgent } from '@waterbots/core/commons';
+import { AGENT_CARD as PHOEBE_CARD } from '@waterbots/phoebe';
+import { AGENT_CARD as CALVIN_CARD } from '@waterbots/calvin';
+import { AGENT_CARD as VIOLET_CARD } from '@waterbots/violet';
+import { AGENT_CARD as BRIDGET_CARD } from '@waterbots/bridget';
+import { AGENT_CARD as WELLINGTON_CARD } from '@waterbots/wellington';
 import { crewMember, type CrewMember } from './crew';
 import { WATER_D3_LISTING } from './methodPacks';
 import { WATER_METHOD_ID } from './visit';
 import { CRITERIA } from '@waterbots/phoebe';
+import modulesRaw from '../content/commons-modules.json?raw';
 
 /**
  * A MODULE'S STAGE AND OWNER — maintainer's rulings, 28 Oct 2026. The owner
@@ -64,11 +66,9 @@ export function stageNumber(stage: ModuleStage): number {
   return STAGES.findIndex((s) => s.name === stage) + 1;
 }
 
-export type ModuleOwner =
-  | 'WaterBots'
-  | 'WaterBots + partner (to be named)'
-  | 'Partner pending'
-  | 'Open to partners';
+const OWNERS = ['WaterBots', 'WaterBots + partner (to be named)', 'Partner pending', 'Open to partners'] as const;
+
+export type ModuleOwner = (typeof OWNERS)[number];
 
 export interface ShelfCard {
   /** Stable key. The registry's own where it has one. */
@@ -80,6 +80,10 @@ export interface ShelfCard {
   slug: string;
   /** The agent whose face the card wears, and whose screen opens. */
   holder: CrewMember;
+  /** The installed package the module belongs to, by its name. */
+  packageName: string;
+  /** That package's own version, read from its package.json at build time (S32). */
+  version: string;
   /** The pack's name as the card's title. */
   title: string;
   /** One short line on what the pack is good at. */
@@ -91,8 +95,8 @@ export interface ShelfCard {
   /** For a method pack, its registry key, so the calculator opens on it. */
   packKey?: string;
   /**
-   * Whether its Open button works on the Commons. Only Phoebe's does, from
-   * 28 Oct 2026: Calvin's and Bridget's rows say "Coming soon", her word.
+   * Whether its Open button works on the Commons. Phoebe's did from 28 Oct 2026; from 26 Nov 2026 (S33) each agent
+   * opens there, on its own seat (src/components/CommonsSeats.tsx).
    */
   opens: boolean;
   stage: ModuleStage;
@@ -122,93 +126,164 @@ export interface PlannedModule {
   grade: null;
 }
 
-const PHOEBE_CARD: ShelfCard = {
-  key: 'phoebe-vwba-cards',
-  slug: 'phoebe',
-  holder: crewMember('Phoebe'),
-  title: 'Eligibility and feasibility cards',
-  line:
-    'Whether a water project can count a volumetric water benefit, and what would make the ' +
-    'case stronger.',
+/**
+ * An installed agent with no row in the content file (S32): a plain row of its package name and version, and nothing
+ * else, since nothing else is known of it. It does not open. Its grade is null, as every grade is.
+ */
+export interface InstalledModule {
+  key: string;
+  /** The crew list's name for the seat. */
+  agent: string;
+  packageName: string;
+  version: string;
+  grade: null;
+}
+
+/* ---------------------------------------------------------------------------
+   The registries a row may read from, by the name the content file uses.
+--------------------------------------------------------------------------- */
+
+const READS: Record<string, () => string> = {
   /* "VWBA 2.0" — read from the first card's citation, as her pack tab reads it. */
-  tag: CRITERIA[0].citation.document,
-  opens: true,
-  stage: 'In development',
-  owner: 'WaterBots',
-  grade: null,
+  'phoebe-first-card-document': () => CRITERIA[0].citation.document,
+  /* Violet's address changed with her holder: the old one carried a full stop, which the interest form refuses. */
+  'water-pack-key': () => `pack-${WATER_METHOD_ID}`,
+  'water-method-id': () => WATER_METHOD_ID,
+  'water-d3-name': () => WATER_D3_LISTING.name,
+  'water-d3-shelf-line': () => WATER_D3_LISTING.shelfLine,
+  'water-d3-shelf-document': () => WATER_D3_LISTING.shelfDocument,
 };
 
-/* The carbon packs are in expert review and the water pack is proposed, the
-   maintainer's word of 28 Oct 2026; the registry's own category says which
-   they are. */
-/* FROM 14 NOV 2026 CARBON IS THE OPEN CORE'S CALCULATOR, one card for both
-   versions: @waterbots/calvin, from the release calvin-v0.4.1 (21 Nov 2026). Its stage and
-   owner are the carbon packs' of 28 Oct 2026, unchanged. */
-const CALVIN_CARBON_CARD: ShelfCard = {
-  key: 'pack-calvin-carbon',
-  slug: 'calvin-carbon',
-  holder: crewMember('Calvin'),
-  title: 'Carbon credits from safe drinking water',
-  line:
-    'A first estimate of the carbon credits a safe drinking water project could earn, under Gold ' +
-    "Standard's methodology, versions 1.0 and 2.0.",
-  tag: 'Gold Standard SDWS',
-  tagHref: 'https://globalgoals.goldstandard.org/429-ee-sws-emission-reductions-from-safe-drinking-water-supply/',
-  packKey: 'calvin-carbon',
-  opens: false,
-  stage: 'Expert review',
-  owner: 'WaterBots + partner (to be named)',
-  grade: null,
-};
+/* ---------------------------------------------------------------------------
+   The installed agents, from core's Commons reader (core 0.6.0, F4.3; the shared console page, rule 15): each
+   package's own card, its version and the places it works. Core says which open here.
+--------------------------------------------------------------------------- */
 
-/* FROM 22 NOV 2026 THE WATER CARD IS VIOLET'S D-3, the open core's, and from 23 Nov 2026 she holds it
-   herself (J5). Its words, stage and owner are the ones this site's own D-3 pack carried, unchanged. Its
-   address changed with its holder: the old one carried a full stop, which the interest form refuses. */
-const VIOLET_WATER_CARD: ShelfCard = {
-  key: `pack-${WATER_METHOD_ID}`,
-  slug: 'violet-water',
-  holder: crewMember('Violet'),
-  title: WATER_D3_LISTING.name,
-  line: WATER_D3_LISTING.shelfLine,
-  tag: WATER_D3_LISTING.shelfDocument,
-  packKey: WATER_METHOD_ID,
-  opens: false,
-  stage: 'Proposed',
-  owner: 'WaterBots',
-  grade: null,
-};
+/** Every agent as the Commons shows it, installed first, in the crew list's order. */
+export const COMMONS_AGENTS: CommonsAgent[] = commonsAgents([PHOEBE_CARD, CALVIN_CARD, VIOLET_CARD, BRIDGET_CARD, WELLINGTON_CARD]);
 
-const CALVIN_CARDS: ShelfCard[] = [CALVIN_CARBON_CARD];
+/** Each installed agent's version, by its id (the package's name after "@waterbots/"). */
+const INSTALLED: Record<string, string> = Object.fromEntries(
+  COMMONS_AGENTS.flatMap((agent) => (agent.status === 'installed' && agent.version ? [[agent.id, agent.version]] : []))
+);
 
-const BRIDGET_CARD: ShelfCard = {
-  key: 'bridget-map-datasets',
-  slug: 'bridget',
-  holder: crewMember('Bridget'),
-  title: 'The map’s two datasets',
-  line: 'Where the world’s river basins are, and how stressed each one’s water is.',
-  tag: 'HydroSHEDS · WRI Aqueduct 4.0',
-  opens: false,
-  stage: 'In development',
-  owner: 'WaterBots',
-  grade: null,
-};
+/** Whether core says the agent opens in the Commons (its card lists the Commons as a place it works). */
+const OPENS_HERE = new Set(COMMONS_AGENTS.filter((agent) => agent.opens).map((agent) => agent.id));
 
-/** The shelf, in the order the maintainer approved on the picture of 9 Sep 2026. */
-export const SHELF: ShelfCard[] = [PHOEBE_CARD, ...CALVIN_CARDS, VIOLET_WATER_CARD, BRIDGET_CARD];
+/* ---------------------------------------------------------------------------
+   Reading the content file. Every field is checked; a wrong one throws, naming the row.
+--------------------------------------------------------------------------- */
+
+const FILE = 'src/content/commons-modules.json';
+
+type Raw = Record<string, unknown>;
+
+function fail(where: string, problem: string): never {
+  throw new Error(`${FILE}: ${where}: ${problem}`);
+}
+
+function text(row: Raw, field: string, where: string): string;
+function text(row: Raw, field: string, where: string, optional: true): string | undefined;
+function text(row: Raw, field: string, where: string, optional = false): string | undefined {
+  const value = row[field];
+  if (value === undefined && optional) return undefined;
+  if (value !== null && typeof value === 'object' && 'read' in value) {
+    const name = (value as { read: unknown }).read;
+    const read = typeof name === 'string' ? READS[name] : undefined;
+    if (!read) fail(where, `"${field}" reads "${String(name)}", which is not one of: ${Object.keys(READS).join(', ')}`);
+    const out = read();
+    if (!out) fail(where, `"${field}" reads "${String(name)}", which is empty`);
+    return out;
+  }
+  if (typeof value !== 'string' || value.trim() === '') fail(where, `"${field}" must be words, and is ${JSON.stringify(value)}`);
+  return value;
+}
+
+function stageOf(row: Raw, where: string): ModuleStage {
+  const stage = STAGES.find((s) => s.name === row.stage);
+  if (!stage) fail(where, `"stage" must be one of: ${STAGES.map((s) => s.name).join(', ')}`);
+  return stage.name;
+}
+
+function ownerOf(row: Raw, where: string): ModuleOwner {
+  const owner = OWNERS.find((o) => o === row.owner);
+  if (!owner) fail(where, `"owner" must be one of: ${OWNERS.join(', ')}`);
+  return owner;
+}
+
+function rows(content: Raw, list: string): Raw[] {
+  const value = content[list];
+  if (!Array.isArray(value)) fail(list, 'must be a list of rows');
+  return value.map((row, i) => {
+    if (row === null || typeof row !== 'object' || Array.isArray(row)) fail(`${list}[${i}]`, 'must be a row');
+    return row as Raw;
+  });
+}
+
+const CONTENT = JSON.parse(modulesRaw) as Raw;
+
+function shelfCard(row: Raw, i: number): ShelfCard {
+  const where = `shelf[${i}]`;
+  const key = text(row, 'key', where);
+  const at = `${where} (${key})`;
+  const slug = text(row, 'slug', at);
+  if (!/^[a-z0-9-]+$/.test(slug)) fail(at, '"slug" may hold only small letters, digits and dashes');
+  const packageName = text(row, 'package', at);
+  const installed = /^@waterbots\/([a-z0-9-]+)$/.exec(packageName)?.[1];
+  const version = installed === undefined ? undefined : INSTALLED[installed];
+  if (!version) fail(at, `"package" is ${packageName}, which is not installed`);
+  if (typeof row.opens !== 'boolean') fail(at, '"opens" must be true or false');
+  const tagHref = text(row, 'tagHref', at, true);
+  const packKey = text(row, 'packKey', at, true);
+  return {
+    key,
+    slug,
+    holder: crewMember(text(row, 'holder', at)),
+    packageName,
+    version,
+    title: text(row, 'title', at),
+    line: text(row, 'line', at),
+    tag: text(row, 'tag', at),
+    ...(tagHref ? { tagHref } : {}),
+    ...(packKey ? { packKey } : {}),
+    /* It opens only where the content file says so and core's reader agrees (Bridget's card keeps her to the two sites). */
+    opens: row.opens && OPENS_HERE.has(installed ?? ''),
+    stage: stageOf(row, at),
+    owner: ownerOf(row, at),
+    grade: null,
+  };
+}
+
+function plannedModule(list: string) {
+  return (row: Raw, i: number): PlannedModule => {
+    const where = `${list}[${i}]`;
+    const key = text(row, 'key', where);
+    const at = `${where} (${key})`;
+    const agent = row.agent === null ? null : typeof row.agent === 'string' && row.agent.trim() !== '' ? row.agent : undefined;
+    if (agent === undefined) fail(at, '"agent" must be a name, or null where there is no agent yet');
+    return {
+      key,
+      agent,
+      title: text(row, 'title', at),
+      line: text(row, 'line', at),
+      method: text(row, 'method', at),
+      stage: stageOf(row, at),
+      owner: ownerOf(row, at),
+      grade: null,
+    };
+  };
+}
+
+/** The shelf, in the order the content file gives (the maintainer's picture of 9 Sep 2026). */
+export const SHELF: ShelfCard[] = rows(CONTENT, 'shelf').map(shelfCard);
+
+for (const [i, card] of SHELF.entries()) {
+  if (SHELF.findIndex((c) => c.slug === card.slug) !== i) fail(`shelf[${i}] (${card.key})`, `"slug" ${card.slug} is used twice`);
+  if (SHELF.findIndex((c) => c.key === card.key) !== i) fail(`shelf[${i}] (${card.key})`, '"key" is used twice');
+}
 
 /** Modules named but not yet open, listed after the shelf. Her words, 28 Oct 2026. */
-export const PLANNED: PlannedModule[] = [
-  {
-    key: 'health-impact-guide',
-    agent: 'Heather',
-    title: 'Health impact guide',
-    line: 'Estimates the health benefits of water and sanitation projects.',
-    method: 'Evidence review (in development)',
-    stage: 'Proposed',
-    owner: 'Partner pending',
-    grade: null,
-  },
-];
+export const PLANNED: PlannedModule[] = rows(CONTENT, 'planned').map(plannedModule('planned'));
 
 /**
  * Modules seeking a build partner and a domain consultant — the maintainer's
@@ -217,53 +292,13 @@ export const PLANNED: PlannedModule[] = [
  * all four hers, 28 Oct 2026.
  * Their grade shows a dash, not "not yet graded": nothing exists to grade.
  */
-export const SEEKING: PlannedModule[] = [
-  {
-    key: 'water-quality-benefits',
-    agent: null,
-    title: 'Water quality benefits',
-    line:
-      'Measures how much a project improves water quality (sediment, nutrients, bacteria, ' +
-      'temperature and metals) and how that benefit can be credibly claimed.',
-    method: 'Water Quality Benefit Accounting guidebook (WRI, LimnoTech, TNC, 2025)',
-    stage: 'Seeking partners',
-    owner: 'Open to partners',
-    grade: null,
-  },
-  {
-    key: 'wash-multiple-benefits',
-    agent: null,
-    title: 'WASH multiple benefits',
-    line:
-      'Estimates and values the benefits of water, sanitation and hygiene access, like better ' +
-      'health, time saved and income.',
-    method: 'WASH Benefits Accounting Framework (WASH4Work, LimnoTech, CEO Water Mandate, 2024)',
-    stage: 'Seeking partners',
-    owner: 'Open to partners',
-    grade: null,
-  },
-  {
-    key: 'sanitation-impact',
-    agent: null,
-    title: 'Sanitation impact',
-    line:
-      'Counts the greenhouse gas a safe sanitation service avoids, mostly methane from untreated ' +
-      'waste.',
-    method: 'Gold Standard Safe Sanitation Services (SASS), draft',
-    stage: 'Seeking partners',
-    owner: 'Open to partners',
-    grade: null,
-  },
-  {
-    key: 'solar-energy-credits',
-    agent: null,
-    title: 'Solar energy credits',
-    line:
-      'Counts the clean electricity a renewable system (often solar) makes, so it can earn ' +
-      'renewable energy credits.',
-    method: 'Peace Renewable Energy Credits (P-RECs), issued under the I-REC standard',
-    stage: 'Seeking partners',
-    owner: 'Open to partners',
-    grade: null,
-  },
-];
+export const SEEKING: PlannedModule[] = rows(CONTENT, 'seeking').map(plannedModule('seeking'));
+
+/**
+ * Installed agents with no row (S32): core's reader lists every installed agent, so one that no row names still shows,
+ * as a plain row of its name and version. Today that is Wellington, who does not open here (his card keeps him to the
+ * two sites and the lobby chat).
+ */
+export const INSTALLED_WITHOUT_ROW: InstalledModule[] = COMMONS_AGENTS.filter(
+  (agent) => agent.status === 'installed' && agent.version !== null && !SHELF.some((card) => card.packageName === `@waterbots/${agent.id}`)
+).map((agent) => ({ key: `installed-${agent.id}`, agent: agent.name, packageName: `@waterbots/${agent.id}`, version: agent.version ?? '', grade: null }));

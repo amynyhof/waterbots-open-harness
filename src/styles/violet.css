@@ -3,7 +3,7 @@
    FROM 23 NOV 2026 (J5, @waterbots/violet 0.6.0) HER SCREEN HAS CALVIN'S LAYOUT, drawn by her own stylesheet,
    @waterbots/violet/styles.css, imported just before this file. This file now sets only:
    - this site's names for the tokens her stylesheet uses, exactly as calvin.css does for Calvin's;
-   - her colour, Orchid, from this site's own token;
+   - (her colour, Orchid, comes from core's colour list from violet 0.10.0; this site sets nothing for it);
    - where her header card pins;
    - the one rule this site keeps: Orchid never carries text.
    Nothing here changes what she says or computes. */
@@ -17,7 +17,6 @@
   padding: 0 24px 32px;
   /* The names her stylesheet uses, mapped to this site's tokens exactly as Calvin's are in calvin.css;
      no new colour. Her screen does not sit inside .wb-calvin, so they are set here. */
-  --orchid: var(--bot-violet);
   --ease-out: var(--ease);
   --duration-fast: 120ms;
   --duration-base: var(--dur);

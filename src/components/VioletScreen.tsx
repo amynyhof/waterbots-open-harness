@@ -12,6 +12,7 @@
  * yet, so her name is set in ink. The brand book holds no portrait of her, so her initial is drawn (AgentFace).
  */
 
+import { crewMember } from '../lib/crew';
 import { useEffect, useRef, type ReactNode } from 'react';
 import { flushSync } from 'react-dom';
 import type { GivenFacts, ProjectRecord } from '@waterbots/core/record';
@@ -39,7 +40,8 @@ import VioletWater from './VioletWater';
 
 export const VIOLET: AgentHost = {
   name: 'Violet',
-  role: 'Volumetric water benefits calculator',
+  /* One role word per agent, the crew file's (the shared console page of 26 Nov 2026, rule 7; A14). */
+  role: crewMember('Violet').role,
   portrait: '',
   colourToken: '--bot-violet',
   nameToken: '--ink',

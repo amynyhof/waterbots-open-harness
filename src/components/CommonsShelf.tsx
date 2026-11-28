@@ -9,13 +9,15 @@
  * ONE ROW PER MODULE: the agent's picture, name and role; one line on what
  * it does; its method; its stage, one of six, as a name and a bar; its
  * owner; its grade; its community rating; and the row's action. The rows come from src/lib/commonsShelf.ts,
- * which reads the registries; nothing here names a pack. ONE LIST, the
+ * which reads the content file src/content/commons-modules.json and the registries (S26); nothing here names a
+ * pack. An agent's row also shows its installed package's version, and an installed agent with no row gets a
+ * plain one of its own, after the planned module (S32). ONE LIST, the
  * maintainer's word of 28 Oct 2026: the built modules, then the planned one,
  * then the modules seeking partners, after them, in the same list.
  *
  * THE ACTION. Open hands the entry up to the Commons page, which opens the
- * holder's screen alone (slice 3); only a module marked `opens` has it, and
- * the others say "Coming soon", not clickable. A planned module says "Not
+ * holder's screen alone (slice 3); only a module marked `opens` has it (each
+ * agent's, from 26 Nov 2026, S33), and the others say "Coming soon", not clickable. A planned module says "Not
  * open yet". A module seeking partners has "Work with us", and its stage's
  * name does the same: both open an email to the team, its subject
  * "Partnering on: <module name>".
@@ -33,15 +35,18 @@
  * on every row, and no way to rate. Nothing is counted or stored.
  */
 
+import { COMMONS_WORDS } from '@waterbots/core/commons';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { SUPPORTERS_PATH, pathForInterest } from '../lib/pages';
 import { SUPPORTERS_LINK } from '../lib/supporters';
 import {
+  INSTALLED_WITHOUT_ROW,
   PLANNED,
   SEEKING,
   SHELF,
   STAGES,
   stageNumber,
+  type InstalledModule,
   type ModuleStage,
   type PlannedModule,
   type ShelfCard,
@@ -220,6 +225,9 @@ export default function CommonsShelf({
           {PLANNED.map((planned) => (
             <PlannedRow key={planned.key} planned={planned} />
           ))}
+          {INSTALLED_WITHOUT_ROW.map((installed) => (
+            <InstalledRow key={installed.key} installed={installed} />
+          ))}
           {SEEKING.map((planned) => (
             <PlannedRow key={planned.key} planned={planned} seeking />
           ))}
@@ -255,7 +263,7 @@ function ModuleRow({ card, onOpen, onInterest }: { card: ShelfCard; onOpen: () =
         </span>
       </div>
 
-      <Module title={card.title} line={card.line} />
+      <Module title={card.title} line={card.line} version={card.version} />
 
       <Cell label="Method">
         <Method text={card.tag} href={card.tagHref} />
@@ -264,7 +272,7 @@ function ModuleRow({ card, onOpen, onInterest }: { card: ShelfCard; onOpen: () =
         <Stage stage={card.stage} />
       </Cell>
       <Cell label="Owner">{card.owner}</Cell>
-      <Cell label="Grade">not yet graded</Cell>
+      <Cell label="Grade">{COMMONS_WORDS.notGraded}</Cell>
       <Cell label="Community rating">
         <Rating />
       </Cell>
@@ -383,7 +391,7 @@ function PlannedRow({ planned, seeking = false }: { planned: PlannedModule; seek
       <Cell label="Owner">{planned.owner}</Cell>
       <Cell label="Grade">
         {/* A module seeking partners has nothing to grade yet: a dash, her word of 28 Oct 2026. */}
-        {seeking ? <span style={{ color: 'var(--ink-3)' }}>—</span> : 'not yet graded'}
+        {seeking ? <span style={{ color: 'var(--ink-3)' }}>—</span> : COMMONS_WORDS.notGraded}
       </Cell>
       <Cell label="Community rating">
         <Rating />
@@ -396,6 +404,33 @@ function PlannedRow({ planned, seeking = false }: { planned: PlannedModule; seek
         ) : (
           <Quiet>Not open yet</Quiet>
         )}
+      </div>
+    </li>
+  );
+}
+
+/* AN INSTALLED AGENT WITH NO ROW (S32): its name from the crew list, its package's name and version, and nothing that
+   is not known of it — a dash for method, stage and owner, the grade not yet graded, and no way to open it. */
+function InstalledRow({ installed }: { installed: InstalledModule }) {
+  const none = <span style={{ color: 'var(--ink-3)' }}>—</span>;
+  return (
+    <li className="wb-module-row" aria-label={installed.packageName}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+        <Portrait />
+        <span style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.2, color: 'var(--ink)' }}>{installed.agent}</span>
+      </div>
+
+      <Module title={installed.packageName} line={`Version ${installed.version}`} />
+
+      <Cell label="Method">{none}</Cell>
+      <Cell label="Stage">{none}</Cell>
+      <Cell label="Owner">{none}</Cell>
+      <Cell label="Grade">{COMMONS_WORDS.notGraded}</Cell>
+      <Cell label="Community rating">
+        <Rating />
+      </Cell>
+      <div>
+        <Quiet>Coming soon</Quiet>
       </div>
     </li>
   );
@@ -443,11 +478,13 @@ function Role({ children }: { children: ReactNode }) {
   );
 }
 
-function Module({ title, line }: { title: string; line: string }) {
+/** The module's name and line; for an agent's row, its installed package's version, read at build time (S32). */
+function Module({ title, line, version }: { title: string; line: string; version?: string }) {
   return (
     <div style={{ minWidth: 0 }}>
       <div style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.3 }}>{title}</div>
       <div style={{ marginTop: 2, fontSize: 13, lineHeight: 1.45, color: 'var(--ink-2)' }}>{line}</div>
+      {version && <div style={{ marginTop: 2, fontSize: 12, lineHeight: 1.45, color: 'var(--ink-3)' }}>Version {version}</div>}
     </div>
   );
 }

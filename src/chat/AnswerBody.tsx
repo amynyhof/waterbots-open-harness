@@ -15,7 +15,7 @@
 
 import { useState } from 'react';
 import CiteLine, { DataTableNote } from './CiteLine';
-import { emphasiseClosingQuestion, layoutAnswer, type Evidence, type Segment } from './evidence';
+import { emphasiseClosingQuestion, layoutAnswer, type DisplaySegment, type Evidence, type Segment } from './evidence';
 
 export default function AnswerBody({
   text,
@@ -72,22 +72,36 @@ export default function AnswerBody({
           shown.push({ ref: segment.ref, item: segment.item });
         }
 
+        const drawLine = (line: DisplaySegment[]) =>
+          line.map((segment, i) =>
+            segment.kind === 'strong' ? (
+              <strong key={i} style={{ fontWeight: 600, color: 'var(--ink)' }}>
+                {segment.parts.map((part, j) => drawSegment(part, j))}
+              </strong>
+            ) : (
+              drawSegment(segment, i)
+            )
+          );
+        /* LISTS SHOW AS LISTS (the shared console page of 26 Nov 2026, rule 6). Display only. */
+        const list = asList(segments);
+        const ListTag = list?.ordered ? 'ol' : 'ul';
+
         return (
           <div key={p} style={{ marginBottom: 9 }}>
-            <p
-              className="t-body"
-              style={{ margin: 0, fontSize: 14, color: 'var(--ink-2)', whiteSpace: 'pre-wrap' }}
-            >
-              {segments.map((segment, i) =>
-                segment.kind === 'strong' ? (
-                  <strong key={i} style={{ fontWeight: 600, color: 'var(--ink)' }}>
-                    {segment.parts.map((part, j) => drawSegment(part, j))}
-                  </strong>
-                ) : (
-                  drawSegment(segment, i)
-                )
-              )}
-            </p>
+            {list ? (
+              <ListTag className="t-body wb-answer-list">
+                {list.items.map((item, i) => (
+                  <li key={i}>{drawLine(item)}</li>
+                ))}
+              </ListTag>
+            ) : (
+              <p
+                className="t-body"
+                style={{ margin: 0, fontSize: 14, color: 'var(--ink-2)', whiteSpace: 'pre-wrap' }}
+              >
+                {drawLine(segments)}
+              </p>
+            )}
 
             {shown.map(({ ref, item }) => (
               <div key={item.id} style={{ marginTop: 6 }}>
@@ -122,4 +136,38 @@ export default function AnswerBody({
       )}
     </>
   );
+}
+
+const BULLET = /^\s*(?:[-*•]|(\d+)[.)])\s+/;
+
+/**
+ * A paragraph whose every line starts with a bullet ("- ", "* ", "• ") or a
+ * number ("1. "), as its lines, with the bullet taken off; null when it is prose.
+ * Two lines at least, so one sentence that starts with a dash stays prose.
+ */
+function asList(segments: DisplaySegment[]): { ordered: boolean; items: DisplaySegment[][] } | null {
+  const lines: DisplaySegment[][] = [[]];
+  for (const segment of segments) {
+    if (segment.kind !== 'text') {
+      lines[lines.length - 1].push(segment);
+      continue;
+    }
+    segment.text.split('\n').forEach((piece, i) => {
+      if (i > 0) lines.push([]);
+      if (piece !== '') lines[lines.length - 1].push({ ...segment, text: piece });
+    });
+  }
+  const items = lines.filter((line) => line.length > 0);
+  if (items.length < 2) return null;
+  const starts = items.map((line) => (line[0].kind === 'text' ? BULLET.exec(line[0].text) : null));
+  if (starts.some((m) => m === null)) return null;
+  const ordered = starts.every((m) => m?.[1] !== undefined);
+  return {
+    ordered,
+    items: items.map((line, i) => {
+      const [first, ...rest] = line;
+      const text = first.kind === 'text' ? first.text.slice(starts[i]![0].length) : '';
+      return text === '' ? rest : [{ ...first, text } as DisplaySegment, ...rest];
+    }),
+  };
 }

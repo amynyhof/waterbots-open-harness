@@ -13,6 +13,7 @@
  * or no funding path goes forward, they are the report and "Save and sign up".
  */
 
+import { EXPORT_WORDS, handoffLabel, type ConsoleStep } from '@waterbots/core/consoleWords';
 import type { TurnButton } from '../chat/evidence';
 import { CREW } from './crew';
 import { JOURNEY, phaseSurface } from './journey';
@@ -34,7 +35,8 @@ export function handoffButton(surface: Surface, go: () => void, steps?: Partial<
   const agent = CREW.find((member) => member.surface === surface);
   if (!step || !agent) return undefined;
   return {
-    label: `Step ${step.number} of ${step.of}: ${step.label}. Meet ${agent.name}`,
+    /* The words are core's, the same on both sites (consoleWords.ts, family 4). */
+    label: handoffLabel(step.label as ConsoleStep, step.number, step.of, agent.name),
     handoff: { token: agent.token, portrait: agent.portrait, name: agent.name },
     reaches: surface,
     go,
@@ -51,7 +53,7 @@ export interface Ending {
 /** The buttons to what comes next, leaving out the desk the visitor is on. Empty while Wellington is still gathering the basics. */
 export function onward(next: NextStep, ending: Ending, here?: Surface): TurnButton[] {
   const end: TurnButton[] = [
-    { label: 'Export screening report', go: ending.report },
+    { label: EXPORT_WORDS.button, go: ending.report },
     { label: 'Save and sign up', go: ending.save },
   ];
   if (next.kind === 'gather') return [];

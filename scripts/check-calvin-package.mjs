@@ -14,7 +14,9 @@
  * the six releases of that day in one step, so the site has one copy of core — core-v0.4.0, calvin-v0.8.0, violet-v0.8.0,
  * phoebe-v0.1.0, wellington-v0.1.0 and bridget-v0.1.0. No sum changed; all five agents come from their packages. Later on 26 Nov
  * 2026, her word ("The fix is released"): core-v0.5.0, calvin-v0.9.0, violet-v0.9.0, phoebe-v0.2.0, wellington-v0.2.0 and
- * bridget-v0.2.0 in one step: an agent fills a fact only when the visitor gave it. No sum changed.
+ * bridget-v0.2.0 in one step: an agent fills a fact only when the visitor gave it. No sum changed. On 27 Nov 2026, family 4
+ * ("Core has released"): core-v0.6.0, calvin-v0.10.0, violet-v0.10.0, phoebe-v0.3.0, wellington-v0.3.0 and bridget-v0.3.0 in one
+ * step: the console's shared parts, and every calculator export printing in full.
  *   6. The project the site hands Calvin sets `creditedUnderV1` from the shared record and never otherwise (item A29,
  *      J4, 23 Nov 2026): Phoebe's question settles it. Until then it was left unset (her word of 16 Nov 2026).
  *
@@ -40,44 +42,44 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const RELEASE = 'calvin-v0.9.0';
-const VIOLET_RELEASE = 'violet-v0.9.0';
+const RELEASE = 'calvin-v0.10.0';
+const VIOLET_RELEASE = 'violet-v0.10.0';
 const FILES = {
   '@waterbots/calvin': {
-    file: 'vendor/waterbots/waterbots-calvin-0.9.0.tgz',
-    version: '0.9.0',
-    sha256: '5f6c77ca0a33fa25b8964f9e88a50e5baa58f6c9d9e7a97d6906e6808af47e14',
-    integrity: 'sha512-kCjvDjgm4W2YDJSM3uja9E6yuX/2xdMWs4a9go7mX3pBkGiOjJgzfQmOlHI6OBwOGY+VfGOAADEqafiYwavj8w==',
+    file: 'vendor/waterbots/waterbots-calvin-0.10.0.tgz',
+    version: '0.10.0',
+    sha256: '2b4445acdfd0cbba47442a1f9477c4f1b3280a6a6cd76fcff42931ca3acbb370',
+    integrity: 'sha512-Cm+CkKc30r2EU8k3zMbXaD70XBfT27parnJNsn1X4A65w9joLH3etUnQabmLvzzoetT+MGR5Li+HCwY0KKzgng==',
   },
   '@waterbots/violet': {
-    file: 'vendor/waterbots/waterbots-violet-0.9.0.tgz',
-    version: '0.9.0',
-    sha256: '408a12f9920e2eda6744aad5f7f5253a5d33ea4ef4387e55ebdadb3ece931679',
-    integrity: 'sha512-Z1G3mlGl37wtRVWnUBafcTEe+yAWrsQviSlbE1zqVnzxCwMB22aNf6zMCbDsnjSeDEnW4XUPgR9APHOl5Pb9bQ==',
+    file: 'vendor/waterbots/waterbots-violet-0.10.0.tgz',
+    version: '0.10.0',
+    sha256: '423e4e1274c9728bba3da56a07e354636be3eafa2321a0f32ff5713e2d7c4256',
+    integrity: 'sha512-SkqGJw47fg1Cxb63Er71bULVVYI5xFQiaUraWDGtmBOyNHOp1VJgP+V6cbIaT7YpyGeKwbVTLBuLK2Q9jhuLHg==',
   },
   '@waterbots/core': {
-    file: 'vendor/waterbots/waterbots-core-0.5.0.tgz',
-    version: '0.5.0',
-    sha256: '187a49e7b7acbda4a646a296a8aded5c54dd4ebaf4853a6d254730e50f2abf71',
-    integrity: 'sha512-QTM5+2qBb755WN3ciS2JIEIto+Himpx9E8sIpBkh46N67G9NrYZu+TFPRgNICwbprPOKp7mSLOrVvS4Kgx7cEA==',
+    file: 'vendor/waterbots/waterbots-core-0.6.0.tgz',
+    version: '0.6.0',
+    sha256: 'de20024230937f5885504fb8f471f1d86fd4ca7143cf7b8088268625f4fc5ece',
+    integrity: 'sha512-+nThlid15K/NoXEXlU2btBj3oTpPVYSuAJvu7Gzua2umoI0rUpgEIcHGSR1dB5QgS9Ekb22g7XqQY0d1UubMAQ==',
   },
   '@waterbots/phoebe': {
-    file: 'vendor/waterbots/waterbots-phoebe-0.2.0.tgz',
-    version: '0.2.0',
-    sha256: 'c9abb169f203d0d7cbf47df122d70ecd0411ca06ae3872f2b94d6a85ccd55a55',
-    integrity: 'sha512-xGmxL6j1nDd347OQmzz0CHrGQAvq165Rfvu1Kr1Na297y8KxCf2veTF23oJVtF1Jw/RgkJLgjCJoRfOuldbl6A==',
+    file: 'vendor/waterbots/waterbots-phoebe-0.3.0.tgz',
+    version: '0.3.0',
+    sha256: '93e665db471782c910d94879710497a279437356330e385669f6c2456a062b37',
+    integrity: 'sha512-dSNmWoJu/Fmj1nkKh88cDh5BWlUPuqrltpSL6JiLhIoKD1rXYTT/d6FruZBMlLYkMUZ7JpM3Vf0trJqzDhoKcA==',
   },
   '@waterbots/wellington': {
-    file: 'vendor/waterbots/waterbots-wellington-0.2.0.tgz',
-    version: '0.2.0',
-    sha256: '18145856f460b23386a7e318de2ee3ded4986d1ed37ccb6c05e940b32dda49f9',
-    integrity: 'sha512-yKS9gpSr3iNa7ARCxMWf5HNb9GabL+TSBId/CsMCLbu0BsoIROHLESYotCMR5mqCgeBPxl/iiG3lYPMrcjdA9g==',
+    file: 'vendor/waterbots/waterbots-wellington-0.3.0.tgz',
+    version: '0.3.0',
+    sha256: '087b57bfbee3c2f35852d12716f62af45323bbd1107231753735742129043190',
+    integrity: 'sha512-CMAZHaNHZwxneKyoyXKja+wzjDT/CYfpNe3Mxk6sQazCBMZWdN+uwOWpukSlvPamCa4+/+3lLYBmL4OeRvMVDQ==',
   },
   '@waterbots/bridget': {
-    file: 'vendor/waterbots/waterbots-bridget-0.2.0.tgz',
-    version: '0.2.0',
-    sha256: 'c09f50a8813b3dd599ad846bcea423beedde1b012bce32b74462ecd5960132ea',
-    integrity: 'sha512-nD8B4woVDTq7SRntqjaoS+8+xxwIYxA0hgBlHn9kJpypdWuFAM1qKQqZXy1pw7N0Pj5IUhRCcL48NoDaO35JRQ==',
+    file: 'vendor/waterbots/waterbots-bridget-0.3.0.tgz',
+    version: '0.3.0',
+    sha256: 'd8123a937d74c60fe813ed0b0085ef8b7db64fa9bea408db9fa7c2b227f2bf7a',
+    integrity: 'sha512-FNq8KrURDinzumJTnVt90g7gDI2sMnVaG+6bmfobxK0BBY7SBQef0sAPUb6jrsz1vcvT6GUiZU5F2ot2MATZuw==',
   },
 };
 const ENGINE_VERSION = '0.19.0';
@@ -428,9 +430,17 @@ expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSy
     'no working in the screening report'
   );
   expect(
-    'the working prints with the screening report, in the flow of the page',
-    /body\.wb-print-screening \.wb-report \.print-report \{\s*display: block !important;\s*position: static !important;/.test(base),
-    'the print rule is missing'
+    /* From core 0.6.0 (family 4): core's print part copies the whole screening report, his working inside it, into its
+       own print area, so his working prints with it in the flow of the page; his time stamp is set before the copy. */
+    'the working prints with the screening report, through core\'s print part, with his time stamp set first',
+    (() => {
+      const exporter = readFileSync(join('src', 'lib', 'exportReport.ts'), 'utf8');
+      return /import \{ openReportInTab, printReport, type ExportOutcome \} from '@waterbots\/core\/print';/.test(exporter) &&
+        /window\.dispatchEvent\(new Event\(REPORT_STAMP_EVENT\)\);\s*if \(opensInTab\(\)\) return openReportInTab\(report\) \? 'tab-chosen' : 'failed';\s*return printReport\(report\);/.test(exporter) &&
+        /\.wb-print-root \.wb-screening-report,\s*body\.wb-report-tab \.wb-screening-report \{\s*display: block;/.test(base) &&
+        /addEventListener\(REPORT_STAMP_EVENT, before\)/.test(holder) && /reportStamp\(\)/.test(holder);
+    })(),
+    'the screening report does not go through core\'s print part, or his time stamp is not set before the copy'
   );
 }
 /* 10. The two switches of 0.4.0, rendered once on the server with a made-up project: with them the
@@ -502,6 +512,20 @@ expect('carried/ is gone (V1, the maintainer\'s word of 14 Nov 2026)', !existsSy
   );
 }
 expect('.gitattributes keeps no carried/ rule', !/^carried\//m.test(readFileSync('.gitattributes', 'utf8')), 'a carried/ line is left');
+
+/* Family 4, rule 7 (core 0.6.0): one colour per agent, from core's colour list. Calvin is Reef and Violet is Orchid;
+   this site's tokens for them must be the list's own values. The other three are not ruled yet (null in the list). */
+{
+  const { AGENT_COLOURS } = await import('@waterbots/core/agentColours');
+  const tokens = readFileSync(join('src', 'styles', 'tokens.css'), 'utf8');
+  const token = (name) => new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{6})`).exec(tokens)?.[1]?.toLowerCase();
+  expect(
+    "Calvin's Reef and Violet's Orchid here are core's colour list's own values",
+    AGENT_COLOURS.calvin?.hex.toLowerCase() === token('reef') && AGENT_COLOURS.violet?.hex.toLowerCase() === token('orchid') &&
+      /--bot-calvin:\s*var\(--reef\)/.test(tokens) && /--bot-violet:\s*var\(--orchid\)/.test(tokens),
+    `core ${AGENT_COLOURS.calvin?.hex} and ${AGENT_COLOURS.violet?.hex}, this site ${token('reef')} and ${token('orchid')}`
+  );
+}
 
 console.log(failures ? `\nFAILED — ${failures} of ${passes + failures} checks did not hold.\n` : `\nPASSED — ${passes} checks: the release, the lockfile and the package's own cases.\n`);
 process.exit(failures ? 1 : 0);

@@ -61,10 +61,15 @@ export default function Commons({
   const slug = moduleFromPath(path);
   const open = slug === null ? null : (SHELF.find((c) => c.opens && c.slug === slug) ?? null);
   /* An address no open module answers to opens the list, and the address
-     says so: /commons/bridget, /commons/anything/else, /commons/ all become
-     /commons. */
+     says so: /commons/anything, /commons/anything/else, /commons/ all become
+     /commons. From 26 Nov 2026 (S33) each agent's module opens, so each
+     agent's own address answers. */
+  /* NO SILENT WRONG DESK (the shared console page, rule 24, the walk of 27 Nov 2026): the list says, in plain words,
+     why the address asked for did not open. */
+  const [asked, setAsked] = useState('');
   useEffect(() => {
     if (pageFromPath(path) === 'commons' && open === null && path !== COMMONS_PATH) {
+      setAsked(notOpenWords(slug));
       navigate(COMMONS_PATH, { replace: true });
     }
   }, [path, slug, open, navigate]);
@@ -122,6 +127,14 @@ export default function Commons({
           hidden, as everywhere in this shell. */}
       <div className="wb-commons-panes" style={{ flex: 1, minHeight: 0, position: 'relative' }}>
         <Pane shown={onShelf}>
+          {asked && (
+            <p className="wb-commons-asked" role="status">
+              {asked}{' '}
+              <button type="button" className="wb-link-button" onClick={() => setAsked('')}>
+                Close
+              </button>
+            </p>
+          )}
           <CommonsShelf
             onOpen={openCard}
             onInterest={(card) => navigate(pathForInterest(card.slug))}
@@ -175,15 +188,17 @@ const ABOUT_LABEL = {
   margin: '0 0 3px',
 } as const;
 
-/* ABOUT THIS MODULE — method, owner, stage and the community rating, as the
-   module's row on the list shows them; "Work with us" only where the module
-   seeks a partner, opening an email with its name in the subject. */
+/* ABOUT THIS MODULE — method, owner, stage, version and the community rating, as
+   the module's row on the list shows them; "Work with us" only where the module
+   seeks a partner, opening an email with its name in the subject. The version
+   is the installed package's own, read at build time (S32). */
 function AboutModule({ card }: { card: ShelfCard }) {
   const seeking = card.stage === 'Seeking partners';
   const facts: { label: string; value: React.ReactNode }[] = [
     { label: 'Method', value: <Method text={card.tag} href={card.tagHref} /> },
     { label: 'Owner', value: card.owner },
     { label: 'Stage', value: <Stage stage={card.stage} /> },
+    { label: 'Version', value: card.version },
     { label: 'Community rating', value: <Rating /> },
   ];
   return (
@@ -230,4 +245,14 @@ function Pane({ shown, children }: { shown: boolean; children: React.ReactNode }
       {children}
     </div>
   );
+}
+
+/** Why an address in the Agent Commons opened the list instead (rule 24). */
+function notOpenWords(slug: string | null): string {
+  const card = slug === null ? undefined : SHELF.find((c) => c.slug === slug);
+  if (card) {
+    const name = card.holder.name;
+    return `${name}'s module is listed here but does not open in the Agent Commons. ${name} works with you on the free site and the paid site.`;
+  }
+  return 'Nothing in the Agent Commons answers to that address, so here is the whole list.';
 }

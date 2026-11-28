@@ -1707,7 +1707,10 @@ button.wb-info {
   display: none;
 }
 
-@media (max-width: 900px) {
+/* FAMILY 4, RULE 19 (the shared console page, from the walk of 27 Nov 2026): three layouts. Under 600 pixels, the phone
+   layout below. From 600 to 1279, the chat keeps the middle, the left rail folds to its slim strip, and the crew is a
+   drawer (the drawer rules, next). From 1280, three columns. The Commons' and the content's own narrow rules stay at 900. */
+@media (max-width: 599px) {
   /* THE PAGE SCROLLS, and the menu goes with it. A screen that holds a chat
      fills exactly what is left below the menu, so its box is in view. */
   html,
@@ -1757,7 +1760,9 @@ button.wb-info {
   select {
     font-size: 16px !important;
   }
+}
 
+@media (max-width: 1279px) {
   /* THE LEFT RAIL AND THE CREW SLIDE OVER THE PAGE, one at a time, above the
      map's own layers; the shade behind closes them. */
   .wb-drawer {
@@ -1809,48 +1814,9 @@ button.wb-info {
     cursor: pointer;
   }
 
-  /* ONE ROW ON A PHONE (21 Nov 2026): the step's name, with a small dot for
-     each step, between "Project" and "Crew". The rings above it are gone. */
-  .wb-phone-bar {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 0 4px;
-    border-bottom: 1px solid var(--line);
-  }
-  .wb-phone-bar-button {
-    flex: none;
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0 10px;
-    background: transparent;
-    border: 0;
-    font-family: var(--font-sans);
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--tide-text);
-    white-space: pre;
-    cursor: pointer;
-  }
-  .wb-phone-bar-name {
-    flex: 1;
-    min-width: 0;
-    text-align: center;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .wb-phone-bar-dots {
-    display: inline-flex;
-    gap: 4px;
-    margin-right: 8px;
-    vertical-align: 1px;
-  }
+}
 
+@media (max-width: 900px) {
   /* An agent's tabs stay on one line: tighter, and the row slides sideways
      on the narrowest phones rather than wrapping. */
   .wb-tabs {
@@ -1945,6 +1911,14 @@ button.wb-info {
   .wb-module-page .wb-tabpanel.is-active:not(.wb-tabpanel-chat) > * {
     flex: none !important;
     height: auto !important;
+    overflow: visible !important;
+  }
+  /* Calvin's calculator lies over its tab (CalvinCalculator.tsx), which on a desk fills the screen. Here the tab has
+     no height of its own, so on a phone his calculator flows at its own height instead, or it would be 0 pixels tall
+     and his Export out of reach (found 27 Nov 2026, family 4, once his Commons row opened). */
+  .wb-module-page .wb-calvin-stack {
+    position: relative !important;
+    inset: auto !important;
     overflow: visible !important;
   }
   /* The chat fills the screen under the menu, the way back (46px and its
@@ -2110,6 +2084,54 @@ button.wb-info {
 
 /* THE REPORT BUTTON in the left rail, under the project (S21): quiet, because
    blue is for the one main next step. */
+/* Family 4 (the shared console page of 26 Nov 2026): the Export button's words
+   (rule 13), what the site says when no print window opened, and Phoebe's
+   progress in the rail (rule 2). Tokens only. */
+.wb-report-how {
+  margin: 6px 2px 0;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--ink-3);
+}
+.wb-report-said {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--card);
+}
+.wb-link-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: var(--tide);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.wb-rail-tally {
+  margin-top: 16px;
+  padding-left: 4px;
+}
+.wb-rail-tally-path + .wb-rail-tally-path {
+  margin-top: 6px;
+}
+.wb-rail-tally-states {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--ink-3);
+}
+.wb-rail-tally-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
 .wb-report-button {
   display: block;
   width: 100%;
@@ -2127,63 +2149,22 @@ button.wb-info {
   border-color: var(--ink-4);
 }
 
-/* THE SCREENING REPORT (S21) is print-only, as the paid calculator's export is:
-   hidden on screen, and the only thing printed.
-
-   TWO EXPORTS TAKE TURNS, from 14 Nov 2026, when Calvin's calculator came from the
-   open core with its own report and print rules (@waterbots/calvin/styles.css),
-   which hide everything but its .print-report. "Export screening report" marks
-   the page with .wb-print-screening while it prints: then only this report
-   prints and Calvin's stays hidden. Unmarked, Calvin's own export prints his,
-   and only the one on the page in view. */
-.wb-report {
+/* THE SCREENING REPORT (S21) is print-only: hidden on screen. From 27 Nov 2026 (family 4)
+   core's print part (@waterbots/core/print, with its rules in report.css, which
+   @waterbots/calvin/styles.css carries) copies it into a print area of its own under
+   <body> and prints only that, or opens it in its own tab, so no console panel can clip
+   it and a cancelled print leaves nothing behind. This site keeps only its look. Core's
+   own reports also use the class .wb-report, so the hiding is by this report's own class. */
+.wb-screening-report {
   display: none;
 }
-@media print {
-  .wb-page.is-off .print-report,
-  .wb-module-page.is-off .print-report {
-    display: none !important;
-  }
-  body.wb-print-screening .print-report {
-    display: none !important;
-  }
-  /* Calvin's full working is the one report of his that does print with it:
-     drawn inside the screening report, in its own place in section 4, and in
-     the flow of the page rather than over it (16 Nov 2026, #174). */
-  body.wb-print-screening .wb-report .print-report {
-    display: block !important;
-    position: static !important;
-    margin-top: 10px;
-  }
-  body.wb-print-screening .wb-report,
-  body.wb-print-screening .wb-report * {
-    visibility: visible !important;
-  }
-  body.wb-print-screening,
-  body.wb-print-screening #root {
-    height: auto !important;
-    overflow: visible !important;
-    background: #ffffff;
-  }
-  body.wb-print-screening .wb-app {
-    height: auto !important;
-    display: block !important;
-    background: #ffffff !important;
-  }
-  body.wb-print-screening .wb-app > :not(.wb-report) {
-    display: none !important;
-  }
-  body.wb-print-screening .wb-report {
-    display: block;
-    color: var(--ink);
-    font-family: var(--font-sans);
-    max-width: 7.5in;
-    margin: 0 auto;
-  }
-  @page {
-    size: letter portrait;
-    margin: 1in;
-  }
+.wb-print-root .wb-screening-report,
+body.wb-report-tab .wb-screening-report {
+  display: block;
+  max-width: 7.5in;
+  margin: 0 auto;
+  color: var(--ink);
+  font-family: var(--font-sans);
 }
 
 /* ---------------------------------------------------------------------------
@@ -2434,4 +2415,280 @@ button.wb-info {
 .wb-about-link {
   margin-left: 6px;
   font-size: 12px;
+}
+
+/* FAMILY 4, CONSOLE AND SURFACES (the shared console page of 26 Nov 2026). Tokens only. */
+
+/* Rule 3: the beta note, just above the typing box on every screen. */
+.wb-beta-note {
+  margin: 0 0 8px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--ink-3);
+}
+
+/* Rule 4: "Keep chatting" wears a blue outline; every other chip stays as it is. */
+.wb-chip.wb-chip-keep {
+  border-color: var(--tide);
+}
+
+/* Rules 8 and 20: everything a visitor taps is at least 44 pixels (core's --wb-tap), at every width, not only on a
+   phone (the walk of 27 Nov 2026), the map's + and − included. */
+  .wb-app button:not(.wb-link-button):not(.wb-info),
+  .wb-app [role='tab'],
+  .wb-app a.btn,
+  .wb-app select,
+  .wb-app input[type='text'],
+  .wb-app input[type='number'],
+  .wb-drawer button:not(.wb-link-button):not(.wb-info),
+  .wb-drawer a {
+    min-height: var(--wb-tap, 44px);
+  }
+  .wb-chip,
+  .wb-handoff {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--wb-tap, 44px);
+  }
+  .wb-app textarea {
+    min-height: var(--wb-tap, 44px);
+  }
+  /* The menu's wordmark and links: the same look, a 44-pixel place to tap. */
+  .wb-site-menu a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--wb-tap, 44px);
+    min-width: var(--wb-tap, 44px);
+  }
+  /* Small marks inside a line keep their size; an unseen layer around each takes the tap. */
+  .wb-info,
+  .wb-link-button {
+    position: relative;
+  }
+  .wb-info::after,
+  .wb-link-button::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(var(--wb-tap, 44px), 100%);
+    height: var(--wb-tap, 44px);
+    transform: translate(-50%, -50%);
+  }
+  .leaflet-control-zoom a,
+  .leaflet-touch .leaflet-bar a {
+    width: var(--wb-tap, 44px) !important;
+    height: var(--wb-tap, 44px) !important;
+    line-height: var(--wb-tap, 44px) !important;
+    font-size: 20px !important;
+  }
+
+/* Rule 6: every chat shows lists. The same size and ink as a reply's prose. */
+.wb-answer-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.wb-answer-list li + li {
+  margin-top: 3px;
+}
+
+/* Rule 24: the Commons says why an address did not open (src/components/Commons.tsx). Tokens only. */
+.wb-commons-asked {
+  max-width: 760px;
+  margin: 16px auto 0;
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--card);
+}
+
+/* RULE 21, TEXT IS READABLE (the shared console page, from the walk of 27 Nov 2026): body text at least 16 pixels; rail
+   and label text at least 14 pixels. These classes and the step bar's words carry the site's small text, so they take
+   the floor; an inline size beneath them gives way. Colour stays as it is; the one label that failed the contrast test
+   ("After you save", --ink-4) takes --ink-3 in JourneyBar.tsx. The (i) mark's glyph is an icon with its own label. */
+.wb-app :is(.t-caption, .eyebrow, .t-mono, .tag, .wb-report-button, .wb-report-how, .wb-report-said, .wb-interest-cta,
+  .wb-rail-link, .wb-row-action, .wb-beta-note, .wb-send-desk, .wb-rail-tally-row, .wb-rail-tally-states, .wb-chip,
+  .wb-handoff, .wb-record-toggle, .wb-rail-name-label, .wb-menu-bar-name, .wb-drawer-close,
+  .wb-commons-asked, .wb-tab, .wb-thinking-line),
+.wb-app .wb-journey span:not([aria-hidden]),
+.wb-site-menu :is(.wb-site-menu-link, .wb-site-menu-fold-word, .wb-site-menu-readout) {
+  font-size: 14px !important;
+}
+.wb-app :is(.wb-bubble, .wb-bubble p, .wb-bubble li, .wb-answer-list, .t-body),
+.wb-app .wb-composer {
+  font-size: 16px !important;
+}
+/* Rule 20: the two links at the foot of the left rail, and the site menu's fold button, are 44 pixels each way. */
+.wb-app :is(.wb-interest-cta, .wb-rail-link) {
+  min-height: var(--wb-tap, 44px);
+}
+.wb-site-menu-fold-button {
+  min-width: var(--wb-tap, 44px);
+  min-height: var(--wb-tap, 44px);
+}
+
+/* Rules 20 and 21 on this site's own Commons and interest pages (the walk of 27 Nov 2026). Calvin's and Violet's own
+   screens inside the Commons are drawn by their packages; their small text is core's to fix. */
+.wb-page-commons :is(.wb-shelf-scroll li, .wb-shelf-scroll li strong, .wb-module-row div, .wb-module-row span,
+  .wb-module-about dt, .wb-module-about dd, .wb-module-about dd *, .wb-crumb-rest, .wb-hit, .wb-form-label, .wb-form-check) {
+  font-size: 14px !important;
+}
+/* The Commons' small links and buttons take a 44-pixel place to tap at every width, as they already did on a phone. */
+.wb-page-commons :is(.wb-hit, .wb-shelf-scroll a),
+.wb-quiet-link {
+  position: relative;
+}
+.wb-page-commons :is(.wb-hit, .wb-shelf-scroll a)::after,
+.wb-quiet-link::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, var(--wb-tap, 44px));
+  height: max(100%, var(--wb-tap, 44px));
+  transform: translate(-50%, -50%);
+}
+.wb-page-commons .wb-module-row button,
+.wb-app .wb-tab {
+  min-width: var(--wb-tap, 44px);
+}
+/* A checkbox's place to tap is its whole row, the label it sits in. */
+.wb-page-commons label.wb-form-check {
+  display: flex;
+  align-items: center;
+  min-height: var(--wb-tap, 44px);
+}
+.wb-page-commons input[type='text'],
+.wb-page-commons input[type='email'] {
+  min-height: var(--wb-tap, 44px);
+}
+
+/* Rule 21 keeps the brand's letter spacing at the larger size, so a label that no longer fits its rail wraps onto a
+   second line rather than pushing past the rail's edge (rule 19). */
+.wb-app .wb-record-toggle {
+  white-space: normal;
+  flex-wrap: wrap;
+}
+
+/* RULE 26, ONE MENU UNDER 1280 PIXELS (the shared console page, the maintainer's word of 28 Nov 2026): one slim bar
+   above the chat and tool, with the menu button and the name of the place; the steps, the desk's tabs, the crew and the
+   rail inside one panel (App.tsx, JourneyBar.tsx, MenuTabs.tsx). Tokens only. */
+.wb-menu-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px var(--gutter, 16px);
+  border-bottom: 1px solid var(--line);
+}
+.wb-menu-bar-button {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--wb-tap, 44px);
+  height: var(--wb-tap, 44px);
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+}
+.wb-menu-bar-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+@media (max-width: 1279px) {
+  .wb-console-menu {
+    width: min(360px, 92vw) !important;
+    overflow-y: auto;
+    background: var(--paper);
+  }
+  /* The desk's own row of tabs lives in the menu here, so the chat and tool get the screen. */
+  .wb-page-console .wb-tabs {
+    display: none !important;
+  }
+  /* The beta note is one short line. */
+  .wb-beta-long {
+    display: none;
+  }
+}
+@media (min-width: 1280px) {
+  .wb-beta-short {
+    display: none;
+  }
+}
+.wb-console-menu-head {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.wb-console-menu-head .wb-drawer-close {
+  margin: -12px -6px -12px auto;
+}
+.wb-console-menu-part {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.wb-console-menu-part > .eyebrow {
+  margin-bottom: 10px;
+}
+.wb-menu-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.wb-menu-steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 32px;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.wb-menu-steps li[aria-current='step'] {
+  font-weight: 600;
+  color: var(--ink);
+}
+.wb-menu-step-dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid;
+  border-radius: var(--r-pill);
+}
+.wb-menu-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wb-menu-tab {
+  min-height: var(--wb-tap, 44px);
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--card);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.wb-menu-tab.is-selected {
+  border-color: var(--tide);
+  font-weight: 600;
+}
+/* Inside the menu the crew and the rail sit at the menu's width, with no edge of their own. */
+.wb-console-menu :is(.wb-crew-embedded, .wb-rail-embedded) {
+  min-height: 0;
 }

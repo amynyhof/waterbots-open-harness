@@ -44,7 +44,7 @@ import { checkEntry, emptyRecord, type ProjectRecord } from '@waterbots/core/rec
 import { COUNTRIES } from '@waterbots/calvin/engine';
 import type { AgentTurn, AskMeta } from '../chat/evidence';
 import { useConversation } from '../chat/useConversation';
-import { EMPTY_SHEET, HER_PACKS, applyUpdates, contextFor, worksheetCaption, type Sheet } from '@waterbots/phoebe';
+import { EMPTY_SHEET, HER_PACKS, applyUpdates, type Sheet } from '@waterbots/phoebe';
 import { EligibilityWorksheet } from '@waterbots/phoebe/screen';
 import phoebePortrait from '../../brand/assets/bots/phoebe.svg';
 import '../styles/phoebe.css';
@@ -71,7 +71,7 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
   async function ask(
     history: { role: 'user' | 'agent'; text: string }[],
     signal: AbortSignal,
-    _meta?: AskMeta,
+    meta?: AskMeta,
     onLive?: (text: string | null) => void
   ): Promise<AgentTurn> {
     /* No record: the Commons carries no visit. The seat's own rows do go,
@@ -84,7 +84,14 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
       })),
       null,
       signal,
-      { sheet: carriedSheet(sheet, HER_PACKS), loaded: loaded.current, onLive, door: 'agent-commons' }
+      {
+        sheet: carriedSheet(sheet, HER_PACKS),
+        loaded: loaded.current,
+        onLive,
+        door: 'agent-commons',
+        /* Her opened turn: nobody has introduced her here, so she says who she is (rule 17). */
+        ...(meta?.opened ? { opened: true } : {}),
+      }
     );
     if (answer.loaded) loaded.current = answer.loaded;
     if (answer.showTool) setToolDot(true);
@@ -93,21 +100,12 @@ export function PhoebeCommonsSeat({ onBack }: { onBack: () => void }) {
     if (moved || answer.sorts.length > 0) {
       setSheet((current) => applyUpdates(current, verdicts));
     }
-    const after = applyUpdates(sheet, verdicts);
     return {
       role: 'agent',
       text: answer.reply,
       evidence: answer.evidence,
       abstained: answer.abstained,
-      /* The shown line — contract line 5 — from her verdicts alone. */
-      ...(moved
-        ? {
-            caption: worksheetCaption(
-              after,
-              HER_PACKS.map((pack) => ({ pack, context: contextFor(after, pack, '') }))
-            ),
-          }
-        : {}),
+      /* No line under her turn (Phoebe 0.3.0): progress is never a line in the chat. */
       /* The way back to the shelf, from the field alone. */
       ...(answer.handBack === 'wellington' ? { action: { label: 'Back to the shelf', go: onBack } } : {}),
       ...(answer.handBack === 'wellington'

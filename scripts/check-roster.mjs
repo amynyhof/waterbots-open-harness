@@ -8,7 +8,7 @@
  * site never edits it. Item A13, 18 Sep 2026.
  *
  * WHAT IT PROVES. That every seat on this site's screens — the crew rail
- * (src/lib/crew.ts) and the Agent Commons shelf (src/lib/commonsShelf.ts) — is
+ * (src/lib/crew.ts) and the Agent Commons shelf (src/content/commons-modules.json) — is
  * a seat on the roster, wears the roster's seat label, opens the phase the
  * roster gives it, and is allowed at that door. That the primer's crew facts
  * (both regions of knowledge-packs/product-shared/agent-primer.md) name every
@@ -25,7 +25,7 @@
  * IT RUNS IN FRONT OF EVERY BUILD (`npm run build`), so a disagreement fails
  * the deploy and names the file and line. Maintainer's ruling, 18 Sep 2026.
  *
- * The crew file and the shelf are read with the TypeScript compiler, walking
+ * The crew file is read with the TypeScript compiler, and the shelf as JSON, walking
  * the source, so a failure can name the exact line. The primer and the prompt
  * are read as text.
  */
@@ -39,7 +39,8 @@ const ts = require('typescript');
 
 const ROSTER = 'knowledge-packs/product-shared/roster.yaml';
 const CREW = 'src/lib/crew.ts';
-const SHELF = 'src/lib/commonsShelf.ts';
+/* The shelf's rows live in their own content file from 26 Nov 2026 (S26); src/lib/commonsShelf.ts reads it. */
+const SHELF = 'src/content/commons-modules.json';
 const PRIMER = 'knowledge-packs/product-shared/agent-primer.md';
 /* Wellington's instructions are his package's from 26 Nov 2026 (@waterbots/wellington 0.1.0). */
 const PROMPT = 'node_modules/@waterbots/wellington/dist/prompt.md';
@@ -236,16 +237,18 @@ for (const m of crew) {
 console.log(`\n  ${SHELF}\n`);
 
 {
-  const source = ts.createSourceFile(SHELF, readFileSync(SHELF, 'utf8'), ts.ScriptTarget.Latest, true);
+  /* Each shelf row's "holder", with the line it stands on, so a failure names it. */
+  const shelfText = readFileSync(SHELF, 'utf8');
+  const shelfLines = shelfText.replace(/\r\n/g, '\n').split('\n');
   const holders = [];
-  const visit = (node) => {
-    if (ts.isCallExpression(node) && node.expression.getText(source) === 'crewMember' && node.arguments[0] && ts.isStringLiteral(node.arguments[0])) {
-      holders.push({ name: node.arguments[0].text, line: source.getLineAndCharacterOfPosition(node.getStart(source)).line + 1 });
-    }
-    ts.forEachChild(node, visit);
-  };
-  visit(source);
-  expect('the shelf names its holders through crewMember()', holders.length > 0, `${SHELF}:1`);
+  let from = 0;
+  for (const row of JSON.parse(shelfText).shelf ?? []) {
+    if (typeof row?.holder !== 'string') continue;
+    const index = shelfLines.findIndex((l, i) => i >= from && l.includes(`"holder": ${JSON.stringify(row.holder)}`));
+    if (index >= 0) from = index + 1;
+    holders.push({ name: row.holder, line: index + 1 });
+  }
+  expect('the shelf names its holders, one "holder" per row', holders.length > 0, `${SHELF}:1`);
   for (const h of holders) {
     const where = `${SHELF}:${h.line}`;
     const seat = seatOfFace(h.name);

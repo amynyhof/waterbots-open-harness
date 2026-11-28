@@ -33,13 +33,14 @@ import { useEffect, useState } from 'react';
 import { SITE_LABEL, SITE_URL } from '../lib/site';
 import { pathForInterest } from '../lib/pages';
 import { STAGE_WORDS as PROJECT_STAGES, typeWords as projectType } from '@waterbots/core/projectWords';
-import { servedWords, type Provenance, type VisitContext } from '../lib/visit';
+import { servedWords, type Provenance, type RailTally, type VisitContext } from '../lib/visit';
+import { EXPORT_BUTTON, EXPORT_HOW } from '../lib/exportReport';
 
-const EXPANDED = 224;
 const COLLAPSED = 52;
 
 /** Narrowed below this after landing, the rail collapses. The reader can still expand it. */
-const AUTO_COLLAPSE_BELOW = 1180;
+/* Under 1280 pixels the rail folds to its slim strip, and opens on tap (the shared console page, rule 19; it was 1180). */
+const AUTO_COLLAPSE_BELOW = 1280;
 
 /** The collapsed rail's title when the visit has not named its project. Not a value. */
 const UNNAMED = 'Unnamed project';
@@ -75,29 +76,37 @@ export interface ReportDoor {
   show: boolean;
   /** Opens the print dialog on the screening report (S21). */
   onExport: () => void;
+  /** What the site said when no print window opened (rule 13); empty otherwise. */
+  said?: string;
+  onDismiss?: () => void;
 }
 
 export default function NavRail({
   context,
   onTyped,
   report,
+  tally = [],
   onInterest,
-  drawer,
+  embedded = false,
 }: {
   context: VisitContext;
   onTyped: (field: 'name' | 'place', value: string) => void;
   report: ReportDoor;
+  /** Phoebe's progress, per funding path, in the rail and not the chat (rule 2). */
+  tally?: RailTally[];
   /** Opens the Register your interest form (16 Nov 2026). */
   onInterest?: () => void;
-  /** On a phone: the rail is a sliding panel, open or shut by the shell. */
-  drawer?: { open: boolean; onClose: () => void };
+  /** Under 1280 pixels the rail is drawn inside the one menu (the shared console page, rule 26): open, full width, no toggle. */
+  embedded?: boolean;
 }) {
   /* OPEN ON LANDING, whatever the width — the maintainer's walk of 13 Nov
      2026: the record is the first thing a visitor should see filling. A
      later resize still follows the viewport until the reader chooses. */
-  const [railOpen, setOpen] = useState(true);
+  /* From family 4 (rule 19) it lands folded under 1280 pixels, in place of the 13 Nov 2026 rule that it opens whatever
+     the width; the shared console page wins. */
+  const [railOpen, setOpen] = useState(() => typeof window === 'undefined' || window.innerWidth >= AUTO_COLLAPSE_BELOW);
   /* A phone's panel always shows the whole record; shut, it is off the screen. */
-  const open = drawer ? true : railOpen;
+  const open = embedded ? true : railOpen;
 
   /* Only follows the viewport until the reader expresses a preference. */
   const [touched, setTouched] = useState(false);
@@ -129,26 +138,21 @@ export default function NavRail({
 
   return (
     <nav
-      className={drawer ? `chrome wb-drawer wb-drawer-left${drawer.open ? ' is-open' : ''}` : 'chrome'}
+      className={embedded ? 'wb-rail-embedded' : 'chrome'}
       aria-label="This visit"
-      aria-hidden={drawer ? !drawer.open : undefined}
       style={{
-        width: open ? EXPANDED : COLLAPSED,
+        /* As wide as the crew rail (the shared console page of 26 Nov 2026, rule 2); inside the menu, the menu's width. */
+        width: embedded ? 'auto' : open ? 'var(--chat-rail)' : COLLAPSED,
         flex: 'none',
         display: 'flex',
         flexDirection: 'column',
-        borderRight: '1px solid var(--line)',
+        borderRight: embedded ? 0 : '1px solid var(--line)',
         borderBottom: 0,
         transition: `width var(--dur) var(--ease)`,
-        overflow: 'hidden',
+        overflow: embedded ? 'visible' : 'hidden',
       }}
     >
-      {drawer ? (
-        <button className="wb-rail-toggle" onClick={drawer.onClose} aria-label="Close the project panel">
-          <Chevron open />
-          <span className="t-caption">Close</span>
-        </button>
-      ) : (
+      {embedded ? null : (
         <button
           className="wb-rail-toggle"
           onClick={() => {
@@ -165,7 +169,7 @@ export default function NavRail({
       )}
 
       {open ? (
-        <div style={{ padding: '14px 12px 0', overflowY: 'auto', minHeight: 0 }}>
+        <div style={{ padding: '14px 12px 0', overflowY: 'auto', overflowX: 'hidden', minHeight: 0 }}>
           <div className="eyebrow" style={{ marginBottom: 10, paddingLeft: 4 }}>
             Project
           </div>
@@ -192,48 +196,65 @@ export default function NavRail({
               />
               {/* THE NAME SHOWS ONCE, HERE — look pass, 8 Sep 2026. The card
                   is where a visitor names the project, by typing or by telling
-                  Wellington; the record below no longer repeats it. A name he
-                  heard reads as a value; a blank or typed one is an input.
+                  Wellington; the record below no longer repeats it.
                   FROM 21 NOV 2026, the maintainer's word, the input is a clear
                   place to type: a "Project name" label over a box, and
                   Wellington asks for the name in the chat. */}
-              {context.provenance.name === 'chat' ? (
-                <span
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    lineHeight: 1.3,
-                    color: 'var(--ink)',
-                    overflowWrap: 'anywhere',
-                  }}
-                >
-                  {name}
-                </span>
-              ) : (
-                <label htmlFor="wb-project-name" className="t-caption wb-rail-name-label">
-                  Project name
-                </label>
-              )}
+              {/* THE PROJECT NAME IS EASY TO FIX (the shared console page of 26 Nov 2026, rule 10):
+                  always a box, whoever gave the name. A name typed here is the visitor's own and is
+                  never overwritten (src/lib/visit.ts). */}
+              <label htmlFor="wb-project-name" className="t-caption wb-rail-name-label">
+                Project name
+              </label>
             </div>
-            {context.provenance.name !== 'chat' && (
-              <input
-                id="wb-project-name"
-                className="wb-rail-name wb-rail-name-box"
-                type="text"
-                value={context.name}
-                onChange={(e) => onTyped('name', e.target.value)}
-                placeholder={NAME_PLACEHOLDER}
-                maxLength={160}
-              />
-            )}
+            <input
+              id="wb-project-name"
+              className="wb-rail-name wb-rail-name-box"
+              type="text"
+              value={context.name}
+              onChange={(e) => onTyped('name', e.target.value)}
+              placeholder={NAME_PLACEHOLDER}
+              maxLength={160}
+            />
           </div>
 
           {/* S21 — the screening report, under the project. Quiet: blue is for
               the one main next step. */}
           {report.show && (
-            <button type="button" className="wb-report-button" onClick={report.onExport} style={{ marginTop: 10 }}>
-              Export screening report
-            </button>
+            <>
+              <button type="button" className="wb-report-button" onClick={report.onExport} style={{ marginTop: 10 }}>
+                {EXPORT_BUTTON}
+              </button>
+              <p className="wb-report-how">{EXPORT_HOW}</p>
+              {report.said && (
+                <p className="wb-report-said" role="status">
+                  {report.said}{' '}
+                  <button type="button" className="wb-link-button" onClick={report.onDismiss}>
+                    Close
+                  </button>
+                </p>
+              )}
+            </>
+          )}
+
+          {/* PROGRESS, IN THE RAIL (rule 2): Phoebe 0.3.0's tally, per funding path, in her own words. */}
+          {tally.length > 0 && (
+            <div className="wb-rail-tally" aria-label="Progress">
+              <div className="eyebrow" style={{ marginBottom: 6 }}>Progress</div>
+              {tally.map((t) => (
+                <div key={t.pack} className="wb-rail-tally-path">
+                  <div className="wb-rail-tally-row">
+                    <span>{t.name}</span>
+                    <span className="t-mono">{t.looked} of {t.rows} looked at</span>
+                  </div>
+                  {t.states.length > 0 && (
+                    <div className="wb-rail-tally-states">
+                      {t.states.map((s) => `${s.count} ${s.label}`).join(' · ')}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           )}
 
           {/* THE RECORD his interview populates — from 21 Nov 2026, the

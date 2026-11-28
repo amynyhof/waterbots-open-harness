@@ -88,3 +88,4 @@ export const HANDOFF_LANDING = 'https://www.waterbots.ai/welcome';
 
 /** The site menu's Sign up: the same welcome page, with no project to carry. */
 export const MENU_SIGN_UP: MenuLink = { label: 'Sign up', href: HANDOFF_LANDING };
+

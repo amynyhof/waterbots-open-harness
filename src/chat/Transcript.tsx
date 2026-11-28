@@ -40,6 +40,7 @@ import { Reached } from './reached';
 import AgentFace from '../components/AgentFace';
 import AnswerBody from './AnswerBody';
 import type { AgentHost, AgentTurn, Turn } from './evidence';
+import { KEEP_CHATTING } from '@waterbots/core/consoleWords';
 
 export default function Transcript({
   host,
@@ -139,7 +140,10 @@ function HostBubble({ host, turn, latest = false }: { host: AgentHost; turn: Age
       <div className="wb-turn-body">
         <div className="wb-turn-who">
           <span>
-            {who.name} · {who.role}
+            {/* NAME AND ROLE ONCE (the shared console page of 26 Nov 2026, rule 10): the screen's
+                header carries its host's role, so the host's own bubbles carry the name alone.
+                Someone else speaking here, such as Wellington in another agent's chat, keeps both. */}
+            {who.name === host.name ? who.name : `${who.name} · ${who.role}`}
           </span>
           {turn.abstained && (
             <span className="t-caption" style={{ fontSize: 10.5, color: 'var(--ink-3)', textTransform: 'none', letterSpacing: 0 }}>
@@ -197,7 +201,8 @@ export function TurnButtons({ turn }: { turn: Pick<AgentTurn, 'buttons'> }) {
           <button
             key={button.label}
             type="button"
-            className={blue ? 'btn btn-primary' : 'wb-chip'}
+            /* "Keep chatting" has a blue outline (the shared console page of 26 Nov 2026, rule 4). */
+            className={blue ? 'btn btn-primary' : button.label === KEEP_CHATTING ? 'wb-chip wb-chip-keep' : 'wb-chip'}
             style={blue ? { padding: '6px 14px', fontSize: 13 } : undefined}
             onClick={button.go}
           >

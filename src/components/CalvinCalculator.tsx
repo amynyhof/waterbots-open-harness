@@ -42,6 +42,8 @@
 
 import { useEffect, useRef, useState, type MutableRefObject, type ReactNode } from 'react';
 import { createPortal, flushSync } from 'react-dom';
+import { reportStamp } from '@waterbots/core/report';
+import { REPORT_STAMP_EVENT } from '../lib/exportReport';
 import {
   CalculatorLens,
   CalculatorWork,
@@ -213,12 +215,13 @@ function CalvinCarbonState({
 function WorkingInReport({ calc, project }: { calc: CalculatorState; project: CalvinProject }) {
   const [slot, setSlot] = useState<HTMLElement | null>(null);
   useEffect(() => setSlot(document.getElementById(SCREENING_WORKING_SLOT)), []);
-  /* The time it is printed, set as the print dialog opens. */
-  const [printedAt, setPrintedAt] = useState(() => new Date().toLocaleString('en-GB'));
+  /* The time it is exported, in core's one time stamp (reportStamp, family 4, rule 14), set just before core's print
+     part copies the report (src/lib/exportReport.ts), so the copy carries it. */
+  const [printedAt, setPrintedAt] = useState(() => reportStamp());
   useEffect(() => {
-    const before = () => flushSync(() => setPrintedAt(new Date().toLocaleString('en-GB')));
-    window.addEventListener('beforeprint', before);
-    return () => window.removeEventListener('beforeprint', before);
+    const before = () => flushSync(() => setPrintedAt(reportStamp()));
+    window.addEventListener(REPORT_STAMP_EVENT, before);
+    return () => window.removeEventListener(REPORT_STAMP_EVENT, before);
   }, []);
   if (!slot || !calc.result || !calc.paaResult) return null;
   const legacy = calc.transition && calc.legacyResult && calc.waterfall ? calc.legacyResult : null;

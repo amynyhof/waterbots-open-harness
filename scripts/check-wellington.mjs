@@ -342,11 +342,14 @@ const { PLAIN_WORDS_MD, BEFORE_AFTER_MD } = await loadApi('_plainWords.generated
     /* From 24 Nov 2026, the shared console behaviours, item 8: every hand-off has one format, in the next agent's colour
        and naming the step (src/lib/steps.ts), so Meet is no longer blue and never goes quiet. */
     'W17, P24, item 8: a route to a colleague draws the hand-off that names the step and "Keep chatting" (a quiet chip) under his message, from the field and the map alone',
-    /Step \$\{step\.number\} of \$\{step\.of\}: \$\{step\.label\}\. Meet \$\{agent\.name\}/.test(readFileSync(join('src', 'lib', 'steps.ts'), 'utf8')) &&
-      /handoffButton\(surface/.test(wellingtonLib) && /'Keep chatting'/.test(wellingtonLib) && /buttonsAfter\(answer\.route/.test(wellingtonLib) &&
+    /* From core 0.6.0 (family 4) the hand-off's words and "Keep chatting" are core's own (consoleWords.ts). */
+    /label: handoffLabel\(step\.label as ConsoleStep, step\.number, step\.of, agent\.name\)/.test(readFileSync(join('src', 'lib', 'steps.ts'), 'utf8')) &&
+      /handoffButton\(surface/.test(wellingtonLib) && /label: KEEP_CHATTING/.test(wellingtonLib) && /buttonsAfter\(answer\.route/.test(wellingtonLib) &&
       /\.wb-handoff \{[^}]*border: 1px solid var\(--handoff\);/.test(readFileSync(join('src', 'styles', 'base.css'), 'utf8')) &&
       /const blue = button\.primary && !\(button\.reaches && reached\.has\(button\.reaches\)\)/.test(readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8')) &&
-      /blue \? 'btn btn-primary' : 'wb-chip'/.test(readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8')) &&
+      /* Family 4, rule 4: the same quiet chip, and "Keep chatting" with a blue outline. */
+      /blue \? 'btn btn-primary' : button\.label === KEEP_CHATTING \? 'wb-chip wb-chip-keep' : 'wb-chip'/.test(readFileSync(join('src', 'chat', 'Transcript.tsx'), 'utf8')) &&
+      /\.wb-chip\.wb-chip-keep \{[^}]*border-color: var\(--tide\);/.test(readFileSync(join('src', 'styles', 'base.css'), 'utf8')) &&
       /\.wb-chip \{[^}]*background: transparent;/.test(readFileSync(join('src', 'styles', 'base.css'), 'utf8')),
     'the two buttons are not built from the route field'
   );
@@ -826,7 +829,8 @@ expect(
 expect(
   'W27: the right panel is the crew, one plain status line each, with no next-step rows (14 Nov 2026)',
   /* `counted` is the visit less what was worked out at a desk the map closed (J4, 23 Nov 2026). */
-  /crewStatus\(counted, sheet, carbon\)/.test(appSource) && /status=\{crew\}/.test(appSource) && !/nextStepRows/.test(appSource),
+  /* From family 4 (rule 26) the crew's props are shared by the right panel and the menu: `crewProps`. */
+  /crewStatus\(counted, sheet, carbon\)/.test(appSource) && /const crewProps = \{ active: surface, status: crew,/.test(appSource) && !/nextStepRows/.test(appSource),
   'the right panel still draws next-step rows'
 );
 expect(
@@ -842,7 +846,7 @@ expect(
     const chatBox = readFileSync('src/screen/ScreenChat.tsx', 'utf8');
     const menu = readFileSync('src/components/SiteMenu.tsx', 'utf8');
     return (
-      /Export screening report/.test(left) && !/wb-save-button|Save and sign up|Send my project to the WaterBots team/.test(left) &&
+      /\{EXPORT_BUTTON\}/.test(left) && !/wb-save-button|Save and sign up|Send my project to the WaterBots team/.test(left) &&
       !/SaveDoor|Save and sign up/.test(railSource) &&
       /Send my project to the WaterBots team/.test(door) && (door.match(/'Save and sign up'/g) ?? []).length === 1 &&
       !/SaveBarSlot|PhoneSaveBar/.test(chatBox + door + appSource) &&
@@ -850,7 +854,9 @@ expect(
       /save=\{onConsole \? saveDoor : undefined\}/.test(appSource)
     );
   })() &&
-    /onExport: printScreeningReport/.test(appSource) && /body\.classList\.add\('wb-print-screening'\)/.test(appSource) &&
+    /* Family 4: the export runs on core's print part (src/lib/exportReport.ts), and the site says what really happened. */
+    /onExport: exportReport/.test(appSource) && /printScreeningReport\(\)\.then\(\(outcome\) => setExportSaid\(saidFor\(outcome\)\)\)/.test(appSource) &&
+    /return printReport\(report\);/.test(readFileSync('src/lib/exportReport.ts', 'utf8')) &&
     !/Next steps|TOOLS_LINE/.test(railSource),
   "the report is not in the left rail, or Save is not the menu's one button, or the team box is not with it"
 );
